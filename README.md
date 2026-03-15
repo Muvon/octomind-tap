@@ -116,12 +116,46 @@ allowed_tools = ["core:*", "filesystem:*", "agent_*"]
 |-------------|-------------|
 | `{{CWD}}` | Current working directory at runtime |
 | `{{INPUT:KEY}}` | Prompts user once, stored in `~/.local/share/octomind/inputs.toml` |
+| `{{ENV:KEY}}` | Reads from environment; if unset, prompts user and saves to `./.env` |
 | `{{SYSTEM}}` | Full system info (shell, OS, binaries, CWD) |
 | `{{CONTEXT}}` | Project context (README, git status, file tree) |
 | `{{DATE}}` | Current date and time with timezone |
 | `{{ROLE}}` | Active role name |
 
-`{{INPUT:KEY}}` is ideal for secrets (API tokens, credentials). The user is prompted once on first use; the value is cached locally and never committed anywhere.
+#### `{{INPUT:KEY}}` — persistent credential store
+
+Use for **secrets that belong to the user globally** — API tokens, personal access tokens, license keys. The user is prompted once on first use; the value is saved to `~/.local/share/octomind/inputs.toml` and reused on every subsequent run across all projects.
+
+```toml
+system = """
+GitHub token: {{INPUT:GITHUB_TOKEN}}
+"""
+```
+
+#### `{{ENV:KEY}}` — environment variable with `.env` fallback
+
+Use for **project-scoped or deployment-specific values** — base URLs, feature flags, environment names, project IDs. The resolution order is:
+
+1. If `KEY` is already set in the environment (and non-empty) → use it directly, no prompt.
+2. If not set → prompt the user, then append `KEY=VALUE` to `./.env` in the current working directory.
+
+On the next run Octomind loads `.env` automatically, so the user is never prompted again for that project. The value also becomes available to MCP tools and shell commands in the session immediately.
+
+```toml
+system = """
+API base URL: {{ENV:API_BASE_URL}}
+Environment: {{ENV:DEPLOY_ENV}}
+"""
+```
+
+**When to use which:**
+
+| Situation | Use |
+|-----------|-----|
+| API token / secret key (global, user-owned) | `{{INPUT:KEY}}` |
+| Project base URL / environment name / feature flag | `{{ENV:KEY}}` |
+| Value already set in CI/CD environment | `{{ENV:KEY}}` |
+| Value that should never touch the filesystem | `{{INPUT:KEY}}` |
 
 ### Role Fields
 
@@ -210,6 +244,14 @@ system = """
 <Your system prompt here.>
 
 Working directory: {{CWD}}
+
+# Use {{INPUT:KEY}} for user-global secrets (API tokens, credentials).
+# Prompted once, stored in ~/.local/share/octomind/inputs.toml.
+# Example: GitHub token: {{INPUT:GITHUB_TOKEN}}
+
+# Use {{ENV:KEY}} for project-scoped values (base URLs, env names, flags).
+# Reads from environment if set; otherwise prompts and saves to ./.env.
+# Example: API base: {{ENV:API_BASE_URL}}
 """
 welcome = "<Emoji> <Short greeting>. Working in {{CWD}}"
 temperature = 0.3
@@ -219,14 +261,14 @@ top_k = 0
 [roles.mcp]
 server_refs = ["core", "filesystem", "agent"]
 allowed_tools = ["core:*", "filesystem:*", "agent_*"]
-```
 
 ### Guidelines
 
 - **Never set `name`** — it is injected from the tag at runtime. Do not include it in the manifest.
 - **Keep system prompts focused** — describe the persona, constraints, and preferred patterns. Avoid walls of text.
 - **Prefer `{{CWD}}` over hardcoded paths** — manifests are used across machines.
-- **Use `{{INPUT:KEY}}` for secrets** — never hardcode tokens or credentials.
+- **Use `{{INPUT:KEY}}` for user-global secrets** — API tokens, credentials. Prompted once, stored in `~/.local/share/octomind/inputs.toml`, reused across all projects.
+- **Use `{{ENV:KEY}}` for project-scoped values** — base URLs, environment names, feature flags. Reads from the environment if set; otherwise prompts and saves to `./.env` in the working directory. Never use `{{ENV:KEY}}` for secrets — the value lands in a plain-text file.
 - **Docker for zero-install tooling** — if your agent needs a language server or CLI tool, wrap it in a Docker MCP server so users don't need to install anything.
 - **One role per file** — a manifest should define exactly one `[[roles]]` entry (the primary agent role). Additional helper roles are discouraged.
 - **Test with `file://` source** before submitting — see the local testing instructions above.
