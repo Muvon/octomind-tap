@@ -16,6 +16,6 @@ if pkg_check docker; then
 fi
 
 # Ensure docker is available
-install_dep containers/docker
+install_dep docker/docker
 
 info "SE Ranking MCP Server requires Docker — already available"
