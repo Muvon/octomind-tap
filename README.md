@@ -236,14 +236,18 @@ Each script is **self-sufficient** — if it needs another tool (e.g. `cargo`), 
 
 ### Script contract
 
-Every dep script **must** follow this contract so the runtime can trust it:
+Every dep script **must** follow two rules:
+
+1. **Self-sufficient** — if it needs another tool to run (e.g. `cargo`), it `source`s that dep script itself. The caller never needs to set anything up beforehand.
+2. **Idempotent** — exits `0` immediately if the tool is already installed. Safe to run twice, ten times, on every session start.
 
 | Rule | Detail |
 |------|--------|
-| **Idempotent** | Check first — exit `0` immediately if the tool is already installed |
-| **Exit codes** | `0` = installed (or already present), `1` = failed |
+| **Self-sufficient** | `source` prerequisite dep scripts directly — do not assume the caller did it |
+| **Idempotent** | Fast-path `exit 0` if already installed — no side effects on repeat runs |
+| **Exit codes** | `0` = ready to use, non-zero = failed |
 | **Output** | Stderr only — stdout is reserved for Octomind |
-| **No side-effects** | Do not modify the user's config, shell profile, or working directory |
+| **No profile changes** | Do not modify `.bashrc`, `.zshrc`, or any shell profile |
 
 ### Using the platform library
 

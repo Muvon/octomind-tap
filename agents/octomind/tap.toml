@@ -173,9 +173,10 @@ If the agent needs a CLI tool that isn't universally available (e.g. `uv`, `node
 require = ["astral-sh/uv", "nodejs/node"]
 ```
 
-Each entry maps to `deps/<org>/<tool>.sh` in this repo. Scripts run before MCP init, must be idempotent (exit 0 if already installed), and write only to stderr.
+Each entry maps to `deps/<org>/<tool>.sh` in this repo. Every dep script follows two strict rules:
 
-Each script is **self-sufficient** — if it needs another tool (e.g. `cargo`), it invokes that dep script directly. No ordering required in the manifest.
+1. **Self-sufficient** — if it needs another tool (e.g. `cargo`), it `source`s that dep script itself. The manifest never needs to list prerequisites.
+2. **Idempotent** — exits `0` immediately if already installed. Safe to run on every session start.
 
 When to add deps:
 - Agent uses an MCP server that requires a specific CLI (e.g. `uvx`, `npx`, `octocode`)

@@ -23,6 +23,10 @@
 
 set -euo pipefail
 
+# Guard against double-sourcing — safe when scripts source prerequisite dep scripts
+[[ -n "${_OCTOMIND_PLATFORM_LOADED:-}" ]] && return 0
+_OCTOMIND_PLATFORM_LOADED=1
+
 # ── OS detection ─────────────────────────────────────────────────────────────
 
 case "$(uname -s)" in

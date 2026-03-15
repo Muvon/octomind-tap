@@ -7,6 +7,10 @@
 set -euo pipefail
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/lib/platform.sh"
 
+# Guard against double-sourcing
+[[ -n "${_OCTOMIND_DEP_RUST_CARGO:-}" ]] && return 0
+_OCTOMIND_DEP_RUST_CARGO=1
+
 # Always source cargo env first — ensures PATH is set for the calling script
 # whether cargo was just installed or was already present.
 # shellcheck source=/dev/null
@@ -14,7 +18,7 @@ source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/lib/platform.sh"
 
 # Fast path — already installed
 if pkg_check cargo; then
-  exit 0
+  return 0 2>/dev/null || exit 0
 fi
 
 info "Rust not found — installing via rustup..."
