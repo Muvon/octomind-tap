@@ -83,6 +83,10 @@ jobs:
 
       - name: Remove pre-installed tool (force real install path)
         run: |
+          set -x
+          echo "Script: ${{ matrix.script }}"
+          cat "${{ matrix.script }}" | head -20
+
           # Read the '# check: <cmd>' header from the script to know what to remove.
           # GH macOS runners come with many tools pre-installed — we must uninstall
           # them so the script actually exercises its install logic, not the fast path.
@@ -103,11 +107,17 @@ jobs:
 
       - name: Run script (install)
         run: |
+          set -x
           echo "Working directory: $(pwd)"
           echo "Script: ${{ matrix.script }}"
-          echo "Script exists: $(test -f '${{ matrix.script }}' && echo yes || echo no)"
-          echo "Platform lib exists: $(test -f deps/lib/platform.sh && echo yes || echo no)"
-          bash -x '${{ matrix.script }}' 2>&1
+          ls -la "${{ matrix.script }}" || echo "Script not found!"
+          ls -la deps/lib/platform.sh || echo "platform.sh not found!"
+          echo "=== Running script ==="
+          bash '${{ matrix.script }}' || {
+            echo "Script failed with exit code: $?"
+            exit 1
+          }
+          echo "=== Script completed successfully ==="
 
       - name: Run script again (idempotency check)
         run: |

@@ -40,7 +40,15 @@ esac
 
 # The installer puts uv in ~/.cargo/bin or ~/.local/bin — verify it's reachable
 if ! pkg_check uv; then
-	info "uv installed but not in PATH. Add ~/.local/bin or ~/.cargo/bin to your PATH."
-	info "Then re-run: octomind run <agent>"
-	exit 1
+	info "uv installed but not in PATH. Adding ~/.local/bin and ~/.cargo/bin to PATH."
+	if [[ -d "$HOME/.local/bin" ]]; then
+		export PATH="$HOME/.local/bin:$PATH"
+	fi
+	if [[ -d "$HOME/.cargo/bin" ]]; then
+		export PATH="$HOME/.cargo/bin:$PATH"
+	fi
+	if ! pkg_check uv; then
+		info "uv still not in PATH. You may need to restart your shell."
+		exit 1
+	fi
 fi

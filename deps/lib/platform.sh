@@ -153,10 +153,16 @@ install_dep() {
 	# We go up one level from that script to get deps/
 	deps_root="$(cd "$(dirname "${BASH_SOURCE[1]}")/.." && pwd)"
 
+	info "Installing dependency: $dep"
 	bash "$deps_root/$dep.sh"
+	info "Dependency $dep installed successfully"
 
 	# Source common env files that deps might have created
 	# shellcheck source=/dev/null
-	[[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
-	[[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"
+	if [[ -f "$HOME/.cargo/env" ]]; then
+		source "$HOME/.cargo/env"
+	fi
+	if [[ -d "$HOME/.local/bin" ]]; then
+		export PATH="$HOME/.local/bin:$PATH"
+	fi
 }
