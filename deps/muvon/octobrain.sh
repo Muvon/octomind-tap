@@ -5,7 +5,7 @@
 # https://github.com/muvon/octobrain
 
 set -euo pipefail
-source "$(dirname "${BASH_SOURCE[0]}")/../../lib/platform.sh"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../lib/platform.sh"
 
 # Fast path — already installed
 if pkg_check octobrain; then
