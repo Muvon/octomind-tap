@@ -1,0 +1,45 @@
+name: Bug report — broken manifest
+description: Report a manifest that fails to load or behaves incorrectly.
+title: "[bug] <domain>:<spec> — <short description>"
+labels: ["bug"]
+body:
+  - type: input
+    id: tag
+    attributes:
+      label: Agent tag
+      description: "The tag you ran, e.g. `developer:rust`"
+      placeholder: "developer:rust"
+    validations:
+      required: true
+
+  - type: input
+    id: octomind_version
+    attributes:
+      label: Octomind version
+      description: "Output of `octomind --version`"
+      placeholder: "0.20.0"
+    validations:
+      required: true
+
+  - type: textarea
+    id: error
+    attributes:
+      label: Error output
+      description: Paste the full error message or unexpected behaviour.
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: OS, shell, any relevant config snippets.

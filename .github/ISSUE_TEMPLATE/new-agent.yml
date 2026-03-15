@@ -1,0 +1,60 @@
+name: Request a new agent
+description: Suggest a new agent manifest for the registry.
+title: "[agent] <domain>:<spec> — <short description>"
+labels: ["new-agent"]
+body:
+  - type: input
+    id: tag
+    attributes:
+      label: Tag
+      description: "The tag for the agent in `domain:spec` format."
+      placeholder: "developer:zig"
+    validations:
+      required: true
+
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Use case
+      description: What does this agent do? Who is it for?
+      placeholder: "An expert Zig developer assistant that writes idiomatic, memory-safe Zig code..."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: tools
+    attributes:
+      label: MCP servers needed
+      description: Which built-in MCP servers should this agent have access to?
+      multiple: true
+      options:
+        - core (plan)
+        - filesystem (view, shell, text_editor, …)
+        - agent (delegate to layers)
+        - octocode (semantic_search, remember, …)
+        - custom (describe below)
+    validations:
+      required: true
+
+  - type: textarea
+    id: custom_tools
+    attributes:
+      label: Custom MCP servers (optional)
+      description: If you need extra tooling (e.g. a Docker-based language server), describe it here.
+      placeholder: "Docker image ghcr.io/org/zig-lsp:latest exposing an MCP server on stdin"
+
+  - type: textarea
+    id: system_prompt_sketch
+    attributes:
+      label: System prompt sketch (optional)
+      description: A rough draft of the system prompt, or key points it should cover.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing agents and this doesn't already exist.
+          required: true
+        - label: The tag follows the `domain:spec` naming convention.
+          required: true

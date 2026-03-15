@@ -127,7 +127,7 @@ allowed_tools = ["core:*", "filesystem:*", "agent_*"]
 
 | Field | Required | Description |
 |-------|----------|-------------|
-| `name` | ✅ | Must match the tag (`domain:spec` or `domain:spec-sub`) |
+| `name` | ❌ omit | Injected automatically from the tag at runtime |
 | `system` | ✅ | System prompt for the AI |
 | `welcome` | ✅ | Message shown when the session starts |
 | `temperature` | ✅ | Sampling temperature (0.0–1.0) |
@@ -205,7 +205,7 @@ octomind untap muvon/tap
 # Description: One-line description of what this agent does.
 
 [[roles]]
-name = "<domain>:<spec>"
+# name is NOT set here — Octomind injects it automatically from the tag at runtime.
 system = """
 <Your system prompt here.>
 
@@ -223,7 +223,7 @@ allowed_tools = ["core:*", "filesystem:*", "agent_*"]
 
 ### Guidelines
 
-- **`name` must match the tag** — `developer:rust` manifest must have `name = "developer:rust"`.
+- **Never set `name`** — it is injected from the tag at runtime. Do not include it in the manifest.
 - **Keep system prompts focused** — describe the persona, constraints, and preferred patterns. Avoid walls of text.
 - **Prefer `{{CWD}}` over hardcoded paths** — manifests are used across machines.
 - **Use `{{INPUT:KEY}}` for secrets** — never hardcode tokens or credentials.
