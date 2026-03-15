@@ -1,0 +1,175 @@
+# templates/agent.toml
+# ─────────────────────────────────────────────────────────────────────────────
+# Octomind Tap Agent Template
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Copy this file to agents/<domain>/<spec>.toml and customize.
+#
+# Quick start:
+#   1. Set domain and spec in the filename and header comment
+#   2. Write a one-line description
+#   3. Set temperature, top_p, top_k for your domain
+#   4. Write your system prompt
+#   5. Configure MCP servers and tools
+#   6. Add dependencies if needed
+#
+# Run: octomind run <domain>:<spec>
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Agent: <domain>:<spec>
+# Description: One-line description of what this agent does.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# DEPENDENCIES (Optional)
+# ─────────────────────────────────────────────────────────────────────────────
+# Tools that auto-install before the session starts.
+# Uncomment and customize as needed.
+
+# [deps]
+# require = ["nodejs/node", "astral-sh/uv", "rust/cargo"]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROLE CONFIGURATION
+# ─────────────────────────────────────────────────────────────────────────────
+
+[[roles]]
+# Sampling temperature (0.0–1.0)
+# Lower = more deterministic, consistent outputs
+# Higher = more creative, varied outputs
+# Recommended: 0.1–0.3 for technical domains, 0.4–0.6 for general chat
+temperature = 0.3
+
+# Nucleus sampling (0.0–1.0)
+# Probability mass to consider. 0.9 = consider tokens comprising top 90% probability
+# Recommended: 0.9 for most use cases
+top_p = 0.9
+
+# Top-k sampling (0 = disabled)
+# Limits to top-k most likely tokens. 0 = disabled (use top_p instead)
+# Recommended: 0 for most use cases, 10–40 for more deterministic output
+top_k = 0
+
+# Welcome message shown when session starts
+# Use {{CWD}} placeholder for current working directory
+welcome = "🤖 <Domain> agent ready. I help with <description>. Working in {{CWD}}"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SYSTEM PROMPT
+# ─────────────────────────────────────────────────────────────────────────────
+# This defines the agent's personality, knowledge, and behavior.
+# Be specific about what the agent can and cannot do.
+# Include domain knowledge, frameworks, and decision trees.
+
+system = """
+You are a <Domain> Specialist — <brief description of role>.
+
+Your role: <what you help users accomplish>.
+
+---
+
+## CORE PRINCIPLES
+
+### <Principle 1>
+- Point 1
+- Point 2
+- Point 3
+
+### <Principle 2>
+- Point 1
+- Point 2
+
+---
+
+## CRITICAL DISCLAIMERS
+
+⚠️ **You are NOT <professional title>** — <what you cannot do>
+⚠️ **You CANNOT <restricted action>** — <why>
+⚠️ **ALWAYS <required action>** — <when>
+
+---
+
+## WHAT YOU CAN DO
+
+✅ <Capability 1>
+✅ <Capability 2>
+✅ <Capability 3>
+
+---
+
+## WHAT YOU CANNOT DO
+
+❌ <Restriction 1>
+❌ <Restriction 2>
+❌ <Restriction 3>
+
+---
+
+## RESPONSE STRUCTURE
+
+For <domain> questions:
+
+1. **Brief disclaimer** — One line (if applicable)
+2. **Direct answer** — Clear, concise response
+3. **Context** — Background, mechanisms, evidence
+4. **Practical implications** — What this means for the user
+5. **Next steps** — Actionable recommendations
+6. **References** — Sources, citations (if applicable)
+
+---
+
+## TOOLS
+
+**<MCP Server Name>** — Use these tools for <purpose>:
+- `tool-name-1` — Description
+- `tool-name-2` — Description
+
+Working directory: {{CWD}}
+"""
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MCP SERVERS
+# ─────────────────────────────────────────────────────────────────────────────
+# Built-in servers: core, filesystem, octocode, octobrain, agent, tavily
+
+[roles.mcp]
+# Server references (built-in servers to enable)
+server_refs = ["core", "filesystem"]
+
+# Tool allow-list (use wildcards for full access)
+# Examples:
+#   ["core:*", "filesystem:*"]           — Full access to core and filesystem
+#   ["view", "shell"]                     — Restricted to specific tools
+#   ["core:*", "semantic_search"]         — Core + specific octocode tool
+allowed_tools = ["core:*", "filesystem:*"]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# CUSTOM MCP SERVERS (Optional)
+# ─────────────────────────────────────────────────────────────────────────────
+# Add MCP servers beyond the built-in ones.
+# Uncomment and customize as needed.
+
+# [[mcp.servers]]
+# name = "my-mcp-server"
+# type = "stdio"
+# command = "npx"
+# args = ["-y", "@scope/my-mcp-server"]
+# timeout_seconds = 60
+# tools = []  # Empty = all tools exposed
+
+# With secrets:
+# [[mcp.servers]]
+# name = "github"
+# type = "stdio"
+# command = "npx"
+# args = ["-y", "@github/mcp-server"]
+# env = { GITHUB_TOKEN = "{{INPUT:GITHUB_TOKEN}}" }
+# timeout_seconds = 60
+# tools = []
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MODEL OVERRIDE (Optional)
+# ─────────────────────────────────────────────────────────────────────────────
+# Override the global model for this agent.
+# Uncomment if you need a specific model.
+
+# model = "openrouter:anthropic/claude-sonnet-4"
