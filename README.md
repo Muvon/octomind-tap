@@ -312,6 +312,8 @@ esac
 | `docker/docker` | Docker CLI + daemon | Running containerized MCP servers |
 | `github/github-mcp` | GitHub MCP Server | Full GitHub API operations (repos, issues, PRs) |
 | `microsoft/playwright` | Playwright MCP Server | Browser automation, screenshots, web scraping |
+| `brave/brave-search` | Brave Search MCP Server | Web search via Brave Search API |
+| `upstash/context7` | Context7 MCP Server | Up-to-date library documentation |
 | `muvon/octocode` | octocode CLI | Octomind's semantic code search |
 | `muvon/octobrain` | octobrain CLI | Octomind's code indexing |
 
@@ -319,23 +321,27 @@ esac
 
 | Runtime | MCP Servers (examples) | Dep Required |
 |---------|------------------------|--------------|
-| **Node.js (npx)** | filesystem, github, postgres, sqlite, brave-search, puppeteer, slack, memory, sequential-thinking | `nodejs/node` |
+| **Node.js (npx)** | filesystem, github, postgres, sqlite, brave-search, puppeteer, slack, memory, context7 | `nodejs/node` |
 | **Python (uvx)** | Many Python-based servers | `astral-sh/uv` |
 | **Rust (cargo)** | octocode, octobrain, other compiled binaries | `rust/cargo` |
-| **Docker** | Containerized MCP servers (mcp/brave-search, etc.) | `docker/docker` |
+| **Docker** | Containerized MCP servers | `docker/docker` |
 
 ### Popular MCP Servers and Their Deps
 
 | MCP Server | Package | Dep Required |
 |-----------|---------|--------------|
-| GitHub | `@github/mcp-server` or `@modelcontextprotocol/server-github` | `github/github-mcp` (or `nodejs/node`) |
-| Playwright | `@playwright/mcp` or `@executeautomation/playwright-mcp-server` | `microsoft/playwright` (or `nodejs/node`) |
+| GitHub | `@github/mcp-server` | `github/github-mcp` (or `nodejs/node`) |
+| Playwright | `@playwright/mcp` | `microsoft/playwright` (or `nodejs/node`) |
+| Brave Search | `@brave/brave-search-mcp-server` | `brave/brave-search` (or `nodejs/node`) |
+| Context7 | `@upstash/context7-mcp` | `upstash/context7` (or `nodejs/node`) |
 | Filesystem | `@modelcontextprotocol/server-filesystem` | `nodejs/node` |
 | Postgres | `@modelcontextprotocol/server-postgres` | `nodejs/node` |
 | SQLite | `@modelcontextprotocol/server-sqlite` | `nodejs/node` |
-| Brave Search | `@brave/brave-search-mcp-server` | `nodejs/node` or `docker/docker` |
-| Slack | `@modelcontextprotocol/server-slack` | `nodejs/node` |
 | Memory | `@modelcontextprotocol/server-memory` | `nodejs/node` |
+| Puppeteer | `@modelcontextprotocol/server-puppeteer` | `nodejs/node` |
+| Slack | `@modelcontextprotocol/server-slack` | `nodejs/node` |
+
+**Note:** `@modelcontextprotocol/*` is the npm namespace for MCP reference implementations, not an org. For generic Node.js MCP servers, just use `nodejs/node` dep.
 
 ### Adding a dep script
 

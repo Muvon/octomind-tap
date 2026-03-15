@@ -56,7 +56,8 @@ jobs:
             ubuntu:22.04 \
             bash -c "
               set -euo pipefail
-              apt-get install -y -qq sudo curl wget bash 2>/dev/null
+              apt-get update -qq
+              apt-get install -y -qq sudo curl wget bash
 
               echo '=== First run (install) ==='
               bash '${{ matrix.script }}'
