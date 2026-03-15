@@ -66,8 +66,8 @@ You are a Blood Test Analysis Assistant...
 """
 
 [roles.mcp]
-server_refs = ["core", "filesystem", "medical"]
-allowed_tools = ["core:*", "filesystem:*", "search-medical-literature"]
+server_refs = ["core", "octofs", "medical"]
+allowed_tools = ["core:*", "octofs:*", "search-medical-literature"]
 ```
 
 ### 4. Test Locally
@@ -111,8 +111,8 @@ model = "openrouter:anthropic/claude-sonnet-4"
 
 # MCP server configuration
 [roles.mcp]
-server_refs = ["core", "filesystem", "octocode"]
-allowed_tools = ["core:*", "filesystem:*", "semantic_search"]
+server_refs = ["core", "octofs", "octocode"]
+allowed_tools = ["core:*", "octofs:*", "semantic_search"]
 
 # Additional MCP servers (beyond built-in)
 [[mcp.servers]]
@@ -225,7 +225,7 @@ The dependency system will:
 | server_ref | Provides |
 |------------|----------|
 | `core` | `plan` — structured task tracker |
-| `filesystem` | `view`, `text_editor`, `batch_edit`, `shell`, `workdir`, `ast_grep` |
+| `octofs`     | `view`, `text_editor`, `batch_edit`, `shell`, `workdir`, `ast_grep` |
 | `octocode` | `semantic_search`, `remember`, `memorize`, `view_signatures`, `graphrag` |
 | `octobrain` | Knowledge graph and reasoning tools |
 | `agent` | `agent_*` tools — delegate to configured layers |
@@ -281,7 +281,7 @@ tools = []
 ### Tool Selection
 
 - **Start minimal** — Only include tools the agent actually needs
-- **Use wildcards** — `"filesystem:*"` for full filesystem access
+- **Use wildcards** — `"octofs:*"` for full file access
 - **Be specific** — `["view", "shell"]` for restricted access
 - **Consider security** — Can this agent modify files? Access secrets?
 
@@ -309,8 +309,8 @@ Working directory: {{CWD}}
 """
 
 [roles.mcp]
-server_refs = ["core", "filesystem"]
-allowed_tools = ["core:*", "filesystem:*"]
+server_refs = ["core", "octofs"]
+allowed_tools = ["core:*", "octofs:*"]
 ```
 
 ### Complex Agent with Dependencies
@@ -336,8 +336,8 @@ You are a Rust development specialist...
 """
 
 [roles.mcp]
-server_refs = ["core", "filesystem", "octocode"]
-allowed_tools = ["core:*", "filesystem:*", "octocode:*"]
+server_refs = ["core", "octofs", "octocode"]
+allowed_tools = ["core:*", "octofs:*", "octocode:*"]
 ```
 
 ---

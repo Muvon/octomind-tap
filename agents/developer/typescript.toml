@@ -3,7 +3,7 @@
 # Description: TypeScript development specialist. Expert in type safety, modern JS/TS patterns, npm ecosystem, and best practices. Writes clean, type-safe, maintainable code.
 
 [deps]
-require = ["nodejs/node", "muvon/octocode", "muvon/octobrain", "tavily-ai/tavily"]
+require = ["muvon/octofs", "nodejs/node", "muvon/octocode", "muvon/octobrain", "tavily-ai/tavily"]
 
 [[roles]]
 temperature = 0.1
@@ -215,8 +215,8 @@ Working directory: {{CWD}}
 """
 
 [roles.mcp]
-server_refs = ["core", "filesystem", "octocode", "octobrain", "agent", "tavily"]
-allowed_tools = ["core:*", "filesystem:*", "octocode:*", "octobrain:*", "get_agent_*", "agent_*", "tavily_search", "tavily_extract", "tavily_map"]
+server_refs = ["core", "octofs", "octocode", "octobrain", "agent", "tavily"]
+allowed_tools = ["core:*", "octofs:*", "octocode:*", "octobrain:*", "get_agent_*", "agent_*", "tavily_search", "tavily_extract", "tavily_map"]
 
 # Octocode MCP Server — codebase intelligence
 [[mcp.servers]]

@@ -129,18 +129,18 @@ Working directory: {{CWD}}
 # ─────────────────────────────────────────────────────────────────────────────
 # MCP SERVERS
 # ─────────────────────────────────────────────────────────────────────────────
-# Built-in servers: core, filesystem, octocode, octobrain, agent, tavily
+# Built-in servers: core, octofs, octocode, octobrain, agent, tavily
 
 [roles.mcp]
 # Server references (built-in servers to enable)
-server_refs = ["core", "filesystem"]
+server_refs = ["core", "octofs"]
 
 # Tool allow-list (use wildcards for full access)
 # Examples:
-#   ["core:*", "filesystem:*"]           — Full access to core and filesystem
-#   ["view", "shell"]                     — Restricted to specific tools
-#   ["core:*", "semantic_search"]         — Core + specific octocode tool
-allowed_tools = ["core:*", "filesystem:*"]
+#   ["core:*", "octofs:*"]           — Full access to core and octofs
+#   ["view", "shell"]                — Restricted to specific tools
+#   ["core:*", "semantic_search"]    — Core + specific octocode tool
+allowed_tools = ["core:*", "octofs:*"]
 
 # ─────────────────────────────────────────────────────────────────────────────
 # CUSTOM MCP SERVERS (Optional)

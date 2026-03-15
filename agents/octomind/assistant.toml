@@ -17,5 +17,5 @@ Working directory: {{CWD}}
 """
 
 [roles.mcp]
-server_refs = ["core", "filesystem", "agent"]
-allowed_tools = ["core:*", "filesystem:*", "agent_*"]
+server_refs = ["core", "octofs", "agent"]
+allowed_tools = ["core:*", "octofs:*", "agent_*"]

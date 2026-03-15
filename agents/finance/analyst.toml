@@ -3,7 +3,7 @@
 # Description: Financial statement analyst. Expert in balance sheets, income statements, cash flow analysis, financial ratios, and investment research. Helps interpret financial data and company performance.
 
 [deps]
-require = ["yahoo/yfinance", "tavily-ai/tavily"]
+require = ["muvon/octofs", "yahoo/yfinance", "tavily-ai/tavily"]
 
 [[roles]]
 temperature = 0.15
@@ -217,8 +217,8 @@ Working directory: {{CWD}}
 """
 
 [roles.mcp]
-server_refs = ["core", "filesystem", "yfinance", "tavily"]
-allowed_tools = ["core:*", "filesystem:*", "yfinance:*", "tavily_search", "tavily_extract"]
+server_refs = ["core", "octofs", "yfinance", "tavily"]
+allowed_tools = ["core:*", "octofs:*", "yfinance:*", "tavily_search", "tavily_extract"]
 
 # Yahoo Finance MCP Server — stock prices, historical data, financials
 [[mcp.servers]]
