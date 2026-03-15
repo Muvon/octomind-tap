@@ -75,8 +75,8 @@ top_k = 0                         # 0 = disabled
 # model = "openrouter:anthropic/claude-sonnet-4"
 
 [roles.mcp]
-server_refs = ["core", "filesystem", "agent"]
-allowed_tools = ["core:*", "filesystem:*", "agent_*"]
+server_refs = ["core", "octofs", "agent"]
+allowed_tools = ["core:*", "octofs:*", "agent_*"]
 
 # Optional: extra MCP servers (e.g. language tooling via Docker)
 # [[mcp.servers]]
@@ -189,11 +189,11 @@ tools = []
 | server_ref   | Provides                                                                 |
 |--------------|--------------------------------------------------------------------------|
 | `core`       | `plan` — structured step-by-step task tracker                            |
-| `filesystem` | `view`, `text_editor`, `batch_edit`, `extract_lines`, `shell`, `workdir`, `ast_grep` |
+| `octofs`     | `view`, `text_editor`, `batch_edit`, `extract_lines`, `shell`, `workdir`, `ast_grep` |
 | `agent`      | `agent_*` tools — delegate tasks to configured layers                    |
 | `octocode`   | `semantic_search`, `remember`, `memorize`, `view_signatures`, `graphrag` and more — semantic code search & memory |
 
-`allowed_tools` supports wildcards: `"core:*"`, `"filesystem:*"`, `"agent_*"`, `"octocode:*"`.
+`allowed_tools` supports wildcards: `"core:*"`, `"octofs:*"`, `"agent_*"`, `"octocode:*"`.
 You can also restrict to specific tools: `["view", "shell", "semantic_search"]`.
 
 ### Adding Custom MCP Servers
@@ -215,8 +215,8 @@ You can also restrict to specific tools: `["view", "shell", "semantic_search"]`.
 # Example: Adding a custom MCP server
 
 [roles.mcp]
-server_refs = ["core", "filesystem", "my-custom-server"]
-allowed_tools = ["core:*", "filesystem:*", "my_custom-tool"]
+server_refs = ["core", "octofs", "my-custom-server"]
+allowed_tools = ["core:*", "octofs:*", "my_custom-tool"]
 
 [[mcp.servers]]
 name = "my-custom-server"
@@ -284,9 +284,9 @@ Each entry maps to `deps/<org>/<tool>.sh` in this repo. Every dep script follows
 
 | Runtime | MCP Servers (examples) | Dep Required |
 |---------|------------------------|--------------|
-| **Node.js (npx)** | filesystem, github, postgres, sqlite, brave-search, puppeteer, slack, memory, context7 | `nodejs/node` |
+| **Node.js (npx)** | github, postgres, sqlite, brave-search, puppeteer, slack, memory, context7 | `nodejs/node` |
 | **Python (uvx)** | Many Python-based servers | `astral-sh/uv` |
-| **Rust (cargo)** | octocode, octobrain, other compiled binaries | `rust/cargo` |
+| **Rust (cargo)** | octocode, octobrain, octofs, other compiled binaries | `rust/cargo` |
 | **Docker** | Containerized MCP servers | `docker/docker` |
 
 ### Popular MCP Servers and Their Deps
@@ -297,7 +297,7 @@ Each entry maps to `deps/<org>/<tool>.sh` in this repo. Every dep script follows
 | Playwright | `@playwright/mcp` | `microsoft/playwright` (or `nodejs/node`) |
 | Brave Search | `@brave/brave-search-mcp-server` | `brave/brave-search` (or `nodejs/node`) |
 | Context7 | `@upstash/context7-mcp` | `upstash/context7` (or `nodejs/node`) |
-| Filesystem | `@modelcontextprotocol/server-filesystem` | `nodejs/node` |
+| Octofs | `octofs` CLI | `muvon/octofs` |
 | Postgres | `@modelcontextprotocol/server-postgres` | `nodejs/node` |
 | SQLite | `@modelcontextprotocol/server-sqlite` | `nodejs/node` |
 | Memory | `@modelcontextprotocol/server-memory` | `nodejs/node` |
@@ -375,5 +375,5 @@ Working directory: {{CWD}}
 """
 
 [roles.mcp]
-server_refs = ["core", "filesystem"]
+server_refs = ["core", "octofs"]
 allowed_tools = ["core:*", "view", "text_editor", "workdir"]

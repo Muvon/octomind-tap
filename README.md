@@ -107,8 +107,8 @@ top_k = 0
 # model = "anthropic/claude-sonnet-4-5"
 
 [roles.mcp]
-server_refs = ["core", "filesystem", "agent"]
-allowed_tools = ["core:*", "filesystem:*", "agent_*"]
+server_refs = ["core", "octofs", "agent"]
+allowed_tools = ["core:*", "octofs:*", "agent_*"]
 
 # Optional: add extra MCP servers (e.g. language-specific tooling via Docker)
 # [[mcp.servers]]
@@ -126,7 +126,7 @@ allowed_tools = ["core:*", "filesystem:*", "agent_*"]
 
 | Field | Purpose |
 |-------|---------|
-| `server_refs` | References servers that are **already defined** in the user's config (built-in: `core`, `filesystem`, `agent`, `octocode`) or defined in this manifest's `[[mcp.servers]]` |
+| `server_refs` | References servers that are **already defined** in the user's config (built-in: `core`, `octofs`, `agent`, `octocode`) or defined in this manifest's `[[mcp.servers]]` |
 | `[[mcp.servers]]` | **Defines new MCP servers** that will be started when this agent runs |
 
 **To use a custom MCP server:**
@@ -139,8 +139,8 @@ allowed_tools = ["core:*", "filesystem:*", "agent_*"]
 # Example: Adding a custom MCP server
 
 [roles.mcp]
-server_refs = ["core", "filesystem", "my-custom-server"]
-allowed_tools = ["core:*", "filesystem:*", "my_custom-tool"]
+server_refs = ["core", "octofs", "my-custom-server"]
+allowed_tools = ["core:*", "octofs:*", "my_custom-tool"]
 
 [[mcp.servers]]
 name = "my-custom-server"
@@ -153,7 +153,7 @@ tools = []
 
 **Built-in servers** (always available, no `[[mcp.servers]]` needed):
 - `core` — `plan`, `mcp`, `agent` tools
-- `filesystem` — `view`, `text_editor`, `batch_edit`, `extract_lines`, `shell`, `workdir`, `ast_grep`
+- `octofs` — `view`, `text_editor`, `batch_edit`, `extract_lines`, `shell`, `workdir`, `ast_grep`
 - `agent` — `agent_*` tools for delegating to layers
 - `octocode` — `semantic_search`, `remember`, `memorize`, `view_signatures`, `graphrag` (requires `muvon/octocode` dep)
 
@@ -359,14 +359,15 @@ esac
 | `upstash/context7` | Context7 MCP Server | Up-to-date library documentation |
 | `muvon/octocode` | octocode CLI | Octomind's semantic code search |
 | `muvon/octobrain` | octobrain CLI | Octomind's code indexing |
+| `muvon/octofs` | octofs CLI | Octomind's file editing and viewing tool |
 
 ### MCP Server Runtime Requirements
 
 | Runtime | MCP Servers (examples) | Dep Required |
 |---------|------------------------|--------------|
-| **Node.js (npx)** | filesystem, github, postgres, sqlite, brave-search, puppeteer, slack, memory, context7 | `nodejs/node` |
+| **Node.js (npx)** | github, postgres, sqlite, brave-search, puppeteer, slack, memory, context7 | `nodejs/node` |
 | **Python (uvx)** | Many Python-based servers | `astral-sh/uv` |
-| **Rust (cargo)** | octocode, octobrain, other compiled binaries | `rust/cargo` |
+| **Rust (cargo)** | octocode, octobrain, octofs, other compiled binaries | `rust/cargo` |
 | **Docker** | Containerized MCP servers | `docker/docker` |
 
 ### Popular MCP Servers and Their Deps
@@ -377,7 +378,7 @@ esac
 | Playwright | `@playwright/mcp` | `microsoft/playwright` (or `nodejs/node`) |
 | Brave Search | `@brave/brave-search-mcp-server` | `brave/brave-search` (or `nodejs/node`) |
 | Context7 | `@upstash/context7-mcp` | `upstash/context7` (or `nodejs/node`) |
-| Filesystem | `@modelcontextprotocol/server-filesystem` | `nodejs/node` |
+| Octofs | `octofs` CLI | `muvon/octofs` |
 | Postgres | `@modelcontextprotocol/server-postgres` | `nodejs/node` |
 | SQLite | `@modelcontextprotocol/server-sqlite` | `nodejs/node` |
 | Memory | `@modelcontextprotocol/server-memory` | `nodejs/node` |
@@ -443,8 +444,8 @@ top_p = 0.9
 top_k = 0
 
 [roles.mcp]
-server_refs = ["core", "filesystem", "agent"]
-allowed_tools = ["core:*", "filesystem:*", "agent_*"]
+server_refs = ["core", "octofs", "agent"]
+allowed_tools = ["core:*", "octofs:*", "agent_*"]
 
 # Optional: declare tools that must be installed before the session starts.
 # Octomind runs deps/<org>/<tool>.sh from the tap automatically.

@@ -3,7 +3,7 @@
 # Description: Elite senior developer. Pragmatic, precise, zero waste. Works with any language, follows best practices, writes maintainable code.
 
 [deps]
-require = ["muvon/octocode", "muvon/octobrain", "tavily-ai/tavily"]
+require = ["muvon/octofs", "muvon/octocode", "muvon/octobrain", "tavily-ai/tavily"]
 
 [[roles]]
 temperature = 0.1
@@ -296,8 +296,8 @@ CRITICAL FLOW: Think → Plan → Confirm → Execute → Complete
 """
 
 [roles.mcp]
-server_refs = ["core", "filesystem", "octocode", "octobrain", "agent", "tavily"]
-allowed_tools = ["core:*", "filesystem:*", "octocode:*", "octobrain:*", "agent:*", "tavily_search", "tavily_extract", "tavily_map"]
+server_refs = ["core", "octofs", "octocode", "octobrain", "agent", "tavily"]
+allowed_tools = ["core:*", "octofs:*", "octocode:*", "octobrain:*", "agent:*", "tavily_search", "tavily_extract", "tavily_map"]
 
 # Octocode MCP Server — codebase intelligence
 [[mcp.servers]]
