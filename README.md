@@ -280,11 +280,14 @@ Helper functions: `pkg_install <pkg>`, `pkg_check <cmd>`, `info <msg>`, `die <ms
 # check: <command-to-verify-install>
 
 set -euo pipefail
-source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/lib/platform.sh"
+
+# Resolve deps/lib/ relative to this script's location
+DEPS_LIB="$(cd "$(dirname "${BASH_SOURCE[0]}")/../lib" && pwd)"
+source "$DEPS_LIB/platform.sh"
 
 # Fast path — already installed
 if pkg_check <tool>; then
-  exit 0
+	exit 0
 fi
 
 # If this script depends on another dep, use install_dep:
@@ -294,8 +297,8 @@ fi
 info "<tool> not found — installing..."
 
 case "$OS" in
-  macos) brew_install <formula> ;;
-  linux) pkg_install <package>  ;;
+	macos) brew_install <formula> ;;
+	linux) pkg_install <package>  ;;
 esac
 ```
 

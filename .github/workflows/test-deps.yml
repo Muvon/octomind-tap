@@ -102,9 +102,14 @@ jobs:
           fi
 
       - name: Run script (install)
-        run: bash "${{ matrix.script }}"
+        run: |
+          echo "Working directory: $(pwd)"
+          echo "Script: ${{ matrix.script }}"
+          echo "Script exists: $(test -f '${{ matrix.script }}' && echo yes || echo no)"
+          echo "Platform lib exists: $(test -f deps/lib/platform.sh && echo yes || echo no)"
+          bash -x '${{ matrix.script }}' 2>&1
 
       - name: Run script again (idempotency check)
         run: |
-          bash "${{ matrix.script }}"
+          bash '${{ matrix.script }}'
           echo "Idempotency OK"

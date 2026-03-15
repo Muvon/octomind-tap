@@ -23,62 +23,58 @@
 
 set -euo pipefail
 
-# Guard against double-sourcing — safe when scripts source prerequisite dep scripts
-[[ -n "${_OCTOMIND_PLATFORM_LOADED:-}" ]] && return 0
-_OCTOMIND_PLATFORM_LOADED=1
-
 # ── OS detection ─────────────────────────────────────────────────────────────
 
 case "$(uname -s)" in
-  Darwin)
-    OS="macos"
-    IS_MACOS="1"
-    IS_LINUX="0"
-    ;;
-  Linux)
-    OS="linux"
-    IS_MACOS="0"
-    IS_LINUX="1"
-    ;;
-  *)
-    echo "Unsupported OS: $(uname -s)" >&2
-    exit 1
-    ;;
+	Darwin)
+		OS="macos"
+		IS_MACOS="1"
+		IS_LINUX="0"
+		;;
+	Linux)
+		OS="linux"
+		IS_MACOS="0"
+		IS_LINUX="1"
+		;;
+	*)
+		echo "Unsupported OS: $(uname -s)" >&2
+		exit 1
+		;;
 esac
 
 # ── Architecture detection ────────────────────────────────────────────────────
 
 case "$(uname -m)" in
-  x86_64 | amd64)
-    ARCH="x86_64"
-    IS_X86_64="1"
-    IS_ARM64="0"
-    ;;
-  arm64 | aarch64)
-    ARCH="arm64"
-    IS_X86_64="0"
-    IS_ARM64="1"
-    ;;
-  *)
-    # Unknown arch — set it but don't abort; scripts can handle it themselves
-    ARCH="$(uname -m)"
-    IS_X86_64="0"
-    IS_ARM64="0"
-    ;;
+	x86_64 | amd64)
+		ARCH="x86_64"
+		IS_X86_64="1"
+		IS_ARM64="0"
+		;;
+	arm64 | aarch64)
+		ARCH="arm64"
+		IS_X86_64="0"
+		IS_ARM64="1"
+		;;
+	*)
+		# Unknown arch — set it but don't abort; scripts can handle it themselves
+		ARCH="$(uname -m)"
+		IS_X86_64="0"
+		IS_ARM64="0"
+		;;
 esac
 
 # ── Package manager detection (Linux only) ────────────────────────────────────
 
 if [[ "$IS_MACOS" == "1" ]]; then
-  PKG_MANAGER="brew"
+	PKG_MANAGER="brew"
 else
-  if   command -v apt-get &>/dev/null; then PKG_MANAGER="apt"
-  elif command -v dnf     &>/dev/null; then PKG_MANAGER="dnf"
-  elif command -v pacman  &>/dev/null; then PKG_MANAGER="pacman"
-  elif command -v zypper  &>/dev/null; then PKG_MANAGER="zypper"
-  elif command -v apk     &>/dev/null; then PKG_MANAGER="apk"
-  else                                      PKG_MANAGER="unknown"
-  fi
+	if   command -v apt-get &>/dev/null; then PKG_MANAGER="apt"
+	elif command -v dnf     &>/dev/null; then PKG_MANAGER="dnf"
+	elif command -v pacman  &>/dev/null; then PKG_MANAGER="pacman"
+	elif command -v zypper  &>/dev/null; then PKG_MANAGER="zypper"
+	elif command -v apk     &>/dev/null; then PKG_MANAGER="apk"
+	else                                      PKG_MANAGER="unknown"
+	fi
 fi
 
 # Export all variables as read-only
@@ -88,18 +84,18 @@ readonly OS ARCH PKG_MANAGER IS_MACOS IS_LINUX IS_X86_64 IS_ARM64
 
 # die <message> — print error to stderr and exit 1
 die() {
-  echo "❌ $*" >&2
-  exit 1
+	echo "❌ $*" >&2
+	exit 1
 }
 
 # info <message> — print informational message to stderr
 info() {
-  echo "  → $*" >&2
+	echo "  → $*" >&2
 }
 
 # pkg_check <command> — returns 0 if command exists, 1 otherwise
 pkg_check() {
-  command -v "$1" &>/dev/null
+	command -v "$1" &>/dev/null
 }
 
 # pkg_install <package> [<package-name-override-per-pm>...]
@@ -111,22 +107,22 @@ pkg_check() {
 # Usage:
 #   pkg_install curl          # same name everywhere
 pkg_install() {
-  local pkg="$1"
-  info "Installing $pkg via $PKG_MANAGER..."
-  case "$PKG_MANAGER" in
-    brew)    brew install "$pkg" ;;
-    apt)     sudo apt-get install -y "$pkg" ;;
-    dnf)     sudo dnf install -y "$pkg" ;;
-    pacman)  sudo pacman -S --noconfirm "$pkg" ;;
-    zypper)  sudo zypper install -y "$pkg" ;;
-    apk)     sudo apk add "$pkg" ;;
-    unknown) die "No supported package manager found. Please install $pkg manually." ;;
-  esac
+	local pkg="$1"
+	info "Installing $pkg via $PKG_MANAGER..."
+	case "$PKG_MANAGER" in
+		brew)    brew install "$pkg" ;;
+		apt)     sudo apt-get install -y "$pkg" ;;
+		dnf)     sudo dnf install -y "$pkg" ;;
+		pacman)  sudo pacman -S --noconfirm "$pkg" ;;
+		zypper)  sudo zypper install -y "$pkg" ;;
+		apk)     sudo apk add "$pkg" ;;
+		unknown) die "No supported package manager found. Please install $pkg manually." ;;
+	esac
 }
 
 # brew_install <formula> — macOS only, no-op on Linux
 brew_install() {
-  [[ "$IS_MACOS" == "1" ]] && brew install "$1" || true
+	[[ "$IS_MACOS" == "1" ]] && brew install "$1" || true
 }
 
 # apt_install <pkg> — Debian/Ubuntu only
@@ -153,7 +149,9 @@ dnf_install() {
 install_dep() {
 	local dep="$1"
 	local deps_root
-	deps_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+	# BASH_SOURCE[1] is the script that sourced this file (the dep script)
+	# We go up one level from that script to get deps/
+	deps_root="$(cd "$(dirname "${BASH_SOURCE[1]}")/.." && pwd)"
 
 	bash "$deps_root/$dep.sh"
 
