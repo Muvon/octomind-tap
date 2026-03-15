@@ -13,40 +13,40 @@ source "$DEPS_LIB/platform.sh"
 # Always source cargo env first — ensures PATH is set for the calling script
 # whether cargo was just installed or was already present.
 if [[ -f "$HOME/.cargo/env" ]]; then
-	# shellcheck source=/dev/null
-	source "$HOME/.cargo/env"
+  # shellcheck source=/dev/null
+  source "$HOME/.cargo/env"
 fi
 
 # Fast path — already installed
 if pkg_check cargo; then
-	exit 0
+  exit 0
 fi
 
 info "Rust not found — installing via rustup..."
 
 if pkg_check curl; then
-	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
 elif pkg_check wget; then
-	wget -qO- https://sh.rustup.rs | sh -s -- -y --no-modify-path
+  wget -qO- https://sh.rustup.rs | sh -s -- -y --no-modify-path
 else
-	die "Neither curl nor wget found. Install one of them first, then re-run."
+  die "Neither curl nor wget found. Install one of them first, then re-run."
 fi
 
 # rustup installs to ~/.cargo/bin — source the env so cargo is reachable immediately
 if [[ -f "$HOME/.cargo/env" ]]; then
-	# shellcheck source=/dev/null
-	source "$HOME/.cargo/env" || true
+  # shellcheck source=/dev/null
+  source "$HOME/.cargo/env" || true
 else
-	die "Rust installed but ~/.cargo/env not found. Rustup may have failed."
+  die "Rust installed but ~/.cargo/env not found. Rustup may have failed."
 fi
 
 # Verify cargo is now in PATH
 if ! pkg_check cargo; then
-	# Last resort: add ~/.cargo/bin to PATH directly
-	export PATH="$HOME/.cargo/bin:$PATH"
-	if ! pkg_check cargo; then
-		die "Rust installed but cargo not in PATH. Add ~/.cargo/bin to your PATH, then re-run."
-	fi
+  # Last resort: add ~/.cargo/bin to PATH directly
+  export PATH="$HOME/.cargo/bin:$PATH"
+  if ! pkg_check cargo; then
+    die "Rust installed but cargo not in PATH. Add ~/.cargo/bin to your PATH, then re-run."
+  fi
 fi
 
 info "Rust installed successfully."

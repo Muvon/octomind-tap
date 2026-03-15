@@ -29,7 +29,8 @@ if [[ ${#FILES[@]} -eq 0 ]]; then
 fi
 
 # Python TOML parser — tomllib (3.11+) or tomli fallback
-PYTHON_TOML_CHECK=$(cat <<'EOF'
+PYTHON_TOML_CHECK=$(
+  cat <<'EOF'
 import sys, pathlib
 
 try:
@@ -99,7 +100,7 @@ lint_file() {
   local inner="${file#"$REPO_ROOT/agents/"}"
   local depth
   depth=$(echo "$inner" | tr -cd '/' | wc -c)
-  if [[ "$depth" -ne 1 ]]; then
+  if [[ $depth -ne 1 ]]; then
     echo "  ✗ path: must be agents/<domain>/<spec>.toml (got extra nesting: $rel)"
     ok=0
   fi
@@ -124,7 +125,7 @@ echo ""
 
 for file in "${FILES[@]}"; do
   # Normalise to absolute path
-  [[ "$file" = /* ]] || file="$REPO_ROOT/$file"
+  [[ $file == /* ]] || file="$REPO_ROOT/$file"
 
   if ! lint_file "$file"; then
     ERRORS=$((ERRORS + 1))
