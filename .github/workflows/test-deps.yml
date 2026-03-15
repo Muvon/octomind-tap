@@ -1,0 +1,110 @@
+name: Test dep scripts
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - 'deps/**'
+  pull_request:
+    branches: [master, main]
+    paths:
+      - 'deps/**'
+
+jobs:
+  # ── Discover all dep scripts (excludes lib/) ─────────────────────────────────
+  discover:
+    name: Discover dep scripts
+    runs-on: ubuntu-latest
+    outputs:
+      scripts: ${{ steps.find.outputs.scripts }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Find dep scripts
+        id: find
+        run: |
+          # Collect every *.sh under deps/ that is NOT under deps/lib/
+          scripts=$(
+            find deps -name '*.sh' -not -path 'deps/lib/*' \
+            | sort \
+            | jq -R . \
+            | jq -sc .
+          )
+          echo "scripts=$scripts" >> "$GITHUB_OUTPUT"
+          echo "Found: $scripts"
+
+  # ── Test on Linux (Docker — genuinely empty Ubuntu 22.04) ────────────────────
+  test-linux:
+    name: "Linux · ${{ matrix.script }}"
+    needs: discover
+    if: ${{ needs.discover.outputs.scripts != '[]' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        script: ${{ fromJson(needs.discover.outputs.scripts) }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run in clean Ubuntu 22.04 container
+        run: |
+          docker run --rm \
+            --volume "$PWD:/tap:ro" \
+            --workdir /tap \
+            --env PATH="/root/.local/bin:/root/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
+            ubuntu:22.04 \
+            bash -c "
+              set -euo pipefail
+              apt-get update -qq
+              apt-get install -y -qq sudo curl wget bash 2>/dev/null
+
+              echo '=== First run (install) ==='
+              bash '${{ matrix.script }}'
+
+              echo '=== Second run (idempotency check) ==='
+              bash '${{ matrix.script }}'
+              echo 'Idempotency OK'
+            "
+
+  # ── Test on macOS ─────────────────────────────────────────────────────────────
+  test-macos:
+    name: "macOS · ${{ matrix.script }}"
+    needs: discover
+    if: ${{ needs.discover.outputs.scripts != '[]' }}
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        script: ${{ fromJson(needs.discover.outputs.scripts) }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Remove pre-installed tool (force real install path)
+        run: |
+          # Read the '# check: <cmd>' header from the script to know what to remove.
+          # GH macOS runners come with many tools pre-installed — we must uninstall
+          # them so the script actually exercises its install logic, not the fast path.
+          cmd=$(grep -m1 '^# check:' "${{ matrix.script }}" | awk '{print $3}')
+          if [[ -z "$cmd" ]]; then
+            echo "No '# check:' header found — skipping pre-removal."
+            exit 0
+          fi
+          echo "Removing '$cmd' if present..."
+          brew uninstall --force "$cmd" 2>/dev/null || true
+          # Also remove from common install locations so PATH check fails cleanly
+          rm -f "$HOME/.local/bin/$cmd" "$HOME/.cargo/bin/$cmd" 2>/dev/null || true
+          if command -v "$cmd" &>/dev/null; then
+            echo "Warning: '$cmd' still in PATH after removal — fast path may fire."
+          else
+            echo "'$cmd' removed successfully."
+          fi
+
+      - name: Run script (install)
+        run: bash "${{ matrix.script }}"
+
+      - name: Run script again (idempotency check)
+        run: |
+          bash "${{ matrix.script }}"
+          echo "Idempotency OK"
