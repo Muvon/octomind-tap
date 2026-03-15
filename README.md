@@ -82,7 +82,7 @@ A manifest is a TOML file with one required `[[roles]]` entry and optional `[[mc
 # agents/developer/rust.toml
 
 [[roles]]
-name = "developer:rust"          # Must match the tag (domain:spec)
+# name is injected automatically from the tag — do not set it
 system = """
 You are an expert Rust developer assistant.
 Working directory: {{CWD}}
@@ -148,33 +148,30 @@ This means your personal config is never destructively modified.
 
 ---
 
-## How Caching Works
+## How Taps Work
 
-Manifests are cached at `~/.local/share/octomind/agents/<domain>/<spec>.toml`.
+Taps are Git repositories containing agent manifests. Octomind uses a Homebrew-style tap system:
 
-- **Fresh cache (< 24 h):** used immediately, no network call.
-- **Stale cache (≥ 24 h):** stale copy returned immediately; refresh happens in the background.
-- **No cache:** fetched synchronously from the first available source.
+- **Default tap** (`muvon/tap`) is always active — cloned automatically on first use and updated on every `octomind run`.
+- **User taps** are checked before the default tap (first match wins).
 
-Cache TTL is configurable in your `config.toml`:
+### Managing Taps
 
-```toml
-[registry]
-sources = ["https://raw.githubusercontent.com/muvon/octomind-agents/main"]
-cache_ttl_hours = 24
+```bash
+# Add a GitHub tap (clones https://github.com/myorg/octomind-agents)
+octomind tap myorg/agents
+
+# Add a local tap (no clone — uses directory directly)
+octomind tap myorg/agents /path/to/local/repo
+
+# List all active taps
+octomind tap
+
+# Remove a tap
+octomind untap myorg/agents
 ```
 
-You can add private or local sources:
-
-```toml
-[registry]
-sources = [
-  "file://~/my-private-agents",
-  "https://raw.githubusercontent.com/muvon/octomind-agents/main",
-]
-```
-
-Sources are tried in order — first hit wins.
+Tap repos are cloned to `~/.local/share/octomind/taps/<user>/octomind-<repo>/` and auto-updated via `git pull` on every run.
 
 ---
 
@@ -188,12 +185,14 @@ Sources are tried in order — first hit wins.
 4. **Test locally** before opening a PR:
 
 ```bash
-# Point your registry at your local checkout
-# In ~/.config/octomind/config.toml:
-# [registry]
-# sources = ["file:///path/to/your/octomind-agents"]
+# Add this repo as a local tap (one-time setup)
+octomind tap muvon/tap /path/to/octomind-tap
 
+# Run your agent
 octomind run developer:your-new-agent
+
+# Remove the local override when done
+octomind untap muvon/tap
 ```
 
 5. **Open a PR** with a short description of what the agent does and which tools/models it targets.
