@@ -175,6 +175,8 @@ require = ["astral-sh/uv", "nodejs/node"]
 
 Each entry maps to `deps/<org>/<tool>.sh` in this repo. Scripts run before MCP init, must be idempotent (exit 0 if already installed), and write only to stderr.
 
+Each script is **self-sufficient** — if it needs another tool (e.g. `cargo`), it invokes that dep script directly. No ordering required in the manifest.
+
 When to add deps:
 - Agent uses an MCP server that requires a specific CLI (e.g. `uvx`, `npx`, `octocode`)
 - The tool is NOT universally installed (don't add deps for `git`, `curl`, `bash`)

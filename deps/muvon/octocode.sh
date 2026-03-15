@@ -12,23 +12,21 @@ if pkg_check octocode; then
   exit 0
 fi
 
+# Ensure cargo is available — sourced so PATH changes propagate to this shell
+# shellcheck source=/dev/null
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/rust/cargo.sh"
+
 info "octocode not found — installing..."
 
 case "$OS" in
   macos)
     if pkg_check brew; then
       brew install muvon/tap/octocode
-    elif pkg_check cargo; then
-      cargo install octocode
     else
-      die "Neither brew nor cargo found. Install one of them first, then re-run."
+      cargo install octocode
     fi
     ;;
   linux)
-    if pkg_check cargo; then
-      cargo install octocode
-    else
-      die "cargo not found. Install Rust first: https://rustup.rs — then re-run."
-    fi
+    cargo install octocode
     ;;
 esac

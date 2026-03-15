@@ -230,7 +230,9 @@ Manifests can declare external tools that must be present before the session sta
 require = ["astral-sh/uv", "nodejs/node"]
 ```
 
-Each entry maps to `deps/<org>/<tool>.sh` inside the tap. Scripts run in order, **before** MCP servers are initialised. If any script exits non-zero the session is aborted with a clear error.
+Each entry maps to `deps/<org>/<tool>.sh` inside the tap. Scripts run before MCP servers are initialised. If any script exits non-zero the session is aborted with a clear error.
+
+Each script is **self-sufficient** — if it needs another tool (e.g. `cargo`), it invokes that dep script directly. No ordering required in the manifest.
 
 ### Script contract
 
@@ -280,6 +282,10 @@ source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/lib/platform.sh"
 if pkg_check <tool>; then
   exit 0
 fi
+
+# If this script depends on another dep, source it (not bash) so PATH propagates:
+# shellcheck source=/dev/null
+# source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/<org>/<dep>.sh"
 
 info "<tool> not found — installing..."
 

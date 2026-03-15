@@ -12,23 +12,21 @@ if pkg_check octobrain; then
   exit 0
 fi
 
+# Ensure cargo is available — sourced so PATH changes propagate to this shell
+# shellcheck source=/dev/null
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/rust/cargo.sh"
+
 info "octobrain not found — installing..."
 
 case "$OS" in
   macos)
     if pkg_check brew; then
       brew install muvon/tap/octobrain
-    elif pkg_check cargo; then
-      cargo install octobrain
     else
-      die "Neither brew nor cargo found. Install one of them first, then re-run."
+      cargo install octobrain
     fi
     ;;
   linux)
-    if pkg_check cargo; then
-      cargo install octobrain
-    else
-      die "cargo not found. Install Rust first: https://rustup.rs — then re-run."
-    fi
+    cargo install octobrain
     ;;
 esac
