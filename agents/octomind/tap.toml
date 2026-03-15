@@ -81,7 +81,7 @@ allowed_tools = ["core:*", "filesystem:*", "agent_*"]
 # Optional: extra MCP servers (e.g. language tooling via Docker)
 # [[mcp.servers]]
 # name = "my-tool-mcp"
-# type = "stdin"
+# type = "stdio"
 # command = "docker"
 # args = ["run", "--rm", "-i", "--volume", "{{CWD}}:/workspace", "ghcr.io/org/image:latest"]
 # timeout_seconds = 60
@@ -131,6 +131,8 @@ type = "stdio"
 command = "npx"
 args = ["-y", "@github/mcp-server"]
 env = { GITHUB_TOKEN = "{{INPUT:GITHUB_TOKEN}}" }
+timeout_seconds = 60
+tools = []
 ```
 
 **`{{ENV:KEY}}` — Project-Scoped Values**
@@ -150,6 +152,8 @@ type = "stdio"
 command = "npx"
 args = ["-y", "@modelcontextprotocol/server-postgres"]
 env = { POSTGRES_URL = "{{ENV:DATABASE_URL}}" }
+timeout_seconds = 60
+tools = []
 ```
 
 **Decision Guide:**
@@ -220,6 +224,7 @@ type = "stdio"
 command = "npx"
 args = ["-y", "my-mcp-server"]
 timeout_seconds = 60
+tools = []
 ```
 
 ---

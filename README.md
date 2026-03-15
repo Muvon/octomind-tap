@@ -113,10 +113,11 @@ allowed_tools = ["core:*", "filesystem:*", "agent_*"]
 # Optional: add extra MCP servers (e.g. language-specific tooling via Docker)
 # [[mcp.servers]]
 # name = "rust-analyzer-mcp"
-# type = "stdin"
+# type = "stdio"
 # command = "docker"
 # args = ["run", "--rm", "-i", "--volume", "{{CWD}}:/workspace", "ghcr.io/muvon/rust-analyzer-mcp:latest"]
 # timeout_seconds = 60
+# tools = []
 ```
 
 ### MCP Server Configuration
@@ -147,6 +148,7 @@ type = "stdio"
 command = "npx"
 args = ["-y", "my-mcp-server"]
 timeout_seconds = 60
+tools = []
 ```
 
 **Built-in servers** (always available, no `[[mcp.servers]]` needed):
