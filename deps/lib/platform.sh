@@ -155,6 +155,10 @@ install_dep() {
 
 	info "Installing dependency: $dep"
 	bash "$deps_root/$dep.sh"
+	local exit_code=$?
+	if [[ $exit_code -ne 0 ]]; then
+		die "Dependency '$dep' failed with exit code $exit_code"
+	fi
 	info "Dependency $dep installed successfully"
 
 	# Source common env files that deps might have created

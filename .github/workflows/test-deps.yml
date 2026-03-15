@@ -112,6 +112,13 @@ jobs:
           echo "Script: ${{ matrix.script }}"
           ls -la "${{ matrix.script }}" || echo "Script not found!"
           ls -la deps/lib/platform.sh || echo "platform.sh not found!"
+          echo "=== Checking environment ==="
+          echo "OS: $(uname -s)"
+          echo "ARCH: $(uname -m)"
+          echo "PATH: $PATH"
+          command -v brew && echo "brew found at: $(command -v brew)" || echo "brew NOT found"
+          command -v cc && echo "cc found at: $(command -v cc)" || echo "cc NOT found"
+          command -v cargo && echo "cargo found at: $(command -v cargo)" || echo "cargo NOT found"
           echo "=== Running script ==="
           bash '${{ matrix.script }}' || {
             echo "Script failed with exit code: $?"
