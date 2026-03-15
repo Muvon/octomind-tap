@@ -58,15 +58,15 @@ system = \"\"\"
 
 Working directory: {{CWD}}
 
-# Use {{INPUT:KEY}} for user-global secrets (API tokens, credentials).
+# Use {{{{INPUT:KEY}}}} for user-global secrets (API tokens, credentials).
 # Prompted once, stored in ~/.local/share/octomind/inputs.toml.
-# Example: GitHub token: {{INPUT:GITHUB_TOKEN}}
+# Example: GitHub token: {{{{INPUT:GITHUB_TOKEN}}}}
 
-# Use {{ENV:KEY}} for project-scoped values (base URLs, env names, flags).
+# Use {{{{ENV:KEY}}}} for project-scoped values (base URLs, env names, flags).
 # Reads from environment if set; otherwise prompts and saves to ./.env.
-# Example: API base: {{ENV:API_BASE_URL}}
+# Example: API base: {{{{ENV:API_BASE_URL}}}}
 \"\"\"
-welcome = "<Emoji> <Short greeting>. Working in {{CWD}}"
+welcome = "<Emoji> <Short greeting>. Working in {{{{CWD}}}}"
 temperature = 0.3                 # 0.0–1.0
 top_p = 0.9                       # 0.0–1.0, nucleus sampling
 top_k = 0                         # 0 = disabled
@@ -83,7 +83,7 @@ allowed_tools = ["core:*", "filesystem:*", "agent_*"]
 # name = "my-tool-mcp"
 # type = "stdio"
 # command = "docker"
-# args = ["run", "--rm", "-i", "--volume", "{{CWD}}:/workspace", "ghcr.io/org/image:latest"]
+# args = ["run", "--rm", "-i", "--volume", "{{{{CWD}}}}:/workspace", "ghcr.io/org/image:latest"]
 # timeout_seconds = 60
 # tools = []
 
@@ -109,20 +109,20 @@ octomind vars --expand     # Show full values
 
 | Placeholder | Description |
 |-------------|-------------|
-| `{{INPUT:KEY}}` | Prompts user once, stored in `~/.local/share/octomind/inputs.toml` |
-| `{{ENV:KEY}}` | Reads from environment; if unset, prompts and saves to `./.env` |
+| `{{{{INPUT:KEY}}}}` | Prompts user once, stored in `~/.local/share/octomind/inputs.toml` |
+| `{{{{ENV:KEY}}}}` | Reads from environment; if unset, prompts and saves to `./.env` |
 
 ### When to Use Each Placeholder
 
-**`{{INPUT:KEY}}` — User Global Secrets**
+**`{{{{INPUT:KEY}}}}` — User Global Secrets**
 - Use for: API tokens, credentials, passwords, personal keys
 - Stored in: `~/.local/share/octomind/inputs.toml` (user's home, global)
 - Prompted: Once, then reused across all projects
-- Example: `{{INPUT:GITHUB_TOKEN}}`, `{{INPUT:OPENAI_API_KEY}}`
+- Example: `{{{{INPUT:GITHUB_TOKEN}}}}`, `{{{{INPUT:OPENAI_API_KEY}}}}`
 
 ```toml
 # In system prompt:
-"Your GitHub token: {{INPUT:GITHUB_TOKEN}}"
+"Your GitHub token: {{{{INPUT:GITHUB_TOKEN}}}}"
 
 # In MCP server config:
 [[mcp.servers]]
@@ -130,20 +130,20 @@ name = "github"
 type = "stdio"
 command = "npx"
 args = ["-y", "@github/mcp-server"]
-env = { GITHUB_TOKEN = "{{INPUT:GITHUB_TOKEN}}" }
+env = { GITHUB_TOKEN = "{{{{INPUT:GITHUB_TOKEN}}}}" }
 timeout_seconds = 60
 tools = []
 ```
 
-**`{{ENV:KEY}}` — Project-Scoped Values**
+**`{{{{ENV:KEY}}}}` — Project-Scoped Values**
 - Use for: Base URLs, environment names, feature flags, project settings
 - Stored in: `./.env` (project directory, git-ignored)
 - Prompted: Once per project if not in environment
-- Example: `{{ENV:API_BASE_URL}}`, `{{ENV:NODE_ENV}}`, `{{ENV:DATABASE_URL}}`
+- Example: `{{{{ENV:API_BASE_URL}}}}`, `{{{{ENV:NODE_ENV}}}}`, `{{{{ENV:DATABASE_URL}}}}`
 
 ```toml
 # In system prompt:
-"Working against API: {{ENV:API_BASE_URL}}"
+"Working against API: {{{{ENV:API_BASE_URL}}}}"
 
 # In MCP server config:
 [[mcp.servers]]
@@ -151,7 +151,7 @@ name = "postgres"
 type = "stdio"
 command = "npx"
 args = ["-y", "@modelcontextprotocol/server-postgres"]
-env = { POSTGRES_URL = "{{ENV:DATABASE_URL}}" }
+env = { POSTGRES_URL = "{{{{ENV:DATABASE_URL}}}}" }
 timeout_seconds = 60
 tools = []
 ```
@@ -160,13 +160,13 @@ tools = []
 
 | Value Type | Use | Reason |
 |------------|-----|--------|
-| API key (personal) | `{{INPUT:API_KEY}}` | Secret, user-global |
-| API key (project-specific) | `{{INPUT:PROJECT_API_KEY}}` | Secret, but named per-project |
-| Base URL | `{{ENV:BASE_URL}}` | Non-secret, project-specific |
-| Environment name | `{{ENV:NODE_ENV}}` | Non-secret, project-specific |
-| Database URL | `{{ENV:DATABASE_URL}}` | May contain password, but project-scoped |
-| OAuth token | `{{INPUT:OAUTH_TOKEN}}` | Secret, user-global |
-| Feature flag | `{{ENV:FEATURE_FLAG}}` | Non-secret, project-specific |
+| API key (personal) | `{{{{INPUT:API_KEY}}}}` | Secret, user-global |
+| API key (project-specific) | `{{{{INPUT:PROJECT_API_KEY}}}}` | Secret, but named per-project |
+| Base URL | `{{{{ENV:BASE_URL}}}}` | Non-secret, project-specific |
+| Environment name | `{{{{ENV:NODE_ENV}}}}` | Non-secret, project-specific |
+| Database URL | `{{{{ENV:DATABASE_URL}}}}` | May contain password, but project-scoped |
+| OAuth token | `{{{{INPUT:OAUTH_TOKEN}}}}` | Secret, user-global |
+| Feature flag | `{{{{ENV:FEATURE_FLAG}}}}` | Non-secret, project-specific |
 
 ---
 
@@ -321,7 +321,7 @@ Write system prompts that are:
 - **Actionable** — tell the agent what to do, not just what it is
 - **Concise** — avoid walls of text; the model reads this on every request
 - **Tool-aware** — mention which tools to prefer and when (e.g. "use `shell` to run tests")
-- **Grounded** — include `{{CWD}}` so the agent knows where it's working
+- **Grounded** — include `{{{{CWD}}}}` so the agent knows where it's working
 
 For developer agents: include language idioms, preferred libraries, quality commands (lint, test, build).
 For devops agents: include infra conventions, safety rules (never delete prod), preferred CLI tools.
