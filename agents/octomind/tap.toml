@@ -97,20 +97,72 @@ allowed_tools = ["core:*", "filesystem:*", "agent_*"]
 
 ## PLACEHOLDER VARIABLES
 
-| Placeholder       | Resolved to                                                        |
-|-------------------|--------------------------------------------------------------------|
-| `{{CWD}}`         | Current working directory at runtime                               |
-| `{{INPUT:KEY}}`   | Prompts user once, stored in ~/.local/share/octomind/inputs.toml   |
-| `{{ENV:KEY}}`     | Reads from environment; if unset, prompts and saves to ./.env      |
-| `{{SYSTEM}}`      | Full system info (shell, OS, binaries, CWD)                        |
-| `{{CONTEXT}}`     | Project context (README, git status, file tree)                    |
-| `{{DATE}}`        | Current date and time with timezone                                |
-| `{{ROLE}}`        | Active role name                                                    |
+Run `octomind vars` to see all available placeholders:
 
-Use `{{INPUT:KEY}}` for secrets (API tokens, credentials) — never hardcode them.
-Use `{{ENV:KEY}}` for project-scoped values (base URLs, env names, flags) — reads from env, falls back to prompting and saving to `./.env`.
-Use `{{SYSTEM}}` when the agent needs to know the OS/shell environment.
-Use `{{CONTEXT}}` when the agent benefits from project-level awareness.
+```bash
+octomind vars              # List all placeholders
+octomind vars --preview    # Show preview values
+octomind vars --expand     # Show full values
+```
+
+**Special placeholders:**
+
+| Placeholder | Description |
+|-------------|-------------|
+| `{{INPUT:KEY}}` | Prompts user once, stored in `~/.local/share/octomind/inputs.toml` |
+| `{{ENV:KEY}}` | Reads from environment; if unset, prompts and saves to `./.env` |
+
+### When to Use Each Placeholder
+
+**`{{INPUT:KEY}}` — User Global Secrets**
+- Use for: API tokens, credentials, passwords, personal keys
+- Stored in: `~/.local/share/octomind/inputs.toml` (user's home, global)
+- Prompted: Once, then reused across all projects
+- Example: `{{INPUT:GITHUB_TOKEN}}`, `{{INPUT:OPENAI_API_KEY}}`
+
+```toml
+# In system prompt:
+"Your GitHub token: {{INPUT:GITHUB_TOKEN}}"
+
+# In MCP server config:
+[[mcp.servers]]
+name = "github"
+type = "stdio"
+command = "npx"
+args = ["-y", "@github/mcp-server"]
+env = { GITHUB_TOKEN = "{{INPUT:GITHUB_TOKEN}}" }
+```
+
+**`{{ENV:KEY}}` — Project-Scoped Values**
+- Use for: Base URLs, environment names, feature flags, project settings
+- Stored in: `./.env` (project directory, git-ignored)
+- Prompted: Once per project if not in environment
+- Example: `{{ENV:API_BASE_URL}}`, `{{ENV:NODE_ENV}}`, `{{ENV:DATABASE_URL}}`
+
+```toml
+# In system prompt:
+"Working against API: {{ENV:API_BASE_URL}}"
+
+# In MCP server config:
+[[mcp.servers]]
+name = "postgres"
+type = "stdio"
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-postgres"]
+env = { POSTGRES_URL = "{{ENV:DATABASE_URL}}" }
+```
+
+**Decision Guide:**
+
+| Value Type | Use | Reason |
+|------------|-----|--------|
+| API key (personal) | `{{INPUT:API_KEY}}` | Secret, user-global |
+| API key (project-specific) | `{{INPUT:PROJECT_API_KEY}}` | Secret, but named per-project |
+| Base URL | `{{ENV:BASE_URL}}` | Non-secret, project-specific |
+| Environment name | `{{ENV:NODE_ENV}}` | Non-secret, project-specific |
+| Database URL | `{{ENV:DATABASE_URL}}` | May contain password, but project-scoped |
+| OAuth token | `{{INPUT:OAUTH_TOKEN}}` | Secret, user-global |
+| Feature flag | `{{ENV:FEATURE_FLAG}}` | Non-secret, project-specific |
 
 ---
 
@@ -139,6 +191,36 @@ Use `{{CONTEXT}}` when the agent benefits from project-level awareness.
 
 `allowed_tools` supports wildcards: `"core:*"`, `"filesystem:*"`, `"agent_*"`, `"octocode:*"`.
 You can also restrict to specific tools: `["view", "shell", "semantic_search"]`.
+
+### Adding Custom MCP Servers
+
+**Important:** `server_refs` and `[[mcp.servers]]` serve different purposes:
+
+| Field | Purpose |
+|-------|--------|
+| `server_refs` | References servers that are **already defined** (built-in or in `[[mcp.servers]]`) |
+| `[[mcp.servers]]` | **Defines new MCP servers** that will be started when this agent runs |
+
+**To use a custom MCP server:**
+
+1. Define it in `[[mcp.servers]]` with name, type, command, args
+2. Reference it in `server_refs` to make it available to the agent
+3. (Optional) Restrict tools in `allowed_tools`
+
+```toml
+# Example: Adding a custom MCP server
+
+[roles.mcp]
+server_refs = ["core", "filesystem", "my-custom-server"]
+allowed_tools = ["core:*", "filesystem:*", "my_custom-tool"]
+
+[[mcp.servers]]
+name = "my-custom-server"
+type = "stdio"
+command = "npx"
+args = ["-y", "my-mcp-server"]
+timeout_seconds = 60
+```
 
 ---
 

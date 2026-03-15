@@ -119,17 +119,58 @@ allowed_tools = ["core:*", "filesystem:*", "agent_*"]
 # timeout_seconds = 60
 ```
 
+### MCP Server Configuration
+
+**Important:** `server_refs` and `[[mcp.servers]]` serve different purposes:
+
+| Field | Purpose |
+|-------|---------|
+| `server_refs` | References servers that are **already defined** in the user's config (built-in: `core`, `filesystem`, `agent`, `octocode`) or defined in this manifest's `[[mcp.servers]]` |
+| `[[mcp.servers]]` | **Defines new MCP servers** that will be started when this agent runs |
+
+**To use a custom MCP server:**
+
+1. Define it in `[[mcp.servers]]` with name, type, command, args
+2. Reference it in `server_refs` to make it available to the agent
+3. (Optional) Restrict tools in `allowed_tools`
+
+```toml
+# Example: Adding a custom MCP server
+
+[roles.mcp]
+server_refs = ["core", "filesystem", "my-custom-server"]
+allowed_tools = ["core:*", "filesystem:*", "my_custom-tool"]
+
+[[mcp.servers]]
+name = "my-custom-server"
+type = "stdio"
+command = "npx"
+args = ["-y", "my-mcp-server"]
+timeout_seconds = 60
+```
+
+**Built-in servers** (always available, no `[[mcp.servers]]` needed):
+- `core` — `plan`, `mcp`, `agent` tools
+- `filesystem` — `view`, `text_editor`, `batch_edit`, `extract_lines`, `shell`, `workdir`, `ast_grep`
+- `agent` — `agent_*` tools for delegating to layers
+- `octocode` — `semantic_search`, `remember`, `memorize`, `view_signatures`, `graphrag` (requires `muvon/octocode` dep)
+
 ### Placeholder Variables
 
-| Placeholder | Resolved to |
+Run `octomind vars` to see all available placeholders:
+
+```bash
+octomind vars              # List all placeholders
+octomind vars --preview    # Show preview values
+octomind vars --expand     # Show full values
+```
+
+**Special placeholders:**
+
+| Placeholder | Description |
 |-------------|-------------|
-| `{{CWD}}` | Current working directory at runtime |
 | `{{INPUT:KEY}}` | Prompts user once, stored in `~/.local/share/octomind/inputs.toml` |
-| `{{ENV:KEY}}` | Reads from environment; if unset, prompts user and saves to `./.env` |
-| `{{SYSTEM}}` | Full system info (shell, OS, binaries, CWD) |
-| `{{CONTEXT}}` | Project context (README, git status, file tree) |
-| `{{DATE}}` | Current date and time with timezone |
-| `{{ROLE}}` | Active role name |
+| `{{ENV:KEY}}` | Reads from environment; if unset, prompts and saves to `./.env` |
 
 #### `{{INPUT:KEY}}` — persistent credential store
 
