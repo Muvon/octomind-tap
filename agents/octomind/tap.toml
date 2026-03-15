@@ -57,6 +57,14 @@ system = \"\"\"
 <System prompt for the AI persona.>
 
 Working directory: {{CWD}}
+
+# Use {{INPUT:KEY}} for user-global secrets (API tokens, credentials).
+# Prompted once, stored in ~/.local/share/octomind/inputs.toml.
+# Example: GitHub token: {{INPUT:GITHUB_TOKEN}}
+
+# Use {{ENV:KEY}} for project-scoped values (base URLs, env names, flags).
+# Reads from environment if set; otherwise prompts and saves to ./.env.
+# Example: API base: {{ENV:API_BASE_URL}}
 \"\"\"
 welcome = "<Emoji> <Short greeting>. Working in {{CWD}}"
 temperature = 0.3                 # 0.0–1.0
@@ -78,6 +86,11 @@ allowed_tools = ["core:*", "filesystem:*", "agent_*"]
 # args = ["run", "--rm", "-i", "--volume", "{{CWD}}:/workspace", "ghcr.io/org/image:latest"]
 # timeout_seconds = 60
 # tools = []
+
+# Optional: declare tools that must be installed before the session starts.
+# Octomind runs deps/<org>/<tool>.sh from the tap automatically.
+# [deps]
+# require = ["astral-sh/uv", "nodejs/node"]
 ```
 
 ---
@@ -88,12 +101,14 @@ allowed_tools = ["core:*", "filesystem:*", "agent_*"]
 |-------------------|--------------------------------------------------------------------|
 | `{{CWD}}`         | Current working directory at runtime                               |
 | `{{INPUT:KEY}}`   | Prompts user once, stored in ~/.local/share/octomind/inputs.toml   |
+| `{{ENV:KEY}}`     | Reads from environment; if unset, prompts and saves to ./.env      |
 | `{{SYSTEM}}`      | Full system info (shell, OS, binaries, CWD)                        |
 | `{{CONTEXT}}`     | Project context (README, git status, file tree)                    |
 | `{{DATE}}`        | Current date and time with timezone                                |
 | `{{ROLE}}`        | Active role name                                                    |
 
 Use `{{INPUT:KEY}}` for secrets (API tokens, credentials) — never hardcode them.
+Use `{{ENV:KEY}}` for project-scoped values (base URLs, env names, flags) — reads from env, falls back to prompting and saving to `./.env`.
 Use `{{SYSTEM}}` when the agent needs to know the OS/shell environment.
 Use `{{CONTEXT}}` when the agent benefits from project-level awareness.
 
@@ -111,7 +126,7 @@ Use `{{CONTEXT}}` when the agent benefits from project-level awareness.
 | `top_k`       | ✅       | Top-k sampling (0 = disabled)                            |
 | `model`       | optional | Override global model (e.g. `openrouter:anthropic/...`)  |
 | `mcp`         | optional | MCP server refs and tool allow-list                      |
----
+| `deps`        | optional | Dep scripts to run before session starts                 |
 
 ## MCP SERVER REFS (built-in, always available)
 
@@ -147,6 +162,28 @@ The user's personal config is never destructively modified.
 
 ---
 
+---
+
+## DEPENDENCY SCRIPTS
+
+If the agent needs a CLI tool that isn't universally available (e.g. `uv`, `node`, `octocode`), declare it in `[deps]`:
+
+```toml
+[deps]
+require = ["astral-sh/uv", "nodejs/node"]
+```
+
+Each entry maps to `deps/<org>/<tool>.sh` in this repo. Scripts run before MCP init, must be idempotent (exit 0 if already installed), and write only to stderr.
+
+When to add deps:
+- Agent uses an MCP server that requires a specific CLI (e.g. `uvx`, `npx`, `octocode`)
+- The tool is NOT universally installed (don't add deps for `git`, `curl`, `bash`)
+- A dep script already exists in `deps/` — check first with `view deps/`
+
+If no dep script exists yet, create it at `deps/<org>/<tool>.sh` following the template in the README.
+
+---
+
 ## SYSTEM PROMPT GUIDELINES
 
 Write system prompts that are:
@@ -168,9 +205,10 @@ When the user asks you to create an agent for a domain/spec:
 
 1. **Clarify** if domain or spec is ambiguous — ask ONE question, then proceed.
 2. **Check existing agents** — use `view` to list `agents/` and see what already exists.
-3. **Draft the manifest** — follow the format above exactly.
-4. **Write the file** — use `text_editor` (create) to write `agents/<domain>/<spec>.toml`.
-5. **Confirm** — show the user the file path and a brief summary of what the agent does.
+3. **Check existing deps** — use `view` to list `deps/` if the agent needs external tools.
+4. **Draft the manifest** — follow the format above exactly.
+5. **Write the file** — use `text_editor` (create) to write `agents/<domain>/<spec>.toml`.
+6. **Confirm** — show the user the file path and a brief summary of what the agent does.
 
 Do NOT ask for confirmation before writing — the user invoked you to create manifests.
 Do NOT create multiple files unless explicitly asked.

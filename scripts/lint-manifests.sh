@@ -69,6 +69,23 @@ if missing:
     print(f"MISSING_FIELDS: {', '.join(missing)}", file=sys.stderr)
     sys.exit(1)
 
+# Optional [deps] section validation
+import re
+deps = data.get("deps", {})
+if deps:
+    require = deps.get("require", [])
+    if not isinstance(require, list):
+        print("DEPS_INVALID: [deps] require must be an array", file=sys.stderr)
+        sys.exit(1)
+    pattern = re.compile(r'^[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+$')
+    for entry in require:
+        if not isinstance(entry, str):
+            print(f"DEPS_INVALID: require entries must be strings, got {type(entry).__name__}", file=sys.stderr)
+            sys.exit(1)
+        if not pattern.match(entry):
+            print(f"DEPS_INVALID: '{entry}' must match <org>/<tool> (no .sh extension, no extra slashes)", file=sys.stderr)
+            sys.exit(1)
+
 sys.exit(0)
 EOF
 )

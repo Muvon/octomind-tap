@@ -65,7 +65,16 @@ agents/
     python-ml.toml
     sql.toml
   ...
-```
+deps/
+  lib/
+    platform.sh       ← shared OS/arch/pkg-manager detection (sourced by all dep scripts)
+  muvon/
+    octocode.sh
+  astral-sh/
+    uv.sh
+  nodejs/
+    node.sh
+  ...
 
 Each file lives at `agents/<domain>/<spec>.toml` and is fetched via:
 ```
@@ -169,6 +178,7 @@ Environment: {{ENV:DEPLOY_ENV}}
 | `top_k` | ✅ | Top-k sampling (0 = disabled) |
 | `model` | optional | Override the global model (e.g. `anthropic/claude-opus-4-5`) |
 | `mcp` | optional | MCP server refs and tool allow-list |
+| `deps` | optional | List of dep scripts to run before the session starts |
 
 ### Merge Semantics
 
@@ -208,6 +218,83 @@ octomind untap myorg/agents
 Tap repos are cloned to `~/.local/share/octomind/taps/<user>/octomind-<repo>/` and auto-updated via `git pull` on every run.
 
 ---
+
+## Dependency Scripts
+
+Manifests can declare external tools that must be present before the session starts. Octomind runs the corresponding scripts automatically on first use.
+
+### Declaring deps in a manifest
+
+```toml
+[deps]
+require = ["astral-sh/uv", "nodejs/node"]
+```
+
+Each entry maps to `deps/<org>/<tool>.sh` inside the tap. Scripts run in order, **before** MCP servers are initialised. If any script exits non-zero the session is aborted with a clear error.
+
+### Script contract
+
+Every dep script **must** follow this contract so the runtime can trust it:
+
+| Rule | Detail |
+|------|--------|
+| **Idempotent** | Check first — exit `0` immediately if the tool is already installed |
+| **Exit codes** | `0` = installed (or already present), `1` = failed |
+| **Output** | Stderr only — stdout is reserved for Octomind |
+| **No side-effects** | Do not modify the user's config, shell profile, or working directory |
+
+### Using the platform library
+
+All dep scripts should source `deps/lib/platform.sh` for portable OS/arch/package-manager detection:
+
+```bash
+#!/usr/bin/env bash
+source "$(dirname "${BASH_SOURCE[0]}")/../lib/platform.sh"
+# (adjust relative path depth to match your location under deps/)
+```
+
+After sourcing, these are available:
+
+| Variable | Values |
+|----------|--------|
+| `$OS` | `macos` \| `linux` |
+| `$ARCH` | `x86_64` \| `arm64` |
+| `$PKG_MANAGER` | `brew` \| `apt` \| `dnf` \| `pacman` \| `zypper` \| `apk` \| `unknown` |
+| `$IS_MACOS` / `$IS_LINUX` | `1` or `0` |
+| `$IS_X86_64` / `$IS_ARM64` | `1` or `0` |
+
+Helper functions: `pkg_install <pkg>`, `pkg_check <cmd>`, `info <msg>`, `die <msg>`.
+
+### Minimal dep script template
+
+```bash
+#!/usr/bin/env bash
+# dep: <org>/<tool>
+# description: One-line description
+# check: <command-to-verify-install>
+
+set -euo pipefail
+source "$(dirname "${BASH_SOURCE[0]}")/../lib/platform.sh"
+
+# Fast path — already installed
+if pkg_check <tool>; then
+  exit 0
+fi
+
+info "<tool> not found — installing..."
+
+case "$OS" in
+  macos) brew_install <formula> ;;
+  linux) pkg_install <package>  ;;
+esac
+```
+
+### Adding a dep script
+
+1. Create `deps/<org>/<tool>.sh` — use the template above.
+2. `chmod +x deps/<org>/<tool>.sh`
+3. Reference it in your manifest: `[deps] require = ["<org>/<tool>"]`
+4. Test it on a clean machine (or a Docker container) before opening a PR.
 
 ## Contributing
 
@@ -262,6 +349,12 @@ top_k = 0
 server_refs = ["core", "filesystem", "agent"]
 allowed_tools = ["core:*", "filesystem:*", "agent_*"]
 
+# Optional: declare tools that must be installed before the session starts.
+# Octomind runs deps/<org>/<tool>.sh from the tap automatically.
+# [deps]
+# require = ["astral-sh/uv", "nodejs/node"]
+```
+
 ### Guidelines
 
 - **Never set `name`** — it is injected from the tag at runtime. Do not include it in the manifest.
@@ -269,6 +362,7 @@ allowed_tools = ["core:*", "filesystem:*", "agent_*"]
 - **Prefer `{{CWD}}` over hardcoded paths** — manifests are used across machines.
 - **Use `{{INPUT:KEY}}` for user-global secrets** — API tokens, credentials. Prompted once, stored in `~/.local/share/octomind/inputs.toml`, reused across all projects.
 - **Use `{{ENV:KEY}}` for project-scoped values** — base URLs, environment names, feature flags. Reads from the environment if set; otherwise prompts and saves to `./.env` in the working directory. Never use `{{ENV:KEY}}` for secrets — the value lands in a plain-text file.
+- **Declare deps for non-Docker tooling** — if your agent needs a CLI tool that isn't wrapped in Docker, add a dep script and reference it via `[deps] require = [...]`. See [Dependency Scripts](#dependency-scripts).
 - **Docker for zero-install tooling** — if your agent needs a language server or CLI tool, wrap it in a Docker MCP server so users don't need to install anything.
 - **One role per file** — a manifest should define exactly one `[[roles]]` entry (the primary agent role). Additional helper roles are discouraged.
 - **Test with `file://` source** before submitting — see the local testing instructions above.
