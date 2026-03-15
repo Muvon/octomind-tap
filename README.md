@@ -302,6 +302,26 @@ case "$OS" in
 esac
 ```
 
+### Available Dep Scripts
+
+| Script | Provides | Used For |
+|--------|----------|----------|
+| `rust/cargo` | Rust toolchain (cargo, rustc) | Building Rust binaries, installing crates |
+| `astral-sh/uv` | uv package manager | Running Python MCP servers via `uvx` |
+| `nodejs/node` | Node.js LTS (node, npm, npx) | Running Node.js MCP servers via `npx` |
+| `docker/docker` | Docker CLI + daemon | Running containerized MCP servers |
+| `muvon/octocode` | octocode CLI | Octomind's semantic code search |
+| `muvon/octobrain` | octobrain CLI | Octomind's code indexing |
+
+### MCP Server Runtime Requirements
+
+| Runtime | MCP Servers (examples) | Dep Required |
+|---------|------------------------|--------------|
+| **Node.js (npx)** | filesystem, github, postgres, sqlite, brave-search, puppeteer, slack, memory, sequential-thinking | `nodejs/node` |
+| **Python (uvx)** | Many Python-based servers | `astral-sh/uv` |
+| **Rust (cargo)** | octocode, octobrain, other compiled binaries | `rust/cargo` |
+| **Docker** | Containerized MCP servers (mcp/brave-search, etc.) | `docker/docker` |
+
 ### Adding a dep script
 
 1. Create `deps/<org>/<tool>.sh` — use the template above.

@@ -178,14 +178,33 @@ Each entry maps to `deps/<org>/<tool>.sh` in this repo. Every dep script follows
 1. **Self-sufficient** — if it needs another tool (e.g. `cargo`), it `source`s that dep script itself. The manifest never needs to list prerequisites.
 2. **Idempotent** — exits `0` immediately if already installed. Safe to run on every session start.
 
-When to add deps:
-- Agent uses an MCP server that requires a specific CLI (e.g. `uvx`, `npx`, `octocode`)
+### Available Dep Scripts
+
+| Script | Provides | Used For |
+|--------|----------|----------|
+| `rust/cargo` | Rust toolchain (cargo, rustc) | Building Rust binaries, installing crates |
+| `astral-sh/uv` | uv package manager | Running Python MCP servers via `uvx` |
+| `nodejs/node` | Node.js LTS (node, npm, npx) | Running Node.js MCP servers via `npx` |
+| `docker/docker` | Docker CLI + daemon | Running containerized MCP servers |
+| `muvon/octocode` | octocode CLI | Octomind's semantic code search |
+| `muvon/octobrain` | octobrain CLI | Octomind's code indexing |
+
+### MCP Server Runtime Requirements
+
+| Runtime | MCP Servers (examples) | Dep Required |
+|---------|------------------------|--------------|
+| **Node.js (npx)** | filesystem, github, postgres, sqlite, brave-search, puppeteer, slack, memory, sequential-thinking | `nodejs/node` |
+| **Python (uvx)** | Many Python-based servers (mcp-server-python, etc.) | `astral-sh/uv` |
+| **Rust (cargo)** | octocode, octobrain, other compiled binaries | `rust/cargo` |
+| **Docker** | Containerized MCP servers (mcp/brave-search, etc.) | `docker/docker` |
+
+### When to Add Deps
+
+- Agent uses an MCP server that requires a specific runtime (npx, uvx, docker)
 - The tool is NOT universally installed (don't add deps for `git`, `curl`, `bash`)
 - A dep script already exists in `deps/` — check first with `view deps/`
 
-If no dep script exists yet, create it at `deps/<org>/<tool>.sh` following the template in the README.
-
----
+If no dep script exists yet, create it at `deps/<org>/<tool>.sh` following the template in README.md.
 
 ## SYSTEM PROMPT GUIDELINES
 

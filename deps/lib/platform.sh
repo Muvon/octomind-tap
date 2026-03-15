@@ -107,6 +107,11 @@ info() {
   echo "  → $*" >&2
 }
 
+# warn <message> — print warning message to stderr
+warn() {
+  echo "  ⚠ $*" >&2
+}
+
 # pkg_check <command> — returns 0 if command exists, 1 otherwise
 pkg_check() {
   command -v "$1" &>/dev/null
