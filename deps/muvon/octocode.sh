@@ -12,9 +12,8 @@ if pkg_check octocode; then
   exit 0
 fi
 
-# Ensure cargo is available — sourced so PATH changes propagate to this shell
-# shellcheck source=/dev/null
-source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/rust/cargo.sh"
+# Ensure cargo is available
+install_dep rust/cargo
 
 info "octocode not found — installing..."
 

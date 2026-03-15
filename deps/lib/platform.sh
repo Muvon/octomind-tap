@@ -131,10 +131,34 @@ brew_install() {
 
 # apt_install <pkg> — Debian/Ubuntu only
 apt_install() {
-  [[ "$PKG_MANAGER" == "apt" ]] && sudo apt-get install -y "$1" || true
+	[[ "$PKG_MANAGER" == "apt" ]] && sudo apt-get install -y "$1" || true
 }
 
 # dnf_install <pkg> — Fedora/RHEL only
 dnf_install() {
-  [[ "$PKG_MANAGER" == "dnf" ]] && sudo dnf install -y "$1" || true
+	[[ "$PKG_MANAGER" == "dnf" ]] && sudo dnf install -y "$1" || true
+}
+
+# ── Dep script helper ──────────────────────────────────────────────────────────
+
+# install_dep <org/tool>
+#
+# Runs a dep script and sources common env files afterward.
+# Use this when your script depends on another dep.
+#
+# Example:
+#   install_dep rust/cargo
+#
+# This ensures the dep is installed AND its binaries are in PATH for this shell.
+install_dep() {
+	local dep="$1"
+	local deps_root
+	deps_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+	bash "$deps_root/$dep.sh"
+
+	# Source common env files that deps might have created
+	# shellcheck source=/dev/null
+	[[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+	[[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"
 }

@@ -287,9 +287,9 @@ if pkg_check <tool>; then
   exit 0
 fi
 
-# If this script depends on another dep, source it (not bash) so PATH propagates:
-# shellcheck source=/dev/null
-# source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/<org>/<dep>.sh"
+# If this script depends on another dep, use install_dep:
+# install_dep rust/cargo
+# This runs the dep script and sources common env files (~/.cargo/env, ~/.local/bin).
 
 info "<tool> not found — installing..."
 
