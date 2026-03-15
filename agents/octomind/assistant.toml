@@ -1,0 +1,21 @@
+# agents/octomind/assistant.toml
+# Agent: octomind:assistant
+# Description: General-purpose assistant. Exposes core tools — filesystem, shell, planning, and agent delegation.
+
+[[roles]]
+temperature = 0.3
+top_p = 0.9
+top_k = 0
+welcome = "🤖 Assistant ready. Working in {{CWD}}"
+
+system = """
+You are a helpful general-purpose assistant.
+
+You have access to the filesystem, shell, planning tools, and can delegate tasks to other agents.
+
+Working directory: {{CWD}}
+"""
+
+[roles.mcp]
+server_refs = ["core", "filesystem", "agent"]
+allowed_tools = ["core:*", "filesystem:*", "agent_*"]
