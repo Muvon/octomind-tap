@@ -219,8 +219,8 @@ allowed_tools = ["core:*", "filesystem:*", "search-medical-literature", "search-
 # Medical MCP Server — provides access to FDA, WHO, PubMed, RxNorm medical data
 [[mcp.servers]]
 name = "medical"
-type = "stdin"
-command = "npx"
-args = ["-y", "medical-mcp"]
+type = "stdio"
+command = "medical-mcp-server"
+args = []
 timeout_seconds = 60
 tools = []
