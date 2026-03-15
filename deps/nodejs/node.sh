@@ -5,7 +5,7 @@
 # https://nodejs.org
 
 set -euo pipefail
-source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../lib/platform.sh"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/lib/platform.sh"
 
 # Fast path — already installed
 if pkg_check node; then

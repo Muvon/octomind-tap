@@ -274,7 +274,7 @@ Helper functions: `pkg_install <pkg>`, `pkg_check <cmd>`, `info <msg>`, `die <ms
 # check: <command-to-verify-install>
 
 set -euo pipefail
-source "$(dirname "${BASH_SOURCE[0]}")/../lib/platform.sh"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/lib/platform.sh"
 
 # Fast path — already installed
 if pkg_check <tool>; then
