@@ -310,6 +310,8 @@ esac
 | `astral-sh/uv` | uv package manager | Running Python MCP servers via `uvx` |
 | `nodejs/node` | Node.js LTS (node, npm, npx) | Running Node.js MCP servers via `npx` |
 | `docker/docker` | Docker CLI + daemon | Running containerized MCP servers |
+| `github/github-mcp` | GitHub MCP Server | Full GitHub API operations (repos, issues, PRs) |
+| `microsoft/playwright` | Playwright MCP Server | Browser automation, screenshots, web scraping |
 | `muvon/octocode` | octocode CLI | Octomind's semantic code search |
 | `muvon/octobrain` | octobrain CLI | Octomind's code indexing |
 
@@ -321,6 +323,19 @@ esac
 | **Python (uvx)** | Many Python-based servers | `astral-sh/uv` |
 | **Rust (cargo)** | octocode, octobrain, other compiled binaries | `rust/cargo` |
 | **Docker** | Containerized MCP servers (mcp/brave-search, etc.) | `docker/docker` |
+
+### Popular MCP Servers and Their Deps
+
+| MCP Server | Package | Dep Required |
+|-----------|---------|--------------|
+| GitHub | `@github/mcp-server` or `@modelcontextprotocol/server-github` | `github/github-mcp` (or `nodejs/node`) |
+| Playwright | `@playwright/mcp` or `@executeautomation/playwright-mcp-server` | `microsoft/playwright` (or `nodejs/node`) |
+| Filesystem | `@modelcontextprotocol/server-filesystem` | `nodejs/node` |
+| Postgres | `@modelcontextprotocol/server-postgres` | `nodejs/node` |
+| SQLite | `@modelcontextprotocol/server-sqlite` | `nodejs/node` |
+| Brave Search | `@brave/brave-search-mcp-server` | `nodejs/node` or `docker/docker` |
+| Slack | `@modelcontextprotocol/server-slack` | `nodejs/node` |
+| Memory | `@modelcontextprotocol/server-memory` | `nodejs/node` |
 
 ### Adding a dep script
 
