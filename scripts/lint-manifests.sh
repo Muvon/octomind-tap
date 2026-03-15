@@ -6,6 +6,7 @@
 #   3. `name` field is NOT set (injected at runtime from the tag)
 #   4. Required fields present: system, welcome, temperature, top_p, top_k
 #   5. File path matches agents/<domain>/<spec>.toml convention
+#   6. Every non-built-in server_ref must be defined under [[mcp.servers]]
 #
 # Usage:
 #   scripts/lint-manifests.sh                  # lint all manifests
@@ -87,6 +88,15 @@ if deps:
             print(f"DEPS_INVALID: '{entry}' must match <org>/<tool> (no .sh extension, no extra slashes)", file=sys.stderr)
             sys.exit(1)
 
+# External server_refs must be defined under [[mcp.servers]]
+BUILTIN_SERVERS = {"core", "filesystem", "agent"}
+mcp_section = data.get("mcp", {})
+defined_servers = {s["name"] for s in mcp_section.get("servers", []) if "name" in s}
+server_refs = role.get("mcp", {}).get("server_refs", [])
+for ref in server_refs:
+    if ref not in BUILTIN_SERVERS and ref not in defined_servers:
+        print(f"MCP_UNDEFINED: server_ref '{ref}' is not a built-in server and has no [[mcp.servers]] entry with name='{ref}'", file=sys.stderr)
+        sys.exit(1)
 sys.exit(0)
 EOF
 )
