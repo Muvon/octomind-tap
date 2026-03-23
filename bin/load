@@ -1,0 +1,287 @@
+#!/usr/bin/env python3
+"""
+bin/load <domain>:<spec>
+
+Resolves capabilities and outputs a merged, ready-to-use agent TOML to stdout.
+
+How it works:
+  1. Read agents/<domain>/<spec>.toml
+  2. Extract top-level `capabilities = [...]` list
+  3. For each capability, load capabilities/<name>/default.toml
+  4. Merge:
+       - [deps] require          → union of all arrays
+       - [roles.mcp] server_refs → union of all arrays
+       - [roles.mcp] allowed_tools → union of all arrays (preserving wildcards)
+       - [[mcp.servers]] blocks  → append all (deduplicated by name)
+  5. Output final TOML to stdout
+
+Capability file format (capabilities/<name>/default.toml):
+  [deps]
+  require = ["some/dep"]
+
+  [roles.mcp]
+  server_refs = ["myserver"]
+  allowed_tools = ["mytool_*"]
+
+  [[mcp.servers]]
+  name = "myserver"
+  type = "stdio"
+  command = "npx"
+  args = ["-y", "@scope/pkg"]
+  timeout_seconds = 60
+  tools = []
+"""
+
+import sys
+import re
+import os
+
+# ---------------------------------------------------------------------------
+# Tiny TOML-subset parser — only what we need, no external deps
+# ---------------------------------------------------------------------------
+
+def parse_inline_array(s):
+    """Parse a TOML inline array string like '["a", "b", "c"]' into a list."""
+    s = s.strip()
+    if not s.startswith("[") or not s.endswith("]"):
+        return []
+    inner = s[1:-1].strip()
+    if not inner:
+        return []
+    # Split on commas not inside quotes
+    items = []
+    current = ""
+    in_str = False
+    for ch in inner:
+        if ch == '"' and not in_str:
+            in_str = True
+            current += ch
+        elif ch == '"' and in_str:
+            in_str = False
+            current += ch
+        elif ch == ',' and not in_str:
+            v = current.strip().strip('"')
+            if v:
+                items.append(v)
+            current = ""
+        else:
+            current += ch
+    v = current.strip().strip('"')
+    if v:
+        items.append(v)
+    return items
+
+
+def format_inline_array(items):
+    """Format a list back into a TOML inline array string."""
+    if not items:
+        return "[]"
+    quoted = [f'"{i}"' for i in items]
+    return "[" + ", ".join(quoted) + "]"
+
+
+def parse_mcp_servers(text):
+    """
+    Extract all [[mcp.servers]] blocks from a TOML text.
+    Returns list of (name, raw_block_text) tuples.
+    """
+    servers = []
+    # Split on [[mcp.servers]] boundaries
+    parts = re.split(r'(?=^\[\[mcp\.servers\]\])', text, flags=re.MULTILINE)
+    for part in parts:
+        part = part.strip()
+        if not part.startswith("[[mcp.servers]]"):
+            continue
+        # Extract name from the block
+        m = re.search(r'^name\s*=\s*"([^"]+)"', part, re.MULTILINE)
+        name = m.group(1) if m else "__unknown__"
+        servers.append((name, part))
+    return servers
+
+
+def parse_array_field(text, field):
+    """
+    Find `field = [...]` in text and return parsed list.
+    Handles the field appearing anywhere in the text.
+    """
+    m = re.search(rf'^{re.escape(field)}\s*=\s*(\[.*?\])', text, re.MULTILINE)
+    if m:
+        return parse_inline_array(m.group(1))
+    return []
+
+
+def extract_capabilities(text):
+    """Extract top-level capabilities = [...] from agent file."""
+    return parse_array_field(text, "capabilities")
+
+
+def strip_section(text, section_header):
+    """
+    Remove a [section] block from TOML text.
+    Stops at the next [section] or [[section]] header.
+    """
+    pattern = rf'^\[{re.escape(section_header)}\][^\[]*'
+    return re.sub(pattern, '', text, flags=re.MULTILINE | re.DOTALL)
+
+
+def strip_mcp_servers(text):
+    """Remove all [[mcp.servers]] blocks from text."""
+    return re.sub(
+        r'^\[\[mcp\.servers\]\].*?(?=^\[|\Z)',
+        '',
+        text,
+        flags=re.MULTILINE | re.DOTALL
+    )
+
+
+def strip_capabilities_line(text):
+    """Remove the capabilities = [...] line from agent text."""
+    return re.sub(r'^capabilities\s*=\s*\[.*?\]\n?', '', text, flags=re.MULTILINE)
+
+
+def replace_array_field(text, field, new_items):
+    """Replace `field = [...]` line in text with new merged value."""
+    new_line = f'{field} = {format_inline_array(new_items)}'
+    replaced = re.sub(
+        rf'^{re.escape(field)}\s*=\s*\[.*?\]',
+        new_line,
+        text,
+        flags=re.MULTILINE
+    )
+    return replaced
+
+
+# ---------------------------------------------------------------------------
+# Main merge logic
+# ---------------------------------------------------------------------------
+
+def load_capability(cap_name, tap_root):
+    """Load a capability file and return its parsed pieces."""
+    path = os.path.join(tap_root, "capabilities", cap_name, "default.toml")
+    if not os.path.exists(path):
+        print(f"ERROR: capability file not found: {path}", file=sys.stderr)
+        sys.exit(1)
+    with open(path) as f:
+        text = f.read()
+    return {
+        "deps":          parse_array_field(text, "require"),
+        "server_refs":   parse_array_field(text, "server_refs"),
+        "allowed_tools": parse_array_field(text, "allowed_tools"),
+        "mcp_servers":   parse_mcp_servers(text),
+        "raw":           text,
+    }
+
+
+def merge_unique(base, additions):
+    """Merge two lists, preserving order, deduplicating."""
+    seen = set(base)
+    result = list(base)
+    for item in additions:
+        if item not in seen:
+            seen.add(item)
+            result.append(item)
+    return result
+
+
+def main():
+    if len(sys.argv) != 2 or ":" not in sys.argv[1]:
+        print("Usage: bin/load <domain>:<spec>", file=sys.stderr)
+        sys.exit(1)
+
+    tag = sys.argv[1]
+    domain, spec = tag.split(":", 1)
+
+    # Resolve tap root (directory containing this script's parent)
+    tap_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    agent_path = os.path.join(tap_root, "agents", domain, f"{spec}.toml")
+    if not os.path.exists(agent_path):
+        print(f"ERROR: agent not found: {agent_path}", file=sys.stderr)
+        sys.exit(1)
+
+    with open(agent_path) as f:
+        agent_text = f.read()
+
+    # --- 1. Extract capabilities list from agent ---
+    capabilities = extract_capabilities(agent_text)
+
+    # --- 2. Load each capability ---
+    cap_data = [load_capability(cap, tap_root) for cap in capabilities]
+
+    # --- 3. Collect merged values ---
+    # Start with what's already in the agent file (minus capability-owned stuff)
+    merged_deps         = parse_array_field(agent_text, "require")
+    merged_server_refs  = parse_array_field(agent_text, "server_refs")
+    merged_allowed      = parse_array_field(agent_text, "allowed_tools")
+
+    # Track MCP server names already in agent to deduplicate
+    existing_servers    = parse_mcp_servers(agent_text)
+    seen_server_names   = {name for name, _ in existing_servers}
+    extra_mcp_blocks    = []
+
+    for cap in cap_data:
+        merged_deps        = merge_unique(merged_deps,        cap["deps"])
+        merged_server_refs = merge_unique(merged_server_refs, cap["server_refs"])
+        merged_allowed     = merge_unique(merged_allowed,     cap["allowed_tools"])
+        for name, block in cap["mcp_servers"]:
+            if name not in seen_server_names:
+                seen_server_names.add(name)
+                extra_mcp_blocks.append(block)
+
+    # --- 4. Build output ---
+
+    # Strip from agent: [deps] block, capabilities= line, [[mcp.servers]] blocks
+    out = agent_text
+    out = strip_section(out, "deps")
+    out = strip_capabilities_line(out)
+    out = strip_mcp_servers(out)
+
+    # Inject or update [roles.mcp] section with merged server_refs and allowed_tools
+    has_roles_mcp = bool(re.search(r'^\[roles\.mcp\]', out, re.MULTILINE))
+
+    if has_roles_mcp:
+        # Update existing fields in-place
+        if re.search(r'^server_refs\s*=', out, re.MULTILINE):
+            out = replace_array_field(out, "server_refs", merged_server_refs)
+        else:
+            # Insert server_refs after [roles.mcp] header
+            out = re.sub(
+                r'(^\[roles\.mcp\]\n)',
+                rf'\1server_refs = {format_inline_array(merged_server_refs)}\n',
+                out, flags=re.MULTILINE
+            )
+        if re.search(r'^allowed_tools\s*=', out, re.MULTILINE):
+            out = replace_array_field(out, "allowed_tools", merged_allowed)
+        else:
+            out = re.sub(
+                r'(^\[roles\.mcp\]\n(?:server_refs\s*=.*\n)?)',
+                rf'\1allowed_tools = {format_inline_array(merged_allowed)}\n',
+                out, flags=re.MULTILINE
+            )
+    else:
+        # No [roles.mcp] section — append one before any [[mcp.servers]] or at end
+        roles_mcp_block = (
+            f"\n[roles.mcp]\n"
+            f"server_refs = {format_inline_array(merged_server_refs)}\n"
+            f"allowed_tools = {format_inline_array(merged_allowed)}\n"
+        )
+        out = out.rstrip() + roles_mcp_block
+
+    # Prepend merged [deps] block (only if we have deps)
+    header = ""
+    if merged_deps:
+        header = f"[deps]\nrequire = {format_inline_array(merged_deps)}\n\n"
+
+    # Append extra [[mcp.servers]] blocks from capabilities
+    footer = ""
+    if extra_mcp_blocks:
+        footer = "\n" + "\n\n".join(extra_mcp_blocks) + "\n"
+
+    # Clean up excessive blank lines in body
+    out = re.sub(r'\n{3,}', '\n\n', out).strip()
+
+    print(header + out + footer)
+
+
+if __name__ == "__main__":
+    main()

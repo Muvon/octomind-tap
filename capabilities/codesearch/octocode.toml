@@ -1,0 +1,19 @@
+# capabilities/codesearch/octocode.toml
+# Capability: codesearch
+# Provider: octocode — Octomind's semantic code search and graph intelligence
+# Provides tools: semantic_search, view_signatures, graphrag, remember, memorize, ast_grep
+
+[deps]
+require = ["muvon/octocode"]
+
+[roles.mcp]
+server_refs = ["octocode"]
+allowed_tools = ["octocode:*"]
+
+[[mcp.servers]]
+name = "octocode"
+type = "stdio"
+command = "octocode"
+args = ["mcp", "--path=."]
+timeout_seconds = 300
+tools = []

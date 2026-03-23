@@ -2,8 +2,10 @@
 # Agent: doctor:medications
 # Description: Medication information assistant. Explains drug mechanisms, interactions, side effects, and helps prepare questions for prescribers. NOT a pharmacist or prescriber.
 
+capabilities = ["core", "filesystem"]
+
 [deps]
-require = ["muvon/octofs", "medical/medical"]
+require = ["medical/medical"]
 
 [[roles]]
 temperature = 0.15
@@ -261,8 +263,8 @@ Working directory: {{CWD}}
 """
 
 [roles.mcp]
-server_refs = ["core", "octofs", "medical"]
-allowed_tools = ["core:*", "octofs:*", "search-medical-literature", "search-medical-databases", "search-clinical-guidelines"]
+server_refs = ["medical"]
+allowed_tools = ["search-medical-literature", "search-medical-databases", "search-clinical-guidelines"]
 
 # Medical MCP Server — provides access to FDA, WHO, PubMed, RxNorm medical data
 [[mcp.servers]]

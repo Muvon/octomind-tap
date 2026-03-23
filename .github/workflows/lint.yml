@@ -18,5 +18,13 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Set up symlinks for capabilities
+        run: bash scripts/setup-symlinks.sh
+
       - name: Lint all manifests
         run: bash scripts/lint-manifests.sh
+
+      - name: Validate capability resolution
+        run: |
+          chmod +x bin/load
+          bash scripts/validate-capabilities.sh --quiet

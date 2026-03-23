@@ -1,0 +1,19 @@
+# capabilities/memory/octobrain.toml
+# Capability: memory
+# Provider: octobrain — Octomind's persistent memory and knowledge graph
+# Provides tools: remember, memorize
+
+[deps]
+require = ["muvon/octobrain"]
+
+[roles.mcp]
+server_refs = ["octobrain"]
+allowed_tools = ["octobrain:*"]
+
+[[mcp.servers]]
+name = "octobrain"
+type = "stdio"
+command = "octobrain"
+args = ["mcp"]
+timeout_seconds = 300
+tools = []

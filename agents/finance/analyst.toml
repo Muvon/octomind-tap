@@ -2,8 +2,10 @@
 # Agent: finance:analyst
 # Description: Financial statement analyst. Expert in balance sheets, income statements, cash flow analysis, financial ratios, and investment research. Helps interpret financial data and company performance.
 
+capabilities = ["core", "filesystem", "websearch"]
+
 [deps]
-require = ["muvon/octofs", "yahoo/yfinance", "tavily-ai/tavily"]
+require = ["yahoo/yfinance"]
 
 [[roles]]
 temperature = 0.15
@@ -217,8 +219,8 @@ Working directory: {{CWD}}
 """
 
 [roles.mcp]
-server_refs = ["core", "octofs", "yfinance", "tavily"]
-allowed_tools = ["core:*", "octofs:*", "yfinance:*", "tavily_search", "tavily_extract"]
+server_refs = ["yfinance"]
+allowed_tools = ["yfinance:*"]
 
 # Yahoo Finance MCP Server — stock prices, historical data, financials
 [[mcp.servers]]
@@ -227,13 +229,4 @@ type = "stdio"
 command = "npx"
 args = ["-y", "@szemeng76/yfinance-mcp-server"]
 timeout_seconds = 60
-tools = []
-# Tavily MCP Server — web search and extraction
-[[mcp.servers]]
-name = "tavily"
-type = "stdio"
-command = "npx"
-args = ["-y", "@tavily/mcp-server"]
-timeout_seconds = 60
-env = { TAVILY_API_KEY = "{{ENV:TAVILY_API_KEY}}" }
 tools = []

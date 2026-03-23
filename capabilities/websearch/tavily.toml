@@ -1,0 +1,20 @@
+# capabilities/websearch/tavily.toml
+# Capability: websearch
+# Provider: Tavily — web search and content extraction
+# Provides tools: tavily_search, tavily_extract, tavily_map
+
+[deps]
+require = ["tavily-ai/tavily"]
+
+[roles.mcp]
+server_refs = ["tavily"]
+allowed_tools = ["tavily_search", "tavily_extract", "tavily_map"]
+
+[[mcp.servers]]
+name = "tavily"
+type = "stdio"
+command = "npx"
+args = ["-y", "@tavily/mcp-server"]
+timeout_seconds = 60
+env = { TAVILY_API_KEY = "{{ENV:TAVILY_API_KEY}}" }
+tools = []

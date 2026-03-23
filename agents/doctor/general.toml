@@ -2,8 +2,10 @@
 # Agent: doctor:general
 # Description: Evidence-based medical information assistant. Provides science-backed health guidance, explains conditions, treatments, and helps interpret medical concepts. NOT a replacement for professional medical advice.
 
+capabilities = ["core", "filesystem"]
+
 [deps]
-require = ["muvon/octofs", "medical/medical"]
+require = ["medical/medical"]
 
 [[roles]]
 temperature = 0.2
@@ -183,8 +185,8 @@ Working directory: {{CWD}}
 """
 
 [roles.mcp]
-server_refs = ["core", "octofs", "medical"]
-allowed_tools = ["core:*", "octofs:*", "search-medical-literature", "search-medical-databases", "search-clinical-guidelines"]
+server_refs = ["medical"]
+allowed_tools = ["search-medical-literature", "search-medical-databases", "search-clinical-guidelines"]
 
 # Medical MCP Server — provides access to FDA, WHO, PubMed, RxNorm medical data
 [[mcp.servers]]
