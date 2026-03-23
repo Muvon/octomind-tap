@@ -54,17 +54,34 @@ data:python-ml                 → agents/data/python-ml.toml
 agents/
   developer/
     rust.toml
-    rust-nightly.toml
-    python.toml
-    go.toml
+    typescript.toml
+    general.toml
   devops/
-    k8s.toml
-    k8s-helm.toml
-    docker.toml
-  data/
-    python-ml.toml
-    sql.toml
+    kubernetes.toml
+  security/
+    owasp.toml
   ...
+capabilities/
+  core/
+    default.toml      ← plan tool (built-in, no symlink needed)
+  agent/
+    default.toml      ← agent delegation (built-in, no symlink needed)
+  filesystem/
+    octofs.toml       ← provider: octofs MCP
+    default.toml      → octofs.toml  (symlink, set by setup-symlinks.sh)
+  codesearch/
+    octocode.toml     ← provider: octocode MCP
+    default.toml      → octocode.toml
+  memory/
+    octobrain.toml    ← provider: octobrain MCP
+    default.toml      → octobrain.toml
+  websearch/
+    tavily.toml       ← provider: Tavily search MCP
+    brave.toml        ← provider: Brave search MCP  (alternative)
+    default.toml      → tavily.toml  (switch with: ln -sf brave.toml ...)
+  versioning/
+    git.toml          ← provider: git via shell
+    default.toml      → git.toml
 deps/
   lib/
     platform.sh       ← shared OS/arch/pkg-manager detection (sourced by all dep scripts)
@@ -75,17 +92,92 @@ deps/
   nodejs/
     node.sh
   ...
+bin/
+  load              ← resolves capabilities and outputs a merged manifest to stdout
+scripts/
+  setup-symlinks.sh ← creates/forces default.toml symlinks; warns on missing providers
+  lint-manifests.sh ← validates all agent TOML files
+  validate-capabilities.sh ← runs bin/load on every agent to catch resolution errors
+```
 
-Each file lives at `agents/<domain>/<spec>.toml` and is fetched via:
+Each agent file lives at `agents/<domain>/<spec>.toml` and is fetched via:
 ```
 https://raw.githubusercontent.com/muvon/octomind-agents/main/agents/<domain>/<spec>.toml
 ```
 
 ---
 
+## Capability System
+
+Agents declare **capabilities** instead of hardcoding MCP servers. This decouples what an agent *needs* from *how* it is provided.
+
+### How it works
+
+1. An agent declares `capabilities = ["filesystem", "codesearch", "websearch"]` at the top of its manifest.
+2. At runtime, `bin/load <domain>:<spec>` resolves each capability to `capabilities/<name>/default.toml`.
+3. `default.toml` is a symlink pointing to the active provider (e.g. `octofs.toml`, `tavily.toml`).
+4. `bin/load` merges all `[deps]`, `server_refs`, `allowed_tools`, and `[[mcp.servers]]` blocks into the final manifest output.
+
+### Available capabilities
+
+| Capability | What it provides | Default provider |
+|------------|-----------------|-----------------|
+| `core` | `plan` task tracker | `core/default.toml` (built-in) |
+| `agent` | `agent_*` delegation tools | `agent/default.toml` (built-in) |
+| `filesystem` | `view`, `shell`, `text_editor`, `workdir`, `ast_grep` | `octofs.toml` |
+| `codesearch` | `semantic_search`, `graphrag`, `view_signatures` | `octocode.toml` |
+| `memory` | `remember`, `memorize` | `octobrain.toml` |
+| `websearch` | web search tool | `tavily.toml` |
+| `versioning` | git operations via shell | `git.toml` |
+
+### Switching providers
+
+```bash
+# Switch websearch from Tavily to Brave
+ln -sf brave.toml capabilities/websearch/default.toml
+
+# Or run the setup script to reset all defaults
+bash scripts/setup-symlinks.sh
+```
+
+### Setup after cloning
+
+```bash
+bash scripts/setup-symlinks.sh   # create/force all default.toml symlinks
+chmod +x bin/load
+
+# Validate all agents resolve correctly
+bash scripts/validate-capabilities.sh
+```
+
+### Writing a capability-driven agent
+
+```toml
+# agents/developer/rust.toml
+
+capabilities = ["core", "filesystem", "codesearch", "versioning"]
+
+[[roles]]
+system = "..."
+welcome = "🦀 Rust agent ready."
+temperature = 0.2
+top_p = 0.9
+top_k = 0
+
+# No [roles.mcp] needed — bin/load injects it from capabilities
+# Add custom MCP servers here only for things NOT covered by capabilities:
+# [[mcp.servers]]
+# name = "my-special-server"
+# ...
+```
+
+`bin/load` merges everything and outputs a complete, ready-to-use manifest to stdout.
+
+---
+
 ## Manifest Format
 
-A manifest is a TOML file with one required `[[roles]]` entry and optional `[[mcp.servers]]` entries.
+A manifest is a TOML file with one required `[[roles]]` entry. Agents use either `capabilities = [...]` (preferred) or explicit `[roles.mcp]` + `[[mcp.servers]]` blocks.
 
 ```toml
 # agents/developer/rust.toml

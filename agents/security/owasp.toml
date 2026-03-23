@@ -2,8 +2,7 @@
 # Agent: security:owasp
 # Description: OWASP security specialist. Expert in application security, vulnerability assessment, secure coding practices, and OWASP Top 10. Helps identify and remediate security issues.
 
-[deps]
-require = ["muvon/octofs", "muvon/octocode", "tavily-ai/tavily"]
+capabilities = ["core", "filesystem", "codesearch", "websearch"]
 
 [[roles]]
 temperature = 0.15
@@ -283,25 +282,3 @@ CRITICAL FLOW: Think → Plan → Confirm → Execute → Complete
 
 Working directory: {{CWD}}
 """
-
-[roles.mcp]
-server_refs = ["core", "octofs", "octocode", "tavily"]
-allowed_tools = ["core:*", "octofs:*", "octocode:*", "tavily_search", "tavily_extract"]
-
-# Octocode MCP Server — codebase intelligence
-[[mcp.servers]]
-name = "octocode"
-type = "stdio"
-command = "octocode"
-args = ["mcp", "--path=."]
-timeout_seconds = 300
-tools = []
-# Tavily MCP Server — web search and extraction
-[[mcp.servers]]
-name = "tavily"
-type = "stdio"
-command = "npx"
-args = ["-y", "@tavily/mcp-server"]
-timeout_seconds = 60
-env = { TAVILY_API_KEY = "{{ENV:TAVILY_API_KEY}}" }
-tools = []

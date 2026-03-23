@@ -1,0 +1,19 @@
+# capabilities/versioning/git.toml
+# Capability: versioning
+# Provider: git MCP — git repository operations via MCP
+# Provides tools: git_log, git_diff, git_status, git_commit, git_branch, etc.
+
+[deps]
+require = ["modelcontextprotocol/git"]
+
+[roles.mcp]
+server_refs = ["git"]
+allowed_tools = ["git_*"]
+
+[[mcp.servers]]
+name = "git"
+type = "stdio"
+command = "uvx"
+args = ["mcp-server-git", "--repository", "."]
+timeout_seconds = 60
+tools = []

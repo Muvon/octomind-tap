@@ -2,6 +2,8 @@
 # Agent: octomind:assistant
 # Description: General-purpose assistant. Exposes core tools — filesystem, shell, planning, and agent delegation.
 
+capabilities = ["core", "filesystem", "agent"]
+
 [[roles]]
 temperature = 0.3
 top_p = 0.9
@@ -15,7 +17,3 @@ You have access to the filesystem, shell, planning tools, and can delegate tasks
 
 Working directory: {{CWD}}
 """
-
-[roles.mcp]
-server_refs = ["core", "octofs", "agent"]
-allowed_tools = ["core:*", "octofs:*", "agent_*"]

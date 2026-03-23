@@ -1,0 +1,11 @@
+# capabilities/filesystem/octofs.toml
+# Capability: filesystem
+# Provider: octofs — Octomind's native filesystem + shell MCP server
+# Provides tools: view, text_editor, batch_edit, extract_lines, shell, workdir, ast_grep
+
+[deps]
+require = ["muvon/octofs"]
+
+[roles.mcp]
+server_refs = ["octofs"]
+allowed_tools = ["octofs:*"]

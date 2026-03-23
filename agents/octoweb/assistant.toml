@@ -2,6 +2,8 @@
 # Agent: octoweb:assistant
 # Description: Octopus — a highly personal AI assistant that lives in your browser, remembers everything, and helps you get things done on the web.
 
+capabilities = ["core", "memory"]
+
 [[roles]]
 temperature = 0.5
 top_p = 0.9
@@ -161,20 +163,12 @@ You build a model of this person over time. Use it actively, not just passively.
 """
 
 [roles.mcp]
-server_refs = ["core", "octobrain", "octoweb"]
-allowed_tools = ["core:*", "octobrain:*", "octoweb:*"]
+server_refs = ["octoweb"]
+allowed_tools = ["octoweb:*"]
 
 [[mcp.servers]]
 name = "octoweb"
 type = "http"
 url = "http://localhost:3434/mcp"
-timeout_seconds = 120
-tools = []
-
-[[mcp.servers]]
-name = "octobrain"
-type = "stdio"
-cmd = "octobrain"
-args = ["mcp"]
 timeout_seconds = 120
 tools = []

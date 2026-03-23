@@ -32,7 +32,7 @@ fi
 # Python TOML parser — tomllib (3.11+) or tomli fallback
 PYTHON_TOML_CHECK=$(
   cat <<'EOF'
-import sys, pathlib
+import sys, pathlib, re
 
 try:
     import tomllib
@@ -72,7 +72,7 @@ if missing:
     sys.exit(1)
 
 # Optional [deps] section validation
-import re
+# (only present in pre-resolved manifests; capability-driven agents omit it)
 deps = data.get("deps", {})
 if deps:
     require = deps.get("require", [])
@@ -88,20 +88,28 @@ if deps:
             print(f"DEPS_INVALID: '{entry}' must match <org>/<tool> (no .sh extension, no extra slashes)", file=sys.stderr)
             sys.exit(1)
 
-# External server_refs must be defined under [[mcp.servers]]
-# Built-in servers must NOT have a redundant [[mcp.servers]] entry
-BUILTIN_SERVERS = {"core", "octofs", "agent"}
-mcp_section = data.get("mcp", {})
-defined_servers = {s["name"] for s in mcp_section.get("servers", []) if "name" in s}
-server_refs = role.get("mcp", {}).get("server_refs", [])
-for ref in server_refs:
-    if ref not in BUILTIN_SERVERS and ref not in defined_servers:
-        print(f"MCP_UNDEFINED: server_ref '{ref}' is not a built-in server and has no [[mcp.servers]] entry with name='{ref}'", file=sys.stderr)
-        sys.exit(1)
-for name in defined_servers:
-    if name in BUILTIN_SERVERS:
-        print(f"MCP_BUILTIN_REDEFINED: [[mcp.servers]] entry name='{name}' is a built-in server — remove the [[mcp.servers]] block", file=sys.stderr)
-        sys.exit(1)
+# Capability-driven agents: top-level `capabilities = [...]` replaces [roles.mcp].
+# If capabilities are declared, skip the server_refs/mcp.servers cross-check —
+# those are resolved at runtime by bin/load.
+raw_text = path.read_text()
+has_capabilities = bool(re.search(r'^capabilities\s*=\s*\[', raw_text, re.MULTILINE))
+
+if not has_capabilities:
+    # Legacy / explicit MCP: external server_refs must be defined under [[mcp.servers]]
+    # Built-in servers must NOT have a redundant [[mcp.servers]] entry
+    BUILTIN_SERVERS = {"core", "octofs", "agent", "octocode"}
+    mcp_section = data.get("mcp", {})
+    defined_servers = {s["name"] for s in mcp_section.get("servers", []) if "name" in s}
+    server_refs = role.get("mcp", {}).get("server_refs", [])
+    for ref in server_refs:
+        if ref not in BUILTIN_SERVERS and ref not in defined_servers:
+            print(f"MCP_UNDEFINED: server_ref '{ref}' is not a built-in server and has no [[mcp.servers]] entry with name='{ref}'", file=sys.stderr)
+            sys.exit(1)
+    for name in defined_servers:
+        if name in BUILTIN_SERVERS:
+            print(f"MCP_BUILTIN_REDEFINED: [[mcp.servers]] entry name='{name}' is a built-in server — remove the [[mcp.servers]] block", file=sys.stderr)
+            sys.exit(1)
+
 sys.exit(0)
 EOF
 )

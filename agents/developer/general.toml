@@ -2,8 +2,7 @@
 # Agent: developer:general
 # Description: Elite senior developer. Pragmatic, precise, zero waste. Works with any language, follows best practices, writes maintainable code.
 
-[deps]
-require = ["muvon/octofs", "muvon/octocode", "muvon/octobrain", "tavily-ai/tavily"]
+capabilities = ["core", "filesystem", "codesearch", "memory", "websearch"]
 
 [[roles]]
 temperature = 0.1
@@ -294,35 +293,3 @@ CRITICAL FLOW: Think → Plan → Confirm → Execute → Complete
 
 {{SYSTEM}}
 """
-
-[roles.mcp]
-server_refs = ["core", "octofs", "octocode", "octobrain", "agent", "tavily"]
-allowed_tools = ["core:*", "octofs:*", "octocode:*", "octobrain:*", "agent:*", "tavily_search", "tavily_extract", "tavily_map"]
-
-# Octocode MCP Server — codebase intelligence
-[[mcp.servers]]
-name = "octocode"
-type = "stdio"
-command = "octocode"
-args = ["mcp", "--path=."]
-timeout_seconds = 300
-tools = []
-
-# Octobrain MCP Server — memory and knowledge
-[[mcp.servers]]
-name = "octobrain"
-type = "stdio"
-command = "octobrain"
-args = ["mcp"]
-timeout_seconds = 300
-tools = []
-
-# Tavily MCP Server — web search and extraction
-[[mcp.servers]]
-name = "tavily"
-type = "stdio"
-command = "npx"
-args = ["-y", "@tavily/mcp-server"]
-timeout_seconds = 60
-env = { TAVILY_API_KEY = "{{ENV:TAVILY_API_KEY}}" }
-tools = []

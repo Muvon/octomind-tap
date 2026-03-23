@@ -2,8 +2,10 @@
 # Agent: devops:kubernetes
 # Description: Kubernetes specialist. Expert in kubectl, helm, deployments, services, configmaps, secrets, and cluster management. Helps with production-grade K8s operations.
 
+capabilities = ["core", "filesystem", "codesearch", "websearch"]
+
 [deps]
-require = ["muvon/octofs", "containers/kubernetes", "muvon/octocode", "tavily-ai/tavily"]
+require = ["containers/kubernetes"]
 
 [[roles]]
 temperature = 0.15
@@ -224,25 +226,3 @@ CRITICAL FLOW: Think → Plan → Confirm → Execute → Complete
 
 Working directory: {{CWD}}
 """
-
-[roles.mcp]
-server_refs = ["core", "octofs", "octocode", "tavily"]
-allowed_tools = ["core:*", "octofs:*", "octocode:*", "tavily_search", "tavily_extract"]
-
-# Octocode MCP Server — codebase intelligence
-[[mcp.servers]]
-name = "octocode"
-type = "stdio"
-command = "octocode"
-args = ["mcp", "--path=."]
-timeout_seconds = 300
-tools = []
-# Tavily MCP Server — web search and extraction
-[[mcp.servers]]
-name = "tavily"
-type = "stdio"
-command = "npx"
-args = ["-y", "@tavily/mcp-server"]
-timeout_seconds = 60
-env = { TAVILY_API_KEY = "{{ENV:TAVILY_API_KEY}}" }
-tools = []
