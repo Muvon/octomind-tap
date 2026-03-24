@@ -171,18 +171,18 @@ top_k = 0
 
 | Placeholder | Description |
 |-------------|-------------|
-| `{{INPUT:KEY}}` | Prompts user once, stored in `~/.local/share/octomind/inputs.toml` |
-| `{{ENV:KEY}}` | Reads from environment; if unset, prompts and saves to `./.env` |
+| `{{{{INPUT:KEY}}}}` | Prompts user once, stored in `~/.local/share/octomind/inputs.toml` |
+| `{{{{ENV:KEY}}}}` | Reads from environment; if unset, prompts and saves to `./.env` |
 
 **Decision Guide:**
 
 | Value Type | Use | Reason |
 |------------|-----|--------|
-| API key (personal) | `{{INPUT:API_KEY}}` | Secret, user-global |
-| Base URL | `{{ENV:BASE_URL}}` | Non-secret, project-specific |
-| Database URL | `{{ENV:DATABASE_URL}}` | May contain password, but project-scoped |
-| OAuth token | `{{INPUT:OAUTH_TOKEN}}` | Secret, user-global |
-| Feature flag | `{{ENV:FEATURE_FLAG}}` | Non-secret, project-specific |
+| API key (personal) | `{{{{INPUT:API_KEY}}}}` | Secret, user-global |
+| Base URL | `{{{{ENV:BASE_URL}}}}` | Non-secret, project-specific |
+| Database URL | `{{{{ENV:DATABASE_URL}}}}` | May contain password, but project-scoped |
+| OAuth token | `{{{{INPUT:OAUTH_TOKEN}}}}` | Secret, user-global |
+| Feature flag | `{{{{ENV:FEATURE_FLAG}}}}` | Non-secret, project-specific |
 
 ---
 
