@@ -131,16 +131,85 @@ bash scripts/setup-symlinks.sh
 
 ---
 
+## Skills
+
+Skills are reusable instruction packs stored alongside agents in the tap. They follow the [AgentSkills specification](https://agentskills.io/specification).
+
+### Directory layout
+
+```
+skills/
+  <skill-name>/
+    SKILL.md        # Required: YAML frontmatter + instruction body
+    scripts/        # Optional: executable scripts the skill references
+    references/     # Optional: supplementary docs (REFERENCE.md, etc.)
+    assets/         # Optional: templates, config files, resources
+```
+
+### SKILL.md frontmatter
+
+| Field | Required | Constraints |
+|-------|----------|-------------|
+| `name` | ✅ | Max 64 chars. Lowercase letters, numbers, hyphens. No leading/trailing hyphen. Must match directory name. |
+| `description` | ✅ | Max 1024 chars. Non-empty. What the skill does and when to use it. |
+| `license` | optional | License name or path to bundled license file. |
+| `compatibility` | optional | Max 500 chars. Environment requirements (tools, OS, network). |
+| `metadata` | optional | Arbitrary key-value mapping (author, version, tags). |
+| `allowed-tools` | optional | Space-delimited pre-approved tools (experimental). |
+
+### How Octomind discovers and injects skills
+
+1. The `skill` MCP tool (built into Octomind core) scans all active taps for `skills/*/SKILL.md`
+2. `skill(action="list")` returns all discovered skills with their metadata
+3. `skill(action="use", name="<name>")` reads the full `SKILL.md` and injects it into the session context
+4. `skill(action="forget", name="<name>")` removes the skill and triggers conversation compression
+
+Skills are **not** loaded automatically — the AI must explicitly activate them. This keeps context lean.
+
+### Validation
+
+```bash
+# Lint all skills
+bash scripts/lint-skills.sh
+
+# Lint a specific skill
+bash scripts/lint-skills.sh skills/git-workflow
+```
+
+The lint script validates:
+- Valid YAML frontmatter (delimited by `---`)
+- Required fields: `name`, `description`
+- `name` format and length constraints
+- `name` matches directory name
+- `description` and `compatibility` length limits
+- Non-empty body after frontmatter
+
+### Skill vs Agent
+
+Skills and agents serve different purposes:
+
+| | Skill | Agent |
+|---|---|---|
+| **File** | `skills/<name>/SKILL.md` | `agents/<domain>/<spec>.toml` |
+| **Activation** | `skill(action="use", name="...")` | `octomind run domain:spec` |
+| **What it provides** | Domain knowledge injected into context | Full role: model, tools, system prompt |
+| **Composable** | Yes — multiple skills per session | No — one role per session |
+
+---
+
 ## CI / Validation
 
 ```bash
 # Lint all manifests (TOML validity, required fields, no name= set)
 bash scripts/lint-manifests.sh
 
+# Lint all skills (frontmatter validity, required fields, name format)
+bash scripts/lint-skills.sh
+
 # Validate capability resolution for all agents
 bash scripts/validate-capabilities.sh
 
-# Both run in .github/workflows/lint.yml on every push/PR
+# All three run in .github/workflows/lint.yml on every push/PR
 ```
 
 The lint script skips the `server_refs` cross-check for capability-driven agents (those with `capabilities =` at top level), since MCP wiring is resolved at runtime.

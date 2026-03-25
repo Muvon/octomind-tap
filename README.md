@@ -58,9 +58,18 @@ agents/
     general.toml
   devops/
     kubernetes.toml
+  octomind/
+    tap.toml          ← octomind:tap  — tap management agent
+    skill.toml        ← octomind:skill — skill development agent
   security/
     owasp.toml
   ...
+skills/
+  git-workflow/
+    SKILL.md          ← git commit conventions and workflow best practices
+  code-review/
+    SKILL.md          ← code review checklist and guidelines
+  ...                 ← community skills (one directory per skill)
 capabilities/
   core/
     default.toml      ← plan tool (built-in, no symlink needed)
@@ -92,11 +101,15 @@ deps/
   nodejs/
     node.sh
   ...
+templates/
+  agent.toml          ← canonical agent manifest template
+  skill.md            ← canonical SKILL.md template
 bin/
   load              ← resolves capabilities and outputs a merged manifest to stdout
 scripts/
   setup-symlinks.sh ← creates/forces default.toml symlinks; warns on missing providers
   lint-manifests.sh ← validates all agent TOML files
+  lint-skills.sh    ← validates all skills/*/SKILL.md files per AgentSkills spec
   validate-capabilities.sh ← runs bin/load on every agent to catch resolution errors
 ```
 
@@ -569,6 +582,69 @@ allowed_tools = ["core:*", "octofs:*", "agent_*"]
 | `review` | Code review, PR analysis |
 
 New domains are welcome — just be consistent and descriptive.
+
+---
+
+## Skills
+
+Skills are reusable instruction packs that inject domain knowledge into any Octomind session on demand. Unlike agents (which define a full role), skills are **context injections** — focused, composable knowledge that any agent can activate.
+
+Skills live in `skills/<name>/SKILL.md` and follow the [AgentSkills specification](https://agentskills.io/specification).
+
+### Using skills in a session
+
+```
+skill(action="list")                          # discover available skills
+skill(action="list", pattern="git")           # filter by name or description
+skill(action="use", name="git-workflow")      # inject skill into context
+skill(action="forget", name="git-workflow")   # remove skill from context
+```
+
+### Skill format
+
+```markdown
+---
+name: skill-name
+description: "What this skill does and when to use it."
+license: Apache-2.0
+compatibility: "Requires git. Works with any git-based project."
+---
+
+# Skill Title
+
+## Overview
+...
+
+## Instructions
+...
+
+## Examples
+...
+```
+
+### Creating a skill
+
+```bash
+# Copy the template
+cp templates/skill.md skills/<name>/SKILL.md
+
+# Edit and fill in frontmatter + body
+# Then validate:
+bash scripts/lint-skills.sh skills/<name>
+
+# Or use the skill development agent:
+octomind run octomind:skill
+```
+
+### Skill vs Agent
+
+| | Skill | Agent |
+|---|---|---|
+| **What it is** | Instruction pack injected into context | Full role with model, tools, system prompt |
+| **Activation** | `skill(action="use", name="...")` | `octomind run domain:spec` |
+| **Scope** | Single domain concern | Complete task persona |
+| **Composable** | Yes — activate multiple skills | No — one role per session |
+| **File format** | `SKILL.md` (Markdown + YAML frontmatter) | `.toml` (TOML manifest) |
 
 ---
 

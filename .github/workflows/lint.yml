@@ -8,7 +8,7 @@ on:
 
 jobs:
   lint:
-    name: Lint manifests
+    name: Lint manifests & skills
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -28,3 +28,6 @@ jobs:
         run: |
           chmod +x bin/load
           bash scripts/validate-capabilities.sh --quiet
+
+      - name: Lint all skills
+        run: bash scripts/lint-skills.sh

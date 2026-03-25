@@ -365,4 +365,113 @@ By contributing, you agree that your contributions will be licensed under the sa
 
 ---
 
-**Thank you for sharing your expertise!** Every agent you create helps someone work smarter in their domain.
+**Thank you for sharing your expertise!** Every agent and skill you create helps someone work smarter in their domain.
+
+---
+
+## Contributing a Skill
+
+Skills are a different kind of contribution from agents. Where an agent defines a full AI persona, a skill encodes **focused domain knowledge** that any agent can activate on demand.
+
+### What is a skill?
+
+A skill is a `SKILL.md` file stored at `skills/<name>/SKILL.md`. When activated in an Octomind session, its full content is injected into the AI's context — giving it specific conventions, workflows, checklists, or decision guides for a particular task.
+
+**Good skill candidates:**
+- Coding conventions for a language or framework
+- Git workflow and commit message rules
+- Code review checklists
+- Security audit procedures
+- API design guidelines
+- Deployment runbooks
+
+**Not a good skill** (use an agent instead):
+- Something that needs its own model settings or tools
+- A full persona (doctor, lawyer, developer)
+- Something that requires MCP server access
+
+### Skill vs Agent
+
+| | Skill | Agent |
+|---|---|---|
+| **File** | `skills/<name>/SKILL.md` | `agents/<domain>/<spec>.toml` |
+| **Activation** | `skill(action="use", name="...")` | `octomind run domain:spec` |
+| **What it provides** | Domain knowledge injected into context | Full role: model, tools, system prompt |
+| **Composable** | Yes — multiple skills per session | No — one role per session |
+
+### Step-by-step: Create a skill
+
+**1. Choose a name**
+
+Lowercase, hyphens only, max 64 chars. Be specific:
+- ✅ `rust-error-handling`, `git-workflow`, `openapi-design`
+- ❌ `rust`, `git`, `api` (too generic)
+
+**2. Copy the template**
+
+```bash
+cp templates/skill.md skills/<name>/SKILL.md
+```
+
+**3. Fill in the frontmatter**
+
+```markdown
+---
+name: my-skill-name
+description: "One sentence: what this skill does and when to use it."
+license: Apache-2.0
+compatibility: "Requires git. Works with any project."
+---
+```
+
+**4. Write the body**
+
+Structure:
+1. **Overview** — 2–4 sentences on what problem this solves
+2. **Instructions** — Core rules, workflows, decision guides (the main content)
+3. **Examples** — Concrete input/output pairs (most valuable part)
+4. **References** — Links to docs or bundled reference files
+
+**5. Add optional directories** (if needed)
+
+```
+skills/<name>/
+  SKILL.md
+  scripts/      ← executable scripts the skill references
+  references/   ← supplementary docs (REFERENCE.md, FORMS.md, etc.)
+  assets/       ← templates, config files, resources
+```
+
+**6. Validate**
+
+```bash
+bash scripts/lint-skills.sh skills/<name>
+```
+
+**7. Test in a session**
+
+```bash
+octomind run octomind:developer   # or any agent with the skill tool
+# Then in session:
+# skill(action="use", name="<name>")
+```
+
+Or use the dedicated skill development agent:
+
+```bash
+octomind run octomind:skill
+```
+
+**8. Submit a Pull Request**
+
+That's it! Include a brief description of what domain knowledge the skill encodes.
+
+### Skill quality checklist
+
+- [ ] `name` matches the directory name exactly
+- [ ] `description` tells you *when* to activate the skill (not just what it is)
+- [ ] `compatibility` lists any required tools or environment constraints
+- [ ] Body has at least an Overview and Instructions section
+- [ ] Instructions are specific enough to follow without guessing
+- [ ] Non-obvious rules have examples
+- [ ] `bash scripts/lint-skills.sh skills/<name>` passes
