@@ -1,0 +1,18 @@
+# capabilities/legal-de/ansvar.toml
+# Capability: legal-de
+# Provider: @ansvar/german-law-mcp — German legislation, case law, and EU cross-references
+
+[deps]
+require = ["ansvar/german-law-mcp"]
+
+[roles.mcp]
+server_refs = ["german-law"]
+allowed_tools = ["german-law:*"]
+
+[[mcp.servers]]
+name = "german-law"
+type = "stdio"
+command = "npx"
+args = ["-y", "@ansvar/german-law-mcp"]
+timeout_seconds = 60
+tools = []

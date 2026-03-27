@@ -1,0 +1,18 @@
+# capabilities/legal-ca/ansvar.toml
+# Capability: legal-ca
+# Provider: @ansvar/canadian-law-mcp — Canadian legislation with bilingual support
+
+[deps]
+require = ["ansvar/canadian-law-mcp"]
+
+[roles.mcp]
+server_refs = ["canada-law"]
+allowed_tools = ["canada-law:*"]
+
+[[mcp.servers]]
+name = "canada-law"
+type = "stdio"
+command = "npx"
+args = ["-y", "@ansvar/canadian-law-mcp"]
+timeout_seconds = 60
+tools = []

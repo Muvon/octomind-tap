@@ -1,9 +1,14 @@
 # capabilities/agent/default.toml
-# Capability: agent (internal)
+# Capability: agent
 # Provider: Octomind built-in agent server
 # Provides tools: agent_* — delegate tasks to configured sub-agents
-# NOTE: No [[mcp.servers]] block — agent is a built-in server, always available.
 
 [roles.mcp]
 server_refs = ["agent"]
 allowed_tools = ["agent_*"]
+
+[[mcp.servers]]
+name = "agent"
+type = "builtin"
+timeout_seconds = 30
+tools = []

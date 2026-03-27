@@ -1,0 +1,6 @@
+# capabilities/docker/docker.toml
+# Capability: docker
+# Provider: Docker CLI (docker, docker-compose)
+
+[deps]
+require = ["docker/docker"]

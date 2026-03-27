@@ -1,0 +1,6 @@
+# capabilities/programming-nodejs/node.toml
+# Capability: programming-nodejs
+# Provider: Node.js LTS (node, npm, npx)
+
+[deps]
+require = ["nodejs/node"]

@@ -1,0 +1,18 @@
+# capabilities/svelte/svelte.toml
+# Capability: svelte
+# Provider: @sveltejs/mcp — official Svelte/SvelteKit documentation
+
+[deps]
+require = ["sveltejs/svelte"]
+
+[roles.mcp]
+server_refs = ["svelte"]
+allowed_tools = ["svelte:*"]
+
+[[mcp.servers]]
+name = "svelte"
+type = "stdio"
+command = "npx"
+args = ["-y", "@sveltejs/mcp"]
+timeout_seconds = 60
+tools = []

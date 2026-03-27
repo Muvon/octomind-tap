@@ -1,0 +1,26 @@
+# capabilities/legal-us/ansvar.toml
+# Capability: legal-us
+# Provider: @ansvar/us-law-mcp + @us-legal-tools/courtlistener-sdk — US federal/state legislation and case law
+
+[deps]
+require = ["ansvar/us-law-mcp", "us-legal-tools/courtlistener"]
+
+[roles.mcp]
+server_refs = ["us-law", "courtlistener"]
+allowed_tools = ["us-law:*", "courtlistener:*"]
+
+[[mcp.servers]]
+name = "us-law"
+type = "stdio"
+command = "npx"
+args = ["-y", "@ansvar/us-law-mcp"]
+timeout_seconds = 60
+tools = []
+
+[[mcp.servers]]
+name = "courtlistener"
+type = "stdio"
+command = "npx"
+args = ["-y", "@us-legal-tools/courtlistener-sdk"]
+timeout_seconds = 60
+tools = []

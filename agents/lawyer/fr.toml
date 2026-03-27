@@ -2,10 +2,7 @@
 # Agent: lawyer:fr
 # Description: French law specialist. Complete French legislation from Légifrance/DILA, covering Code civil, Code du travail, Code pénal, droit des sociétés, RGPD, and more.
 
-capabilities = ["core", "filesystem", "websearch"]
-
-[deps]
-require = ["nodejs/node"]
+capabilities = ["core", "filesystem", "websearch", "legal-fr"]
 
 [[roles]]
 temperature = 0.2
@@ -190,12 +187,3 @@ For French legal questions:
 
 Working directory: {{CWD}}
 """
-
-# French Law MCP — Complete French legislation from Légifrance/DILA
-[[mcp.servers]]
-name = "french-law"
-type = "stdio"
-command = "npx"
-args = ["-y", "@ansvar/french-law-mcp"]
-timeout_seconds = 60
-tools = ["search_legislation", "get_provision", "validate_citation", "format_citation", "build_legal_stance", "check_currency", "get_eu_basis", "get_french_implementations", "search_eu_implementations", "get_provision_eu_basis", "validate_eu_compliance", "about"]

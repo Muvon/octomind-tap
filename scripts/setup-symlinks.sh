@@ -40,11 +40,29 @@ link "codesearch" "octocode.toml"
 link "memory" "octobrain.toml"
 link "websearch" "tavily.toml"
 link "versioning" "git.toml"
+link "programming-python" "uv.toml"
+link "programming-rust" "cargo.toml"
+link "programming-nodejs" "node.toml"
+link "docker" "docker.toml"
+link "kubernetes" "kubernetes.toml"
+link "svelte" "svelte.toml"
+link "medical" "medical.toml"
+link "finance" "yfinance.toml"
+link "legal-au" "ansvar.toml"
+link "legal-ca" "ansvar.toml"
+link "legal-de" "ansvar.toml"
+link "legal-fr" "ansvar.toml"
+link "legal-in" "ansvar.toml"
+link "legal-sg" "ansvar.toml"
+link "legal-th" "ansvar.toml"
+link "legal-uk" "ansvar.toml"
+link "legal-us" "ansvar.toml"
+link "octoweb" "octoweb.toml"
 # ─────────────────────────────────────────────────────────────────────────────
 
 # Detect capability dirs that have NO mapping declared above
 echo ""
-DECLARED=("filesystem" "codesearch" "memory" "websearch" "versioning" "core" "agent")
+DECLARED=("filesystem" "codesearch" "memory" "websearch" "versioning" "core" "agent" "programming-python" "programming-rust" "programming-nodejs" "docker" "kubernetes" "svelte" "medical" "finance" "legal-au" "legal-ca" "legal-de" "legal-fr" "legal-in" "legal-sg" "legal-th" "legal-uk" "legal-us" "octoweb")
 for dir in "$CAP_ROOT"/*/; do
   cap="$(basename "$dir")"
   found=0

@@ -1,9 +1,14 @@
 # capabilities/core/default.toml
-# Capability: core (internal)
+# Capability: core
 # Provider: Octomind built-in core server
 # Provides tools: plan — structured step-by-step task tracker
-# NOTE: No [[mcp.servers]] block — core is a built-in server, always available.
 
 [roles.mcp]
 server_refs = ["core"]
 allowed_tools = ["core:*"]
+
+[[mcp.servers]]
+name = "core"
+type = "builtin"
+timeout_seconds = 30
+tools = []

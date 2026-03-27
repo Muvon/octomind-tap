@@ -1,0 +1,18 @@
+# capabilities/legal-uk/ansvar.toml
+# Capability: legal-uk
+# Provider: @ansvar/uk-law-mcp — UK legislation with EU cross-reference support
+
+[deps]
+require = ["ansvar/uk-law-mcp"]
+
+[roles.mcp]
+server_refs = ["uk-law"]
+allowed_tools = ["uk-law:*"]
+
+[[mcp.servers]]
+name = "uk-law"
+type = "stdio"
+command = "npx"
+args = ["-y", "@ansvar/uk-law-mcp"]
+timeout_seconds = 60
+tools = []

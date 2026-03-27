@@ -2,10 +2,7 @@
 # Agent: devops:kubernetes
 # Description: Kubernetes specialist. Expert in kubectl, helm, deployments, services, configmaps, secrets, and cluster management. Helps with production-grade K8s operations.
 
-capabilities = ["core", "filesystem", "codesearch", "websearch"]
-
-[deps]
-require = ["containers/kubernetes"]
+capabilities = ["core", "filesystem", "codesearch", "websearch", "kubernetes"]
 
 [[roles]]
 temperature = 0.15

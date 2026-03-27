@@ -2,10 +2,7 @@
 # Agent: developer:svelte
 # Description: Svelte/SvelteKit development specialist. Expert in reactive components, stores, SvelteKit routing, and the Svelte ecosystem. Uses the official Svelte MCP server for up-to-date docs and tooling.
 
-capabilities = ["core", "filesystem", "codesearch", "memory", "websearch"]
-
-[deps]
-require = ["nodejs/node", "sveltejs/svelte"]
+capabilities = ["core", "filesystem", "codesearch", "memory", "websearch", "programming-nodejs", "svelte"]
 
 [[roles]]
 temperature = 0.1
@@ -243,11 +240,3 @@ CRITICAL FLOW: Think → Plan → Confirm → Execute → Complete
 
 Working directory: {{CWD}}
 """
-
-[[mcp.servers]]
-name = "svelte"
-type = "stdio"
-command = "npx"
-args = ["-y", "@sveltejs/mcp"]
-timeout_seconds = 60
-tools = []

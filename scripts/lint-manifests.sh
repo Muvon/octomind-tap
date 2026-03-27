@@ -6,7 +6,8 @@
 #   3. `name` field is NOT set (injected at runtime from the tag)
 #   4. Required fields present: system, welcome, temperature, top_p, top_k
 #   5. File path matches agents/<domain>/<spec>.toml convention
-#   6. Every non-built-in server_ref must be defined under [[mcp.servers]]
+#   6. Capability-driven agents must NOT have [deps], [roles.mcp], or [[mcp.servers]]
+#   7. Every capability reference must have a matching capabilities/<name>/default.toml
 #
 # Usage:
 #   scripts/lint-manifests.sh                  # lint all manifests
@@ -31,8 +32,8 @@ fi
 
 # Python TOML parser — tomllib (3.11+) or tomli fallback
 PYTHON_TOML_CHECK=$(
-  cat <<'EOF'
-import sys, pathlib, re
+  cat <<'PYEOF'
+import sys, pathlib, re, os
 
 try:
     import tomllib
@@ -44,74 +45,99 @@ except ImportError:
         sys.exit(2)
 
 path = pathlib.Path(sys.argv[1])
+repo_root = pathlib.Path(sys.argv[2])
+
 try:
     data = tomllib.loads(path.read_text())
 except Exception as e:
     print(f"INVALID_TOML: {e}", file=sys.stderr)
     sys.exit(1)
 
+errors = []
 roles = data.get("roles", [])
 
 # Exactly one [[roles]] entry
 if len(roles) != 1:
-    print(f"ROLES_COUNT: expected 1 [[roles]] entry, got {len(roles)}", file=sys.stderr)
+    errors.append(f"ROLES_COUNT: expected 1 [[roles]] entry, got {len(roles)}")
+
+if errors:
+    print("\n".join(errors), file=sys.stderr)
     sys.exit(1)
 
 role = roles[0]
 
 # name must NOT be set
 if "name" in role:
-    print(f"NAME_SET: 'name' must not be set in manifests — it is injected from the tag at runtime", file=sys.stderr)
-    sys.exit(1)
+    errors.append("NAME_SET: 'name' must not be set in manifests — it is injected from the tag at runtime")
 
 # Required fields
 required = ["system", "welcome", "temperature", "top_p", "top_k"]
 missing = [f for f in required if f not in role]
 if missing:
-    print(f"MISSING_FIELDS: {', '.join(missing)}", file=sys.stderr)
-    sys.exit(1)
+    errors.append(f"MISSING_FIELDS: {', '.join(missing)}")
 
-# Optional [deps] section validation
-# (only present in pre-resolved manifests; capability-driven agents omit it)
-deps = data.get("deps", {})
-if deps:
-    require = deps.get("require", [])
-    if not isinstance(require, list):
-        print("DEPS_INVALID: [deps] require must be an array", file=sys.stderr)
-        sys.exit(1)
-    pattern = re.compile(r'^[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+$')
-    for entry in require:
-        if not isinstance(entry, str):
-            print(f"DEPS_INVALID: require entries must be strings, got {type(entry).__name__}", file=sys.stderr)
-            sys.exit(1)
-        if not pattern.match(entry):
-            print(f"DEPS_INVALID: '{entry}' must match <org>/<tool> (no .sh extension, no extra slashes)", file=sys.stderr)
-            sys.exit(1)
-
-# Capability-driven agents: top-level `capabilities = [...]` replaces [roles.mcp].
-# If capabilities are declared, skip the server_refs/mcp.servers cross-check —
-# those are resolved at runtime by bin/load.
+# Check for capabilities declaration
 raw_text = path.read_text()
 has_capabilities = bool(re.search(r'^capabilities\s*=\s*\[', raw_text, re.MULTILINE))
 
-if not has_capabilities:
+if has_capabilities:
+    caps = data.get("capabilities", [])
+
+    # Capability-driven agents must NOT have [deps]
+    if "deps" in data:
+        errors.append("AGENT_HAS_DEPS: capability-driven agents must NOT have [deps] — deps belong in capability files only")
+
+    # Capability-driven agents must NOT have [roles.mcp]
+    if "mcp" in role:
+        errors.append("AGENT_HAS_ROLES_MCP: capability-driven agents must NOT have [roles.mcp] — injected from capabilities at runtime")
+
+    # Capability-driven agents must NOT have [[mcp.servers]]
+    if "mcp" in data and "servers" in data.get("mcp", {}):
+        errors.append("AGENT_HAS_MCP_SERVERS: capability-driven agents must NOT have [[mcp.servers]] — MCP servers belong in capability files")
+
+    # Each capability must have a directory with default.toml
+    cap_root = repo_root / "capabilities"
+    for cap in caps:
+        cap_dir = cap_root / cap
+        cap_default = cap_dir / "default.toml"
+        if not cap_dir.is_dir():
+            errors.append(f"CAP_MISSING_DIR: capability '{cap}' has no directory at capabilities/{cap}/")
+        elif not cap_default.exists():
+            errors.append(f"CAP_MISSING_DEFAULT: capability '{cap}' has no default.toml at capabilities/{cap}/default.toml")
+
+else:
     # Legacy / explicit MCP: external server_refs must be defined under [[mcp.servers]]
-    # Built-in servers must NOT have a redundant [[mcp.servers]] entry
     BUILTIN_SERVERS = {"core", "octofs", "agent", "octocode"}
     mcp_section = data.get("mcp", {})
     defined_servers = {s["name"] for s in mcp_section.get("servers", []) if "name" in s}
     server_refs = role.get("mcp", {}).get("server_refs", [])
     for ref in server_refs:
         if ref not in BUILTIN_SERVERS and ref not in defined_servers:
-            print(f"MCP_UNDEFINED: server_ref '{ref}' is not a built-in server and has no [[mcp.servers]] entry with name='{ref}'", file=sys.stderr)
-            sys.exit(1)
+            errors.append(f"MCP_UNDEFINED: server_ref '{ref}' has no [[mcp.servers]] entry")
     for name in defined_servers:
         if name in BUILTIN_SERVERS:
-            print(f"MCP_BUILTIN_REDEFINED: [[mcp.servers]] entry name='{name}' is a built-in server — remove the [[mcp.servers]] block", file=sys.stderr)
-            sys.exit(1)
+            errors.append(f"MCP_BUILTIN_REDEFINED: [[mcp.servers]] name='{name}' is a built-in — remove the block")
+
+# Optional [deps] validation (for legacy agents that still have it)
+deps = data.get("deps", {})
+if deps:
+    require = deps.get("require", [])
+    if not isinstance(require, list):
+        errors.append("DEPS_INVALID: [deps] require must be an array")
+    else:
+        pattern = re.compile(r'^[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+$')
+        for entry in require:
+            if not isinstance(entry, str):
+                errors.append(f"DEPS_INVALID: require entries must be strings, got {type(entry).__name__}")
+            elif not pattern.match(entry):
+                errors.append(f"DEPS_INVALID: '{entry}' must match <org>/<tool>")
+
+if errors:
+    print("\n".join(errors), file=sys.stderr)
+    sys.exit(1)
 
 sys.exit(0)
-EOF
+PYEOF
 )
 
 lint_file() {
@@ -130,7 +156,7 @@ lint_file() {
 
   # TOML validity + field checks via Python
   local py_err
-  if ! py_err=$(python3 -c "$PYTHON_TOML_CHECK" "$file" 2>&1); then
+  if ! py_err=$(python3 -c "$PYTHON_TOML_CHECK" "$file" "$REPO_ROOT" 2>&1); then
     echo "  ✗ $py_err"
     ok=0
   fi

@@ -2,10 +2,7 @@
 # Agent: doctor:nutrition
 # Description: Evidence-based nutrition guidance. Explains nutrients, dietary patterns, supplement interactions, and helps interpret nutrition research. NOT personalized diet advice.
 
-capabilities = ["core", "filesystem"]
-
-[deps]
-require = ["medical/medical"]
+capabilities = ["core", "filesystem", "medical"]
 
 [[roles]]
 temperature = 0.25
@@ -213,16 +210,3 @@ For nutrition questions:
 
 Working directory: {{CWD}}
 """
-
-[roles.mcp]
-server_refs = ["medical"]
-allowed_tools = ["search-medical-literature", "search-medical-databases", "search-clinical-guidelines"]
-
-# Medical MCP Server — provides access to FDA, WHO, PubMed, RxNorm medical data
-[[mcp.servers]]
-name = "medical"
-type = "stdio"
-command = "medical-mcp-server"
-args = []
-timeout_seconds = 60
-tools = []

@@ -2,10 +2,7 @@
 # Agent: lawyer:de
 # Description: German law specialist. 91,843 provisions, 5,000 federal court decisions, EU cross-references. Covers BGB, HGB, GmbHG, StGB, ArbR, DSGVO and all major German legal codes.
 
-capabilities = ["core", "filesystem", "websearch"]
-
-[deps]
-require = ["nodejs/node"]
+capabilities = ["core", "filesystem", "websearch", "legal-de"]
 
 [[roles]]
 temperature = 0.2
@@ -211,12 +208,3 @@ For German legal questions:
 
 Working directory: {{CWD}}
 """
-
-# German Law MCP — 91,843 provisions, 5,000 court decisions, EU cross-references
-[[mcp.servers]]
-name = "german-law"
-type = "stdio"
-command = "npx"
-args = ["-y", "@ansvar/german-law-mcp"]
-timeout_seconds = 60
-tools = ["search_legislation", "get_provision", "search_case_law", "get_preparatory_works", "validate_citation", "build_legal_stance", "format_citation", "check_currency", "parse_citation", "get_eu_basis", "get_german_implementations", "search_eu_implementations", "get_provision_eu_basis", "validate_eu_compliance", "list_sources", "about"]

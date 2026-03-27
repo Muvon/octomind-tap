@@ -2,10 +2,7 @@
 # Agent: devops:docker
 # Description: Docker and container specialist. Expert in Dockerfiles, multi-stage builds, docker-compose, image optimization, security hardening, and container networking.
 
-capabilities = ["core", "filesystem", "codesearch", "websearch"]
-
-[deps]
-require = ["docker/docker"]
+capabilities = ["core", "filesystem", "codesearch", "websearch", "docker"]
 
 [[roles]]
 temperature = 0.15

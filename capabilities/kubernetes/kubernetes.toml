@@ -1,0 +1,6 @@
+# capabilities/kubernetes/kubernetes.toml
+# Capability: kubernetes
+# Provider: kubectl/helm — Kubernetes CLI tools
+
+[deps]
+require = ["containers/kubernetes"]

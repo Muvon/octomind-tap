@@ -2,10 +2,7 @@
 # Agent: lawyer:uk
 # Description: UK law specialist. English, Welsh, Scottish, and Northern Irish legislation with EU cross-reference support. Covers contracts, employment, criminal, property, family, business, and more.
 
-capabilities = ["core", "filesystem", "websearch"]
-
-[deps]
-require = ["nodejs/node"]
+capabilities = ["core", "filesystem", "websearch", "legal-uk"]
 
 [[roles]]
 temperature = 0.2
@@ -189,12 +186,3 @@ For UK legal questions:
 
 Working directory: {{CWD}}
 """
-
-# UK Legislation MCP — legislation.gov.uk with EU cross-reference support
-[[mcp.servers]]
-name = "uk-law"
-type = "stdio"
-command = "npx"
-args = ["-y", "@ansvar/uk-law-mcp"]
-timeout_seconds = 60
-tools = ["search_legislation", "get_provision", "validate_citation", "format_citation", "check_currency", "get_eu_basis", "get_uk_implementations", "search_eu_implementations", "get_provision_eu_basis", "validate_eu_compliance"]

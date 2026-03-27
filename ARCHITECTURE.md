@@ -26,16 +26,25 @@ capabilities = ["core", "filesystem", "codesearch"]
 
 ## How Capabilities Work
 
+A **capability** is something an agent can do, achievable by different tools (providers).
+Agents declare capabilities; the runtime resolves providers and injects dependencies.
+
+Each capability name maps to `capabilities/<name>/default.toml` (a symlink to the active provider).
+Users can override providers via `[capabilities]` in their config (e.g. `websearch = "brave"`).
+
+Use prefix naming to group related capabilities: `programming-python`, `programming-rust`, etc.
+
 ```
 agents/developer/rust.toml
-  └── capabilities = ["core", "filesystem", "codesearch"]
+  └── capabilities = ["core", "filesystem", "codesearch", "programming-rust"]
            │
            ▼
   bin/load developer:rust
            │
-           ├── capabilities/core/default.toml        (real file, built-in)
-           ├── capabilities/filesystem/default.toml  → octofs.toml (symlink)
-           └── capabilities/codesearch/default.toml  → octocode.toml (symlink)
+           ├── capabilities/core/default.toml              (built-in)
+           ├── capabilities/filesystem/default.toml        → octofs.toml
+           ├── capabilities/codesearch/default.toml        → octocode.toml
+           └── capabilities/programming-rust/default.toml  → cargo.toml
            │
            ▼
   Merged manifest with [deps], [roles.mcp], [[mcp.servers]] injected
@@ -51,15 +60,23 @@ Symlinks are managed by `scripts/setup-symlinks.sh` which **always force-creates
 
 ## Available Capabilities
 
-| Capability   | Tools provided                                      | Default provider file  |
-|--------------|-----------------------------------------------------|------------------------|
-| `core`       | `plan`                                              | `core/default.toml`    |
-| `agent`      | `agent_*`                                           | `agent/default.toml`   |
-| `filesystem` | `view`, `shell`, `text_editor`, `workdir`, `ast_grep` | `filesystem/octofs.toml` |
-| `codesearch` | `semantic_search`, `graphrag`, `view_signatures`    | `codesearch/octocode.toml` |
-| `memory`     | `remember`, `memorize`                              | `memory/octobrain.toml` |
-| `websearch`  | web search                                          | `websearch/tavily.toml` (alt: `brave.toml`) |
-| `versioning` | git via shell                                       | `versioning/git.toml`  |
+| Capability     | Providers              | What it provides                                      |
+|----------------|------------------------|-------------------------------------------------------|
+| `core`         | default                | `plan` task tracker                                   |
+| `agent`        | default                | `agent_*` delegation tools                            |
+| `filesystem`   | octofs                 | `view`, `shell`, `text_editor`, `workdir`, `ast_grep` |
+| `codesearch`   | octocode               | `semantic_search`, `graphrag`, `view_signatures`      |
+| `memory`       | octobrain              | `remember`, `memorize`                                |
+| `websearch`    | tavily                 | web search and content extraction                     |
+| `versioning`   | git                    | git operations                                        |
+| `programming-python`  | uv               | Python runtime (uv, uvx)                              |
+| `programming-rust`    | cargo            | Rust toolchain (cargo, rustc, clippy, rustfmt)        |
+| `programming-nodejs`  | node             | Node.js runtime (node, npm, npx)                      |
+| `docker`              | docker           | Docker CLI (docker, docker-compose)                   |
+| `kubernetes`          | kubernetes       | Kubernetes CLI (kubectl, helm)                        |
+| `svelte`              | svelte           | Svelte/SvelteKit documentation MCP server             |
+| `medical`             | medical          | medical references (PubMed, FDA, WHO, RxNorm)         |
+| `finance`             | yfinance         | financial data (Yahoo Finance)                        |
 
 ---
 
@@ -83,11 +100,12 @@ allowed_tools = ["octocode:*"]
 ## Manifest Rules (non-negotiable)
 
 1. **`capabilities = [...]` is mandatory** — every manifest must have it at the top level.
-2. **Never write `[roles.mcp]`** — it is injected by `bin/load` from capabilities.
-3. **`[[mcp.servers]]` only for custom servers** — things with no matching capability (domain APIs, databases, etc.). Even then, no `[roles.mcp]`.
-4. **Never set `name`** in `[[roles]]` — injected from the tag at runtime.
-5. **One `[[roles]]` per file** — no multi-role manifests.
-6. **File path must match tag** — `developer:rust` → `agents/developer/rust.toml`.
+2. **Never write `[roles.mcp]`** in an agent — injected by `bin/load` from capabilities.
+3. **Never write `[deps]`** in an agent — deps belong in capability files only.
+4. **Never write `[[mcp.servers]]`** in an agent — MCP servers belong in capability files.
+5. **Never set `name`** in `[[roles]]` — injected from the tag at runtime.
+6. **One `[[roles]]` per file** — no multi-role manifests.
+7. **File path must match tag** — `developer:rust` → `agents/developer/rust.toml`.
 
 ---
 
@@ -112,8 +130,12 @@ bash scripts/setup-symlinks.sh
 
 1. Create `capabilities/<name>/<provider>.toml` with `[deps]`, `[roles.mcp]`, optional `[[mcp.servers]]`
 2. Add a `link "<name>" "<provider>.toml"` line to `scripts/setup-symlinks.sh`
-3. Run `bash scripts/setup-symlinks.sh` to create the symlink
-4. Use `capabilities = ["...", "<name>"]` in any agent that needs it
+3. Run `bash scripts/setup-symlinks.sh` to create the default symlink
+4. Use `"<name>"` (default provider) or `"<name>:<provider>"` (explicit) in any agent
+
+To add an alternative provider to an existing capability:
+1. Create `capabilities/<name>/<new-provider>.toml`
+2. Use `"<name>:<new-provider>"` in agents that need it
 
 ---
 
@@ -123,9 +145,11 @@ bash scripts/setup-symlinks.sh
 
 1. Reads `agents/<domain>/<spec>.toml`
 2. Extracts `capabilities = [...]`
-3. Loads each `capabilities/<name>/default.toml`
+3. For each capability reference, resolves provider:
+   - `"name"` → `capabilities/<name>/default.toml`
+   - `"name:provider"` → `capabilities/<name>/<provider>.toml`
 4. Merges: `[deps].require`, `server_refs`, `allowed_tools`, `[[mcp.servers]]` (deduplicated by name)
-5. Strips `capabilities =` line and `[deps]` from agent file
+5. Strips `capabilities =` line from agent file
 6. Injects merged `[roles.mcp]` (creates section if absent)
 7. Outputs final TOML to stdout
 
@@ -223,7 +247,7 @@ The lint script skips the `server_refs` cross-check for capability-driven agents
 # Agent: <domain>:<spec>
 # Description: One-line description.
 
-capabilities = ["core", "filesystem"]   # REQUIRED — the only way to wire MCP tools
+capabilities = ["core", "filesystem", "programming-python"]   # REQUIRED
 
 [[roles]]
 system = """
@@ -237,17 +261,4 @@ top_k = 0
 
 # Optional: model override
 # model = "openrouter:anthropic/claude-sonnet-4"
-
-# Optional: dep scripts
-# [deps]
-# require = ["nodejs/node"]
-
-# Optional: custom MCP servers NOT covered by any capability
-# [[mcp.servers]]
-# name = "my-server"
-# type = "stdio"
-# command = "npx"
-# args = ["-y", "my-mcp-server"]
-# timeout_seconds = 60
-# tools = []
 ```

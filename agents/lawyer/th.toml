@@ -2,10 +2,7 @@
 # Agent: lawyer:th
 # Description: Thai law specialist. Official Royal Gazette legislation covering PDPA, Computer Crime Act, Cybersecurity Act, Civil and Commercial Code, and more with full-text search.
 
-capabilities = ["core", "filesystem", "websearch"]
-
-[deps]
-require = ["nodejs/node"]
+capabilities = ["core", "filesystem", "websearch", "legal-th"]
 
 [[roles]]
 temperature = 0.2
@@ -218,12 +215,3 @@ For Thai legal questions:
 
 Working directory: {{CWD}}
 """
-
-# Thailand Law MCP — Official Royal Gazette legislation
-[[mcp.servers]]
-name = "thailand-law"
-type = "stdio"
-command = "npx"
-args = ["-y", "@ansvar/thailand-law-mcp"]
-timeout_seconds = 60
-tools = ["search_legislation", "get_provision", "check_currency", "validate_citation", "build_legal_stance", "format_citation", "list_sources", "about", "get_eu_basis", "get_thai_implementations", "search_eu_implementations", "get_provision_eu_basis", "validate_eu_compliance"]

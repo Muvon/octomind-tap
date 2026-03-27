@@ -1,0 +1,18 @@
+# capabilities/legal-th/ansvar.toml
+# Capability: legal-th
+# Provider: @ansvar/thailand-law-mcp — Thai legislation from Royal Gazette
+
+[deps]
+require = ["ansvar/thailand-law-mcp"]
+
+[roles.mcp]
+server_refs = ["thailand-law"]
+allowed_tools = ["thailand-law:*"]
+
+[[mcp.servers]]
+name = "thailand-law"
+type = "stdio"
+command = "npx"
+args = ["-y", "@ansvar/thailand-law-mcp"]
+timeout_seconds = 60
+tools = []

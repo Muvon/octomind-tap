@@ -2,10 +2,7 @@
 # Agent: lawyer:us
 # Description: US law specialist. Federal + all 50 states legislation, case law via CourtListener, cross-state comparison. Covers contracts, employment, criminal, business, IP, immigration, and more.
 
-capabilities = ["core", "filesystem", "websearch"]
-
-[deps]
-require = ["nodejs/node"]
+capabilities = ["core", "filesystem", "websearch", "legal-us"]
 
 [[roles]]
 temperature = 0.2
@@ -182,21 +179,3 @@ For US legal questions:
 
 Working directory: {{CWD}}
 """
-
-# US Federal + State Legislation MCP
-[[mcp.servers]]
-name = "us-law"
-type = "stdio"
-command = "npx"
-args = ["-y", "@ansvar/us-law-mcp"]
-timeout_seconds = 60
-tools = ["search_legislation", "get_provision", "list_sources", "compare_requirements", "get_state_requirements", "validate_citation", "check_currency", "build_legal_stance"]
-
-# CourtListener — millions of US court opinions and case law
-[[mcp.servers]]
-name = "courtlistener"
-type = "stdio"
-command = "npx"
-args = ["-y", "@us-legal-tools/courtlistener-sdk"]
-timeout_seconds = 60
-tools = []

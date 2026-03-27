@@ -2,10 +2,7 @@
 # Agent: developer:rust
 # Description: Rust development specialist. Expert in idiomatic Rust, cargo, clippy, rustfmt, and best practices. Writes safe, performant, maintainable code.
 
-capabilities = ["core", "filesystem", "codesearch", "memory", "websearch"]
-
-[deps]
-require = ["rust/cargo"]
+capabilities = ["core", "filesystem", "codesearch", "memory", "websearch", "programming-rust"]
 
 [[roles]]
 temperature = 0.1

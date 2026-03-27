@@ -1,0 +1,18 @@
+# capabilities/legal-sg/ansvar.toml
+# Capability: legal-sg
+# Provider: @ansvar/singapore-law-mcp — Singapore legislation from SSO
+
+[deps]
+require = ["ansvar/singapore-law-mcp"]
+
+[roles.mcp]
+server_refs = ["singapore-law"]
+allowed_tools = ["singapore-law:*"]
+
+[[mcp.servers]]
+name = "singapore-law"
+type = "stdio"
+command = "npx"
+args = ["-y", "@ansvar/singapore-law-mcp"]
+timeout_seconds = 60
+tools = []

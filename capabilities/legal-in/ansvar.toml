@@ -1,0 +1,18 @@
+# capabilities/legal-in/ansvar.toml
+# Capability: legal-in
+# Provider: @ansvar/india-law-mcp — Indian central legislation from India Code
+
+[deps]
+require = ["ansvar/india-law-mcp"]
+
+[roles.mcp]
+server_refs = ["india-law"]
+allowed_tools = ["india-law:*"]
+
+[[mcp.servers]]
+name = "india-law"
+type = "stdio"
+command = "npx"
+args = ["-y", "@ansvar/india-law-mcp"]
+timeout_seconds = 60
+tools = []

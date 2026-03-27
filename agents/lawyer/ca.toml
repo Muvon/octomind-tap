@@ -2,10 +2,7 @@
 # Agent: lawyer:ca
 # Description: Canadian law specialist. Federal legislation with bilingual (EN/FR) support, covering common law provinces, Quebec civil law, Charter rights, employment, business, privacy, and more.
 
-capabilities = ["core", "filesystem", "websearch"]
-
-[deps]
-require = ["nodejs/node"]
+capabilities = ["core", "filesystem", "websearch", "legal-ca"]
 
 [[roles]]
 temperature = 0.2
@@ -195,12 +192,3 @@ For Canadian legal questions:
 
 Working directory: {{CWD}}
 """
-
-# Canada Law MCP — Federal legislation with bilingual support
-[[mcp.servers]]
-name = "canada-law"
-type = "stdio"
-command = "npx"
-args = ["-y", "@ansvar/canadian-law-mcp"]
-timeout_seconds = 60
-tools = ["search_legislation", "get_provision", "check_currency", "validate_citation", "build_legal_stance", "format_citation", "list_sources", "about", "get_eu_basis", "get_canadian_implementations", "search_eu_implementations", "get_provision_eu_basis", "validate_eu_compliance"]

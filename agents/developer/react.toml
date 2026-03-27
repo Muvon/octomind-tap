@@ -2,10 +2,7 @@
 # Agent: developer:react
 # Description: React development specialist. Expert in hooks, component patterns, state management, and the modern React ecosystem. Writes clean, performant, maintainable React code.
 
-capabilities = ["core", "filesystem", "codesearch", "memory", "websearch"]
-
-[deps]
-require = ["nodejs/node"]
+capabilities = ["core", "filesystem", "codesearch", "memory", "websearch", "programming-nodejs"]
 
 [[roles]]
 temperature = 0.1

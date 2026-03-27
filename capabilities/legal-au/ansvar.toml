@@ -1,0 +1,18 @@
+# capabilities/legal-au/ansvar.toml
+# Capability: legal-au
+# Provider: @ansvar/australian-law-mcp — Australian legislation and case law
+
+[deps]
+require = ["ansvar/australian-law-mcp"]
+
+[roles.mcp]
+server_refs = ["australia-law"]
+allowed_tools = ["australia-law:*"]
+
+[[mcp.servers]]
+name = "australia-law"
+type = "stdio"
+command = "npx"
+args = ["-y", "@ansvar/australian-law-mcp"]
+timeout_seconds = 60
+tools = []

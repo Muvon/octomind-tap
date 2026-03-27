@@ -2,10 +2,7 @@
 # Agent: developer:python
 # Description: Python development specialist. Expert in idiomatic Python, type hints, uv, pytest, ruff, mypy, and modern best practices. Writes clean, typed, maintainable code.
 
-capabilities = ["core", "filesystem", "codesearch", "memory", "websearch"]
-
-[deps]
-require = ["astral-sh/uv"]
+capabilities = ["core", "filesystem", "codesearch", "memory", "websearch", "programming-python"]
 
 [[roles]]
 temperature = 0.1

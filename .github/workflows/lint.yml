@@ -24,6 +24,9 @@ jobs:
       - name: Lint all manifests
         run: bash scripts/lint-manifests.sh
 
+      - name: Lint all capabilities
+        run: bash scripts/lint-capabilities.sh
+
       - name: Validate capability resolution
         run: |
           chmod +x bin/load

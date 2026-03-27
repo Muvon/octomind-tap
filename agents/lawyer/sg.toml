@@ -2,10 +2,7 @@
 # Agent: lawyer:sg
 # Description: Singapore law specialist. 523 Acts from Singapore Statutes Online (sso.agc.gov.sg), covering contracts, employment, criminal, company, property, family, data protection, and more.
 
-capabilities = ["core", "filesystem", "websearch"]
-
-[deps]
-require = ["nodejs/node"]
+capabilities = ["core", "filesystem", "websearch", "legal-sg"]
 
 [[roles]]
 temperature = 0.2
@@ -207,12 +204,3 @@ For Singapore legal questions:
 
 Working directory: {{CWD}}
 """
-
-# Singapore Law MCP — 523 Acts from Singapore Statutes Online
-[[mcp.servers]]
-name = "singapore-law"
-type = "stdio"
-command = "npx"
-args = ["-y", "@ansvar/singapore-law-mcp"]
-timeout_seconds = 60
-tools = ["search_legislation", "get_provision", "check_currency", "validate_citation", "build_legal_stance", "format_citation", "list_sources", "about", "get_eu_basis", "get_singapore_implementations", "search_eu_implementations", "get_provision_eu_basis", "validate_eu_compliance"]

@@ -1,0 +1,18 @@
+# capabilities/legal-fr/ansvar.toml
+# Capability: legal-fr
+# Provider: @ansvar/french-law-mcp — French legislation from Legifrance/DILA
+
+[deps]
+require = ["ansvar/french-law-mcp"]
+
+[roles.mcp]
+server_refs = ["french-law"]
+allowed_tools = ["french-law:*"]
+
+[[mcp.servers]]
+name = "french-law"
+type = "stdio"
+command = "npx"
+args = ["-y", "@ansvar/french-law-mcp"]
+timeout_seconds = 60
+tools = []

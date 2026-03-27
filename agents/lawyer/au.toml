@@ -2,10 +2,7 @@
 # Agent: lawyer:au
 # Description: Australian law specialist. 1,253 federal Acts from legislation.gov.au, covering contracts, employment, criminal, property, family, business, consumer, and more.
 
-capabilities = ["core", "filesystem", "websearch"]
-
-[deps]
-require = ["nodejs/node"]
+capabilities = ["core", "filesystem", "websearch", "legal-au"]
 
 [[roles]]
 temperature = 0.2
@@ -189,12 +186,3 @@ For Australian legal questions:
 
 Working directory: {{CWD}}
 """
-
-# Australia Law MCP — 1,253 federal Acts from legislation.gov.au
-[[mcp.servers]]
-name = "australia-law"
-type = "stdio"
-command = "npx"
-args = ["-y", "@ansvar/australian-law-mcp"]
-timeout_seconds = 60
-tools = ["search_legislation", "get_provision", "check_currency", "validate_citation", "build_legal_stance", "format_citation", "list_sources", "about", "get_eu_basis", "get_australian_implementations", "search_eu_implementations", "get_provision_eu_basis", "validate_eu_compliance"]

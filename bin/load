@@ -14,22 +14,6 @@ How it works:
        - [roles.mcp] allowed_tools → union of all arrays (preserving wildcards)
        - [[mcp.servers]] blocks  → append all (deduplicated by name)
   5. Output final TOML to stdout
-
-Capability file format (capabilities/<name>/default.toml):
-  [deps]
-  require = ["some/dep"]
-
-  [roles.mcp]
-  server_refs = ["myserver"]
-  allowed_tools = ["mytool_*"]
-
-  [[mcp.servers]]
-  name = "myserver"
-  type = "stdio"
-  command = "npx"
-  args = ["-y", "@scope/pkg"]
-  timeout_seconds = 60
-  tools = []
 """
 
 import sys

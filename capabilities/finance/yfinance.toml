@@ -1,0 +1,18 @@
+# capabilities/finance/yfinance.toml
+# Capability: finance
+# Provider: yfinance — Yahoo Finance data via MCP
+
+[deps]
+require = ["yahoo/yfinance"]
+
+[roles.mcp]
+server_refs = ["yfinance"]
+allowed_tools = ["yfinance:*"]
+
+[[mcp.servers]]
+name = "yfinance"
+type = "stdio"
+command = "npx"
+args = ["-y", "@szemeng76/yfinance-mcp-server"]
+timeout_seconds = 60
+tools = []

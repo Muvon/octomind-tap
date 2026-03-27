@@ -2,10 +2,7 @@
 # Agent: lawyer:in
 # Description: Indian law specialist. 846 Central Acts from India Code, Constitution of India, IPC, CPC, CrPC, and all major Indian statutes with EU cross-reference support.
 
-capabilities = ["core", "filesystem", "websearch"]
-
-[deps]
-require = ["nodejs/node"]
+capabilities = ["core", "filesystem", "websearch", "legal-in"]
 
 [[roles]]
 temperature = 0.2
@@ -183,12 +180,3 @@ For Indian legal questions:
 
 Working directory: {{CWD}}
 """
-
-# India Law MCP — 846 Central Acts from India Code
-[[mcp.servers]]
-name = "india-law"
-type = "stdio"
-command = "npx"
-args = ["-y", "@ansvar/india-law-mcp"]
-timeout_seconds = 60
-tools = ["search_legislation", "get_provision", "check_currency", "validate_citation", "build_legal_stance", "format_citation", "list_sources", "about", "get_eu_basis", "get_indian_implementations", "search_eu_implementations", "get_provision_eu_basis", "validate_eu_compliance"]

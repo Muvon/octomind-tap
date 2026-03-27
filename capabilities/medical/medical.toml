@@ -1,0 +1,18 @@
+# capabilities/medical/medical.toml
+# Capability: medical
+# Provider: medical-mcp-server — medical references (PubMed, FDA, WHO, RxNorm)
+
+[deps]
+require = ["medical/medical"]
+
+[roles.mcp]
+server_refs = ["medical"]
+allowed_tools = ["medical:*"]
+
+[[mcp.servers]]
+name = "medical"
+type = "stdio"
+command = "medical-mcp-server"
+args = []
+timeout_seconds = 60
+tools = []

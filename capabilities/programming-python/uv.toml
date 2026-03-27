@@ -1,0 +1,6 @@
+# capabilities/programming-python/uv.toml
+# Capability: programming-python
+# Provider: uv — Python package and project manager (uv, uvx)
+
+[deps]
+require = ["astral-sh/uv"]

@@ -9,3 +9,11 @@ require = ["muvon/octofs"]
 [roles.mcp]
 server_refs = ["octofs"]
 allowed_tools = ["octofs:*"]
+
+[[mcp.servers]]
+name = "octofs"
+type = "stdio"
+command = "octofs"
+args = ["mcp"]
+timeout_seconds = 300
+tools = []
