@@ -1,0 +1,19 @@
+# capabilities/browser/playwright.toml
+# Capability: browser
+# Provider: Playwright — browser automation, navigation, screenshots, scraping
+# https://github.com/microsoft/playwright-mcp
+
+[deps]
+require = ["microsoft/playwright"]
+
+[roles.mcp]
+server_refs = ["playwright"]
+allowed_tools = ["playwright:*"]
+
+[[mcp.servers]]
+name = "playwright"
+type = "stdio"
+command = "npx"
+args = ["@playwright/mcp@latest", "--headless"]
+timeout_seconds = 120
+tools = []

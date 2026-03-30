@@ -58,11 +58,12 @@ link "legal-th" "ansvar.toml"
 link "legal-uk" "ansvar.toml"
 link "legal-us" "ansvar.toml"
 link "octoweb" "octoweb.toml"
+link "browser" "playwright.toml"
 # ─────────────────────────────────────────────────────────────────────────────
 
 # Detect capability dirs that have NO mapping declared above
 echo ""
-DECLARED=("filesystem" "codesearch" "memory" "websearch" "versioning" "core" "agent" "programming-python" "programming-rust" "programming-nodejs" "docker" "kubernetes" "svelte" "medical" "finance" "legal-au" "legal-ca" "legal-de" "legal-fr" "legal-in" "legal-sg" "legal-th" "legal-uk" "legal-us" "octoweb")
+DECLARED=("filesystem" "codesearch" "memory" "websearch" "versioning" "core" "agent" "programming-python" "programming-rust" "programming-nodejs" "docker" "kubernetes" "svelte" "medical" "finance" "legal-au" "legal-ca" "legal-de" "legal-fr" "legal-in" "legal-sg" "legal-th" "legal-uk" "legal-us" "octoweb" "browser")
 for dir in "$CAP_ROOT"/*/; do
   cap="$(basename "$dir")"
   found=0
