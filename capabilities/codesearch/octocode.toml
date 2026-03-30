@@ -1,6 +1,8 @@
 # capabilities/codesearch/octocode.toml
 # Capability: codesearch
 # Provider: octocode — Octomind's semantic code search and graph intelligence
+# Title: Code Search
+# Description: Semantic code search, signatures, and graph intelligence via octocode.
 # Provides tools: semantic_search, view_signatures, graphrag, remember, memorize, ast_grep
 
 [deps]

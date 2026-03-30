@@ -1,6 +1,8 @@
 # capabilities/legal-us/ansvar.toml
 # Capability: legal-us
 # Provider: @ansvar/us-law-mcp + @us-legal-tools/courtlistener-sdk — US federal/state legislation and case law
+# Title: US Law
+# Description: US federal and state legislation plus case law via Ansvar and CourtListener MCP.
 
 [deps]
 require = ["ansvar/us-law-mcp", "us-legal-tools/courtlistener"]

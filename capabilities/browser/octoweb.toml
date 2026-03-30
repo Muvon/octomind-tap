@@ -1,6 +1,8 @@
 # capabilities/browser/octoweb.toml
 # Capability: browser
 # Provider: Octoweb — browser automation via Octoweb HTTP MCP server
+# Title: Browser (Octoweb)
+# Description: Browser automation via Octoweb local HTTP MCP server.
 # Requires Octoweb running locally on port 3434
 # Alternative to Playwright — swap with: ln -sf octoweb.toml capabilities/browser/default.toml
 

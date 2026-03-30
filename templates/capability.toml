@@ -1,0 +1,49 @@
+# templates/capability.toml
+# ─────────────────────────────────────────────────────────────────────────────
+# Octomind Tap Capability Template
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Copy this file to capabilities/<name>/<provider>.toml and customize.
+#
+# Quick start:
+#   1. Set capability name and provider in the header comments
+#   2. Write a title (5–60 chars) and description (20–160 chars)
+#   3. Add dependency declarations if needed
+#   4. Configure MCP server refs and allowed tools
+#   5. Add MCP server blocks with description (10–200 chars)
+#   6. Create a default.toml symlink: ln -s <provider>.toml default.toml
+#
+# ─────────────────────────────────────────────────────────────────────────────
+
+# capabilities/<name>/<provider>.toml
+# Capability: <name>
+# Provider: <provider-name>
+# Title: <Short Capability Title (5–60 chars)>
+# Description: <What this capability provides (20–160 chars)>
+
+# ─────────────────────────────────────────────────────────────────────────────
+# DEPENDENCIES (Optional)
+# ─────────────────────────────────────────────────────────────────────────────
+
+# [deps]
+# require = ["org/tool"]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MCP CONFIGURATION
+# ─────────────────────────────────────────────────────────────────────────────
+
+[roles.mcp]
+server_refs = ["<server-name>"]
+allowed_tools = ["<server-name>:*"]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MCP SERVERS
+# ─────────────────────────────────────────────────────────────────────────────
+
+[[mcp.servers]]
+name = "<server-name>"
+type = "stdio"
+command = "<command>"
+args = ["<args>"]
+timeout_seconds = 60
+tools = []

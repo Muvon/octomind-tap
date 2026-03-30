@@ -1,6 +1,8 @@
 # capabilities/websearch/tavily.toml
 # Capability: websearch
 # Provider: Tavily — web search and content extraction
+# Title: Web Search
+# Description: Web search and content extraction via Tavily API.
 # Provides tools: tavily_search, tavily_extract, tavily_map
 
 [deps]

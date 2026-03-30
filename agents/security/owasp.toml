@@ -1,6 +1,7 @@
 # agents/security/owasp.toml
 # Agent: security:owasp
-# Description: OWASP security specialist. Expert in application security, vulnerability assessment, secure coding practices, and OWASP Top 10. Helps identify and remediate security issues.
+# Title: OWASP Security Specialist
+# Description: OWASP security specialist. Expert in application security, vulnerability assessment, secure coding, and OWASP Top 10 remediation.
 
 capabilities = ["core", "filesystem", "codesearch", "websearch"]
 

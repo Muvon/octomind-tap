@@ -1,6 +1,8 @@
 # capabilities/core/default.toml
 # Capability: core
 # Provider: Octomind built-in core server
+# Title: Core Task Planner
+# Description: Built-in core server with structured step-by-step task planning.
 # Provides tools: plan — structured step-by-step task tracker
 
 [roles.mcp]

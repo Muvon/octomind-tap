@@ -1,6 +1,8 @@
 # capabilities/legal-sg/ansvar.toml
 # Capability: legal-sg
 # Provider: @ansvar/singapore-law-mcp — Singapore legislation from SSO
+# Title: Singapore Law
+# Description: Singapore legislation from Statutes Online via Ansvar MCP.
 
 [deps]
 require = ["ansvar/singapore-law-mcp"]

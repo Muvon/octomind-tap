@@ -1,6 +1,7 @@
 # agents/launch/explore.toml
 # Agent: launch:explore
-# Description: Product opportunity explorer. Deep-dives into markets, scrapes real user conversations on Reddit/HN/ProductHunt/forums, analyzes pain points and sentiment, maps competitive landscapes, and surfaces blue-ocean opportunities with evidence. Outputs ranked opportunity reports with viability scores.
+# Title: Product Opportunity Explorer
+# Description: Product opportunity explorer. Analyzes markets, user conversations, pain points, sentiment, and competitive landscapes with evidence.
 
 capabilities = ["core", "filesystem", "websearch", "memory", "browser"]
 

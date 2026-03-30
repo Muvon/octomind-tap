@@ -17,7 +17,8 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 # Agent: <domain>:<spec>
-# Description: One-line description of what this agent does.
+# Title: <Short Agent Title (5–60 chars)>
+# Description: <One-line description of what this agent does (20–160 chars)>
 
 # ─────────────────────────────────────────────────────────────────────────────
 # DEPENDENCIES (Optional)

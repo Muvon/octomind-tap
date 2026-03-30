@@ -1,6 +1,7 @@
 # agents/content/blog.toml
 # Agent: content:blog
-# Description: Blog post writer. Conversational, opinionated, audience-aware. Writes punchy, shareable blog posts with strong hooks, clear value, and personality. Fast and focused.
+# Title: Blog Post Writer
+# Description: Blog post writer. Conversational, audience-aware. Writes punchy, shareable posts with strong hooks and clear value.
 
 capabilities = ["core", "filesystem", "websearch", "memory"]
 

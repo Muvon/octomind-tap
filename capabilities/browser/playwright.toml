@@ -1,6 +1,8 @@
 # capabilities/browser/playwright.toml
 # Capability: browser
 # Provider: Playwright — browser automation, navigation, screenshots, scraping
+# Title: Browser (Playwright)
+# Description: Browser automation, navigation, screenshots, and web scraping via Playwright.
 # https://github.com/microsoft/playwright-mcp
 
 [deps]

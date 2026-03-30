@@ -1,5 +1,6 @@
 # agents/octomind/tap.toml
 # Agent: octomind:tap
+# Title: Agent Manifest Creator
 # Description: Creates fully-valid Octomind agent manifests for any domain/spec.
 #              Run in the octomind-tap repo root to generate new agents/domain/spec.toml files.
 
@@ -84,6 +85,10 @@ capabilities/<name>/
 Provider file format:
 ```toml
 # capabilities/<name>/<provider>.toml
+# Capability: <name>
+# Provider: <provider-name>
+# Title: Short Capability Title (5–60 chars)
+# Description: What this capability provides (20–160 chars).
 
 [deps]
 require = ["org/tool"]       # each entry needs a deps/<org>/<tool>.sh script
@@ -144,11 +149,12 @@ Not all fields are required — a capability can be deps-only (e.g. `programming
 ### When to create a new capability
 
 If the agent needs a tool, dependency, or MCP server not covered above:
-1. Create `capabilities/<name>/<provider>.toml` with deps, roles.mcp, and/or mcp.servers
+1. Create `capabilities/<name>/<provider>.toml` with `# Title:`, `# Description:`, deps, roles.mcp, and/or mcp.servers
 2. Create the dep script at `deps/<org>/<tool>.sh` if the capability has deps
 3. Create the `default.toml` symlink: `ln -s <provider>.toml default.toml`
 4. Add entries to `scripts/setup-symlinks.sh` (link + DECLARED array)
-5. Reference the capability in the agent
+5. Run `bash scripts/lint-capabilities.sh capabilities/<name>` to validate
+6. Reference the capability in the agent
 
 ---
 
@@ -157,7 +163,8 @@ If the agent needs a tool, dependency, or MCP server not covered above:
 ```toml
 # agents/<domain>/<spec>.toml
 # Agent: <domain>:<spec>
-# Description: One-line description.
+# Title: Short Agent Title (5–60 chars)
+# Description: What this agent does (20–160 chars).
 
 capabilities = ["core", "filesystem", "codesearch", "programming-python"]
 
@@ -179,6 +186,8 @@ top_k = 0
 
 | Field | Notes |
 |-------|-------|
+| `# Title:` | Comment. Short human-readable label. 5–60 chars. |
+| `# Description:` | Comment. What the agent does. 20–160 chars. |
 | `capabilities` | Top-level, always first. The ONLY way to wire tools. |
 | `system` | The system prompt — agent's identity, rules, domain knowledge |
 | `welcome` | First message shown to user. Include emoji + {{CWD}} |
@@ -247,12 +256,14 @@ Medical, legal, and financial agents MUST include prominent disclaimers:
 
 ---
 
-## NAMING RULES
+## NAMING AND METADATA RULES
 
 - File path matches tag: `developer:rust` → `agents/developer/rust.toml`
 - Sub-specs use hyphens: `developer:rust-nightly`
 - One `[[roles]]` per file
 - Capability names use prefix grouping: `programming-python`, `legal-us`
+- `# Title:` — short, human-readable (5–60 chars). Example: "Rust Developer", "Blood Test Interpreter"
+- `# Description:` — one-line summary (20–160 chars). Concise and scannable, like an SEO meta description
 
 ---
 
@@ -268,8 +279,10 @@ Medical, legal, and financial agents MUST include prominent disclaimers:
 
 ### Before writing, always check:
 
+- [ ] `# Title:` comment present? (5–60 chars, short human-readable label)
+- [ ] `# Description:` comment present? (20–160 chars, what the agent does)
 - [ ] Is there a similar agent I can reference for prompt structure?
-- [ ] Do all needed capabilities exist? If not, create them first.
+- [ ] Do all needed capabilities exist? If not, create them first (with `# Title:` and `# Description:`).
 - [ ] Is the system prompt specific enough? (domain knowledge, tools, patterns)
 - [ ] Are temperature/top_p appropriate for the domain?
 - [ ] Does the welcome message include an emoji + {{CWD}}?

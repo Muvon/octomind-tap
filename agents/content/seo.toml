@@ -1,6 +1,7 @@
 # agents/content/seo.toml
 # Agent: content:seo
-# Description: SEO strategist. Keyword research, SERP analysis, content gap identification, meta optimization, and on-page SEO auditing. Data-driven, intent-focused, ranking-obsessed.
+# Title: SEO Strategist
+# Description: SEO strategist. Keyword research, SERP analysis, content gaps, meta optimization, and on-page auditing. Data-driven and intent-focused.
 
 capabilities = ["core", "filesystem", "websearch", "memory"]
 

@@ -1,6 +1,7 @@
 ---
 # Required fields
 name: my-skill-name
+title: "My Skill Name (5–60 chars)"
 description: "One-line description of what this skill does and when to use it. Be specific — this is what the AI reads when deciding whether to activate the skill."
 
 # Optional fields

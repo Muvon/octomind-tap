@@ -1,6 +1,8 @@
 # capabilities/kubernetes/kubernetes.toml
 # Capability: kubernetes
 # Provider: kubectl/helm — Kubernetes CLI tools
+# Title: Kubernetes
+# Description: Kubernetes cluster management via kubectl and helm CLI tools.
 
 [deps]
 require = ["containers/kubernetes"]

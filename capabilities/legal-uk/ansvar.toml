@@ -1,6 +1,8 @@
 # capabilities/legal-uk/ansvar.toml
 # Capability: legal-uk
 # Provider: @ansvar/uk-law-mcp — UK legislation with EU cross-reference support
+# Title: UK Law
+# Description: UK legislation with EU cross-reference support via Ansvar MCP.
 
 [deps]
 require = ["ansvar/uk-law-mcp"]

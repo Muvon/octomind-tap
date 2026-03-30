@@ -1,6 +1,8 @@
 # capabilities/finance/yfinance.toml
 # Capability: finance
 # Provider: yfinance — Yahoo Finance data via MCP
+# Title: Finance
+# Description: Stock market and financial data from Yahoo Finance via MCP.
 
 [deps]
 require = ["yahoo/yfinance"]

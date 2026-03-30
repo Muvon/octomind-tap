@@ -1,6 +1,8 @@
 # capabilities/memory/octobrain.toml
 # Capability: memory
 # Provider: octobrain — Octomind's persistent memory and knowledge graph
+# Title: Memory
+# Description: Persistent memory and knowledge graph via octobrain.
 # Provides tools: remember, memorize
 
 [deps]

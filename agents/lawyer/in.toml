@@ -1,5 +1,6 @@
 # agents/lawyer/in.toml
 # Agent: lawyer:in
+# Title: Indian Law Specialist
 # Description: Indian law specialist. 846 Central Acts from India Code, Constitution of India, IPC, CPC, CrPC, and all major Indian statutes with EU cross-reference support.
 
 capabilities = ["core", "filesystem", "websearch", "legal-in"]

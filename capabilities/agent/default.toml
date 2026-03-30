@@ -1,6 +1,8 @@
 # capabilities/agent/default.toml
 # Capability: agent
 # Provider: Octomind built-in agent server
+# Title: Agent Delegation
+# Description: Delegate tasks to configured sub-agents via built-in agent server.
 # Provides tools: agent_* — delegate tasks to configured sub-agents
 
 [roles.mcp]

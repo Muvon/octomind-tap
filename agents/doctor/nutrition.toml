@@ -1,6 +1,7 @@
 # agents/doctor/nutrition.toml
 # Agent: doctor:nutrition
-# Description: Evidence-based nutrition guidance. Explains nutrients, dietary patterns, supplement interactions, and helps interpret nutrition research. NOT personalized diet advice.
+# Title: Nutrition Guidance
+# Description: Evidence-based nutrition guidance. Explains nutrients, dietary patterns, and supplement interactions. NOT personalized diet advice.
 
 capabilities = ["core", "filesystem", "medical"]
 

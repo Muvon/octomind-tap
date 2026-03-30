@@ -1,6 +1,7 @@
 # agents/content/editor.toml
 # Agent: content:editor
-# Description: Surgical content editor. Reads existing articles and blog posts, diagnoses structural and stylistic issues, then polishes them to match the content:article or content:blog role path standards. No new content — only sharpen what exists.
+# Title: Content Editor
+# Description: Content editor. Reads existing articles, diagnoses structural and stylistic issues, and polishes them. No new content — sharpens what exists.
 
 capabilities = ["core", "filesystem", "websearch", "memory"]
 

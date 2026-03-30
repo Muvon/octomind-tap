@@ -1,6 +1,7 @@
 # agents/launch/brand.toml
 # Agent: launch:brand
-# Description: Brand strategist. Naming, positioning, messaging framework, voice & tone, taglines, landing page copy. Turns vague ideas into sharp brand identities that resonate with a specific audience.
+# Title: Brand Strategist
+# Description: Brand strategist. Naming, positioning, messaging, voice and tone, taglines, and landing page copy. Turns ideas into sharp brand identities.
 
 capabilities = ["core", "filesystem", "websearch", "memory"]
 

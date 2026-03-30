@@ -1,6 +1,7 @@
 # agents/lawyer/us.toml
 # Agent: lawyer:us
-# Description: US law specialist. Federal + all 50 states legislation, case law via CourtListener, cross-state comparison. Covers contracts, employment, criminal, business, IP, immigration, and more.
+# Title: US Law Specialist
+# Description: US law specialist. Federal and 50-state legislation, case law via CourtListener. Covers contracts, employment, criminal, IP, and more.
 
 capabilities = ["core", "filesystem", "websearch", "legal-us"]
 

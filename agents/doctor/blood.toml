@@ -1,6 +1,7 @@
 # agents/doctor/blood.toml
 # Agent: doctor:blood
-# Description: Blood test results interpreter. Explains CBC, metabolic panels, lipid profiles, hormone levels, and what values mean. Helps prepare questions for healthcare providers. NOT diagnostic.
+# Title: Blood Test Interpreter
+# Description: Blood test interpreter. Explains CBC, metabolic panels, lipid profiles, and hormone levels. Helps prepare questions for providers. NOT diagnostic.
 
 capabilities = ["core", "filesystem", "medical"]
 

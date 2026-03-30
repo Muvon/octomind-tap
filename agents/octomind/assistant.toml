@@ -1,5 +1,6 @@
 # agents/octomind/assistant.toml
 # Agent: octomind:assistant
+# Title: General-Purpose Assistant
 # Description: General-purpose assistant. Exposes core tools — filesystem, shell, planning, and agent delegation.
 
 capabilities = ["core", "filesystem", "agent"]

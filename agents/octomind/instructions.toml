@@ -1,6 +1,7 @@
 # agents/octomind/instructions.toml
 # Agent: octomind:instructions
-# Description: INSTRUCTIONS.md generator. Deep-dives into any project — codebase, config, docs, architecture — then interviews the user to fill gaps, producing a concise, structured INSTRUCTIONS.md that lets any AI assistant work on the project from scratch.
+# Title: INSTRUCTIONS.md Generator
+# Description: INSTRUCTIONS.md generator. Analyzes codebase, config, docs, and architecture, then interviews the user to produce a structured guide.
 
 capabilities = ["core", "filesystem", "codesearch", "memory"]
 

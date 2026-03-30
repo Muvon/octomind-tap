@@ -51,6 +51,7 @@ Open the file and customize:
 ```toml
 # agents/doctor/blood.toml
 # Agent: doctor:blood
+# Title: Blood Test Interpreter
 # Description: Blood test results interpreter. Explains CBC, metabolic panels...
 
 [[roles]]
@@ -89,7 +90,8 @@ That's it! Your agent is ready for review.
 ```toml
 # agents/<domain>/<spec>.toml
 # Agent: <domain>:<spec>
-# Description: One-line description of what this agent does.
+# Title: <Short Agent Title (5–60 chars)>
+# Description: <One-line description (20–160 chars)>
 
 [[roles]]
 temperature = 0.3          # 0.0–1.0 (lower = more deterministic)
@@ -294,7 +296,8 @@ tools = []
 ```toml
 # agents/utility/notes.toml
 # Agent: utility:notes
-# Description: Quick note-taking assistant
+# Title: Note-Taking Assistant
+# Description: Quick note-taking and information organization assistant.
 
 [[roles]]
 temperature = 0.5
@@ -318,7 +321,8 @@ allowed_tools = ["core:*", "octofs:*"]
 ```toml
 # agents/developer/rust.toml
 # Agent: developer:rust
-# Description: Rust development specialist with cargo, clippy, and rustfmt
+# Title: Rust Developer
+# Description: Rust development specialist with cargo, clippy, and rustfmt.
 
 [deps]
 require = ["rust/cargo"]
@@ -418,6 +422,7 @@ cp templates/skill.md skills/<name>/SKILL.md
 ```markdown
 ---
 name: my-skill-name
+title: "My Skill Name"
 description: "One sentence: what this skill does and when to use it."
 license: Apache-2.0
 compatibility: "Requires git. Works with any project."
@@ -469,6 +474,7 @@ That's it! Include a brief description of what domain knowledge the skill encode
 ### Skill quality checklist
 
 - [ ] `name` matches the directory name exactly
+- [ ] `title` is a short human-readable label (5–60 chars)
 - [ ] `description` tells you *when* to activate the skill (not just what it is)
 - [ ] `compatibility` lists any required tools or environment constraints
 - [ ] Body has at least an Overview and Instructions section

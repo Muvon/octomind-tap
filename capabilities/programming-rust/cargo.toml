@@ -1,6 +1,8 @@
 # capabilities/programming-rust/cargo.toml
 # Capability: programming-rust
 # Provider: rustup — Rust toolchain (cargo, rustc, clippy, rustfmt)
+# Title: Rust Toolchain
+# Description: Rust toolchain with cargo, rustc, clippy, and rustfmt.
 
 [deps]
 require = ["rust/cargo"]

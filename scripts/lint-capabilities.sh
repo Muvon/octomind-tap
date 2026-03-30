@@ -7,6 +7,7 @@
 #   4. Every [deps] require entry has a corresponding deps/<org>/<tool>.sh script
 #   5. default.toml exists and is a symlink (except for built-in: core, agent)
 #   6. default.toml symlink target exists
+#   7. Comment metadata: # Title: (5–60 chars) and # Description: (20–160 chars) required
 #
 # Usage:
 #   scripts/lint-capabilities.sh                  # lint all capabilities
@@ -48,13 +49,37 @@ except ImportError:
 path = pathlib.Path(sys.argv[1])
 deps_root = pathlib.Path(sys.argv[2])
 
+raw_text = path.read_text()
+
 try:
-    data = tomllib.loads(path.read_text())
+    data = tomllib.loads(raw_text)
 except Exception as e:
     print(f"INVALID_TOML: {e}", file=sys.stderr)
     sys.exit(1)
 
 errors = []
+
+# ── Comment metadata: # Title: and # Description: ────────────────────────────
+title_match = re.search(r'^# Title:\s*(.+)$', raw_text, re.MULTILINE)
+desc_match = re.search(r'^# Description:\s*(.+)$', raw_text, re.MULTILINE)
+
+if not title_match:
+    errors.append("MISSING_TITLE: '# Title: ...' comment is required")
+else:
+    title_val = title_match.group(1).strip()
+    if len(title_val) < 5:
+        errors.append(f"TITLE_SHORT: title must be at least 5 characters ({len(title_val)} chars)")
+    elif len(title_val) > 60:
+        errors.append(f"TITLE_LONG: title must be at most 60 characters ({len(title_val)} chars)")
+
+if not desc_match:
+    errors.append("MISSING_DESCRIPTION: '# Description: ...' comment is required")
+else:
+    desc_val = desc_match.group(1).strip()
+    if len(desc_val) < 20:
+        errors.append(f"DESC_SHORT: description must be at least 20 characters ({len(desc_val)} chars)")
+    elif len(desc_val) > 160:
+        errors.append(f"DESC_LONG: description must be at most 160 characters ({len(desc_val)} chars)")
 
 # Validate [deps] require
 deps = data.get("deps", {})

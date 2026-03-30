@@ -1,6 +1,8 @@
 # capabilities/legal-in/ansvar.toml
 # Capability: legal-in
 # Provider: @ansvar/india-law-mcp — Indian central legislation from India Code
+# Title: Indian Law
+# Description: Indian central legislation from India Code via Ansvar MCP.
 
 [deps]
 require = ["ansvar/india-law-mcp"]

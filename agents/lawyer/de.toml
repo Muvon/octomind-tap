@@ -1,6 +1,7 @@
 # agents/lawyer/de.toml
 # Agent: lawyer:de
-# Description: German law specialist. 91,843 provisions, 5,000 federal court decisions, EU cross-references. Covers BGB, HGB, GmbHG, StGB, ArbR, DSGVO and all major German legal codes.
+# Title: German Law Specialist
+# Description: German law specialist. 91,843 provisions, 5,000 court decisions, EU cross-references. Covers BGB, HGB, StGB, DSGVO, and more.
 
 capabilities = ["core", "filesystem", "websearch", "legal-de"]
 

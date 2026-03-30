@@ -1,6 +1,7 @@
 # agents/content/article.toml
 # Agent: content:article
-# Description: Long-form article writer. Researches topics via web, builds structured outlines, drafts authoritative content, and writes to disk. SEO-aware, source-backed, publication-ready.
+# Title: Article Writer
+# Description: Long-form article writer. Researches via web, builds outlines, drafts authoritative content to disk. SEO-aware and source-backed.
 
 capabilities = ["core", "filesystem", "websearch", "memory"]
 

@@ -1,6 +1,7 @@
 # agents/lawyer/sg.toml
 # Agent: lawyer:sg
-# Description: Singapore law specialist. 523 Acts from Singapore Statutes Online (sso.agc.gov.sg), covering contracts, employment, criminal, company, property, family, data protection, and more.
+# Title: Singapore Law Specialist
+# Description: Singapore law specialist. 523 Acts from Singapore Statutes Online covering contracts, employment, criminal, company, and property law.
 
 capabilities = ["core", "filesystem", "websearch", "legal-sg"]
 

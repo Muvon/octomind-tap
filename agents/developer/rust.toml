@@ -1,5 +1,6 @@
 # agents/developer/rust.toml
 # Agent: developer:rust
+# Title: Rust Developer
 # Description: Rust development specialist. Expert in idiomatic Rust, cargo, clippy, rustfmt, and best practices. Writes safe, performant, maintainable code.
 
 capabilities = ["core", "filesystem", "codesearch", "memory", "websearch", "programming-rust"]

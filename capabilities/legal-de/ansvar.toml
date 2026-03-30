@@ -1,6 +1,8 @@
 # capabilities/legal-de/ansvar.toml
 # Capability: legal-de
 # Provider: @ansvar/german-law-mcp — German legislation, case law, and EU cross-references
+# Title: German Law
+# Description: German legislation, court decisions, and EU cross-references via Ansvar MCP.
 
 [deps]
 require = ["ansvar/german-law-mcp"]

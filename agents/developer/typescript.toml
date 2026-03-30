@@ -1,5 +1,6 @@
 # agents/developer/typescript.toml
 # Agent: developer:typescript
+# Title: TypeScript Developer
 # Description: TypeScript development specialist. Expert in type safety, modern JS/TS patterns, npm ecosystem, and best practices. Writes clean, type-safe, maintainable code.
 
 capabilities = ["core", "filesystem", "codesearch", "memory", "websearch", "programming-nodejs"]

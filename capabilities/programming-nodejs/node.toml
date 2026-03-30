@@ -1,6 +1,8 @@
 # capabilities/programming-nodejs/node.toml
 # Capability: programming-nodejs
 # Provider: Node.js LTS (node, npm, npx)
+# Title: Node.js
+# Description: Node.js LTS runtime with npm and npx package management.
 
 [deps]
 require = ["nodejs/node"]

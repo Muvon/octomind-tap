@@ -1,5 +1,6 @@
 # agents/lawyer/general.toml
 # Agent: lawyer:general
+# Title: General Legal Assistant
 # Description: General legal assistant. Country-aware legal guidance, rights, obligations, document review, and legal research via web. Works for any jurisdiction worldwide.
 
 capabilities = ["core", "filesystem", "websearch"]

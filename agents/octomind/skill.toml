@@ -1,5 +1,6 @@
 # agents/octomind/skill.toml
 # Agent: octomind:skill
+# Title: Skill Development Assistant
 # Description: Skill development assistant — creates and validates AgentSkills-compliant SKILL.md packs for Octomind taps.
 
 capabilities = ["core", "filesystem"]

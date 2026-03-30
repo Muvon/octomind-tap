@@ -1,6 +1,8 @@
 # capabilities/versioning/git.toml
 # Capability: versioning
 # Provider: git MCP — git repository operations via MCP
+# Title: Git Version Control
+# Description: Git repository operations — log, diff, status, commit, branch via MCP.
 # Provides tools: git_log, git_diff, git_status, git_commit, git_branch, etc.
 
 [deps]

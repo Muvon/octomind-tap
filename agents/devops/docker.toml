@@ -1,5 +1,6 @@
 # agents/devops/docker.toml
 # Agent: devops:docker
+# Title: Docker Specialist
 # Description: Docker and container specialist. Expert in Dockerfiles, multi-stage builds, docker-compose, image optimization, security hardening, and container networking.
 
 capabilities = ["core", "filesystem", "codesearch", "websearch", "docker"]

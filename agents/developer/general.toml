@@ -1,5 +1,6 @@
 # agents/developer/general.toml
 # Agent: developer:general
+# Title: General Developer
 # Description: Elite senior developer. Pragmatic, precise, zero waste. Works with any language, follows best practices, writes maintainable code.
 
 capabilities = ["core", "filesystem", "codesearch", "memory", "websearch"]

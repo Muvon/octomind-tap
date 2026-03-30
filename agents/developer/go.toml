@@ -1,6 +1,7 @@
 # agents/developer/go.toml
 # Agent: developer:go
-# Description: Go development specialist. Expert in idiomatic Go, modules, interfaces, goroutines, testing, and the standard library. Writes simple, explicit, production-grade Go code.
+# Title: Go Developer
+# Description: Go development specialist. Expert in idiomatic Go, modules, interfaces, goroutines, and testing. Writes simple, production-grade code.
 
 capabilities = ["core", "filesystem", "codesearch", "memory", "websearch"]
 

@@ -1,6 +1,8 @@
 # capabilities/docker/docker.toml
 # Capability: docker
 # Provider: Docker CLI (docker, docker-compose)
+# Title: Docker
+# Description: Docker container management via docker and docker-compose CLI.
 
 [deps]
 require = ["docker/docker"]

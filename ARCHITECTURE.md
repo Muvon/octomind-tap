@@ -84,6 +84,10 @@ Symlinks are managed by `scripts/setup-symlinks.sh` which **always force-creates
 
 ```toml
 # capabilities/<name>/<provider>.toml
+# Capability: <name>
+# Provider: <provider-name>
+# Title: <Short Capability Title (5–60 chars)>
+# Description: <What this capability provides (20–160 chars)>
 
 [deps]
 require = ["muvon/octocode"]
@@ -93,6 +97,11 @@ server_refs = ["octocode"]
 allowed_tools = ["octocode:*"]
 
 # Optional: [[mcp.servers]] if the provider needs a custom MCP server
+[[mcp.servers]]
+name = "octocode"
+type = "stdio"
+command = "octocode"
+args = ["mcp"]
 ```
 
 ---
@@ -175,7 +184,8 @@ skills/
 | Field | Required | Constraints |
 |-------|----------|-------------|
 | `name` | ✅ | Max 64 chars. Lowercase letters, numbers, hyphens. No leading/trailing hyphen. Must match directory name. |
-| `description` | ✅ | Max 1024 chars. Non-empty. What the skill does and when to use it. |
+| `title` | ✅ | 5–60 chars. Short human-readable label for the skill. |
+| `description` | ✅ | 20–1024 chars. What the skill does and when to use it. |
 | `license` | optional | License name or path to bundled license file. |
 | `compatibility` | optional | Max 500 chars. Environment requirements (tools, OS, network). |
 | `metadata` | optional | Arbitrary key-value mapping (author, version, tags). |
@@ -202,10 +212,11 @@ bash scripts/lint-skills.sh skills/git-workflow
 
 The lint script validates:
 - Valid YAML frontmatter (delimited by `---`)
-- Required fields: `name`, `description`
+- Required fields: `name`, `title`, `description`
 - `name` format and length constraints
 - `name` matches directory name
-- `description` and `compatibility` length limits
+- `title` length (5–60 chars)
+- `description` length (20–1024 chars) and `compatibility` length limits
 - Non-empty body after frontmatter
 
 ### Skill vs Agent
@@ -224,19 +235,35 @@ Skills and agents serve different purposes:
 ## CI / Validation
 
 ```bash
-# Lint all manifests (TOML validity, required fields, no name= set)
+# Lint all manifests (TOML validity, required fields, title/description, no name= set)
 bash scripts/lint-manifests.sh
 
-# Lint all skills (frontmatter validity, required fields, name format)
+# Lint all capabilities (TOML validity, title/description, MCP server description)
+bash scripts/lint-capabilities.sh
+
+# Lint all skills (frontmatter validity, required fields incl. title)
 bash scripts/lint-skills.sh
 
 # Validate capability resolution for all agents
 bash scripts/validate-capabilities.sh
 
-# All three run in .github/workflows/lint.yml on every push/PR
+# All four run in .github/workflows/lint.yml on every push/PR
 ```
 
 The lint script skips the `server_refs` cross-check for capability-driven agents (those with `capabilities =` at top level), since MCP wiring is resolved at runtime.
+
+---
+
+## Metadata Comments
+
+All agents and capabilities require `# Title:` and `# Description:` comment lines:
+
+| Entity | Field | Constraints |
+|--------|-------|-------------|
+| Agent | `# Title:` | 5–60 chars. Short human-readable label. |
+| Agent | `# Description:` | 20–160 chars. What the agent does. |
+| Capability | `# Title:` | 5–60 chars. Short capability label. |
+| Capability | `# Description:` | 20–160 chars. What the capability provides. |
 
 ---
 
@@ -245,7 +272,8 @@ The lint script skips the `server_refs` cross-check for capability-driven agents
 ```toml
 # agents/<domain>/<spec>.toml
 # Agent: <domain>:<spec>
-# Description: One-line description.
+# Title: Short Agent Title
+# Description: One-line description of what this agent does.
 
 capabilities = ["core", "filesystem", "programming-python"]   # REQUIRED
 

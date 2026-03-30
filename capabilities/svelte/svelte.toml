@@ -1,6 +1,8 @@
 # capabilities/svelte/svelte.toml
 # Capability: svelte
 # Provider: @sveltejs/mcp — official Svelte/SvelteKit documentation
+# Title: Svelte
+# Description: Official Svelte/SvelteKit documentation via MCP server.
 
 [deps]
 require = ["sveltejs/svelte"]

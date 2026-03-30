@@ -1,6 +1,8 @@
 # capabilities/legal-ca/ansvar.toml
 # Capability: legal-ca
 # Provider: @ansvar/canadian-law-mcp — Canadian legislation with bilingual support
+# Title: Canadian Law
+# Description: Canadian federal legislation with bilingual support via Ansvar MCP.
 
 [deps]
 require = ["ansvar/canadian-law-mcp"]

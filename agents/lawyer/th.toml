@@ -1,6 +1,7 @@
 # agents/lawyer/th.toml
 # Agent: lawyer:th
-# Description: Thai law specialist. Official Royal Gazette legislation covering PDPA, Computer Crime Act, Cybersecurity Act, Civil and Commercial Code, and more with full-text search.
+# Title: Thai Law Specialist
+# Description: Thai law specialist. Royal Gazette legislation covering PDPA, Computer Crime Act, Cybersecurity Act, and Civil and Commercial Code.
 
 capabilities = ["core", "filesystem", "websearch", "legal-th"]
 

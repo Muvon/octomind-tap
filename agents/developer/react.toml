@@ -1,6 +1,7 @@
 # agents/developer/react.toml
 # Agent: developer:react
-# Description: React development specialist. Expert in hooks, component patterns, state management, and the modern React ecosystem. Writes clean, performant, maintainable React code.
+# Title: React Developer
+# Description: React development specialist. Expert in hooks, component patterns, state management, and the modern React ecosystem.
 
 capabilities = ["core", "filesystem", "codesearch", "memory", "websearch", "programming-nodejs"]
 

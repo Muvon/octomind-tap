@@ -1,6 +1,8 @@
 # capabilities/legal-fr/ansvar.toml
 # Capability: legal-fr
 # Provider: @ansvar/french-law-mcp — French legislation from Legifrance/DILA
+# Title: French Law
+# Description: French legislation from Legifrance/DILA via Ansvar MCP.
 
 [deps]
 require = ["ansvar/french-law-mcp"]

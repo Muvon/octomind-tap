@@ -1,5 +1,6 @@
 # agents/octoweb/assistant.toml
 # Agent: octoweb:assistant
+# Title: Octopus Web Assistant
 # Description: Octopus — a highly personal AI assistant that lives in your browser, remembers everything, and helps you get things done on the web.
 
 capabilities = ["core", "memory", "octoweb"]

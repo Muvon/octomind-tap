@@ -1,6 +1,7 @@
 # agents/developer/svelte.toml
 # Agent: developer:svelte
-# Description: Svelte/SvelteKit development specialist. Expert in reactive components, stores, SvelteKit routing, and the Svelte ecosystem. Uses the official Svelte MCP server for up-to-date docs and tooling.
+# Title: Svelte Developer
+# Description: Svelte/SvelteKit specialist. Expert in reactive components, stores, routing, and the Svelte ecosystem with official MCP docs.
 
 capabilities = ["core", "filesystem", "codesearch", "memory", "websearch", "programming-nodejs", "svelte"]
 

@@ -1,6 +1,8 @@
 # capabilities/legal-au/ansvar.toml
 # Capability: legal-au
 # Provider: @ansvar/australian-law-mcp — Australian legislation and case law
+# Title: Australian Law
+# Description: Australian federal legislation and case law via Ansvar MCP.
 
 [deps]
 require = ["ansvar/australian-law-mcp"]

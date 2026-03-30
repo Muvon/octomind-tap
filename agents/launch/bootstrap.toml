@@ -1,6 +1,7 @@
 # agents/launch/bootstrap.toml
 # Agent: launch:bootstrap
-# Description: Zero-budget launch strategist. Product Hunt playbooks, community building, organic growth tactics, cold outreach templates, content-led growth, social proof hacks. Gets your first 1,000 users without spending a dollar.
+# Title: Zero-Budget Launch Strategist
+# Description: Zero-budget launch strategist. Product Hunt playbooks, community building, organic growth, cold outreach, and social proof tactics.
 
 capabilities = ["core", "filesystem", "websearch", "memory"]
 

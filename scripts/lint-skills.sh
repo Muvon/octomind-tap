@@ -3,11 +3,12 @@
 # Validates per the AgentSkills specification (https://agentskills.io/specification):
 #   1. File exists at skills/<name>/SKILL.md
 #   2. Valid YAML frontmatter (delimited by ---)
-#   3. Required fields: name, description
+#   3. Required fields: name, title, description
 #   4. name: lowercase letters, numbers, hyphens only; no leading/trailing hyphen; max 64 chars
-#   5. description: non-empty, max 1024 chars
-#   6. Optional fields validated if present: license, compatibility (max 500 chars), allowed-tools
-#   7. Directory name matches the `name` field in frontmatter
+#   5. title: non-empty, 5–60 chars
+#   6. description: non-empty, 20–1024 chars
+#   7. Optional fields validated if present: license, compatibility (max 500 chars), allowed-tools
+#   8. Directory name matches the `name` field in frontmatter
 #
 # Usage:
 #   scripts/lint-skills.sh                        # lint all skills
@@ -93,12 +94,30 @@ if dir_name != name:
     print(f"NAME_MISMATCH: directory name '{dir_name}' does not match name field '{name}'", file=sys.stderr)
     sys.exit(1)
 
+# ── Required: title ───────────────────────────────────────────────────────────
+if "title" not in fields or not fields["title"].strip():
+    print("MISSING_TITLE: 'title' is required in frontmatter", file=sys.stderr)
+    sys.exit(1)
+
+skill_title = fields["title"]
+if len(skill_title) < 5:
+    print(f"TITLE_TOO_SHORT: title must be at least 5 characters ({len(skill_title)} chars)", file=sys.stderr)
+    sys.exit(1)
+
+if len(skill_title) > 60:
+    print(f"TITLE_TOO_LONG: title exceeds 60 characters ({len(skill_title)} chars)", file=sys.stderr)
+    sys.exit(1)
+
 # ── Required: description ─────────────────────────────────────────────────────
 if "description" not in fields or not fields["description"].strip():
     print("MISSING_DESCRIPTION: 'description' is required and must be non-empty", file=sys.stderr)
     sys.exit(1)
 
 desc = fields["description"]
+if len(desc) < 20:
+    print(f"DESCRIPTION_TOO_SHORT: description must be at least 20 characters ({len(desc)} chars)", file=sys.stderr)
+    sys.exit(1)
+
 if len(desc) > 1024:
     print(f"DESCRIPTION_TOO_LONG: description exceeds 1024 characters ({len(desc)} chars)", file=sys.stderr)
     sys.exit(1)
