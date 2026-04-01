@@ -1,0 +1,22 @@
+#brave_web_search capabilities/websearch/brave.toml
+# Capability: websearch
+# Provider: Brave Search — web search via Brave Search API
+# Title: Web Search (Brave)
+# Description: Web search via Brave Search API with local and web results.
+# Provides tools: brave_web_search, brave_local_search
+
+[deps]
+require = ["brave/brave-search"]
+
+[roles.mcp]
+server_refs = ["brave-search"]
+allowed_tools = []
+
+[[mcp.servers]]
+name = "brave-search"
+type = "stdio"
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-brave-search"]
+timeout_seconds = 60
+env = { BRAVE_API_KEY = "{{ENV:BRAVE_API_KEY}}" }
+tools = []

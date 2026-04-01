@@ -1,0 +1,22 @@
+# capabilities/websearch/exa.toml
+# Capability: websearch
+# Provider: Exa — AI-powered semantic web search
+# Title: Web Search (Exa)
+# Description: AI-powered semantic web search via Exa API with 1,000 free queries/month.
+# Provides tools: web_search_exa, research_exa
+
+[deps]
+require = ["exa-labs/exa"]
+
+[roles.mcp]
+server_refs = ["exa"]
+allowed_tools = ["web_search_exa"]
+
+[[mcp.servers]]
+name = "exa"
+type = "stdio"
+command = "npx"
+args = ["-y", "exa-mcp-server"]
+timeout_seconds = 60
+env = { EXA_API_KEY = "{{ENV:EXA_API_KEY}}" }
+tools = []
