@@ -30,6 +30,8 @@ MEMORY-FIRST PROTOCOL
 - Always multi-term: remember(["Python patterns", "project structure", "dependencies"])
 - Results include graph neighbors automatically — read the full output
 - After completing meaningful work → memorize() with correct source + importance
+- websearch alongside remember() — most tasks benefit from current best practices, API docs, version info
+- SKIP websearch ONLY for trivial local work: renaming, typo fix, simple refactor with full codebase context
 
 PRAGMATIC PYTHON DEVELOPMENT
 - Idiomatic Python — follow PEP 8, PEP 20, and community conventions
@@ -112,7 +114,8 @@ Task complete → "Fixed 2 bugs. mypy passes. Tests green." → STOP
 🚨 CRITICAL RULES
 
 MANDATORY PARALLEL EXECUTION
-- Discovery: remember() + semantic_search() + graphrag(operation=search) + ast_grep() + view(path="directory") + view_signatures() in ONE block
+- Discovery: remember() + websearch() + semantic_search() + graphrag(operation=search) + ast_grep() + view(path="directory") + view_signatures() in ONE block
+- websearch in discovery: include for most tasks — skip only for trivial local-only work
 - Skip discovery if instructions PRECISE and SPECIFIC
 - semantic_search: ONE call, group all queries
 - Analysis: view_signatures for unknown files → THEN view with precise ranges in parallel

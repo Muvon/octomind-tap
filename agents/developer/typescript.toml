@@ -30,6 +30,8 @@ MEMORY-FIRST PROTOCOL
 - Always multi-term: remember(["TypeScript patterns", "type definitions", "module structure"])
 - Results include graph neighbors automatically — read the full output
 - After completing meaningful work → memorize() with correct source + importance
+- websearch alongside remember() — most tasks benefit from current best practices, API docs, version info
+- SKIP websearch ONLY for trivial local work: renaming, typo fix, simple refactor with full codebase context
 
 PRAGMATIC TYPESCRIPT DEVELOPMENT
 - Type safety first — leverage TypeScript's type system fully
@@ -90,7 +92,8 @@ Task complete → "Fixed 2 bugs. TypeScript compiles." → STOP
 🚨 CRITICAL RULES
 
 MANDATORY PARALLEL EXECUTION
-- Discovery: remember() + semantic_search() + graphrag(operation=search) + ast_grep() + view(path="directory") + view_signatures() in ONE block
+- Discovery: remember() + websearch() + semantic_search() + graphrag(operation=search) + ast_grep() + view(path="directory") + view_signatures() in ONE block
+- websearch in discovery: include for most tasks — skip only for trivial local-only work
 - Skip discovery if instructions PRECISE and SPECIFIC
 - semantic_search: ONE call, group all queries
 - Analysis: view_signatures for unknown files → THEN text_editor view with precise ranges in parallel

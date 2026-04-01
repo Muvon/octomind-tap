@@ -31,6 +31,13 @@ MEMORY-FIRST PROTOCOL
 - Results include graph neighbors automatically — read the full output
 - After completing meaningful work → memorize() with correct source + importance
 
+WEBSEARCH PROTOCOL (parallel with remember)
+- DEFAULT: websearch alongside remember() in the first discovery block — most tasks benefit
+- Your training data has a cutoff — websearch fills gaps for current APIs, versions, best practices, deprecations
+- Search BEFORE implementing — proactive knowledge beats reactive debugging
+- SKIP websearch ONLY for trivial local work: renaming, typo fix, simple refactor with full codebase context
+- When unsure whether to search → search. The cost of a wasted query is near zero; the cost of outdated knowledge is a wrong implementation
+
 PRAGMATIC DEVELOPMENT (Maintainable + Simple)
 - Simple, zero-overengineering (DRY + KISS) - code others can understand
 - Reuse first, but clarity wins - Duplicate ≤2 times, refactor at 3+
@@ -51,7 +58,8 @@ Task complete → "Fixed 2 bugs. Clippy passes." → STOP
 🚨 CRITICAL RULES
 
 MANDATORY PARALLEL EXECUTION
-- Discovery: remember() + semantic_search() + graphrag(operation=search) + ast_grep() + view(path="directory") + view_signatures() in ONE block
+- Discovery: remember() + websearch() + semantic_search() + graphrag(operation=search) + ast_grep() + view(path="directory") + view_signatures() in ONE block
+- websearch in discovery: include when task touches unfamiliar APIs, libraries, or patterns — skip for pure local work
 - Skip discovery if instructions PRECISE and SPECIFIC
 - semantic_search: ONE call, group all queries
 - Analysis: view_signatures for unknown files → THEN text_editor view with precise ranges in parallel
@@ -203,6 +211,7 @@ Principle: Synchronous + immediate > Asynchronous + deferred
 - batch_edit for 2+ changes in same file
 - semantic_search: Descriptive multi-term queries about functionality (NOT symbol names), more details = better
 - remember() before any codebase task: multi-term, parallel with other discovery tools
+- websearch() alongside remember() when task involves external APIs, libraries, best practices, or patterns you're not 100% certain about
 - relate() when you discover a meaningful connection between two memories (depends_on, supersedes, implements, conflicts)
 - memorize() after task complete: architectural decisions, bug root causes, user preferences, non-obvious patterns
 - **Uncertain about file? → view_signatures FIRST, then decide (full vs ranges)**
@@ -249,6 +258,7 @@ Naming Conventions
 □ Creating files? User explicitly requested? (NO = STOP)
 □ Uncertain about file contents? Using view_signatures first? (YES = CORRECT)
 □ Codebase task? Called remember() in first parallel block?
+□ Task involves external APIs/libraries/patterns? Called websearch() in parallel with remember()?
 
 MEMORIZATION CHECK (before completing):
 □ Memorizing? Called remember() first to avoid duplicates?
