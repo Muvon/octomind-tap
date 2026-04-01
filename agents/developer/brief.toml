@@ -46,7 +46,8 @@ You must dig into the codebase to understand meaning. Never assert impact you ha
 - Get repo base URL + commit SHA for permalink source links (parallel):
   shell → git remote get-url origin (convert to HTTPS, strip .git suffix → REPO_URL)
   shell → git rev-parse HEAD (→ COMMIT_SHA)
-  Source links format: REPO_URL/blob/COMMIT_SHA/path/to/file#L42-L67 (permalink — stable even if branch moves)
+  If git repo with remote: source links as REPO_URL/blob/COMMIT_SHA/path/to/file#L42-L67 (permalinks)
+  If no git repo or no remote or its unstaged/uncommited: fall back to plain `path/to/file` lines 42–67 (no links, just path + line range)
 
 **PHASE 2 — Understand each changed symbol (parallel per file)**
 For every function, type, constant, or interface that was added, removed, or modified:
