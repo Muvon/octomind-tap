@@ -195,6 +195,13 @@ top_k = 0
 | `top_p` | Typically 0.2 (precise) to 0.9 (creative) |
 | `top_k` | 0 or 10 for most agents |
 
+### Optional fields
+
+| Field | Notes |
+|-------|-------|
+| `workflow` | `"workflow_name"` — activates a workflow pipeline before main session |
+| `model` | Override model for this agent (e.g. `"openrouter:anthropic/claude-sonnet-4"`) |
+
 ### Forbidden in agents
 
 | Field | Why |
@@ -203,6 +210,122 @@ top_k = 0
 | `[deps]` | Deps belong in capability files |
 | `[roles.mcp]` | Injected from capabilities at runtime |
 | `[[mcp.servers]]` | MCP servers belong in capability files |
+
+---
+
+## WORKFLOWS & LAYERS (Multi-Step Pipelines)
+
+Agents can define **workflows** — multi-step AI pipelines that run before the main session.
+The main session (`""`) receives accumulated workflow output and handles the final step.
+
+```
+workflow = "my_workflow"  →  [[workflows]] steps execute  →  main session runs
+```
+
+### When to use workflows
+
+- Agent needs multiple AI processing stages (context curation → implementation → review)
+- Different steps need different models (cheap for analysis, best for code generation)
+- A feedback loop is needed (build → review → score → fix → review → score)
+- The main session should only handle finalization (e.g., shipping a PR)
+
+### Workflow definition (inside agent manifest)
+
+```toml
+[[workflows]]
+name = "my_workflow"
+description = "What this workflow does"
+
+[[workflows.steps]]
+name = "step_name"
+type = "once"
+layer = "layer_name"
+```
+
+### Step types
+
+| Type | Key fields | Behavior |
+|------|-----------|----------|
+| `once` | `layer` | Run layer once |
+| `loop` | substeps, `max_iterations`, `exit_pattern` | Repeat substeps until pattern matches or max hit |
+| `foreach` | `parse_pattern`, substeps | Iterate over regex-matched items |
+| `conditional` | `layer`, `condition_pattern`, `on_match`, `on_no_match` | Branch based on output |
+| `parallel` | `parallel_layers`, `aggregator` | Run layers simultaneously, aggregate results |
+
+### Nested substeps (for loop/foreach)
+
+```toml
+[[workflows.steps]]
+name = "dev_cycle"
+type = "loop"
+max_iterations = 3
+exit_pattern = "VERDICT:\\s*SHIP"
+
+  [[workflows.steps.substeps]]
+  name = "build"
+  type = "once"
+  layer = "builder"
+
+  [[workflows.steps.substeps]]
+  name = "review"
+  type = "once"
+  layer = "reviewer"
+```
+
+### Layer definition
+
+```toml
+[[layers]]
+name = "layer_name"
+description = "What this layer does"
+model = "openrouter:google/gemini-2.5-flash"
+max_tokens = 4096
+temperature = 0.2
+input_mode = "last"       # last | first | all
+output_mode = "append"    # none | append | replace
+output_role = "assistant" # assistant | user
+system_prompt = \"""...\"""
+
+[layers.mcp]
+server_refs = ["octofs", "octocode"]
+allowed_tools = ["octofs:view", "octocode:semantic_search"]
+```
+
+### Data flow between layers
+
+| `input_mode` | Layer sees |
+|-------------|-----------|
+| `last` | Only the most recent message |
+| `first` | Only the first message (user's original input) |
+| `all` | Full conversation history |
+
+| `output_mode` | Effect |
+|--------------|--------|
+| `none` | Output discarded |
+| `append` | Output added as new message |
+| `replace` | Output replaces history |
+
+| `output_role` | Use when |
+|--------------|----------|
+| `user` | Next layer should treat this as instructions/context |
+| `assistant` | This is a response/result |
+
+### Layer MCP tools
+
+Layers use `[layers.mcp]` to specify tool access. This references the same servers that capabilities provide (resolved by `bin/load`). `[layers.mcp]` is separate from `[roles.mcp]`.
+
+### Model selection for layers
+
+| Role | Model choice | Why |
+|------|-------------|-----|
+| Context curation | Cheap (gemini-flash, gpt-4.1-mini) | Read-only, no code generation |
+| Code implementation | Best (claude-sonnet-4, opus) | Quality matters most here |
+| Review / scoring | Cheap (gemini-flash) | Analysis, not generation |
+| Shipping / PR | Cheap (gemini-flash) | Mechanical, no reasoning |
+
+### Reference example
+
+See `developer:autopilot` for a complete workflow agent: scout → builder/reviewer/scorer loop → PR finalizer.
 
 ---
 

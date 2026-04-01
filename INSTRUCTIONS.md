@@ -41,6 +41,7 @@ CONTRIBUTING.md                 # Contribution guidelines
 | Resolve a manifest (debug) | `bin/load <domain>:<spec>` — prints merged TOML to stdout |
 | Refresh capability symlinks | `scripts/setup-symlinks.sh` |
 | Platform detection in dep scripts | `deps/lib/platform.sh` — source this, never re-implement |
+| Add a workflow-based agent | Study `agents/developer/autopilot.toml` for workflow + layer patterns |
 | Meta-agents (tap/skill/instructions) | `agents/octomind/` — these operate on the tap itself |
 
 ## How Things Work
@@ -111,6 +112,116 @@ tools = []
 | `temperature` | Required; 0.1–0.3 for technical, 0.4–0.6 for general |
 | `top_p` | Required; 0.9 for most cases |
 | `top_k` | Required; 0 to disable, 10–40 for more deterministic output |
+| `workflow` | Optional; `"workflow_name"` activates a workflow pipeline before main session |
+
+### Workflows & Layers (Multi-Step Pipelines)
+
+Agents can define **workflows** — multi-step AI pipelines that run before the main session (`""`). Each step runs a **layer** (a separate AI instance with its own model, prompt, and tools). The main session receives the accumulated workflow output and handles the final step.
+
+```
+workflow = "my_workflow"
+         ↓
+   [[workflows]] steps execute sequentially
+         ↓
+   main session runs with all accumulated output
+```
+
+#### Workflow Definition
+
+```toml
+# In the agent manifest, after [[roles]]
+[[workflows]]
+name = "my_workflow"
+description = "What this workflow does"
+
+[[workflows.steps]]
+name = "step_name"
+type = "once"
+layer = "layer_name"
+```
+
+#### Step Types
+
+| Type | Fields | Behavior |
+|------|--------|----------|
+| `once` | `layer` | Run layer once |
+| `loop` | `layer` or substeps, `max_iterations`, `exit_pattern` | Repeat until `exit_pattern` matches output or max iterations hit |
+| `foreach` | `parse_pattern`, substeps | Iterate over regex-matched items from previous output |
+| `conditional` | `layer`, `condition_pattern`, `on_match`, `on_no_match` | Run layer, then branch based on output pattern |
+| `parallel` | `parallel_layers`, `aggregator` | Run multiple layers simultaneously, feed results to aggregator layer |
+
+#### Nested Substeps
+
+`loop` and `foreach` steps support nested substeps:
+
+```toml
+[[workflows.steps]]
+name = "dev_cycle"
+type = "loop"
+max_iterations = 3
+exit_pattern = "VERDICT:\\s*SHIP"
+
+  [[workflows.steps.substeps]]
+  name = "build"
+  type = "once"
+  layer = "builder"
+
+  [[workflows.steps.substeps]]
+  name = "review"
+  type = "once"
+  layer = "reviewer"
+```
+
+#### Layer Definition
+
+```toml
+[[layers]]
+name = "layer_name"
+description = "What this layer does"
+model = "openrouter:google/gemini-2.5-flash"
+max_tokens = 4096
+temperature = 0.2
+input_mode = "last"       # last | first | all — what conversation history to see
+output_mode = "append"    # none | append | replace — how output enters conversation
+output_role = "assistant" # assistant | user — role of the appended message
+system_prompt = """..."""
+
+[layers.mcp]
+server_refs = ["octofs", "octocode"]
+allowed_tools = ["octofs:view", "octocode:semantic_search"]
+```
+
+#### Layer Data Flow
+
+| `input_mode` | Layer sees |
+|-------------|-----------|
+| `last` | Only the most recent message |
+| `first` | Only the first message (user's original input) |
+| `all` | Full conversation history |
+
+| `output_mode` | Effect |
+|--------------|--------|
+| `none` | Output discarded (side effects only) |
+| `append` | Output added as a new message |
+| `replace` | Output replaces conversation history |
+
+| `output_role` | Use when |
+|--------------|----------|
+| `user` | Layer output should be treated as instructions by the next layer |
+| `assistant` | Layer output is a response/result |
+
+#### Layer MCP Tools
+
+Layers reference the same MCP servers that capabilities provide. `[layers.mcp]` specifies which servers and tools the layer can access — this is separate from `[roles.mcp]` (which is injected by `bin/load` for the main role).
+
+#### Example: Autonomous Developer Pipeline
+
+See `agents/developer/autopilot.toml` for a complete workflow-based agent:
+- **scout** layer: cheap model, read-only context curation
+- **builder** layer: best model, implement + test + commit
+- **reviewer** layer: cheap model, code review
+- **scorer** layer: no tools, quality gate with confidence score
+- **main session**: finalizer, creates PR with confidence badge
 
 ### Naming Conventions
 
