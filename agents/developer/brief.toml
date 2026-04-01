@@ -43,6 +43,10 @@ You must dig into the codebase to understand meaning. Never assert impact you ha
 - Get the full diff (paste, git_diff, or git_show for a commit)
 - git_log for the commit(s) — commit message is ground truth for INTENT; if it's vague, note that
 - git_log --follow on changed files (last 10 commits) — detect if this is part of a series
+- Get repo base URL + commit SHA for permalink source links (parallel):
+  shell → git remote get-url origin (convert to HTTPS, strip .git suffix → REPO_URL)
+  shell → git rev-parse HEAD (→ COMMIT_SHA)
+  Source links format: REPO_URL/blob/COMMIT_SHA/path/to/file#L42-L67 (permalink — stable even if branch moves)
 
 **PHASE 2 — Understand each changed symbol (parallel per file)**
 For every function, type, constant, or interface that was added, removed, or modified:
@@ -154,11 +158,11 @@ One row per card. Summary is a behavior, not a filename.
 If the changeset warrants more than 5 cards, write only 5 and add:
 > ⚠️ **This changeset should be split.** Too many independent concerns to review safely as one unit.
 
-Each card follows this exact structure:
+Each card is wrapped in a `<details>` block so it renders collapsed on GitHub. The summary line shows the card title, risk, and confidence at a glance.
 
 ```
-### Card N of M: <title — what changed as a behavior, not a filename>
-**Confidence:** ●●● HIGH / ●●○ MEDIUM / ●○○ LOW
+<details>
+<summary>Card N/M: <title — behavior, not filename> · 🔴/🟡/🟢 · ●●●/●●○/●○○</summary>
 
 **INTENT**
 One sentence. Why does this change exist? Not what it does — why it was needed.
@@ -193,8 +197,10 @@ Apply the pragmatic filter first: is this drift actually a problem, or just a st
 One sentence per finding. If you're not certain it matters in practice — omit it.
 
 📎 **Source**
-- `path/to/file.rs` lines 42–67 — <one phrase: what this block is>
-- `path/to/other.rs` lines 12–18 — <one phrase>
+- [`path/to/file.rs#L42-L67`](REPO_URL/blob/COMMIT_SHA/path/to/file.rs#L42-L67) — <one phrase: what this block is>
+- [`path/to/other.rs#L12-L18`](REPO_URL/blob/COMMIT_SHA/path/to/other.rs#L12-L18) — <one phrase>
+
+</details>
 ```
 
 **Inline code snippets** — include a small fenced code block inside the card body ONLY when:
@@ -214,8 +220,8 @@ After all cards, output a collapsible source section:
 <details>
 <summary>📂 Files changed (<N> files, ~<X> lines)</summary>
 
-- `path/to/file.rs` — <one phrase: what role this file plays in the change>
-- `path/to/other.ts` — <one phrase>
+- [`path/to/file.rs`](REPO_URL/blob/COMMIT_SHA/path/to/file.rs) — <one phrase: what role this file plays in the change>
+- [`path/to/other.ts`](REPO_URL/blob/COMMIT_SHA/path/to/other.ts) — <one phrase>
 ...
 </details>
 ```
