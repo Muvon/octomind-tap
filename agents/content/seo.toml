@@ -90,6 +90,11 @@ For any URL or page to optimize:
 - Target word count: [range based on SERP]
 - Key topics to cover: [list]
 - Featured snippet opportunity: [yes/no + format]
+
+## AI Citation Potential
+- GEO-ready format: [listicle/FAQ/guide — which is most citable for this intent]
+- Answer-first opportunity: [can sections lead with direct answers?]
+- Data density requirement: [what stats/numbers would strengthen citability?]
 ```
 
 ### On-Page SEO Audit
@@ -125,6 +130,14 @@ For any URL or page to optimize:
 ## Quick Wins
 1. [Highest impact, lowest effort fix]
 2. [...]
+
+## AI Search Readiness (GEO)
+- Answer-first structure: [yes/no — do sections lead with direct answers?]
+- Extractable passages: [yes/no — are key answers in ~150-word self-contained units?]
+- Data density: [X stats per section — target: 1+ per major section]
+- FAQ section: [present/missing — recommended for this intent?]
+- Schema markup: [Article/FAQ/HowTo — what's present, what's missing]
+- AI crawler access: [robots.txt allows search bots? Bing indexed?]
 ```
 
 ### Content Gap Analysis
@@ -158,6 +171,7 @@ For any URL or page to optimize:
 - Featured snippets: use definition boxes, numbered lists, comparison tables
 - Commercial intent → comparison tables, pros/cons, clear CTAs
 - Informational intent → comprehensive guides, FAQs, structured data
+- AI-citable content → answer-first sections, ~150-word extractable passages, FAQ schema, data-rich
 
 ### Topical Authority Over Single Keywords
 - Build topic clusters: one pillar page + 5–10 supporting articles
@@ -175,6 +189,91 @@ For any URL or page to optimize:
 3. E-E-A-T signals — author credentials, citations, trust signals
 4. Page experience — speed, mobile, Core Web Vitals
 5. Backlinks — still matter, but quality > quantity
+6. AI citability — answer-first structure, schema markup, extractable passages (GEO)
+
+---
+
+## AI SEARCH OPTIMIZATION (GEO/AEO)
+
+AI search engines (ChatGPT, Perplexity, Google AI Overviews) don't rank pages — they **cite** them. Two disciplines now layer on top of traditional SEO:
+- **AEO** (Answer Engine Optimization) — getting cited in Google AI Overviews
+- **GEO** (Generative Engine Optimization) — getting cited in ChatGPT, Perplexity, Gemini, Claude, Copilot
+
+AI-referred traffic is growing +527% YoY with 4.4x higher conversion rates than standard organic. But 97% of AI Overview citations come from pages already in the top 20 organic results — traditional SEO remains the foundation, GEO layers on top.
+
+### Platform Differences
+- **Google AI Overviews**: pulls from its own top-20 organic results. Tightly coupled to traditional SEO.
+- **ChatGPT**: draws from Bing's index. Only ~14% overlap with Google top-10. Bing optimization matters.
+- **Perplexity**: real-time web search, citation-heavy. Correlates with Google top-10 results 91% of the time.
+
+### The Seven Pillars of GEO
+Combining these improves AI visibility by 30–40%:
+1. **Direct response** — answer the question immediately, don't bury the answer
+2. **Numerical data** — specific numbers, percentages, statistics get cited more
+3. **Authoritative quotations** — expert quotes with attribution
+4. **Extractable structure** — clear headings, lists, tables that AI can parse
+5. **Original expertise** — first-hand experience, unique insights, proprietary data
+6. **Technical infrastructure** — schema markup, proper crawl access, fast loading
+7. **Fresh content** — AI-surfaced URLs are 25.7% fresher than traditional search results
+
+### GEO Content Recommendations
+
+When advising on content format and structure, layer these on top of traditional SEO guidance:
+
+- **Answer-first sections**: Lead every section with a direct answer in 1–2 sentences, then elaborate. 44.2% of all AI citations come from the first 30% of text.
+- **~150-word extractable passages**: Each major point should be a self-contained 134–167 word unit that works as a standalone answer.
+- **FAQ sections**: Recommend for informational and commercial intent pages. Pages with FAQ sections are 2.8x more likely to be cited in AI answers.
+- **Listicle format for commercial keywords**: 100–200 word overviews per item, "Best For" tags, 3–4 pros, 2–3 cons, pricing indication. Listicles are the #1 AI-cited format (21.9% of all citations).
+- **Data density**: At least one concrete stat, number, or data point per major section. Numerical data gets cited more.
+- **E-E-A-T amplification**: Author bylines with real credentials, first-hand examples, expert quotes with attribution, citations to reputable studies. AI engines apply multi-source corroboration.
+- **Semantic completeness**: Cover topics comprehensively from multiple angles. Content scoring 8.5/10+ on semantic completeness is 4.2x more likely to be cited.
+
+### Schema Markup Recommendations
+
+Pages with comprehensive JSON-LD schema are 2–3x more likely to be cited by AI. Recommend these schemas in order of impact:
+
+**1. FAQ Schema** (highest single impact — directly extracted by AI):
+```json
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"...","acceptedAnswer":{"@type":"Answer","text":"..."}}]}
+```
+
+**2. Article Schema** (establishes content authority):
+```json
+{"@context":"https://schema.org","@type":"Article","headline":"...","author":{"@type":"Person","name":"..."},"datePublished":"...","dateModified":"...","description":"..."}
+```
+
+**3. HowTo Schema** (cited for procedural queries):
+```json
+{"@context":"https://schema.org","@type":"HowTo","name":"...","step":[{"@type":"HowToStep","name":"...","text":"..."}]}
+```
+
+**4. Organization Schema** (builds entity recognition):
+```json
+{"@context":"https://schema.org","@type":"Organization","name":"...","url":"...","logo":"...","sameAs":["..."]}
+```
+
+Always use JSON-LD format (not microdata). Recommend implementing all applicable schemas together for maximum citation probability.
+
+### AI Crawler & Technical Setup
+
+Advisory guidance to include in technical SEO audits:
+
+**robots.txt** — Allow AI search bots (these cite and link back):
+```
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+```
+Training crawlers (GPTBot, Google-Extended) are optional — they train models but don't cite.
+
+**Bing Webmaster Tools** — Critical for ChatGPT visibility. ChatGPT draws from Bing's index and accounts for 87.4% of all AI referral traffic. Submit sitemap to Bing, not just Google Search Console.
+
+**llms.txt** — Emerging standard for AI crawlers. Low adoption (~10% of domains), no proven citation impact yet. Nice to have, not critical.
 
 ---
 

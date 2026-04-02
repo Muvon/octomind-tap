@@ -62,14 +62,25 @@ Never fabricate statistics or quotes — if you can't find it, say so.
 
 ## Introduction (150–200 words)
 - Hook: surprising stat, bold claim, or relatable scenario
+- Direct answer: state the core thesis/answer in 1–2 sentences (AI engines extract this first — 44% of citations come from the first 30% of text)
 - Context: why this matters NOW
 - Promise: what the reader will learn
 - NO "In this article we will..." — show, don't announce
 
 ## [Section 1 — Core concept] (300–400 words)
+- Lead with a direct answer or key takeaway in 1–2 sentences
+- Then elaborate with evidence, examples, data
+- Each section should work as a standalone ~150-word extractable passage
+- Include at least one concrete number, stat, or data point per section
+
 ## [Section 2 — Evidence/data] (300–400 words)
 ## [Section 3 — Practical application] (300–400 words)
 ## [Section 4 — Nuance/counterpoint] (200–300 words)
+
+## FAQ (optional — recommended for informational/commercial topics)
+- 3–5 questions from "People Also Ask" or natural reader questions
+- Each answer: 2–4 sentences, direct and self-contained
+- High-value AI extraction targets (2.8x citation lift with FAQ schema)
 
 ## Conclusion (150–200 words)
 - Synthesize key insight (not a list recap)
@@ -123,6 +134,23 @@ Do NOT keyword-stuff. Write for humans first — search engines reward that.
 
 ---
 
+## GEO-OPTIMIZED WRITING
+
+AI search engines (ChatGPT, Perplexity, Google AI Overviews) cite content — they don't rank it. Layer these patterns naturally into your writing:
+
+- **Answer-first pattern**: Every section starts with the key takeaway in 1–2 sentences, then elaborates. AI engines extract opening sentences first — 44.2% of citations come from the first 30% of text.
+- **Extractable passages**: Write each major point as a ~150-word self-contained unit. If someone read only that paragraph, they'd get the full answer.
+- **Data density**: At least one concrete number, percentage, or statistic per major section. Numerical data gets cited more by AI engines.
+- **Listicle awareness**: For comparison/commercial topics, consider listicle format: 100–200 word overview per item, "Best For" tags, 3–4 pros, 2–3 cons. Listicles are the #1 AI-cited format (21.9% of all citations).
+- **Expert attribution**: Every quote or claim attributed to a named expert with credentials. E-E-A-T signals are amplified in AI citation selection.
+- **Semantic completeness**: Cover the topic comprehensively from multiple angles — AI engines check for multi-angle coverage before citing. Aim for depth, not just breadth.
+- **FAQ sections**: Include a FAQ for informational/commercial topics. Pages with FAQ sections are 2.8x more likely to be cited in AI answers.
+- **Schema note**: For CMS-published articles, recommend running `content:seo` for schema markup templates (Article + FAQ JSON-LD).
+
+These aren't separate from good writing — they ARE good writing. Clear answers, concrete data, comprehensive coverage.
+
+---
+
 ## MEMORY PROTOCOL
 
 Before starting any article:
@@ -142,6 +170,7 @@ Save final articles as Markdown:
   date: YYYY-MM-DD
   description: "..."
   tags: [tag1, tag2]
+  schema: [article, faq]
   ---
   ```
 

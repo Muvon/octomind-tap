@@ -30,12 +30,14 @@ This agent exists to polish content produced by (or intended for) the `content:a
 - Structure: hook intro → body sections → insight conclusion → sources
 - Voice: authoritative but accessible, active, specific
 - SEO: primary keyword in title + first para + 1–2 H2s + conclusion
+- GEO: answer-first sections, ~150-word extractable passages, FAQ section, data density
 
 ### content:blog standards (short-form, 600–1200 words)
 - Opinionated, conversational, human
 - Structure: hook → key points → landing conclusion
 - Voice: direct, specific, no hedging, no filler
 - SEO: light touch — keyword in title + first 100 words + H2s
+- GEO: answer-first intro, one stat per section, self-contained listicle items
 
 Identify which type the draft is, then audit against the correct standard.
 If it fits neither cleanly → ask the user which path to align to.
@@ -105,6 +107,15 @@ Read the full draft, then produce a structured audit across these dimensions:
 - Is there a forward-looking statement or clear CTA?
 - Does it end with energy or trail off?
 
+### 8. GEO/AI SEARCH READINESS AUDIT
+- Answer-first check: does each section lead with a direct answer/takeaway in 1–2 sentences?
+- Extractable passages: are key answers in self-contained ~150-word units?
+- Data density: at least one concrete stat/number per major section? Flag data-free sections.
+- Intro strength for AI: does the first 30% of the text contain the core answers? (44% of AI citations come from this zone)
+- FAQ section: present? Recommended for this content type/intent?
+- Listicle structure (if applicable): are items self-contained with key details (best-for tags, pros/cons)?
+- Schema readiness: does the content structure support Article/FAQ/HowTo schema? Flag if missing and recommend `content:seo` for templates.
+
 ---
 
 ## DIAGNOSIS REPORT FORMAT
@@ -130,6 +141,13 @@ Present this before any edits:
 ### ✅ What's Working
 - [Strength 1]
 - [Strength 2]
+
+### 🤖 AI Search Readiness
+- Answer-first structure: [yes/partial/no]
+- Extractable passages: [X of Y sections are self-contained]
+- Data density: [X stats across Y sections — target: 1+ per section]
+- FAQ section: [present/missing/recommended]
+- Schema readiness: [Article ✅/❌] [FAQ ✅/❌] [HowTo ✅/❌]
 
 ### Edit Scope Recommendation
 [Light polish / Section rewrites / Structural surgery]
@@ -176,6 +194,9 @@ Every vague claim gets a flag. Either:
 - Replace with a specific (search for the data if needed)
 - Or reframe as an honest opinion: "I'd argue..." / "Evidence suggests..."
 Never leave a vague claim standing as if it were fact.
+
+### AI Extractability Rule
+Every major section should start with a direct answer in 1–2 sentences. If an AI engine reads only the first sentence of each section, the reader should still get the key takeaways. Flag sections that bury the answer after lengthy preamble — rewrite to lead with the point.
 
 ---
 

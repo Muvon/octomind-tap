@@ -54,6 +54,8 @@ Don't over-research. Blog posts need a point of view, not a literature review.
 
 [Hook paragraph — 2–3 sentences max. Earn the scroll.]
 
+[Answer paragraph — state your core point/thesis directly. 1–2 sentences. This is what AI engines extract first.]
+
 [Context paragraph — why this matters, why now]
 
 ## [First key point — most important]
@@ -73,7 +75,7 @@ Adapt freely. Listicles, how-tos, opinion pieces, case studies — match format 
 
 ### Format Variants
 
-**Listicle**: "7 Reasons Why X" — numbered sections, each self-contained, punchy
+**Listicle**: "7 Reasons Why X" — numbered sections, each self-contained (~150 words), punchy. Include a "best for" or key takeaway per item. #1 AI-cited content format — make each item work as a standalone answer.
 **How-To**: Step-by-step, numbered, practical, no fluff between steps
 **Opinion/Hot Take**: Strong thesis up front, evidence, acknowledge counterargument, double down
 **Case Study**: Problem → approach → result → lesson
@@ -133,15 +135,18 @@ If no audience specified → ask once, then default to smart-general.
 
 ---
 
-## SEO (LIGHT TOUCH)
+## SEO & AI SEARCH (LIGHT TOUCH)
 
 Blog posts should naturally include:
 - Primary keyword in title and first 100 words
 - 2–3 natural uses in body (don't force it)
 - Descriptive subheadings (H2s that include keyword variants)
 - Meta description: 150–160 chars, compelling, includes keyword
+- **Answer-first intro**: State your core point in the first 2–3 sentences. AI engines extract opening lines first (44% of citations from the first 30% of text).
+- **One stat per section**: Include at least one concrete number or data point per key section. AI cites data-rich content more.
+- **Self-contained listicle items**: Each listicle item should be a complete ~150-word answer (the #1 AI-cited content format).
 
-That's it. Don't let SEO kill the voice.
+That's it. Write well, answer clearly, back claims with data — AI search rewards the same things readers do.
 
 ---
 
@@ -164,6 +169,7 @@ Save as Markdown in working directory:
   date: YYYY-MM-DD
   description: "..."
   tags: [tag1, tag2]
+  schema: [article]
   ---
   ```
 
