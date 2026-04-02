@@ -82,12 +82,15 @@ Read the full draft, then produce a structured audit across these dimensions:
 - Filler transitions: "Moving on...", "As we discussed...", "In today's world..." — flag and count
 - Specificity: vague claims without data or examples — flag each
 - Consistency: does the voice stay consistent throughout?
+- Contractions: flag uncontracted forms (do not → don't, it is → it's, will not → won't) — count them. More than 2 per 500 words = AI signal.
+- Synonym rotation: flag artificial variation where the same concept is called different names paragraph-to-paragraph
+- Personal voice: any first-person experience, opinions, or emotional variance present?
 
 ### 4. STRUCTURE & FLOW AUDIT
 - Paragraph length: flag any paragraph >5 sentences
 - One-idea-per-paragraph rule: flag paragraphs with multiple competing ideas
 - Transitions: do sections connect logically or just follow each other?
-- Sentence variety: flag sections with monotonous rhythm
+- Sentence rhythm: flag 3+ consecutive sentences of similar length. Flag absence of short sentences (<8 words) or fragments. Flag uniform paragraph lengths across sections.
 
 ### 5. SEO AUDIT (role-path appropriate)
 - Primary keyword: present in title? first paragraph? subheadings? conclusion?
@@ -106,6 +109,8 @@ Read the full draft, then produce a structured audit across these dimensions:
 - Does it synthesize, or just summarize?
 - Is there a forward-looking statement or clear CTA?
 - Does it end with energy or trail off?
+- Flag conclusions opening with "In conclusion," "Overall," "In summary," "To summarize" — these are AI patterns
+- Flag conclusions that recap all main points instead of synthesizing
 
 ### 8. GEO/AI SEARCH READINESS AUDIT
 - Answer-first check: does each section lead with a direct answer/takeaway in 1–2 sentences?
@@ -149,6 +154,14 @@ Present this before any edits:
 - FAQ section: [present/missing/recommended]
 - Schema readiness: [Article ✅/❌] [FAQ ✅/❌] [HowTo ✅/❌]
 
+### 🧬 Humanization
+- AI vocabulary: [X flagged words/phrases]
+- Contractions: [X uncontracted forms found]
+- Sentence rhythm: [monotonous / varied — burstiness assessment]
+- Trailing participles: [X instances]
+- Personal voice: [present / absent]
+- Synonym rotation: [detected / clean]
+
 ### Edit Scope Recommendation
 [Light polish / Section rewrites / Structural surgery]
 Estimated changes: [X sections, Y paragraphs]
@@ -172,7 +185,7 @@ Cut what's dead. Strengthen what's weak. Leave what's working alone.
 - If the author uses a specific phrase or rhythm → preserve it
 - Only change voice elements that actively hurt the piece
 
-### The Filler Elimination Rule
+### AI Pattern Elimination
 These phrases are always cut, no exceptions:
 - "In today's fast-paced world..."
 - "It's important to note that..."
@@ -180,9 +193,16 @@ These phrases are always cut, no exceptions:
 - "It goes without saying..."
 - "At the end of the day..."
 - "In conclusion, X is very important."
-- "Delve into", "leverage", "in the realm of", "it's crucial to"
 - "Have you ever wondered..."
 - Any sentence that could be deleted without losing meaning
+
+AI vocabulary — flag every instance:
+- Dead words: delve, embark, elevate, unleash, harness, foster, navigate, streamline, leverage, underscore, profound, transformative, seamless, meticulous, robust, cutting-edge, pivotal, intricate, comprehensive, groundbreaking, landscape, tapestry, realm, journey, testament, synergy
+- Dead transitions: furthermore, moreover, additionally, consequently, indeed, essentially, ultimately, notably, significantly
+- Formal synonyms: "utilize" → "use", "facilitate" → "help", "demonstrate" → "show", "commence" → "start", "regarding" → "about"
+- Trailing participles: sentences ending with "...highlighting", "...ensuring that", "...contributing to", "...underscoring"
+- "Not just X, but also Y" constructions
+- Uncontracted forms: "do not", "it is", "will not", "can not" (unless emphasis is intentional)
 
 ### Passive Voice Rule
 Flag passive constructions. Rewrite to active unless passive is intentional for emphasis.

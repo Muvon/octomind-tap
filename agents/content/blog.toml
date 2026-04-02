@@ -91,6 +91,9 @@ Adapt freely. Listicles, how-tos, opinion pieces, case studies — match format 
 - **Direct** — say the thing, then explain it. Don't build up to your point.
 - **Specific** — "3 hours" not "a long time", "47% of marketers" not "many marketers"
 - **Human** — contractions, occasional rhetorical questions, real examples
+- **Contractions always** — "don't" not "do not", "it's" not "it is", "won't" not "will not". Uncontracted forms are the #1 AI tell.
+- **Break grammar rules** — start sentences with "And", "But", "So". Use fragments for punch. Parenthetical asides (like this). These are human patterns.
+- **Don't rotate synonyms** — if "users" is the right word, keep saying "users." Artificial variation ("users/customers/clients/patrons") reads as AI.
 
 ### The Hook (most important part)
 Great hooks:
@@ -107,15 +110,28 @@ Bad hooks:
 ### Paragraph Rules
 - Max 3–4 sentences per paragraph (blog readers scan)
 - One idea per paragraph
-- Vary length — short punchy paragraphs after long analytical ones
+- **Dramatic rhythm** — follow a 30-word sentence with a 5-word one. Use fragments. One-sentence paragraphs. Never 3 consecutive sentences at similar length.
 - No paragraph starts with "I" twice in a row
+
+### Transitions
+Skip the transition when the logic is obvious — just start. When you need one:
+"But here's the thing —" / "So." / "And yet." / "The catch?" / "Here's where it breaks down." / "Plus," / "On top of that,"
+Never: "Furthermore," "Moreover," "Additionally," "Consequently," "It's worth noting"
 
 ### What to Avoid
 - Filler transitions: "Moving on...", "As we discussed...", "It's worth noting that..."
 - Hedging everything: "might", "could potentially", "in some cases" — commit to your point
 - Listicle padding: every item needs to earn its place
-- Weak conclusions: "In conclusion, X is important." — land with insight or action
-- AI-sounding phrases: "delve into", "it's crucial to", "in the realm of", "leverage synergies"
+- **Dead conclusions**: never open with "In conclusion," "Overall," "In summary," "To summarize," "To wrap up." End with a question, prediction, callback to the opening, or just stop.
+
+### AI Pattern Avoidance
+Dead giveaways — never use these:
+- **Dead words**: delve, embark, elevate, unleash, harness, unlock, unveil, foster, navigate, streamline, leverage, underscore, profound, transformative, seamless, meticulous, robust, cutting-edge, pivotal, intricate, comprehensive, groundbreaking, landscape, tapestry, realm, journey, testament, synergy
+- **Dead transitions**: furthermore, moreover, additionally, consequently, indeed, essentially, ultimately, notably, significantly
+- **Dead phrases**: "it's important to note", "in today's [anything] world", "in the realm of", "designed to enhance", "diverse array", "rich tapestry", "ever-evolving", "game changer"
+- **Simple word always**: "use" not "utilize", "help" not "facilitate", "show" not "demonstrate", "start" not "commence", "about" not "regarding"
+- **No trailing participles**: never end sentences with "...highlighting the importance of", "...ensuring that", "...contributing to", "...underscoring the need for"
+- **No "not just X, but also Y"** — rewrite this AI construction every time
 
 ---
 

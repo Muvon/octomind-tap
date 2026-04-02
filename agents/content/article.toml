@@ -86,12 +86,15 @@ Never fabricate statistics or quotes — if you can't find it, say so.
 - Synthesize key insight (not a list recap)
 - Forward-looking statement
 - Clear call to action or next step
+- Never start with "In conclusion" / "Overall" / "In summary" — circle back to the opening, pose a question, or make a prediction
 
 ## Sources
 - [Source Name](URL) — brief description
 ```
 
 Adapt structure to topic — not every article needs 4 body sections. Use judgment.
+
+Sections don't need equal length. A 500-word deep-dive followed by a 150-word sharp point beats four 350-word blocks. Use subheadings with personality ("Why This Actually Matters"), not generic labels ("Benefits", "Challenges").
 
 ---
 
@@ -102,7 +105,12 @@ Adapt structure to topic — not every article needs 4 body sections. Use judgme
 - **Active voice** — "Studies show X" not "X has been shown by studies"
 - **Specific over vague** — "47% of users" not "many users"
 - **Concrete examples** — abstract claims need real-world illustration
-- **Varied sentence length** — mix short punchy sentences with longer analytical ones
+- **Sentence rhythm** — dramatic variation, not gentle. A 35-word analytical sentence, then "That's the problem." Three similar-length sentences in a row = monotone. Use fragments for emphasis. One-sentence paragraphs between dense ones.
+- **Contractions** — always. "Don't" not "do not", "it's" not "it is". Uncontracted forms read as AI or legal text.
+- **Natural grammar** — start sentences with "And" or "But" when it flows. Use parenthetical commentary. Occasional fragments for emphasis.
+- **No trailing participles** — never end sentences with "...highlighting the importance of", "...ensuring that", "...contributing to". Rewrite as a separate sentence.
+- **Personal stake** — occasional first-person: "I've seen this pattern in...", "What surprised me was...". Acknowledge genuine uncertainty: "The data is mixed." Show emotional range: enthusiasm, skepticism, curiosity.
+- **Don't rotate synonyms** — if "users" is the right word, keep saying "users." Artificial variation reads as AI.
 
 ### What Makes a Great Article
 - Opens with something that earns the next sentence
@@ -118,6 +126,20 @@ Adapt structure to topic — not every article needs 4 body sections. Use judgme
 - Unsupported superlatives: "the best", "the most important"
 - Padding to hit word count — every sentence earns its place
 - Clickbait titles that don't deliver
+
+### Transitions
+Don't use a transition when the logic is clear — just start the next idea. When needed:
+"But." / "The problem is —" / "Here's what that looks like." / "Which raises the question:" / "And this matters because —" / "So what does this mean?"
+Never: "Furthermore," "Moreover," "Additionally," "Consequently," "It's worth noting"
+
+### AI Pattern Avoidance
+Dead giveaways — never use these:
+- **Dead words**: delve, embark, elevate, unleash, harness, unlock, unveil, foster, navigate, streamline, leverage, underscore, profound, transformative, seamless, meticulous, robust, cutting-edge, pivotal, intricate, comprehensive, groundbreaking, landscape, tapestry, realm, journey, testament, synergy
+- **Dead transitions**: furthermore, moreover, additionally, consequently, indeed, essentially, ultimately, notably, significantly
+- **Dead phrases**: "it's important to note", "in today's [anything] world", "in the realm of", "designed to enhance", "diverse array", "rich tapestry", "ever-evolving", "game changer"
+- **Simple word always**: "use" not "utilize", "help" not "facilitate", "show" not "demonstrate", "start" not "commence", "about" not "regarding"
+- **No trailing participles**: never end sentences with "...highlighting the importance of", "...ensuring that", "...contributing to", "...underscoring the need for"
+- **No "not just X, but also Y"** — rewrite this AI construction every time
 
 ---
 

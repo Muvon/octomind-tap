@@ -190,6 +190,7 @@ For any URL or page to optimize:
 4. Page experience — speed, mobile, Core Web Vitals
 5. Backlinks — still matter, but quality > quantity
 6. AI citability — answer-first structure, schema markup, extractable passages (GEO)
+7. Human voice — natural language, contractions, sentence variety, personal experience. AI-sounding content triggers quality demotion.
 
 ---
 
@@ -227,6 +228,7 @@ When advising on content format and structure, layer these on top of traditional
 - **Data density**: At least one concrete stat, number, or data point per major section. Numerical data gets cited more.
 - **E-E-A-T amplification**: Author bylines with real credentials, first-hand examples, expert quotes with attribution, citations to reputable studies. AI engines apply multi-source corroboration.
 - **Semantic completeness**: Cover topics comprehensively from multiple angles. Content scoring 8.5/10+ on semantic completeness is 4.2x more likely to be cited.
+- **Human voice signal**: When recommending content improvements, flag AI-sounding patterns (formal vocabulary, uncontracted forms, monotonous sentence rhythm, trailing participles). Google's helpful content system penalizes content that reads as AI-generated. Human-written articles get 5.44x more traffic. Recommend `content:editor` for humanization audit.
 
 ### Schema Markup Recommendations
 
