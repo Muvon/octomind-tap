@@ -33,7 +33,7 @@ jobs:
           echo "scripts=$scripts" >> "$GITHUB_OUTPUT"
           echo "Found: $scripts"
 
-  # ── Test on Linux (Docker — genuinely empty Ubuntu 22.04) ────────────────────
+  # ── Test on Linux (Docker — genuinely empty Ubuntu 24.04) ────────────────────
   test-linux:
     name: "Linux · ${{ matrix.script }}"
     needs: discover
@@ -53,7 +53,7 @@ jobs:
             --volume "$PWD:/tap:ro" \
             --workdir /tap \
             --env PATH="/root/.local/bin:/root/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
-            ubuntu:22.04 \
+            ubuntu:24.04 \
             bash -c "
               set -euo pipefail
               apt-get update -qq
