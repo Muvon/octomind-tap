@@ -59,11 +59,19 @@ link "legal-uk" "ansvar.toml"
 link "legal-us" "ansvar.toml"
 link "octoweb" "octoweb.toml"
 link "browser" "playwright.toml"
+link "messaging-slack" "slack.toml"
+link "messaging-discord" "discord.toml"
+link "messaging-telegram" "iflow-mcp.toml"
+link "messaging-whatsapp" "iflow-mcp.toml"
+link "messaging-linkedin" "pegasusheavy.toml"
+link "messaging-instagram" "mcpware.toml"
+link "messaging-email" "codefuturist.toml"
+link "messaging-sms" "twilio.toml"
 # ─────────────────────────────────────────────────────────────────────────────
 
 # Detect capability dirs that have NO mapping declared above
 echo ""
-DECLARED=("filesystem" "codesearch" "memory" "websearch" "versioning" "core" "agent" "programming-python" "programming-rust" "programming-nodejs" "docker" "kubernetes" "svelte" "medical" "finance" "legal-au" "legal-ca" "legal-de" "legal-fr" "legal-in" "legal-sg" "legal-th" "legal-uk" "legal-us" "octoweb" "browser")
+DECLARED=("filesystem" "codesearch" "memory" "websearch" "versioning" "core" "agent" "programming-python" "programming-rust" "programming-nodejs" "docker" "kubernetes" "svelte" "medical" "finance" "legal-au" "legal-ca" "legal-de" "legal-fr" "legal-in" "legal-sg" "legal-th" "legal-uk" "legal-us" "octoweb" "browser" "messaging-slack" "messaging-discord" "messaging-telegram" "messaging-whatsapp" "messaging-linkedin" "messaging-instagram" "messaging-email" "messaging-sms")
 for dir in "$CAP_ROOT"/*/; do
   cap="$(basename "$dir")"
   found=0

@@ -1,0 +1,21 @@
+# capabilities/messaging-linkedin/pegasusheavy.toml
+# Capability: messaging-linkedin
+# Provider: @pegasusheavy/linkedin-mcp — LinkedIn profile, posts, connections
+# Title: LinkedIn Messaging
+# Description: LinkedIn integration — profile management, posts, connections, messaging.
+
+[deps]
+require = ["linkedin/linkedin"]
+
+[roles.mcp]
+server_refs = ["linkedin"]
+allowed_tools = []
+
+[[mcp.servers]]
+name = "linkedin"
+type = "stdio"
+command = "npx"
+args = ["-y", "@pegasusheavy/linkedin-mcp"]
+timeout_seconds = 60
+env = { LINKEDIN_EMAIL = "{{ENV:LINKEDIN_EMAIL}}", LINKEDIN_PASSWORD = "{{ENV:LINKEDIN_PASSWORD}}" }
+tools = []

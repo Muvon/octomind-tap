@@ -1,0 +1,21 @@
+# capabilities/messaging-email/codefuturist.toml
+# Capability: messaging-email
+# Provider: @codefuturist/email-mcp — SMTP/IMAP email via standard protocols
+# Title: Email
+# Description: Email via standard SMTP/IMAP protocols — works with any mail server.
+
+[deps]
+require = ["codefuturist/email"]
+
+[roles.mcp]
+server_refs = ["email"]
+allowed_tools = []
+
+[[mcp.servers]]
+name = "email"
+type = "stdio"
+command = "npx"
+args = ["-y", "@codefuturist/email-mcp", "stdio"]
+timeout_seconds = 60
+env = { MCP_EMAIL_ADDRESS = "{{ENV:MCP_EMAIL_ADDRESS}}", MCP_EMAIL_PASSWORD = "{{ENV:MCP_EMAIL_PASSWORD}}", MCP_EMAIL_IMAP_HOST = "{{ENV:MCP_EMAIL_IMAP_HOST}}", MCP_EMAIL_SMTP_HOST = "{{ENV:MCP_EMAIL_SMTP_HOST}}" }
+tools = []

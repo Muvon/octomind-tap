@@ -1,0 +1,21 @@
+# capabilities/messaging-telegram/iflow-mcp.toml
+# Capability: messaging-telegram
+# Provider: @iflow-mcp/telegram-mcp-server — Telegram bot messaging
+# Title: Telegram Messaging
+# Description: Telegram bot messaging — send messages, manage channels, groups.
+
+[deps]
+require = ["iflow-mcp/telegram"]
+
+[roles.mcp]
+server_refs = ["telegram"]
+allowed_tools = []
+
+[[mcp.servers]]
+name = "telegram"
+type = "stdio"
+command = "npx"
+args = ["-y", "@iflow-mcp/telegram-mcp-server"]
+timeout_seconds = 60
+env = { TELEGRAM_BOT_TOKEN = "{{ENV:TELEGRAM_BOT_TOKEN}}" }
+tools = []

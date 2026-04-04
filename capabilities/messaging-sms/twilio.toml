@@ -1,0 +1,21 @@
+# capabilities/messaging-sms/twilio.toml
+# Capability: messaging-sms
+# Provider: Twilio — SMS and voice messaging
+# Title: SMS (Twilio)
+# Description: SMS and voice messaging via Twilio API.
+
+[deps]
+require = ["twilio/twilio"]
+
+[roles.mcp]
+server_refs = ["twilio"]
+allowed_tools = []
+
+[[mcp.servers]]
+name = "twilio"
+type = "stdio"
+command = "npx"
+args = ["-y", "@twilio-alpha/mcp"]
+timeout_seconds = 60
+env = { TWILIO_ACCOUNT_SID = "{{ENV:TWILIO_ACCOUNT_SID}}", TWILIO_AUTH_TOKEN = "{{ENV:TWILIO_AUTH_TOKEN}}", TWILIO_FROM_NUMBER = "{{ENV:TWILIO_FROM_NUMBER}}" }
+tools = []

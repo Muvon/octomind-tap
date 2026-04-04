@@ -1,0 +1,21 @@
+# capabilities/messaging-slack/slack.toml
+# Capability: messaging-slack
+# Provider: Slack — official MCP Slack server
+# Title: Slack Messaging
+# Description: Interact with Slack workspaces — channels, messages, threads, users.
+
+[deps]
+require = ["modelcontextprotocol/slack"]
+
+[roles.mcp]
+server_refs = ["slack"]
+allowed_tools = []
+
+[[mcp.servers]]
+name = "slack"
+type = "stdio"
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-slack"]
+timeout_seconds = 60
+env = { SLACK_BOT_TOKEN = "{{ENV:SLACK_BOT_TOKEN}}", SLACK_TEAM_ID = "{{ENV:SLACK_TEAM_ID}}" }
+tools = []

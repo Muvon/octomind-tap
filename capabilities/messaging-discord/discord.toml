@@ -1,0 +1,21 @@
+# capabilities/messaging-discord/discord.toml
+# Capability: messaging-discord
+# Provider: mcp-discord — Discord bot integration
+# Title: Discord Messaging
+# Description: Discord bot integration — channels, messages, moderation, voice.
+
+[deps]
+require = ["discord/discord"]
+
+[roles.mcp]
+server_refs = ["discord"]
+allowed_tools = []
+
+[[mcp.servers]]
+name = "discord"
+type = "stdio"
+command = "npx"
+args = ["-y", "mcp-discord"]
+timeout_seconds = 60
+env = { DISCORD_TOKEN = "{{ENV:DISCORD_TOKEN}}" }
+tools = []

@@ -1,0 +1,22 @@
+# capabilities/messaging-instagram/mcpware.toml
+# Capability: messaging-instagram
+# Provider: @mcpware/instagram-mcp — Instagram Graph API integration
+# Title: Instagram Messaging
+# Description: Instagram integration — posts, comments, DMs, stories, reels.
+# Requires: Instagram Business or Creator account linked to a Facebook Page.
+
+[deps]
+require = ["mcpware/instagram"]
+
+[roles.mcp]
+server_refs = ["instagram"]
+allowed_tools = []
+
+[[mcp.servers]]
+name = "instagram"
+type = "stdio"
+command = "npx"
+args = ["-y", "@mcpware/instagram-mcp"]
+timeout_seconds = 60
+env = { INSTAGRAM_ACCESS_TOKEN = "{{ENV:INSTAGRAM_ACCESS_TOKEN}}", INSTAGRAM_ACCOUNT_ID = "{{ENV:INSTAGRAM_ACCOUNT_ID}}" }
+tools = []

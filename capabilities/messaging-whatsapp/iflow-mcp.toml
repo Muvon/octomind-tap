@@ -1,0 +1,21 @@
+# capabilities/messaging-whatsapp/iflow-mcp.toml
+# Capability: messaging-whatsapp
+# Provider: @iflow-mcp/mcp-whatsapp-web — WhatsApp Web messaging
+# Title: WhatsApp Messaging
+# Description: WhatsApp Web messaging — send messages, contacts, media sharing.
+# Auth: QR code scan via get_qr_code tool on first run; session persists locally.
+
+[deps]
+require = ["iflow-mcp/whatsapp"]
+
+[roles.mcp]
+server_refs = ["whatsapp"]
+allowed_tools = []
+
+[[mcp.servers]]
+name = "whatsapp"
+type = "stdio"
+command = "npx"
+args = ["-y", "@iflow-mcp/mcp-whatsapp-web"]
+timeout_seconds = 60
+tools = []
