@@ -19,24 +19,38 @@ fi
 # Ensure cargo is available
 install_dep rust/cargo
 
-# On Linux, ensure build tools are available (required for compiling native crates)
+# On Linux, ensure build tools + OpenSSL dev headers are available
 if [[ $OS == "linux" ]]; then
-  if ! pkg_check cc; then
-    info "Installing build dependencies (build-essential, pkg-config)..."
-    if pkg_check apt-get; then
-      sudo apt-get update -qq
-      sudo apt-get install -y -qq build-essential pkg-config
-    elif pkg_check dnf; then
-      sudo dnf install -y @development-tools pkgconfig
-    elif pkg_check yum; then
-      sudo yum install -y @development-tools pkgconfig
-    elif pkg_check pacman; then
-      sudo pacman -S --noconfirm base-devel pkgconf
-    elif pkg_check apk; then
-      sudo apk add --no-cache build-base pkgconfig
-    else
-      warn "No supported package manager found. Build tools may be missing."
-    fi
+  needs_install=0
+  pkg_check cc || needs_install=1
+  # Check for OpenSSL dev headers (required by openssl-sys crate)
+  if ! pkg-config --exists openssl 2>/dev/null; then
+    needs_install=1
+  fi
+
+  if [[ $needs_install -eq 1 ]]; then
+    info "Installing build dependencies (build-essential, pkg-config, openssl-dev)..."
+    case "$PKG_MANAGER" in
+      apt)
+        sudo apt-get update -qq
+        sudo apt-get install -y -qq build-essential pkg-config libssl-dev
+        ;;
+      dnf)
+        sudo dnf install -y @development-tools pkgconfig openssl-devel
+        ;;
+      pacman)
+        sudo pacman -S --noconfirm base-devel pkgconf openssl
+        ;;
+      zypper)
+        sudo zypper install -y -t pattern devel_basis && sudo zypper install -y pkg-config libopenssl-devel
+        ;;
+      apk)
+        sudo apk add --no-cache build-base pkgconfig openssl-dev
+        ;;
+      *)
+        warn "No supported package manager found. Build tools and OpenSSL dev headers may be missing."
+        ;;
+    esac
   fi
 fi
 
