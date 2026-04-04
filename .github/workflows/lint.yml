@@ -34,3 +34,6 @@ jobs:
 
       - name: Lint all skills
         run: bash scripts/lint-skills.sh
+
+      - name: Lint all dep scripts
+        run: bash scripts/lint-deps.sh

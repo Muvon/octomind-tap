@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: medical/medical
+# type: mcp
 # description: Medical MCP Server — FDA, WHO, PubMed, RxNorm medical data
 # check: node
 # https://github.com/JamesANZ/medical-mcp

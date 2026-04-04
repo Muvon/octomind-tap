@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: iflow-mcp/telegram
+# type: mcp
 # description: MCP Telegram Server — interact with Telegram channels and groups
 # check: npx
 # https://www.npmjs.com/package/@iflow-mcp/telegram-mcp-server

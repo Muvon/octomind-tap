@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: steipete/macos-automator
+# type: mcp
 # description: macOS Automator MCP — AppleScript, JXA execution
 # check: npx
 # https://www.npmjs.com/package/@steipete/macos-automator-mcp

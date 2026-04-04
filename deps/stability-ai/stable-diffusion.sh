@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: stability-ai/stable-diffusion
+# type: mcp
 # description: Stable Diffusion MCP Server — local image generation
 # check: npx
 # https://mcpservers.org/servers/Ichigo3766/image-gen-mcp

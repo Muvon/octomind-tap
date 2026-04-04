@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: hashicorp/terraform
+# type: mcp
 # description: Terraform MCP Server — Infrastructure as Code
 # check: npx
 # https://developer.hashicorp.com/terraform/mcp-server

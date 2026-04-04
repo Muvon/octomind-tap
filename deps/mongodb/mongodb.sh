@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: mongodb/mongodb
+# type: mcp
 # description: MongoDB MCP Server — official MongoDB Atlas and database operations
 # check: npx
 # https://www.npmjs.com/package/@mongodb-js/mongodb-mcp-server

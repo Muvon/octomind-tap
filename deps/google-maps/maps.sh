@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: google-maps/maps
+# type: mcp
 # description: Google Maps MCP Server — geocoding, navigation, location services
 # check: npx
 # https://www.npmjs.com/package/@iflow-mcp/mcp-google-map

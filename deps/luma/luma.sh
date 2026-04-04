@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: luma/luma
+# type: mcp
 # description: Luma AI MCP Server — video generation, Dream Machine
 # check: npx
 # https://mcpservers.org/servers/wheattoast11/mcp-video-gen

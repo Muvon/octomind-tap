@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: iflow-mcp/social-media
+# type: mcp
 # description: Social Media MCP — multi-platform posting, scheduling
 # check: npx
 # https://www.npmjs.com/package/@iflow-mcp/2389-research-mcp-socialmedia

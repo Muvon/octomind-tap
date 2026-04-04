@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: prometheus/prometheus
+# type: mcp
 # description: Prometheus MCP Server — monitoring, metrics
 # check: npx
 # https://www.npmjs.com/package/@wkronmiller/prometheus-mcp-server

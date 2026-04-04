@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: salesforce/salesforce
+# type: mcp
 # description: Salesforce MCP Server — CRM objects, records, queries
 # check: npx
 # https://www.npmjs.com/package/@tsmztech/mcp-server-salesforce

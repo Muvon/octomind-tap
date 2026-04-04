@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: modelcontextprotocol/postgres
+# type: mcp
 # description: MCP PostgreSQL Server — query PostgreSQL databases
 # check: npx
 # https://github.com/modelcontextprotocol/servers/tree/main/src/postgres

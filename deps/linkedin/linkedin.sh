@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: linkedin/linkedin
+# type: mcp
 # description: LinkedIn MCP Server — profile, posts, connections
 # check: npx
 # https://www.npmjs.com/package/@pegasusheavy/linkedin-mcp

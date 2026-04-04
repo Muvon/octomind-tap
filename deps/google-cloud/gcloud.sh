@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: google-cloud/gcloud
+# type: mcp
 # description: Google Cloud MCP Server — GCP services management
 # check: npx
 # https://www.npmjs.com/package/@google-cloud/gcloud-mcp

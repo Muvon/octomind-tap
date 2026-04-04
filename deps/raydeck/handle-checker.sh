@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: raydeck/handle-checker
+# type: mcp
 # description: Social Media Handle Checker — username availability
 # check: npx
 # https://www.npmjs.com/package/@raydeck/social-media-handle-checker-mcp

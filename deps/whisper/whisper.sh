@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: whisper/whisper
+# type: mcp
 # description: Whisper MCP Server — local audio transcription using whisper.cpp
 # check: npx
 # https://www.npmjs.com/package/whisper-mcp

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: google/drive
+# type: mcp
 # description: Google Drive MCP Server — search, read, and manage Google Drive files
 # check: npx
 # https://www.npmjs.com/package/@dguido/google-drive-mcp

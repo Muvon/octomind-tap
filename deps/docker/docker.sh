@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: docker/docker
+# type: dep
 # description: Installs Docker CLI and daemon (required for containerized MCP servers)
 # check: docker
 # https://docs.docker.com/engine/install/

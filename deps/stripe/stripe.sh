@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: stripe/stripe
+# type: mcp
 # description: Stripe MCP Server — payments, customers, subscriptions, invoices
 # check: npx
 # https://www.npmjs.com/package/@stripe/mcp

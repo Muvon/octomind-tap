@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: sentry/sentry
+# type: mcp
 # description: Sentry MCP Server — error tracking, issues, and performance monitoring
 # check: npx
 # https://www.npmjs.com/package/@sentry/mcp-server

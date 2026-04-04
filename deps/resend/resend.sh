@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: resend/resend
+# type: mcp
 # description: Resend MCP Server — email sending and management
 # check: npx
 # https://github.com/resend/mcp-send-email

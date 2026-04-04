@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: exa-labs/exa
+# type: mcp
 # description: Exa MCP Server — AI-powered web search, code search, and company research
 # check: npx
 # https://github.com/exa-labs/exa-mcp-server

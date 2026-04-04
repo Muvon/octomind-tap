@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: iflow-mcp/whatsapp
+# type: mcp
 # description: MCP WhatsApp Server — interact with WhatsApp Web (messages, contacts, media)
 # check: npx
 # https://www.npmjs.com/package/@iflow-mcp/mcp-whatsapp-web

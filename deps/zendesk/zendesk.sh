@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: zendesk/zendesk
+# type: mcp
 # description: Zendesk MCP Server — tickets, users, organizations
 # check: npx
 # https://github.com/mattcoatsworth/zendesk-mcp-server

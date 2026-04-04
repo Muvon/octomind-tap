@@ -17,6 +17,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 # dep: <org>/<tool>
+# type: mcp|dep
 # description: Brief description of what this installs
 # check: <command-to-check-if-installed>
 # https://example.com/tool-homepage

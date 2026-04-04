@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: tiktok/tiktok-shop
+# type: mcp
 # description: TikTok Shop MCP — products, orders, inventory
 # check: npx
 # https://www.npmjs.com/package/@aisar-labs/tiktok-shop-mcp

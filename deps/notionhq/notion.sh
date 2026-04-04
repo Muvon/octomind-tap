@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: notionhq/notion
+# type: mcp
 # description: Notion MCP Server — interact with Notion workspaces (pages, databases, blocks)
 # check: npx
 # https://www.npmjs.com/package/@notionhq/notion-mcp-server

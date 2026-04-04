@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: spotify/spotify
+# type: mcp
 # description: Spotify MCP Server — music playback, playlists, library
 # check: npx
 # https://www.npmjs.com/package/@darrenjaws/spotify-mcp

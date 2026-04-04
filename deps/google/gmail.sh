@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: google/gmail
+# type: mcp
 # description: Gmail MCP Server — send, search, read emails and manage labels
 # check: npx
 # https://www.npmjs.com/package/@node2flow/gmail-mcp

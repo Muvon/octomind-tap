@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: rust/cargo
+# type: dep
 # description: Installs Rust toolchain via rustup (provides cargo, rustc)
 # check: cargo
 # https://rustup.rs

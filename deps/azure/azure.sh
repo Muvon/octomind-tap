@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: azure/azure
+# type: mcp
 # description: Azure MCP Server — Azure cloud services management
 # check: npx
 # https://learn.microsoft.com/en-us/azure/developer/azure-mcp-server/

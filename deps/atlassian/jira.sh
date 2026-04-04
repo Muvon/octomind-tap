@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: atlassian/jira
+# type: mcp
 # description: Jira MCP Server — issue tracking, projects, comments, workflows
 # check: npx
 # https://www.npmjs.com/package/@atlassian-dc-mcp/jira

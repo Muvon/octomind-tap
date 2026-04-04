@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: webflow/webflow
+# type: mcp
 # description: Webflow MCP Server — CMS, sites, pages
 # check: npx
 # https://www.npmjs.com/package/webflow-mcp-server

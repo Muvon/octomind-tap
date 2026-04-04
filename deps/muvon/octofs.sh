@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: muvon/octofs
+# type: dep
 # description: Installs the octofs CLI (file editing and viewing tool by Muvon)
 # check: octofs
 # https://github.com/muvon/octofs

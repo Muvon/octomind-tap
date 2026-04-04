@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: upstash/context7
+# type: mcp
 # description: Context7 MCP Server — up-to-date library documentation and code examples
 # check: npx
 # https://github.com/upstash/context7-mcp

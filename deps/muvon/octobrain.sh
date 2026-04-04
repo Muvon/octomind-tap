@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: muvon/octobrain
+# type: dep
 # description: Installs the octobrain CLI (code indexing and search tool by Muvon)
 # check: octobrain
 # https://github.com/muvon/octobrain

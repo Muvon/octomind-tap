@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: ahrefs/ahrefs
+# type: mcp
 # description: Ahrefs MCP Server — SEO, backlinks, keywords, rank tracking
 # check: npx
 # https://www.npmjs.com/package/@ahrefs/mcp

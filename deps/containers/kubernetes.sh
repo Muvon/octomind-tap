@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: containers/kubernetes
+# type: mcp
 # description: Kubernetes MCP Server — manage K8s clusters (pods, deployments, logs, helm)
 # check: docker
 # https://github.com/containers/kubernetes-mcp-server

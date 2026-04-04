@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: calendly/calendly
+# type: mcp
 # description: Calendly MCP Server — scheduling, meetings
 # check: npx
 # https://github.com/meAmitPatil/calendly-mcp-server

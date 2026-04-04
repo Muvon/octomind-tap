@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: macos-tools/contacts
+# type: mcp
 # description: macOS Contacts MCP — access Contacts database
 # check: npx
 # https://www.npmjs.com/package/@macos-tools/mcp-server

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: replicate/replicate
+# type: mcp
 # description: Replicate MCP Server — AI image generation, Flux, SDXL
 # check: npx
 # https://www.npmjs.com/package/replicate-flux-mcp

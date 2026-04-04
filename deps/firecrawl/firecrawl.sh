@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: firecrawl/firecrawl
+# type: mcp
 # description: Firecrawl MCP Server — web scraping, crawling, and data extraction
 # check: npx
 # https://github.com/firecrawl/firecrawl-mcp-server

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: pinecone/pinecone
+# type: mcp
 # description: Pinecone MCP Server — vector database for AI/ML
 # check: npx
 # https://www.npmjs.com/package/@pinecone-database/mcp

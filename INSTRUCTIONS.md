@@ -34,7 +34,8 @@ CONTRIBUTING.md                 # Contribution guidelines
 | Understand capability system | `ARCHITECTURE.md` — full design + capability table |
 | See all available capabilities | `ARCHITECTURE.md` capability table + `capabilities/` directory |
 | Add a new capability | `capabilities/<name>/<provider>.toml` + update `scripts/setup-symlinks.sh` |
-| Add a new dep script | Copy `templates/dep.sh` → `deps/<org>/<tool>.sh` |
+| Add a new dep script | Copy `templates/dep.sh` → `deps/<org>/<tool>.sh` + `templates/dep-mcp.md` or `templates/dep-tool.md` → `deps/<org>/<tool>.md` |
+| Lint dep scripts | `scripts/lint-deps.sh` |
 | Add a new skill | Copy `templates/skill.md` → `skills/<name>/SKILL.md` |
 | Lint agents | `scripts/lint-manifests.sh` |
 | Lint skills | `scripts/lint-skills.sh` |
@@ -241,10 +242,21 @@ Every dep script must:
 **Required header comments** (parsed by tooling):
 ```bash
 # dep: <org>/<tool>
+# type: mcp|dep
 # description: Brief description of what this installs
 # check: <command-to-verify-installation>
 # https://homepage-url
 ```
+
+**Type classification:**
+- `mcp` — script exists to make an MCP server runnable (ensures npx/uvx/docker)
+- `dep` — script installs a standalone CLI tool or runtime used directly
+
+**Companion documentation** — every dep script must have a matching `.md` file:
+- `deps/<org>/<tool>.md` alongside `deps/<org>/<tool>.sh`
+- MCP servers (`type: mcp`): must include `## MCP Server`, `## Authentication`, `## Available Tools`, `## Configuration Example`
+- Plain deps (`type: dep`): must include `## Key Commands`, `## Common Usage`
+- Templates: `templates/dep-mcp.md` and `templates/dep-tool.md`
 
 **Boilerplate** (copy from `templates/dep.sh`):
 ```bash
@@ -348,6 +360,12 @@ bash scripts/lint-skills.sh
 # Lint a specific skill
 bash scripts/lint-skills.sh skills/<name>
 
+# Lint all dep scripts (headers + companion docs)
+bash scripts/lint-deps.sh
+
+# Lint a specific dep script
+bash scripts/lint-deps.sh deps/<org>/<tool>.sh
+
 # Verify capability symlinks are intact
 bash scripts/setup-symlinks.sh
 
@@ -361,6 +379,7 @@ bin/load <domain>:<spec>
 - [ ] Every capability in `capabilities = [...]` has a `capabilities/<name>/default.toml`
 - [ ] `bin/load <domain>:<spec>` resolves without errors
 - [ ] All required dep scripts exist under `deps/` for every `require` entry in used capabilities
+- [ ] All dep scripts pass linting (`lint-deps.sh`) — includes `# type:` header and companion `.md`
 - [ ] System prompt is detailed and domain-focused — covers what the agent does, what it won't do, and key decision rules
 - [ ] `welcome` message is descriptive and includes `{{CWD}}`
 

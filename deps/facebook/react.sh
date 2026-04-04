@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: facebook/react
+# type: mcp
 # description: React MCP Server — official React documentation and compiler tools
 # check: npx
 # https://github.com/facebook/react/tree/compiler/packages/react-mcp-server

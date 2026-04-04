@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: sveltejs/svelte
+# type: mcp
 # description: Svelte MCP Server — official Svelte/SvelteKit documentation and tooling
 # check: npx
 # https://github.com/sveltejs/ai-tools

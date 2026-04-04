@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: twilio/twilio
+# type: mcp
 # description: Twilio MCP Server — SMS, voice, messaging
 # check: npx
 # https://www.npmjs.com/package/@twilio-alpha/mcp

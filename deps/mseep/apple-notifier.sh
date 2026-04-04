@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: mseep/apple-notifier
+# type: mcp
 # description: macOS Notifier MCP — native notifications
 # check: npx
 # https://npmjs.com/package/@mseep/apple-notifier-mcp

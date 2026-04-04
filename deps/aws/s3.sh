@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: aws/s3
+# type: mcp
 # description: AWS S3 MCP Server — object storage, upload, download, list buckets
 # check: npx
 # https://www.npmjs.com/package/@geunoh/s3-mcp-server

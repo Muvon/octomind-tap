@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: auth0/auth0
+# type: mcp
 # description: Auth0 MCP Server — authentication and identity
 # check: npx
 # https://www.npmjs.com/package/@auth0/auth0-mcp-server

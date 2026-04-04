@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: muvon/octocode
+# type: dep
 # description: Installs the octocode CLI (code indexing and search tool by Muvon)
 # check: octocode
 # https://github.com/muvon/octocode

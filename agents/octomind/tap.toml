@@ -37,7 +37,9 @@ capabilities/
   <name>/
     <provider>.toml   ← actual capability definition
     default.toml      → <provider>.toml  (symlink to active provider)
-deps/             ← install scripts: deps/<org>/<tool>.sh
+deps/
+  <org>/<tool>.sh   ← install scripts (# type: mcp|dep in header)
+  <org>/<tool>.md   ← companion documentation (required for each .sh)
 bin/load          ← resolves capabilities → merged manifest
 scripts/          ← linting, validation, symlink setup
 ```
@@ -139,6 +141,14 @@ Not all fields are required — a capability can be deps-only (e.g. `programming
 | `legal-uk`             | ansvar           | UK legislation MCP                                    |
 | `legal-us`             | ansvar           | US legislation + CourtListener case law               |
 | `octoweb`              | octoweb          | browser automation via Octoweb HTTP MCP               |
+| `messaging-slack`      | slack            | Slack channels, messages, threads                     |
+| `messaging-discord`    | discord          | Discord channels, messages, moderation                |
+| `messaging-telegram`   | iflow-mcp        | Telegram bot messaging, channels, groups              |
+| `messaging-whatsapp`   | iflow-mcp        | WhatsApp Web messaging, contacts, media               |
+| `messaging-linkedin`   | pegasusheavy     | LinkedIn profile, posts, connections                  |
+| `messaging-instagram`  | mcpware          | Instagram posts, comments, DMs, stories               |
+| `messaging-email`      | codefuturist     | Email via standard SMTP/IMAP protocols                |
+| `messaging-sms`        | twilio           | SMS and voice messaging via Twilio                    |
 
 ### Naming conventions
 
@@ -150,11 +160,12 @@ Not all fields are required — a capability can be deps-only (e.g. `programming
 
 If the agent needs a tool, dependency, or MCP server not covered above:
 1. Create `capabilities/<name>/<provider>.toml` with `# Title:`, `# Description:`, deps, roles.mcp, and/or mcp.servers
-2. Create the dep script at `deps/<org>/<tool>.sh` if the capability has deps
-3. Create the `default.toml` symlink: `ln -s <provider>.toml default.toml`
-4. Add entries to `scripts/setup-symlinks.sh` (link + DECLARED array)
-5. Run `bash scripts/lint-capabilities.sh capabilities/<name>` to validate
-6. Reference the capability in the agent
+2. Create the dep script at `deps/<org>/<tool>.sh` with `# type: mcp` or `# type: dep` header
+3. Create the companion doc at `deps/<org>/<tool>.md` — use `templates/dep-mcp.md` for MCP servers, `templates/dep-tool.md` for plain deps
+4. Create the `default.toml` symlink: `ln -s <provider>.toml default.toml`
+5. Add entries to `scripts/setup-symlinks.sh` (link + DECLARED array)
+6. Run `bash scripts/lint-deps.sh deps/<org>/<tool>.sh` and `bash scripts/lint-capabilities.sh capabilities/<name>` to validate
+7. Reference the capability in the agent
 
 ---
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: microsoft/teams
+# type: mcp
 # description: Microsoft Teams MCP Server — Teams integration
 # check: npx
 # https://www.npmjs.com/package/teams-mcp

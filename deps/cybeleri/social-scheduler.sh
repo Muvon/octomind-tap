@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: cybeleri/social-scheduler
+# type: mcp
 # description: Social Media Scheduler MCP — multi-platform content scheduling
 # check: npx
 # https://www.npmjs.com/package/@cybeleri/social-media-scheduler-mcp

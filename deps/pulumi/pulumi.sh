@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: pulumi/pulumi
+# type: mcp
 # description: Pulumi MCP Server — Infrastructure as Code
 # check: npx
 # https://www.pulumi.com/docs/ai/mcp-server/

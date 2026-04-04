@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: openai/chatgpt
+# type: mcp
 # description: ChatGPT MCP Server — Claude-ChatGPT collaboration
 # check: npx
 # https://www.npmjs.com/package/@chinchillaenterprises/mcp-chatgpt

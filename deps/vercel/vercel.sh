@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: vercel/vercel
+# type: mcp
 # description: Vercel MCP Server — deployment and project management
 # check: npx
 # https://www.npmjs.com/package/vercel-mcp

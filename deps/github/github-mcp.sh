@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: github/github-mcp
+# type: mcp
 # description: GitHub MCP Server — full GitHub API operations (repos, issues, PRs, actions)
 # check: npx
 # https://github.com/github/github-mcp-server

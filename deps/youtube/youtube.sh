@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # dep: youtube/youtube
+# type: mcp
 # description: YouTube MCP Server — video subtitles, transcripts, channel info
 # check: npx
 # https://www.npmjs.com/package/@anaisbetts/mcp-youtube
