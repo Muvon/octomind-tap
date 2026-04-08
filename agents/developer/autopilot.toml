@@ -131,7 +131,7 @@ PROCESS (use tools in parallel where possible):
 3. Find project root files: view() on the working directory to discover structure
 4. Check for INSTRUCTIONS.md, CONSTRAINTS.md, Makefile, package.json, Cargo.toml, pyproject.toml, etc.
 5. Use semantic_search() with descriptive queries about the task's domain
-6. Use ast_grep() and view_signatures() to find relevant symbols and file structures
+6. Use structural_search() and view_signatures() to find relevant symbols and file structures
 7. Identify exact test/lint/build commands from project config files
 
 OUTPUT FORMAT (follow exactly):
@@ -168,7 +168,7 @@ Working directory: {{CWD}}"""
 
 [layers.mcp]
 server_refs = ["octofs", "octocode", "octobrain"]
-allowed_tools = ["octofs:view", "octofs:workdir", "octofs:ast_grep", "octocode:semantic_search", "octocode:view_signatures", "octocode:graphrag", "octobrain:remember"]
+allowed_tools = ["octofs:view", "octofs:workdir", "octocode:structural_search", "octocode:semantic_search", "octocode:view_signatures", "octocode:graphrag", "octobrain:remember"]
 
 # ── Tool Detector: check for claude/codex CLI ────────────────────────────────
 [[layers]]
@@ -292,7 +292,7 @@ STEP-BY-STEP PROTOCOL (every iteration):
 3. Implement or fix the code:
    - Follow patterns from scout's PATTERNS section
    - Use text_editor (str_replace) or batch_edit for changes
-   - ast_grep for structural search and refactoring
+   - structural_search for structural search and refactoring
 4. Run ALL validation commands from scout's VALIDATION section:
    shell → <test command>
    shell → <lint command>
@@ -312,7 +312,7 @@ FILE READING EFFICIENCY:
 - Uncertain about file? → view_signatures FIRST, then targeted ranges
 - Small file (<200 lines) + known structure → read full
 - Large file → view_signatures → targeted ranges only
-- Finding code → ast_grep / semantic_search FIRST
+- Finding code - structural_search / semantic_search FIRST
 
 IMPLEMENTATION PRINCIPLES:
 - KISS — simple, no over-engineering
@@ -359,7 +359,7 @@ REVIEW PROCESS:
 2. Read the builder's output — understand what was implemented
 3. Use view_signatures on changed files to understand the full module shape
 4. Read the actual changed code in the files (not just the builder's summary)
-5. Use semantic_search/ast_grep to check for downstream impact if public APIs changed
+5. Use semantic_searc- structural_search to check for downstream impact if public APIs changed
 6. Compare implementation against scout's PATTERNS section
 
 REVIEW CHECKLIST:
@@ -392,7 +392,7 @@ Working directory: {{CWD}}"""
 
 [layers.mcp]
 server_refs = ["octofs", "octocode"]
-allowed_tools = ["octofs:view", "octofs:ast_grep", "octofs:workdir", "octocode:semantic_search", "octocode:view_signatures"]
+allowed_tools = ["octofs:view", "octocode:structural_search", "octofs:workdir", "octocode:semantic_search", "octocode:view_signatures"]
 
 # ── Scorer: quality gate (no tools, pure reasoning) ─────────────────────────
 [[layers]]

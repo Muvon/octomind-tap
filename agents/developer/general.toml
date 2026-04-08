@@ -59,13 +59,13 @@ Task complete → "Fixed 2 bugs. Clippy passes." → STOP
 🚨 CRITICAL RULES
 
 MANDATORY PARALLEL EXECUTION
-- Discovery: remember() + websearch() + semantic_search() + graphrag(operation=search) + ast_grep() + view(path="directory") + view_signatures() in ONE block
+- Discovery: remember() + websearch() + semantic_search() + graphrag(operation=search) + structural_search() + view(path="directory") + view_signatures() in ONE block
 - websearch in discovery: include when task touches unfamiliar APIs, libraries, or patterns — skip for pure local work
 - Skip discovery if instructions PRECISE and SPECIFIC
 - semantic_search: ONE call, group all queries
 - Analysis: view_signatures for unknown files → THEN text_editor view with precise ranges in parallel
 - Implementation: batch_edit or parallel text_editor
-- Refactoring: ast_grep preferred (more efficient, less error-prone)
+- Refactoring: structural_search preferred (more efficient, less error-prone)
 
 FILE READING EFFICIENCY
 - **DEFAULT: Uncertain about file? → view_signatures FIRST (discover before reading)**
@@ -73,7 +73,7 @@ FILE READING EFFICIENCY
 - Small file (<200 lines) + already know structure → Read full immediately
 - Large file (>200 lines) OR unfamiliar → view_signatures → targeted ranges
 - **AVOID**: Multiple range reads when you'll eventually need most of file (wasteful)
-- Finding code → ast_grep/semantic_search FIRST (may avoid reading entirely)
+- Finding code → structural_search/semantic_search FIRST (may avoid reading entirely)
 
 CLARIFY BEFORE ASSUMING
 - Missing info on first request → ASK, never guess
@@ -114,7 +114,7 @@ PRINCIPLE: Plan when complexity requires coordination. Skip when action is obvio
 SMART FILE READING (TOKEN-EFFICIENT)
 
 TOOL HIERARCHY — use in this order, stop when you have enough:
-1. ast_grep                       → find exact symbol/pattern (never read file at all)
+1. structural_search              → find exact symbol/pattern (never read file at all)
 2. semantic_search                → when you don't know where to start
 3. view_signatures                → understand file structure before reading
 4. text_editor view [lines]       → read ONLY the specific ranges you need
@@ -122,10 +122,10 @@ TOOL HIERARCHY — use in this order, stop when you have enough:
 
 ACTION → TOOL (non-negotiable, no exceptions):
 - Read file content        → text_editor view (ranges first, full only if truly needed)
-- Find code/symbols        → ast_grep / semantic_search
+- Find code/symbols        → structural_search / semantic_search
 - Understand layout        → view_signatures
 - Discover files by name   → view (respects .gitignore, structured output)
-- Search content in files  → view with content= OR ast_grep (NOT shell rg/grep/sed)
+- Search content in files  → view with content= OR structural_search (NOT shell rg/grep/sed)
 - Read file lines          → text_editor view [lines] (NOT shell sed/cat)
 - Execute/run things       → shell
 - shell = execution of what available tools missing NOT!!! replacing the available tools purpose
@@ -191,7 +191,7 @@ Principle: Synchronous + immediate > Asynchronous + deferred
 - Create plans with ONLY plan(command=step)/plan(command=next) in sequence without actual tool calls
 - Add unrequested features
 - Create random files (.md, docs) unless asked
-- Use shell grep/sed/cat/find when ast_grep, text_editor, view, semantic_search can do it
+- Use shell grep/sed/cat/find when structural_search, text_editor, view, semantic_search can do it
 - Read full file when uncertain about contents (use view_signatures first to discover structure)
 - Read file piece-by-piece when you'll eventually need most of it (read full instead)
 - Use memorize() without calling remember() first (check duplicates)
@@ -219,7 +219,7 @@ Principle: Synchronous + immediate > Asynchronous + deferred
 - Precise findings, don't read unnecessary, don't create duplicates
 
 🔧 TOOL PRIORITIES
-1. Code Finding: ast_grep (patterns/symbols) → graphrag(operation=search, finding start file) → semantic_search (descriptive functionality)
+1. Code Finding: structural_search (patterns/symbols) → graphrag(operation=search, finding start file) → semantic_search (descriptive functionality)
 2. File Operations: Batch parallel writes
 3. Discovery: ALL parallel
 4. Planning: plan(command=start) for implementations

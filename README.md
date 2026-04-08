@@ -137,8 +137,8 @@ Agents declare **capabilities** instead of hardcoding MCP servers. This decouple
 |------------|-----------------|-----------------|
 | `core` | `plan` task tracker | `core/default.toml` (built-in) |
 | `agent` | `agent_*` delegation tools | `agent/default.toml` (built-in) |
-| `filesystem` | `view`, `shell`, `text_editor`, `workdir`, `ast_grep` | `octofs.toml` |
-| `codesearch` | `semantic_search`, `graphrag`, `view_signatures` | `octocode.toml` |
+| `filesystem` | `view`, `shell`, `text_editor`, `workdir` | `octofs.toml` |
+| `codesearch` | `semantic_search`, `structural_search`, `graphrag`, `view_signatures` | `octocode.toml` |
 | `memory` | `remember`, `memorize` | `octobrain.toml` |
 | `websearch` | web search tool | `tavily.toml` |
 | `versioning` | git operations via shell | `git.toml` |
@@ -244,8 +244,8 @@ allowed_tools = ["core:*", "octofs:*", "agent_*"]
 # Example: Adding a custom MCP server
 
 [roles.mcp]
-server_refs = ["core", "octofs", "my-custom-server"]
-allowed_tools = ["core:*", "octofs:*", "my_custom-tool"]
+server_refs = ["core", "agent", "my-custom-server"]
+allowed_tools = ["core:*", "agent:*", "my-custom-server:my_custom-tool"]
 
 [[mcp.servers]]
 name = "my-custom-server"
@@ -258,9 +258,7 @@ tools = []
 
 **Built-in servers** (always available, no `[[mcp.servers]]` needed):
 - `core` — `plan`, `mcp`, `agent` tools
-- `octofs` — `view`, `text_editor`, `batch_edit`, `extract_lines`, `shell`, `workdir`, `ast_grep`
 - `agent` — `agent_*` tools for delegating to layers
-- `octocode` — `semantic_search`, `remember`, `memorize`, `view_signatures`, `graphrag` (requires `muvon/octocode` dep)
 
 ### Placeholder Variables
 

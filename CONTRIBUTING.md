@@ -227,11 +227,7 @@ The dependency system will:
 | server_ref | Provides |
 |------------|----------|
 | `core` | `plan` — structured task tracker |
-| `octofs`     | `view`, `text_editor`, `batch_edit`, `shell`, `workdir`, `ast_grep` |
-| `octocode` | `semantic_search`, `remember`, `memorize`, `view_signatures`, `graphrag` |
-| `octobrain` | Knowledge graph and reasoning tools |
 | `agent` | `agent_*` tools — delegate to configured layers |
-| `tavily` | `tavily_search`, `tavily_extract`, `tavily_map` — web search |
 
 ### Adding Custom MCP Servers
 

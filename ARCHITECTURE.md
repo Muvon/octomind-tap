@@ -64,8 +64,8 @@ Symlinks are managed by `scripts/setup-symlinks.sh` which **always force-creates
 |----------------|------------------------|-------------------------------------------------------|
 | `core`         | default                | `plan` task tracker                                   |
 | `agent`        | default                | `agent_*` delegation tools                            |
-| `filesystem`   | octofs                 | `view`, `shell`, `text_editor`, `workdir`, `ast_grep` |
-| `codesearch`   | octocode               | `semantic_search`, `graphrag`, `view_signatures`      |
+| `filesystem`   | octofs                 | `view`, `shell`, `text_editor`, `workdir` |
+| `codesearch`   | octocode               | `semantic_search`, `structural_search`, `graphrag`, `view_signatures`      |
 | `memory`       | octobrain              | `remember`, `memorize`                                |
 | `websearch`    | tavily                 | web search and content extraction                     |
 | `versioning`   | git                    | git operations                                        |

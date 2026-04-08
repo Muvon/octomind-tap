@@ -548,10 +548,10 @@ Commands typed at the session prompt (prefix with `/`):
 - `batch_edit` — atomic multi-operation file edits
 - `shell` — execute shell commands
 - `workdir` — get/set working directory
-- `ast_grep` — AST-based code search and refactoring
 
 ### Codesearch (octocode)
 - `semantic_search` — semantic code search
+- `structural_search` — AST-based code search and refactoring
 - `graphrag` — graph-based code relationship queries
 - `view_signatures` — view function/type signatures
 

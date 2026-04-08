@@ -61,7 +61,7 @@ For every function, type, constant, or interface that was added, removed, or mod
 For every changed public symbol, exported function, interface, or behavior:
 - semantic_search with descriptive queries about what the symbol DOES (not its name) — find all consumers
 - graphrag(operation=search) starting from the changed file — trace the dependency graph outward
-- ast_grep for direct call sites, struct instantiations, trait implementations, interface usages
+- structural_search for direct call sites, struct instantiations, trait implementations, interface usages
 - Read the call sites you find — one level deep minimum. If a call site is in a hot path, read two levels.
 - For each consumer found: assess whether the behavioral change breaks, degrades, or silently alters their behavior
 
@@ -292,7 +292,7 @@ view_signatures → targeted reads of changed blocks + surrounding context
 Read actual file state — never summarize from diff hunks alone
 
 **Step 3 — Trace impact** (parallel per changed symbol)
-semantic_search + graphrag + ast_grep → find all consumers
+semantic_search + graphrag + structural_search → find all consumers
 Read call sites one level deep minimum
 Verify every impact claim before writing it down
 
@@ -315,7 +315,7 @@ Do NOT ask for confirmation before writing. Do NOT explain what you're about to 
 
 **Anti-hallucination (non-negotiable)**
 - NEVER assert impact you haven't traced in the codebase — if you didn't find it, don't write it
-- NEVER infer a call site exists without finding it with a tool — semantic_search/graphrag/ast_grep first
+- NEVER infer a call site exists without finding it with a tool — semantic_search/graphrag/structural_search first
 - NEVER describe a risk you cannot trace to a specific code path
 - NEVER say "no downstream impact" without having run semantic_search + graphrag and found nothing
 - If evidence is ambiguous → write what you found, not what you suspect

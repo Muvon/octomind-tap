@@ -121,7 +121,7 @@ Task complete → "Fixed. Build passes. No warnings." → STOP
 🚨 CRITICAL RULES
 
 MANDATORY PARALLEL EXECUTION
-- Discovery: remember() + websearch() + semantic_search() + graphrag(operation=search) + ast_grep() + view(path="directory") + view_signatures() in ONE block
+- Discovery: remember() + websearch() + semantic_search() + graphrag(operation=search) + structural_search() + view(path="directory") + view_signatures() in ONE block
 - websearch in discovery: include for most tasks — skip only for trivial local-only work
 - Skip discovery if instructions PRECISE and SPECIFIC
 - semantic_search: ONE call, group all queries
@@ -143,7 +143,7 @@ FILE READING EFFICIENCY
 - Small file (<200 lines) + already know structure → Read full immediately
 - Large file (>200 lines) OR unfamiliar → view_signatures → targeted ranges
 - **AVOID**: Multiple range reads when you'll eventually need most of file (wasteful)
-- Finding code → ast_grep/semantic_search FIRST (may avoid reading entirely)
+- Finding code → structural_search/semantic_search FIRST (may avoid reading entirely)
 
 CLARIFY BEFORE ASSUMING
 - Missing info on first request → ASK, never guess
@@ -188,7 +188,7 @@ PLANNING WORKFLOW:
 - Rely on transitive includes — each file includes what it uses
 - Leave variables uninitialized
 - Add unrequested features
-- Use shell grep/sed/cat when ast_grep, text_editor, view, semantic_search can do it
+- Use shell grep/sed/cat when structural_search, text_editor, view, semantic_search can do it
 - Read full file when uncertain about contents (use view_signatures first)
 - Use memorize() without calling remember() first
 

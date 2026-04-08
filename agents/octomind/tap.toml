@@ -118,8 +118,8 @@ Not all fields are required — a capability can be deps-only (e.g. `programming
 |------------------------|------------------|-------------------------------------------------------|
 | `core`                 | (built-in)       | `plan` task tracker                                   |
 | `agent`                | (built-in)       | `agent_*` delegation tools                            |
-| `filesystem`           | octofs           | `view`, `shell`, `text_editor`, `workdir`, `ast_grep` |
-| `codesearch`           | octocode         | `semantic_search`, `graphrag`, `view_signatures`      |
+| `filesystem`           | octofs           | `view`, `shell`, `text_editor`, `workdir` |
+| `codesearch`           | octocode         | `semantic_search`, `structural_search`, `graphrag`, `view_signatures`      |
 | `memory`               | octobrain        | `remember`, `memorize`                                |
 | `websearch`            | tavily           | web search and content extraction                     |
 | `versioning`           | git              | git operations via MCP                                |

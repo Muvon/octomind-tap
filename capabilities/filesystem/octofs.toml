@@ -2,8 +2,8 @@
 # Capability: filesystem
 # Provider: octofs — Octomind's native filesystem + shell MCP server
 # Title: Filesystem
-# Description: File viewing, editing, shell execution, and AST-aware search via octofs.
-# Provides tools: view, text_editor, batch_edit, extract_lines, shell, workdir, ast_grep
+# Description: File viewing, editing, shell execution, and pattern search via octofs.
+# Provides tools: view, text_editor, batch_edit, extract_lines, shell, workdir
 
 [deps]
 require = ["muvon/octofs"]
