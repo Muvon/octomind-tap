@@ -23,12 +23,10 @@ case "$OS" in
     if pkg_check brew; then
       brew install uv
     else
-      # Official installer works on macOS too
       curl -LsSf https://astral.sh/uv/install.sh | sh
     fi
     ;;
   linux)
-    # Official installer is the recommended path on Linux (works on all distros)
     if pkg_check curl; then
       curl -LsSf https://astral.sh/uv/install.sh | sh
     elif pkg_check wget; then
@@ -36,6 +34,10 @@ case "$OS" in
     else
       die "Neither curl nor wget found. Install one of them first, then re-run."
     fi
+    ;;
+  windows)
+    # Official PowerShell installer for Windows
+    powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
     ;;
 esac
 

@@ -31,6 +31,13 @@ case "$OS" in
       cargo install ast-grep --locked
     fi
     ;;
+  windows)
+    if pkg_check npm; then
+      npm install -g @ast-grep/cli
+    else
+      cargo install ast-grep --locked
+    fi
+    ;;
 esac
 
 if ! pkg_check sg; then
