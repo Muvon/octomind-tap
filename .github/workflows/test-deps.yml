@@ -130,3 +130,29 @@ jobs:
         run: |
           bash '${{ matrix.script }}'
           echo "Idempotency OK"
+
+  # ── Test on Windows ──────────────────────────────────────────────────────────
+  test-windows:
+    name: "Windows · ${{ matrix.script }}"
+    needs: discover
+    if: ${{ needs.discover.outputs.scripts != '[]' }}
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        script: ${{ fromJson(needs.discover.outputs.scripts) }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run script (install)
+        shell: bash
+        run: |
+          echo "=== First run (install) ==="
+          bash '${{ matrix.script }}'
+
+      - name: Run script again (idempotency check)
+        shell: bash
+        run: |
+          bash '${{ matrix.script }}'
+          echo "Idempotency OK"
