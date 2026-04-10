@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 # dep: muvon/octobrain
 # type: dep
-# description: Installs the octobrain CLI (code indexing and search tool by Muvon)
+# description: Installs the octobrain CLI (memory and knowledge tool by Muvon)
 # check: octobrain
 # https://github.com/muvon/octobrain
 
 set -euo pipefail
 
-# Resolve deps/lib/ relative to this script's location
 DEPS_LIB="$(cd "$(dirname "${BASH_SOURCE[0]}")/../lib" && pwd)"
 source "$DEPS_LIB/platform.sh"
 
@@ -16,55 +15,47 @@ if pkg_check octobrain; then
   exit 0
 fi
 
-# Ensure cargo is available
-install_dep rust/cargo
+REPO="Muvon/octobrain"
+BINARY="octobrain"
+INSTALL_DIR="${HOME}/.local/bin"
 
-# On Linux, ensure build tools + OpenSSL dev headers + protoc are available
-if [[ $OS == "linux" ]]; then
-  needs_install=0
-  pkg_check cc || needs_install=1
-  pkg_check protoc || needs_install=1
-  if ! pkg-config --exists openssl 2>/dev/null; then
-    needs_install=1
-  fi
+info "octobrain not found — installing from GitHub releases..."
 
-  if [[ $needs_install -eq 1 ]]; then
-    info "Installing build dependencies (build-essential, pkg-config, openssl-dev, protobuf)..."
-    case "$PKG_MANAGER" in
-      apt)
-        sudo apt-get update -qq
-        sudo apt-get install -y -qq build-essential pkg-config libssl-dev protobuf-compiler
-        ;;
-      dnf)
-        sudo dnf install -y @development-tools pkgconfig openssl-devel protobuf-compiler
-        ;;
-      pacman)
-        sudo pacman -S --noconfirm base-devel pkgconf openssl protobuf
-        ;;
-      zypper)
-        sudo zypper install -y -t pattern devel_basis && sudo zypper install -y pkg-config libopenssl-devel protobuf-devel
-        ;;
-      apk)
-        sudo apk add --no-cache build-base pkgconfig openssl-dev protobuf-dev protoc
-        ;;
-      *)
-        warn "No supported package manager found. Build dependencies may be missing."
-        ;;
-    esac
-  fi
+# On macOS, prefer Homebrew if available
+if [[ $OS == "macos" ]] && pkg_check brew; then
+  brew install muvon/tap/octobrain
+  exit 0
 fi
 
-info "octobrain not found — installing..."
-
-case "$OS" in
-  macos)
-    if pkg_check brew; then
-      brew install muvon/tap/octobrain
-    else
-      cargo install octobrain
-    fi
-    ;;
-  linux)
-    cargo install octobrain
-    ;;
+# Determine target triple
+case "$OS-$ARCH" in
+  linux-x86_64) TARGET="x86_64-unknown-linux-musl" ;;
+  linux-arm64) TARGET="aarch64-unknown-linux-musl" ;;
+  macos-x86_64) TARGET="x86_64-apple-darwin" ;;
+  macos-arm64) TARGET="aarch64-apple-darwin" ;;
+  *) die "Unsupported platform: $OS-$ARCH" ;;
 esac
+
+# Get latest version
+VERSION=$(curl -fsSL "https://api.github.com/repos/$REPO/releases" | grep '"tag_name":' | head -1 | sed -E 's/.*"([^"]+)".*/\1/')
+if [[ -z $VERSION ]]; then
+  die "Failed to get latest version from GitHub"
+fi
+
+# Download and extract
+TMP_DIR=$(mktemp -d)
+trap "rm -rf '$TMP_DIR'" EXIT
+
+FILENAME="${BINARY}-${VERSION}-${TARGET}.tar.gz"
+URL="https://github.com/$REPO/releases/download/$VERSION/$FILENAME"
+
+info "Downloading $BINARY $VERSION for $TARGET..."
+curl -fsSL "$URL" -o "$TMP_DIR/$FILENAME"
+tar xzf "$TMP_DIR/$FILENAME" -C "$TMP_DIR"
+
+# Install
+mkdir -p "$INSTALL_DIR"
+cp "$TMP_DIR/$BINARY" "$INSTALL_DIR/$BINARY"
+chmod +x "$INSTALL_DIR/$BINARY"
+
+info "octobrain $VERSION installed to $INSTALL_DIR"
