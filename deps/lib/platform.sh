@@ -30,11 +30,19 @@ case "$(uname -s)" in
     OS="macos"
     IS_MACOS="1"
     IS_LINUX="0"
+    IS_WINDOWS="0"
     ;;
   Linux)
     OS="linux"
     IS_MACOS="0"
     IS_LINUX="1"
+    IS_WINDOWS="0"
+    ;;
+  MINGW* | MSYS* | CYGWIN* | Windows_NT)
+    OS="windows"
+    IS_MACOS="0"
+    IS_LINUX="0"
+    IS_WINDOWS="1"
     ;;
   *)
     echo "Unsupported OS: $(uname -s)" >&2
@@ -92,7 +100,7 @@ else
 fi
 
 # Export all variables as read-only
-readonly OS ARCH PKG_MANAGER IS_MACOS IS_LINUX IS_X86_64 IS_ARM64
+readonly OS ARCH PKG_MANAGER IS_MACOS IS_LINUX IS_WINDOWS IS_X86_64 IS_ARM64
 
 # ── Helper functions ──────────────────────────────────────────────────────────
 
