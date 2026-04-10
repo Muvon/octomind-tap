@@ -5,10 +5,12 @@ on:
     branches: [master, main]
     paths:
       - 'deps/**'
+      - '.github/workflows/test-deps.yml'
   pull_request:
     branches: [master, main]
     paths:
       - 'deps/**'
+      - '.github/workflows/test-deps.yml'
 
 jobs:
   # ── Discover all dep scripts (excludes lib/) ─────────────────────────────────
