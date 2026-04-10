@@ -27,12 +27,21 @@ if [[ $OS == "macos" ]] && pkg_check brew; then
   exit 0
 fi
 
-# Determine target triple
+# Determine target triple and archive format
+ARCHIVE_EXT="tar.gz"
 case "$OS-$ARCH" in
   linux-x86_64) TARGET="x86_64-unknown-linux-musl" ;;
   linux-arm64) TARGET="aarch64-unknown-linux-musl" ;;
   macos-x86_64) TARGET="x86_64-apple-darwin" ;;
   macos-arm64) TARGET="aarch64-apple-darwin" ;;
+  windows-x86_64)
+    TARGET="x86_64-pc-windows-msvc"
+    ARCHIVE_EXT="zip"
+    ;;
+  windows-arm64)
+    TARGET="aarch64-pc-windows-msvc"
+    ARCHIVE_EXT="zip"
+    ;;
   *) die "Unsupported platform: $OS-$ARCH" ;;
 esac
 
@@ -46,16 +55,25 @@ fi
 TMP_DIR=$(mktemp -d)
 trap "rm -rf '$TMP_DIR'" EXIT
 
-FILENAME="${BINARY}-${VERSION}-${TARGET}.tar.gz"
+FILENAME="${BINARY}-${VERSION}-${TARGET}.${ARCHIVE_EXT}"
 URL="https://github.com/$REPO/releases/download/$VERSION/$FILENAME"
 
 info "Downloading $BINARY $VERSION for $TARGET..."
 curl -fsSL "$URL" -o "$TMP_DIR/$FILENAME"
-tar xzf "$TMP_DIR/$FILENAME" -C "$TMP_DIR"
+
+if [[ $ARCHIVE_EXT == "zip" ]]; then
+  unzip -qo "$TMP_DIR/$FILENAME" -d "$TMP_DIR"
+else
+  tar xzf "$TMP_DIR/$FILENAME" -C "$TMP_DIR"
+fi
 
 # Install
 mkdir -p "$INSTALL_DIR"
-cp "$TMP_DIR/$BINARY" "$INSTALL_DIR/$BINARY"
-chmod +x "$INSTALL_DIR/$BINARY"
+if [[ $OS == "windows" ]]; then
+  cp "$TMP_DIR/${BINARY}.exe" "$INSTALL_DIR/${BINARY}.exe"
+else
+  cp "$TMP_DIR/$BINARY" "$INSTALL_DIR/$BINARY"
+  chmod +x "$INSTALL_DIR/$BINARY"
+fi
 
 info "octocode $VERSION installed to $INSTALL_DIR"
