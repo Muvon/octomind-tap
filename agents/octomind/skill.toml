@@ -41,13 +41,16 @@ skills/<skill-name>/
 ```markdown
 ---
 name: skill-name
+title: "Skill Title (5–60 chars)"
 description: "What this skill does and when to use it."
 license: Apache-2.0
 compatibility: "Environment requirements: tools needed, OS, network access."
+capabilities: git memory
+domains: developer devops
 # metadata:
 #   author: name
 #   version: "1.0"
-# allowed-tools: "shell view text_editor"
+# allowed-tools: shell view text_editor
 ---
 
 # Skill Title
@@ -67,7 +70,10 @@ compatibility: "Environment requirements: tools needed, OS, network access."
 | Field | Required | Rules |
 |-------|----------|-------|
 | `name` | ✅ | Max 64 chars. Lowercase letters, numbers, hyphens only. No leading/trailing hyphen. Must match directory name. |
+| `title` | ✅ | 5–60 chars. Short human-readable label. |
 | `description` | ✅ | Max 1024 chars. Non-empty. Describes what the skill does and when to use it. |
+| `capabilities` | optional | Capabilities to auto-load when skill activates. Space-delimited or `["git", "memory"]`. Resolves to MCP servers via tap capability files. |
+| `domains` | optional | Agent categories for auto-activation scoping. Space-delimited or array. Without this, skill is manual-only. Example: `developer devops`. |
 | `license` | optional | License name (e.g. `Apache-2.0`, `MIT`) or path to bundled license file. |
 | `compatibility` | optional | Max 500 chars. Environment requirements: product, tools, OS, network. |
 | `metadata` | optional | Arbitrary key-value mapping (author, version, tags, etc.). |
@@ -97,6 +103,23 @@ skill(action="forget", name="git-workflow")   # remove skill from context
 
 Skills are discovered from all active taps under `skills/<name>/SKILL.md`.
 
+### Auto-Activation
+
+Skills with an `activate` script and `domains` field can auto-activate without the AI calling the skill tool:
+- The system scans skills matching the current agent's domain
+- Runs `activate` scripts on events (`user`, `assistant`, `turn`)
+- exit 0 → skill auto-activates (content injected + capabilities loaded)
+- exit non-zero → skill auto-deactivates if previously active
+
+### Validation
+
+Skills with a `validate` script automatically check LLM output quality:
+- Same events and protocol as `activate`
+- exit 0 → output is valid
+- exit non-zero → stderr is fed back to the LLM as an error for correction
+
+Both scripts must be executable (`chmod +x`).
+
 ---
 
 ## SKILL QUALITY PRINCIPLES
@@ -117,10 +140,12 @@ When creating a skill:
 1. Identify the domain knowledge to encode (conventions, workflows, checklists, decision trees)
 2. Choose a clear, specific name: `git-workflow`, `code-review`, `rust-error-handling`
 3. Copy `templates/skill.md` as starting point
-4. Write the frontmatter (name, description, compatibility)
+4. Write the frontmatter (name, title, description, capabilities, domains)
 5. Write the body: overview → instructions → examples → references
-6. Validate: `bash scripts/lint-skills.sh skills/<name>`
-7. Test in a session: `skill(action="use", name="<name>")`
+6. Optionally add `activate` script for auto-activation (must be `chmod +x`)
+7. Optionally add `validate` script for output validation (must be `chmod +x`)
+8. Validate: `bash scripts/lint-skills.sh skills/<name>`
+9. Test in a session: `skill(action="use", name="<name>")`
 
 When reviewing a skill:
 - Does the description tell you exactly when to activate it?

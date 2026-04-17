@@ -174,6 +174,8 @@ Skills are reusable instruction packs stored alongside agents in the tap. They f
 skills/
   <skill-name>/
     SKILL.md        # Required: YAML frontmatter + instruction body
+    activate        # Optional: executable script — auto-activates skill based on events
+    validate        # Optional: executable script — validates LLM output quality
     scripts/        # Optional: executable scripts the skill references
     references/     # Optional: supplementary docs (REFERENCE.md, etc.)
     assets/         # Optional: templates, config files, resources
@@ -186,19 +188,56 @@ skills/
 | `name` | ✅ | Max 64 chars. Lowercase letters, numbers, hyphens. No leading/trailing hyphen. Must match directory name. |
 | `title` | ✅ | 5–60 chars. Short human-readable label for the skill. |
 | `description` | ✅ | 20–1024 chars. What the skill does and when to use it. |
+| `capabilities` | optional | Capabilities to auto-load when skill activates. Space-delimited or array: `git memory` or `["git", "memory"]`. |
+| `domains` | optional | Agent categories for auto-activation scoping. Space-delimited or array. Without this, skill is manual-only. |
 | `license` | optional | License name or path to bundled license file. |
 | `compatibility` | optional | Max 500 chars. Environment requirements (tools, OS, network). |
 | `metadata` | optional | Arbitrary key-value mapping (author, version, tags). |
 | `allowed-tools` | optional | Space-delimited pre-approved tools (experimental). |
 
-### How Octomind discovers and injects skills
+### Activation: manual and automatic
 
-1. The `skill` MCP tool (built into Octomind core) scans all active taps for `skills/*/SKILL.md`
-2. `skill(action="list")` returns all discovered skills with their metadata
-3. `skill(action="use", name="<name>")` reads the full `SKILL.md` and injects it into the session context
-4. `skill(action="forget", name="<name>")` removes the skill and triggers conversation compression
+**Manual activation** — the AI calls the `skill` MCP tool:
 
-Skills are **not** loaded automatically — the AI must explicitly activate them. This keeps context lean.
+1. `skill(action="list")` — discover available skills across all taps
+2. `skill(action="use", name="<name>")` — inject skill content into session context
+3. `skill(action="forget", name="<name>")` — remove skill and compress context
+
+**Auto-activation** — skills with an `activate` script are automatically checked on conversation events. The system scans skills whose `domains` match the current agent's role, runs their `activate` scripts, and activates matching skills.
+
+### activate script
+
+An executable file at `skills/<name>/activate`. Decides whether the skill should be active.
+
+- `argv[1]` = event type: `user` | `assistant` | `turn`
+- `stdin` = event content (user message, assistant response, or turn summary with tool names)
+- Runs in the project working directory
+- **exit 0** = activate this skill
+- **exit non-zero** = don't activate (or deactivate if currently active)
+
+Events: `user` (real typed input), `assistant` (response done), `turn` (tools executed, ready for next loop).
+
+### validate script
+
+An executable file at `skills/<name>/validate`. Checks LLM output quality deterministically.
+
+- Same invocation as `activate` (event type + stdin content)
+- **exit 0** = output is valid
+- **exit non-zero** = invalid. stderr (or stdout if stderr empty) is captured and fed back to the LLM as an error message for correction.
+
+### Capabilities auto-loading
+
+When a skill declares `capabilities: git memory`, activating the skill resolves each capability from tap files (`capabilities/<name>/<provider>.toml`) and automatically loads the backing MCP servers. This replaces the previous warning about missing tools.
+
+### Domain scoping
+
+The `domains` field limits auto-activation to relevant agent categories:
+
+```yaml
+domains: developer devops
+```
+
+Only agents with matching role names (e.g., `developer:rust`) run this skill's `activate` script. Skills without `domains` are manual-only (backward compatible).
 
 ### Validation
 
@@ -218,6 +257,7 @@ The lint script validates:
 - `title` length (5–60 chars)
 - `description` length (20–1024 chars) and `compatibility` length limits
 - Non-empty body after frontmatter
+- `activate` and `validate` scripts are executable if they exist
 
 ### Skill vs Agent
 
@@ -226,9 +266,10 @@ Skills and agents serve different purposes:
 | | Skill | Agent |
 |---|---|---|
 | **File** | `skills/<name>/SKILL.md` | `agents/<domain>/<spec>.toml` |
-| **Activation** | `skill(action="use", name="...")` | `octomind run domain:spec` |
-| **What it provides** | Domain knowledge injected into context | Full role: model, tools, system prompt |
+| **Activation** | Manual via `skill` tool, or auto via `activate` script | `octomind run domain:spec` |
+| **What it provides** | Domain knowledge + capabilities + validation | Full role: model, tools, system prompt |
 | **Composable** | Yes — multiple skills per session | No — one role per session |
+| **Auto-expand** | Yes — skills can auto-load MCP servers via capabilities | No — tools are static |
 
 ---
 

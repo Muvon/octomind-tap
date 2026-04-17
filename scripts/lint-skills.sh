@@ -164,6 +164,15 @@ lint_skill() {
     fi
   fi
 
+  # activate and validate scripts must be executable if they exist
+  for script_name in activate validate; do
+    local script_path="$skill_dir/$script_name"
+    if [[ -f $script_path && ! -x $script_path ]]; then
+      echo "  ✗ $rel/$script_name: exists but is not executable (chmod +x)"
+      ok=0
+    fi
+  done
+
   if [[ $ok -eq 1 ]]; then
     echo "  ✓ $rel"
   else
