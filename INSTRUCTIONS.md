@@ -12,6 +12,8 @@ capabilities/<name>/            # Capability definitions
 deps/<org>/<tool>.sh            # Dependency install scripts (auto-run before sessions)
 deps/lib/platform.sh            # Shared platform detection helpers (source in all dep scripts)
 skills/<name>/SKILL.md          # Reusable instruction packs (AgentSkills spec)
+skills/<name>/activate          # Optional: auto-activation script (exit 0 = activate)
+skills/<name>/validate          # Optional: validation script (exit 0 = valid, stderr = error)
 bin/load                        # Python resolver: merges capabilities → final manifest (stdout)
 scripts/
   lint-manifests.sh             # Validate all agent TOML files
@@ -316,9 +318,12 @@ esac
 ```markdown
 ---
 name: skill-name
+title: "Skill Title (5–60 chars)"
 description: "What this skill does and when to use it."
 license: Apache-2.0
 compatibility: "Requires: tool1, tool2. macOS/Linux."
+capabilities: git memory
+domains: developer devops
 ---
 
 # Skill Title
@@ -333,7 +338,21 @@ compatibility: "Requires: tool1, tool2. macOS/Linux."
 ...
 ```
 
-Required frontmatter: `name`, `description`. Directory name must match `name`.
+Required frontmatter: `name`, `title`, `description`. Directory name must match `name`.
+
+Optional fields:
+- `capabilities` — capabilities to auto-load when skill activates (space-delimited or array)
+- `domains` — agent categories for auto-activation scoping (omit for manual-only)
+- `allowed-tools` — space-delimited pre-approved tools
+
+### Skill Scripts (Optional)
+
+Skills can include `activate` and `validate` scripts alongside SKILL.md:
+
+- **`activate`** — executable script that decides if the skill should be active. Receives event type (`user`|`assistant`|`turn`) as argv[1], content on stdin. Runs in project workdir. exit 0 = activate, non-zero = don't.
+- **`validate`** — executable script that validates LLM output. Same protocol. exit 0 = valid, non-zero = invalid (stderr fed back to LLM).
+
+Both must be executable (`chmod +x`). The lint script checks this.
 
 ### Adding a New Capability (full checklist)
 

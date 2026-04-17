@@ -7,11 +7,13 @@ description: "One-line description of what this skill does and when to use it. B
 # Optional fields
 license: Apache-2.0
 compatibility: "Describe environment requirements: intended product (e.g. Octomind), system tools needed (e.g. git, docker), network access, OS constraints."
+# capabilities: git memory              # capabilities to auto-load when skill activates (space-delimited)
+# domains: developer devops             # agent categories that auto-check this skill (omit for manual-only)
+# allowed-tools: shell view text_editor  # space-delimited pre-approved tools (experimental)
 # metadata:
 #   author: your-name
 #   version: "1.0"
 #   tags: "tag1 tag2"
-# allowed-tools: "shell view text_editor"   # space-delimited pre-approved tools (experimental)
 ---
 
 # My Skill Name
@@ -88,7 +90,9 @@ Result here
 
 ---
 
-<!-- Optional directories you can add alongside this SKILL.md:
+<!-- Optional directories and files you can add alongside this SKILL.md:
+  activate    — executable script: auto-activates skill based on events (exit 0 = activate)
+  validate    — executable script: validates LLM output quality (exit 0 = valid, stderr = error)
   scripts/    — executable scripts the skill may reference
   references/ — supplementary documentation (REFERENCE.md, FORMS.md, etc.)
   assets/     — templates, config files, other resources

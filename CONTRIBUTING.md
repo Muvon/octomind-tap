@@ -386,18 +386,20 @@ A skill is a `SKILL.md` file stored at `skills/<name>/SKILL.md`. When activated 
 - Deployment runbooks
 
 **Not a good skill** (use an agent instead):
-- Something that needs its own model settings or tools
+- Something that needs its own model settings
 - A full persona (doctor, lawyer, developer)
-- Something that requires MCP server access
+
+Note: Skills **can** declare `capabilities` to auto-load MCP servers when activated. A skill that needs git tools can declare `capabilities: git` and the backing MCP server loads automatically.
 
 ### Skill vs Agent
 
 | | Skill | Agent |
 |---|---|---|
 | **File** | `skills/<name>/SKILL.md` | `agents/<domain>/<spec>.toml` |
-| **Activation** | `skill(action="use", name="...")` | `octomind run domain:spec` |
-| **What it provides** | Domain knowledge injected into context | Full role: model, tools, system prompt |
+| **Activation** | Manual via `skill` tool, or auto via `activate` script | `octomind run domain:spec` |
+| **What it provides** | Domain knowledge + capabilities + validation | Full role: model, tools, system prompt |
 | **Composable** | Yes — multiple skills per session | No — one role per session |
+| **Auto-expand** | Yes — can auto-load MCP servers via capabilities | No — tools are static |
 
 ### Step-by-step: Create a skill
 
@@ -422,8 +424,13 @@ title: "My Skill Name"
 description: "One sentence: what this skill does and when to use it."
 license: Apache-2.0
 compatibility: "Requires git. Works with any project."
+capabilities: git memory
+domains: developer devops
 ---
 ```
+
+- `capabilities` — auto-loads MCP servers when skill activates (optional, space-delimited)
+- `domains` — limits auto-activation to matching agent categories (optional, omit for manual-only)
 
 **4. Write the body**
 
@@ -433,15 +440,19 @@ Structure:
 3. **Examples** — Concrete input/output pairs (most valuable part)
 4. **References** — Links to docs or bundled reference files
 
-**5. Add optional directories** (if needed)
+**5. Add optional files and directories** (if needed)
 
 ```
 skills/<name>/
   SKILL.md
+  activate      ← auto-activation script (chmod +x, exit 0 = activate)
+  validate      ← validation script (chmod +x, exit 0 = valid, stderr = error)
   scripts/      ← executable scripts the skill references
   references/   ← supplementary docs (REFERENCE.md, FORMS.md, etc.)
   assets/       ← templates, config files, resources
 ```
+
+`activate` and `validate` receive event type (`user`|`assistant`|`turn`) as argv[1] and content on stdin. They run in the project working directory.
 
 **6. Validate**
 
@@ -473,7 +484,11 @@ That's it! Include a brief description of what domain knowledge the skill encode
 - [ ] `title` is a short human-readable label (5–60 chars)
 - [ ] `description` tells you *when* to activate the skill (not just what it is)
 - [ ] `compatibility` lists any required tools or environment constraints
+- [ ] `capabilities` lists all capabilities the skill needs (if any)
+- [ ] `domains` lists relevant agent categories (if auto-activation desired)
 - [ ] Body has at least an Overview and Instructions section
 - [ ] Instructions are specific enough to follow without guessing
 - [ ] Non-obvious rules have examples
+- [ ] `activate` script is executable if present (`chmod +x`)
+- [ ] `validate` script is executable if present (`chmod +x`)
 - [ ] `bash scripts/lint-skills.sh skills/<name>` passes
