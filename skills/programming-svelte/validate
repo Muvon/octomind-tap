@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+[ -f svelte.config.js ] || [ -f svelte.config.ts ] || exit 0
+npx svelte-check 2>&1

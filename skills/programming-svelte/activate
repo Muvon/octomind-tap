@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+[ -f svelte.config.js ] && exit 0
+[ -f svelte.config.ts ] && exit 0
+[ "$1" = "user" ] && grep -qi '\bsvelte\b\|sveltekit\b\|\.svelte\b' && exit 0
+exit 1

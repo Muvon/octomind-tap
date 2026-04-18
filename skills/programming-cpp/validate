@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+[ -f CMakeLists.txt ] || exit 0
+[ -d build ] && cmake --build build 2>&1

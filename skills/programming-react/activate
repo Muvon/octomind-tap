@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+[ -f package.json ] && grep -q '"react"' package.json && exit 0
+[ "$1" = "user" ] && grep -qi '\breact\b\|\.tsx\b\|\.jsx\b' && exit 0
+exit 1

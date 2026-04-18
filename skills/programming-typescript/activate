@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+[ -f tsconfig.json ] && exit 0
+[ -f tsconfig.base.json ] && exit 0
+[ "$1" = "user" ] && grep -qi '\btypescript\b\|\.ts\b\|\.tsx\b' && exit 0
+exit 1

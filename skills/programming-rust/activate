@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+[ -f Cargo.toml ] && exit 0
+[ "$1" = "user" ] && grep -qi '\brust\b\|cargo\b\|\.\brs\b' && exit 0
+exit 1

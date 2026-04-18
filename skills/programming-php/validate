@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+[ -f composer.json ] || exit 0
+[ -f vendor/bin/phpstan ] && ./vendor/bin/phpstan analyse --no-progress 2>&1
