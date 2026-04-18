@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+[ -f Gemfile ] || exit 0
+command -v rubocop >/dev/null 2>&1 && rubocop --format simple 2>&1 ||
+  bundle exec rubocop --format simple 2>&1

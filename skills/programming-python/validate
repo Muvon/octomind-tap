@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+[ -f pyproject.toml ] || [ -f requirements.txt ] || exit 0
+if command -v ruff >/dev/null 2>&1; then
+  ruff check . 2>&1
+elif command -v uv >/dev/null 2>&1 && uv run ruff --version >/dev/null 2>&1; then
+  uv run ruff check . 2>&1
+fi

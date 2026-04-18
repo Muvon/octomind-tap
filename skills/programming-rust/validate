@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+[ -f Cargo.toml ] || exit 0
+cargo clippy --quiet --all-targets -- -D warnings 2>&1

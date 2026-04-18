@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+[ -f go.mod ] || exit 0
+go vet ./... 2>&1

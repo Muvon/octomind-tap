@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+[ -f tsconfig.json ] || exit 0
+npx tsc --noEmit 2>&1

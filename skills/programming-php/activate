@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+[ -f composer.json ] && exit 0
+[ "$1" = "user" ] && grep -qi '\bphp\b\|laravel\b\|symfony\b\|composer\b' && exit 0
+exit 1

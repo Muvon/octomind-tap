@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+[ -f mix.exs ] || exit 0
+mix format --check-formatted 2>&1
