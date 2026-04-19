@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-set -euo pipefail
-[ -f mix.exs ] && exit 0
-[ "$1" = "user" ] && grep -qi '\belixir\b\|phoenix\b\|\.ex\b\|\.exs\b' && exit 0
-exit 1

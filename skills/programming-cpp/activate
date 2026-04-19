@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-set -euo pipefail
-[ -f CMakeLists.txt ] && exit 0
-[ -f meson.build ] && exit 0
-[ "$1" = "user" ] && grep -qi '\bc++\b\|cpp\b\|cmake\b\|\.hpp\b' && exit 0
-exit 1

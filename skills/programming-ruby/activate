@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-set -euo pipefail
-[ -f Gemfile ] && exit 0
-[ -f Rakefile ] && exit 0
-[ "$1" = "user" ] && grep -qi '\bruby\b\|rails\b\|\.rb\b\|bundler\b' && exit 0
-exit 1

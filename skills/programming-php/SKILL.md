@@ -5,6 +5,11 @@ description: "Modern PHP 8.x conventions, strict types, Composer, PHPUnit, PHPSt
 license: Apache-2.0
 compatibility: "Requires PHP 8.1+ and Composer."
 domains: developer
+activate:
+  - on: any
+    rule: file(composer.json)
+  - on: user
+    rule: content(php)
 ---
 
 # PHP Development

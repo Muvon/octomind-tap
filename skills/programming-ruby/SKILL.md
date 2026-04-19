@@ -5,6 +5,11 @@ description: "Ruby conventions, Rails patterns, RSpec testing, RuboCop linting, 
 license: Apache-2.0
 compatibility: "Requires Ruby and Bundler."
 domains: developer
+activate:
+  - on: any
+    rule: file(Gemfile)
+  - on: user
+    rule: content(ruby)
 ---
 
 # Ruby Development
