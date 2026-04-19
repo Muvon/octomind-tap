@@ -349,10 +349,17 @@ Optional fields:
 
 Skills can include `activate` and `validate` scripts alongside SKILL.md:
 
-- **`activate`** — executable script that decides if the skill should be active. Receives event type (`user`|`assistant`|`turn`) as argv[1], content on stdin. Runs in project workdir. exit 0 = activate, non-zero = don't.
-- **`validate`** — executable script that validates LLM output. Same protocol. exit 0 = valid, non-zero = invalid (stderr fed back to LLM).
+- **`activate`** — executable script that decides if the skill should be active. Receives event type (`user`|`assistant`|`turn`) as argv[1], content on stdin. Runs in project workdir. exit 0 = activate, non-zero = don't. Already-active skills are skipped.
+- **`validate`** — executable script that validates LLM output. Runs at end of assistant turn. exit 0 = valid, non-zero = invalid (stderr fed back to LLM). Retries capped by `[skills] max_retries`.
 
 Both must be executable (`chmod +x`). The lint script checks this.
+
+### Environment Variable
+
+Preload skills at session start without activate scripts:
+```bash
+OCTOMIND_SKILLS=programming-rust,git-workflow octomind run developer:general
+```
 
 ### Adding a New Capability (full checklist)
 

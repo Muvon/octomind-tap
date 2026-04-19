@@ -6,6 +6,11 @@ license: Apache-2.0
 compatibility: "Requires Node.js and npm/pnpm."
 capabilities: programming-nodejs svelte
 domains: developer
+activate:
+  - on: any
+    rule: file(svelte.config.js)
+  - on: user
+    rule: content(svelte)
 ---
 
 # Svelte Development

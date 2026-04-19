@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-set -euo pipefail
-[ -f pyproject.toml ] && exit 0
-[ -f requirements.txt ] && exit 0
-[ -f setup.py ] && exit 0
-[ "$1" = "user" ] && grep -qi '\bpython\b\|\.py\b\|pytest\b\|pip\b' && exit 0
-exit 1

@@ -195,15 +195,21 @@ skills/
 | `metadata` | optional | Arbitrary key-value mapping (author, version, tags). |
 | `allowed-tools` | optional | Space-delimited pre-approved tools (experimental). |
 
-### Activation: manual and automatic
+### Activation: three methods
 
-**Manual activation** — the AI calls the `skill` MCP tool:
+**Environment variable** — preload skills at session start:
+```bash
+OCTOMIND_SKILLS=programming-rust,git-workflow octomind run developer:general
+```
+Comma-delimited skill names. Activated permanently, no `activate` scripts run.
 
-1. `skill(action="list")` — discover available skills across all taps
-2. `skill(action="use", name="<name>")` — inject skill content into session context
-3. `skill(action="forget", name="<name>")` — remove skill and compress context
+**Auto-activation** — skills with an `activate` script are automatically checked on conversation events. The system scans skills whose `domains` match the current agent's role, runs their `activate` scripts, and activates matching skills. Already-active skills (including env-loaded) are skipped.
 
-**Auto-activation** — skills with an `activate` script are automatically checked on conversation events. The system scans skills whose `domains` match the current agent's role, runs their `activate` scripts, and activates matching skills.
+**Manual activation** — the AI calls the `skill` MCP tool or user runs `/skill` command:
+
+- `skill(action="use", name="<name>")` or `/skill use <name>` — inject skill into context
+- `skill(action="forget", name="<name>")` or `/skill forget <name>` — remove skill
+- `skill(action="list")` or `/skill list` — discover available skills
 
 ### activate script
 
