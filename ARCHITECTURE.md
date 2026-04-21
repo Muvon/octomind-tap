@@ -174,7 +174,6 @@ Skills are reusable instruction packs stored alongside agents in the tap. They f
 skills/
   <skill-name>/
     SKILL.md        # Required: YAML frontmatter + instruction body
-    activate        # Optional: executable script — auto-activates skill based on events
     validate        # Optional: executable script — validates LLM output quality
     scripts/        # Optional: executable scripts the skill references
     references/     # Optional: supplementary docs (REFERENCE.md, etc.)
@@ -190,6 +189,7 @@ skills/
 | `description` | ✅ | 20–1024 chars. What the skill does and when to use it. |
 | `capabilities` | optional | Capabilities to auto-load when skill activates. Space-delimited or array: `git memory` or `["git", "memory"]`. |
 | `domains` | optional | Agent categories for auto-activation scoping. Space-delimited or array. Without this, skill is manual-only. |
+| `rules` | optional | Auto-activation rules — list of expressions evaluated against the project and conversation. See [Auto-activation rules](#auto-activation-rules). |
 | `license` | optional | License name or path to bundled license file. |
 | `compatibility` | optional | Max 500 chars. Environment requirements (tools, OS, network). |
 | `metadata` | optional | Arbitrary key-value mapping (author, version, tags). |
@@ -201,9 +201,9 @@ skills/
 ```bash
 OCTOMIND_SKILLS=programming-rust,git-workflow octomind run developer:general
 ```
-Comma-delimited skill names. Activated permanently, no `activate` scripts run.
+Comma-delimited skill names. Activated permanently, no rules evaluated.
 
-**Auto-activation** — skills with an `activate` script are automatically checked on conversation events. The system scans skills whose `domains` match the current agent's role, runs their `activate` scripts, and activates matching skills. Already-active skills (including env-loaded) are skipped.
+**Auto-activation** — skills with a `rules:` frontmatter field are automatically evaluated on conversation events. The system scans skills whose `domains` match the current agent's role, evaluates their rules, and activates matching skills. Already-active skills (including env-loaded) are skipped.
 
 **Manual activation** — the AI calls the `skill` MCP tool or user runs `/skill` command:
 
@@ -211,23 +211,53 @@ Comma-delimited skill names. Activated permanently, no `activate` scripts run.
 - `skill(action="forget", name="<name>")` or `/skill forget <name>` — remove skill
 - `skill(action="list")` or `/skill list` — discover available skills
 
-### activate script
+### Auto-activation rules
 
-An executable file at `skills/<name>/activate`. Decides whether the skill should be active.
+The `rules:` frontmatter field declares a list of expressions that determine when a skill should auto-activate. Rules are evaluated against the project working directory and the current conversation.
 
-- `argv[1]` = event type: `user` | `assistant` | `turn`
-- `stdin` = event content (user message, assistant response, or turn summary with tool names)
-- Runs in the project working directory
-- **exit 0** = activate this skill
-- **exit non-zero** = don't activate (or deactivate if currently active)
+#### Logic: OR between items, AND within a single item
 
-Events: `user` (real typed input), `assistant` (response done), `turn` (tools executed, ready for next loop).
+Each list item (`- ...`) is an **OR branch** — if any item matches, the skill activates.
+Multiple expressions on the **same line** (space-separated) act as **AND** — all must match.
+
+```yaml
+rules:
+  - file(Cargo.toml)              # OR: activates if Cargo.toml exists
+  - content(rust)                 # OR: activates if user message contains "rust"
+  - file(Cargo.toml) content(async)  # OR: activates if BOTH conditions are true
+```
+
+#### Rule expressions
+
+| Expression | Matches when |
+|------------|-------------|
+| `file(<glob>)` | A file matching the glob pattern exists in the working directory. Supports `*` and `**`. Examples: `file(Cargo.toml)`, `file(*.rs)`, `file(src/**/*.go)` |
+| `content(<word>)` | The user's message contains the word as a whole-word match (word-boundary aware, case-insensitive). Example: `content(rust)` matches "Rust" but not "rusty" |
+| `match(<pattern>)` | The user's message matches the regular expression pattern. Example: `match(fix.*bug)` |
+| `grep(<pattern>, <glob>)` | A file matching the glob contains a line matching the pattern. Example: `grep(tokio, Cargo.toml)`, `grep(use async_trait, src/**/*.rs)` |
+| `env(<VAR>)` | The environment variable `VAR` is set (non-empty). Example: `env(CI)` |
+| `env(<VAR>=<value>)` | The environment variable `VAR` equals `value`. Example: `env(NODE_ENV=production)` |
+
+#### Full example
+
+```yaml
+rules:
+  - file(Cargo.toml)                        # Rust project marker
+  - file(*.rs)                              # any .rs file in workdir
+  - content(rust) content(async)            # user mentions both "rust" AND "async"
+  - grep(tokio, Cargo.toml)                 # project uses tokio
+  - match(rewrite.*in rust)                 # user asks to rewrite something in Rust
+  - env(RUSTUP_HOME)                        # rustup is configured
+```
+
+Skills without `rules:` are manual-only — they never auto-activate.
 
 ### validate script
 
 An executable file at `skills/<name>/validate`. Checks LLM output quality deterministically.
 
-- Same invocation as `activate` (event type + stdin content)
+- `argv[1]` = event type: `user` | `assistant` | `turn`
+- `stdin` = event content (user message, assistant response, or turn summary with tool names)
 - **exit 0** = output is valid
 - **exit non-zero** = invalid. stderr (or stdout if stderr empty) is captured and fed back to the LLM as an error message for correction.
 
@@ -243,7 +273,7 @@ The `domains` field limits auto-activation to relevant agent categories:
 domains: developer devops
 ```
 
-Only agents with matching role names (e.g., `developer:rust`) run this skill's `activate` script. Skills without `domains` are manual-only (backward compatible).
+Only agents with matching role names (e.g., `developer:rust`) evaluate this skill's `rules`. Skills without `domains` are manual-only (backward compatible).
 
 ### Validation
 
@@ -263,7 +293,7 @@ The lint script validates:
 - `title` length (5–60 chars)
 - `description` length (20–1024 chars) and `compatibility` length limits
 - Non-empty body after frontmatter
-- `activate` and `validate` scripts are executable if they exist
+- `validate` script is executable if it exists
 
 ### Skill vs Agent
 
@@ -272,7 +302,7 @@ Skills and agents serve different purposes:
 | | Skill | Agent |
 |---|---|---|
 | **File** | `skills/<name>/SKILL.md` | `agents/<domain>/<spec>.toml` |
-| **Activation** | Manual via `skill` tool, or auto via `activate` script | `octomind run domain:spec` |
+| **Activation** | Manual via `skill` tool, or auto via `rules:` frontmatter field | `octomind run domain:spec` |
 | **What it provides** | Domain knowledge + capabilities + validation | Full role: model, tools, system prompt |
 | **Composable** | Yes — multiple skills per session | No — one role per session |
 | **Auto-expand** | Yes — skills can auto-load MCP servers via capabilities | No — tools are static |

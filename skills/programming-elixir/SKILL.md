@@ -5,11 +5,9 @@ description: "Elixir/OTP conventions, pattern matching, GenServer, supervision t
 license: Apache-2.0
 compatibility: "Requires Elixir and Erlang/OTP."
 domains: developer
-activate:
-  - on: any
-    rule: file(mix.exs)
-  - on: user
-    rule: content(elixir)
+rules:
+  - file(mix.exs)
+  - content(elixir)
 ---
 
 # Elixir Development

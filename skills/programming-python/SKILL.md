@@ -6,11 +6,9 @@ license: Apache-2.0
 compatibility: "Requires Python 3.10+ and uv."
 capabilities: programming-python
 domains: developer
-activate:
-  - on: any
-    rule: file(pyproject.toml)
-  - on: user
-    rule: content(python)
+rules:
+  - file(pyproject.toml)
+  - content(python)
 ---
 
 # Python Development

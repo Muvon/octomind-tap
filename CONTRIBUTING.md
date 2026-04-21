@@ -396,7 +396,7 @@ Note: Skills **can** declare `capabilities` to auto-load MCP servers when activa
 | | Skill | Agent |
 |---|---|---|
 | **File** | `skills/<name>/SKILL.md` | `agents/<domain>/<spec>.toml` |
-| **Activation** | Manual via `skill` tool, or auto via `activate` script | `octomind run domain:spec` |
+| **Activation** | Manual via `skill` tool, or auto via `rules:` frontmatter field | `octomind run domain:spec` |
 | **What it provides** | Domain knowledge + capabilities + validation | Full role: model, tools, system prompt |
 | **Composable** | Yes — multiple skills per session | No — one role per session |
 | **Auto-expand** | Yes — can auto-load MCP servers via capabilities | No — tools are static |
@@ -426,11 +426,15 @@ license: Apache-2.0
 compatibility: "Requires git. Works with any project."
 capabilities: git memory
 domains: developer devops
+rules:
+  - file(some-marker-file)   # activate if file exists in workdir
+  - content(keyword)         # activate if user message contains keyword
 ---
 ```
 
 - `capabilities` — auto-loads MCP servers when skill activates (optional, space-delimited)
 - `domains` — limits auto-activation to matching agent categories (optional, omit for manual-only)
+- `rules` — list of auto-activation expressions; omit for manual-only skills
 
 **4. Write the body**
 
@@ -445,14 +449,13 @@ Structure:
 ```
 skills/<name>/
   SKILL.md
-  activate      ← auto-activation script (chmod +x, exit 0 = activate)
   validate      ← validation script (chmod +x, exit 0 = valid, stderr = error)
   scripts/      ← executable scripts the skill references
   references/   ← supplementary docs (REFERENCE.md, FORMS.md, etc.)
   assets/       ← templates, config files, resources
 ```
 
-`activate` and `validate` receive event type (`user`|`assistant`|`turn`) as argv[1] and content on stdin. They run in the project working directory.
+`validate` receives event type (`user`|`assistant`|`turn`) as argv[1] and content on stdin. It runs in the project working directory.
 
 **6. Validate**
 
@@ -486,9 +489,9 @@ That's it! Include a brief description of what domain knowledge the skill encode
 - [ ] `compatibility` lists any required tools or environment constraints
 - [ ] `capabilities` lists all capabilities the skill needs (if any)
 - [ ] `domains` lists relevant agent categories (if auto-activation desired)
+- [ ] `rules` lists auto-activation expressions if auto-activation is desired
 - [ ] Body has at least an Overview and Instructions section
 - [ ] Instructions are specific enough to follow without guessing
 - [ ] Non-obvious rules have examples
-- [ ] `activate` script is executable if present (`chmod +x`)
 - [ ] `validate` script is executable if present (`chmod +x`)
 - [ ] `bash scripts/lint-skills.sh skills/<name>` passes

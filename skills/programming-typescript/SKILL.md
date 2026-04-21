@@ -6,11 +6,9 @@ license: Apache-2.0
 compatibility: "Requires Node.js and npm/pnpm/yarn."
 capabilities: programming-nodejs
 domains: developer
-activate:
-  - on: any
-    rule: file(tsconfig.json)
-  - on: user
-    rule: content(typescript)
+rules:
+  - file(tsconfig.json)
+  - content(typescript)
 ---
 
 # TypeScript Development
