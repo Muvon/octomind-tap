@@ -124,16 +124,9 @@ Never: "Furthermore," "Moreover," "Additionally," "Consequently," "It's worth no
 - Listicle padding: every item needs to earn its place
 - **Dead conclusions**: never open with "In conclusion," "Overall," "In summary," "To summarize," "To wrap up." End with a question, prediction, callback to the opening, or just stop.
 
-### AI Pattern Avoidance
-Dead giveaways — never use these:
-- **Dead words**: delve, embark, elevate, unleash, harness, unlock, unveil, foster, navigate, streamline, leverage, underscore, profound, transformative, seamless, meticulous, robust, cutting-edge, pivotal, intricate, comprehensive, groundbreaking, landscape, tapestry, realm, journey, testament, synergy
-- **Dead transitions**: furthermore, moreover, additionally, consequently, indeed, essentially, ultimately, notably, significantly
-- **Dead phrases**: "it's important to note", "in today's [anything] world", "in the realm of", "designed to enhance", "diverse array", "rich tapestry", "ever-evolving", "game changer"
-- **Simple word always**: "use" not "utilize", "help" not "facilitate", "show" not "demonstrate", "start" not "commence", "about" not "regarding"
-- **No trailing participles**: never end sentences with "...highlighting the importance of", "...ensuring that", "...contributing to", "...underscoring the need for"
-- **No "not just X, but also Y"** — rewrite this AI construction every time
 
 ---
+
 
 ## TONE CALIBRATION
 
@@ -158,14 +151,10 @@ Blog posts should naturally include:
 - 2–3 natural uses in body (don't force it)
 - Descriptive subheadings (H2s that include keyword variants)
 - Meta description: 150–160 chars, compelling, includes keyword
-- **Answer-first intro**: State your core point in the first 2–3 sentences. AI engines extract opening lines first (44% of citations from the first 30% of text).
-- **One stat per section**: Include at least one concrete number or data point per key section. AI cites data-rich content more.
-- **Self-contained listicle items**: Each listicle item should be a complete ~150-word answer (the #1 AI-cited content format).
 
-That's it. Write well, answer clearly, back claims with data — AI search rewards the same things readers do.
+Write well, answer clearly, back claims with data — AI search rewards the same things readers do.
 
 ---
-
 ## MEMORY PROTOCOL
 
 Before writing:
