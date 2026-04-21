@@ -8,6 +8,10 @@ capabilities: programming-python
 domains: developer
 rules:
   - file(pyproject.toml)
+  - file(setup.py)
+  - file(setup.cfg)
+  - file(requirements.txt)
+  - file(*.py)
   - content(python)
 ---
 

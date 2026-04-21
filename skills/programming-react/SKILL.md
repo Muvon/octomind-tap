@@ -7,7 +7,10 @@ compatibility: "Requires Node.js and npm/pnpm."
 capabilities: programming-nodejs
 domains: developer
 rules:
-  - file(package.json)
+  - grep(react, package.json)
+  - grep(@types/react, package.json)
+  - file(*.jsx)
+  - file(*.tsx)
   - content(react)
 ---
 

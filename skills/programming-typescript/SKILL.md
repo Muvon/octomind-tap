@@ -8,6 +8,8 @@ capabilities: programming-nodejs
 domains: developer
 rules:
   - file(tsconfig.json)
+  - file(*.ts)
+  - file(*.tsx)
   - content(typescript)
 ---
 
