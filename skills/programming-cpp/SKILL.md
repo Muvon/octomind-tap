@@ -3,11 +3,21 @@ name: programming-cpp
 title: "C++ Development"
 description: "Modern C++20/23 conventions, RAII, smart pointers, CMake, sanitizers, and safe systems programming best practices. Auto-activates in C++ projects."
 license: Apache-2.0
-compatibility: "Requires C++ compiler (clang/gcc) and CMake."
+compatibility: "Requires C++ compiler (clang++ or g++) and a build system (CMake, Meson, or Make)."
 domains: developer
 rules:
   - file(CMakeLists.txt)
+  - file(meson.build)
+  - file(conanfile.txt)
+  - file(conanfile.py)
+  - file(vcpkg.json)
+  - file(*.cpp)
+  - file(*.cc)
+  - file(*.cxx)
+  - file(*.hpp)
+  - file(*.hxx)
   - content(c++)
+  - content(cpp)
 ---
 
 # C++ Development

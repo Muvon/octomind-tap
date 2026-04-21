@@ -8,6 +8,9 @@ capabilities: programming-nodejs svelte
 domains: developer
 rules:
   - file(svelte.config.js)
+  - file(svelte.config.ts)
+  - file(*.svelte)
+  - grep(svelte, package.json)
   - content(svelte)
 ---
 

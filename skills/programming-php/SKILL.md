@@ -7,6 +7,7 @@ compatibility: "Requires PHP 8.1+ and Composer."
 domains: developer
 rules:
   - file(composer.json)
+  - file(*.php)
   - content(php)
 ---
 
