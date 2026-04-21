@@ -11,7 +11,6 @@ rules:
   - file(setup.py)
   - file(setup.cfg)
   - file(requirements.txt)
-  - file(*.py)
   - content(python)
 ---
 

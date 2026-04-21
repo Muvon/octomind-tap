@@ -9,8 +9,6 @@ domains: developer
 rules:
   - grep(react, package.json)
   - grep(@types/react, package.json)
-  - file(*.jsx)
-  - file(*.tsx)
   - content(react)
 ---
 
