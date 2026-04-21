@@ -620,6 +620,35 @@ compatibility: "Requires git. Works with any git-based project."
 ...
 ```
 
+### Auto-activation rules
+
+Skills can declare `rules:` in their frontmatter to auto-activate when conditions are met. Rules are evaluated against the project and conversation — no user action needed.
+
+**Logic: OR between items, AND within a single item.**
+
+```yaml
+rules:
+  - file(Cargo.toml)              # activates if Cargo.toml exists in workdir
+  - content(rust)                 # activates if user message contains "rust"
+  - file(Cargo.toml) content(async)  # activates if BOTH are true (AND)
+```
+
+#### Rule expressions
+
+| Expression | Matches when |
+|------------|-------------|
+| `file(<glob>)` | File matching glob exists in working directory. Supports `*` and `**`. |
+| `content(<word>)` | User message contains the word (whole-word, case-insensitive). |
+| `match(<pattern>)` | User message matches the regular expression. |
+| `grep(<pattern>, <glob>)` | A file matching the glob contains a line matching the pattern. |
+| `env(<VAR>)` | Environment variable `VAR` is set (non-empty). |
+| `env(<VAR>=<value>)` | Environment variable `VAR` equals `value`. |
+| `bin(<command>)` | Command is available in `$PATH` (detects installed runtimes/tools). |
+| `workdir(<pattern>)` | Current working directory path contains the pattern (substring). |
+| `session(<word>)` | Current session name contains the word (e.g. `session(rust)` matches `developer:rust`). |
+
+Skills without `rules:` are manual-only — they never auto-activate. Add `domains:` to scope auto-activation to specific agent categories (e.g. `domains: developer devops`).
+
 ### Creating a skill
 
 ```bash

@@ -237,6 +237,9 @@ rules:
 | `grep(<pattern>, <glob>)` | A file matching the glob contains a line matching the pattern. Example: `grep(tokio, Cargo.toml)`, `grep(use async_trait, src/**/*.rs)` |
 | `env(<VAR>)` | The environment variable `VAR` is set (non-empty). Example: `env(CI)` |
 | `env(<VAR>=<value>)` | The environment variable `VAR` equals `value`. Example: `env(NODE_ENV=production)` |
+| `bin(<command>)` | The command is available in `$PATH`. Use to detect installed runtimes or tools. Example: `bin(cargo)`, `bin(docker)`, `bin(kubectl)` |
+| `workdir(<pattern>)` | The current working directory path contains the pattern (substring match). Example: `workdir(projects/backend)`, `workdir(monorepo)` |
+| `session(<word>)` | The current session name contains the word (case-insensitive substring). Example: `session(rust)` activates when running `octomind run developer:rust` |
 
 #### Full example
 
@@ -248,6 +251,9 @@ rules:
   - grep(tokio, Cargo.toml)                 # project uses tokio
   - match(rewrite.*in rust)                 # user asks to rewrite something in Rust
   - env(RUSTUP_HOME)                        # rustup is configured
+  - bin(cargo)                              # cargo is installed (Rust toolchain present)
+  - workdir(rust-projects)                  # working dir path contains "rust-projects"
+  - session(rust)                           # running under a rust-tagged agent session
 ```
 
 Skills without `rules:` are manual-only — they never auto-activate.

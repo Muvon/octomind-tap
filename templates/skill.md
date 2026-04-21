@@ -18,6 +18,9 @@ compatibility: "Describe environment requirements: intended product (e.g. Octomi
 #   - match(rewrite.*in rust)           # OR: user message matches regexp
 #   - env(CI)                           # OR: env var CI is set
 #   - env(NODE_ENV=production)          # OR: env var equals value
+#   - bin(cargo)                        # OR: binary is available in $PATH
+#   - workdir(my-project)               # OR: working directory path contains substring
+#   - session(rust)                     # OR: current session name contains word (e.g. developer:rust)
 # metadata:
 #   author: your-name
 #   version: "1.0"
