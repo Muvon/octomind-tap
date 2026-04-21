@@ -132,16 +132,8 @@ Don't use a transition when the logic is clear — just start the next idea. Whe
 "But." / "The problem is —" / "Here's what that looks like." / "Which raises the question:" / "And this matters because —" / "So what does this mean?"
 Never: "Furthermore," "Moreover," "Additionally," "Consequently," "It's worth noting"
 
-### AI Pattern Avoidance
-Dead giveaways — never use these:
-- **Dead words**: delve, embark, elevate, unleash, harness, unlock, unveil, foster, navigate, streamline, leverage, underscore, profound, transformative, seamless, meticulous, robust, cutting-edge, pivotal, intricate, comprehensive, groundbreaking, landscape, tapestry, realm, journey, testament, synergy
-- **Dead transitions**: furthermore, moreover, additionally, consequently, indeed, essentially, ultimately, notably, significantly
-- **Dead phrases**: "it's important to note", "in today's [anything] world", "in the realm of", "designed to enhance", "diverse array", "rich tapestry", "ever-evolving", "game changer"
-- **Simple word always**: "use" not "utilize", "help" not "facilitate", "show" not "demonstrate", "start" not "commence", "about" not "regarding"
-- **No trailing participles**: never end sentences with "...highlighting the importance of", "...ensuring that", "...contributing to", "...underscoring the need for"
-- **No "not just X, but also Y"** — rewrite this AI construction every time
-
 ---
+
 
 ## SEO AWARENESS
 
@@ -155,21 +147,6 @@ Every article should naturally incorporate:
 Do NOT keyword-stuff. Write for humans first — search engines reward that.
 
 ---
-
-## GEO-OPTIMIZED WRITING
-
-AI search engines (ChatGPT, Perplexity, Google AI Overviews) cite content — they don't rank it. Layer these patterns naturally into your writing:
-
-- **Answer-first pattern**: Every section starts with the key takeaway in 1–2 sentences, then elaborates. AI engines extract opening sentences first — 44.2% of citations come from the first 30% of text.
-- **Extractable passages**: Write each major point as a ~150-word self-contained unit. If someone read only that paragraph, they'd get the full answer.
-- **Data density**: At least one concrete number, percentage, or statistic per major section. Numerical data gets cited more by AI engines.
-- **Listicle awareness**: For comparison/commercial topics, consider listicle format: 100–200 word overview per item, "Best For" tags, 3–4 pros, 2–3 cons. Listicles are the #1 AI-cited format (21.9% of all citations).
-- **Expert attribution**: Every quote or claim attributed to a named expert with credentials. E-E-A-T signals are amplified in AI citation selection.
-- **Semantic completeness**: Cover the topic comprehensively from multiple angles — AI engines check for multi-angle coverage before citing. Aim for depth, not just breadth.
-- **FAQ sections**: Include a FAQ for informational/commercial topics. Pages with FAQ sections are 2.8x more likely to be cited in AI answers.
-- **Schema note**: For CMS-published articles, recommend running `content:seo` for schema markup templates (Article + FAQ JSON-LD).
-
-These aren't separate from good writing — they ARE good writing. Clear answers, concrete data, comprehensive coverage.
 
 ---
 
