@@ -47,6 +47,14 @@ license: Apache-2.0
 compatibility: "Environment requirements: tools needed, OS, network access."
 capabilities: git memory
 domains: developer devops
+rules:
+  - file(marker-file)              # OR: file exists in workdir (glob ok: *.rs)
+  - content(keyword)               # OR: user message contains whole word
+  - file(marker) content(keyword)  # OR: BOTH conditions (AND within one line)
+  - grep(pattern, glob)            # OR: file content matches
+  - match(regexp)                  # OR: user message matches regexp
+  - env(VAR)                       # OR: env var is set
+  - env(VAR=value)                 # OR: env var equals value
 # metadata:
 #   author: name
 #   version: "1.0"
@@ -74,6 +82,7 @@ domains: developer devops
 | `description` | ✅ | Max 1024 chars. Non-empty. Describes what the skill does and when to use it. |
 | `capabilities` | optional | Capabilities to auto-load when skill activates. Space-delimited or `["git", "memory"]`. Resolves to MCP servers via tap capability files. |
 | `domains` | optional | Agent categories for auto-activation scoping. Space-delimited or array. Without this, skill is manual-only. Example: `developer devops`. |
+| `rules` | optional | Auto-activation rules — list of expressions. If any matches, skill auto-activates. Omit for manual-only. |
 | `license` | optional | License name (e.g. `Apache-2.0`, `MIT`) or path to bundled license file. |
 | `compatibility` | optional | Max 500 chars. Environment requirements: product, tools, OS, network. |
 | `metadata` | optional | Arbitrary key-value mapping (author, version, tags, etc.). |
@@ -105,16 +114,53 @@ Skills are discovered from all active taps under `skills/<name>/SKILL.md`.
 
 ### Auto-Activation
 
-Skills with an `activate` script and `domains` field can auto-activate without the AI calling the skill tool:
+Skills with a `rules:` frontmatter field and a `domains` field can auto-activate without the AI calling the skill tool:
 - The system scans skills matching the current agent's domain
-- Runs `activate` scripts on events (`user`, `assistant`, `turn`)
-- exit 0 → skill auto-activates (content injected + capabilities loaded)
-- exit non-zero → skill auto-deactivates if previously active
+- Evaluates each rule in the `rules:` list against the project and conversation
+- If **any** item matches → skill auto-activates (content injected + capabilities loaded)
+- If no items match → skill stays inactive (or deactivates if previously active)
+
+#### Logic: OR between items, AND within a single item
+
+Each list item (`- ...`) is an **OR branch** — if any item matches, the skill activates.
+Multiple expressions on the **same line** (space-separated) act as **AND** — all must match.
+
+```yaml
+rules:
+  - file(Cargo.toml)                  # OR: Rust project marker file exists
+  - content(rust)                     # OR: user message contains word "rust"
+  - file(Cargo.toml) content(async)   # OR: BOTH file exists AND message contains "async"
+```
+
+#### Rule expressions
+
+| Expression | Matches when |
+|------------|-------------|
+| `file(<glob>)` | A file matching the glob exists in the working directory. Supports `*` and `**`. E.g. `file(Cargo.toml)`, `file(*.rs)`, `file(src/**/*.go)` |
+| `content(<word>)` | User's message contains the word as a whole-word match (word-boundary aware, case-insensitive). E.g. `content(rust)` matches "Rust" but not "rusty" |
+| `match(<pattern>)` | User's message matches the regular expression. E.g. `match(fix.*bug)` |
+| `grep(<pattern>, <glob>)` | A file matching the glob contains a line matching the pattern. E.g. `grep(tokio, Cargo.toml)`, `grep(use async_trait, src/**/*.rs)` |
+| `env(<VAR>)` | Environment variable `VAR` is set (non-empty). E.g. `env(CI)` |
+| `env(<VAR>=<value>)` | Environment variable `VAR` equals `value`. E.g. `env(NODE_ENV=production)` |
+
+#### Full example
+
+```yaml
+rules:
+  - file(Cargo.toml)                    # Rust project marker
+  - file(*.rs)                          # any .rs file in workdir
+  - content(rust) content(async)        # user mentions both "rust" AND "async"
+  - grep(tokio, Cargo.toml)             # project uses tokio
+  - match(rewrite.*in rust)             # user asks to rewrite something in Rust
+  - env(RUSTUP_HOME)                    # rustup is configured
+```
+
+Skills without `rules:` are manual-only — they never auto-activate.
 
 ### Validation
 
 Skills with a `validate` script automatically check LLM output quality:
-- Same events and protocol as `activate`
+- Same invocation as rules evaluation (event type + stdin content)
 - exit 0 → output is valid
 - exit non-zero → stderr is fed back to the LLM as an error for correction
 
@@ -141,8 +187,8 @@ When creating a skill:
 2. Choose a clear, specific name: `git-workflow`, `code-review`, `rust-error-handling`
 3. Copy `templates/skill.md` as starting point
 4. Write the frontmatter (name, title, description, capabilities, domains)
-5. Write the body: overview → instructions → examples → references
-6. Optionally add `activate` script for auto-activation (must be `chmod +x`)
+5. Add `rules:` for auto-activation if desired (e.g. `file(Cargo.toml)`, `content(rust)`)
+6. Write the body: overview → instructions → examples → references
 7. Optionally add `validate` script for output validation (must be `chmod +x`)
 8. Validate: `bash scripts/lint-skills.sh skills/<name>`
 9. Test in a session: `skill(action="use", name="<name>")`

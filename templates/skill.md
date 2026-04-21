@@ -10,6 +10,14 @@ compatibility: "Describe environment requirements: intended product (e.g. Octomi
 # capabilities: git memory              # capabilities to auto-load when skill activates (space-delimited)
 # domains: developer devops             # agent categories that auto-check this skill (omit for manual-only)
 # allowed-tools: shell view text_editor  # space-delimited pre-approved tools (experimental)
+# rules:                                # auto-activation rules (omit for manual-only)
+#   - file(Cargo.toml)                  # OR: file exists in workdir (glob ok: *.rs, src/**/*.go)
+#   - content(rust)                     # OR: user message contains whole word "rust" (not "rusty")
+#   - file(Cargo.toml) content(async)   # OR: BOTH file exists AND message contains "async" (AND within line)
+#   - grep(tokio, Cargo.toml)           # OR: file content matches pattern (grep(pattern, glob))
+#   - match(rewrite.*in rust)           # OR: user message matches regexp
+#   - env(CI)                           # OR: env var CI is set
+#   - env(NODE_ENV=production)          # OR: env var equals value
 # metadata:
 #   author: your-name
 #   version: "1.0"
@@ -91,9 +99,8 @@ Result here
 ---
 
 <!-- Optional directories and files you can add alongside this SKILL.md:
-  activate    — executable script: auto-activates skill based on events (exit 0 = activate)
   validate    — executable script: validates LLM output quality (exit 0 = valid, stderr = error)
-  scripts/    — executable scripts the skill may reference
+  scripts/    — executable scripts the skill references
   references/ — supplementary documentation (REFERENCE.md, FORMS.md, etc.)
   assets/     — templates, config files, other resources
 -->

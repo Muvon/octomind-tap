@@ -6,11 +6,9 @@ license: Apache-2.0
 compatibility: "Requires cargo and rustc toolchain."
 capabilities: programming-rust
 domains: developer
-activate:
-  - on: any
-    rule: file(Cargo.toml)
-  - on: user
-    rule: content(rust)
+rules:
+  - file(Cargo.toml)
+  - content(rust)
 ---
 
 # Rust Development

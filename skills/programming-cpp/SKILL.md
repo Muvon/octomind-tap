@@ -5,11 +5,9 @@ description: "Modern C++20/23 conventions, RAII, smart pointers, CMake, sanitize
 license: Apache-2.0
 compatibility: "Requires C++ compiler (clang/gcc) and CMake."
 domains: developer
-activate:
-  - on: any
-    rule: file(CMakeLists.txt)
-  - on: user
-    rule: content(c++)
+rules:
+  - file(CMakeLists.txt)
+  - content(c++)
 ---
 
 # C++ Development

@@ -5,11 +5,9 @@ description: "Go conventions, idiomatic patterns, concurrency, standard library,
 license: Apache-2.0
 compatibility: "Requires Go toolchain (go 1.21+)."
 domains: developer
-activate:
-  - on: any
-    rule: file(go.mod)
-  - on: user
-    rule: content(golang)
+rules:
+  - file(go.mod)
+  - content(golang)
 ---
 
 # Go Development
