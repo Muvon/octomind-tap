@@ -436,6 +436,22 @@ rules:
 - `domains` — limits auto-activation to matching agent categories (optional, omit for manual-only)
 - `rules` — list of auto-activation expressions; omit for manual-only skills
 
+**Available rule expressions:**
+
+| Expression | Matches when |
+|------------|-------------|
+| `file(<glob>)` | File matching glob exists in working directory (`*` and `**` supported) |
+| `content(<word>)` | User message contains the word (whole-word, case-insensitive) |
+| `match(<pattern>)` | User message matches the regular expression |
+| `grep(<pattern>, <glob>)` | A file matching the glob contains a line matching the pattern |
+| `env(<VAR>)` | Environment variable `VAR` is set (non-empty) |
+| `env(<VAR>=<value>)` | Environment variable `VAR` equals `value` |
+| `bin(<command>)` | Command is available in `$PATH` (detects installed runtimes/tools) |
+| `workdir(<pattern>)` | Current working directory path contains the pattern (substring) |
+| `session(<word>)` | Current session name contains the word (e.g. `session(rust)` matches `developer:rust`) |
+
+Logic: each list item is an **OR branch**; multiple expressions on the same line are **AND**.
+
 **4. Write the body**
 
 Structure:
