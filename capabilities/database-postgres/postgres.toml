@@ -1,0 +1,20 @@
+# capabilities/database-postgres/postgres.toml
+# Capability: database-postgres
+# Provider: PostgreSQL — official MCP reference server
+# Title: PostgreSQL Database
+# Description: Query and inspect PostgreSQL databases via MCP.
+
+[deps]
+require = ["modelcontextprotocol/postgres"]
+
+[roles.mcp]
+server_refs = ["postgres"]
+allowed_tools = ["postgres:*"]
+
+[[mcp.servers]]
+name = "postgres"
+type = "stdio"
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-postgres", "{{ENV:POSTGRES_CONNECTION_STRING}}"]
+timeout_seconds = 60
+tools = []

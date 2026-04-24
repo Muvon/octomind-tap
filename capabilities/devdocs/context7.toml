@@ -1,0 +1,20 @@
+# capabilities/devdocs/context7.toml
+# Capability: devdocs
+# Provider: Context7 — library and framework documentation lookup
+# Title: Developer Docs
+# Description: Look up version-specific library and framework documentation via Context7.
+
+[deps]
+require = ["upstash/context7"]
+
+[roles.mcp]
+server_refs = ["context7"]
+allowed_tools = ["context7:*"]
+
+[[mcp.servers]]
+name = "context7"
+type = "stdio"
+command = "npx"
+args = ["-y", "@upstash/context7-mcp@latest"]
+timeout_seconds = 60
+tools = []

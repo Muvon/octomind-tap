@@ -3,7 +3,7 @@
 # Title: Blood Test Interpreter
 # Description: Blood test interpreter. Explains CBC, metabolic panels, lipid profiles, and hormone levels. Helps prepare questions for providers. NOT diagnostic.
 
-capabilities = ["core", "filesystem", "medical"]
+capabilities = ["core", "filesystem", "medical-reference"]
 
 [[roles]]
 temperature = 0.15

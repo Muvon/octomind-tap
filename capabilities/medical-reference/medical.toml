@@ -1,8 +1,8 @@
-# capabilities/medical/medical.toml
-# Capability: medical
+# capabilities/medical-reference/medical.toml
+# Capability: medical-reference
 # Provider: medical-mcp-server — medical references (PubMed, FDA, WHO, RxNorm)
-# Title: Medical References
-# Description: Medical references from PubMed, FDA, WHO, and RxNorm via MCP.
+# Title: Medical Reference
+# Description: Drug info, clinical data, and guidelines from PubMed, FDA, WHO, and RxNorm via MCP.
 
 [deps]
 require = ["medical/medical"]

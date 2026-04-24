@@ -1,0 +1,21 @@
+# capabilities/translation/deepl.toml
+# Capability: translation
+# Provider: DeepL — official MCP server for translation
+# Title: Translation (DeepL)
+# Description: Text and document translation via DeepL API — supports 30+ languages.
+
+[deps]
+require = ["deepl/deepl"]
+
+[roles.mcp]
+server_refs = ["deepl"]
+allowed_tools = ["deepl:*"]
+
+[[mcp.servers]]
+name = "deepl"
+type = "stdio"
+command = "npx"
+args = ["-y", "deepl-mcp-server"]
+timeout_seconds = 60
+env = { DEEPL_API_KEY = "{{ENV:DEEPL_API_KEY}}" }
+tools = []

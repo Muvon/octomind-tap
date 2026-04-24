@@ -1,0 +1,20 @@
+# capabilities/database-sqlite/sqlite.toml
+# Capability: database-sqlite
+# Provider: SQLite — official MCP reference server
+# Title: SQLite Database
+# Description: Query and manage local SQLite databases via MCP.
+
+[deps]
+require = ["modelcontextprotocol/sqlite"]
+
+[roles.mcp]
+server_refs = ["sqlite"]
+allowed_tools = ["sqlite:*"]
+
+[[mcp.servers]]
+name = "sqlite"
+type = "stdio"
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-sqlite", "--db-path", "{{ENV:SQLITE_DB_PATH}}"]
+timeout_seconds = 60
+tools = []

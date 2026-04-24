@@ -1,0 +1,21 @@
+# capabilities/highlights/readwise.toml
+# Capability: highlights
+# Provider: Readwise — reading highlights and annotations via MCP
+# Title: Highlights (Readwise)
+# Description: Search and retrieve reading highlights, book annotations, and saved articles from Readwise.
+
+[deps]
+require = ["readwise/readwise"]
+
+[roles.mcp]
+server_refs = ["readwise"]
+allowed_tools = ["readwise:*"]
+
+[[mcp.servers]]
+name = "readwise"
+type = "stdio"
+command = "npx"
+args = ["-y", "readwise-mcp"]
+timeout_seconds = 60
+env = { READWISE_API_KEY = "{{ENV:READWISE_API_KEY}}" }
+tools = []

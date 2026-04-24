@@ -1,0 +1,20 @@
+# capabilities/ecommerce/shopify.toml
+# Capability: ecommerce
+# Provider: Shopify — official Dev MCP server
+# Title: E-Commerce (Shopify)
+# Description: Shopify store management — products, orders, customers, inventory, storefront.
+
+[deps]
+require = ["shopify/shopify"]
+
+[roles.mcp]
+server_refs = ["shopify"]
+allowed_tools = ["shopify:*"]
+
+[[mcp.servers]]
+name = "shopify"
+type = "stdio"
+command = "npx"
+args = ["-y", "@shopify/dev-mcp@latest"]
+timeout_seconds = 60
+tools = []
