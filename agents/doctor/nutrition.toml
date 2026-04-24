@@ -3,7 +3,7 @@
 # Title: Nutrition Guidance
 # Description: Evidence-based nutrition guidance. Explains nutrients, dietary patterns, and supplement interactions. NOT personalized diet advice.
 
-capabilities = ["core", "filesystem", "medical"]
+capabilities = ["core", "filesystem", "medical-reference"]
 
 [[roles]]
 temperature = 0.25

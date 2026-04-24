@@ -1,0 +1,21 @@
+# capabilities/maps/google-maps.toml
+# Capability: maps
+# Provider: Google Maps — official MCP reference server
+# Title: Maps & Geolocation
+# Description: Geocoding, directions, places, and elevation via Google Maps API.
+
+[deps]
+require = ["google-maps/maps"]
+
+[roles.mcp]
+server_refs = ["google-maps"]
+allowed_tools = ["google-maps:*"]
+
+[[mcp.servers]]
+name = "google-maps"
+type = "stdio"
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-google-maps"]
+timeout_seconds = 60
+env = { GOOGLE_MAPS_API_KEY = "{{ENV:GOOGLE_MAPS_API_KEY}}" }
+tools = []

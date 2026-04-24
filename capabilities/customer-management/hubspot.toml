@@ -1,0 +1,21 @@
+# capabilities/customer-management/hubspot.toml
+# Capability: customer-management
+# Provider: HubSpot — official MCP server
+# Title: Customer Management (HubSpot)
+# Description: Manage contacts, deals, tickets, campaigns, and email templates via HubSpot.
+
+[deps]
+require = ["hubspot/hubspot"]
+
+[roles.mcp]
+server_refs = ["hubspot"]
+allowed_tools = ["hubspot:*"]
+
+[[mcp.servers]]
+name = "hubspot"
+type = "stdio"
+command = "npx"
+args = ["-y", "@hubspot/mcp-server"]
+timeout_seconds = 60
+env = { HUBSPOT_PRIVATE_APP_TOKEN = "{{ENV:HUBSPOT_PRIVATE_APP_TOKEN}}" }
+tools = []

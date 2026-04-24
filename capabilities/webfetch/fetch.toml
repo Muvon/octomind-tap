@@ -1,0 +1,20 @@
+# capabilities/webfetch/fetch.toml
+# Capability: webfetch
+# Provider: Fetch — official MCP reference server
+# Title: Web Fetch
+# Description: Fetch any URL and convert to markdown for LLM consumption.
+
+[deps]
+require = ["modelcontextprotocol/fetch"]
+
+[roles.mcp]
+server_refs = ["fetch"]
+allowed_tools = ["fetch:*"]
+
+[[mcp.servers]]
+name = "fetch"
+type = "stdio"
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-fetch"]
+timeout_seconds = 60
+tools = []

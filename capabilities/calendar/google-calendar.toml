@@ -1,0 +1,21 @@
+# capabilities/calendar/google-calendar.toml
+# Capability: calendar
+# Provider: Google Calendar — official MCP reference server
+# Title: Google Calendar
+# Description: Manage Google Calendar events and scheduling via MCP.
+
+[deps]
+require = ["google/calendar"]
+
+[roles.mcp]
+server_refs = ["google-calendar"]
+allowed_tools = ["google-calendar:*"]
+
+[[mcp.servers]]
+name = "google-calendar"
+type = "stdio"
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-google-calendar"]
+timeout_seconds = 60
+env = { GOOGLE_CALENDAR_CLIENT_ID = "{{ENV:GOOGLE_CALENDAR_CLIENT_ID}}", GOOGLE_CALENDAR_CLIENT_SECRET = "{{ENV:GOOGLE_CALENDAR_CLIENT_SECRET}}", GOOGLE_CALENDAR_REFRESH_TOKEN = "{{ENV:GOOGLE_CALENDAR_REFRESH_TOKEN}}" }
+tools = []

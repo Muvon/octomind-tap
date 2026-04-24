@@ -1,0 +1,21 @@
+# capabilities/browser/puppeteer.toml
+# Capability: browser
+# Provider: Puppeteer — official MCP reference server
+# Title: Browser (Puppeteer)
+# Description: Browser automation, screenshots, and page interaction via Puppeteer.
+# Alternative to Playwright — swap with: ln -sf puppeteer.toml capabilities/browser/default.toml
+
+[deps]
+require = ["modelcontextprotocol/puppeteer"]
+
+[roles.mcp]
+server_refs = ["puppeteer"]
+allowed_tools = ["puppeteer:*"]
+
+[[mcp.servers]]
+name = "puppeteer"
+type = "stdio"
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-puppeteer"]
+timeout_seconds = 120
+tools = []

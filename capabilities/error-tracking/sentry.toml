@@ -1,0 +1,21 @@
+# capabilities/error-tracking/sentry.toml
+# Capability: error-tracking
+# Provider: Sentry — official error tracking MCP server
+# Title: Error Tracking (Sentry)
+# Description: Query error issues, events, and releases via Sentry MCP.
+
+[deps]
+require = ["sentry/sentry"]
+
+[roles.mcp]
+server_refs = ["sentry"]
+allowed_tools = ["sentry:*"]
+
+[[mcp.servers]]
+name = "sentry"
+type = "stdio"
+command = "npx"
+args = ["-y", "@sentry/mcp-server-sentry"]
+timeout_seconds = 60
+env = { SENTRY_AUTH_TOKEN = "{{ENV:SENTRY_AUTH_TOKEN}}" }
+tools = []

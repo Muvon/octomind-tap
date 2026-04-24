@@ -3,7 +3,7 @@
 # Title: Financial Analyst
 # Description: Financial statement analyst. Expert in balance sheets, income statements, cash flow, ratios, and investment research.
 
-capabilities = ["core", "filesystem", "websearch", "finance"]
+capabilities = ["core", "filesystem", "websearch", "market-data"]
 
 [[roles]]
 temperature = 0.15

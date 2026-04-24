@@ -1,0 +1,21 @@
+# capabilities/payments/stripe.toml
+# Capability: payments
+# Provider: Stripe — official agent toolkit MCP server
+# Title: Payments (Stripe)
+# Description: Manage Stripe customers, charges, subscriptions, and invoices via MCP.
+
+[deps]
+require = ["stripe/stripe"]
+
+[roles.mcp]
+server_refs = ["stripe"]
+allowed_tools = ["stripe:*"]
+
+[[mcp.servers]]
+name = "stripe"
+type = "stdio"
+command = "npx"
+args = ["-y", "@stripe/agent-toolkit", "mcp"]
+timeout_seconds = 60
+env = { STRIPE_SECRET_KEY = "{{ENV:STRIPE_SECRET_KEY}}" }
+tools = []

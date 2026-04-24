@@ -1,0 +1,21 @@
+# capabilities/task-management/linear.toml
+# Capability: task-management
+# Provider: Linear — issue tracking and project management via MCP
+# Title: Task Management (Linear)
+# Description: Manage Linear issues, projects, teams, cycles, and workflows.
+
+[deps]
+require = ["linear-app/linear"]
+
+[roles.mcp]
+server_refs = ["linear"]
+allowed_tools = ["linear:*"]
+
+[[mcp.servers]]
+name = "linear"
+type = "stdio"
+command = "npx"
+args = ["-y", "linear-mcp"]
+timeout_seconds = 60
+env = { LINEAR_API_KEY = "{{ENV:LINEAR_API_KEY}}" }
+tools = []

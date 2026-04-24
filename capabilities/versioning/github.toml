@@ -1,0 +1,21 @@
+# capabilities/versioning/github.toml
+# Capability: versioning
+# Provider: GitHub — official MCP reference server
+# Title: GitHub
+# Description: GitHub repositories, issues, pull requests, and branches via MCP.
+
+[deps]
+require = ["github/github-mcp"]
+
+[roles.mcp]
+server_refs = ["github"]
+allowed_tools = ["github:*"]
+
+[[mcp.servers]]
+name = "github"
+type = "stdio"
+command = "npx"
+args = ["-y", "@modelcontextprotocol/server-github"]
+timeout_seconds = 60
+env = { GITHUB_PERSONAL_ACCESS_TOKEN = "{{ENV:GITHUB_PERSONAL_ACCESS_TOKEN}}" }
+tools = []

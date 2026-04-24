@@ -1,0 +1,21 @@
+# capabilities/edge-hosting/cloudflare.toml
+# Capability: edge-hosting
+# Provider: Cloudflare — official MCP server
+# Title: Edge Hosting (Cloudflare)
+# Description: Manage Workers, KV, R2, D1, and DNS via Cloudflare MCP.
+
+[deps]
+require = ["cloudflare/cloudflare"]
+
+[roles.mcp]
+server_refs = ["cloudflare"]
+allowed_tools = ["cloudflare:*"]
+
+[[mcp.servers]]
+name = "cloudflare"
+type = "stdio"
+command = "npx"
+args = ["-y", "@cloudflare/mcp-server-cloudflare"]
+timeout_seconds = 60
+env = { CLOUDFLARE_API_TOKEN = "{{ENV:CLOUDFLARE_API_TOKEN}}" }
+tools = []

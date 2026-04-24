@@ -1,0 +1,21 @@
+# capabilities/scraping/firecrawl.toml
+# Capability: scraping
+# Provider: Firecrawl — web scraping, crawling, and site mapping
+# Title: Web Scraping
+# Description: Deep web scraping, crawling, and site mapping via Firecrawl.
+
+[deps]
+require = ["firecrawl/firecrawl"]
+
+[roles.mcp]
+server_refs = ["firecrawl"]
+allowed_tools = ["firecrawl:*"]
+
+[[mcp.servers]]
+name = "firecrawl"
+type = "stdio"
+command = "npx"
+args = ["-y", "@mendableai/firecrawl-mcp-server"]
+timeout_seconds = 120
+env = { FIRECRAWL_API_KEY = "{{ENV:FIRECRAWL_API_KEY}}" }
+tools = []
