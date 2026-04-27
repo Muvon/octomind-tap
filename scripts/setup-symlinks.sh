@@ -46,8 +46,8 @@ link "programming-nodejs" "node.toml"
 link "docker" "docker.toml"
 link "kubernetes" "kubernetes.toml"
 link "svelte" "svelte.toml"
-link "medical" "medical.toml"
-link "finance" "yfinance.toml"
+link "medical-reference" "medical.toml"
+link "market-data" "yfinance.toml"
 link "legal-au" "ansvar.toml"
 link "legal-ca" "ansvar.toml"
 link "legal-de" "ansvar.toml"
@@ -67,11 +67,27 @@ link "messaging-linkedin" "pegasusheavy.toml"
 link "messaging-instagram" "mcpware.toml"
 link "messaging-email" "codefuturist.toml"
 link "messaging-sms" "twilio.toml"
+# ── New capabilities (PR #5) ──────────────────────────────────────────────────
+link "calendar" "google-calendar.toml"
+link "customer-management" "hubspot.toml"
+link "database-postgres" "postgres.toml"
+link "database-sqlite" "sqlite.toml"
+link "devdocs" "context7.toml"
+link "ecommerce" "shopify.toml"
+link "edge-hosting" "cloudflare.toml"
+link "error-tracking" "sentry.toml"
+link "highlights" "readwise.toml"
+link "maps" "google-maps.toml"
+link "payments" "stripe.toml"
+link "scraping" "firecrawl.toml"
+link "task-management" "linear.toml"
+link "translation" "deepl.toml"
+link "webfetch" "fetch.toml"
 # ─────────────────────────────────────────────────────────────────────────────
 
 # Detect capability dirs that have NO mapping declared above
 echo ""
-DECLARED=("filesystem" "codesearch" "memory" "websearch" "versioning" "core" "agent" "programming-python" "programming-rust" "programming-nodejs" "docker" "kubernetes" "svelte" "medical" "finance" "legal-au" "legal-ca" "legal-de" "legal-fr" "legal-in" "legal-sg" "legal-th" "legal-uk" "legal-us" "octoweb" "browser" "messaging-slack" "messaging-discord" "messaging-telegram" "messaging-whatsapp" "messaging-linkedin" "messaging-instagram" "messaging-email" "messaging-sms")
+DECLARED=("filesystem" "codesearch" "memory" "websearch" "versioning" "core" "agent" "programming-python" "programming-rust" "programming-nodejs" "docker" "kubernetes" "svelte" "medical-reference" "market-data" "legal-au" "legal-ca" "legal-de" "legal-fr" "legal-in" "legal-sg" "legal-th" "legal-uk" "legal-us" "octoweb" "browser" "messaging-slack" "messaging-discord" "messaging-telegram" "messaging-whatsapp" "messaging-linkedin" "messaging-instagram" "messaging-email" "messaging-sms" "calendar" "customer-management" "database-postgres" "database-sqlite" "devdocs" "ecommerce" "edge-hosting" "error-tracking" "highlights" "maps" "payments" "scraping" "task-management" "translation" "webfetch")
 for dir in "$CAP_ROOT"/*/; do
   cap="$(basename "$dir")"
   found=0
