@@ -2,7 +2,6 @@
 # Agent: finance:analyst
 # Title: Financial Analyst
 # Description: Financial statement analyst. Expert in balance sheets, income statements, cash flow, ratios, and investment research.
-
 capabilities = ["core", "filesystem", "websearch", "market-data"]
 
 [[roles]]
