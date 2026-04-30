@@ -1,0 +1,9 @@
+# capabilities/messaging-discord/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"send a message to a discord channel",
+	"post to discord",
+	"list discord servers",
+	"read recent discord messages",
+]

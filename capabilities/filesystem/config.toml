@@ -1,0 +1,11 @@
+# capabilities/filesystem/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"read a local file",
+	"edit a file on disk",
+	"list directory contents",
+	"search files for a pattern",
+	"execute a shell command",
+	"find files by name",
+]

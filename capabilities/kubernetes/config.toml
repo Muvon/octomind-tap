@@ -1,0 +1,11 @@
+# capabilities/kubernetes/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"list pods in a kubernetes cluster",
+	"check kubectl logs",
+	"describe a kubernetes deployment",
+	"look at a helm chart",
+	"troubleshoot a failing pod",
+	"scale a kubernetes deployment",
+]

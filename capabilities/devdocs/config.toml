@@ -1,0 +1,9 @@
+# capabilities/devdocs/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"look up the documentation for this API",
+	"find the docs for this library",
+	"read the reference for this function",
+	"show me documentation for this framework",
+]

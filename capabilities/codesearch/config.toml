@@ -1,0 +1,11 @@
+# capabilities/codesearch/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"find where this function is used",
+	"search the codebase for an implementation",
+	"look up symbol definitions",
+	"find code matching a pattern",
+	"semantic search across the repo",
+	"view function signatures in this file",
+]

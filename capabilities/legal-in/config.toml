@@ -1,0 +1,9 @@
+# capabilities/legal-in/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"look up Indian case law",
+	"find an Indian statute",
+	"research Indian legal regulation",
+	"check Indian court precedent",
+]

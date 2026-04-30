@@ -1,0 +1,10 @@
+# capabilities/task-management/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"create a linear issue",
+	"look up linear tickets",
+	"update task status in linear",
+	"find a project in linear",
+	"comment on a linear issue",
+]

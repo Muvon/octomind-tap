@@ -1,0 +1,9 @@
+# capabilities/legal-th/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"look up Thai case law",
+	"find a Thai statute",
+	"research Thai legal regulation",
+	"check Thai court precedent",
+]

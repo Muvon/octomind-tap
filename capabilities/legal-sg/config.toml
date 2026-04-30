@@ -1,0 +1,9 @@
+# capabilities/legal-sg/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"look up Singapore case law",
+	"find a Singapore statute",
+	"research Singapore legal regulation",
+	"check Singapore court precedent",
+]

@@ -1,0 +1,10 @@
+# capabilities/maps/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"find directions between two places",
+	"search for a place on the map",
+	"get geocoding for an address",
+	"look up nearby businesses",
+	"calculate driving distance",
+]

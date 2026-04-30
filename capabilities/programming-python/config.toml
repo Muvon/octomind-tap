@@ -1,0 +1,10 @@
+# capabilities/programming-python/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"run a Python script",
+	"execute python code",
+	"manage pip packages",
+	"run a python REPL",
+	"install a python library",
+]

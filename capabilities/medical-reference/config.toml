@@ -1,0 +1,9 @@
+# capabilities/medical-reference/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"look up a medical condition",
+	"find drug interactions",
+	"check medical reference data",
+	"research a clinical topic",
+]

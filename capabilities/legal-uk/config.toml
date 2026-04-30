@@ -1,0 +1,9 @@
+# capabilities/legal-uk/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"look up UK case law",
+	"find a UK statute",
+	"research UK legal regulation",
+	"check UK court precedent",
+]

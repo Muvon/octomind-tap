@@ -1,0 +1,9 @@
+# capabilities/legal-au/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"look up Australian case law",
+	"find an Australian statute",
+	"research Australian legal regulation",
+	"check Australian court precedent",
+]

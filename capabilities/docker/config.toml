@@ -1,0 +1,11 @@
+# capabilities/docker/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"list running docker containers",
+	"build a docker image",
+	"inspect a container's logs",
+	"run a docker compose service",
+	"stop a docker container",
+	"check docker container status",
+]

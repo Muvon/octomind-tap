@@ -1,0 +1,10 @@
+# capabilities/versioning/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"check git status",
+	"look at the version history",
+	"view git log",
+	"see what changed between commits",
+	"track changes in version control",
+]

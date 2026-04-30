@@ -1,0 +1,8 @@
+# capabilities/messaging-whatsapp/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"send a whatsapp message",
+	"post on whatsapp",
+	"read recent whatsapp messages",
+]

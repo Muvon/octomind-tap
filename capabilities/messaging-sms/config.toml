@@ -1,0 +1,8 @@
+# capabilities/messaging-sms/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"send an SMS",
+	"send a text message",
+	"look up sms history",
+]

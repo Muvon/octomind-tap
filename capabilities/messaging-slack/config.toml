@@ -1,0 +1,10 @@
+# capabilities/messaging-slack/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"send a slack message",
+	"post to a slack channel",
+	"search slack history",
+	"look up a slack thread",
+	"list slack channels",
+]

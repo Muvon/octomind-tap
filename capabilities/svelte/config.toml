@@ -1,0 +1,9 @@
+# capabilities/svelte/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"look up Svelte documentation",
+	"build a Svelte component",
+	"Svelte best practices",
+	"research a Svelte feature",
+]

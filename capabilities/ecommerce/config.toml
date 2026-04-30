@@ -1,0 +1,10 @@
+# capabilities/ecommerce/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"manage a shopify store",
+	"update a product listing",
+	"look up an order in shopify",
+	"check inventory levels",
+	"create a new product on shopify",
+]

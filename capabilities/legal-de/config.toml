@@ -1,0 +1,9 @@
+# capabilities/legal-de/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"look up German case law",
+	"find a German statute",
+	"research German legal regulation",
+	"check German court precedent",
+]
