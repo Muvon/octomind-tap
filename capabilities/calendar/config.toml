@@ -1,0 +1,10 @@
+# capabilities/calendar/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"schedule a meeting",
+	"check my calendar for tomorrow",
+	"find a free slot next week",
+	"create a calendar event",
+	"list upcoming events",
+]

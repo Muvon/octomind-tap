@@ -1,0 +1,10 @@
+# capabilities/agent/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"configure an agent role",
+	"spawn a sub-agent for analysis",
+	"set up a specialized agent",
+	"delegate work to a sub-agent",
+	"manage agent profiles",
+]

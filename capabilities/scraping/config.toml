@@ -1,0 +1,9 @@
+# capabilities/scraping/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"scrape a website",
+	"extract content from web pages",
+	"crawl a web domain",
+	"extract structured data from a page",
+]

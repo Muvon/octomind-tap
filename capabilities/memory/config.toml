@@ -1,0 +1,10 @@
+# capabilities/memory/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"remember this for later",
+	"search semantic memory",
+	"store knowledge in memory",
+	"recall something I told you before",
+	"find related memories",
+]

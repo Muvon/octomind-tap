@@ -1,0 +1,11 @@
+# capabilities/browser/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"browse a website",
+	"navigate to a URL and click around",
+	"fill out a web form",
+	"automate browser interactions",
+	"take a screenshot of a webpage",
+	"scrape the rendered content of a page",
+]

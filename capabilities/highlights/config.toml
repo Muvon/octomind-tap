@@ -1,0 +1,9 @@
+# capabilities/highlights/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"annotate this code with a highlight",
+	"save a highlighted snippet",
+	"review previous highlights",
+	"mark this section as important",
+]

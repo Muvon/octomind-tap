@@ -1,0 +1,9 @@
+# capabilities/webfetch/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"fetch a URL's content",
+	"download a webpage",
+	"get the contents of a web page",
+	"retrieve a web resource",
+]

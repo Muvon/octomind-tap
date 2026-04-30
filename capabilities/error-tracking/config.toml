@@ -1,0 +1,10 @@
+# capabilities/error-tracking/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"investigate a production error",
+	"look up error reports",
+	"check Sentry for recent issues",
+	"find recent crashes in production",
+	"track exception frequency",
+]

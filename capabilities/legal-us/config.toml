@@ -1,0 +1,10 @@
+# capabilities/legal-us/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"look up US case law",
+	"find a US statute",
+	"research US legal regulation",
+	"check US court precedent",
+	"look up federal regulations",
+]

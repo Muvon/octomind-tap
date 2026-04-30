@@ -1,0 +1,10 @@
+# capabilities/database-sqlite/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"query a sqlite database",
+	"inspect a SQLite file",
+	"run SQL against a sqlite db",
+	"look at the schema of a sqlite database",
+	"open a .db file and read tables",
+]

@@ -1,0 +1,9 @@
+# capabilities/core/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"plan out the steps for this task",
+	"break down a task into a structured plan",
+	"create a step-by-step plan",
+	"organize work into phases",
+]

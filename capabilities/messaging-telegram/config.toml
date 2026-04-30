@@ -1,0 +1,8 @@
+# capabilities/messaging-telegram/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"send a telegram message",
+	"post in a telegram channel",
+	"read telegram messages",
+]

@@ -1,0 +1,9 @@
+# capabilities/translation/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"translate text from one language to another",
+	"translate this paragraph to French",
+	"use DeepL to translate",
+	"convert this text to English",
+]

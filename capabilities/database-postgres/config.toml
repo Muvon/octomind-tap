@@ -1,0 +1,11 @@
+# capabilities/database-postgres/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"query a postgres database",
+	"EXPLAIN ANALYZE a slow postgres query",
+	"look at the postgres schema",
+	"investigate a Postgres query plan",
+	"check rows in a postgres table",
+	"run SQL against postgres",
+]

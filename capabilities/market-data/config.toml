@@ -1,0 +1,10 @@
+# capabilities/market-data/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"look up a stock price",
+	"get historical stock data",
+	"check financial market data",
+	"track ticker performance",
+	"fetch quote for a stock symbol",
+]

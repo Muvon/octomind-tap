@@ -1,0 +1,9 @@
+# capabilities/messaging-linkedin/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"post on linkedin",
+	"send a linkedin message",
+	"look up a linkedin profile",
+	"share a linkedin update",
+]

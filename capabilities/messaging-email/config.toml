@@ -1,0 +1,10 @@
+# capabilities/messaging-email/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"send an email",
+	"check my inbox",
+	"read recent emails",
+	"search for an email",
+	"compose a reply",
+]

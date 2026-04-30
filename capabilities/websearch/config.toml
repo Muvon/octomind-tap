@@ -1,0 +1,10 @@
+# capabilities/websearch/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"search the web for information",
+	"find recent news online",
+	"google something",
+	"look up an article on the web",
+	"find a tutorial online",
+]

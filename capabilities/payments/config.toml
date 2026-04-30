@@ -1,0 +1,10 @@
+# capabilities/payments/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"look up a stripe payment",
+	"check payment status",
+	"refund a stripe charge",
+	"manage stripe customers",
+	"create a stripe invoice",
+]

@@ -1,0 +1,10 @@
+# capabilities/customer-management/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"look up a customer record",
+	"update customer contact details",
+	"find contact information for a client",
+	"manage CRM data",
+	"track a sales deal",
+]

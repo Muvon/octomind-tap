@@ -1,0 +1,9 @@
+# capabilities/legal-fr/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"look up French case law",
+	"find a French statute",
+	"research French legal regulation",
+	"check French court precedent",
+]

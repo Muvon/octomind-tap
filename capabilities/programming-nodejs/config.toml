@@ -1,0 +1,10 @@
+# capabilities/programming-nodejs/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"run a Node.js script",
+	"manage npm packages",
+	"execute javascript code",
+	"install a node module",
+	"check node version",
+]

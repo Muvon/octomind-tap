@@ -1,0 +1,8 @@
+# capabilities/messaging-instagram/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"post to instagram",
+	"send a direct message on instagram",
+	"look at my instagram feed",
+]

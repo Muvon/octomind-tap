@@ -1,0 +1,10 @@
+# capabilities/edge-hosting/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"deploy to cloudflare workers",
+	"configure DNS on cloudflare",
+	"set up an edge function",
+	"manage a cloudflare site",
+	"look up cloudflare worker logs",
+]

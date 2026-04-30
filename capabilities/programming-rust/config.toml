@@ -1,0 +1,10 @@
+# capabilities/programming-rust/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"compile a Rust project",
+	"run cargo commands",
+	"execute Rust code",
+	"build a Rust crate",
+	"check cargo dependencies",
+]

@@ -1,0 +1,8 @@
+# capabilities/octoweb/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"browse the web with octoweb",
+	"fetch web content via octoweb",
+	"search the web through octoweb",
+]

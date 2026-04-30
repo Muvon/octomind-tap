@@ -1,0 +1,9 @@
+# capabilities/legal-ca/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"look up Canadian case law",
+	"find a Canadian statute",
+	"research Canadian legal regulation",
+	"check Canadian court precedent",
+]
