@@ -187,6 +187,65 @@ Still a boosted format as of 2026 but declining — use selectively.
 
 ---
 
+### Thread-Vibe Matching (Comments)
+
+Before writing a comment on someone else's post, scan the existing comment section. LinkedIn comments develop a tone quickly — formal vs. casual, long vs. short, personal vs. analytical.
+
+**What to scan:**
+- **Length** — are comments 1 line or 4–5 lines? Match the median. A 4-line comment in a 1-line thread reads like a lecture.
+- **Formality** — are people writing in full sentences with punctuation, or is it casual and clipped?
+- **Personal vs. analytical** — is the thread sharing personal stories, or debating a claim? Match the mode.
+- **First-name culture** — if people are addressing the author by first name, you can too. If not, don't.
+
+**Vibe calibration by post type:**
+
+| Post type | Comment vibe |
+|---|---|
+| Personal story / vulnerability post | Warmer, shorter, first-person, no data |
+| Framework / how-we-did-it | Analytical, can be 3–4 lines, add your own data |
+| Contrarian take | Engage the claim directly; disagree or extend with specifics |
+| Announcement / milestone | Brief acknowledgment + a real question (not "congrats!") |
+| Data reveal | Add a counter-data point or a "we saw the same/opposite" |
+
+---
+
+### Human Imperfection Protocol
+
+LinkedIn is the most polished of all social platforms — posts are professional, people proofread. But **comments** are typed casually, often from a phone between meetings. Calibrate accordingly.
+
+**Imperfection level by content type:**
+
+| Content type | Level | What that means |
+|---|---|---|
+| Original post | Very low | 0 imperfections for posts; one subtle slip max if it's a personal/casual post |
+| Document carousel | Zero | Slides are designed artifacts — no imperfections |
+| Comment on others' post | Low-medium | 1 natural imperfection is fine; reads human, not careless |
+| Reply to a comment on your own post | Low | 1 subtle imperfection acceptable; you're in a conversation |
+
+**Imperfection menu for LinkedIn (pick 0–1 per comment, never in posts):**
+
+- **Missing comma** — `I saw the same thing at our last company and it surprised me` — natural in fast typing
+- **Lowercase opener** — only if the comment thread is already casual/lowercase
+- **Casual contraction** — `gonna`, `kinda`, `tbh` — only in clearly informal threads, never in professional/formal ones
+- **Dropped article** — `We ran [the] same experiment` — one small omission
+- **Run-on with "and"** — two thoughts joined without a period — common in typed-fast comments
+- **No closing period** — end a comment without a period — very common in LinkedIn comments
+
+**Never do on LinkedIn:**
+- Typos in a post — credibility damage is real; LinkedIn audiences notice and judge
+- Typos in a document/carousel — these are designed artifacts, zero tolerance
+- Casual slang (`lol`, `ngl`, `tbh`) in a formal or B2B thread
+- More than 1 imperfection per comment — stacking reads as careless, not human
+- Imperfections when citing data, numbers, or making a technical claim
+
+**Calibration check before posting:**
+1. Is this a post or a comment? Posts = zero imperfections (or one subtle slip in a personal post only).
+2. Read the existing comment thread — what's the formality level?
+3. Does your comment have 0–1 natural imperfections appropriate to the register?
+4. Would a professional typing this between meetings plausibly have written exactly this?
+
+---
+
 ### Pre-Publish Checklist
 
 - [ ] First 210 characters stand alone and pull the expand click
@@ -199,6 +258,8 @@ Still a boosted format as of 2026 but declining — use selectively.
 - [ ] Scheduled for Tue–Thu morning or lunch window
 - [ ] Ready to respond to first 5 comments within 60 minutes
 - [ ] Reads like a person talking, not a press release
+- [ ] **Post:** zero imperfections (or one subtle slip in a personal/casual post only)
+- [ ] **Comment only:** scanned existing comments for length/formality before writing; 0–1 natural imperfection calibrated to register
 
 ---
 
@@ -305,6 +366,44 @@ Someone posts: *"We cut our engineering hiring in half this year and shipped mor
 > Has the meeting load gone down on your side too, or did you consciously cut it?
 
 What works: specific numbers from own experience, extends the idea with an unexpected angle (meetings disappeared), closes with a real question that invites a reply. High chance of profile visit, very high chance of a reply-to-your-reply (the compounding signal).
+
+---
+
+### Example 6: Thread-vibe matching in a casual comment thread
+
+Post: *"We cut our engineering hiring in half this year and shipped more features than the year before."*
+
+Comment thread vibe: casual, 1–3 lines, conversational, no formal punctuation.
+
+**Bad comment (ignores vibe — reads like a formal reply):**
+> This is a fascinating observation that aligns with research on team efficiency. Smaller, more focused teams often outperform larger ones due to reduced coordination overhead and clearer ownership boundaries.
+
+**Good comment (matches casual vibe, 1 natural imperfection):**
+> Same here — went from 22 to 14 and honestly the velocity went up
+>
+> I think we just stopped having meetings to coordinate the coordination
+
+What works: matches the short/casual register of the thread, missing period at the end of line 1 reads natural, adds a specific angle (meta-meetings) without lecturing.
+
+---
+
+### Example 7: Comment with calibrated imperfection (professional thread)
+
+Post: *"I lost a $40k deal last week because of a single sentence in my email."*
+
+Comment thread vibe: professional, 3–5 lines, full sentences, sharing real experiences.
+
+**Bad comment (over-imperfected for a professional thread):**
+> omg yeah this happens all the time lol, we had the same thing happen and it was kinda embarrassing tbh
+
+**Good comment (low imperfection, matches professional register):**
+> Had the exact same thing happen with "future-proof architecture" in a proposal.
+>
+> The client read it as "you're not ready for us yet." We meant it as a selling point.
+>
+> Now we only mention scale if they bring it up first.
+
+What works: one missing article (`[the] exact same thing` → `the exact same thing` — actually clean here, which is right for a professional thread), specific parallel experience, concrete lesson, no imperfections because the register doesn't call for them.
 
 ---
 

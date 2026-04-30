@@ -1,7 +1,7 @@
 ---
 name: social-reddit
 title: "Reddit Publishing Playbook"
-description: "Ground-truth 2026 playbook for posting, commenting, and replying on Reddit. Covers the ranking algorithm (Hot/Best sort, vote velocity, time decay, confidence score), subreddit-first research, the 90/10 self-promotion rule, title craft, post body structure per subreddit type, comment strategy, and — critically — surviving the AI-content automods now deployed across major subs (r/SaaS, r/startups, r/Entrepreneur, r/programming and others run pattern-based detectors that auto-remove anything reading as LLM-written). Activate whenever drafting anything destined for Reddit."
+description: "Ground-truth 2026 playbook for posting, commenting, and replying on Reddit. Covers the ranking algorithm, subreddit-first research, the 90/10 self-promotion rule, title craft, post body structure, comment strategy, thread-vibe matching, and surviving AI-content automods. Replies and comments must read as a real human typed them — imperfect, thread-aware, naturally flawed. Activate whenever drafting anything destined for Reddit."
 license: Apache-2.0
 compatibility: "Octomind content agents. Platform-specific to Reddit."
 domains: content
@@ -134,9 +134,84 @@ Reddit titles are the entire package for most users — most scroll the feed wit
 
 ---
 
+### Thread-Vibe Matching (read before you write)
+
+Before drafting any reply or comment, **scan the thread first**. This is not optional — it's the single most effective anti-detection move because it makes your output structurally match the community's actual behaviour in that moment.
+
+**What to read:**
+- The top 5–8 comments (or all of them if the thread is small)
+- The OP's writing style — length, punctuation habits, whether they use caps, how casual they are
+- The dominant reply length: are people writing 2-line zingers or 6-paragraph essays?
+- The emotional register: sarcastic? earnest? technical? venting?
+- Any recurring phrases, in-jokes, or sub-specific slang
+
+**What to extract before writing:**
+
+| Signal | What to match |
+|--------|--------------|
+| Median comment length | Stay within ±30% of it |
+| Punctuation style | If nobody uses periods at end of short comments, don't |
+| Capitalization | If thread is mostly lowercase, go lowercase |
+| Emoji usage | If zero emoji in thread, use zero |
+| Markdown | If nobody uses bold/bullets, don't |
+| Tone | Match the dominant register (sarcastic, earnest, technical, casual) |
+
+**Hard rule:** if the thread is full of 1–3 line replies, your 8-line structured comment will stand out as AI-generated even if every word is perfect. **Short thread = short reply.** Long thread = you have room to breathe.
+
+---
+
+### Human Imperfection Protocol (replies and comments)
+
+This is the most important section for social interactions. Posts and thread titles can be more polished — they're written with more care and often edited before submitting. **Replies and comments are typed fast, on a phone, in the middle of something else.** They should read that way.
+
+**The goal is not to look like a bad writer. It's to look like a real person who types quickly.**
+
+#### Imperfections to inject (pick 1–2 per reply, not all at once)
+
+**Typos (realistic ones — adjacent keys, missed letters, transpositions):**
+- `teh` → `the`, `hte` → `the`, `taht` → `that`, `jsut` → `just`
+- `becuase` → `because`, `recieve` → `receive`, `definately` → `definitely`
+- `youre` → `you're` (missing apostrophe), `dont` → `don't`, `cant` → `can't`
+- Doubled letters: `thiss`, `iss`, `andd`
+- Missing space: `alot` instead of `a lot`, `infact` instead of `in fact`
+
+**Grammar that reads human, not broken:**
+- Run-on sentences joined with "and" or "but" where a period would be "correct"
+- Starting a sentence with "And" or "But" or "So" — very common in casual writing
+- Ending a thought mid-sentence and starting fresh: "the thing is. its just not worth it"
+- Lowercase `i` mid-sentence (not at the start of a sentence — that reads like a style choice, not a typo)
+- Missing comma in a compound sentence: "I tried that once and it didnt work at all"
+- Casual abbreviation without consistency: "you" in one sentence, "u" in the next (only in very casual threads)
+
+**Rhythm and structure:**
+- One sentence that's noticeably shorter than the others. Like this.
+- A thought that trails off with "..." when you're not sure how to finish it
+- "edit: typo" or "edit: meant to say X" at the end (use sparingly — once per session max)
+- Repeating a word accidentally: "the the" or "is is" — only if the comment is long enough that it reads like a scanning miss
+
+#### Calibration by content type
+
+| Type | Imperfection level | Notes |
+|------|-------------------|-------|
+| Standalone post / thread | Low — 0–1 minor imperfection | People proofread posts more; too many errors reads as low-effort |
+| Top-level comment | Low-medium — 1 imperfection | Still somewhat considered |
+| Reply to a comment | Medium — 1–2 imperfections | This is where humans are most casual |
+| Reply in a fast-moving thread | Medium-high — 1–2 imperfections + short length | Match the pace of the thread |
+| Reply to a hostile/sarcastic comment | High casualness — short, punchy, possibly no punctuation | Matching the energy is more important than grammar |
+
+#### What NOT to do
+
+- Don't inject a typo in the first word — it reads like a deliberate trick
+- Don't put a typo in a technical term, a username, or a number — those get corrected by humans too
+- Don't use more than 2 imperfections in a single comment — it tips from "human" to "illiterate"
+- Don't use the same imperfection twice in the same comment
+- Don't add imperfections to a post title — titles get proofread
+
+---
+
 ### Comment Strategy
 
-Comments are where most Reddit karma actually comes from, and where mods/moderators form their read on whether your account is a real member or a promo bot.
+Comments are where most Reddit karma actually comes from, and where mods form their read on whether your account is a real member or a promo bot.
 
 - **Answer the question asked.** Don't steer the conversation to your topic.
 - **Top-comment early or don't bother.** After the first 3 substantive comments, you're buried unless your comment is exceptional.
@@ -258,6 +333,8 @@ Reddit is heavily US-skewed. For English subs:
 - [ ] Posted in a peak window for the sub
 - [ ] Ready to respond to the first comment within 30 minutes
 - [ ] Post doesn't sound like marketing if read aloud
+- [ ] **Thread-vibe check (replies/comments):** scanned the thread, matched dominant length and tone, no markdown if nobody else uses it
+- [ ] **Imperfection check (replies/comments):** 1–2 realistic imperfections present — typo, missing apostrophe, run-on, or casual grammar — not in the first word, not in a technical term
 - [ ] **AI-detection pass**: opens with a specific lived detail, no headers in comments, no bold in prose, < 1 em-dash per 100 words, at least one contraction, no closing summary, no dead vocabulary, no tri-colon parallel structure, no "It's worth noting" / "That said" openers
 - [ ] **Sub is high-suspicion (r/SaaS, r/startups, r/Entrepreneur, r/programming, r/MachineLearning)?** Comment quotes another commenter or references a username, includes one casual reduction (imo/ngl/tbh/fwiw), and varies sentence length deliberately
 
@@ -403,6 +480,66 @@ Same idea, automod-survivable rewrite:
 > agree on the wedge thing but i think you're underselling distribution. shipped 4 saas products since 2019, the two that survived weren't the technically best ones, they were the ones where i'd already built an audience in the niche before launch. the failed ones i tried to launch cold and even with a better product they died within 6 months. ai didn't change that math, it just made the technically-best part cheaper to get to.
 
 What changed: lowercase opener, real disagreement, specific number (4 products, 2019), specific failure outcome (died within 6 months), one sentence fragment, zero markdown, zero dead vocabulary, no closing summary.
+
+---
+
+### Example 8: Thread-vibe matching in action
+
+**The thread** (r/cscareerquestions, fast-moving, casual):
+> OP: "is it worth learning rust in 2026 or just stick with go"
+> Reply 1: "go tbh, rust is overkill for most jobs"
+> Reply 2: "depends what you want to do"
+> Reply 3: "rust if you want systems, go if you want a job"
+
+Every reply is 1 line. No punctuation at the end. Lowercase. No markdown.
+
+**Bad reply (ignores thread vibe — will read as AI or try-hard):**
+> This is a great question! In my experience, the choice between Rust and Go depends heavily on your career goals:
+>
+> - **Rust** is ideal for systems programming, embedded, and performance-critical applications
+> - **Go** is better suited for backend services, cloud infrastructure, and general web development
+>
+> Ultimately, Go will get you hired faster, but Rust is worth learning if you're passionate about systems.
+
+**Good reply (matches thread vibe):**
+> rust if you care about the craft, go if you want to get hired in 6 months
+
+One line. No caps. No punctuation. Matches the thread exactly.
+
+---
+
+### Example 9: Realistic imperfections in a reply
+
+**Context:** r/SaaS, someone asks "how do you handle churn in the early days?"
+
+**Too perfect (reads AI):**
+> In the early days, churn is almost always a signal problem, not a product problem. The customers who churn fastest are usually the ones who had the wrong expectations going in. I'd focus on tightening the onboarding conversation — specifically the questions you ask before someone signs up — rather than adding features to retain people who were never a good fit.
+
+**With realistic imperfections (reads human):**
+> in the early days churn is almost always a signal problem, not a product problem. the customers who churn fastest are usually the ones who had the wrong expectations going in. i'd focus on tightening the onboarding conversation — specificaly the questions you ask before someone signs up — rather than adding features to retain people who were never a good fit.
+
+What changed: lowercase opener, lowercase `i`, one realistic typo (`specificaly`), no closing summary. Same idea, reads like someone typed it on their phone.
+
+---
+
+### Example 10: Calibrating imperfection level by reply type
+
+**Scenario:** r/webdev, a long technical thread about CSS container queries. Thread has a mix of short and medium replies, mostly lowercase, some punctuation.
+
+**Top-level comment (low imperfection — more considered):**
+> container queries are genuinely useful but the mental model shift is harder than people admit. you're not asking "how wide is the viewport" anymore, you're asking "how wide is this specific box" — and that changes how you think about component design from the ground up. took me a few projects to stop reaching for media queries out of habit.
+
+One minor imperfection: no period at the end (matches thread style). Otherwise clean.
+
+**Reply to a comment that said "just use media queries lol" (high casualness — match the energy):**
+> lol yeah until you try to reuse a component in a sidebar and a main column and suddenly your media queries are lying to you
+
+No punctuation. Lowercase. Matches the dismissive-but-friendly tone of what it's replying to. No imperfection needed — the casualness is the imperfection.
+
+**Reply in a heated debate (short, punchy, no grammar polish):**
+> thats not how specificity works tho
+
+Missing apostrophe in `thats`. Short. Ends without punctuation. Matches the pace of a fast argument thread.
 
 ---
 

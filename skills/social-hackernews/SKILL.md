@@ -395,6 +395,71 @@ HN's culture is direct, technical, and allergic to defensiveness. Negative comme
 - [ ] Account is established (30+ days, non-zero karma) — new accounts get throttled
 - [ ] Ready to engage with comments for 2–3 hours after posting
 - [ ] If the post dies: know the hn@ycombinator.com email and when it's legitimate to use it
+- [ ] **Comment only:** scanned the existing comment tree for depth and tone before writing
+- [ ] **Comment only:** 0–1 structural imperfection only (informal phrasing, casual aside) — no typos
+
+---
+
+### Thread-Vibe Matching (Comments)
+
+Before commenting, read the existing comment tree — not just the top-level comments but the depth. HN threads develop a specific intellectual register within the first 10–20 comments, and deviating from it reads as out-of-place.
+
+**What to scan:**
+- **Depth of technical detail** — are people citing papers, benchmarks, production numbers? Match that depth.
+- **Comment length** — 2-sentence quips or 5-paragraph mini-essays? Match the median.
+- **Tone** — skeptical/analytical, warm/collaborative, or heated/contested? Adjust accordingly.
+- **Whether the thread is already contested** — if there's a flame war forming, either add something genuinely de-escalating or stay out.
+- **Existing answers** — don't repeat what's already been said well. Add or extend.
+
+**Vibe calibration by thread type:**
+
+| Thread type | Comment vibe |
+|---|---|
+| Technical deep-dive (Show HN, paper) | Match the depth; cite specifics, production numbers, versions |
+| Ask HN (genuine question) | Answer directly; show your work; "we did X and found Y" |
+| Contested claim / debate | Measured, specific disagreement; cite sources; no contempt |
+| Personal story / retrospective | Warmer; share a parallel experience; shorter |
+| News / announcement | Factual extension or question; no hype either direction |
+
+---
+
+### Human Imperfection Protocol
+
+HN is the most formal platform in this set. Comments are essentially mini-essays — readers are engineers, researchers, and founders who notice both AI-polished prose and careless typos. The goal is **structural informality**, not visible sloppiness.
+
+**Key HN nuance: typos read as careless, not human.** On HN, a typo in a technical term signals you don't know the domain. Imperfections should be structural — informal phrasing, a sentence fragment, a casual aside in parentheses — not spelling errors.
+
+**Imperfection level by content type:**
+
+| Content type | Level | What that means |
+|---|---|---|
+| Submission title | Zero | Titles are edited artifacts; zero imperfections |
+| Show HN first comment | Zero | This is your pitch; zero imperfections |
+| Ask HN body | Very low | 0–1 structural imperfection max |
+| Comment on others' posts | Very low | 1 structural imperfection; no typos |
+| Reply in a casual/warm thread | Low | 1 structural imperfection; slightly more informal phrasing |
+
+**Imperfection menu for HN (pick 0–1 per comment, structural only):**
+
+- **Casual aside in parentheses** — `(worth checking if yours went dark)` — very HN-native; engineers write like this
+- **Sentence fragment as emphasis** — `Not a typo. The whole thing.` — used for emphasis, reads as deliberate
+- **"though" / "honestly" / "actually"** — casual qualifiers that read as human hedging
+- **Informal opener** — `Ran into this exact thing last year.` instead of `I encountered this issue last year.`
+- **Dropped subject** — `Tried X, didn't work.` instead of `I tried X and it didn't work.` — common in technical writing
+- **Em-dash used informally** — `The fix was one line — and it was embarrassing.` — reads as thinking-while-typing
+
+**Never do on HN:**
+- Typos in technical terms, library names, language names, or proper nouns — credibility damage is severe
+- `lol`, `lmao`, `tbh`, `ngl` — too casual for HN register in almost all threads
+- Emoji in comments — HN culture treats this as low-effort
+- Stack 2+ imperfections in one comment — reads as careless
+- Imperfections in a Show HN first comment or submission title — these are edited artifacts
+
+**Calibration check before posting:**
+1. Is this a title, first comment, or a reply? Titles and first comments = zero imperfections.
+2. Read the existing thread — what's the depth and formality level?
+3. Does your comment have 0–1 structural imperfections (informal phrasing, not typos)?
+4. Would a senior engineer typing this between tasks plausibly have written exactly this?
 
 ---
 
@@ -478,6 +543,40 @@ First comment:
 > Hi everyone! We built this to help businesses leverage AI! Please check out our landing page and let us know what you think! Upvotes appreciated 🙏
 
 **Why this dies in under 10 minutes**: title has `Revolutionary`, `AI-Powered`, `Transform Your Business`, two emoji, no specifics. First comment asks for upvotes, has no substance, no tech stack, no real problem description. Flagged within the first 5 users; hellban risk for "Upvotes appreciated." Mods remove, account reputation damaged.
+
+---
+
+### Example 6: Thread-vibe matching (technical deep-dive thread)
+
+Show HN post about a SQLite-per-tenant architecture. Thread vibe: technical, 3–5 sentence comments, citing specific numbers and trade-offs.
+
+**Bad comment (ignores vibe — too casual for a technical thread):**
+> lol yeah sqlite is great, we use it too and its way easier than postgres tbh
+
+**Good comment (matches technical register, structural imperfection only):**
+> Ran into the same trade-off last year. Went with SQLite-per-tenant for a similar reason — write contention on a shared Postgres was killing p99 latency at ~2k concurrent tenants.
+>
+> One thing worth watching: WAL mode is essential, and you'll want to tune `PRAGMA journal_size_limit` or your WAL files balloon under write-heavy tenants. Caught us off guard in staging.
+
+What works: matches the technical depth of the thread, cites a specific production number (2k concurrent tenants), adds a concrete gotcha (WAL file size), informal opener (`Ran into`) is the only structural imperfection — no typos, no casual slang.
+
+---
+
+### Example 7: Comment with calibrated imperfection (Ask HN thread)
+
+Ask HN: *"How do you evaluate long-context LLMs for retrieval tasks?"*
+
+Thread vibe: practitioners sharing real experience, 3–6 sentences, specific setups.
+
+**Bad comment (over-imperfected for HN):**
+> honestly idk lol we just kinda tried stuff and it worked out, ngl the whole eval thing is kinda a mess
+
+**Good comment (very low imperfection, matches practitioner register):**
+> Built a domain-specific eval for this last quarter. The key insight: synthetic evals (needle-in-haystack, LongBench) don't predict real retrieval quality on your data. They measure capability, not fit.
+>
+> What worked for us — take 200 real queries with known-good answers from your existing system, run them through the new model, and score with a cheap LLM judge. Imperfect but correlates with user satisfaction better than any benchmark we tried.
+
+What works: `Built a` opener (dropped subject — structural imperfection), specific number (200 queries), honest about limitations ("Imperfect but"), adds a concrete method, no typos, no casual slang.
 
 ---
 

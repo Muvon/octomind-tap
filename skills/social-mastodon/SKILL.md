@@ -248,6 +248,84 @@ Each post stands alone, each is tagged, chronological timeline works with it.
 - **Screenshot-dunking.** The Fediverse remembers. Callout culture doesn't work the way it does on X — it rebounds.
 - **Gratuitous tag stacking.** `#life #mood #thoughts #random` is a tell.
 
+---
+
+## Thread-Vibe Matching (Replies)
+
+Mastodon reply culture is slower and more deliberate than X or Threads. Before replying, read the existing reply chain and the local timeline context. The vibe is set by the instance culture as much as by the individual thread.
+
+**What to scan:**
+- **Instance culture** — a reply on `infosec.exchange` reads differently than one on `mastodon.art`. Check the local timeline if you're new to an instance.
+- **Length** — are replies 1–2 sentences or 3–4? Match the median.
+- **Formality** — Mastodon skews more formal than Threads; full sentences and proper punctuation are common.
+- **CW conventions** — if the thread has a CW, your reply should too (same or related CW label).
+- **Hashtag practice** — if the thread is using hashtags in replies, match the pattern.
+
+**Vibe calibration by post type:**
+
+| Post type | Reply vibe |
+|---|---|
+| Technical observation | Match the depth; add a specific detail or counter-case |
+| FOSS / project announcement | Substantive question or specific feedback; no hype |
+| Personal / creative post | Warmer, shorter, first-person |
+| CW'd sensitive topic | Match the care level; keep it measured |
+| Accessibility-focused post | Especially careful; this community notices and values care |
+
+---
+
+## Human Imperfection Protocol
+
+Mastodon values craftsmanship. The culture rewards care — in writing, in alt text, in CW labels. Imperfections should be about **informality of phrasing**, not typos. A typo in alt text is worse than a typo in prose here; accessibility is an ethical norm, not a nicety.
+
+**Imperfection level by content type:**
+
+| Content type | Level | What that means |
+|---|---|---|
+| Original post | Very low | 0–1 subtle imperfection; posts are considered artifacts |
+| Alt text | Zero | Alt text is an accessibility artifact — zero imperfections |
+| CW label | Zero | CW labels are functional — zero imperfections |
+| Reply in a technical thread | Very low | 0–1 structural imperfection; precision still matters |
+| Reply in a casual/personal thread | Low | 1 subtle imperfection; informal phrasing fine |
+
+**Imperfection menu for Mastodon (pick 0–1 per reply, structural only):**
+
+- **Informal opener** — `Been thinking about this since the glib 2.84 release.` instead of `I have been thinking about this.`
+- **Casual aside in parentheses** — `(worth checking if yours went dark)` — reads as thinking-while-typing
+- **Dropped subject** — `Tried the same approach, hit the same wall.` — common in technical writing
+- **"though" / "honestly" / "actually"** — casual qualifiers that read as human hedging
+- **No closing period** — end a reply without a period — common in casual Mastodon replies
+- **Sentence fragment as emphasis** — `Not a bug. A feature of the spec.` — deliberate, reads as considered
+
+**Never do on Mastodon:**
+- Typos in technical terms, library names, or proper nouns — credibility damage
+- Typos or errors in alt text — this is an accessibility failure, not just a style issue
+- Errors in CW labels — these are functional; wrong labels break trust
+- `lol`, `lmao`, `ngl` — too casual for most Mastodon threads
+- Stack 2+ imperfections in one post — reads as careless in a culture that values care
+- Hype language or emoji stacks even with imperfections — the register is wrong regardless
+
+**Calibration check before posting:**
+1. Is this a post, alt text, or CW label? Alt text and CW labels = zero imperfections.
+2. Read the instance's local timeline — what's the general formality level?
+3. Does your reply have 0–1 structural imperfections (informal phrasing, not typos)?
+4. Would a thoughtful FOSS-community member typing this at their desk plausibly have written exactly this?
+
+---
+
+## Pre-Publish Checklist
+
+- [ ] Alt text on every image — descriptive, functional, screen-reader-ready
+- [ ] CW applied if the content warrants it (spoilers, sensitive topics, long post)
+- [ ] CamelCase multi-word hashtags (`#RustLang`, not `#rustlang`)
+- [ ] 1–3 relevant hashtags at the end (or woven in naturally)
+- [ ] No X-ported hype language, no emoji stacks, no "boost appreciated"
+- [ ] Links are to original sources, not aggregators or tracking URLs
+- [ ] Under 500 characters (or CW'd if longer, or split into self-reply thread)
+- [ ] Tone matches instance culture (check local timeline if unsure)
+- [ ] For threads: each self-reply stands alone; tagged individually
+- [ ] **Reply only:** scanned existing replies for length, formality, and CW conventions
+- [ ] **Reply only:** 0–1 structural imperfection (informal phrasing, not typos); alt text and CW labels always zero
+
 ## Examples
 
 ### Example 1 — Announcing a blog post
@@ -327,6 +405,40 @@ suggest...
 ```
 
 The CW is honest about the content and length. Users who want it, expand. Users who are tired of US politics today, scroll past.
+
+### Example 5 — Thread-vibe matching (technical thread)
+
+Post: *"Discovered today that Gtk4 on Wayland exposes a new compositor-side protocol for fractional scaling that avoids the double-rounding bug we've been chasing since 2023."*
+
+Reply chain vibe: technical, 2–4 sentences, proper punctuation, specific version numbers.
+
+**Bad reply (ignores vibe — too casual):**
+> omg finally lol, that bug has been driving me crazy for ages tbh
+
+**Good reply (matches technical register, very low imperfection):**
+> Been hitting this on a 2x HiDPI setup with a 1.5x secondary monitor. The double-rounding showed up as 1px misalignment in GTK dialogs.
+>
+> Good to know it's in 2.84 — will test against the flag this week.
+
+What works: informal opener (`Been hitting`) is the only structural imperfection, specific hardware setup, concrete symptom, no typos, no casual slang, matches the technical depth of the thread.
+
+---
+
+### Example 6 — Reply with calibrated imperfection (personal/creative thread)
+
+Post: *"Finally got the old ThinkPad running NetBSD current with a working Wayland session."*
+
+Reply chain vibe: warm, personal, 1–3 sentences, casual but not sloppy.
+
+**Bad reply (over-imperfected — reads careless in a warm personal thread):**
+> omg thats so cool lol i love old thinkpads tbh, the keyboards are amazing ngl
+
+**Good reply (low imperfection, matches warm-but-careful register):**
+> The X61 keyboard is genuinely one of the best ever made. Still have mine from 2009 — the travel is something modern laptops just don't do.
+
+What works: no imperfections here because the thread is warm but careful (Mastodon culture values craftsmanship), specific model name, personal connection, no hype language, reads as a thoughtful human response.
+
+---
 
 ## Composition
 

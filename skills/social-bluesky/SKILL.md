@@ -213,6 +213,84 @@ Bluesky profiles are search-indexed and curators read them.
 - **Huge link-card posts with no text.** Looks like a feed bot. Add one sentence of framing.
 - **Reply-guy behavior on mega accounts.** The platform is small enough that regulars recognize it.
 
+---
+
+## Thread-Vibe Matching
+
+Before replying, read the existing reply chain. Bluesky reply chains are calmer than X — the Following feed is chronological, so there's no rush — but the tone is set quickly and deviating reads as out-of-place.
+
+**What to scan:**
+- **Technical depth** — is the chain swapping implementation details, or is it more conceptual? Match the depth.
+- **Length** — 1–2 sentences or 3–4? Match the median.
+- **Formality** — Bluesky skews more measured than X; full sentences and proper punctuation are common.
+- **Humor register** — dry/wry is the Bluesky default; sarcasm is fine, contempt is not.
+- **Emoji density** — Bluesky uses fewer emoji than Threads or X; 0–1 per post is the norm.
+
+**Vibe calibration by post type:**
+
+| Post type | Reply vibe |
+|---|---|
+| Specific technical observation | Match the technical depth; add a data point or counter-case |
+| Link + why it matters | Extend with a specific detail they didn't mention |
+| Question to the feed | Answer directly and specifically; no hedging |
+| Personal/project post | Warmer, shorter, first-person |
+| Quote post | Add one specific thing; don't echo |
+
+---
+
+## Human Imperfection Protocol
+
+Bluesky's audience is technical and skeptical — they notice both AI-polished prose and careless typos. The goal is **subtle informality**, not visible sloppiness. Imperfections should feel like a thoughtful person typing at normal speed, not a bot or a careless one.
+
+**Imperfection level by content type:**
+
+| Content type | Level | What that means |
+|---|---|---|
+| Original post | Very low | 0–1 subtle imperfection; posts are considered, not dashed off |
+| Self-reply thread | Very low | Same as original post — each post is a standalone artifact |
+| Reply in a technical thread | Low | 1 subtle imperfection max; precision still matters |
+| Reply in a casual/conversational thread | Low-medium | 1–2 imperfections; lowercase opener or missing period fine |
+| Quote post | Very low | Quote posts are amplification artifacts — keep them clean |
+
+**Imperfection menu for Bluesky (pick 0–1 per reply, calibrate carefully):**
+
+- **Missing period at end** — the most natural and least visible imperfection; common in casual replies
+- **Lowercase opener** — only if the thread is already casual/lowercase; rare on Bluesky
+- **Comma splice** — `I tried this, it didn't work` — reads as fast typing, not careless
+- **Dropped article** — `[The] methodology section is the interesting part` — one small omission
+- **Casual aside in parens** — `(worth checking if yours went dark)` — Bluesky-native informal move
+- **"though" / "tbh" / "honestly"** — casual qualifiers that read as human hedging, not AI hedging
+
+**Never do on Bluesky:**
+- Visible typos in technical terms, proper nouns, or code — the audience notices and it tanks credibility
+- `lol`, `lmao`, `ngl` — too casual for the Bluesky register in most threads
+- Stack 2+ imperfections in one post — reads as low-effort to a technical audience
+- Imperfections in a quote post — these are amplification artifacts, keep them clean
+- Imperfections when citing data, specs, or making a technical claim
+
+**Calibration check before posting:**
+1. Is this a post/quote-post or a reply? Posts and quote posts = very low (0–1 max).
+2. Read the thread — is it technical/formal or casual/conversational?
+3. Does your reply have 0–1 subtle imperfections that fit the register?
+4. Would a thoughtful engineer typing this at normal speed plausibly have written exactly this?
+
+---
+
+## Pre-Publish Checklist
+
+- [ ] Under 300 graphemes (count emoji and CJK as 1 each)
+- [ ] No hype language ("this changes everything," "insane," "🚀🔥")
+- [ ] No X-imported framing ("🧵👇," "a thread:", "RT if you agree")
+- [ ] Specific over clever — concrete observation beats witty one-liner
+- [ ] Alt text on every image (accessibility is a cultural norm here)
+- [ ] Self-labeled if AI-generated image or sensitive topic
+- [ ] Hashtags: 0–2, lowercase, placed naturally
+- [ ] No "follow for more" / "like and repost" CTAs
+- [ ] Unmarked AI prose removed (em-dashes, "delve," hedge stacks)
+- [ ] For quote posts: adds one specific thing, stands alone
+- [ ] **Reply only:** scanned chain for technical depth and tone before writing
+- [ ] **Reply only:** 0–1 subtle imperfection calibrated to register (very low for technical, low-medium for casual)
+
 ## Examples
 
 ### Example 1 — Launching a side project
@@ -283,6 +361,42 @@ from "now" and add history selectively.
 dedups on post ID, you'll miss labels added after the fact.
 Dedup on (post ID, rev) instead.
 ```
+
+### Example 5 — Thread-vibe matching (technical thread)
+
+Post: *"Ran the AT Protocol firehose through a week of our traffic. Three things surprised me."*
+
+Reply chain vibe: technical, measured, 2–4 sentences, proper punctuation, specific data points.
+
+**Bad reply (ignores vibe — too casual for a technical thread):**
+> omg same lol the firehose is wild, we had so many issues with it tbh
+
+**Good reply (matches technical register, very low imperfection):**
+> The backfill cost surprised us too — we estimated 2 hours and it ran 7.
+>
+> Turned out we were starting from genesis when we only needed the last 30 days. Worth adding a `since` param early.
+
+What works: matches the technical depth and measured tone of the chain, adds a specific counter-data point (7 hours vs 2), offers a concrete fix, one missing period at end of first line is the only imperfection.
+
+---
+
+### Example 6 — Reply with calibrated imperfection (casual thread)
+
+Post: *"For people who've run feed generators: what's your actual p99 for posts-to-inclusion? Mine hovers around 4 minutes and I can't tell if that's slow or normal."*
+
+Reply chain vibe: casual, conversational, lowercase openers, 1–3 lines.
+
+**Bad reply (over-imperfected for Bluesky):**
+> lol yeah ours is like 6 mins sometimes, idk its just kinda slow i guess, ngl the whole thing is a mess tbh
+
+**Good reply (low imperfection, matches casual-but-technical register):**
+> ours runs 3–5 minutes on average, spikes to 12 during high-volume events
+>
+> 4 minutes sounds normal to me — the indexer batches in 60s windows so you're always at least a minute behind
+
+What works: lowercase opener matches the chain, no closing period on line 1 (one natural imperfection), specific numbers, explains the mechanism (60s batching), reads like a practitioner typing between tasks.
+
+---
 
 ## Composition
 
