@@ -258,6 +258,7 @@ LinkedIn is the most polished of all social platforms — posts are professional
 - [ ] Scheduled for Tue–Thu morning or lunch window
 - [ ] Ready to respond to first 5 comments within 60 minutes
 - [ ] Reads like a person talking, not a press release
+- [ ] **Strip-test (announcement / win / company-mention posts):** if the announcement, milestone, or company name is removed, is the post still useful or interesting to a reader? If no, it's a humble-brag wearing a story's clothes — rewrite around the actual lesson, or skip the post
 - [ ] **Post:** zero imperfections (or one subtle slip in a personal/casual post only)
 - [ ] **Comment only:** scanned existing comments for length/formality before writing; 0–1 natural imperfection calibrated to register
 

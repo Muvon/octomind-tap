@@ -121,6 +121,7 @@ Reddit titles are the entire package for most users — most scroll the feed wit
 - Share what you learned, not what you sell. Revenue numbers, MRR, failures, tech stack — all good.
 - Include screenshots. Text-only project posts flop.
 - Don't link aggressively. One link, in-body, not repeated.
+- **Name a real limitation of the thing you built.** Uniformly positive descriptions read as marketing or LLM output. A specific con — "the search is slow on >10k records", "auth still doesn't have SSO" — does more for trust than any amount of polish.
 
 **Question subs (r/learnprogramming, r/AskReddit, domain subs)**
 - Title is the question itself. Clear, specific, not "help pls."
@@ -219,7 +220,8 @@ Comments are where most Reddit karma actually comes from, and where mods form th
 - **Don't link in comments unless asked** — and when asked, link once, no UTM parameters, no tracking.
 - **Agree with the top comment? Don't just say 'this' — add the next layer.** Extension > echo.
 - **Disagree? Cite the specific claim you disagree with.** "Disagree on point 2 — here's why" beats a general "no."
-- **Never start with 'As someone who has worked in X…' unless you actually have.** Reddit detects credentialing theatre instantly.
+- **Never start with 'As someone who has worked in X…' unless you actually have.** Reddit detects credentialing theatre instantly. Fabricated specifics are worse than vague comments — a fake-precise claim ("ran this in production at a 10k-employee bank") attracts replies asking *which* bank, and the silence that follows is what mods and classifier bots escalate on. If you don't have the experience, write from the angle of what you've actually read or seen, and say so.
+- **Include a real con when recommending something you have a stake in.** Bots and marketing copy are uniformly positive. Real recommendations name a specific trade-off — "the mobile app is weak", "scaling past ~50k rows the planner gives up", "onboarding took me a week to figure out". Vague hedges ("not for everyone") don't count; the con has to be concrete enough that someone could verify or push back on it.
 - **Edit-to-add is fine and human.** "Edit: to clarify…" reads normal. Silent edits on controversial comments read sketchy.
 
 ---
@@ -264,6 +266,7 @@ Beyond the `content-voice` dead-vocabulary list — these are extra-flagged on R
 8. **Write the comment, then delete the first sentence.** AI-trained openers ("Great question!", "This is an interesting point", "I think there are a few things to consider") almost always live in sentence #1.
 9. **Disagree with part of what you're replying to.** Pure agreement reads sycophantic and AI-shaped. A small, specific pushback ("agree on most of this but the part about X is overstated because…") reads as a thinking human.
 10. **Run the draft through a 'would I actually type this on my phone at 11pm' filter.** If no, cut it down.
+11. **Pre-empt the sub's known controversy directly.** If the topic, tool, or stance you're writing about is divisive in this community — and you can usually tell from a 5-minute scroll of recent threads — name that disagreement up front instead of pretending consensus. "I know [X] gets mixed reviews here, here's my honest read after [specific time/context]" reads like a member of the community talking to other members. Bots paper over disagreement; humans acknowledge it. Bonus effect: it pre-empts downvote brigading from the camp that disagrees, because they recognise you've already heard their argument.
 
 **Per-sub calibration:** the level of AI suspicion varies. r/SaaS, r/startups, r/Entrepreneur, r/MachineLearning, r/programming, r/cscareerquestions are *high-suspicion*. r/SideProject, r/IndieHackers, niche hobby subs are mid. Default to high-suspicion behaviour everywhere; relax only after you've read recent successful posts.
 
@@ -311,6 +314,17 @@ If your post disappears within minutes: check modmail, check your post on old.re
 
 ---
 
+### After Posting (the behavioural detection layer)
+
+Detectors and mods don't only read the text — they read the account's behaviour around it. Bots post and disappear; real authors hang around. The first hour after posting is part of the post.
+
+- **Answer the first 2–3 comments within an hour.** Even if it's "good point, I'd missed that" or "no I tried that and it didn't work because…". Silent OPs on commented threads are a known classifier signal.
+- **Edit the post with corrections when commenters catch something.** "edit: u/foo pointed out X, fixed" reads as a real person updating their thinking. It also tells the mod queue this is an active thread, not a drive-by.
+- **Concede where you're wrong.** "Yeah you're right, that part was sloppy" outperforms defending every point. Bots don't concede; humans do.
+- **If you can't be at the keyboard for the hour after posting, don't post yet.** Better to wait for a window when you can engage live than to publish into silence.
+
+---
+
 ### Timing
 
 Reddit is heavily US-skewed. For English subs:
@@ -333,6 +347,9 @@ Reddit is heavily US-skewed. For English subs:
 - [ ] Posted in a peak window for the sub
 - [ ] Ready to respond to the first comment within 30 minutes
 - [ ] Post doesn't sound like marketing if read aloud
+- [ ] **Strip-test (project/recommendation posts):** if the product/project mention is removed, is the post still useful to a reader? If no, it's marketing wearing humble clothes — rewrite around the actual lesson, or don't post
+- [ ] **Honest-con check (project/recommendation posts):** at least one specific, concrete trade-off named — not a vague hedge
+- [ ] **Engagement window:** can be at the keyboard for the next hour to reply to first 2–3 comments — if not, postpone
 - [ ] **Thread-vibe check (replies/comments):** scanned the thread, matched dominant length and tone, no markdown if nobody else uses it
 - [ ] **Imperfection check (replies/comments):** 1–2 realistic imperfections present — typo, missing apostrophe, run-on, or casual grammar — not in the first word, not in a technical term
 - [ ] **AI-detection pass**: opens with a specific lived detail, no headers in comments, no bold in prose, < 1 em-dash per 100 words, at least one contraction, no closing summary, no dead vocabulary, no tri-colon parallel structure, no "It's worth noting" / "That said" openers

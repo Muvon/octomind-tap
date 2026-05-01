@@ -361,6 +361,7 @@ On other people's posts:
 - **Assume good faith.** HN's comment culture explicitly requires it — mods enforce.
 - **Don't name-call, don't dunk, don't rage-post.** You'll be banned faster than anywhere else.
 - **Cite sources for factual claims.** Engineers on HN check.
+- **Don't fabricate specifics to sound credible.** A fake-precise claim ("ran this in production at a 10k-employee bank", "we hit 99.999% uptime") attracts replies asking *which* bank or *which* SLO calculation, and the silence that follows is what damages your account. A vague-but-honest comment ("from what I've read on this") survives. A fake-specific one gets dunked on, and the dunk is what classifier bots and mods escalate on.
 
 On your own posts (especially Show HN):
 - Respond to every substantive comment for the first 2–3 hours.
