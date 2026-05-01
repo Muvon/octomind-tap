@@ -1,0 +1,22 @@
+# capabilities/composition/remotion.toml
+# Capability: composition
+# Provider: Remotion — code-driven (React) video composition + Lambda render
+# Title: Video Composition
+# Description: Programmatic React-based video composition for templated ad variants and explainer videos.
+# Provides tools: remotion_render_local, remotion_render_lambda, remotion_get_compositions, remotion_install_template
+
+[deps]
+require = ["remotion/remotion", "ffmpeg/ffmpeg"]
+
+[roles.mcp]
+server_refs = ["remotion"]
+allowed_tools = ["remotion_*"]
+
+[[mcp.servers]]
+name = "remotion"
+type = "stdio"
+command = "npx"
+args = ["-y", "remotion-mcp"]
+timeout_seconds = 600
+env = { REMOTION_LICENSE_KEY = "{{INPUT:REMOTION_LICENSE_KEY}}" }
+tools = []

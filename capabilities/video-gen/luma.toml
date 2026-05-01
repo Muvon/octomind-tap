@@ -1,0 +1,22 @@
+# capabilities/video-gen/luma.toml
+# Capability: video-gen
+# Provider: Luma Dream Machine — text-to-video, image-to-video, audio overlay
+# Title: Video Generation
+# Description: Text-to-video and image-to-video generation via Luma Dream Machine.
+# Provides tools: generate_text_to_video, generate_image_to_video, luma_generate_image, luma_upscale, luma_add_audio, luma_get_camera_motions
+
+[deps]
+require = ["luma/luma"]
+
+[roles.mcp]
+server_refs = ["luma"]
+allowed_tools = ["luma_*", "generate_text_to_video", "generate_image_to_video"]
+
+[[mcp.servers]]
+name = "luma"
+type = "stdio"
+command = "npx"
+args = ["-y", "mcp-video-gen"]
+timeout_seconds = 120
+env = { LUMAAI_API_KEY = "{{INPUT:LUMAAI_API_KEY}}" }
+tools = []

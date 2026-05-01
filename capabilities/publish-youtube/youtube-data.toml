@@ -1,0 +1,22 @@
+# capabilities/publish-youtube/youtube-data.toml
+# Capability: publish-youtube
+# Provider: YouTube Data API v3 — Shorts and long-form upload
+# Title: YouTube Publishing
+# Description: Upload Shorts and long-form video, set thumbnail, edit metadata via the YouTube Data API.
+# Provides tools: youtube_upload_video, youtube_set_thumbnail, youtube_update_metadata, youtube_list_videos, youtube_get_analytics
+
+[deps]
+require = ["google/youtube-data"]
+
+[roles.mcp]
+server_refs = ["youtube-data"]
+allowed_tools = ["youtube_*"]
+
+[[mcp.servers]]
+name = "youtube-data"
+type = "stdio"
+command = "npx"
+args = ["-y", "youtube-data-mcp"]
+timeout_seconds = 600
+env = { GOOGLE_CLIENT_ID = "{{INPUT:GOOGLE_CLIENT_ID}}", GOOGLE_CLIENT_SECRET = "{{INPUT:GOOGLE_CLIENT_SECRET}}", GOOGLE_REFRESH_TOKEN = "{{INPUT:GOOGLE_REFRESH_TOKEN}}" }
+tools = []

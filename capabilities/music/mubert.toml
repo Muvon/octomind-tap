@@ -1,0 +1,22 @@
+# capabilities/music/mubert.toml
+# Capability: music
+# Provider: Mubert — royalty-safe AI music for ad soundtracks
+# Title: Music Generation
+# Description: Royalty-safe AI music tracks and seamless loops via the Mubert Render API.
+# Provides tools: mubert_generate_track, mubert_generate_loop, mubert_get_job
+
+[deps]
+require = ["mubert/mubert"]
+
+[roles.mcp]
+server_refs = ["mubert"]
+allowed_tools = ["mubert_*"]
+
+[[mcp.servers]]
+name = "mubert"
+type = "stdio"
+command = "npx"
+args = ["-y", "mubert-mcp"]
+timeout_seconds = 120
+env = { MUBERT_PAT = "{{INPUT:MUBERT_PAT}}" }
+tools = []

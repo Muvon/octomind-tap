@@ -1,0 +1,9 @@
+# capabilities/composition/ffmpeg.toml
+# Capability: composition
+# Provider: ffmpeg — installs ffmpeg locally; agent uses it via the filesystem `shell` tool
+# Title: Video Composition
+# Description: Lightweight composition fallback. Installs ffmpeg; agents stitch clips via shell.
+# Provides tools: (none — invoked via filesystem:shell)
+
+[deps]
+require = ["ffmpeg/ffmpeg"]

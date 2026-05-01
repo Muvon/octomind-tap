@@ -1,0 +1,22 @@
+# capabilities/music/elevenlabs-music.toml
+# Capability: music
+# Provider: ElevenLabs Music — same SDK as elevenlabs voice, music endpoints
+# Title: Music Generation
+# Description: ElevenLabs Music for higher-fidelity bespoke ad tracks via the elevenlabs MCP.
+# Provides tools: text_to_speech, soundscape (also includes Music endpoints when MCP exposes them)
+
+[deps]
+require = ["elevenlabs/elevenlabs"]
+
+[roles.mcp]
+server_refs = ["elevenlabs"]
+allowed_tools = ["soundscape", "text_to_speech"]
+
+[[mcp.servers]]
+name = "elevenlabs"
+type = "stdio"
+command = "uvx"
+args = ["elevenlabs-mcp"]
+timeout_seconds = 120
+env = { ELEVENLABS_API_KEY = "{{INPUT:ELEVENLABS_API_KEY}}" }
+tools = []
