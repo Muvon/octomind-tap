@@ -1,0 +1,22 @@
+# capabilities/image-gen/dalle.toml
+# Capability: image-gen
+# Provider: OpenAI DALL-E / gpt-image-1 — text-to-image
+# Title: Image Generation
+# Description: Text-to-image generation via OpenAI DALL-E / gpt-image-1.
+# Provides tools: dalle_generate, dalle_edit, dalle_variation
+
+[deps]
+require = ["openai/dalle"]
+
+[roles.mcp]
+server_refs = ["dalle"]
+allowed_tools = ["dalle_*"]
+
+[[mcp.servers]]
+name = "dalle"
+type = "stdio"
+command = "npx"
+args = ["-y", "dalle-mcp"]
+timeout_seconds = 120
+env = { OPENAI_API_KEY = "{{INPUT:OPENAI_API_KEY}}" }
+tools = []

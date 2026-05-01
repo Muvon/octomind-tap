@@ -1,0 +1,22 @@
+# capabilities/captions/whisper.toml
+# Capability: captions
+# Provider: OpenAI Whisper — fast transcription, no diarization
+# Title: Captions / Transcripts
+# Description: Plain transcription / SRT generation via the Whisper MCP server.
+# Provides tools: transcribe_audio, list_audio_files, convert_audio, compress_audio
+
+[deps]
+require = ["whisper/whisper"]
+
+[roles.mcp]
+server_refs = ["whisper"]
+allowed_tools = ["transcribe_audio", "list_audio_files", "convert_audio", "compress_audio"]
+
+[[mcp.servers]]
+name = "whisper"
+type = "stdio"
+command = "uvx"
+args = ["mcp-server-whisper"]
+timeout_seconds = 120
+env = { OPENAI_API_KEY = "{{INPUT:OPENAI_API_KEY}}", AUDIO_FILES_PATH = "{{CWD}}/video-out" }
+tools = []

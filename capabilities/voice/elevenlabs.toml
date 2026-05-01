@@ -1,0 +1,22 @@
+# capabilities/voice/elevenlabs.toml
+# Capability: voice
+# Provider: ElevenLabs — text-to-speech, voice cloning, voice design, soundscapes
+# Title: Voice Synthesis
+# Description: Text-to-speech, voice cloning, voice design, soundscapes via ElevenLabs.
+# Provides tools: text_to_speech, voice_clone, voice_design, audio_isolation, soundscape, transcribe_audio
+
+[deps]
+require = ["elevenlabs/elevenlabs"]
+
+[roles.mcp]
+server_refs = ["elevenlabs"]
+allowed_tools = ["text_to_speech", "voice_clone", "voice_design", "audio_isolation", "soundscape", "transcribe_audio"]
+
+[[mcp.servers]]
+name = "elevenlabs"
+type = "stdio"
+command = "uvx"
+args = ["elevenlabs-mcp"]
+timeout_seconds = 120
+env = { ELEVENLABS_API_KEY = "{{INPUT:ELEVENLABS_API_KEY}}" }
+tools = []

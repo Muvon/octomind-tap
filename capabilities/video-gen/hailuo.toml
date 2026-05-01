@@ -1,0 +1,22 @@
+# capabilities/video-gen/hailuo.toml
+# Capability: video-gen
+# Provider: MiniMax Hailuo 02 — cheapest viable T2V/I2V for volume tests
+# Title: Video Generation
+# Description: Text-to-video and image-to-video via MiniMax Hailuo 02 (low-cost variant testing).
+# Provides tools: hailuo_text_to_video, hailuo_image_to_video, hailuo_get_task
+
+[deps]
+require = ["minimax/hailuo"]
+
+[roles.mcp]
+server_refs = ["hailuo"]
+allowed_tools = ["hailuo_*", "minimax_*"]
+
+[[mcp.servers]]
+name = "hailuo"
+type = "stdio"
+command = "npx"
+args = ["-y", "minimax-mcp"]
+timeout_seconds = 120
+env = { MINIMAX_API_KEY = "{{INPUT:MINIMAX_API_KEY}}" }
+tools = []

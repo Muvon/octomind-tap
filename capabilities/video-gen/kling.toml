@@ -1,0 +1,22 @@
+# capabilities/video-gen/kling.toml
+# Capability: video-gen
+# Provider: Kling AI — text-to-video with strong motion physics
+# Title: Video Generation
+# Description: Text-to-video and image-to-video via Kling AI 2.x with strong motion physics.
+# Provides tools: kling_text_to_video, kling_image_to_video, kling_motion_brush, kling_extend_video, kling_lipsync, kling_get_task
+
+[deps]
+require = ["kling/kling"]
+
+[roles.mcp]
+server_refs = ["kling"]
+allowed_tools = ["kling_*"]
+
+[[mcp.servers]]
+name = "kling"
+type = "stdio"
+command = "npx"
+args = ["-y", "kling-mcp-server"]
+timeout_seconds = 180
+env = { KLING_ACCESS_KEY = "{{INPUT:KLING_ACCESS_KEY}}", KLING_SECRET_KEY = "{{INPUT:KLING_SECRET_KEY}}" }
+tools = []

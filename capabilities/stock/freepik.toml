@@ -1,0 +1,22 @@
+# capabilities/stock/freepik.toml
+# Capability: stock
+# Provider: Freepik — AI generation + stock images, vectors, video templates
+# Title: Stock Media
+# Description: Stock and AI image / video generation via the Freepik API.
+# Provides tools: freepik_search_resources, freepik_download_resource, freepik_generate_image, freepik_generate_video, freepik_get_task
+
+[deps]
+require = ["freepik/freepik"]
+
+[roles.mcp]
+server_refs = ["freepik"]
+allowed_tools = ["freepik_*"]
+
+[[mcp.servers]]
+name = "freepik"
+type = "stdio"
+command = "npx"
+args = ["-y", "freepik-mcp"]
+timeout_seconds = 120
+env = { FREEPIK_API_KEY = "{{INPUT:FREEPIK_API_KEY}}" }
+tools = []

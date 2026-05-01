@@ -1,0 +1,22 @@
+# capabilities/avatar/heygen.toml
+# Capability: avatar
+# Provider: HeyGen — AI avatar UGC video generation
+# Title: AI Avatar
+# Description: Talking-head AI avatar videos for ads, UGC and translation via HeyGen.
+# Provides tools: heygen_create_video, heygen_list_avatars, heygen_list_voices, heygen_translate_video, heygen_get_video_status, heygen_create_avatar_iv
+
+[deps]
+require = ["heygen/heygen"]
+
+[roles.mcp]
+server_refs = ["heygen"]
+allowed_tools = ["heygen_*"]
+
+[[mcp.servers]]
+name = "heygen"
+type = "stdio"
+command = "npx"
+args = ["-y", "@heygen/mcp-server"]
+timeout_seconds = 180
+env = { HEYGEN_API_KEY = "{{INPUT:HEYGEN_API_KEY}}" }
+tools = []

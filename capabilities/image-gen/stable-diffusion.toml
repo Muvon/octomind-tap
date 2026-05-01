@@ -1,0 +1,22 @@
+# capabilities/image-gen/stable-diffusion.toml
+# Capability: image-gen
+# Provider: Stability AI Stable Diffusion — text-to-image
+# Title: Image Generation
+# Description: Text-to-image generation via Stability AI Stable Diffusion.
+# Provides tools: stable_diffusion_*
+
+[deps]
+require = ["stability-ai/stable-diffusion"]
+
+[roles.mcp]
+server_refs = ["stable-diffusion"]
+allowed_tools = ["stable_diffusion_*"]
+
+[[mcp.servers]]
+name = "stable-diffusion"
+type = "stdio"
+command = "npx"
+args = ["-y", "stable-diffusion-mcp"]
+timeout_seconds = 120
+env = { STABILITY_API_KEY = "{{INPUT:STABILITY_API_KEY}}" }
+tools = []

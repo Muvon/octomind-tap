@@ -1,0 +1,22 @@
+# capabilities/publish-tiktok/tiktok-posting.toml
+# Capability: publish-tiktok
+# Provider: TikTok Content Posting API — direct video / photo upload
+# Title: TikTok Publishing
+# Description: Direct Post / Inbox upload of finished video creative via the TikTok Content Posting API.
+# Provides tools: tiktok_publish_video, tiktok_inbox_video, tiktok_publish_photo, tiktok_query_creator_info, tiktok_get_publish_status
+
+[deps]
+require = ["tiktok-posting/tiktok-posting"]
+
+[roles.mcp]
+server_refs = ["tiktok-posting"]
+allowed_tools = ["tiktok_*"]
+
+[[mcp.servers]]
+name = "tiktok-posting"
+type = "stdio"
+command = "npx"
+args = ["-y", "tiktok-posting-mcp"]
+timeout_seconds = 240
+env = { TIKTOK_CLIENT_KEY = "{{INPUT:TIKTOK_CLIENT_KEY}}", TIKTOK_CLIENT_SECRET = "{{INPUT:TIKTOK_CLIENT_SECRET}}", TIKTOK_ACCESS_TOKEN = "{{INPUT:TIKTOK_ACCESS_TOKEN}}" }
+tools = []

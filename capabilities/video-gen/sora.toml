@@ -1,0 +1,22 @@
+# capabilities/video-gen/sora.toml
+# Capability: video-gen
+# Provider: OpenAI Sora 2 — long coherent shots, brand-safe
+# Title: Video Generation
+# Description: Long coherent text-to-video, remix and image-to-video via OpenAI Sora 2.
+# Provides tools: sora_generate_video, sora_remix, sora_image_to_video, sora_get_job
+
+[deps]
+require = ["openai/sora"]
+
+[roles.mcp]
+server_refs = ["sora"]
+allowed_tools = ["sora_*"]
+
+[[mcp.servers]]
+name = "sora"
+type = "stdio"
+command = "npx"
+args = ["-y", "openai-sora-mcp"]
+timeout_seconds = 240
+env = { OPENAI_API_KEY = "{{INPUT:OPENAI_API_KEY}}" }
+tools = []

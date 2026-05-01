@@ -1,0 +1,22 @@
+# capabilities/video-gen/veo.toml
+# Capability: video-gen
+# Provider: Google Veo 3 — text-to-video and image-to-video with native audio
+# Title: Video Generation
+# Description: Text-to-video and image-to-video with native dialogue / SFX via Google Veo 3.
+# Provides tools: veo_generate_video, veo_image_to_video, veo_extend_video, veo_get_operation
+
+[deps]
+require = ["google/veo"]
+
+[roles.mcp]
+server_refs = ["veo"]
+allowed_tools = ["veo_*"]
+
+[[mcp.servers]]
+name = "veo"
+type = "stdio"
+command = "npx"
+args = ["-y", "mcp-google-veo"]
+timeout_seconds = 180
+env = { GOOGLE_API_KEY = "{{INPUT:GOOGLE_API_KEY}}" }
+tools = []

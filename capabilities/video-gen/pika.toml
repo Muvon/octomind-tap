@@ -1,0 +1,22 @@
+# capabilities/video-gen/pika.toml
+# Capability: video-gen
+# Provider: Pika 2.x — stylized text-to-video and Pikaffects
+# Title: Video Generation
+# Description: Stylized text-to-video, image-to-video and Pikaffects via Pika 2.x.
+# Provides tools: pika_text_to_video, pika_image_to_video, pika_effect, pika_scene_extend, pika_get_job
+
+[deps]
+require = ["pika/pika"]
+
+[roles.mcp]
+server_refs = ["pika"]
+allowed_tools = ["pika_*"]
+
+[[mcp.servers]]
+name = "pika"
+type = "stdio"
+command = "npx"
+args = ["-y", "pika-mcp-server"]
+timeout_seconds = 120
+env = { PIKA_API_KEY = "{{INPUT:PIKA_API_KEY}}" }
+tools = []

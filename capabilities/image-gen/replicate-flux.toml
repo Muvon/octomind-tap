@@ -1,0 +1,22 @@
+# capabilities/image-gen/replicate-flux.toml
+# Capability: image-gen
+# Provider: Replicate Flux — text-to-image (Flux Schnell) and SVG via Recraft V3
+# Title: Image Generation
+# Description: Text-to-image generation (Flux Schnell) and SVG (Recraft V3) via Replicate.
+# Provides tools: generate_image, generate_multiple_images, generate_image_variants, generate_svg, prediction_list, get_prediction
+
+[deps]
+require = ["replicate/replicate"]
+
+[roles.mcp]
+server_refs = ["replicate"]
+allowed_tools = ["generate_image", "generate_multiple_images", "generate_image_variants", "generate_svg", "prediction_list", "get_prediction"]
+
+[[mcp.servers]]
+name = "replicate"
+type = "stdio"
+command = "npx"
+args = ["-y", "replicate-flux-mcp"]
+timeout_seconds = 120
+env = { REPLICATE_API_TOKEN = "{{INPUT:REPLICATE_API_TOKEN}}" }
+tools = []

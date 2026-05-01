@@ -1,0 +1,22 @@
+# capabilities/video-gen/runway.toml
+# Capability: video-gen
+# Provider: Runway Gen-4 — text-to-video and image-to-video generation
+# Title: Video Generation
+# Description: Text-to-video and image-to-video generation via Runway Gen-4.
+# Provides tools: runway_generateVideo, runway_generateImage, runway_upscaleVideo, runway_editVideo, runway_getTask
+
+[deps]
+require = ["runwayml/runway"]
+
+[roles.mcp]
+server_refs = ["runway"]
+allowed_tools = ["runway_*"]
+
+[[mcp.servers]]
+name = "runway"
+type = "stdio"
+command = "npx"
+args = ["-y", "runway-api-mcp-server"]
+timeout_seconds = 120
+env = { RUNWAYML_API_SECRET = "{{INPUT:RUNWAYML_API_SECRET}}" }
+tools = []

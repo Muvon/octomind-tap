@@ -1,0 +1,22 @@
+# capabilities/stock/pexels.toml
+# Capability: stock
+# Provider: Pexels — free b-roll video and photos
+# Title: Stock Media
+# Description: Free b-roll videos and photos via the Pexels API.
+# Provides tools: pexels_search_videos, pexels_search_photos, pexels_get_video, pexels_curated_photos, pexels_popular_videos
+
+[deps]
+require = ["pexels/pexels"]
+
+[roles.mcp]
+server_refs = ["pexels"]
+allowed_tools = ["pexels_*"]
+
+[[mcp.servers]]
+name = "pexels"
+type = "stdio"
+command = "npx"
+args = ["-y", "pexels-mcp-server"]
+timeout_seconds = 60
+env = { PEXELS_API_KEY = "{{INPUT:PEXELS_API_KEY}}" }
+tools = []

@@ -1,0 +1,22 @@
+# capabilities/captions/assemblyai.toml
+# Capability: captions
+# Provider: AssemblyAI — diarized captions, chapters, sentiment
+# Title: Captions / Transcripts
+# Description: Diarized captions, auto-chapters, speaker labels and SRT/VTT output via AssemblyAI.
+# Provides tools: assemblyai_transcribe, assemblyai_get_subtitles, assemblyai_summarize, assemblyai_get_transcript
+
+[deps]
+require = ["assemblyai/assemblyai"]
+
+[roles.mcp]
+server_refs = ["assemblyai"]
+allowed_tools = ["assemblyai_*"]
+
+[[mcp.servers]]
+name = "assemblyai"
+type = "stdio"
+command = "npx"
+args = ["-y", "@assemblyai/mcp-server"]
+timeout_seconds = 180
+env = { ASSEMBLYAI_API_KEY = "{{INPUT:ASSEMBLYAI_API_KEY}}" }
+tools = []

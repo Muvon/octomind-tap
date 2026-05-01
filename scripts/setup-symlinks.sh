@@ -83,11 +83,24 @@ link "scraping" "firecrawl.toml"
 link "task-management" "linear.toml"
 link "translation" "deepl.toml"
 link "webfetch" "fetch.toml"
+# ── Video / media production capabilities ────────────────────────────────────
+link "video-gen" "runway.toml"
+link "voice" "elevenlabs.toml"
+link "avatar" "heygen.toml"
+link "lipsync" "sync.toml"
+link "music" "mubert.toml"
+link "composition" "remotion.toml"
+link "captions" "assemblyai.toml"
+link "stock" "pexels.toml"
+link "image-gen" "replicate-flux.toml"
+link "publish-tiktok" "tiktok-posting.toml"
+link "publish-instagram" "meta-instagram.toml"
+link "publish-youtube" "youtube-data.toml"
 # ─────────────────────────────────────────────────────────────────────────────
 
 # Detect capability dirs that have NO mapping declared above
 echo ""
-DECLARED=("filesystem" "codesearch" "memory" "websearch" "versioning" "core" "agent" "programming-python" "programming-rust" "programming-nodejs" "docker" "kubernetes" "svelte" "medical-reference" "market-data" "legal-au" "legal-ca" "legal-de" "legal-fr" "legal-in" "legal-sg" "legal-th" "legal-uk" "legal-us" "octoweb" "browser" "messaging-slack" "messaging-discord" "messaging-telegram" "messaging-whatsapp" "messaging-linkedin" "messaging-instagram" "messaging-email" "messaging-sms" "calendar" "customer-management" "database-postgres" "database-sqlite" "devdocs" "ecommerce" "edge-hosting" "error-tracking" "highlights" "maps" "payments" "scraping" "task-management" "translation" "webfetch")
+DECLARED=("filesystem" "codesearch" "memory" "websearch" "versioning" "core" "agent" "programming-python" "programming-rust" "programming-nodejs" "docker" "kubernetes" "svelte" "medical-reference" "market-data" "legal-au" "legal-ca" "legal-de" "legal-fr" "legal-in" "legal-sg" "legal-th" "legal-uk" "legal-us" "octoweb" "browser" "messaging-slack" "messaging-discord" "messaging-telegram" "messaging-whatsapp" "messaging-linkedin" "messaging-instagram" "messaging-email" "messaging-sms" "calendar" "customer-management" "database-postgres" "database-sqlite" "devdocs" "ecommerce" "edge-hosting" "error-tracking" "highlights" "maps" "payments" "scraping" "task-management" "translation" "webfetch" "video-gen" "voice" "avatar" "lipsync" "music" "composition" "captions" "stock" "image-gen" "publish-tiktok" "publish-instagram" "publish-youtube")
 for dir in "$CAP_ROOT"/*/; do
   cap="$(basename "$dir")"
   found=0

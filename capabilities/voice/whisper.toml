@@ -1,0 +1,22 @@
+# capabilities/voice/whisper.toml
+# Capability: voice
+# Provider: OpenAI Whisper — TTS via OpenAI tts-1, plus transcription
+# Title: Voice Synthesis
+# Description: OpenAI TTS and transcription via the Whisper MCP server.
+# Provides tools: create_audio, transcribe_audio, convert_audio, compress_audio, list_audio_files, chat_with_audio
+
+[deps]
+require = ["whisper/whisper"]
+
+[roles.mcp]
+server_refs = ["whisper"]
+allowed_tools = ["create_audio", "transcribe_audio", "convert_audio", "compress_audio", "list_audio_files", "chat_with_audio"]
+
+[[mcp.servers]]
+name = "whisper"
+type = "stdio"
+command = "uvx"
+args = ["mcp-server-whisper"]
+timeout_seconds = 120
+env = { OPENAI_API_KEY = "{{INPUT:OPENAI_API_KEY}}", AUDIO_FILES_PATH = "{{CWD}}/video-out" }
+tools = []
