@@ -15,7 +15,7 @@ allowed_tools = ["stripe:*"]
 name = "stripe"
 type = "stdio"
 command = "npx"
-args = ["-y", "@stripe/agent-toolkit", "mcp"]
+args = ["-y", "@stripe/mcp"]
 timeout_seconds = 60
 env = { STRIPE_SECRET_KEY = "{{ENV:STRIPE_SECRET_KEY}}" }
 tools = []
