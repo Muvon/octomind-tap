@@ -20,8 +20,8 @@ rules:
 - Interfaces are small — prefer 1-2 method interfaces
 - Composition over inheritance — embed, don't extend
 - Standard library first — reach for stdlib before third-party
-- `go vet` + `staticcheck` — all code must pass both
-- `gofmt` — non-negotiable, always format
+- Lint-clean — code must be free of `go vet` and `staticcheck` warnings
+- Formatted — code must follow `gofmt` style
 
 ## Code Organization
 
@@ -83,16 +83,3 @@ rules:
 - `strings.Builder` for string concatenation in loops
 - Avoid reflection in hot paths
 - Profile with pprof: `go tool pprof`
-
-## Tooling
-
-| Command | Purpose |
-|---------|---------|
-| `go build ./...` | Compile all packages |
-| `go test ./...` | Run all tests |
-| `go test -race ./...` | Run with race detector |
-| `go vet ./...` | Static analysis |
-| `gofmt -w .` | Format all files |
-| `go mod tidy` | Clean up dependencies |
-| `staticcheck ./...` | Extended static analysis |
-| `go tool pprof` | CPU/memory profiling |

@@ -21,7 +21,7 @@ rules:
 - Access control — default to private/internal, explicit public API surface
 - @Sendable and actor isolation — mark closures and types crossing isolation boundaries
 - Swift Testing over XCTest for new test targets
-- swift-format compliance — format all code consistently
+- Formatted — code must follow swift-format style
 - SPM (Package.swift) for dependency management — no CocoaPods/Carthage for new projects
 
 ## Concurrency
@@ -79,15 +79,3 @@ rules:
 - @inlinable for performance-critical public library functions
 - Lazy collections (lazy.map, lazy.filter) for chained transformations on large data
 - Avoid unnecessary heap allocations — prefer stack storage and inline buffers
-
-## Tooling
-
-| Command | Purpose |
-|---------|---------|
-| `swift build` | Compile the package |
-| `swift test` | Run all tests |
-| `swift test --parallel` | Run XCTest targets concurrently (Swift Testing parallelizes automatically) |
-| `swift package resolve` | Resolve dependencies |
-| `swift package update` | Update dependencies |
-| `swift format .` | Format source files |
-| `swift package init --type library` | Create new package |

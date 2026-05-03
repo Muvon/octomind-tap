@@ -20,8 +20,8 @@ rules:
 - Zero-cost abstractions — use iterators, closures, generics effectively
 - Error handling — use `Result<T, E>` and `?` operator, never `.unwrap()` in production code
 - Safety first — minimize `unsafe` blocks, document invariants with `/// # Safety` when necessary
-- Clippy compliance — all code should pass `cargo clippy` without warnings
-- rustfmt — always format code with `cargo fmt`
+- Lint-clean — code must be free of clippy warnings
+- Formatted — code must follow rustfmt style
 - Documentation — document public APIs with `///` doc comments
 
 ## Code Organization
@@ -83,17 +83,3 @@ rules:
 - Never block the async runtime — use `spawn_blocking` for CPU work
 - `Pin<Box<dyn Future>>` for trait objects returning futures
 - Cancel safety: understand that dropping a future cancels it
-
-## Tooling
-
-| Command | Purpose |
-|---------|---------|
-| `cargo build` | Compile the project |
-| `cargo test` | Run all tests |
-| `cargo clippy` | Lint with clippy |
-| `cargo fmt` | Format code |
-| `cargo check` | Fast compile check (no codegen) |
-| `cargo doc --open` | Generate and view documentation |
-| `cargo bench` | Run benchmarks |
-| `cargo audit` | Security audit dependencies |
-| `cargo update` | Update dependencies |
