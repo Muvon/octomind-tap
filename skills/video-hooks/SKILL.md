@@ -8,13 +8,15 @@ domains: video content launch
 rules:
   - session(video)
   - session(adcraft)
-  - content(hook)
-  - content(short-form)
+  - content(short-form video)
   - content(reels)
   - content(shorts)
   - content(tiktok)
-  - match(\bopens?\s+with\b)
-  - match(\bfirst\s+\d+\s*(seconds|s)\b)
+  - content(video hook)
+  - content(video ad)
+  - match(\bvideo\s+hook\b)
+  - match(\b(first|opening)\s+\d+\s*(seconds|s)\s+of\s+(the\s+)?(video|clip|reel|short|ad)\b)
+  - match(\bopens?\s+with\b.*\b(video|clip|reel|short|ad|shot|frame)\b)
 ---
 
 # Video Hooks — First-1.5s Retention Patterns

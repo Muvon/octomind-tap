@@ -8,7 +8,12 @@ domains: content
 rules:
   - content(humanize)
   - content(ai-generated)
-  - match(humanize|make.*human|sounds.*ai|ai.detection)
+  - match(\bhumanize\b)
+  - match(\bmake\s+(this|it|my)\s+(text|content|writing|copy)?\s*(sound|feel|read)\s+(more\s+)?human\b)
+  - match(\bsounds?\s+(too\s+)?(like\s+)?ai\b)
+  - match(\bai[-\s]?detection\b)
+  - match(\bdetect(ed|ion)\s+as\s+ai\b)
+  - match(\bai[-\s]generated\s+(text|content|writing|copy)\b)
 ---
 
 # Content Humanization

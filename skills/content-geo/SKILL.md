@@ -8,10 +8,14 @@ domains: content
 rules:
   - content(seo)
   - content(geo)
-  - content(optimize)
-  - content(schema)
-  - content(rank)
-  - content(citation)
+  - match(\b(rank|ranking)\s+(in|on)\s+(google|search|serps?)\b)
+  - match(\bschema\.org\b)
+  - match(\bmeta\s+(description|title|tags?)\b)
+  - match(\bserps?\b)
+  - match(\bai\s+overview\b)
+  - match(\b(llm|ai)\s+citation\b)
+  - match(\bgenerative\s+engine\s+optimization\b)
+  - match(\bsearch\s+engine\s+optimization\b)
 ---
 
 # GEO & AI Citation Optimization

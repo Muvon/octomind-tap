@@ -6,14 +6,18 @@ license: Apache-2.0
 compatibility: "Stack-agnostic. Pairs with skills/video-hooks (the open) and skills/content-voice (the words)."
 domains: video content launch
 rules:
-  - content(ad)
-  - content(ads)
   - content(advertisement)
   - content(copywriting)
   - match(\bads?\b)
+  - match(\bad\s+(copy|creative|script|frame|funnel|account)\b)
+  - match(\b(facebook|meta|tiktok|google|youtube|reddit|x|twitter|linkedin)\s+ads?\b)
+  - match(\bpaid\s+(social|search|media)\b)
+  - match(\bAIDA\b)
+  - match(\bPAS\b)
+  - match(\bproblem.agitation.solution\b)
+  - match(\bbefore.after.bridge\b)
   - session(adcraft)
   - session(ugc)
-  - session(brand)
 ---
 
 # Ad Frameworks — AIDA, PAS, BAB, 4Us

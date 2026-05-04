@@ -9,11 +9,12 @@ rules:
   - content(tweet)
   - content(tweets)
   - content(twitter)
-  - content(thread)
+  - match(\b(twitter|x)\s+thread\b)
+  - match(\btweetstorm\b)
   - match(\bpost\s+(on|to|for)\s+(x|twitter))
   - match(\b(x|twitter)\s+post\b)
   - match(\bviral\s+(tweet|thread|post)\b)
-  - match(\bwrite.*\bfor\s+x\b)
+  - match(\bwrite.{0,40}for\s+(x|twitter)\b)
 ---
 
 # X (Twitter) Publishing Playbook
