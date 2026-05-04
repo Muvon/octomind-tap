@@ -51,16 +51,16 @@ case "$OS" in
     ;;
 
   windows)
-    # Download pre-built ffmpeg from gybern.dev (official Windows builds)
-    VERSION="7.1.1"
+    # Download pre-built ffmpeg from gyan.dev (essentials zip — no 7z needed)
     TMP_DIR=$(mktemp -d)
     trap 'rm -rf "$TMP_DIR"' EXIT
-    FILENAME="ffmpeg-${VERSION}-full_build.zip"
-    curl -fsSL "https://www.gyan.dev/ffmpeg/builds/${FILENAME}" -o "$TMP_DIR/${FILENAME}"
-    unzip -qo "$TMP_DIR/${FILENAME}" -d "$TMP_DIR"
+    curl -fsSL "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip" -o "$TMP_DIR/ffmpeg.zip"
+    unzip -qo "$TMP_DIR/ffmpeg.zip" -d "$TMP_DIR"
+    # Archive contains a single directory like ffmpeg-8.0-essentials_build/
+    BIN_DIR=$(dirname "$(find "$TMP_DIR" -name "ffmpeg.exe" | head -1)")
     mkdir -p "${HOME}/.local/bin"
-    cp "$TMP_DIR/ffmpeg-${VERSION}-full_build/bin/ffmpeg.exe" "${HOME}/.local/bin/ffmpeg.exe"
-    cp "$TMP_DIR/ffmpeg-${VERSION}-full_build/bin/ffprobe.exe" "${HOME}/.local/bin/ffprobe.exe"
+    cp "$BIN_DIR/ffmpeg.exe" "${HOME}/.local/bin/ffmpeg.exe"
+    cp "$BIN_DIR/ffprobe.exe" "${HOME}/.local/bin/ffprobe.exe" 2>/dev/null || true
     export PATH="${HOME}/.local/bin:$PATH"
     ;;
 esac
