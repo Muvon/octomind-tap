@@ -17,33 +17,56 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # ── Discover all dep scripts (excludes lib/) ─────────────────────────────────
+  # ── Discover changed dep scripts only ────────────────────────────────────────
   discover:
-    name: Discover dep scripts
+    name: Discover changed dep scripts
     runs-on: ubuntu-latest
     outputs:
       scripts: ${{ steps.find.outputs.scripts }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Find dep scripts
+      - name: Find changed dep scripts
         id: find
         run: |
-          # Collect every *.sh under deps/ that is NOT under deps/lib/
-          scripts=$(
-            find deps -name '*.sh' -not -path 'deps/lib/*' \
-            | sort \
-            | jq -R . \
-            | jq -sc .
-          )
-          echo "scripts=$scripts" >> "$GITHUB_OUTPUT"
-          echo "Found: $scripts"
+          # Base ref differs between push and PR
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE="${{ github.base_ref }}"
+          else
+            BASE="${{ github.event.before }}"
+          fi
+
+          # Find changed .sh files under deps/ (excluding deps/lib/)
+          # If merge base fails, fall back to HEAD~1
+          MERGE_BASE=$(git merge-base "origin/$BASE" HEAD 2>/dev/null || git rev-parse HEAD~1)
+          CHANGED=$(git diff --name-only --diff-filter=ACMR "$MERGE_BASE" HEAD -- 'deps/*.sh' 'deps/*/*.sh' \
+            | grep -v 'deps/lib/' \
+            | grep '\.sh$' \
+            | sort || true)
+
+          # If the workflow file itself changed, test ALL scripts
+          WORKFLOW_CHANGED=$(git diff --name-only "$MERGE_BASE" HEAD -- '.github/workflows/test-deps.yml' || true)
+          if [[ -n "$WORKFLOW_CHANGED" ]]; then
+            echo "Workflow file changed — testing all scripts"
+            CHANGED=$(find deps -name '*.sh' -not -path 'deps/lib/*' | sort)
+          fi
+
+          if [[ -z "$CHANGED" ]]; then
+            echo "No dep scripts changed"
+            echo "scripts=[]" >> "$GITHUB_OUTPUT"
+          else
+            scripts=$(echo "$CHANGED" | jq -R . | jq -sc .)
+            echo "scripts=$scripts" >> "$GITHUB_OUTPUT"
+            echo "Changed scripts: $CHANGED"
+          fi
 
   # ── Test on Linux (Docker — genuinely empty Ubuntu 24.04) ────────────────────
   test-linux:
     name: "Linux · ${{ matrix.script }}"
     needs: discover
-    if: ${{ needs.discover.outputs.scripts != '[]' }}
+    if: ${{ needs.discover.outputs.scripts != '[]' && needs.discover.outputs.scripts != '' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -53,7 +76,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run in clean Ubuntu 22.04 container
+      - name: Cache Docker layer
+        uses: actions/cache@v4
+        with:
+          path: /tmp/docker-ubuntu-cache
+          key: docker-ubuntu-24.04-base-v1
+
+      - name: Load cached Docker image
+        run: |
+          if [[ -f /tmp/docker-ubuntu-cache/ubuntu.tar ]]; then
+            docker load -i /tmp/docker-ubuntu-cache/ubuntu.tar 2>/dev/null || true
+          fi
+
+      - name: Run in clean Ubuntu 24.04 container
         run: |
           docker run --rm \
             --volume "$PWD:/tap:ro" \
@@ -64,20 +99,24 @@ jobs:
               set -euo pipefail
               apt-get update -qq
               apt-get install -y -qq sudo curl wget bash
-
               echo '=== First run (install) ==='
               bash '${{ matrix.script }}'
-
               echo '=== Second run (idempotency check) ==='
               bash '${{ matrix.script }}'
               echo 'Idempotency OK'
             "
 
+      - name: Save Docker image to cache
+        if: success()
+        run: |
+          mkdir -p /tmp/docker-ubuntu-cache
+          docker save ubuntu:24.04 -o /tmp/docker-ubuntu-cache/ubuntu.tar
+
   # ── Test on macOS ─────────────────────────────────────────────────────────────
   test-macos:
     name: "macOS · ${{ matrix.script }}"
     needs: discover
-    if: ${{ needs.discover.outputs.scripts != '[]' }}
+    if: ${{ needs.discover.outputs.scripts != '[]' && needs.discover.outputs.scripts != '' }}
     runs-on: macos-latest
     strategy:
       fail-fast: false
@@ -94,8 +133,6 @@ jobs:
           cat "${{ matrix.script }}" | head -20
 
           # Read the '# check: <cmd>' header from the script to know what to remove.
-          # GH macOS runners come with many tools pre-installed — we must uninstall
-          # them so the script actually exercises its install logic, not the fast path.
           cmd=$(grep -m1 '^# check:' "${{ matrix.script }}" | awk '{print $3}')
           if [[ -z "$cmd" ]]; then
             echo "No '# check:' header found — skipping pre-removal."
@@ -103,7 +140,6 @@ jobs:
           fi
           echo "Removing '$cmd' if present..."
           brew uninstall --force "$cmd" 2>/dev/null || true
-          # Also remove from common install locations so PATH check fails cleanly
           rm -f "$HOME/.local/bin/$cmd" "$HOME/.cargo/bin/$cmd" 2>/dev/null || true
           if command -v "$cmd" &>/dev/null; then
             echo "Warning: '$cmd' still in PATH after removal — fast path may fire."
@@ -141,7 +177,7 @@ jobs:
   test-windows:
     name: "Windows · ${{ matrix.script }}"
     needs: discover
-    if: ${{ needs.discover.outputs.scripts != '[]' }}
+    if: ${{ needs.discover.outputs.scripts != '[]' && needs.discover.outputs.scripts != '' }}
     runs-on: windows-latest
     strategy:
       fail-fast: false
