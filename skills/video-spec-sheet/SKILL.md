@@ -11,12 +11,13 @@ rules:
   - content(reels)
   - content(shorts)
   - content(tiktok)
-  - content(stories)
+  - content(instagram stories)
   - content(aspect ratio)
   - match(\bsafe\s+zone\b)
-  - match(\bcodec\b)
-  - match(\bbitrate\b)
+  - match(\b(video\s+)?codec\b)
+  - match(\b(video\s+)?bitrate\b)
   - match(\bplatform\s+specs?\b)
+  - match(\b(9:16|16:9|1:1|4:5)\b)
 ---
 
 # Video Spec Sheet — Platform Specs and Safe Zones
