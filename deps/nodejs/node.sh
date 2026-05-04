@@ -29,23 +29,11 @@ case "$OS" in
   linux)
     case "$PKG_MANAGER" in
       apt)
-        # NodeSource LTS repo — works on Debian, Ubuntu, and derivatives
-        if pkg_check curl; then
-          curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-        else
-          sudo apt-get install -y curl
-          curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-        fi
+        # Ubuntu/Debian — nodejs bundles npm/npx in 24.04+
+        sudo apt-get update -qq
         sudo apt-get install -y nodejs
         ;;
       dnf)
-        # NodeSource LTS repo for Fedora/RHEL
-        if pkg_check curl; then
-          curl -fsSL https://rpm.nodesource.com/setup_lts.x | sudo bash -
-        else
-          sudo dnf install -y curl
-          curl -fsSL https://rpm.nodesource.com/setup_lts.x | sudo bash -
-        fi
         sudo dnf install -y nodejs
         ;;
       pacman)
@@ -73,4 +61,21 @@ case "$OS" in
         ;;
     esac
     ;;
+  windows)
+    if pkg_check choco; then
+      choco install nodejs-lts -y
+    elif pkg_check scoop; then
+      scoop install nodejs-lts
+    elif pkg_check winget; then
+      winget install OpenJS.NodeJS.LTS --accept-package-agreements --accept-source-agreements
+    else
+      die "No Windows package manager found (choco/scoop/winget). Install Node.js manually: https://nodejs.org"
+    fi
+    ;;
 esac
+
+if ! pkg_check node; then
+  die "node installed but not in PATH."
+fi
+
+info "node installed successfully."
