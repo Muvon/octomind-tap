@@ -29,18 +29,18 @@ case "$OS" in
   linux)
     case "$PKG_MANAGER" in
       apt)
-        # Ubuntu/Debian — nodejs bundles npm/npx in 24.04+
+        # Ubuntu/Debian — npm is a separate package, must install both
         sudo apt-get update -qq
-        sudo apt-get install -y nodejs
+        sudo apt-get install -y nodejs npm
         ;;
       dnf)
-        sudo dnf install -y nodejs
+        sudo dnf install -y nodejs npm
         ;;
       pacman)
         sudo pacman -S --noconfirm nodejs npm
         ;;
       zypper)
-        sudo zypper install -y nodejs
+        sudo zypper install -y nodejs npm
         ;;
       apk)
         sudo apk add nodejs npm
