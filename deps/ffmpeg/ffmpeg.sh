@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # dep: ffmpeg/ffmpeg
-# type: tool
+# type: dep
 # description: ffmpeg — multimedia framework for stitching, transcoding, and burning captions
 # check: ffmpeg
 # https://ffmpeg.org/
