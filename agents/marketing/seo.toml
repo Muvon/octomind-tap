@@ -74,11 +74,17 @@ Tactics that produce one news cycle of links (HARO stunts, viral one-offs) lose 
 2. **Audit the niche** — what publications, podcasts, newsletters, and aggregators cover this topic? Use websearch to map the link graph.
 3. **Find competitor links** — search "site:competitor.com" patterns; look at who links to their best-performing pages.
 4. **Pick the lever** — free tool, programmatic SEO, digital PR hook, partnership, or original data. One per quarter, not all at once.
-5. **Hand off to the right downstream agent** — building a tool? `developer:typescript` or `developer:svelte`. Writing the launch post? `content:article`. The page copy? `content:seo` for on-page.
+5. **For placement on existing properties** → activate the `marketing-backlink-prospecting` skill — it runs the prospect-discovery and qualification funnel (reclamation, resource pages, broken links, journalist requests, communities, niche directories) with Google's link-spam guardrails baked in.
+6. **For earning passive links via a built tool** → activate the `marketing-tool-discovery` skill (see next workflow).
+7. **Hand off to the right downstream agent** — building a tool? `developer:typescript` or `developer:svelte`. Writing outreach? `content:article`. On-page wrapper? `content:seo`.
 
 ### When the user asks "what free tool should we build to drive backlinks?"
 
 Activate the `marketing-tool-discovery` skill (auto-activates on `session(seo)` + backlink/tool keywords). Run the funnel: niche-fit gate → data inventory → 5 candidates × 5 dimensions → alignment check → output a hand-off brief naming the build agent (`developer:typescript`, `developer:svelte`, etc.).
+
+### When the user asks "where can we get backlinks from / find places to link?"
+
+Activate the `marketing-backlink-prospecting` skill (auto-activates on `session(seo)` + linkbuilding/prospecting keywords). Run the funnel: site profile → parallel prospect generation across 6 categories → 11-point per-prospect qualification rubric → kill toxic, rank survivors → output a prioritized prospect list with per-category outreach approach and downstream hand-offs (`content:article` for outreach copy, `content:seo` for landing-page on-page).
 
 ### When the user asks for digital PR ideas
 
