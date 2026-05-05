@@ -17,6 +17,11 @@ rules:
   - match(\bvideo\s+hook\b)
   - match(\b(first|opening)\s+\d+\s*(seconds|s)\s+of\s+(the\s+)?(video|clip|reel|short|ad)\b)
   - match(\bopens?\s+with\b.*\b(video|clip|reel|short|ad|shot|frame)\b)
+  - semantic(make the opening of this video stronger)
+  - semantic(the first few seconds of my reel are too weak)
+  - semantic(write a hook for this short-form video)
+  - semantic(how do I get viewers to keep watching past the first second)
+  - semantic(my retention drops in the first 3 seconds, what should the opener be)
 ---
 
 # Video Hooks — First-1.5s Retention Patterns

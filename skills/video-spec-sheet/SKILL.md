@@ -18,6 +18,11 @@ rules:
   - match(\b(video\s+)?bitrate\b)
   - match(\bplatform\s+specs?\b)
   - match(\b(9:16|16:9|1:1|4:5)\b)
+  - semantic(what dimensions should I export this video at)
+  - semantic(safe export settings for TikTok or Reels)
+  - semantic(what are the platform specs for short-form video)
+  - semantic(which codec and bitrate should I use for vertical video)
+  - semantic(why does my video get cropped on Instagram)
 ---
 
 # Video Spec Sheet — Platform Specs and Safe Zones

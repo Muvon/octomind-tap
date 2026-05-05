@@ -17,6 +17,10 @@ rules:
   - match(\blink[\s-]?bait\b)
   - match(\bembed\s+(widget|tool|calculator)\b)
   - match(\blink\s+magnet\b)
+  - semantic(what free tool should we build to drive backlinks)
+  - semantic(linkable asset idea to attract organic links)
+  - semantic(interactive calculator or widget to earn traffic)
+  - semantic(build something free that other sites will embed or link to)
 ---
 
 # Free-Tool Discovery for Backlinks & Traffic

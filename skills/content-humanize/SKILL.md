@@ -14,6 +14,11 @@ rules:
   - match(\bai[-\s]?detection\b)
   - match(\bdetect(ed|ion)\s+as\s+ai\b)
   - match(\bai[-\s]generated\s+(text|content|writing|copy)\b)
+  - semantic(make this writing sound more human and less robotic)
+  - semantic(this draft reads like AI wrote it)
+  - semantic(eliminate AI signature from this text)
+  - semantic(rewrite so it does not read as AI generated)
+  - semantic(my content keeps getting flagged as AI written)
 ---
 
 # Content Humanization
