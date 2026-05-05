@@ -74,17 +74,19 @@ Tactics that produce one news cycle of links (HARO stunts, viral one-offs) lose 
 2. **Audit the niche** — what publications, podcasts, newsletters, and aggregators cover this topic? Use websearch to map the link graph.
 3. **Find competitor links** — search "site:competitor.com" patterns; look at who links to their best-performing pages.
 4. **Pick the lever** — free tool, programmatic SEO, digital PR hook, partnership, or original data. One per quarter, not all at once.
-5. **For placement on existing properties** → activate the `marketing-backlink-prospecting` skill — it runs the prospect-discovery and qualification funnel (reclamation, resource pages, broken links, journalist requests, communities, niche directories) with Google's link-spam guardrails baked in.
-6. **For earning passive links via a built tool** → activate the `marketing-tool-discovery` skill (see next workflow).
-7. **Hand off to the right downstream agent** — building a tool? `developer:typescript` or `developer:svelte`. Writing outreach? `content:article`. On-page wrapper? `content:seo`.
+5. **Hand off downstream** — building a tool? `developer:typescript` or `developer:svelte`. Writing outreach? `content:article`. On-page wrapper? `content:seo`.
 
-### When the user asks "what free tool should we build to drive backlinks?"
+### When the user asks about a free tool to drive backlinks
 
-Activate the `marketing-tool-discovery` skill (auto-activates on `session(seo)` + backlink/tool keywords). Run the funnel: niche-fit gate → data inventory → 5 candidates × 5 dimensions → alignment check → output a hand-off brief naming the build agent (`developer:typescript`, `developer:svelte`, etc.).
+Run the discovery funnel: niche-fit gate → data inventory → 5 candidates scored across 5 dimensions (niche fit, data moat, SEO signals, feasibility, monetization) → alignment check on the survivor → hand-off brief naming the build agent (`developer:typescript`, `developer:svelte`, etc.). Refuse tool ideas without a data moat — commodity tools earn nothing durable.
 
-### When the user asks "where can we get backlinks from / find places to link?"
+### When the user asks about finding places to backlink
 
-Activate the `marketing-backlink-prospecting` skill (auto-activates on `session(seo)` + linkbuilding/prospecting keywords). Run the funnel: site profile → parallel prospect generation across 6 categories → 11-point per-prospect qualification rubric → kill toxic, rank survivors → output a prioritized prospect list with per-category outreach approach and downstream hand-offs (`content:article` for outreach copy, `content:seo` for landing-page on-page).
+Run the prospecting funnel: site profile → parallel prospect generation across reclamation, resource pages, broken-link replacement, journalist requests, communities, and niche directories → 11-point per-prospect qualification rubric (topical fit, real traffic, editorial signals, outbound profile, indexability, page context, anchor naturalness, reachability, cost, penalty history, velocity) → kill toxic neighborhoods on first failure, rank survivors by topical fit × reachability × authority → prioritized prospect list with per-category outreach approach. Hand off outreach copy to `content:article`, on-page wrapper to `content:seo`.
+
+### When the user asks about guest posting
+
+Run the 7-stage workflow: author tier-mapping (T1–T4 against actual portfolio — refuse pitches above the user's tier) → discovery via operators + competitor reverse-engineering → 11-point site qualification (incl. PBN tells, author-diversity check, network-graph check) → content-gap topic ideation per target (3–5 topics tied to specific gaps in their existing content) → 80–150-word pitch architecture with personalization hook and 3 topic offers → tier-matched post writing standards → anchor distribution (40–50% branded, <10% exact-match) and link placement (1–2 contextual body + 1 author bio) → follow-up cadence and relationship building. Refuse paid networks, niche-edits, AI-content farms, and any tier-jumping pitches. Hand off pitch and post writing to `content:article`.
 
 ### When the user asks for digital PR ideas
 
