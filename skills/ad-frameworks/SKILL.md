@@ -18,6 +18,12 @@ rules:
   - match(\bbefore.after.bridge\b)
   - session(adcraft)
   - session(ugc)
+  - semantic(write a punchier ad for our product)
+  - semantic(structure this ad copy better)
+  - semantic(make this ad creative more compelling)
+  - semantic(which ad framework should we use for this audience)
+  - semantic(rewrite this landing page hero in a proven copy formula)
+  - semantic(my ad is not converting, what is wrong with the structure)
 ---
 
 # Ad Frameworks — AIDA, PAS, BAB, 4Us

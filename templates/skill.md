@@ -21,6 +21,7 @@ compatibility: "Describe environment requirements: intended product (e.g. Octomi
 #   - bin(cargo)                        # OR: binary is available in $PATH
 #   - workdir(my-project)               # OR: working directory path contains substring
 #   - session(rust)                     # OR: current session name contains word (e.g. developer:rust)
+#   - semantic(rewrite this in rust)    # OR: user message is semantically close to the phrase (intent-based, paraphrase-tolerant)
 # metadata:
 #   author: your-name
 #   version: "1.0"

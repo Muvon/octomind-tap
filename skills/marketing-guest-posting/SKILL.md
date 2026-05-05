@@ -18,6 +18,11 @@ rules:
   - match(\bbylined?\s+(article|piece|post|content)\b)
   - match(\bniche\s+edits?\b)
   - match(\blink\s+insertions?\b)
+  - semantic(how do we land guest posts on industry blogs)
+  - semantic(pitch articles to other publications for backlinks)
+  - semantic(write for other blogs to get authoritative links)
+  - semantic(strategy for getting accepted as a guest author)
+  - semantic(find blogs that accept contributor articles)
 ---
 
 # Guest Posting

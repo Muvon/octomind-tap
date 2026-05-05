@@ -22,6 +22,11 @@ rules:
   - match(\b(haro|qwoted|featured\.com|journorequest)\b)
   - match(\bdigital\s+pr\b)
   - content(HARO)
+  - semantic(where can we get backlinks safely for our website)
+  - semantic(find places to publish links pointing to our site)
+  - semantic(safe free link building opportunities)
+  - semantic(list of websites to get backlinks from in our niche)
+  - semantic(how to do outreach for backlinks without getting penalized)
 ---
 
 # Backlink Prospecting & Qualification
