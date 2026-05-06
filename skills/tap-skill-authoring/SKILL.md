@@ -132,6 +132,18 @@ A `validate` script at `skills/<name>/validate` checks LLM output quality at the
 4. **One concern per skill** — Don't bundle unrelated knowledge; compose multiple skills instead
 5. **Body must be actionable** — If the AI can't follow the instructions directly, rewrite them
 6. **Compatibility matters** — Be explicit about what tools/environment the skill requires
+7. **Stay in your domain** — A skill belongs to one domain (its `domains:` field), and its body must not reach into others. No "hand off to `content:article`", no "companion agent: `marketing:seo`", no `developer:typescript` build-agent references. The orchestrating agent composes domains; the skill stays focused on the work that lives inside its own. Cross-domain pollution makes skills brittle and creates implicit coupling that the agent layer can't override.
+
+### Domain Isolation (the hard rule)
+
+Skills are domain-scoped instruction packs. They are loaded by an agent in a specific domain (marketing, content, video, developer, etc.) and must focus only on what that domain owns. Concretely:
+
+- `domains:` — single domain wherever possible. `domains: marketing content launch` couples the skill to three roles at once and is almost always wrong; pick the one that owns this skill's deliverable.
+- `compatibility:` — environment requirements only (tools, OS, network). Do NOT use it to declare "Pairs with X agent" — pairing is the orchestrator's job.
+- Body — never name agents from other domains (`content:*`, `developer:*`, `marketing:*`). If the work needs to be handed off, describe it as a downstream concern (e.g. "outreach copy is owned by another domain") without pinning a specific agent.
+- Within-domain skill references are fine when genuinely useful (a marketing skill mentioning a sibling marketing skill), but keep them minimal — the orchestrator decides composition.
+
+The architectural reason: a skill that names downstream agents bakes in routing decisions that belong to the agent that loaded it. When the orchestrator changes (e.g., a different marketing agent runs the same skill, or the content domain reuses it), those names become wrong. Keeping skills domain-isolated lets the agent layer compose them freely without rewriting skill bodies.
 
 ---
 

@@ -1,10 +1,10 @@
 ---
 name: marketing-guest-posting
 title: "Guest Posting — Editorial Pitches & Safe Link Strategy"
-description: "Operational skill for landing genuine editorial guest posts that earn high-quality contextual links without triggering the Oct-2025 spam update on guest-post farms. Encodes the 7-stage workflow (author tier-mapping, discovery operators, 11-point site qualification, content-gap topic ideation, 80–150-word pitch architecture, post writing standards by tier, internal-link strategy, anchor distribution, follow-up). Bakes in Google's hard kill-rules (paid networks, repetitive exact-match anchors, duplicate content, AI-content farms), the data-backed anchor distribution (40-50% branded, <10% exact-match, 68% penalty reduction with diversification), and link-placement rules (1-2 contextual body + 1 bio = 387% more referral traffic than bio-only). Use BEFORE writing any pitch. Pairs with marketing-backlink-prospecting (broader prospecting) — this skill goes deep on the guest-post tactic specifically."
+description: "Operational skill for landing genuine editorial guest posts that earn high-quality contextual links without triggering the Oct-2025 spam update on guest-post farms. Encodes the 7-stage workflow (author tier-mapping, discovery operators, 11-point site qualification, content-gap topic ideation, 80–150-word pitch architecture, post writing standards by tier, internal-link strategy, anchor distribution, follow-up). Bakes in Google's hard kill-rules (paid networks, repetitive exact-match anchors, duplicate content, AI-content farms), the data-backed anchor distribution (40-50% branded, <10% exact-match, 68% penalty reduction with diversification), and link-placement rules (1-2 contextual body + 1 bio = 387% more referral traffic than bio-only). Use BEFORE writing any pitch. Stays in the marketing lane: produces strategy, target list, topics, pitch brief — does not write the email or post itself."
 license: Apache-2.0
-compatibility: "Stack-agnostic. Pairs with marketing:seo (off-page strategy), marketing-backlink-prospecting (broader prospect funnel), content:article / content:blog (post writing), content:editor (editing). Requires websearch and webfetch for discovery and qualification."
-domains: marketing content launch
+compatibility: "Stack-agnostic. Requires websearch and webfetch for discovery and qualification."
+domains: marketing
 rules:
   - session(seo)
   - content(guest post)
@@ -31,7 +31,7 @@ rules:
 
 Guest posting still works in 2026 — but the rules changed sharply. The October 2025 Google spam update added "AI-generated guest post farms" as a distinct violation category, targeting large-scale operations that publish thin machine content to embed paid backlinks. Volume is now actively penalized. Repetitive exact-match anchors across posts trigger manual review. "Niche edits" sold as guest-post alternatives carry the same penalty as paid guest posts. The tactic survives only when each post is editorially earned, topically aligned, written to publication standard, and linked back with diverse natural anchors.
 
-This skill encodes the 7-stage workflow for doing exactly that: map your authority to publication tiers, discover qualified targets, qualify each one against an 11-point rubric, pitch a specific content gap (not "a guest post"), write to the host's standard, link strategically without over-optimizing, and follow up to build a multi-post relationship. It pairs with `marketing-backlink-prospecting` — that skill covers prospect discovery across all link categories; this one goes deep on guest posting specifically. Use BEFORE writing any pitch email.
+This skill encodes the 7-stage workflow for doing exactly that: map your authority to publication tiers, discover qualified targets, qualify each one against an 11-point rubric, pitch a specific content gap (not "a guest post"), write to the host's standard, link strategically without over-optimizing, and follow up to build a multi-post relationship. Use BEFORE writing any pitch email. The deliverable is a strategy + brief; orchestration of downstream copywriting belongs to the agent layer, not this skill.
 
 ---
 
@@ -48,7 +48,7 @@ This skill encodes the 7-stage workflow for doing exactly that: map your authori
 - **Each post must be unique.** Duplicate content across publications is its own violation category. Re-pitching the same topic to multiple sites = OK only if each post is independently written.
 - **One pitch, one topic-set.** Don't blast the same 3-topic pitch to 50 sites. Each pitch is researched per-publication, references their actual content, fills a specific gap they have.
 - **AI-written drafts are detectable and devalued.** The Oct 2025 update specifically targets thin AI content farms. Use AI for outlining/research support if needed, but ship human-written prose at publication standard.
-- **Output a brief, not a finished email.** This skill produces the strategy, target list, topics, and pitch architecture. The actual email goes to `content:article`. The post itself goes to `content:blog` or `content:article`. Stay in your lane.
+- **Output a brief, not a finished email.** This skill produces the strategy, target list, topics, and pitch architecture. The actual email and post writing happen elsewhere — stay in the marketing lane.
 
 ---
 
@@ -156,7 +156,7 @@ This is the stage that separates 6% pitch reply rates from 18%. Generic topic of
    - Fit the publication's editorial niche exactly
    - Don't duplicate something they ran in the last 6 months
    - Bring something only the user can bring (data, case study, technical depth)
-   - Match a known search-intent pattern in the niche (you can run keyword research via `content:seo` if needed)
+   - Match a known search-intent pattern in the niche (keyword research, if needed, is handled outside this skill)
 5. **Pre-write the value proposition** — for each topic, one sentence on why their audience needs this.
 
 **Topic angles that work:**
@@ -213,7 +213,7 @@ SIGN-OFF — Name. One link. Done.
 
 **Length math:** subject ~10 words; opening ~25 words; credibility ~25 words; topic offers ~50 words; CTA ~10 words; signature ~5 words = ~125 words. Stay in this range.
 
-**Pitch template (handed to `content:article` for personalization):**
+**Pitch template (brief — not a finished email):**
 
 ```
 Subject: [Reference to specific post they wrote] — [topic suggestion in 4-6 words]
@@ -279,7 +279,7 @@ The post lives or dies based on whether it meets the publication's standard. Mat
 - Lead with the value, not the setup
 - No promotional content for your own product/service in the body
 
-**Hand off the writing** to `content:article` (long-form posts), `content:blog` (shorter editorial), or `content:editor` (review/polish). This skill produces the brief; the writing agents produce the post.
+**Output of Stage 6:** an outline + post-writing brief (target word count, format, voice notes, internal-link list). Actual prose generation is out of scope for this skill.
 
 #### Stage 7 — Link Strategy (placement + anchors)
 
@@ -436,7 +436,7 @@ site:[competitor.com] "guest post" → reverse-engineer competitor's link source
 2. **"Self-hosted runners vs. managed CI: a 6-month cost-and-reliability comparison"** — case study with numbers; publication has discussed runners but not done a head-to-head
 3. **"Why we shipped a CI cancellation policy and what we measured after"** — process post; ties to author's company experience
 
-**Stage 5 — Pitch (handed to `content:article`):**
+**Stage 5 — Pitch brief:**
 ```
 Subject: Loved the runner-sizing piece — pitch on monorepo CI metrics?
 
@@ -458,9 +458,9 @@ Happy to send a detailed outline if any of these fit.
 acme-deploy.com
 ```
 
-**Stage 6 — Post writing:**
+**Stage 6 — Post writing brief:**
 - Tier-3 standard: 1,500 words; case study format; 3 charts from internal data; 2 internal links to host site's prior CI/CD posts
-- Hand off to `content:article` with this outline
+- Outline produced; prose generation handled outside this skill
 
 **Stage 7 — Link strategy:**
 - 1 body link: "...we benchmarked this against the [Acme Deploy CI runner pool]..." — partial-match anchor
@@ -512,7 +512,3 @@ User: "I found a service offering 10 guest posts per month on DR 50+ sites for $
 - [Hunter — 15 best-performing guest post email templates](https://hunter.io/templates/seo/guest-post) — pitch performance data
 - [Anchor distribution data — 68% penalty reduction](https://staydigitalmarketers.com/2026/01/31/is-guest-posting-safe-seo-risks-penalties/)
 - [Editorial links are the new brand mentions for AI search](https://linkbuilder.io/editorial-links/) — 2026 framing
-- Companion skill: `marketing-backlink-prospecting` — broader prospect funnel
-- Companion skill: `marketing-tool-discovery` — earning links via tools
-- Companion agent: `marketing:seo` — runs this skill as part of off-page strategy
-- Hand-off agents: `content:article` (pitch + post writing), `content:blog` (shorter posts), `content:editor` (review)

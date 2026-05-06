@@ -313,6 +313,17 @@ Skills and agents serve different purposes:
 | **Composable** | Yes — multiple skills per session | No — one role per session |
 | **Auto-expand** | Yes — skills can auto-load MCP servers via capabilities | No — tools are static |
 
+### Domain Isolation (skills do not reach across domains)
+
+A skill belongs to a single domain (its `domains:` field) and must stay inside it. Concretely:
+
+- **`domains:` is single-valued where possible.** `domains: marketing content launch` couples one skill to three agent roles and is almost always wrong — pick the domain that owns this skill's deliverable.
+- **`compatibility:` describes environment only.** Tools, OS, network requirements. Not "Pairs with X agent" — pairing is the orchestrator's responsibility.
+- **The body does not name agents from other domains.** No `content:article`, no `developer:typescript`, no `marketing:seo`. If the work needs to continue elsewhere, describe it as a downstream concern owned by another domain — without pinning a specific agent.
+- **Within-domain references are fine** but should be minimal (e.g., a marketing skill mentioning a sibling marketing skill).
+
+The reason: a skill that names downstream agents bakes routing decisions into instruction content. When a different agent in the same domain loads the skill, or the orchestrator restructures composition, those names become stale. Keeping skills domain-isolated lets the agent layer compose them freely without rewriting skill bodies. This is the same separation as capabilities — agents declare *what they need*, capabilities provide *how it's delivered*; skills encode *what to know inside one domain*, and the agent decides *which domains to pull together*.
+
 ---
 
 ## CI / Validation

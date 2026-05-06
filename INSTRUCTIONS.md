@@ -415,6 +415,7 @@ bin/load <domain>:<spec>
 - [ ] `name` in frontmatter matches directory name exactly
 - [ ] Body has Overview + Instructions + Examples sections
 - [ ] Instructions are actionable (tell the AI what to DO, not just describe the domain)
+- [ ] **Domain-isolated** — `domains:` is a single value where possible; body does NOT reference agents from other domains (`content:article`, `developer:typescript`, `marketing:seo`, etc.); `compatibility:` describes environment only, not skill pairings. Cross-domain composition is the orchestrating agent's job.
 
 ## Gotchas
 
