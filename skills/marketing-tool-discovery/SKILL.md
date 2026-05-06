@@ -1,10 +1,10 @@
 ---
 name: marketing-tool-discovery
 title: "Free-Tool Discovery for Backlinks & Traffic"
-description: "Validation funnel for deciding WHICH free tool to build for backlinks, embeds, and AI-search citation. Encodes the data-moat-first methodology: niche-fit gate, data inventory, 5-candidate scoring across niche/moat/SEO/feasibility/monetization, alignment checklist, and hand-off brief that names the downstream build agent. Use BEFORE any tool-build work to avoid building commodity tools that earn nothing. Skip if the user has already validated the concept and just wants to build."
+description: "Validation funnel for deciding WHICH free tool to build for backlinks, embeds, and AI-search citation. Encodes the data-moat-first methodology: niche-fit gate, data inventory, 5-candidate scoring across niche/moat/SEO/feasibility/monetization, alignment checklist, and a strategy brief. Use BEFORE any tool-build work to avoid building commodity tools that earn nothing. Skip if the user has already validated the concept and just wants to build. Stays in the marketing lane: produces the brief — the build itself is owned by other domains."
 license: Apache-2.0
-compatibility: "Stack-agnostic. Pairs with marketing:seo (off-page strategy) and the developer:* agents (build hand-off). Requires websearch and webfetch for competitor and SERP scans."
-domains: marketing content launch
+compatibility: "Stack-agnostic. Requires websearch and webfetch for competitor and SERP scans."
+domains: marketing
 rules:
   - session(seo)
   - content(backlink)
@@ -41,7 +41,7 @@ Use this skill BEFORE any tool-build work. Skip it if the user has already valid
 - **Niche fit is non-negotiable.** A "useful" tool that doesn't serve the site's existing audience earns off-topic links that Google discounts. Cosmetics site → skin-tone matcher YES, SEO checker NO.
 - **80/20 the planning.** 80% of the value of this skill is in idea selection (niche fit + data moat). Building is downstream. Do not let users skip the gate to "just start building."
 - **Five candidates, not one.** Single-idea brainstorms anchor to whatever came first. Always generate five and rank — even if four are obvious dead ends, the comparison clarifies why the survivor wins.
-- **Output a hand-off, not a verdict.** The skill's deliverable is a brief that names the downstream build agent (`developer:typescript`, `developer:svelte`, etc.) and what they need from the data source. A "good idea" with no hand-off is not done.
+- **Output a strategy brief, not a verdict.** The skill's deliverable is a written brief covering niche fit, data moat, SEO signals, feasibility, monetization, and alignment. Build, on-page wrapping, and launch content are downstream concerns owned by the orchestrating agent.
 - **Compound over spike.** Prefer tools that keep earning links for years (calculators on durable data, embed widgets) over tools tied to a news cycle.
 
 ### The Funnel
@@ -139,12 +139,11 @@ Output a single brief in the format below. This is the deliverable.
 - Competitive moat: [✅/⚠️ + note]
 - Longevity: [✅/⚠️ + note]
 
-## Build Hand-Off
-- **Build agent:** `developer:[language]` (e.g. developer:typescript, developer:svelte)
+## Build Notes (for the orchestrating agent)
 - **Stack hint:** [Svelte / Next / static HTML / Astro — based on feasibility]
-- **Data source:** [exact source the build agent needs access to]
-- **On-page wrapper:** route to `content:seo` for the page copy + meta + schema
-- **Launch content:** route to `content:article` for the launch post / press hook
+- **Data source:** [exact source the build needs access to]
+- **On-page wrapper:** page copy + meta + schema needs
+- **Launch content:** launch post / press hook angle
 - **Tracking:** [what events to instrument — embed loads, completions, email captures]
 ```
 
@@ -191,7 +190,7 @@ Output a single brief in the format below. This is the deliverable.
 - Competitive moat ✅ — matcher accuracy depends on the SKU undertone tags (proprietary)
 - Longevity ✅ — foundation matching is a permanent problem
 
-**Stage 5 — Hand-off brief:** (would be written using the template above, naming `developer:svelte` for client-side image processing)
+**Stage 5 — Strategy brief:** (would be written using the template above; client-side image processing noted as a stack hint)
 
 ### Example 2: Engineering blog with no data
 
@@ -212,11 +211,11 @@ Do not soften, do not propose a tool anyway. The honest answer is the only usefu
 User: "I already know I want to build a salary calculator for tech jobs. Just help me design it."
 
 **Response:**
-> "Before I hand off to a build agent, two questions — these are the same gates the funnel runs and they're 30 seconds:
+> "Before producing the brief, two questions — these are the same gates the funnel runs and they're 30 seconds:
 > 1. What salary data are you using? (Public scraped Glassdoor data has no moat — Levels.fyi already won that. Proprietary survey, payroll-anonymized, or company-disclosed data is a different game.)
 > 2. Who's your existing audience and do they search for salary info? (If you're a dev-tools blog, salary data isn't your niche — links from HR sites won't compound your dev-tools rankings.)
 >
-> If both pass, I'll write the brief and hand off. If either fails, we change the tool — not skip the questions."
+> If both pass, I'll write the brief. If either fails, we change the tool — not skip the questions."
 
 ---
 
@@ -224,6 +223,3 @@ User: "I already know I want to build a salary calculator for tech jobs. Just he
 
 - Original article framework: [How to build free tools with Claude Code for backlinks](https://www.madebyagents.com/blog/how-to-build-free-tools-with-claude-code-for-backlinks)
 - Eugene Schwartz, *Breakthrough Advertising* — for awareness-stage matching when picking the tool's positioning
-- Companion agent: `marketing:seo` — runs this skill as part of off-page strategy
-- Companion agent: `content:seo` — receives the hand-off for on-page copy, meta, schema
-- Build agents: `developer:typescript`, `developer:svelte`, `developer:python` — receive the build hand-off

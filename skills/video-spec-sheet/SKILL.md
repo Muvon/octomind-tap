@@ -3,8 +3,8 @@ name: video-spec-sheet
 title: "Video Spec Sheet — Platform Specs and Safe Zones"
 description: "Canonical reference for platform-by-platform video output specs: aspect ratio, length cap, codec, bitrate, frame rate, color, caption style and safe-zone bands. Use when picking output settings, validating an export, or spec-checking before publishing. Covers TikTok, Reels, Shorts, IG/FB feed, Stories, X, LinkedIn — all four format families: short-form vertical, square/feed, long-form 16:9, story 9:16."
 license: Apache-2.0
-compatibility: "Stack-agnostic. Used by every video agent for output validation. Pairs with skills/video-hooks for content rules."
-domains: video content
+compatibility: "Stack-agnostic."
+domains: video
 rules:
   - session(video)
   - session(adcraft)

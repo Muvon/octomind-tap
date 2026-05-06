@@ -1,10 +1,10 @@
 ---
 name: marketing-backlink-prospecting
 title: "Backlink Prospecting & Qualification — Find Safe Free Places"
-description: "Operational funnel for finding and qualifying SAFE free places to place backlinks. Encodes the prospect categories (reclamation, resource pages, broken links, journalist requests, communities, aggregators, niche directories), the per-target qualification rubric (topical fit, real traffic, outbound profile, page context, anchor naturalness, reachability), Google's link-spam guardrails (penalty triggers, rel attribution rules), and the 2026 AI-search citation overlay (Reddit/community as Perplexity/ChatGPT citation sources). Use AFTER niche/audience are clear and BEFORE any outreach. Pairs with marketing-tool-discovery — that one earns links via tools you build; this one places links on properties that already exist."
+description: "Operational funnel for finding and qualifying SAFE free places to place backlinks. Encodes the prospect categories (reclamation, resource pages, broken links, journalist requests, communities, aggregators, niche directories), the per-target qualification rubric (topical fit, real traffic, outbound profile, page context, anchor naturalness, reachability), Google's link-spam guardrails (penalty triggers, rel attribution rules), and the 2026 AI-search citation overlay (Reddit/community as Perplexity/ChatGPT citation sources). Use AFTER niche/audience are clear and BEFORE any outreach. Stays in the marketing lane: produces a prospect brief — outreach copy and on-page wrappers belong to other domains."
 license: Apache-2.0
-compatibility: "Stack-agnostic. Pairs with marketing:seo (off-page strategy), marketing-tool-discovery (passive earning via tools), and content:article / content:blog (the actual outreach copy). Requires websearch and webfetch for prospect discovery and qualification."
-domains: marketing content launch
+compatibility: "Stack-agnostic. Requires websearch and webfetch for prospect discovery and qualification."
+domains: marketing
 rules:
   - session(seo)
   - content(backlink)
@@ -35,7 +35,7 @@ rules:
 
 Most "free backlink" attempts fail in one of two ways: they spray submissions across generic directories and forums (which earn nothing and risk penalties), or they over-rely on a single tactic (only HARO, only guest posts) and stall. This skill is the funnel that prevents both. It organizes free-link opportunities by category and risk profile, encodes a per-target qualification rubric so prospects get manually filtered before any outreach, and bakes in Google's actual link-spam guardrails (March 2026 update — devaluation in minutes, not months) so the work doesn't trigger algorithmic demotion or manual actions.
 
-It pairs with `marketing-tool-discovery` — that skill decides what tool to *build* to earn passive links; this skill decides where to *place* links on properties that already accept them. Use this AFTER the site's niche and audience are clear and BEFORE any outreach email is written. The deliverable is a prioritized prospect list with per-category outreach approach, ready to hand off to `content:article` for the actual copy.
+Use this AFTER the site's niche and audience are clear and BEFORE any outreach email is written. The deliverable is a prioritized prospect list with per-category outreach approach. Outreach copy, on-page wrappers, and tracking instrumentation are out of scope — composing those belongs to the orchestrating agent.
 
 ---
 
@@ -51,7 +51,7 @@ It pairs with `marketing-tool-discovery` — that skill decides what tool to *bu
 - **Velocity matters.** A natural site earns links at a roughly steady rate. Spiking 50 links in a week from a campaign is fine ONCE, on a newsworthy basis. Sustained spike-velocity is the #1 SpamBrain trigger.
 - **Anchor diversity is natural.** Branded ("Acme"), URL-only ("acme.com"), and natural-phrase anchors should dominate. Exact-match keyword anchors should be the minority. Outreach you control = always use branded.
 - **Community links count, even when nofollow.** Reddit, Stack Exchange, LinkedIn group posts are usually `rel="ugc"` or `nofollow` — but they drive AI-search citations (Reddit = ~40% of LLM citations across major models, 46.7% on Perplexity), brand search volume (which now outranks backlinks as an LLM citation predictor), and direct traffic. Treat them as visibility, not just SEO.
-- **Output a hand-off brief, not a verdict.** The deliverable names downstream agents (`content:article` for the email, `marketing:seo` for the strategy review) and what they need.
+- **Output a prospect brief, not a verdict.** The deliverable is the prioritized list with per-category outreach approach. Downstream composition (writing emails, on-page setup, tracking) is the orchestrating agent's job, not this skill's.
 
 ### The Funnel
 
@@ -171,9 +171,9 @@ Sort by composite score:
 
 Top 20% → priority outreach this month. Middle 60% → systematic follow-up over the quarter. Bottom 20% → skip; opportunity cost too high.
 
-#### Stage 5 — Hand-Off Brief
+#### Stage 5 — Prospect Brief
 
-Output one brief in this format. The brief is the deliverable — the emails come from `content:article`.
+Output one brief in this format. The brief is the deliverable — outreach copy and downstream wiring happen elsewhere.
 
 ```markdown
 # Backlink Prospecting Brief: [Site / Campaign Name]
@@ -214,25 +214,25 @@ Output one brief in this format. The brief is the deliverable — the emails com
 
 ## Outreach Approach Per Category
 
-| Category | Approach | Tone | Hand-off |
-|---|---|---|---|
-| Resource page | "I noticed your resources page on X. I built [thing] that adds [unique angle]. No worries if it's not a fit." | Brief, value-first | content:article writes the email |
-| Broken link | "Your post links to [URL] which is 404. [My replacement] covers the same scope." | Helpful, factual | content:article writes the email |
-| Unlinked mention | "Thanks for mentioning [brand]. Could the next edit add a link to [URL]?" | Gracious, low-friction | content:article writes the email |
-| HARO/Qwoted/SOS | 75–100 words, lead with credentials, direct expertise, no pitch slap | Editorial, expert-positioned | the agent writes pitches in real time |
-| Forum / Reddit | Genuine answer; link only if it adds value | Peer, not promotional | the strategist participates personally |
-| Guest post | Pitch a topic the site hasn't covered + your unique data | Editorial, contributor-positioned | content:article + content:blog |
+| Category | Approach | Tone |
+|---|---|---|
+| Resource page | "I noticed your resources page on X. I built [thing] that adds [unique angle]. No worries if it's not a fit." | Brief, value-first |
+| Broken link | "Your post links to [URL] which is 404. [My replacement] covers the same scope." | Helpful, factual |
+| Unlinked mention | "Thanks for mentioning [brand]. Could the next edit add a link to [URL]?" | Gracious, low-friction |
+| HARO/Qwoted/SOS | 75–100 words, lead with credentials, direct expertise, no pitch slap | Editorial, expert-positioned |
+| Forum / Reddit | Genuine answer; link only if it adds value | Peer, not promotional |
+| Guest post | Pitch a topic the site hasn't covered + your unique data | Editorial, contributor-positioned |
 
 ## Velocity Plan
 - Target pace: [X new links / month based on baseline]
 - Monthly budget by category: [reclamation N, discovery N, earned N, community ongoing]
 - Red flags to watch: spike weeks, anchor concentration, sudden DR drop on referring domains
 
-## Hand-Offs
-- Outreach copy → `content:article` (with the per-category template above)
-- Page-level on-page setup for landing pages → `content:seo`
-- Link-worthy asset gap (if profile thin) → `marketing-tool-discovery` skill
-- Tracking instrumentation → developer:[stack]
+## Open Items (for the orchestrating agent)
+- Outreach copy per template above
+- On-page wrapper / landing page setup
+- Link-worthy asset build (if profile thin)
+- Tracking instrumentation
 ```
 
 ### Decision Guide — Edge Cases
@@ -338,7 +338,7 @@ Fired in one block:
 | r/devops AMA opportunity | ✅ | ✅ | n/a | n/a | n/a | n/a | nofollow | self | free | clean | **Engage** (AI-citation play) |
 | dev-tools-directory.net | ⚠️ generic | ⚠️ low | ❌ auto-content | ❌ links to casino | ❌ | n/a | n/a | n/a | $50 | flagged | **Strike** (toxic neighborhood + paid + auto-content) |
 
-**Output:** 14 priority prospects, ranked, with outreach approach per category. Hand-off to `content:article` for outreach copy.
+**Output:** 14 priority prospects, ranked, with outreach approach per category.
 
 ### Example 2: Cosmetics e-commerce (continuing the prior skill's example)
 
@@ -397,6 +397,3 @@ Do not soften. The honest answer is the only useful one.
 - [AI Platform Citation Source Index 2026 — 5W](https://www.prnewswire.com/news-releases/5w-releases-ai-platform-citation-source-index-2026-the-50-websites-that-now-decide-what-brands-are-visible-inside-chatgpt-claude-perplexity-gemini-and-google-ai-overviews-302759804.html)
 - [Reddit's role in AI citations](https://techedgeai.com/ai-platform-citation-source-index-2026-shows-reddits-surge-and-a-new-era-of-volatile-ai-generated-answers/)
 - [Resource page link building — search operators](https://www.clickrank.ai/link-building-search-operators/)
-- Companion skill: `marketing-tool-discovery` — earning passive links by building free tools
-- Companion agent: `marketing:seo` — runs this skill as part of off-page strategy
-- Hand-off agents: `content:article` (outreach copy), `content:seo` (on-page wrapper), `developer:*` (tracking)

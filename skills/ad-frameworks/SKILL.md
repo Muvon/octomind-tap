@@ -3,8 +3,8 @@ name: ad-frameworks
 title: "Ad Frameworks — AIDA, PAS, BAB, 4Us"
 description: "Compact playbook of ad copy frameworks (AIDA, PAS, problem-agitation-solution, before-after-bridge, 4Us, FAB) and when to apply each. Use when structuring the body of an ad — script, body copy, landing-page sections, or any persuasive piece. Includes a decision guide that matches framework to audience awareness level (Schwartz)."
 license: Apache-2.0
-compatibility: "Stack-agnostic. Pairs with skills/video-hooks (the open) and skills/content-voice (the words)."
-domains: video content launch
+compatibility: "Stack-agnostic."
+domains: video
 rules:
   - content(advertisement)
   - content(copywriting)
@@ -31,8 +31,6 @@ rules:
 ## Overview
 
 Strong ads aren't written from scratch — they're written into a framework that has been pressure-tested across millions of dollars of spend. The framework's job is to make the structure invisible: the viewer feels a story, the writer follows a checklist. This skill gives you the small set of frameworks that actually convert in 2026 short-form video and direct-response copy, plus a rule for which one to pick based on the audience's awareness level (Schwartz's five stages).
-
-Pair with `video-hooks` for the open and `video-spec-sheet` for the platform constraints.
 
 ---
 
