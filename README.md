@@ -631,6 +631,7 @@ rules:
   - file(Cargo.toml)              # activates if Cargo.toml exists in workdir
   - content(rust)                 # activates if user message contains "rust"
   - file(Cargo.toml) content(async)  # activates if BOTH are true (AND)
+  - semantic(rewrite this in rust)   # activates when the user's intent is semantically close to the phrase
 ```
 
 #### Rule expressions
@@ -640,6 +641,7 @@ rules:
 | `file(<glob>)` | File matching glob exists in working directory. Supports `*` and `**`. |
 | `content(<word>)` | User message contains the word (whole-word, case-insensitive). |
 | `match(<pattern>)` | User message matches the regular expression. |
+| `semantic(<phrase>)` | User message is semantically close to the phrase — intent-based, paraphrase-tolerant. Use for triggers that natural language can express many ways (e.g. `semantic(how do I land guest posts)` covers "pitch articles", "write for other blogs", "get accepted as a contributor"). |
 | `grep(<pattern>, <glob>)` | A file matching the glob contains a line matching the pattern. |
 | `env(<VAR>)` | Environment variable `VAR` is set (non-empty). |
 | `env(<VAR>=<value>)` | Environment variable `VAR` equals `value`. |

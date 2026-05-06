@@ -7,11 +7,22 @@ compatibility: "Octomind content agents."
 domains: content
 rules:
   - content(humanize)
-  - content(rewrite)
   - content(voice)
-  - content(write)
   - content(article)
   - content(blog)
+  - match(\brewrite\s+(this|the|my)\s+(article|blog|post|copy|content|draft|piece|writing)\b)
+  - match(\b(write|writing|draft|drafting)\s+(an|a|the|this)\s+(article|blog|post|copy|piece|essay|newsletter)\b)
+  - match(\b(make|sounds?)\b.*\b(human|natural|authentic|less\s+ai|less\s+robotic)\b)
+  - match(\b(ai|gpt|llm)[-\s]?(generated|sounding|tone|copy|writing|text|prose)\b)
+  - match(\bdead\s+vocabulary\b)
+  - match(\b(content|copy|article|blog|writing)\s+voice\b)
+  - match(\b(tone\s+of\s+voice|brand\s+voice|writing\s+voice)\b)
+  - semantic(write this in a more human voice)
+  - semantic(make this copy sound natural and authentic)
+  - semantic(fix the tone of this writing)
+  - semantic(rewrite this article so it does not sound robotic)
+  - semantic(remove AI patterns from this draft)
+  - semantic(polish this content to read like a real person wrote it)
 ---
 
 # Human Writing Voice

@@ -3,8 +3,8 @@ name: video-hooks
 title: "Video Hooks — First-1.5s Retention Patterns"
 description: "Catalog of proven first-1.5-second hook patterns for short-form video (TikTok, Reels, Shorts). Use whenever drafting an ad or social-video script — the hook is what decides whether the rest of the clip ever gets watched. Encodes pattern types (pattern-interrupt, problem-aware, curiosity-gap, contrarian, on-screen-text, motion-cut, voice-led), the rules for each, and what to NEVER open with."
 license: Apache-2.0
-compatibility: "Stack-agnostic. Pairs with skills/video-spec-sheet for platform constraints and skills/ad-frameworks for body structure."
-domains: video content launch
+compatibility: "Stack-agnostic."
+domains: video
 rules:
   - session(video)
   - session(adcraft)
@@ -17,6 +17,11 @@ rules:
   - match(\bvideo\s+hook\b)
   - match(\b(first|opening)\s+\d+\s*(seconds|s)\s+of\s+(the\s+)?(video|clip|reel|short|ad)\b)
   - match(\bopens?\s+with\b.*\b(video|clip|reel|short|ad|shot|frame)\b)
+  - semantic(make the opening of this video stronger)
+  - semantic(the first few seconds of my reel are too weak)
+  - semantic(write a hook for this short-form video)
+  - semantic(how do I get viewers to keep watching past the first second)
+  - semantic(my retention drops in the first 3 seconds, what should the opener be)
 ---
 
 # Video Hooks — First-1.5s Retention Patterns
@@ -24,8 +29,6 @@ rules:
 ## Overview
 
 Short-form video lives or dies in the first 1.5 seconds. The hook is the only sentence in the script that matters more than the offer — if it doesn't earn the next breath, the user swipes and the rest of the work is wasted. This skill encodes the small number of hook patterns that *actually* convert on TikTok, Reels, and Shorts in 2025–2026, the rules each pattern follows, and the dead opens to avoid.
-
-Pair with `video-spec-sheet` (platform constraints) and `ad-frameworks` (body structure once the hook lands).
 
 ---
 
