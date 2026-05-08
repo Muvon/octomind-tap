@@ -66,7 +66,7 @@ These words appear 5–10× more in AI text than human text. Replace every insta
 - "a testament to"
 - "not just X, but also Y" — rewrite this construction every time
 
-**Formal overreach** — always use the simpler word:
+**Formal overreach** — default to the word you'd say out loud. If you'd hesitate to use it in conversation with a friend, swap it for the simpler one. Plain words win almost everywhere; reach for the formal version only when it carries meaning the simple word can't:
 - "utilize" → "use"
 - "facilitate" → "help"
 - "demonstrate" → "show"
@@ -111,6 +111,18 @@ Start sentences with "And" or "But" when it flows. Use parenthetical commentary.
 
 **Active voice**
 "Studies show X" not "X has been shown by studies." Flag passive constructions and rewrite to active unless passive is intentional for emphasis.
+
+**Em-dashes — exception, used sparingly**
+A single em-dash is natural human punctuation — people use them when thinking-while-writing. The AI signal isn't the em-dash itself, it's density. Three em-dashes in one paragraph reads as GPT default. Keep total use under ~1 em-dash per 100 words and mix punctuation: full stops, commas, parentheses, occasional em-dash. Don't strip them all out either — total absence is its own tell now (over-corrected humanization).
+
+**Format follows the venue**
+The shape of the text adapts to where it lives. The same idea looks different in a reply versus a long article, and getting that wrong is one of the loudest AI tells in 2026.
+
+- **Replies and comments** — prose. 1–4 sentences for most. No headers, no numbered lists, no bullet stacks, no bold mid-sentence. People don't write replies as slide decks; AI does by default. Match the surrounding chain — if everyone is writing 1-line lowercase replies, a 6-line structured response stands out as a bot.
+- **Posts and threads** — each post is a standalone piece of prose. No "1/12" markers, no "🧵", no thread-promo intros. Write each one like a single considered post.
+- **Long articles, blogs, docs** — structure is fine *when it serves reading*. Headers break sections that earn it; bullets handle truly enumerable lists (3+ genuinely parallel items); bold marks the rare phrase that needs marking. The test: strip the formatting — does the reader lose anything? If not, drop it.
+
+Lists, headers, and bold are cheap — they're what AI reaches for whenever it isn't sure what to write. Use them only when they earn their place.
 
 ---
 
