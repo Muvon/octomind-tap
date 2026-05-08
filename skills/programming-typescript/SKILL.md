@@ -11,8 +11,6 @@ rules:
   - content(typescript)
 ---
 
-# TypeScript Development
-
 ## Conventions
 
 - Type safety first — leverage TypeScript's type system fully

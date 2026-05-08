@@ -14,8 +14,6 @@ rules:
   - content(python)
 ---
 
-# Python Development
-
 ## Conventions
 
 - Idiomatic Python — follow PEP 8, PEP 20, and community conventions

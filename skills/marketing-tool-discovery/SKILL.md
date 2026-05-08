@@ -23,15 +23,11 @@ rules:
   - semantic(build something free that other sites will embed or link to)
 ---
 
-# Free-Tool Discovery for Backlinks & Traffic
-
 ## Overview
 
 Most free tools built for SEO fail because they're picked by gut, not by a gate. They duplicate something Lorem-Ipsum-generic, run on commodity data, drift outside the site's niche, or have no monetization path — so even when they get traffic, they don't earn links and don't move revenue. This skill encodes the discovery funnel that prevents that: a niche-fit + data-moat gate that kills 80% of bad ideas before any build effort, a 5-candidate scoring rubric that ranks survivors, and a hand-off format that names the downstream build agent so nothing falls between roles.
 
 Use this skill BEFORE any tool-build work. Skip it if the user has already validated their concept and just wants to ship.
-
----
 
 ## Instructions
 
@@ -158,8 +154,6 @@ Output a single brief in the format below. This is the deliverable.
 | User pushes "let's just start building" before scoring | Hold the line. The whole point of this skill is to refuse premature build. |
 | User's niche is too broad to assess | Force a narrowing question: "Which sub-niche is the priority for the next 6 months?" |
 
----
-
 ## Examples
 
 ### Example 1: Cosmetics e-commerce site
@@ -217,9 +211,7 @@ Response:
 >
 > If both pass, I'll write the brief. If either fails, we change the tool — not skip the questions."
 
----
-
 ## References
 
 - Original article framework: [How to build free tools with Claude Code for backlinks](https://www.madebyagents.com/blog/how-to-build-free-tools-with-claude-code-for-backlinks)
-- Eugene Schwartz, *Breakthrough Advertising* — for awareness-stage matching when picking the tool's positioning
+- Eugene Schwartz, Breakthrough Advertising — for awareness-stage matching when picking the tool's positioning

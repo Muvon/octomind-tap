@@ -13,8 +13,6 @@ rules:
   - match(@threads\b)
 ---
 
-# Threads (Meta) Publishing Playbook
-
 ## Overview
 
 Threads is Meta's text-first social app — launched July 2023, reached 400M MAU by 2026, and by now a distinct platform with its own tone, algorithm, and culture. It looks like Twitter but does not behave like Twitter. Posts that crush on X often flop on Threads, and vice versa.
@@ -22,8 +20,6 @@ Threads is Meta's text-first social app — launched July 2023, reached 400M MAU
 This skill is not about X/Twitter threads (multi-post chains on X) — that's `social-x`. This is about the Meta Threads app specifically. If ambiguous, assume the user means X threads unless they explicitly say "Threads app," "Meta Threads," "threads.net," or reference the platform mechanics.
 
 Pair with `content-voice` for human voice.
-
----
 
 ## Instructions
 
@@ -53,8 +49,6 @@ Threads' For You feed aggressively surfaces posts from accounts you don't follow
 | Follow after read | strong positive |
 | External link click | modest; Threads is less link-hostile than X but still prefers on-platform |
 
----
-
 ### The Tone Split — Threads vs X
 
 This is the single biggest mistake cross-posters make. Do not port X posts verbatim.
@@ -73,8 +67,6 @@ This is the single biggest mistake cross-posters make. Do not port X posts verba
 
 Threads' vibe in 2026 is often described as "early Twitter but friendlier" — less drama, more actual conversation, more willingness to reply to strangers.
 
----
-
 ### The Post Anatomy
 
 Threads posts are short (500-char limit) and the front of the feed favors:
@@ -92,8 +84,6 @@ Key differences from X:
 - Emoji as tone-punctuation is alive — not emoji bullets, but a single emoji at the end of a line for tone reads normal. Don't overdo it.
 - Shorter posts often win. A 80–150 char observation beats a 450 char argument more often than on X.
 - No thread markers needed for reply chains — users naturally scroll replies.
-
----
 
 ### Post Types That Work on Threads
 
@@ -115,8 +105,6 @@ What flops on Threads:
 - Pure news commentary — Threads is not where news breaks or gets analyzed
 - Cross-posted X threads with thread markers ("1/5", "🧵") — obvious and ignored
 
----
-
 ### Reply Culture (the core of the platform)
 
 Threads is built around reply chains in a way X isn't. People actually read 20-reply conversations between strangers.
@@ -128,8 +116,6 @@ Threads is built around reply chains in a way X isn't. People actually read 20-r
 - Author reply to your own post as a follow-up is welcome — treat it like thinking out loud, not thread continuation.
 - Don't @-tag the OP in your reply — already threaded.
 - Disagreement is fine but stays softer than X. "I see it differently because…" beats "That's wrong."
-
----
 
 ### What Kills Posts on Threads
 
@@ -144,16 +130,12 @@ Threads is built around reply chains in a way X isn't. People actually read 20-r
 - Emoji bullets (💡✨🚀 as list markers)
 - AI vocabulary (same list as `content-voice`)
 
----
-
 ### Timing
 
 - Best windows: weekday evenings 7–10 PM local, and weekend mornings 9 AM–12 PM local.
 - Threads skews younger and more international than X; peak activity is not the 9–5 business window.
 - Post daily for growth. Threads rewards consistency more than volume; 1 post a day beats 5 posts once a week.
 - Don't burst-post — multiple posts within 30 minutes fragments engagement.
-
----
 
 ### Cross-Platform Strategy
 
@@ -163,8 +145,6 @@ If you're posting on both X and Threads:
 - Threads first if the content is a question/relatable observation, then tighten for X.
 - Don't cross-post threads/chains at all — they almost always flop on the receiving platform.
 - Instagram → Threads cross-post is fine for photo/memory content; for text content rewrite.
-
----
 
 ### Thread-Vibe Matching
 
@@ -186,8 +166,6 @@ Vibe calibration by post type:
 | Relatable moment | Warm, personal, first-person |
 | Soft hot take | Agree/extend or gentle pushback; no aggression |
 | Silly/absurdist post | Match the absurdity or don't reply — forced serious replies kill the vibe |
-
----
 
 ### Human Imperfection Protocol
 
@@ -225,8 +203,6 @@ Calibration check before posting:
 3. Does your reply have 0–2 natural imperfections that fit the chain's register?
 4. Would someone typing this on their phone in 20 seconds plausibly have written exactly this?
 
----
-
 ### Pre-Publish Checklist
 
 - [ ] Register matches Threads (conversational, not X-sharp)
@@ -241,8 +217,6 @@ Calibration check before posting:
 - [ ] Not a literal cross-post from X
 - [ ] Reply only: scanned chain for capitalization/tone/emoji pattern before writing
 - [ ] Reply only: 0–2 natural imperfections calibrated to chain vibe (medium for casual, low for personal/vulnerable)
-
----
 
 ## Examples
 
@@ -269,8 +243,6 @@ Threads version (conversational, observational, reply-inviting):
 
 What changed: lowercase casual, "watched my" is softer than "My agent spent," the takeaway becomes a question instead of a closed statement, no colon-styled callout. Same idea, native to Threads.
 
----
-
 ### Example 2: Pure Threads post (doesn't need to exist on X)
 
 > small observation from 6 months of using cursor daily:
@@ -281,15 +253,11 @@ What changed: lowercase casual, "watched my" is softer than "My agent spent," th
 
 What works: lowercase conversational register, a real observation not a hot take, ends on a specific number that invites replies (other people will share their own ceiling), no CTA needed.
 
----
-
 ### Example 3: Observational micro-take
 
 > there's a specific flavor of "i asked chatgpt" posts where you can tell the person never actually used the answer. they just wanted the vibes
 
 What works: 130 characters, one observation, mild callout without being mean. High likelihood of replies and reposts because readers recognize the pattern. No question, no CTA — the pattern recognition itself drives engagement.
-
----
 
 ### Example 4: Question post that generates a reply chain
 
@@ -300,8 +268,6 @@ What works: 130 characters, one observation, mild callout without being mean. Hi
 > i've been burning hours on the wrong side of that line
 
 What works: earnest tone, names a specific common pain, admits own weakness ("burning hours"), ends with no canned CTA. This type of post routinely generates 30+ replies on Threads — the platform's native conversation mode.
-
----
 
 ### Example 5: What NOT to post on Threads
 
@@ -314,11 +280,9 @@ Ported from X (fails on Threads):
 
 Why it fails on Threads: thread markers ("1/"), the 🧵 emoji, "40+ agents" credential flex, "nobody talks about" hot-take framing, the 5-numbered-points structure. All of this reads as X culture. On Threads the same idea would be one soft-take post inviting replies, not a broadcasted thread.
 
----
-
 ### Example 6: Thread-vibe matching (casual chain)
 
-Post: *"there's a specific flavor of 'i asked chatgpt' posts where you can tell the person never actually used the answer. they just wanted the vibes"*
+Post: "there's a specific flavor of 'i asked chatgpt' posts where you can tell the person never actually used the answer. they just wanted the vibes"
 
 Reply chain vibe: all lowercase, no punctuation, 1–2 lines, slightly absurdist.
 
@@ -332,11 +296,9 @@ Good reply (matches chain vibe, medium imperfection):
 
 What works: all lowercase, no periods, matches the 2-line casual pattern, extends the observation with a specific behavior (screenshotting the prompt) that readers will recognize.
 
----
-
 ### Example 7: Reply with calibrated imperfection (personal/vulnerable thread)
 
-Post: *"honest question for anyone building with LLMs: how do you decide when a bug is 'the model is wrong' vs 'your prompt is wrong'? i've been burning hours on the wrong side of that line"*
+Post: "honest question for anyone building with LLMs: how do you decide when a bug is 'the model is wrong' vs 'your prompt is wrong'? i've been burning hours on the wrong side of that line"
 
 Reply chain vibe: earnest, personal, lowercase but thoughtful, 2–3 lines.
 
@@ -349,8 +311,6 @@ Good reply (low imperfection, matches earnest register):
 > but if i've rewritten it 3 times and it's still wrong, that's usually the model
 
 What works: lowercase throughout (matches chain), missing apostrophe in `its` (one natural imperfection), earnest and specific answer, no over-casual slang that would feel dismissive of the person's real frustration.
-
----
 
 ## References
 

@@ -10,8 +10,6 @@ rules:
   - content(ruby)
 ---
 
-# Ruby Development
-
 ## Conventions
 
 - Idiomatic Ruby — expressive, readable, convention-over-configuration

@@ -18,8 +18,6 @@ rules:
   - match(\bsearch\s+engine\s+optimization\b)
 ---
 
-# GEO & AI Citation Optimization
-
 ## Overview
 
 AI search engines (ChatGPT, Perplexity, Google AI Overviews) don't rank pages — they cite them. Two disciplines layer on top of traditional SEO:
@@ -27,8 +25,6 @@ AI search engines (ChatGPT, Perplexity, Google AI Overviews) don't rank pages �
 - GEO (Generative Engine Optimization) — getting cited in ChatGPT, Perplexity, Gemini, Claude, Copilot
 
 AI-referred traffic is growing +527% YoY with 4.4x higher conversion rates than standard organic. But 97% of AI Overview citations come from pages already in the top 20 organic results — traditional SEO remains the foundation, GEO layers on top.
-
----
 
 ## Instructions
 
@@ -77,8 +73,6 @@ Cover topics comprehensively from multiple angles. Content scoring 8.5/10+ on se
 E-E-A-T amplification
 Author bylines with real credentials, first-hand examples, expert quotes with attribution, citations to reputable studies. AI engines apply multi-source corroboration before citing.
 
----
-
 ### Schema Markup
 
 Pages with comprehensive JSON-LD schema are 2–3x more likely to be cited by AI. Apply in order of impact:
@@ -105,8 +99,6 @@ Pages with comprehensive JSON-LD schema are 2–3x more likely to be cited by AI
 
 Always use JSON-LD (not microdata). Apply all applicable schemas together for maximum citation probability.
 
----
-
 ### AI Crawler Setup
 
 robots.txt — allow AI search bots (they cite and link back):
@@ -125,8 +117,6 @@ Training crawlers (GPTBot, Google-Extended) are optional — they train models b
 Bing Webmaster Tools — submit sitemap to Bing, not just Google Search Console. Critical for ChatGPT visibility.
 
 llms.txt — emerging standard for AI crawlers. Low adoption (~10% of domains), no proven citation impact yet. Nice to have, not critical.
-
----
 
 ## Examples
 

@@ -24,19 +24,15 @@ rules:
   - semantic(my retention drops in the first 3 seconds, what should the opener be)
 ---
 
-# Video Hooks — First-1.5s Retention Patterns
-
 ## Overview
 
-Short-form video lives or dies in the first 1.5 seconds. The hook is the only sentence in the script that matters more than the offer — if it doesn't earn the next breath, the user swipes and the rest of the work is wasted. This skill encodes the small number of hook patterns that *actually* convert on TikTok, Reels, and Shorts in 2025–2026, the rules each pattern follows, and the dead opens to avoid.
-
----
+Short-form video lives or dies in the first 1.5 seconds. The hook is the only sentence in the script that matters more than the offer — if it doesn't earn the next breath, the user swipes and the rest of the work is wasted. This skill encodes the small number of hook patterns that actually convert on TikTok, Reels, and Shorts in 2025–2026, the rules each pattern follows, and the dead opens to avoid.
 
 ## Instructions
 
 ### Core Rules
 
-- The hook is the first 1.5s of video, not the first sentence of the script. It is *visual + audible + on-screen text* together. Treat all three as the hook.
+- The hook is the first 1.5s of video, not the first sentence of the script. It is visual + audible + on-screen text together. Treat all three as the hook.
 - Earn the next second, not the next minute. Each beat (1.5s, 3s, 5s) needs its own retention reason.
 - Never open with the brand. Brand goes in the resolution, not the open. Brand-first opens have ~30–40% lower 3s retention.
 - Never open with "Hi guys" / "In this video" / "Today I'll show you". These are skip triggers — the algorithm has trained users to expect filler after them.
@@ -58,7 +54,7 @@ Short-form video lives or dies in the first 1.5 seconds. The hook is the only se
 | Direct Address | Existing followers / retargeting | `"This is for the [specific user] who [specific pain]."` |
 | Negative Framing | Performance ads (Meta/TikTok) | `"Don't [common action] until you [see this/read this]."` |
 | Confession | UGC / authentic | `"I'm not supposed to say this, but [insider truth]."` |
-| Demo-Cold-Open | Product-led | Show the result *first*, no setup, then reverse-engineer the how. |
+| Demo-Cold-Open | Product-led | Show the result first, no setup, then reverse-engineer the how. |
 
 ### Visual Hook Devices (stack on top of script)
 
@@ -88,8 +84,6 @@ Short-form video lives or dies in the first 1.5 seconds. The hook is the only se
 | Audience is already a fan / past visitor | Direct Address or Identity Bait |
 | Performance ad on TikTok / Meta | Negative Framing or Pattern-Interrupt |
 | Educational / informational content | Curiosity-Gap or Listicle Promise |
-
----
 
 ## Examples
 
@@ -136,8 +130,6 @@ Variant B — Confession
 - Voice: `Nobody told me this would happen the second week of using it.`
 - Motion: hand reveals the product mid-frame.
 
----
-
 ## Hooks That Are Banned
 
 These openers measurably tank retention — never use them:
@@ -150,8 +142,6 @@ These openers measurably tank retention — never use them:
 - Any sentence that starts with "So..."
 - A static product shot with no motion
 - Music-only opener with no visual or text claim
-
----
 
 ## References
 

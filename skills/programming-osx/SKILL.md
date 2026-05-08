@@ -14,8 +14,6 @@ rules:
   - match(mac.+app|macos.+app|osx.+app|desktop.+app)
 ---
 
-# macOS Development
-
 ## Conventions
 
 - SwiftUI for Mac first — AppKit only for advanced window management and legacy APIs

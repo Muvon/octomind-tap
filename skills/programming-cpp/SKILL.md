@@ -15,8 +15,6 @@ rules:
   - content(cpp)
 ---
 
-# C++ Development
-
 ## Conventions
 
 - Modern C++ — default to C++20, C++23 features when project opts in

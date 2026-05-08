@@ -21,13 +21,9 @@ rules:
   - semantic(my content keeps getting flagged as AI written)
 ---
 
-# Content Humanization
-
 ## Overview
 
 AI-generated text has measurable signatures that readers and search engines detect. This skill encodes the science behind those signals, a scoring diagnostic across 8 dimensions, and a 7-pass rewrite technique for eliminating them. The goal isn't evasion — it's quality. Human-written articles get 5.44x more traffic and hold reader attention 41% longer.
-
----
 
 ## Instructions
 
@@ -45,8 +41,6 @@ AI-generated text has measurable signatures that readers and search engines dete
 | Transitions | "Furthermore", "Moreover", "Additionally" | Absent, or "But.", "So.", "The catch?" |
 
 Google's March 2026 update amplified "Experience" — content demonstrating genuine first-hand experience outranks comprehensive but impersonal content. 96% of AI Overview citations come from sources with strong E-E-A-T signals.
-
----
 
 ### 8-Dimension Diagnostic
 
@@ -114,8 +108,6 @@ Also flag formal overreach: "utilize" (use), "facilitate" (help), "demonstrate" 
 - Check for zero-transition jumps (just starting the next idea — humans do this often)
 - Score: organic or absent transitions = high, formulaic = low
 
----
-
 ### Diagnostic Report Format
 
 ```
@@ -144,8 +136,6 @@ Also flag formal overreach: "utilize" (use), "facilitate" (help), "demonstrate" 
 [List every flagged word/phrase with location]
 ```
 
----
-
 ### 7-Pass Rewrite Technique
 
 Apply section by section, in order. Preserve every fact, citation, and data point — rewrite the voice, not the content.
@@ -163,8 +153,6 @@ Pass 5: Grammar humanity — Start 2–3 sentences per section with "And" or "Bu
 Pass 6: Voice injection — At least one first-person observation per major section (if content type allows). At least one opinion or position taken. At least one moment of specificity: a named tool, person, date, or publication. At least one emotional beat: enthusiasm, skepticism, surprise, frustration.
 
 Pass 7: Structure — Make section lengths deliberately unequal. Vary paragraph openers (question, example, continuation — not always topic sentence). If the conclusion recaps, rewrite to end with a question, prediction, or callback. If subheadings are generic, inject personality. Kill synonym rotation — pick the best word and stick with it.
-
----
 
 ## Examples
 

@@ -147,6 +147,45 @@ if bold_matches:
     print(f"BODY_HAS_BOLD: {len(bold_matches)} **bold** pattern(s) in body — strip them (headers and lists provide structure). First match: {sample}", file=sys.stderr)
     sys.exit(1)
 
+# No ***bold-italic*** — pure decoration
+bi_matches = re.findall(r'\*\*\*[^*\n]+?\*\*\*', no_inline_code)
+if bi_matches:
+    sample = bi_matches[0][:60]
+    print(f"BODY_HAS_BOLD_ITALIC: {len(bi_matches)} ***bold-italic*** pattern(s) in body — strip them. First match: {sample}", file=sys.stderr)
+    sys.exit(1)
+
+# No *italic* — pure decoration (asterisk emphasis adds no semantic value for the model)
+italic_matches = re.findall(r'(?<![*\w])\*([^*\s][^*\n]{0,200}?[^*\s])\*(?!\*)', no_inline_code)
+if italic_matches:
+    sample = italic_matches[0][:60]
+    print(f"BODY_HAS_ITALIC: {len(italic_matches)} *italic* pattern(s) in body — strip them (decoration, not semantics). First match: *{sample}*", file=sys.stderr)
+    sys.exit(1)
+
+# No --- horizontal rule separators — ## H2 already marks sections
+hr_matches = re.findall(r'^---\s*$', no_inline_code, re.MULTILINE)
+if hr_matches:
+    print(f"BODY_HAS_HR: {len(hr_matches)} '---' horizontal-rule separator(s) in body — strip them (## headers already mark sections; HR is pure decoration)", file=sys.stderr)
+    sys.exit(1)
+
+# No leading # H1 — frontmatter `title:` is the canonical title; H1 in body duplicates it
+body_stripped = body.lstrip()
+if body_stripped.startswith('# '):
+    h1_line = body_stripped.split('\n', 1)[0]
+    print(f"BODY_HAS_REDUNDANT_H1: body starts with '{h1_line[:60]}' — frontmatter `title:` is the canonical title; remove the H1 (token waste, no semantic gain)", file=sys.stderr)
+    sys.exit(1)
+
+# Body length cap — Anthropic recommends "under 500 lines" (~2500-3500 words)
+# Beyond ~4000 words, context rot degrades recall on individual rules
+word_count = len(body.split())
+SOFT_LIMIT = 3000
+HARD_LIMIT = 4500
+if word_count > HARD_LIMIT:
+    print(f"BODY_TOO_LONG: body is {word_count} words (hard limit {HARD_LIMIT}). Anthropic recommends splitting large skills via progressive disclosure (SKILL.md + reference/*.md files).", file=sys.stderr)
+    sys.exit(1)
+if word_count > SOFT_LIMIT:
+    # Soft warning — does not fail lint, just surfaces
+    print(f"BODY_LENGTH_WARN: body is {word_count} words (soft target {SOFT_LIMIT}). Consider splitting into reference files for better token economy.", file=sys.stderr)
+
 sys.exit(0)
 EOF
 )

@@ -7,15 +7,11 @@ compatibility: "Requires: octomind-tap repo. Use alongside tap-capability-author
 domains: octomind
 ---
 
-# Agent Manifest Authoring
-
 ## Overview
 
 This skill encodes everything needed to write a correct, high-quality `agents/<domain>/<spec>.toml` file for the octomind-tap registry. It covers the exact TOML format, required and forbidden fields, how to write effective system prompts, temperature/top_p guidelines by domain, workflow and layer patterns for multi-step pipelines, and the pre-write checklist.
 
 Use this skill whenever you are creating or editing an agent manifest.
-
----
 
 ## Instructions
 
@@ -71,8 +67,6 @@ top_k = 0
 | `[roles.mcp]` | Injected from capabilities at runtime. |
 | `[[mcp.servers]]` | MCP servers belong in capability files. |
 
----
-
 ### System Prompt Structure (mandatory — 2026 standard)
 
 System prompts must use XML-tagged blocks in a fixed order. This is grounded in three findings: (1) the U-shape attention curve — beginning and end of the prompt get the most attention, the middle gets "lost"; (2) Anthropic's published guidance that XML tags are the preferred structuring method for Claude; (3) Claude Opus 4.7 follows instructions more literally than 4.6 — implicit gaps don't get bridged anymore, so structure has to be explicit.
@@ -120,8 +114,9 @@ Block-by-block authoring rules:
 - `<critical>` — Two named lists: NEVER and ALWAYS. Hard fails on top, must-dos on bottom. Nothing else — no CWD/DATE placeholders, no preamble.
 
 Token discipline (Claude 4.7 / 2026):
-- 200–1000 words for the full system prompt is the production sweet spot
-- Beyond 1500 words you risk context rot — model recall on rules degrades
+- Target: 200–1000 words for the full system prompt is the production sweet spot
+- Soft warning at 1500 words (`SYSTEM_LENGTH_WARN`) — context rot risk
+- Hard cap: 3000 words. Above this, `lint-manifests.sh` fails with `SYSTEM_TOO_LONG` — extract documentation/reference content into skills.
 - Be explicit — Claude 4.7 doesn't bridge implicit gaps the way 4.6 did
 - Static content first for prompt caching (saves up to 90% cost on repeat sessions)
 - No decorative prose — every line must do work; if you can cut it without losing meaning, cut it
@@ -138,13 +133,14 @@ Anti-patterns that break the structure:
 - Long preambles before `<identity>` (e.g. "Welcome to this agent...") — wastes the primacy slot
 - Critical rules buried in the middle — they get "lost"
 - `<critical>` block with paragraphs of explanation — keep it tight: NEVER / ALWAYS bullet lists, that's it
+- Embedding reference documentation (CLI commands, config schema, API listings) inside the system prompt — this ships to the model on every activation, even for unrelated questions. Reference content belongs in skills loaded on demand, not in `system`. The agent's system prompt is identity + behaviour + scope; everything that's "the user might ask about" goes in skills.
 
 Markdown discipline inside XML blocks (token economy — mandatory):
 
 The XML tag IS the structural anchor. Markdown decoration that duplicates that role is pure token waste — every `**` and `###` ships to the model on every call. Strip the noise:
 
 - No `### subsection` heading at the top of an XML block. The opening tag already names the section. `<voice>` followed immediately by `### Voice & Tone` is redundant — drop the H3.
-- **`### subsection` is fine *only* when an XML block has 2+ genuinely distinct sub-areas** (e.g. `<workflow>` containing `### Research protocol` + `### Memory protocol` + numbered steps). Single-subsection blocks should flow as plain prose under the tag.
+- `### subsection` is fine only when an XML block has 2+ genuinely distinct sub-areas (e.g. `<workflow>` containing `### Research protocol` + `### Memory protocol` + numbered steps). Single-subsection blocks should flow as plain prose under the tag.
 - No `bold` on bullet leads. `- Active voice — "Studies show X"` becomes `- Active voice — "Studies show X"`. The em-dash already separates lead from explanation. Bold adds tokens, not meaning.
 - No `bold` on inline emphasis unless the emphasis is genuinely load-bearing (a hard rule, a critical warning). Default: drop it.
 - Keep tables. `|---|---|` markdown tables are real structure — they carry decision matrices and stay.
@@ -172,8 +168,6 @@ Medical, legal, and financial agents MUST include prominent disclaimers in the s
 - Legal: "NOT a licensed attorney, legal information only"
 - Financial: "NOT financial advice"
 
----
-
 ### Placeholder Variables
 
 | Placeholder | Use for |
@@ -183,8 +177,6 @@ Medical, legal, and financial agents MUST include prominent disclaimers in the s
 | `{{INPUT:KEY}}` | Secret, user-global (e.g. API keys) |
 | `{{ENV:KEY}}` | Non-secret or project-scoped env var |
 
----
-
 ### Naming and Metadata Rules
 
 - File path matches tag: `developer:rust` → `agents/developer/rust.toml`
@@ -192,8 +184,6 @@ Medical, legal, and financial agents MUST include prominent disclaimers in the s
 - One `[[roles]]` per file
 - `# Title:` — 5–60 chars. Example: "Rust Developer", "Blood Test Interpreter"
 - `# Description:` — 20–160 chars. Concise and scannable, like an SEO meta description
-
----
 
 ### Workflows & Layers (Multi-Step Pipelines)
 
@@ -272,8 +262,6 @@ allowed_tools = ["octofs:view", "octocode:semantic_search"]
 
 See `agents/developer/autopilot.toml` for a complete workflow example.
 
----
-
 ### Pre-Write Checklist
 
 Before writing any agent manifest, verify:
@@ -293,8 +281,6 @@ Before writing any agent manifest, verify:
 - [ ] No `[deps]`, `[roles.mcp]`, or `[[mcp.servers]]` in the agent file?
 - [ ] Run `bash scripts/lint-manifests.sh agents/<domain>/<spec>.toml` — passes clean?
 - [ ] Run `bin/load <domain>:<spec>` — resolves without errors?
-
----
 
 ## Examples
 
@@ -386,8 +372,6 @@ server_refs = ["octofs"]
 [[mcp.servers]]
 name = "octofs"
 ```
-
----
 
 ## References
 

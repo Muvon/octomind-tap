@@ -11,8 +11,6 @@ rules:
   - content(swift)
 ---
 
-# Swift Development
-
 ## Conventions
 
 - Swift 6 language mode for strict concurrency — opt into complete data-race safety (set `swiftLanguageMode: .v6` in Package.swift)

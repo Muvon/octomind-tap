@@ -26,13 +26,9 @@ rules:
   - semantic(my ad is not converting, what is wrong with the structure)
 ---
 
-# Ad Frameworks — AIDA, PAS, BAB, 4Us
-
 ## Overview
 
 Strong ads aren't written from scratch — they're written into a framework that has been pressure-tested across millions of dollars of spend. The framework's job is to make the structure invisible: the viewer feels a story, the writer follows a checklist. This skill gives you the small set of frameworks that actually convert in 2026 short-form video and direct-response copy, plus a rule for which one to pick based on the audience's awareness level (Schwartz's five stages).
-
----
 
 ## Instructions
 
@@ -159,8 +155,6 @@ Avoid for: B2B explainer, anything where a story would feel forced.
 | Cold email | PAS, 75 words max |
 | Retargeting / cart-abandon | Direct offer, no framework, lead with deal |
 
----
-
 ## Examples
 
 ### Example 1: PAS for a B2B SaaS TikTok ad (30s)
@@ -218,11 +212,9 @@ Product: A teeth-whitening pen. Audience: cold, scrolling.
 11–15 A "Free calculator at link. 60 seconds, no signup."
 ```
 
----
-
 ## References
 
-- Eugene Schwartz, *Breakthrough Advertising* (1966) — the awareness-level model.
-- David Ogilvy, *Ogilvy on Advertising* — the canonical book on long-form direct-response.
+- Eugene Schwartz, Breakthrough Advertising (1966) — the awareness-level model.
+- David Ogilvy, Ogilvy on Advertising — the canonical book on long-form direct-response.
 - [Meta Ads Library](https://www.facebook.com/ads/library/) — to study current top-spending ads.
 - [TikTok Top Ads](https://ads.tiktok.com/business/creativecenter/topads) — by vertical and region.

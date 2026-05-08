@@ -14,8 +14,6 @@ rules:
   - match(\bstarter\s+pack\b)
 ---
 
-# Bluesky Publishing Playbook
-
 ## Overview
 
 Bluesky in 2026 is not late-era Twitter with a blue logo. It's a federated AT Protocol network where the user — not the platform — picks the algorithm. Discovery happens through custom feeds and starter packs, not a single opaque For You feed. The culture skews more technical, more skeptical of hype, and more willing to punish AI-slop and engagement-bait than X.
@@ -213,8 +211,6 @@ Bluesky profiles are search-indexed and curators read them.
 - Huge link-card posts with no text. Looks like a feed bot. Add one sentence of framing.
 - Reply-guy behavior on mega accounts. The platform is small enough that regulars recognize it.
 
----
-
 ## Thread-Vibe Matching
 
 Before replying, read the existing reply chain. Bluesky reply chains are calmer than X — the Following feed is chronological, so there's no rush — but the tone is set quickly and deviating reads as out-of-place.
@@ -235,8 +231,6 @@ Vibe calibration by post type:
 | Question to the feed | Answer directly and specifically; no hedging |
 | Personal/project post | Warmer, shorter, first-person |
 | Quote post | Add one specific thing; don't echo |
-
----
 
 ## Human Imperfection Protocol
 
@@ -273,8 +267,6 @@ Calibration check before posting:
 2. Read the thread — is it technical/formal or casual/conversational?
 3. Does your reply have 0–1 subtle imperfections that fit the register?
 4. Would a thoughtful engineer typing this at normal speed plausibly have written exactly this?
-
----
 
 ## Examples
 
@@ -349,7 +341,7 @@ Dedup on (post ID, rev) instead.
 
 ### Example 5 — Thread-vibe matching (technical thread)
 
-Post: *"Ran the AT Protocol firehose through a week of our traffic. Three things surprised me."*
+Post: "Ran the AT Protocol firehose through a week of our traffic. Three things surprised me."
 
 Reply chain vibe: technical, measured, 2–4 sentences, proper punctuation, specific data points.
 
@@ -363,11 +355,9 @@ Good reply (matches technical register, very low imperfection):
 
 What works: matches the technical depth and measured tone of the chain, adds a specific counter-data point (7 hours vs 2), offers a concrete fix, one missing period at end of first line is the only imperfection.
 
----
-
 ### Example 6 — Reply with calibrated imperfection (casual thread)
 
-Post: *"For people who've run feed generators: what's your actual p99 for posts-to-inclusion? Mine hovers around 4 minutes and I can't tell if that's slow or normal."*
+Post: "For people who've run feed generators: what's your actual p99 for posts-to-inclusion? Mine hovers around 4 minutes and I can't tell if that's slow or normal."
 
 Reply chain vibe: casual, conversational, lowercase openers, 1–3 lines.
 
@@ -380,8 +370,6 @@ Good reply (low imperfection, matches casual-but-technical register):
 > 4 minutes sounds normal to me — the indexer batches in 60s windows so you're always at least a minute behind
 
 What works: lowercase opener matches the chain, no closing period on line 1 (one natural imperfection), specific numbers, explains the mechanism (60s batching), reads like a practitioner typing between tasks.
-
----
 
 ## Pre-Publish Checklist
 

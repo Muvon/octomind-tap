@@ -15,15 +15,11 @@ rules:
   - match(\b(mcp|dep)\s+manifest\b)
 ---
 
-# Tap Dep Script Authoring
-
 ## Overview
 
 A dep script is a `deps/<org>/<tool>.sh` bash script that auto-installs a tool or MCP server runtime before an Octomind session starts. Deps are never run manually — Octomind runs them automatically to ensure the required binary is available. Every dep script must handle macOS and all major Linux package managers.
 
 Each dep script must have a matching `deps/<org>/<tool>.md` companion doc.
-
----
 
 ## Instructions
 
@@ -179,8 +175,6 @@ info "<tool> installed successfully."
 
 Never re-implement platform detection — always source `deps/lib/platform.sh`.
 
----
-
 ### Companion Documentation
 
 Every `.sh` must have a matching `.md` at the same path (`deps/<org>/<tool>.md`).
@@ -195,8 +189,6 @@ For plain deps (`type: dep`) — copy `templates/dep-tool.md`, must include:
 - `## Key Commands` — most important CLI commands
 - `## Common Usage` — typical usage patterns with examples
 
----
-
 ### Validation
 
 ```bash
@@ -204,8 +196,6 @@ bash scripts/lint-deps.sh deps/<org>/<tool>.sh
 ```
 
 Checks: required header comments present, `# type:` set, companion `.md` exists, script is executable.
-
----
 
 ### Creation Checklist
 
@@ -217,8 +207,6 @@ Checks: required header comments present, `# type:` set, companion `.md` exists,
 - [ ] Post-install `pkg_check` verify with `die` on failure
 - [ ] Companion `deps/<org>/<tool>.md` exists with correct sections
 - [ ] `bash scripts/lint-deps.sh deps/<org>/<tool>.sh` passes clean
-
----
 
 ## Examples
 
@@ -313,8 +301,6 @@ DEPS_LIB="$(cd "$(dirname "${BASH_SOURCE[0]}")/../lib" && pwd)"
 source "$DEPS_LIB/platform.sh"
 brew_install something
 ```
-
----
 
 ## References
 

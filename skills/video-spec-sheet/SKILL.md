@@ -25,13 +25,9 @@ rules:
   - semantic(why does my video get cropped on Instagram)
 ---
 
-# Video Spec Sheet — Platform Specs and Safe Zones
-
 ## Overview
 
 Each social platform has its own combination of aspect ratio, max duration, codec, bitrate, frame rate, and caption / UI safe zones. Getting any of these wrong on the export means the platform will either reject, re-encode (quality drop), or crop your creative. This skill encodes the current 2026 specs as a single-source-of-truth table the agent can extract from per brief.
-
----
 
 ## Instructions
 
@@ -107,7 +103,7 @@ Each social platform has its own combination of aspect ratio, max duration, code
 2. Pick aspect, length cap, fps from the table.
 3. Mark safe zones when storyboarding — keep face, hook text, CTA inside the center region.
 4. At export, use the matching ffmpeg preset above.
-5. If publishing to multiple platforms, render the master in the *largest* aspect (e.g. 9:16 1080×1920 30fps) and downconvert to others — never upscale.
+5. If publishing to multiple platforms, render the master in the largest aspect (e.g. 9:16 1080×1920 30fps) and downconvert to others — never upscale.
 
 ### Decision Guide
 
@@ -124,8 +120,6 @@ Each social platform has its own combination of aspect ratio, max duration, code
 | "X / Twitter post" | 16:9 1280×720 if widescreen, else 1:1 1080×1080 |
 | "LinkedIn post" | 1:1 1080×1080 (preferred) or 16:9 1920×1080 |
 | "Pinterest" | 9:16 1080×1920 |
-
----
 
 ## Examples
 
@@ -154,8 +148,6 @@ Brief: One ad, ship to TikTok + IG Reels + IG feed + YT Shorts + YT long-form tr
 | YT Shorts | 9:16 | 1080×1920 | 45s (master, captions repositioned higher) |
 | IG feed (1:1 cut-down) | 1:1 | 1080×1080 | 30s (re-edited, key beats only) |
 | YT long-form trailer | 16:9 | 1920×1080 | 60s (re-edited, b-roll padded) |
-
----
 
 ## References
 

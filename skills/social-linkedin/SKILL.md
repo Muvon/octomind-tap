@@ -13,15 +13,11 @@ rules:
   - match(\bcareer\s+post\b)
 ---
 
-# LinkedIn Publishing Playbook
-
 ## Overview
 
 LinkedIn in 2026 is not the LinkedIn of 2020. The algorithm rewards dwell time above everything else, comments weigh ~15× a like, and overall impressions have dropped ~63% platform-wide since 2024 — meaning the remaining audience is harder to earn and easier to lose. At the same time, the "motivational quote + emoji + humble brag" era is over; LinkedIn's 2026 LLM-powered ranking actively suppresses generic inspirational content.
 
 Pair with `content-voice` for human voice. LinkedIn has its own dialect ("excited to announce," "humbled to share") that reads instantly as AI or PR. Kill it hard.
-
----
 
 ## Instructions
 
@@ -47,8 +43,6 @@ Critical structural facts:
 - Impressions dropped 63% platform-wide since 2024. What counted as a flop two years ago is now a good post.
 - The 210-character fold: only the first ~210 chars show before "…see more" on mobile. If the user doesn't click "see more," you get close to zero dwell time. The hook must earn the expand click.
 
----
-
 ### What LinkedIn Kills in 2026 (dead patterns)
 
 These used to work. They don't now. The 2026 LLM-based ranker actively downranks them:
@@ -66,8 +60,6 @@ These used to work. They don't now. The 2026 LLM-based ranker actively downranks
 - "As a leader…" / "As a founder…" / "As an entrepreneur…" opens
 - Story-that-isn't-a-story: "Yesterday a junior dev asked me…" followed by a generic lesson. The 2026 ranker detects fabricated parables
 
----
-
 ### Post Length — 3 Modes
 
 LinkedIn allows up to 3000 characters. Three viable modes:
@@ -79,8 +71,6 @@ LinkedIn allows up to 3000 characters. Three viable modes:
 | Authority article | 2000–3000 | Long-form thinking, white paper bait |
 
 The 1300–2000 band is the sweet spot for dwell time + comment generation. Shorter posts can go viral but rarely generate the conversation LinkedIn rewards.
-
----
 
 ### The Post Anatomy (1300–2000 char mode)
 
@@ -102,8 +92,6 @@ Rules:
 - Body in the expanded section is where specifics go — numbers, names, concrete artifacts, your actual experience.
 - Closing question must be answerable. "What's your take?" is dead. "Has anyone tried X in production? Did it behave the way I'm describing?" works.
 
----
-
 ### Hook Patterns That Earn the Expand Click
 
 LinkedIn's 210-char fold is brutal. These hook shapes survive it:
@@ -118,8 +106,6 @@ LinkedIn's 210-char fold is brutal. These hook shapes survive it:
 
 Never open with: "Excited to," "Thrilled to," "Humbled to," "Happy to," "I'm proud to," a generic quote, or a motivational aphorism.
 
----
-
 ### Post Types That Work in 2026
 
 | Type | Structure | Why It Works |
@@ -132,8 +118,6 @@ Never open with: "Excited to," "Thrilled to," "Humbled to," "Happy to," "I'm pro
 | Short-form vertical video (< 90s) | Face-to-camera or screen recording | The single most boosted format in 2026 |
 
 What doesn't work as its own post type: pure product announcement, pure inspirational quote, pure request-for-network-help without value offered in return.
-
----
 
 ### Comment Strategy
 
@@ -153,8 +137,6 @@ On others' posts (the actual growth play):
 - No links in comments unless asked. LinkedIn throttles them.
 - Tag people sparingly and only when genuinely relevant.
 
----
-
 ### Documents (PDF Carousels)
 
 Still a boosted format as of 2026 but declining — use selectively.
@@ -165,8 +147,6 @@ Still a boosted format as of 2026 but declining — use selectively.
 - Last slide = soft CTA — "Save this if it was useful" or "Follow for more on [niche]"
 - Design matters. Canva-default templates are obvious; bespoke or minimalist wins.
 
----
-
 ### Videos (the 2026 growth edge)
 
 - Vertical (9:16), native upload. Re-uploads from TikTok/IG get suppressed.
@@ -176,16 +156,12 @@ Still a boosted format as of 2026 but declining — use selectively.
 - Face-to-camera outperforms voiceover for personal accounts.
 - No intro logos, no "hey guys welcome back." Straight to the point.
 
----
-
 ### Timing
 
 - Best windows: Tue–Thu, 8–10 AM local and 12–1 PM local (lunch scroll).
 - Avoid: Friday afternoon, all weekend for B2B audiences; Sunday evening can work for career/personal-development content.
 - One post per day max for personal accounts; more dilutes each post's reach budget.
 - Company pages are separate and generally have 5–10× less organic reach — don't mix strategies.
-
----
 
 ### Thread-Vibe Matching (Comments)
 
@@ -206,8 +182,6 @@ Vibe calibration by post type:
 | Contrarian take | Engage the claim directly; disagree or extend with specifics |
 | Announcement / milestone | Brief acknowledgment + a real question (not "congrats!") |
 | Data reveal | Add a counter-data point or a "we saw the same/opposite" |
-
----
 
 ### Human Imperfection Protocol
 
@@ -244,8 +218,6 @@ Calibration check before posting:
 3. Does your comment have 0–1 natural imperfections appropriate to the register?
 4. Would a professional typing this between meetings plausibly have written exactly this?
 
----
-
 ### Pre-Publish Checklist
 
 - [ ] First 210 characters stand alone and pull the expand click
@@ -261,8 +233,6 @@ Calibration check before posting:
 - [ ] Strip-test (announcement / win / company-mention posts): if the announcement, milestone, or company name is removed, is the post still useful or interesting to a reader? If no, it's a humble-brag wearing a story's clothes — rewrite around the actual lesson, or skip the post
 - [ ] Post: zero imperfections (or one subtle slip in a personal/casual post only)
 - [ ] Comment only: scanned existing comments for length/formality before writing; 0–1 natural imperfection calibrated to register
-
----
 
 ## Examples
 
@@ -282,8 +252,6 @@ Good (counter-intuitive + specific):
 > [body below the fold…]
 
 What works: line 1 creates a gap the reader must close. Specific number. Promise of a counter-intuitive lesson. No LinkedIn-speak.
-
----
 
 ### Example 2: 1300–1800 char story post
 
@@ -317,8 +285,6 @@ Has anyone else had a deal die on a specific line they wrote? Curious which phra
 
 What works: specific dollar amount, concrete scene, three numbered lessons that are actually lessons (not platitudes), honest failure, closing question is answerable from real experience not a forced prompt.
 
----
-
 ### Example 3: Short virality-mode post
 
 ```
@@ -335,8 +301,6 @@ Write a 3-line "what this role actually does on Monday morning" instead. Watch y
 
 What works: under 300 characters would be tighter, but this reads as a sharp single-idea post. No fold problem because it's short enough to read whole. Contrarian claim, evidence, actionable alternative, specific prediction.
 
----
-
 ### Example 4: Closing question comparison
 
 Dead (engagement bait):
@@ -350,11 +314,9 @@ Alive (answerable from experience):
 
 What works: specific, bounded, invites someone who has a counter-example to contribute something the OP hasn't thought of. These replies drive the dwell time and comment chains that amplify reach.
 
----
-
 ### Example 5: Comment that earns a profile visit
 
-Someone posts: *"We cut our engineering hiring in half this year and shipped more features than the year before."*
+Someone posts: "We cut our engineering hiring in half this year and shipped more features than the year before."
 
 Bad (echo, no substance):
 > This is so true! Quality over quantity, always.
@@ -368,11 +330,9 @@ Good (extending with specifics):
 
 What works: specific numbers from own experience, extends the idea with an unexpected angle (meetings disappeared), closes with a real question that invites a reply. High chance of profile visit, very high chance of a reply-to-your-reply (the compounding signal).
 
----
-
 ### Example 6: Thread-vibe matching in a casual comment thread
 
-Post: *"We cut our engineering hiring in half this year and shipped more features than the year before."*
+Post: "We cut our engineering hiring in half this year and shipped more features than the year before."
 
 Comment thread vibe: casual, 1–3 lines, conversational, no formal punctuation.
 
@@ -386,11 +346,9 @@ Good comment (matches casual vibe, 1 natural imperfection):
 
 What works: matches the short/casual register of the thread, missing period at the end of line 1 reads natural, adds a specific angle (meta-meetings) without lecturing.
 
----
-
 ### Example 7: Comment with calibrated imperfection (professional thread)
 
-Post: *"I lost a $40k deal last week because of a single sentence in my email."*
+Post: "I lost a $40k deal last week because of a single sentence in my email."
 
 Comment thread vibe: professional, 3–5 lines, full sentences, sharing real experiences.
 
@@ -405,8 +363,6 @@ Good comment (low imperfection, matches professional register):
 > Now we only mention scale if they bring it up first.
 
 What works: one missing article (`[the] exact same thing` → `the exact same thing` — actually clean here, which is right for a professional thread), specific parallel experience, concrete lesson, no imperfections because the register doesn't call for them.
-
----
 
 ## References
 
