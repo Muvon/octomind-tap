@@ -52,7 +52,7 @@ Google's March 2026 update amplified "Experience" — content demonstrating genu
 
 Score each dimension 1–10 (10 = fully human). Sum = X/80.
 
-**Risk levels**: Pass (65+) / Borderline (45–64) / Flagged (30–44) / Critical (<30)
+Risk levels: Pass (65+) / Borderline (45–64) / Flagged (30–44) / Critical (<30)
 
 #### 1. Perplexity (Word-Level Unpredictability)
 - Flag every statistically obvious word choice
@@ -150,28 +150,28 @@ Also flag formal overreach: "utilize" (use), "facilitate" (help), "demonstrate" 
 
 Apply section by section, in order. Preserve every fact, citation, and data point — rewrite the voice, not the content.
 
-**Pass 1: Vocabulary** — Replace every dead word, dead transition, dead phrase, and formal overreach. Use the simplest natural word. Don't replace with another AI-sounding synonym — use what a human expert in this field would actually say.
+Pass 1: Vocabulary — Replace every dead word, dead transition, dead phrase, and formal overreach. Use the simplest natural word. Don't replace with another AI-sounding synonym — use what a human expert in this field would actually say.
 
-**Pass 2: Contractions** — Convert every uncontracted form unless it's deliberate emphasis. "Do not touch this" (emphasis) is fine. "It does not appear to be the case" → "It doesn't look like it."
+Pass 2: Contractions — Convert every uncontracted form unless it's deliberate emphasis. "Do not touch this" (emphasis) is fine. "It does not appear to be the case" → "It doesn't look like it."
 
-**Pass 3: Rhythm** — Rebuild sentence lengths for burstiness. Find runs of 3+ similar-length sentences: break one into a fragment, merge two into a long flowing one. After any sentence >25 words, follow with one <8 words. Insert a one-sentence paragraph between dense ones.
+Pass 3: Rhythm — Rebuild sentence lengths for burstiness. Find runs of 3+ similar-length sentences: break one into a fragment, merge two into a long flowing one. After any sentence >25 words, follow with one <8 words. Insert a one-sentence paragraph between dense ones.
 
-**Pass 4: Transitions** — Kill every formulaic transition. Replace with nothing (just start the next idea), or: "But.", "So here's the thing.", "The catch?", "And yet —", "Which brings up something interesting."
+Pass 4: Transitions — Kill every formulaic transition. Replace with nothing (just start the next idea), or: "But.", "So here's the thing.", "The catch?", "And yet —", "Which brings up something interesting."
 
-**Pass 5: Grammar humanity** — Start 2–3 sentences per section with "And" or "But". Add 1–2 parenthetical asides per major section. Use at least one fragment per section. Remove all trailing participle phrases — rewrite as separate sentences. Remove all "not just X, but also Y" constructions. Remove semicolons connecting simple phrases.
+Pass 5: Grammar humanity — Start 2–3 sentences per section with "And" or "But". Add 1–2 parenthetical asides per major section. Use at least one fragment per section. Remove all trailing participle phrases — rewrite as separate sentences. Remove all "not just X, but also Y" constructions. Remove semicolons connecting simple phrases.
 
-**Pass 6: Voice injection** — At least one first-person observation per major section (if content type allows). At least one opinion or position taken. At least one moment of specificity: a named tool, person, date, or publication. At least one emotional beat: enthusiasm, skepticism, surprise, frustration.
+Pass 6: Voice injection — At least one first-person observation per major section (if content type allows). At least one opinion or position taken. At least one moment of specificity: a named tool, person, date, or publication. At least one emotional beat: enthusiasm, skepticism, surprise, frustration.
 
-**Pass 7: Structure** — Make section lengths deliberately unequal. Vary paragraph openers (question, example, continuation — not always topic sentence). If the conclusion recaps, rewrite to end with a question, prediction, or callback. If subheadings are generic, inject personality. Kill synonym rotation — pick the best word and stick with it.
+Pass 7: Structure — Make section lengths deliberately unequal. Vary paragraph openers (question, example, continuation — not always topic sentence). If the conclusion recaps, rewrite to end with a question, prediction, or callback. If subheadings are generic, inject personality. Kill synonym rotation — pick the best word and stick with it.
 
 ---
 
 ## Examples
 
-**AI writes:**
+AI writes:
 > "Digital marketing has evolved significantly over the past decade. Companies now utilize multiple channels to reach their audiences. Social media platforms offer unique opportunities for engagement. Content marketing remains a powerful strategy for building trust."
 
-**Human writes:**
+Human writes:
 > "Digital marketing looks nothing like it did ten years ago. Nothing. The channels alone — social, search, email, video, podcasts, influencer partnerships — would've seemed absurd in 2014. And here's what nobody tells you: most companies are still figuring it out, throwing budget at whatever platform had a good case study last quarter."
 
-**What changed:** Specific over abstract. Fragments for punch. Contractions throughout. First-person energy. Unexpected vocabulary. Dramatic rhythm shifts. No dead words.
+What changed: Specific over abstract. Fragments for punch. Contractions throughout. First-person energy. Unexpected vocabulary. Dramatic rhythm shifts. No dead words.

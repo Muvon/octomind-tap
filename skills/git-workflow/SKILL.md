@@ -28,7 +28,7 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 [optional footer]
 ```
 
-**Types:**
+Types:
 - `feat` — new feature
 - `fix` — bug fix
 - `refactor` — code change that neither fixes a bug nor adds a feature
@@ -38,7 +38,7 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 - `chore` — build process, tooling, dependencies
 - `ci` — CI/CD changes
 
-**Rules:**
+Rules:
 - Summary line: max 72 characters, imperative mood ("add" not "added")
 - No period at end of summary
 - Body: wrap at 72 characters, explain *why* not *what*
@@ -59,11 +59,11 @@ Use kebab-case. Keep it short but descriptive. Match the commit type.
 
 ### Workflow Rules
 
-1. **Never commit directly to `main`** — always use a branch
-2. **Keep commits atomic** — one logical change per commit
-3. **Rebase before merging** — keep history linear: `git rebase main`
-4. **Squash WIP commits** before opening a PR
-5. **Tag releases** with semantic versioning: `v1.2.3`
+1. Never commit directly to `main` — always use a branch
+2. Keep commits atomic — one logical change per commit
+3. Rebase before merging — keep history linear: `git rebase main`
+4. Squash WIP commits before opening a PR
+5. Tag releases with semantic versioning: `v1.2.3`
 
 ---
 

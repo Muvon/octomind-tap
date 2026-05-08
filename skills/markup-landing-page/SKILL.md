@@ -33,15 +33,15 @@ Pair with `content-voice` for copy. This skill handles *structure, design system
 
 Default to the lightest possible stack. Heavy frameworks slow time-to-interactive, hurt SEO, and add maintenance burden for what should be ~80% prerendered HTML.
 
-**Recommended:**
-- **SvelteKit + adapter-static** for prerendered SSR. Zero JS on most pages, full SEO, instant LCP.
-- **Plain CSS with custom properties** — no Tailwind, no UI library. CSS custom properties + `prefers-color-scheme` give you theming for free.
-- **System font stack** — `-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif`. Zero font load, native OS feel.
-- **TypeScript** in `<script>` blocks.
-- **Vite** for bundling.
-- **Cloudflare Pages or Vercel** for hosting (static + edge functions).
+Recommended:
+- SvelteKit + adapter-static for prerendered SSR. Zero JS on most pages, full SEO, instant LCP.
+- Plain CSS with custom properties — no Tailwind, no UI library. CSS custom properties + `prefers-color-scheme` give you theming for free.
+- System font stack — `-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif`. Zero font load, native OS feel.
+- TypeScript in `<script>` blocks.
+- Vite for bundling.
+- Cloudflare Pages or Vercel for hosting (static + edge functions).
 
-**Avoid unless specifically needed:**
+Avoid unless specifically needed:
 - React + Next.js for a marketing site (overkill, hydration cost)
 - Tailwind for a single-domain landing (verbose class soup, design tokens scattered)
 - Heavy animation libraries (GSAP, Framer Motion) for fade-ins (CSS does it in 4 lines)
@@ -177,11 +177,11 @@ This is non-negotiable for modern landing pages. Implement once at the token lev
 }
 ```
 
-**Rules:**
-- **Never hardcode colors** in components. Use `var(--token)`.
-- **`--on-accent` does NOT invert** — text on a colored button stays white in both modes.
-- **Test both modes**. Dark mode reveals contrast bugs that pass in light.
-- **Add the meta tag** so the OS chrome matches:
+Rules:
+- Never hardcode colors in components. Use `var(--token)`.
+- `--on-accent` does NOT invert — text on a colored button stays white in both modes.
+- Test both modes. Dark mode reveals contrast bugs that pass in light.
+- Add the meta tag so the OS chrome matches:
   ```html
   <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
@@ -207,13 +207,13 @@ Order matters. The page is a sales conversation. Each section answers the next o
 
 The single most important section. Conversion is decided here.
 
-- **Badge** above headline — context tag (e.g., "macOS 14+ · Apple Silicon"). Tiny, uppercase, muted.
-- **Headline** — `clamp(2.5rem, 6vw, 3.5rem)`, weight 700, letter-spacing -0.035em, line-height 1.08. Two lines max with `<br>`. State the outcome, not the feature. "Talk to your computer, don't type." beats "AI-powered voice recognition for macOS."
-- **Subtitle** — single sentence, max ~30 words, `--text-lg`, `--text-secondary`. Includes 2–3 specific features ("smart cleanup, live translation, meeting summaries").
-- **Primary CTA** — pill button, accent fill, `--text-lg`, generous padding. Use action verbs. "Download Free" beats "Get Started." Concrete > abstract.
-- **Trust line** under CTA — free trial limits ("100 free dictations · No credit card") in `--text-sm` muted.
-- **Alt install** — `brew install ...` block in monospace if relevant.
-- **System requirements** — last line, muted small text.
+- Badge above headline — context tag (e.g., "macOS 14+ · Apple Silicon"). Tiny, uppercase, muted.
+- Headline — `clamp(2.5rem, 6vw, 3.5rem)`, weight 700, letter-spacing -0.035em, line-height 1.08. Two lines max with `<br>`. State the outcome, not the feature. "Talk to your computer, don't type." beats "AI-powered voice recognition for macOS."
+- Subtitle — single sentence, max ~30 words, `--text-lg`, `--text-secondary`. Includes 2–3 specific features ("smart cleanup, live translation, meeting summaries").
+- Primary CTA — pill button, accent fill, `--text-lg`, generous padding. Use action verbs. "Download Free" beats "Get Started." Concrete > abstract.
+- Trust line under CTA — free trial limits ("100 free dictations · No credit card") in `--text-sm` muted.
+- Alt install — `brew install ...` block in monospace if relevant.
+- System requirements — last line, muted small text.
 
 Vertical centering: `min-height: calc(100vh - var(--nav-height))`. Background: subtle radial gradient to accent-50 at top.
 
@@ -248,7 +248,7 @@ Two cards minimum: yours (highlighted) and the alternative (cloud subscription).
 
 ### 8. Competitor Comparison Table
 
-Feature-by-feature against named competitors. Your column highlighted with `--accent-50` background. Strikethroughs for promo prices. Cost-after-2-years row at bottom in heavier border. **This is often the highest-converting section** — visitors scroll specifically to compare.
+Feature-by-feature against named competitors. Your column highlighted with `--accent-50` background. Strikethroughs for promo prices. Cost-after-2-years row at bottom in heavier border. This is often the highest-converting section — visitors scroll specifically to compare.
 
 ### 9. Performance / Stats (if applicable)
 
@@ -286,17 +286,17 @@ Brand + tagline on left, columns on right (Product, Company, Legal, Connect). Co
 
 ## CTA Hierarchy
 
-A landing page should have **one primary action** and zero or one secondary action. Multiple CTAs of equal weight = no CTA.
+A landing page should have one primary action and zero or one secondary action. Multiple CTAs of equal weight = no CTA.
 
-**Hierarchy:**
-1. **Primary CTA** — accent-filled pill, white text. Use for the conversion goal (Download, Buy, Sign up). Placed in: Nav, Hero, FooterCTA. Same label, same color.
-2. **Secondary CTA** — outline pill (accent border + accent text, transparent fill). Use for alternate paths (Learn more, Buy after free trial). Different label.
-3. **Tertiary** — text links with underline-on-hover. Used in nav, footer, inline copy.
+Hierarchy:
+1. Primary CTA — accent-filled pill, white text. Use for the conversion goal (Download, Buy, Sign up). Placed in: Nav, Hero, FooterCTA. Same label, same color.
+2. Secondary CTA — outline pill (accent border + accent text, transparent fill). Use for alternate paths (Learn more, Buy after free trial). Different label.
+3. Tertiary — text links with underline-on-hover. Used in nav, footer, inline copy.
 
-**Rules:**
+Rules:
 - Never two filled accent CTAs in the same viewport.
 - Never use red, orange, or yellow for primary CTAs unless brand-justified — they read as warnings.
-- CTA text is a **verb + outcome**: "Download Free", "Start Trial", "Buy Vext" — not "Click here", "Learn more", "Submit".
+- CTA text is a verb + outcome: "Download Free", "Start Trial", "Buy Vext" — not "Click here", "Learn more", "Submit".
 - Pill radius (`border-radius: 9999px`) outperforms rounded rectangles in tests for software products.
 
 ---
@@ -330,7 +330,7 @@ Don't bunch all trust at the bottom. Sprinkle:
 
 ### Urgency without manipulation
 
-If you have a real launch promo or deadline, show it: pulsing dot pill, deadline date, original price strikethrough. **Never use fake countdowns or invented deadlines** — buyers detect them, and trust dies fast.
+If you have a real launch promo or deadline, show it: pulsing dot pill, deadline date, original price strikethrough. Never use fake countdowns or invented deadlines — buyers detect them, and trust dies fast.
 
 ### Multiple CTAs, one ask
 
@@ -342,10 +342,10 @@ The CTA should appear in nav, hero, mid-page (after pricing), and footer. All po
 
 ### Headlines
 
-- **State the outcome, not the feature.** "Talk to your computer, don't type." > "AI-powered voice recognition."
-- **Two lines max** — use `<br>` to control wrapping. Mobile gets the same break.
-- **Verb-driven** when possible. "Capture a thought before it's gone." > "Voice notes feature."
-- **No marketing dead words** in headlines: "revolutionary", "next-generation", "ultimate", "powerful". Use the words your customer would use describing it to a friend.
+- State the outcome, not the feature. "Talk to your computer, don't type." > "AI-powered voice recognition."
+- Two lines max — use `<br>` to control wrapping. Mobile gets the same break.
+- Verb-driven when possible. "Capture a thought before it's gone." > "Voice notes feature."
+- No marketing dead words in headlines: "revolutionary", "next-generation", "ultimate", "powerful". Use the words your customer would use describing it to a friend.
 
 ### Subtitles / lead paragraphs
 
@@ -402,10 +402,10 @@ Every page (not just the landing) must set:
 
 Generate per-page OG images at build time as 1200×630 SVG → PNG (use `@resvg/resvg-js` or similar).
 
-- **PNG only** for `og:image` and `twitter:image` — Facebook, Slack, LinkedIn don't render SVG.
-- **Brand-consistent**: dark background, accent gradient bar at top/bottom, logo top-left, headline center-left, domain footer.
-- **Auto-wrap titles** with dynamic font sizing (drop from 80px → 64px → 52px as line count grows).
-- **Generated files in .gitignore** — they're build artifacts, not source.
+- PNG only for `og:image` and `twitter:image` — Facebook, Slack, LinkedIn don't render SVG.
+- Brand-consistent: dark background, accent gradient bar at top/bottom, logo top-left, headline center-left, domain footer.
+- Auto-wrap titles with dynamic font sizing (drop from 80px → 64px → 52px as line count grows).
+- Generated files in .gitignore — they're build artifacts, not source.
 
 ### JSON-LD structured data
 
@@ -432,7 +432,7 @@ For a software product landing page, include `SoftwareApplication`:
 
 Plus `Organization` and `FAQPage` (if you have a FAQ section).
 
-**Never invent `aggregateRating`** with fake review counts — Google penalizes this. Only include if you have real reviews.
+Never invent `aggregateRating` with fake review counts — Google penalizes this. Only include if you have real reviews.
 
 ### Canonical and sitemap
 
@@ -450,35 +450,35 @@ A non-existent route is a conversion opportunity, not a dead end. Most sites shi
 
 Build a single `+error.svelte` (SvelteKit) / `error.tsx` (Next) / equivalent that handles every status code. Branch the headline and copy on `status`:
 
-- **404** — "Lost in transcription." / "Page not found." Light, on-brand, slight humor if it fits the voice.
-- **5xx** — "Something glitched on our end." Acknowledge the problem honestly. Don't blame the user.
-- **Other (403, 401, etc.)** — fall back to the actual error message in a plain frame.
+- 404 — "Lost in transcription." / "Page not found." Light, on-brand, slight humor if it fits the voice.
+- 5xx — "Something glitched on our end." Acknowledge the problem honestly. Don't blame the user.
+- Other (403, 401, etc.) — fall back to the actual error message in a plain frame.
 
 ### Required elements
 
-1. **Status badge** — small monospace pill ("Error 404"). Tells the user what category of problem it is without the page looking like a debug screen.
-2. **Headline** — `clamp(2rem, 5vw, 2.75rem)`, on-brand, friendly. Avoid all-caps "OOPS!" or "PAGE NOT FOUND!".
-3. **Blurb** — single sentence explaining what happened in human language. Never expose stack traces or server-side error messages to users.
-4. **Two CTAs** — "Back home" (primary, accent-filled) + a secondary path ("Read the blog", "See pricing"). Same hierarchy as the rest of the site.
-5. **Suggestions list** — 3–5 inline links to common destinations (Pricing, FAQ, Contact, etc.). Catches the "I was looking for X" case where Home isn't the right answer.
-6. **Visual** — optional but recommended: a subtle brand element (animated icon, illustration). Reuses brand tokens so it doesn't break in dark mode.
+1. Status badge — small monospace pill ("Error 404"). Tells the user what category of problem it is without the page looking like a debug screen.
+2. Headline — `clamp(2rem, 5vw, 2.75rem)`, on-brand, friendly. Avoid all-caps "OOPS!" or "PAGE NOT FOUND!".
+3. Blurb — single sentence explaining what happened in human language. Never expose stack traces or server-side error messages to users.
+4. Two CTAs — "Back home" (primary, accent-filled) + a secondary path ("Read the blog", "See pricing"). Same hierarchy as the rest of the site.
+5. Suggestions list — 3–5 inline links to common destinations (Pricing, FAQ, Contact, etc.). Catches the "I was looking for X" case where Home isn't the right answer.
+6. Visual — optional but recommended: a subtle brand element (animated icon, illustration). Reuses brand tokens so it doesn't break in dark mode.
 
 ### Tone rules
 
-- **Be human, not corporate.** "We can't find that page" beats "The requested resource was not found."
-- **Don't apologize excessively.** One sentence acknowledging is enough.
-- **No "Click here to" instructions.** The CTAs are obvious.
-- **No marketing copy.** Don't try to sell. Just help them find what they wanted.
-- **Never blame the user.** "You typed the wrong URL" is hostile. "This page doesn't exist anymore" is neutral.
+- Be human, not corporate. "We can't find that page" beats "The requested resource was not found."
+- Don't apologize excessively. One sentence acknowledging is enough.
+- No "Click here to" instructions. The CTAs are obvious.
+- No marketing copy. Don't try to sell. Just help them find what they wanted.
+- Never blame the user. "You typed the wrong URL" is hostile. "This page doesn't exist anymore" is neutral.
 
 ### Technical requirements
 
-- **Title**: `<title>404 — Brand</title>` (use the actual status code).
-- **Meta**: `<meta name="robots" content="noindex">` — error pages should never be indexed.
-- **Same layout**: nav + footer present, identical to the rest of the site. Visitors should see continuity, not a stripped-down system page.
-- **Dark/light mode**: error page uses the same CSS custom properties — zero special-case styling.
-- **Reduced motion**: any animations gate on `@media (prefers-reduced-motion: reduce)`.
-- **No third-party calls**: error pages must work even when APIs are down. No analytics that block render, no social embeds.
+- Title: `<title>404 — Brand</title>` (use the actual status code).
+- Meta: `<meta name="robots" content="noindex">` — error pages should never be indexed.
+- Same layout: nav + footer present, identical to the rest of the site. Visitors should see continuity, not a stripped-down system page.
+- Dark/light mode: error page uses the same CSS custom properties — zero special-case styling.
+- Reduced motion: any animations gate on `@media (prefers-reduced-motion: reduce)`.
+- No third-party calls: error pages must work even when APIs are down. No analytics that block render, no social embeds.
 
 ### Static fallback
 
@@ -534,7 +534,7 @@ document.querySelectorAll('.animate-on-scroll').forEach((el) => observer.observe
 }
 ```
 
-**Rules:**
+Rules:
 - Use sparingly — every section animating is annoying.
 - Never animate content above the fold (hero is visible at load).
 - Disable on `prefers-reduced-motion: reduce`:
@@ -572,7 +572,7 @@ Two breakpoints cover ~95% of cases:
 @media (max-width: 640px) { /* mobile */ }
 ```
 
-**Patterns:**
+Patterns:
 - 3-column grids → 1 column on mobile, max-width 480px centered
 - 2-column feature blocks → stack on tablet, both full-width
 - Hero clamp() handles headline sizing automatically — no manual mobile override needed
@@ -585,29 +585,67 @@ Two breakpoints cover ~95% of cases:
 
 A landing page that takes >1s to render loses customers regardless of copy quality.
 
-- **LCP < 1.5s** — system fonts, prerendered HTML, images optimized
-- **CLS < 0.1** — explicit width/height on images, no layout-shifting embeds
-- **Total JS shipped** — under 50KB gzipped for a marketing-only landing
-- **Image format** — WebP for photos, SVG for illustrations, PNG only for screenshots that need pixel accuracy
-- **Hero image** — preload it: `<link rel="preload" as="image" href="...">`
-- **Above-the-fold CSS** — inline critical CSS if your stack supports it
+- LCP < 1.5s — system fonts, prerendered HTML, images optimized
+- CLS < 0.1 — explicit width/height on images, no layout-shifting embeds
+- Total JS shipped — under 50KB gzipped for a marketing-only landing
+- Image format — WebP for photos, SVG for illustrations, PNG only for screenshots that need pixel accuracy
+- Hero image — preload it: `<link rel="preload" as="image" href="...">`
+- Above-the-fold CSS — inline critical CSS if your stack supports it
 
 ---
 
 ## Anti-Patterns (Don't)
 
-- **Don't autoplay video** — it ships +500KB, distracts, and breaks on mobile
-- **Don't use full-bleed background videos** — performance disaster
-- **Don't gate the price** behind "Contact us" unless you genuinely sell enterprise
-- **Don't add a "newsletter signup" modal** that interrupts reading
-- **Don't use generic stock photos** of laptops/teams/handshakes — kills credibility
-- **Don't put "Award winning" or trust-badge soup** in hero — empty signals
-- **Don't bury the CTA** below 4 sections of content
-- **Don't write copy that sounds like AI** — see `content-voice`
-- **Don't scroll-jack** with libraries that hijack the wheel event
-- **Don't hide nav on scroll** — visitors lose orientation
-- **Don't ship cookie banners** unless you actually need them (most marketing sites don't if no third-party cookies)
-- **Don't write "trusted by X companies"** without showing real logos and numbers — adds nothing
+- Don't autoplay video — it ships +500KB, distracts, and breaks on mobile
+- Don't use full-bleed background videos — performance disaster
+- Don't gate the price behind "Contact us" unless you genuinely sell enterprise
+- Don't add a "newsletter signup" modal that interrupts reading
+- Don't use generic stock photos of laptops/teams/handshakes — kills credibility
+- Don't put "Award winning" or trust-badge soup in hero — empty signals
+- Don't bury the CTA below 4 sections of content
+- Don't write copy that sounds like AI — see `content-voice`
+- Don't scroll-jack with libraries that hijack the wheel event
+- Don't hide nav on scroll — visitors lose orientation
+- Don't ship cookie banners unless you actually need them (most marketing sites don't if no third-party cookies)
+- Don't write "trusted by X companies" without showing real logos and numbers — adds nothing
+
+---
+
+## Examples
+
+### Hero — what works
+
+❌ AI-generic:
+> "Revolutionary AI-Powered Voice Recognition Software for Modern Professionals"
+
+✅ Outcome-driven:
+> "Talk to your computer, don't type."
+> Subtitle: Voice to text with smart cleanup, live translation, meeting summaries. No cloud. No subscription. Your voice never leaves your Mac.
+
+### Pricing — what works
+
+❌ Hidden / vague:
+> "Get a quote" or "Starting at $—"
+
+✅ Concrete + comparison:
+> Vext: $49 once · $0 in year 2
+> Cloud voice tools: $10–30 /month · $120–360/year
+
+### CTA — what works
+
+❌ "Click here", "Submit", "Get started"
+
+✅ "Download Free" (verb + outcome)
+✅ "Buy for $24.50" (verb + price clarity)
+✅ "Apply to join" (verb + commitment level)
+
+### Comparison row — what works
+
+❌ Generic feature names:
+> "Cloud-dependent · Account required"
+
+✅ Specific friction points:
+> "Audio sent to third-party servers · Requires monthly subscription · Account + login required"
 
 ---
 
@@ -634,49 +672,11 @@ Before declaring a landing page ready:
 
 ---
 
-## Examples
-
-### Hero — what works
-
-❌ AI-generic:
-> "Revolutionary AI-Powered Voice Recognition Software for Modern Professionals"
-
-✅ Outcome-driven:
-> "Talk to your computer, don't type."
-> Subtitle: Voice to text with smart cleanup, live translation, meeting summaries. No cloud. No subscription. Your voice never leaves your Mac.
-
-### Pricing — what works
-
-❌ Hidden / vague:
-> "Get a quote" or "Starting at $—"
-
-✅ Concrete + comparison:
-> Vext: **$49** once · $0 in year 2
-> Cloud voice tools: **$10–30** /month · $120–360/year
-
-### CTA — what works
-
-❌ "Click here", "Submit", "Get started"
-
-✅ "Download Free" (verb + outcome)
-✅ "Buy for $24.50" (verb + price clarity)
-✅ "Apply to join" (verb + commitment level)
-
-### Comparison row — what works
-
-❌ Generic feature names:
-> "Cloud-dependent · Account required"
-
-✅ Specific friction points:
-> "Audio sent to third-party servers · Requires monthly subscription · Account + login required"
-
----
-
 ## When to Break the Rules
 
-- **Premium price points (>$500)** — add more credibility (case studies, named customers, ROI calculator). Single-page may not be enough.
-- **Enterprise B2B** — gate pricing behind a demo if your sales motion needs qualification.
-- **High-emotion products** (luxury, lifestyle) — typography and imagery matter more than spec lists.
-- **Developer tools** — code samples in hero, GitHub stars badge, technical spec sheet upfront.
+- Premium price points (>$500) — add more credibility (case studies, named customers, ROI calculator). Single-page may not be enough.
+- Enterprise B2B — gate pricing behind a demo if your sales motion needs qualification.
+- High-emotion products (luxury, lifestyle) — typography and imagery matter more than spec lists.
+- Developer tools — code samples in hero, GitHub stars badge, technical spec sheet upfront.
 
 The patterns above are calibrated for $20–200 indie/SaaS products sold to individuals or small teams. Adjust upward (more depth, more proof) for higher prices.

@@ -19,7 +19,7 @@ rules:
 
 ## Overview
 
-A dep script is a `deps/<org>/<tool>.sh` bash script that auto-installs a tool or MCP server runtime before an Octomind session starts. Deps are **never run manually** — Octomind runs them automatically to ensure the required binary is available. Every dep script must handle macOS and all major Linux package managers.
+A dep script is a `deps/<org>/<tool>.sh` bash script that auto-installs a tool or MCP server runtime before an Octomind session starts. Deps are never run manually — Octomind runs them automatically to ensure the required binary is available. Every dep script must handle macOS and all major Linux package managers.
 
 Each dep script must have a matching `deps/<org>/<tool>.md` companion doc.
 
@@ -48,7 +48,7 @@ Every dep script must start with these header comments (parsed by tooling):
 
 ### Type Classification
 
-**`type: mcp`** — the dep exists to make an MCP server launchable. Most MCP servers run via `npx -y <package>` or `uvx <package>`. The dep script just ensures the runtime is present:
+`type: mcp` — the dep exists to make an MCP server launchable. Most MCP servers run via `npx -y <package>` or `uvx <package>`. The dep script just ensures the runtime is present:
 
 ```bash
 #!/usr/bin/env bash
@@ -67,7 +67,7 @@ if pkg_check npx; then exit 0; fi
 install_dep nodejs/node
 ```
 
-**`type: dep`** — the dep installs a real CLI tool that agents use directly (not via MCP):
+`type: dep` — the dep installs a real CLI tool that agents use directly (not via MCP):
 
 ```bash
 #!/usr/bin/env bash
@@ -177,7 +177,7 @@ info "<tool> installed successfully."
 | `warn <msg>` | Print warning to stderr |
 | `die <msg>` | Print error to stderr and exit 1 |
 
-**Never re-implement platform detection** — always source `deps/lib/platform.sh`.
+Never re-implement platform detection — always source `deps/lib/platform.sh`.
 
 ---
 
@@ -185,13 +185,13 @@ info "<tool> installed successfully."
 
 Every `.sh` must have a matching `.md` at the same path (`deps/<org>/<tool>.md`).
 
-**For MCP servers** (`type: mcp`) — copy `templates/dep-mcp.md`, must include:
+For MCP servers (`type: mcp`) — copy `templates/dep-mcp.md`, must include:
 - `## MCP Server` — package name, transport, launch command
 - `## Authentication` — required env vars and how to obtain them
 - `## Available Tools` — list of tools the MCP server exposes
 - `## Configuration Example` — example `[[mcp.servers]]` TOML block
 
-**For plain deps** (`type: dep`) — copy `templates/dep-tool.md`, must include:
+For plain deps (`type: dep`) — copy `templates/dep-tool.md`, must include:
 - `## Key Commands` — most important CLI commands
 - `## Common Usage` — typical usage patterns with examples
 

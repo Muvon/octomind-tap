@@ -37,12 +37,12 @@ Use this skill BEFORE any tool-build work. Skip it if the user has already valid
 
 ### Core Rules
 
-- **The data moat decides everything.** A tool without proprietary or hard-to-replicate data is a commodity. Commodity tools earn no durable links — competitors clone them in a day. If no moat, kill the idea even if everything else looks good.
-- **Niche fit is non-negotiable.** A "useful" tool that doesn't serve the site's existing audience earns off-topic links that Google discounts. Cosmetics site → skin-tone matcher YES, SEO checker NO.
-- **80/20 the planning.** 80% of the value of this skill is in idea selection (niche fit + data moat). Building is downstream. Do not let users skip the gate to "just start building."
-- **Five candidates, not one.** Single-idea brainstorms anchor to whatever came first. Always generate five and rank — even if four are obvious dead ends, the comparison clarifies why the survivor wins.
-- **Output a strategy brief, not a verdict.** The skill's deliverable is a written brief covering niche fit, data moat, SEO signals, feasibility, monetization, and alignment. Build, on-page wrapping, and launch content are downstream concerns owned by the orchestrating agent.
-- **Compound over spike.** Prefer tools that keep earning links for years (calculators on durable data, embed widgets) over tools tied to a news cycle.
+- The data moat decides everything. A tool without proprietary or hard-to-replicate data is a commodity. Commodity tools earn no durable links — competitors clone them in a day. If no moat, kill the idea even if everything else looks good.
+- Niche fit is non-negotiable. A "useful" tool that doesn't serve the site's existing audience earns off-topic links that Google discounts. Cosmetics site → skin-tone matcher YES, SEO checker NO.
+- 80/20 the planning. 80% of the value of this skill is in idea selection (niche fit + data moat). Building is downstream. Do not let users skip the gate to "just start building."
+- Five candidates, not one. Single-idea brainstorms anchor to whatever came first. Always generate five and rank — even if four are obvious dead ends, the comparison clarifies why the survivor wins.
+- Output a strategy brief, not a verdict. The skill's deliverable is a written brief covering niche fit, data moat, SEO signals, feasibility, monetization, and alignment. Build, on-page wrapping, and launch content are downstream concerns owned by the orchestrating agent.
+- Compound over spike. Prefer tools that keep earning links for years (calculators on durable data, embed widgets) over tools tied to a news cycle.
 
 ### The Funnel
 
@@ -50,8 +50,8 @@ Use this skill BEFORE any tool-build work. Skip it if the user has already valid
 
 Before anything else, force two answers from the user. If either is "no" or "unclear," stop and ask. Do not proceed to candidate generation.
 
-1. **Niche question:** "What is the site's niche, in one sentence? Who exactly visits today?"
-2. **Data question:** "What data do you already own or can ingest cheaply? List concretely."
+1. Niche question: "What is the site's niche, in one sentence? Who exactly visits today?"
+2. Data question: "What data do you already own or can ingest cheaply? List concretely."
 
 Examples of valid data sources:
 - Product or service specifications (catalogs, SKUs, configurations)
@@ -73,11 +73,11 @@ Brainstorm exactly five candidate tools that:
 Write each as one sentence: `[Tool name] — [what it does] — [data it uses]`.
 
 Example for a GPU benchmark site:
-1. **GPU Compatibility Matrix** — checks if a GPU fits a given motherboard/case/PSU — uses spec database
-2. **FPS Estimator** — predicts FPS for game × GPU × resolution — uses benchmark database
-3. **Upgrade ROI Calculator** — shows cost-per-FPS gained for an upgrade — uses spec + benchmark + price data
-4. **Power Draw Estimator** — calculates total system wattage needed — uses spec database
-5. **GPU Generation Timeline** — visualizes performance gains across generations — uses benchmark database
+1. GPU Compatibility Matrix — checks if a GPU fits a given motherboard/case/PSU — uses spec database
+2. FPS Estimator — predicts FPS for game × GPU × resolution — uses benchmark database
+3. Upgrade ROI Calculator — shows cost-per-FPS gained for an upgrade — uses spec + benchmark + price data
+4. Power Draw Estimator — calculates total system wattage needed — uses spec database
+5. GPU Generation Timeline — visualizes performance gains across generations — uses benchmark database
 
 #### Stage 3 — Score Each Candidate Across 5 Dimensions
 
@@ -85,11 +85,11 @@ Score 1–5 (1 = bad, 5 = excellent) on each dimension. Total a candidate by sum
 
 | Dimension | What 5 looks like | What 1 looks like |
 |---|---|---|
-| **Niche fit** | The site's exact audience uses this monthly | The audience would never search for this |
-| **Data moat** | Built on proprietary data competitors can't easily replicate | Built on data anyone can scrape in a day |
-| **SEO signals** | Sticky (3–5 min dwell), produces shareable outputs, AI-citable answers, natural embed hook | Static result, nothing to embed, no citation hook |
-| **Feasibility** | Mostly client-side, ships in days | Months of backend, infrastructure-heavy |
-| **Monetization path** | Clear path to email capture / affiliate / paid upgrade / sponsorship | No revenue connection at all |
+| Niche fit | The site's exact audience uses this monthly | The audience would never search for this |
+| Data moat | Built on proprietary data competitors can't easily replicate | Built on data anyone can scrape in a day |
+| SEO signals | Sticky (3–5 min dwell), produces shareable outputs, AI-citable answers, natural embed hook | Static result, nothing to embed, no citation hook |
+| Feasibility | Mostly client-side, ships in days | Months of backend, infrastructure-heavy |
+| Monetization path | Clear path to email capture / affiliate / paid upgrade / sponsorship | No revenue connection at all |
 
 A score of 1 on niche_fit OR data_moat → strike the candidate. No exceptions.
 
@@ -97,10 +97,10 @@ A score of 1 on niche_fit OR data_moat → strike the candidate. No exceptions.
 
 Before recommending the highest-scoring candidate, run it through:
 
-- [ ] **Audience match** — does this solve a problem the site's existing visitors face?
-- [ ] **Brand fit** — would the site's customers expect them to build this? (Yes = free credibility. No = build credibility before launching.)
-- [ ] **Competitive moat** — would a competitor need the user's specific data/position to replicate, or could they build it in a week?
-- [ ] **Longevity** — will this tool still be relevant in 2 years, or is it a trend rider?
+- [ ] Audience match — does this solve a problem the site's existing visitors face?
+- [ ] Brand fit — would the site's customers expect them to build this? (Yes = free credibility. No = build credibility before launching.)
+- [ ] Competitive moat — would a competitor need the user's specific data/position to replicate, or could they build it in a week?
+- [ ] Longevity — will this tool still be relevant in 2 years, or is it a trend rider?
 
 A "no" on any of these is not an automatic kill — but every "no" must be acknowledged in the hand-off brief with mitigation.
 
@@ -164,41 +164,41 @@ Output a single brief in the format below. This is the deliverable.
 
 ### Example 1: Cosmetics e-commerce site
 
-**Stage 1 inputs:**
+Stage 1 inputs:
 - Niche: mid-tier cosmetics e-commerce, focused on inclusive shade ranges for foundations
 - Data: SKU database (3,400 products with hex codes + undertone tags), customer purchase history, returns reasons
 
-**Stage 2 candidates:**
+Stage 2 candidates:
 1. Skin-Tone-to-Foundation Matcher — uploads selfie or picks tone, returns matching SKUs — uses SKU database
 2. Lorem Ipsum for Beauty Copy — generic placeholder text — none
 3. Foundation Coverage Comparison — side-by-side coverage levels — uses SKU database
 4. Return-Reason Stats Dashboard — public stats on which products are returned and why — uses returns data
 5. SEO Keyword Tool for Beauty Brands — generic SEO checker — none
 
-**Stage 3 scores:**
+Stage 3 scores:
 | Candidate | Niche | Moat | SEO | Feas | Monet | Total | Verdict |
 |---|---|---|---|---|---|---|---|
-| 1. Tone Matcher | 5 | 5 | 5 | 4 | 5 | **24** | ✅ |
+| 1. Tone Matcher | 5 | 5 | 5 | 4 | 5 | 24 | ✅ |
 | 2. Lorem Ipsum | 1 | 1 | 1 | 5 | 1 | 9 | ❌ kill (niche=1, moat=1) |
 | 3. Coverage Compare | 5 | 4 | 4 | 4 | 4 | 21 | possible |
 | 4. Returns Dashboard | 4 | 5 | 4 | 3 | 2 | 18 | privacy risk + weak monet |
 | 5. SEO Keyword Tool | 1 | 1 | 3 | 3 | 2 | 10 | ❌ kill (niche=1) |
 
-**Stage 4 — Tone Matcher alignment:**
+Stage 4 — Tone Matcher alignment:
 - Audience match ✅ — exact pain point of every shopper
 - Brand fit ✅ — site is already known for shade range
 - Competitive moat ✅ — matcher accuracy depends on the SKU undertone tags (proprietary)
 - Longevity ✅ — foundation matching is a permanent problem
 
-**Stage 5 — Strategy brief:** (would be written using the template above; client-side image processing noted as a stack hint)
+Stage 5 — Strategy brief: (would be written using the template above; client-side image processing noted as a stack hint)
 
 ### Example 2: Engineering blog with no data
 
-**Stage 1 inputs:**
+Stage 1 inputs:
 - Niche: engineering blog covering distributed systems
 - Data: 47 published blog posts, no databases, no APIs, no proprietary metrics
 
-**Action:** Kill at Stage 1.
+Action: Kill at Stage 1.
 
 > "47 blog posts is content, not a tool data source. Building a tool here means building on commodity APIs (GitHub, Stack Overflow) — which means competitors can clone it in a weekend and your moat is zero. Two paths forward:
 > 1. Build a data set FIRST. Run benchmarks, scrape your own corpus, run a community survey. Come back when you have something exclusive.
@@ -210,7 +210,7 @@ Do not soften, do not propose a tool anyway. The honest answer is the only usefu
 
 User: "I already know I want to build a salary calculator for tech jobs. Just help me design it."
 
-**Response:**
+Response:
 > "Before producing the brief, two questions — these are the same gates the funnel runs and they're 30 seconds:
 > 1. What salary data are you using? (Public scraped Glassdoor data has no moat — Levels.fyi already won that. Proprietary survey, payroll-anonymized, or company-disclosed data is a different game.)
 > 2. Who's your existing audience and do they search for salary info? (If you're a dev-tools blog, salary data isn't your niche — links from HR sites won't compound your dev-tools rankings.)

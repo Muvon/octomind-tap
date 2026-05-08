@@ -30,57 +30,68 @@ compatibility: "Describe environment requirements: intended product (e.g. Octomi
 
 # My Skill Name
 
-<!-- One-paragraph overview: what problem this skill solves and when to use it. -->
+<!-- Canonical section order (2026 standard — see tap-skill-authoring):
+     Overview → Mental model → Rules → Examples → Checklist → Composition / References
+     Overview at the top (primacy), Checklist near the end (recency). -->
 
 ## Overview
 
-Describe the skill's purpose in 2–4 sentences. What domain knowledge does it encode?
-What tasks does it help with? When should the AI activate this skill?
+Describe the skill's purpose in 2–4 sentences. Name the problem, the trigger, and the outcome. No fluff.
 
 ---
 
-## Instructions
+## Mental model
 
-<!-- The core of the skill: step-by-step guidance, rules, conventions, decision trees. -->
-<!-- Write as if instructing the AI directly. Be precise and actionable. -->
+<!-- Optional but recommended for any skill with >3 rules. The framing concept that makes
+     the rules read as a system, not a list. Skip if the skill is purely mechanical. -->
 
-### Core Rules
+The core principle that governs all the rules below: ...
+
+---
+
+## Rules
+
+<!-- The bulk of the skill. Tables for decisions, bullet lists for sequential rules, prose
+     only when WHY is non-obvious. Never paragraph-after-paragraph. -->
+
+### Core rules
 
 - Rule 1: ...
 - Rule 2: ...
 - Rule 3: ...
 
-### Workflow
-
-1. **Step one** — description
-2. **Step two** — description
-3. **Step three** — description
-
-### Decision Guide
+### Decision guide
 
 | Situation | Action |
 |-----------|--------|
 | Case A    | Do X   |
 | Case B    | Do Y   |
 
+### Workflow (if applicable)
+
+1. Step one — description
+2. Step two — description
+3. Step three — description
+
 ---
 
 ## Examples
 
-<!-- Concrete examples are the most valuable part of a skill. -->
-<!-- Show input → output, before → after, or command → result. -->
+<!-- Bad → Good is the strongest format. Show the AI tell, then the fix. -->
 
-### Example 1: Basic case
+### Example 1: Bad → Good
 
+❌ Bad:
 ```
-Input or context here
+[the wrong way]
 ```
 
-Expected output or behavior:
+✅ Good:
+```
+[the right way]
+```
 
-```
-Result here
-```
+What changed: <one-line explanation>
 
 ### Example 2: Edge case
 
@@ -88,22 +99,28 @@ Result here
 
 ---
 
-## References
+## Checklist
 
-<!-- Optional: link to external docs, standards, or bundled reference files. -->
-<!-- For bundled files, use relative paths: references/FORMS.md -->
+<!-- Recency: this is the last actionable thing the model sees, so it acts as a final gate.
+     Verifiable items only — "does X have Y" not "make sure quality is high". -->
 
-- [Official documentation](https://example.com/docs)
-- [Specification](https://example.com/spec)
-
-<!-- If you have reference files, place them in references/ and link here:
-- See [references/REFERENCE.md](references/REFERENCE.md) for the full reference guide.
--->
+- [ ] <verifiable check>
+- [ ] <verifiable check>
+- [ ] <verifiable check>
 
 ---
 
-<!-- Optional directories and files you can add alongside this SKILL.md:
-  validate    — executable script: validates LLM output quality (exit 0 = valid, stderr = error)
+## Composition / References
+
+<!-- Within-domain skill pairings (do NOT name agents from other domains).
+     External authoritative sources, spec links. -->
+
+- Pairs with `<sibling-skill-in-same-domain>` when ...
+- [Official documentation](https://example.com/docs)
+- [Specification](https://example.com/spec)
+
+<!-- Optional directories alongside this SKILL.md:
+  validate    — executable script: validates LLM output quality (exit 0 = valid)
   scripts/    — executable scripts the skill references
   references/ — supplementary documentation (REFERENCE.md, FORMS.md, etc.)
   assets/     — templates, config files, other resources

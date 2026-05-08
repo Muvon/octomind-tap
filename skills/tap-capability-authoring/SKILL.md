@@ -11,7 +11,7 @@ domains: octomind
 
 ## Overview
 
-This skill encodes everything needed to create a new capability or dep script in the octomind-tap registry. A **capability** is the abstraction layer between agents and MCP servers — agents declare what they need, capabilities provide the wiring. This skill covers the full creation checklist: capability file format, provider/symlink pattern, dep script structure, platform coverage requirements, companion documentation, `setup-symlinks.sh` registration, and how to validate everything.
+This skill encodes everything needed to create a new capability or dep script in the octomind-tap registry. A capability is the abstraction layer between agents and MCP servers — agents declare what they need, capabilities provide the wiring. This skill covers the full creation checklist: capability file format, provider/symlink pattern, dep script structure, platform coverage requirements, companion documentation, `setup-symlinks.sh` registration, and how to validate everything.
 
 Use this skill whenever you need to create a new capability or dep script, or when an agent needs a tool not covered by existing capabilities.
 
@@ -22,13 +22,13 @@ Use this skill whenever you need to create a new capability or dep script, or wh
 ### What Is a Capability?
 
 A capability is a named bundle that provides:
-- **Deps** — install scripts to run before the session
-- **MCP server config** — how to launch the server
-- **Tool permissions** — which tools the agent can call
+- Deps — install scripts to run before the session
+- MCP server config — how to launch the server
+- Tool permissions — which tools the agent can call
 
 Agents declare `capabilities = ["name"]`. At runtime, `bin/load` resolves each name to `capabilities/<name>/default.toml` and merges everything into the final manifest.
 
-**Key principle:** capabilities hide MCP complexity from agents. An agent says "I need websearch" — it doesn't care whether that's Tavily, Brave, or something else. The capability + provider pattern enables swapping implementations without touching agents.
+Key principle: capabilities hide MCP complexity from agents. An agent says "I need websearch" — it doesn't care whether that's Tavily, Brave, or something else. The capability + provider pattern enables swapping implementations without touching agents.
 
 ### Capability Directory Structure
 
@@ -67,14 +67,14 @@ timeout_seconds = 60
 tools = []
 ```
 
-**Not all sections are required:**
+Not all sections are required:
 - Deps-only capability (e.g. `programming-python`): only `[deps]` section
 - MCP-only capability: only `[roles.mcp]` + `[[mcp.servers]]`
 - Full capability: all three sections
 
-**Built-in servers** (`core`, `octofs`, `agent`, `octocode`) do NOT need `[[mcp.servers]]` blocks. Every other `server_refs` entry MUST have a matching `[[mcp.servers]]` block.
+Built-in servers (`core`, `octofs`, `agent`, `octocode`) do NOT need `[[mcp.servers]]` blocks. Every other `server_refs` entry MUST have a matching `[[mcp.servers]]` block.
 
-**Environment variable injection:** use `{{ENV:VAR_NAME}}` in capability files for runtime env vars (e.g. API keys). Document required env vars in the capability file header comment.
+Environment variable injection: use `{{ENV:VAR_NAME}}` in capability files for runtime env vars (e.g. API keys). Document required env vars in the capability file header comment.
 
 ---
 
@@ -82,23 +82,23 @@ tools = []
 
 When creating a new capability:
 
-1. **Create** `capabilities/<name>/<provider>.toml` with `# Title:`, `# Description:`, and the appropriate sections
-2. **Create** the dep script at `deps/<org>/<tool>.sh` (if needed) — see dep script format below
-3. **Create** the companion doc at `deps/<org>/<tool>.md` — required for every `.sh`
-4. **Create** the symlink: `cd capabilities/<name> && ln -s <provider>.toml default.toml`
-5. **Register** in `scripts/setup-symlinks.sh`:
+1. Create `capabilities/<name>/<provider>.toml` with `# Title:`, `# Description:`, and the appropriate sections
+2. Create the dep script at `deps/<org>/<tool>.sh` (if needed) — see dep script format below
+3. Create the companion doc at `deps/<org>/<tool>.md` — required for every `.sh`
+4. Create the symlink: `cd capabilities/<name> && ln -s <provider>.toml default.toml`
+5. Register in `scripts/setup-symlinks.sh`:
    - Add `link "<name>" "<provider>.toml"` line in the links section
    - Add `"<name>"` to the `DECLARED` array
-6. **Run** `bash scripts/setup-symlinks.sh` to verify symlinks
-7. **Run** `bash scripts/lint-deps.sh deps/<org>/<tool>.sh` to validate dep script
-8. **Run** `bash scripts/lint-capabilities.sh capabilities/<name>` to validate capability
-9. **Reference** `"<name>"` in the agent's `capabilities = [...]`
+6. Run `bash scripts/setup-symlinks.sh` to verify symlinks
+7. Run `bash scripts/lint-deps.sh deps/<org>/<tool>.sh` to validate dep script
+8. Run `bash scripts/lint-capabilities.sh capabilities/<name>` to validate capability
+9. Reference `"<name>"` in the agent's `capabilities = [...]`
 
 ---
 
 ### Dep Script Authoring
 
-Dep scripts are covered in full by the **`tap-deps-authoring`** skill. Load it when you need to write or edit a `deps/<org>/<tool>.sh` file:
+Dep scripts are covered in full by the `tap-deps-authoring` skill. Load it when you need to write or edit a `deps/<org>/<tool>.sh` file:
 
 ```
 skill(action="use", name="tap-deps-authoring")
@@ -110,20 +110,19 @@ Key points to know here:
 - `type: dep` — installs a standalone CLI tool used directly
 - Every `.sh` must have a companion `.md` at the same path
 
-
 ---
 
 ### Companion Documentation Format
 
 Every dep script MUST have a matching `.md` file at `deps/<org>/<tool>.md`.
 
-**For MCP servers** (`type: mcp`) — use `templates/dep-mcp.md` as base, must include:
+For MCP servers (`type: mcp`) — use `templates/dep-mcp.md` as base, must include:
 - `## MCP Server` — what the server provides
 - `## Authentication` — required env vars, tokens, setup
 - `## Available Tools` — list of tools the server exposes
 - `## Configuration Example` — example capability TOML snippet
 
-**For plain deps** (`type: dep`) — use `templates/dep-tool.md` as base, must include:
+For plain deps (`type: dep`) — use `templates/dep-tool.md` as base, must include:
 - `## Key Commands` — most important CLI commands
 - `## Common Usage` — typical usage patterns
 
@@ -148,7 +147,7 @@ DECLARED=(
 
 If you skip either step, `setup-symlinks.sh` will emit a `WARN` for undeclared dirs.
 
-**Note:** `core` and `agent` are built-in capabilities — do NOT add `link` entries for them. They have real files, not symlinks.
+Note: `core` and `agent` are built-in capabilities — do NOT add `link` entries for them. They have real files, not symlinks.
 
 ---
 

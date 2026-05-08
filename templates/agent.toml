@@ -55,76 +55,65 @@ top_k = 0
 welcome = "🤖 <Domain> agent ready. I help with <description>. Working in {{CWD}}"
 
 # ─────────────────────────────────────────────────────────────────────────────
-# SYSTEM PROMPT
+# SYSTEM PROMPT (XML-tagged blocks, U-shape order — see tap-agent-authoring)
 # ─────────────────────────────────────────────────────────────────────────────
-# This defines the agent's personality, knowledge, and behavior.
-# Be specific about what the agent can and cannot do.
-# Include domain knowledge, frameworks, and decision trees.
+# Order: identity → voice → scope → workflow → rules → examples → output_format → interaction → critical
+# - <identity> first (primacy effect)
+# - <critical> last with NEVER / ALWAYS lists only (recency effect)
+# - Middle blocks rely on tag anchors to survive "lost in the middle"
+# - {{CWD}} and {{DATE}} go in the `welcome` field ONLY — never inside `system`.
+#   The harness pipes runtime context separately; duplicating it in system causes drift.
+# Target: 200–1000 words total. Beyond ~1500 words, context rot hits recall.
 
 system = """
-You are a <Domain> Specialist — <brief description of role>.
+<identity>
+<Role + expertise + style — 2–4 sentences. The model reads this first; it sets the persona.>
+</identity>
 
-Your role: <what you help users accomplish>.
+<voice>
+<Tone, register, formality. Plain prose or clean bullets. No `### Voice` heading — the tag IS the heading. No `bold` on bullet leads.>
+</voice>
 
----
+<scope>
+✅ Own: <bullet list of what this agent handles>
+❌ Don't own (route elsewhere): <bullet list with `<other-domain>:<spec>` references>
+</scope>
 
-## CORE PRINCIPLES
+<workflow>
+1. <Step name> — <one-sentence description>
+2. <Step name> — <description>
+3. <Step name> — <description>
 
-### <Principle 1>
-- Point 1
-- Point 2
-- Point 3
+<Use `### Subsection` only when this block has 2+ genuinely distinct sub-areas, e.g. `### Research protocol` + `### Memory protocol` alongside the numbered steps. Single-purpose blocks flow as plain prose.>
+</workflow>
 
-### <Principle 2>
-- Point 1
-- Point 2
+<rules>
+<Domain knowledge as tables, decision matrices, parameter ranges, vocabulary lists.
+Tables and code fences stay. `bold` on bullet leads goes — em-dash already separates lead from explanation.>
+</rules>
 
----
+<examples>
+<Bad → Good pairs. Skip this block if the agent's output is freeform.>
+</examples>
 
-## CRITICAL DISCLAIMERS
+<output_format>
+<Exact structure of the artifact. File paths, schemas, save locations.>
+</output_format>
 
-⚠️ **You are NOT <professional title>** — <what you cannot do>
-⚠️ **You CANNOT <restricted action>** — <why>
-⚠️ **ALWAYS <required action>** — <when>
+<interaction>
+- <Trigger pattern> → <response pattern>
+- Ambiguous → ask ONE clarifying question, then proceed.
+</interaction>
 
----
+<critical>
+NEVER:
+- <hard-fail rule>
+- <hard-fail rule>
 
-## WHAT YOU CAN DO
-
-✅ <Capability 1>
-✅ <Capability 2>
-✅ <Capability 3>
-
----
-
-## WHAT YOU CANNOT DO
-
-❌ <Restriction 1>
-❌ <Restriction 2>
-❌ <Restriction 3>
-
----
-
-## RESPONSE STRUCTURE
-
-For <domain> questions:
-
-1. **Brief disclaimer** — One line (if applicable)
-2. **Direct answer** — Clear, concise response
-3. **Context** — Background, mechanisms, evidence
-4. **Practical implications** — What this means for the user
-5. **Next steps** — Actionable recommendations
-6. **References** — Sources, citations (if applicable)
-
----
-
-## TOOLS
-
-**<MCP Server Name>** — Use these tools for <purpose>:
-- `tool-name-1` — Description
-- `tool-name-2` — Description
-
-Working directory: {{CWD}}
+ALWAYS:
+- <must-do rule>
+- <must-do rule>
+</critical>
 """
 
 # ─────────────────────────────────────────────────────────────────────────────

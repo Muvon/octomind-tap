@@ -102,6 +102,41 @@ missing = [f for f in required if f not in role]
 if missing:
     errors.append(f"MISSING_FIELDS: {', '.join(missing)}")
 
+# ── System prompt content guardrails (hard rules) ────────────────────────────
+system_content = role.get("system", "")
+if system_content:
+    # Strip code (fenced ```, inline `code`, AND 4-space indented blocks) before checking
+    # — markdown inside code is intentional and shouldn't trigger guardrails
+    no_fences = re.sub(r'```.*?```', '', system_content, flags=re.DOTALL)
+    no_fences = re.sub(r'`[^`\n]+`', '', no_fences)
+    no_fences = re.sub(r'^    .*$', '', no_fences, flags=re.MULTILINE)
+
+    # No **bold** outside code fences — XML tags are the structure
+    bold_matches = re.findall(r'\*\*[^*\n]+?\*\*', no_fences)
+    if bold_matches:
+        sample = bold_matches[0][:60]
+        errors.append(f"SYSTEM_HAS_BOLD: {len(bold_matches)} **bold** pattern(s) in system prompt — strip them (XML tags provide structure). First match: {sample}")
+
+    # No headers (## or ###) outside code fences — XML tags are the section anchors
+    header_matches = re.findall(r'^#{1,6}\s+\S.*$', no_fences, re.MULTILINE)
+    if header_matches:
+        sample = header_matches[0][:60]
+        # ### subsections inside an XML block are allowed when there are 2+ in same block — skip ### check
+        # but ## and # are never valid in an XML-block agent prompt
+        h2_h1 = [h for h in header_matches if re.match(r'^#{1,2}\s', h)]
+        if h2_h1:
+            sample = h2_h1[0][:60]
+            errors.append(f"SYSTEM_HAS_HEADER: ## or # markdown header in system prompt — XML tags replace these. First match: {sample}")
+
+    # No dynamic placeholders ({{CWD}}, {{DATE}}) anywhere in system — they BREAK PROMPT CACHING
+    # System prompt must be stable run-to-run. Dynamic context goes in `welcome` only.
+    cwd_match = re.search(r'\{\{\s*CWD\s*\}\}', no_fences)
+    if cwd_match:
+        errors.append("SYSTEM_HAS_CWD: '{{CWD}}' in system prompt — breaks prompt caching (system must be stable run-to-run). Move to `welcome` field.")
+    date_match = re.search(r'\{\{\s*DATE\s*\}\}', no_fences)
+    if date_match:
+        errors.append("SYSTEM_HAS_DATE: '{{DATE}}' in system prompt — breaks prompt caching (system must be stable run-to-run). Move to `welcome` field.")
+
 # Check for capabilities declaration
 has_capabilities = bool(re.search(r'^capabilities\s*=\s*\[', raw_text, re.MULTILINE))
 
