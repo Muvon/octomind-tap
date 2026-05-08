@@ -85,6 +85,7 @@ Also flag formal overreach: "utilize" (use), "facilitate" (help), "demonstrate" 
 - Trailing participles: sentences ending with "...highlighting", "...ensuring that", "...contributing to", "...underscoring", "...reflecting" — count each
 - "Not just X, but also Y" constructions — count
 - Semicolons connecting simple phrases — count (AI overuses these)
+- Em-dash density — count em-dashes per 100 words. AI default is 3+ per paragraph; humans average <1 per 100 words. Total absence is also a tell (over-corrected humanization). One per ~100 words used naturally is the human shape
 - Perfect grammar throughout with zero breaks = AI signal
 - Score: natural grammar breaks present = high, perfect throughout = low
 
@@ -104,6 +105,7 @@ Also flag formal overreach: "utilize" (use), "facilitate" (help), "demonstrate" 
 - Opening: broad definitional? (AI) Or specific scene/claim/stat with commentary? (human)
 - Subheadings: generic labels ("Benefits", "Challenges")? Or personality ("Why This Actually Matters")?
 - Synonym rotation: same concept called different names each paragraph? (AI tell)
+- Format matches the venue: a short reply or comment with `## Headers`, 3+ bullet points, or bold mid-sentence reads as AI regardless of word choice. Long articles can use structure when it serves reading; replies, comments, and short posts must be prose unless the surrounding chain uses markdown. Score down hard for short-form content with templated structure
 - Score: unpredictable, varied structure = high, formulaic = low
 
 #### 8. Transition Quality
