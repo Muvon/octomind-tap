@@ -31,35 +31,15 @@ Key concepts:
 
 ### INSTALLATION
 
-```bash
-# Quick install (macOS/Linux)
-curl -fsSL https://raw.githubusercontent.com/muvon/octomind/master/install.sh | bash
-
-# Via Cargo (Rust 1.82+)
-cargo install octomind
-
-# Verify
-octomind --version
-```
-
-Binaries available for: Linux x86_64/ARM64, macOS Intel/Apple Silicon, Windows x86_64.
+Quick install (macOS/Linux): `curl -fsSL https://raw.githubusercontent.com/muvon/octomind/master/install.sh | bash`. Via Cargo (Rust 1.82+): `cargo install octomind`. Binaries available for Linux x86_64/ARM64, macOS Intel/Apple Silicon, Windows x86_64.
 
 ### INITIAL SETUP
 
-```bash
-# 1. Set API key (OpenRouter recommended — access to all providers via one key)
-export OPENROUTER_API_KEY="your_key"
+1. Set API key: `export OPENROUTER_API_KEY="your_key"` (OpenRouter gives access to all providers via one key).
+2. `octomind config` (generate default).
+3. `octomind run` (start a session).
 
-# 2. Generate default config
-octomind config
-
-# 3. Start a session
-octomind run
-```
-
-Config is stored at: `~/.local/share/octomind/config/config.toml`
-Sessions are stored at: `~/.local/share/octomind/sessions/`
-Taps are stored at: `~/.local/share/octomind/taps/`
+Storage paths under `~/.local/share/octomind/`: `config/config.toml`, `sessions/`, `taps/`.
 
 ### CLI COMMANDS
 
@@ -95,57 +75,27 @@ octomind run --daemon --name ci --format jsonl  # daemon mode
 
 ### `octomind server [TAG]`
 
-Start a WebSocket server for remote AI sessions.
-
-```bash
-octomind server                          # default role, localhost:8080
-octomind server --host 0.0.0.0 --port 9090
-octomind server developer --sandbox
-```
+WebSocket server for remote AI sessions. Default `localhost:8080`. Flags: `--host`, `--port`, `--sandbox`.
 
 ### `octomind acp [TAG]`
 
-Run as Agent Client Protocol agent over stdio (for editor integration).
-
-```bash
-octomind acp developer
-octomind acp context_gatherer --sandbox
-```
+Agent Client Protocol agent over stdio (editor integration). Same flags.
 
 ### `octomind tap [TAP] [PATH]`
 
-Add or list registry taps.
-
-```bash
-octomind tap                             # list all taps
-octomind tap muvon/octomind-tap          # add from GitHub
-octomind tap myorg/my-tap /local/path   # add local tap (symlink)
-```
+Add or list registry taps. `octomind tap` lists; `octomind tap muvon/octomind-tap` adds from GitHub; `octomind tap myorg/my-tap /local/path` adds local (symlink).
 
 ### `octomind untap <TAP>`
 
 Remove a tap.
 
-```bash
-octomind untap myorg/my-tap
-```
-
 ### `octomind vars`
 
-Show all template placeholder variables and their current values.
-
-```bash
-octomind vars
-# Shows: {{CWD}}, {{ROLE}}, {{DATE}}, {{SHELL}}, {{OS}}, {{BINARIES}}, {{GIT_STATUS}}, {{README}}, etc.
-```
+Show template placeholder values currently resolved in this environment.
 
 ### `octomind send`
 
-Send a message to a running daemon session.
-
-```bash
-echo "Check build status" | octomind send --name ci-watcher
-```
+Send a message to a running daemon session: `echo "..." | octomind send --name <session>`.
 
 ### `octomind config [OPTIONS]`
 
@@ -666,41 +616,9 @@ Hook scripts receive: stdin (raw HTTP body), env vars (`HOOK_NAME`, `HOOK_METHOD
 
 ### Automatic Compression
 
-Triggers when total token count exceeds configurable pressure level thresholds. Each threshold has a `target_ratio` that controls how aggressively history is reduced. A decision model (default: `anthropic:claude-haiku-4-5`) evaluates whether compression would save money (cache-aware economics) before acting. Critical knowledge is retained across compressions via `knowledge_retention`. Consecutive compressions require increasing token growth before re-triggering (exponential cooldown).
+Triggers when total tokens exceed configurable pressure thresholds. Each threshold has a `target_ratio` controlling reduction aggressiveness (e.g. 2.0 = 50% cut, 4.0 = 75%, 8.0 = 87.5%). A decision model (default `anthropic:claude-haiku-4-5`) evaluates cost-savings before acting (cache-aware). Critical knowledge persists via `knowledge_retention`. Consecutive compressions need exponential token growth to re-trigger.
 
-Configure in `config.toml`:
-
-```toml
-    [compression]
-    hints_enabled = true              # show compression hints to AI
-    hints_pressure_threshold = 0.7   # hint when at 70% of first threshold
-    hints_min_interval = 5           # min messages between hints
-    knowledge_retention = 10         # messages of critical knowledge to keep
-
-    [[compression.pressure_levels]]
-    threshold = 50000
-    target_ratio = 2.0    # 50% reduction
-
-    [[compression.pressure_levels]]
-    threshold = 100000
-    target_ratio = 4.0    # 75% reduction
-
-    [[compression.pressure_levels]]
-    threshold = 150000
-    target_ratio = 8.0    # 87.5% reduction
-
-    [compression.decision]
-    model = "anthropic:claude-haiku-4-5"
-    max_tokens = 16000
-    temperature = 0.3
-    top_p = 1.0
-    top_k = 0
-    max_retries = 1
-    retry_timeout = 30
-    ignore_cost = false   # set true to always compress regardless of cost savings
-```
-
-Monitor with `/info` — shows compression statistics, tokens saved, cost saved.
+Configure under `[compression]` in config.toml: `hints_enabled`, `hints_pressure_threshold`, `hints_min_interval`, `knowledge_retention`, then `[[compression.pressure_levels]]` blocks with `threshold` + `target_ratio`, plus `[compression.decision]` model settings (`ignore_cost = true` forces compression regardless of savings). Monitor with `/info`.
 
 ### CUSTOM INSTRUCTIONS
 
@@ -729,50 +647,7 @@ Or per-session: `octomind run --sandbox`
 
 ### COMMON SETUP PATTERNS
 
-### Minimal Setup
-
-```bash
-export OPENROUTER_API_KEY="sk-or-..."
-octomind config
-octomind run
-```
-
-### Project-Specific Setup
-
-```bash
-# .env in project root (overrides system env for this process)
-OPENROUTER_API_KEY=sk-or-...
-ANTHROPIC_API_KEY=sk-ant-...
-```
-
-```toml
-# config.toml
-default = "developer:rust"
-model = "anthropic:claude-sonnet-4"
-custom_instructions_file_name = "INSTRUCTIONS.md"
-```
-
-### Using Tap Agents
-
-```bash
-octomind tap muvon/octomind-tap          # install the official tap
-octomind run octomind:assistant          # use this agent
-octomind run developer:rust              # Rust specialist
-octomind run devops:kubernetes           # Kubernetes specialist
-```
-
-### Non-Interactive / CI Usage
-
-```bash
-# Single message, plain output
-octomind run developer "Review this PR" --format plain
-
-# Structured JSON output
-octomind run developer "List TODOs" --schema schema.json --format jsonl
-
-# Daemon for CI webhooks
-octomind run --name ci --daemon --format jsonl --hook github-push
-```
+Minimal setup: set API key env var, run `octomind config`, then `octomind run`. Project-specific: `.env` in project root overrides system env; pin `default`, `model`, and `custom_instructions_file_name` in `config.toml`. Tap agents: `octomind tap muvon/octomind-tap` then `octomind run <domain>:<spec>`. Non-interactive/CI: pass message inline (`octomind run developer "..." --format plain`), use `--schema` for structured JSON, `--daemon --hook` for CI webhooks.
 </rules>
 
 <critical>

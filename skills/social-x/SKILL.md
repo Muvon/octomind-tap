@@ -17,15 +17,11 @@ rules:
   - match(\bwrite.{0,40}for\s+(x|twitter)\b)
 ---
 
-# X (Twitter) Publishing Playbook
-
 ## Overview
 
 This skill is the ground-truth recipe for writing anything that ships to X. It encodes what the 2026 algorithm rewards, what it suppresses, and the post-level craft that makes a piece actually get read — single posts, threads, replies, and bios.
 
-Pair this with `content-voice` for human voice rules. This skill handles *what wins on X*; `content-voice` handles *how you sound*. If both are active, follow voice rules, then apply the X-specific structure below.
-
----
+Pair this with `content-voice` for human voice rules. This skill handles what wins on X; `content-voice` handles how you sound. If both are active, follow voice rules, then apply the X-specific structure below.
 
 ## Instructions
 
@@ -70,8 +66,6 @@ These all trigger suppression or just bounce off the modern feed. Do not produce
 - AI vocabulary: delve, leverage, unlock, harness, unveil, seamless, cutting-edge (full list in `content-voice`)
 - Uniform long paragraphs — mobile reads fail instantly
 
----
-
 ### Post Types — Pick the Right One
 
 | Goal | Format | Length |
@@ -102,24 +96,20 @@ Rules per part:
 
 White space is structural. One sentence per paragraph is fine and often correct. Mobile reads in short chunks.
 
----
-
 ### Hook Formulas (use, don't parrot)
 
 These are skeletons. Fill with specifics from your actual experience. Never leave the template visible.
 
-1. The broken expectation — "My X did Y. It wasn't Z." → *"My agent spent $50 in tokens to solve a $5 problem. Not because it's dumb."*
-2. The contrarian rule — bold imperative stating the opposite of default advice → *"Do not be helpful. Be correct."*
-3. The specific artifact — an exact number or moment → *"Day 3. Server broke. Here's why:"*
-4. The pattern callout — naming a thing everyone sees but no one says → *"Most LLMs start doing when they're not sure."*
-5. The lost money / lost time — stakes first → *"I burned 40 hours on a config bug. The fix was one line."*
-6. The cost comparison — reframing scale → *"Claude wrote 12,000 lines of code for me last month. I reviewed 400."*
-7. The anti-credential — puncturing authority → *"Seven-figure founders don't write better code. They ship more of it."*
-8. The observed asymmetry — someone is doing X, nobody's doing Y → *"Everyone's tuning prompts. Nobody's tuning tool descriptions."*
+1. The broken expectation — "My X did Y. It wasn't Z." → "My agent spent $50 in tokens to solve a $5 problem. Not because it's dumb."
+2. The contrarian rule — bold imperative stating the opposite of default advice → "Do not be helpful. Be correct."
+3. The specific artifact — an exact number or moment → "Day 3. Server broke. Here's why:"
+4. The pattern callout — naming a thing everyone sees but no one says → "Most LLMs start doing when they're not sure."
+5. The lost money / lost time — stakes first → "I burned 40 hours on a config bug. The fix was one line."
+6. The cost comparison — reframing scale → "Claude wrote 12,000 lines of code for me last month. I reviewed 400."
+7. The anti-credential — puncturing authority → "Seven-figure founders don't write better code. They ship more of it."
+8. The observed asymmetry — someone is doing X, nobody's doing Y → "Everyone's tuning prompts. Nobody's tuning tool descriptions."
 
 Never start with: a question to the reader, a greeting, a disclaimer, "I think," a quote from someone famous, or "Today I want to talk about."
-
----
 
 ### Thread Structure (4–8 posts)
 
@@ -143,8 +133,6 @@ Rules:
 - Bookmark bait works when honest. Post 7 can be "Save this if you're building agents — it's the rule I wish I'd known." Don't use if the content doesn't actually deserve saving.
 - Screenshots beat text for anything that's code, numbers, error logs, or DMs. They bypass link suppression and increase dwell time. Include alt text.
 - Link outside — if the thread has a destination URL (blog post, repo, video), put it in a reply under the final thread post, not in any thread post itself.
-
----
 
 ### Reply-First Growth (the actual growth engine)
 
@@ -184,8 +172,6 @@ A reply is its own post in miniature. Same ranking pipeline, less patience. Ever
 - Skip the CTA. "Check my pinned" / "Follow for more" in a reply reads desperate and kills the reply's amplification.
 - If your reply goes big, reply to yourself with a follow-up thought. Author-reply loops are the 150× signal.
 
----
-
 ### Trend Research — What's Going on in a Field
 
 Before writing on any topic, run this 10-minute research pass. This is what separates "post that fits the moment" from "post that feels six months late."
@@ -205,16 +191,12 @@ Output of the research pass, before writing:
 - Event to attach to (if any): _______
 - Working hook: _______
 
----
-
 ### Timing & Frequency
 
 - Best windows (2026 data) — Tue–Thu, 8–10 AM local and 5–6 PM local. Breaking-news niches skew earlier (7–8 AM).
 - Frequency — 3–5 posts/day spaced 2–3 hours apart is the documented sweet spot for growth accounts. Sub-10k: 1–2 posts/day + 20 replies is more effective than 5 posts/day alone.
 - Do not post in bursts. Five posts in ten minutes dilutes engagement across all of them.
 - One thread per day max. Threads consume reply budget; posting two threads in a day caps both.
-
----
 
 ### Bios, Pinned Posts, and the Profile
 
@@ -224,8 +206,6 @@ New readers come from a viral post or reply and decide in ~3 seconds whether to 
 - Pinned post: your single best-performing post or a purpose-built "start here." Update quarterly.
 - Handle + display name: searchable. If your niche is known by a keyword, have it in one of them.
 - Header image: the one place a link is safe. Use it as a CTA billboard.
-
----
 
 ### Thread-Vibe Matching
 
@@ -247,8 +227,6 @@ Vibe calibration by context:
 | Reply to a personal story | Warmer, first-person, shorter |
 | Reply to a joke/meme post | Match the absurdity level or don't reply |
 | Original post (no reply chain) | Your own voice; no vibe to match |
-
----
 
 ### Human Imperfection Protocol
 
@@ -286,8 +264,6 @@ Calibration check before posting:
 3. Does it have 0–2 natural imperfections appropriate to the context?
 4. Would a fast-typing human plausibly have written exactly this?
 
----
-
 ### Pre-Publish Checklist
 
 Before shipping any post, go through this. Fail on any one → rewrite.
@@ -308,8 +284,6 @@ Before shipping any post, go through this. Fail on any one → rewrite.
 - [ ] Reply only: scanned the reply chain for length/tone/vibe before writing
 - [ ] Reply only: 0–2 natural imperfections calibrated to context (medium for fast threads, low for technical)
 
----
-
 ## Examples
 
 ### Example 1: Single post, broken-expectation hook
@@ -329,8 +303,6 @@ Good (hook → setup → twist → takeaway):
 
 What works: specific dollar amount, active voice, one idea, contrarian takeaway that is poster-able on its own.
 
----
-
 ### Example 2: Pattern-callout hook
 
 > Most LLMs start doing when they're not sure.
@@ -342,8 +314,6 @@ What works: specific dollar amount, active voice, one idea, contrarian takeaway 
 > The fix isn't smarter models. It's a system prompt that punishes silent guessing.
 
 What works: observation everyone has seen, nobody named. Short paragraphs. Final line is a concrete handhold, not a moral.
-
----
 
 ### Example 3: Thread (5 posts, no markers)
 
@@ -388,25 +358,21 @@ Most "bugs" are things that never executed.
 
 What works: post 1 stands alone as a hook. Each post re-hooks. No thread markers. No filler. Post 5 is quotable on its own.
 
----
-
 ### Example 4: Reply that earns a profile visit
 
-Someone with 80k followers posts: *"Every AI startup will need to solve the context window problem eventually."*
+Someone with 80k followers posts: "Every AI startup will need to solve the context window problem eventually."
 
 Bad reply:
 > So true! Context windows are the biggest bottleneck for sure.
 
 Good reply:
-> Disagree slightly — it's not context size, it's context *relevance*.
+> Disagree slightly — it's not context size, it's context relevance.
 >
 > We tested 200k-token Claude vs. 32k-token GPT on the same codebase. The 32k model won on bug-fix accuracy because we forced better retrieval upstream.
 >
 > The problem is selection, not storage.
 
 What works: disagrees specifically, has a number, names a concrete test, ends with a poster-able reframing. Profile visits from this type of reply convert several times better than from a viral root post.
-
----
 
 ### Example 5: Trend research output before writing
 
@@ -419,11 +385,9 @@ Working hook: "Agents are shipping code faster than teams can review it. Nobody'
 
 This research step is the difference between posts that land and posts that feel stale on arrival.
 
----
-
 ### Example 6: Thread-vibe matching in a fast reply chain
 
-Root post (82k followers): *"Shipping fast is a skill. Most teams treat it like a personality trait."*
+Root post (82k followers): "Shipping fast is a skill. Most teams treat it like a personality trait."
 
 Reply chain vibe: short, punchy, lowercase, no periods, 1–2 lines each.
 
@@ -437,11 +401,9 @@ Good reply (matches chain vibe, medium imperfection):
 
 What works: lowercase opener, missing apostrophe in `its`, matches the 2-line chain pattern, adds a specific counter-point.
 
----
-
 ### Example 7: Reply with calibrated imperfection (technical thread)
 
-Root post: *"Hot take: most RAG pipelines fail because of chunking strategy, not retrieval."*
+Root post: "Hot take: most RAG pipelines fail because of chunking strategy, not retrieval."
 
 Reply chain vibe: technical, measured, 3–5 lines, mostly proper punctuation.
 
@@ -454,8 +416,6 @@ Good reply (low imperfection, matches technical register):
 > The retrieval model was fine the whole time.
 
 What works: one small imperfection (no period after "boundaries" before the line break), specific number, technical precision maintained, matches the thread's measured tone.
-
----
 
 ## References
 

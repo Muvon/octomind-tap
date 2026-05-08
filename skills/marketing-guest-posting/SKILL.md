@@ -25,15 +25,11 @@ rules:
   - semantic(find blogs that accept contributor articles)
 ---
 
-# Guest Posting
-
 ## Overview
 
 Guest posting still works in 2026 — but the rules changed sharply. The October 2025 Google spam update added "AI-generated guest post farms" as a distinct violation category, targeting large-scale operations that publish thin machine content to embed paid backlinks. Volume is now actively penalized. Repetitive exact-match anchors across posts trigger manual review. "Niche edits" sold as guest-post alternatives carry the same penalty as paid guest posts. The tactic survives only when each post is editorially earned, topically aligned, written to publication standard, and linked back with diverse natural anchors.
 
 This skill encodes the 7-stage workflow for doing exactly that: map your authority to publication tiers, discover qualified targets, qualify each one against an 11-point rubric, pitch a specific content gap (not "a guest post"), write to the host's standard, link strategically without over-optimizing, and follow up to build a multi-post relationship. Use BEFORE writing any pitch email. The deliverable is a strategy + brief; orchestration of downstream copywriting belongs to the agent layer, not this skill.
-
----
 
 ## Instructions
 
@@ -49,8 +45,6 @@ This skill encodes the 7-stage workflow for doing exactly that: map your authori
 - One pitch, one topic-set. Don't blast the same 3-topic pitch to 50 sites. Each pitch is researched per-publication, references their actual content, fills a specific gap they have.
 - AI-written drafts are detectable and devalued. The Oct 2025 update specifically targets thin AI content farms. Use AI for outlining/research support if needed, but ship human-written prose at publication standard.
 - Output a brief, not a finished email. This skill produces the strategy, target list, topics, and pitch architecture. The actual email and post writing happen elsewhere — stay in the marketing lane.
-
----
 
 ### The 7-Stage Workflow
 
@@ -179,226 +173,22 @@ Topic angles that fail:
 
 Output of Stage 4: for each qualified target, 3–5 specific topic offers, each one sentence + a value prop.
 
-#### Stage 5 — Pitch Architecture (the 80–150-word email)
+#### Stages 5–8 — Pitch, Post, Links, Follow-up
 
-Pitch performance data:
-- Personalized pitch = 18% reply vs 6% generic (3× difference)
-- Length: 80–150 words, no longer
-- Subject line: specific, references their content, not generic
-- Body structure (in order): personalization hook → credibility line → 3 topic offers → soft CTA
+Stages 5–8 are workflow execution and have detailed templates, tier-by-tier writing standards, anchor distribution targets, and follow-up cadence. Quick guidance:
 
-Architecture:
+- Stage 5 (Pitch): 80–150 words. Subject references their content, body = personalization hook → credibility line → 3 topic offers → soft CTA. Personalized pitch yields 18% reply vs 6% generic.
+- Stage 6 (Post): word count and depth match the tier (T1: 2.5–4k words + original data; T2: 1.5–2.5k; T3: 1–1.5k; T4: 0.8–1.2k). Universal rules: original, human-written, match publication voice, no promotional content in body.
+- Stage 7 (Links): 1–2 body links + 1 bio link. Anchor mix: 40–50% branded, 20–30% partial-match, 15–25% semantic, 5–10% generic, <10% exact-match. Diversification reduces manual-action risk by 68%.
+- Stage 8 (Follow-up): 7-day bump, 14-day final, thank-you after publish, re-pitch at 90 days. Goal: 3–4 posts in 12 months, not one-offs.
 
-```
-SUBJECT: [Specific reference to a recent post + 4–6 word topic suggestion]
-   GOOD: "Loved your CI piece — pitch on monorepo trade-offs?"
-   BAD: "Guest post pitch for [publication]"
-   BAD: "Quick question"
+Full templates (subject formulas, pitch architecture, tier-by-tier writing standards, anchor-distribution table, link-placement rules, follow-up cadence): see `reference/detailed-stages.md`.
 
-OPENING (1–2 lines) — Personalization hook tied to a SPECIFIC article they published.
-   Reference the title or a specific point. Not "love your blog" — "your piece on X
-   made me rethink Y."
+### Decision guide and Google's policy
 
-CREDIBILITY (1 line) — One sentence on who you are, why you can write on this.
-   Name 1–2 prior placements (with link), or your specific expertise/data.
+Edge cases (paid networks, tier-jumping, ghostwriting, syndication, exact-match push-back) and Google's exact rules on what's editorial vs violation: see `reference/detailed-stages.md`. The intent test stands: would this guest post exist if SEO didn't exist? If yes → editorial. If no → violation in waiting.
 
-TOPIC OFFER (the meat — 3–5 lines) — 3 specific topic ideas, each one sentence,
-   each addressing a content gap on their site. Title + value prop.
-
-CTA (1 line) — Soft. "Happy to send a draft outline if any of these fit."
-   NEVER "let me know what you think" or "if interested, please reply."
-
-SIGN-OFF — Name. One link. Done.
-```
-
-Length math: subject ~10 words; opening ~25 words; credibility ~25 words; topic offers ~50 words; CTA ~10 words; signature ~5 words = ~125 words. Stay in this range.
-
-Pitch template (brief — not a finished email):
-
-```
-Subject: [Reference to specific post they wrote] — [topic suggestion in 4-6 words]
-
-Hi [Editor first name],
-
-Your [post title or specific point] last [time-frame] got me thinking about [related angle]. Specifically, the part where you mentioned [specific quote/idea] — I think there's a follow-up that would resonate with [audience descriptor].
-
-I'm [credibility — role + 1 prior tier-comparable placement OR specific original asset]. A few topics I could write that I think would fit:
-
-  • [Topic 1 title] — [one-sentence value prop tied to their audience]
-  • [Topic 2 title] — [one-sentence value prop]
-  • [Topic 3 title] — [one-sentence value prop]
-
-Happy to send a detailed outline if any of these fit your editorial calendar.
-
-— [Name]
-[One link, branded]
-```
-
-Pre-pitch relationship-building (multiplier):
-
-If pitching T1/T2 (where acceptance rates are <20%), do this BEFORE the pitch over 2–4 weeks:
-- Share their content 2–3× on social with your own thoughtful comment
-- Leave 1–2 substantive comments on their recent posts (not "great article!")
-- Send one appreciation email — no pitch, just thank them for a specific piece
-- Reference all of this implicitly in the eventual pitch
-
-This is what moves T1/T2 acceptance rates from 5% to 20%+.
-
-#### Stage 6 — The Post Itself (writing standards by tier)
-
-The post lives or dies based on whether it meets the publication's standard. Match the tier:
-
-Tier-1 standard:
-- "As good or better than what you post on your own blog"
-- 2,500–4,000 words; longer is fine if substantive
-- Actionable system, not summary — step-by-step process the reader can apply
-- Custom screenshots, charts, original data
-- Search-intent match — readers should find it via target queries
-- Original quotes (not just citations) where possible
-- Internal linking to host site's own relevant content (3–5 internal links to THEIR posts) — this is a signal of editorial care
-
-Tier-2 standard:
-- 1,500–2,500 words
-- Case study or process post format works well
-- Visuals required but can be lighter
-- Internal linking to host site (2–3 links to their posts)
-
-Tier-3 standard:
-- 1,000–1,500 words
-- Substantive but doesn't need T1 production polish
-- 1–2 internal links to host site
-
-Tier-4 standard:
-- 800–1,200 words
-- Solid contribution, simpler structure
-
-Universal rules across all tiers:
-- Original — never duplicate published-elsewhere content
-- Human-written — AI-content farms are now a tagged violation category
-- Match the publication's voice (read 5 of their posts before writing)
-- Lead with the value, not the setup
-- No promotional content for your own product/service in the body
-
-Output of Stage 6: an outline + post-writing brief (target word count, format, voice notes, internal-link list). Actual prose generation is out of scope for this skill.
-
-#### Stage 7 — Link Strategy (placement + anchors)
-
-This is where the penalty risk is highest. Get it right.
-
-Link placement (where the links go):
-
-| Link Type | Count | Placement | Notes |
-|---|---|---|---|
-| Body link (preferred) | 1–2 | Inside the article body, contextually relevant | 387% more referral traffic than bio-only; always preferred |
-| Author bio link | 1 | In the bio at top or bottom | Standard; safe; usually nofollow |
-| In-content related-link | 0–1 | Linking to host's other content | Signals editorial care; not your link, but boosts pitch acceptance |
-
-Body link rules:
-- The link must genuinely help the reader at that exact point in the post
-- Place near (within 1–2 paragraphs of) a topic the linked page covers
-- Don't force a link if the post doesn't naturally call for one — better to have only the bio link than a forced body link
-
-Anchor text distribution (DATA-BACKED, track across all posts):
-
-| Anchor Type | Target Mix | Examples |
-|---|---|---|
-| Branded | 40–50% | "Acme", "Acme Tools", "Acme's documentation" |
-| Partial-match | 20–30% | "Acme's CI/CD platform", "see Acme's monorepo guide" |
-| Semantic / long-tail | 15–25% | "this benchmark on deploy time", "the team's analysis of cold-start latency" |
-| Generic | 5–10% | "here", "this article", "see this case study", URL-only |
-| Exact-match keyword | <10% | "monorepo CI tool", "best CI/CD platform" — used SPARINGLY |
-
-Why this matters: diversification reduces manual-action risk by 68%. Sites that use exact-match on every guest post get flagged within months. Track anchor distribution across your last 20 placements; if exact-match exceeds 10%, stop using them entirely until ratio rebalances.
-
-Author bio rules:
-- ONE link only
-- Anchor: branded or URL — never exact-match keyword
-- 1–2 sentence bio — don't write a sales pitch
-- Link to homepage or a specific resource (a blog post, tool, or about page) — not to a sales page
-
-Forbidden in any guest post:
-- Self-promotional CTAs ("buy our X", "sign up for our Y")
-- Stuffed exact-match anchors
-- Affiliate links unless explicitly approved by host (and then with `rel="sponsored"`)
-- Linking to the same destination URL across multiple posts (sitewide pattern)
-
-#### Stage 8 — Follow-up & Relationship
-
-The pitch isn't a one-shot. Build the relationship:
-
-| Action | Timing | Purpose |
-|---|---|---|
-| First follow-up | 7 days after pitch (no reply) | Polite bump, re-state one topic, ask if a different angle would fit |
-| Second follow-up | 14 days after pitch (no reply after first follow-up) | One sentence; do not pitch a third time |
-| Thank-you note | After post is published | One paragraph, no ask, mention a specific reader response if any |
-| Share + amplify | Day of and week after publication | Post on social; tag the publication and editor; comment-engage |
-| Re-pitch trigger | 90 days after publication | Pitch a follow-up topic referencing the prior post's reception |
-
-Goal: convert a one-off placement into a 3–4 post relationship over 12 months. This is more valuable than 4 different one-off placements at the same tier, because each subsequent post:
-- Has a higher acceptance rate (relationship now exists)
-- Compounds your association with the publication
-- Builds a credible portfolio for tier-up moves
-
----
-
-### Decision Guide — Edge Cases
-
-| Situation | Action |
-|---|---|
-| Site lists "guest post fee: $200" with no `rel="sponsored"` mention | Strike — paid placement passing ranking signal = penalty |
-| "Vetted network" agency offers 10 placements/month for $2k | Strike — at scale this is functionally a guest-post farm; Oct 2025 update target |
-| Niche-edit / link-insertion service offers placement on existing article for $300 | Strike — same penalty class as paid guest posts |
-| Site clearly editorial but their "write for us" page hasn't been updated in 2 years | Email the editor directly anyway — the page is outdated, not the policy |
-| Editor responds: "We charge $150 per published post, fully edited" | Skip unless `rel="sponsored"` is explicitly applied — clarify; if dofollow paid, walk away |
-| User wants to use one ghostwriter for 10 posts under different bylines | Refuse — same-author footprint across "different" voices = PBN-detection trigger |
-| User wants to syndicate the same post to 5 sites | Refuse — duplicate content is its own violation; rewrite per publication |
-| Pitch reply: "We need it within 48 hours and 3,500 words" | Decline if not realistic — rushed posts read as rushed; better to pass than ship sub-standard |
-| User has zero portfolio; asks to pitch tier-1 | Refuse and ladder — start tier-3/4, build 3–5 placements, then ladder up |
-| Same topic accepted by two publications independently | Write two original versions — different angles, different examples, different conclusions; never publish the same draft twice |
-| Pitch accepted but editor wants you to remove the body link | Negotiate once, accept gracefully — bio-link-only is still a valid placement at lower value |
-| Pitch accepted but editor wants exact-match anchor on the body link | Push back — request branded or partial-match; if they insist on exact, walk away (manual-action risk on you, not them) |
-| Tier-1 has been engaged for 3 months, no acceptance | Stop. Drop tier. — at T2 your portfolio grows; you can re-pitch T1 in 6 months from a stronger position |
-
----
-
-### Google's Position on Guest Posting (the actual rules)
-
-Google has been consistent: editorial guest posts on relevant authoritative sites are endorsed. Manipulative ones are violations. The line:
-
-ALLOWED:
-- Editorial guest contributions on topically aligned sites
-- Posts written for genuine readership, not just for the link
-- Properly attributed sponsored content with `rel="sponsored"`
-- Niche-relevant outreach that builds real relationships
-
-VIOLATIONS (per Google's spam policy):
-- "Advertorials or native advertising where payment is received for articles that include links that pass ranking credit" (paid guest posts without `rel="sponsored"`)
-- "Using automated programs or services to create links" (mass guest-post farms)
-- "Excessive reciprocal link exchanges" (you write for me, I write for you, scaled)
-- Guest post networks (closed networks publishing for SEO)
-- AI-generated guest post farms (Oct 2025 update — distinct violation category)
-- Repetitive exact-match anchor patterns across multiple guest posts (algorithmic flag)
-
-The intent test: would this guest post exist if SEO didn't exist? If yes → it's editorial. If no → it's a violation in waiting.
-
----
-
-### Tools — what's free vs paid
-
-| Tool | Tier | Use for |
-|---|---|---|
-| Google Search (operators) | Free | Discovery |
-| Ahrefs Free Backlink Checker | Free (limited) | Top 100 backlinks of competitor → guest opportunities |
-| Wayback Machine | Free | Confirming a site's longevity / topical history |
-| Hunter.io free tier | Free (limited) | Editor email discovery |
-| Apollo / RocketReach free tier | Free (limited) | Editor LinkedIn / email discovery |
-| Featured.com newsletter | Free | Editor calls for sources (HARO replacement) |
-| Source of Sources (SOS) | Free | Editor calls for sources |
-| Qwoted | Freemium | Journalist matching |
-| Similarweb (free tier) | Free | Traffic estimate sanity-check |
-| Ahrefs / Semrush full | Paid | Network graph, full backlink profile |
-
----
+Tool inventory (free + paid) for discovery, qualification, and outreach: see `reference/detailed-stages.md`.
 
 ## Examples
 
@@ -500,8 +290,6 @@ Response:
 > The honest math: 10 placements at $150 each from a network = ~$1,500 in spend, ~0 long-term link value, and a manual-action risk on a 6-month recovery curve.
 >
 > Real editorial costs more in time, but the placements compound. 2 tier-3 editorial guest posts per month, earned through the workflow above, beat 10 paid network posts every quarter.
-
----
 
 ## References
 

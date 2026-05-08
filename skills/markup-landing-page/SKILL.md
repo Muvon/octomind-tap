@@ -19,15 +19,11 @@ rules:
   - match(\bpricing\s+page\b)
 ---
 
-# Landing Page Craft
-
 ## Overview
 
 A landing page has one job: turn a stranger into a buyer (or trial user). Everything else — logos, headers, badges, blog links — is decoration. This skill encodes the patterns that consistently convert: a tight design system that handles dark/light mode automatically, an opinionated section order that walks visitors through the buy decision, copy rules that avoid AI-generic language, and the SEO/structured-data baseline that gets the page found in the first place.
 
-Pair with `content-voice` for copy. This skill handles *structure, design system, and conversion mechanics*. `content-voice` handles *how the words sound*.
-
----
+Pair with `content-voice` for copy. This skill handles structure, design system, and conversion mechanics. `content-voice` handles how the words sound.
 
 ## Tech Stack Baseline
 
@@ -47,8 +43,6 @@ Avoid unless specifically needed:
 - Heavy animation libraries (GSAP, Framer Motion) for fade-ins (CSS does it in 4 lines)
 - Web fonts (system fonts look better than 90% of imported fonts on Apple devices)
 - Component libraries (Radix, shadcn) — landing pages need brand-specific UI, not generic primitives
-
----
 
 ## Design System (Single Source of Truth)
 
@@ -148,8 +142,6 @@ All design tokens live in one CSS file as custom properties on `:root`. Componen
 }
 ```
 
----
-
 ## Automatic Dark/Light Mode
 
 This is non-negotiable for modern landing pages. Implement once at the token level — components shouldn't know which mode they're in.
@@ -188,8 +180,6 @@ Rules:
   <meta name="color-scheme" content="light dark" />
   ```
 - Component-specific cases (like a `rgba(0,0,0,0.4)` overlay) need explicit dark-mode overrides inside the component.
-
----
 
 ## Section Anatomy (Top to Bottom)
 
@@ -282,8 +272,6 @@ A repeat CTA section before the footer. Different headline from hero — emotion
 
 Brand + tagline on left, columns on right (Product, Company, Legal, Connect). Copyright at bottom. Keep it minimal — 3–4 columns max.
 
----
-
 ## CTA Hierarchy
 
 A landing page should have one primary action and zero or one secondary action. Multiple CTAs of equal weight = no CTA.
@@ -298,8 +286,6 @@ Rules:
 - Never use red, orange, or yellow for primary CTAs unless brand-justified — they read as warnings.
 - CTA text is a verb + outcome: "Download Free", "Start Trial", "Buy Vext" — not "Click here", "Learn more", "Submit".
 - Pill radius (`border-radius: 9999px`) outperforms rounded rectangles in tests for software products.
-
----
 
 ## Conversion Patterns
 
@@ -336,8 +322,6 @@ If you have a real launch promo or deadline, show it: pulsing dot pill, deadline
 
 The CTA should appear in nav, hero, mid-page (after pricing), and footer. All point to the same action. Don't split between "Buy" and "Sign up free" and "Watch demo" — pick one primary outcome and repeat.
 
----
-
 ## Copy Rules (apply on top of `content-voice`)
 
 ### Headlines
@@ -370,8 +354,6 @@ The CTA should appear in nav, hero, mid-page (after pricing), and footer. All po
 - 1–3 words. "Download Free", "Buy for $24.50", "Get started".
 - Action + outcome. Never "Click here" or "Submit".
 - Match what happens next. "Buy" → checkout. "Download Free" → trial. "Start" → signup. Don't bait.
-
----
 
 ## SEO + Social Baseline
 
@@ -438,9 +420,7 @@ Never invent `aggregateRating` with fake review counts — Google penalizes this
 
 - Every page sets `<link rel="canonical">`.
 - Static `sitemap.xml` listing all routes with `lastmod` and reasonable `priority` (1.0 for home, 0.7 for content, 0.3 for legal).
-- `robots.txt` allowing everything except `/api/*` and `/_*`.
-
----
+- `robots.txt` allowing everything except `/api/` and `/_`.
 
 ## Error Pages (404, 5xx)
 
@@ -499,8 +479,6 @@ The `+error.svelte` component is what gets prerendered into `404.html` at build 
 - ❌ Use stock "lost robot" / "broken cable" illustrations — generic and dated
 - ❌ Skip the nav and footer — the page should feel like part of the site
 - ❌ Index error pages (missing `noindex` is a common SEO bug)
-
----
 
 ## Animation (Restrained)
 
@@ -561,8 +539,6 @@ For "live" indicators (recording, launch promo):
 .dot { animation: pulse 1.6s ease-in-out infinite; }
 ```
 
----
-
 ## Responsive Rules
 
 Two breakpoints cover ~95% of cases:
@@ -579,8 +555,6 @@ Patterns:
 - Tap targets ≥ 44×44px on mobile
 - Tables: `overflow-x: auto` wrapper with `min-width` on the table itself
 
----
-
 ## Performance Targets
 
 A landing page that takes >1s to render loses customers regardless of copy quality.
@@ -591,8 +565,6 @@ A landing page that takes >1s to render loses customers regardless of copy quali
 - Image format — WebP for photos, SVG for illustrations, PNG only for screenshots that need pixel accuracy
 - Hero image — preload it: `<link rel="preload" as="image" href="...">`
 - Above-the-fold CSS — inline critical CSS if your stack supports it
-
----
 
 ## Anti-Patterns (Don't)
 
@@ -608,8 +580,6 @@ A landing page that takes >1s to render loses customers regardless of copy quali
 - Don't hide nav on scroll — visitors lose orientation
 - Don't ship cookie banners unless you actually need them (most marketing sites don't if no third-party cookies)
 - Don't write "trusted by X companies" without showing real logos and numbers — adds nothing
-
----
 
 ## Examples
 
@@ -647,8 +617,6 @@ A landing page that takes >1s to render loses customers regardless of copy quali
 ✅ Specific friction points:
 > "Audio sent to third-party servers · Requires monthly subscription · Account + login required"
 
----
-
 ## Pre-Ship Checklist
 
 Before declaring a landing page ready:
@@ -669,8 +637,6 @@ Before declaring a landing page ready:
 - [ ] Sitemap.xml lists every page
 - [ ] Canonical URL is set on every page
 - [ ] At least one trust signal in hero, one mid-page, one footer
-
----
 
 ## When to Break the Rules
 

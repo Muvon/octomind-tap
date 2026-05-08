@@ -6,13 +6,9 @@ license: Apache-2.0
 compatibility: "Language-agnostic. Applicable to any software project using pull requests."
 ---
 
-# Code Review Skill
-
 ## Overview
 
 This skill provides a structured approach to code review: what to check, how to communicate feedback, and how to receive it. Activate it when reviewing a PR, preparing your own code for review, or establishing review norms for a team.
-
----
 
 ## Instructions
 
@@ -32,7 +28,7 @@ This skill provides a structured approach to code review: what to check, how to 
 
 #### Readability
 - [ ] Are names clear and intention-revealing?
-- [ ] Is complex logic explained with comments (the *why*, not the *what*)?
+- [ ] Is complex logic explained with comments (the why, not the what)?
 - [ ] Is the code easy to follow without needing to trace through many files?
 
 #### Tests
@@ -79,8 +75,6 @@ Praise good work: Acknowledge clever solutions or clean refactors.
 
 Large PRs get shallow reviews. Smaller PRs get better feedback faster.
 
----
-
 ## Examples
 
 ### Good feedback comment
@@ -118,8 +112,6 @@ Key implementation decisions and trade-offs.
 ## Testing
 How you verified this works.
 ```
-
----
 
 ## References
 

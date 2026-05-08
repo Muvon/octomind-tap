@@ -7,15 +7,11 @@ compatibility: "Requires: octomind-tap repo. Use alongside tap-agent-authoring f
 domains: octomind
 ---
 
-# Capability & Dep Script Authoring
-
 ## Overview
 
 This skill encodes everything needed to create a new capability or dep script in the octomind-tap registry. A capability is the abstraction layer between agents and MCP servers — agents declare what they need, capabilities provide the wiring. This skill covers the full creation checklist: capability file format, provider/symlink pattern, dep script structure, platform coverage requirements, companion documentation, `setup-symlinks.sh` registration, and how to validate everything.
 
 Use this skill whenever you need to create a new capability or dep script, or when an agent needs a tool not covered by existing capabilities.
-
----
 
 ## Instructions
 
@@ -76,8 +72,6 @@ Built-in servers (`core`, `octofs`, `agent`, `octocode`) do NOT need `[[mcp.serv
 
 Environment variable injection: use `{{ENV:VAR_NAME}}` in capability files for runtime env vars (e.g. API keys). Document required env vars in the capability file header comment.
 
----
-
 ### Full Creation Checklist
 
 When creating a new capability:
@@ -94,8 +88,6 @@ When creating a new capability:
 8. Run `bash scripts/lint-capabilities.sh capabilities/<name>` to validate capability
 9. Reference `"<name>"` in the agent's `capabilities = [...]`
 
----
-
 ### Dep Script Authoring
 
 Dep scripts are covered in full by the `tap-deps-authoring` skill. Load it when you need to write or edit a `deps/<org>/<tool>.sh` file:
@@ -110,8 +102,6 @@ Key points to know here:
 - `type: dep` — installs a standalone CLI tool used directly
 - Every `.sh` must have a companion `.md` at the same path
 
----
-
 ### Companion Documentation Format
 
 Every dep script MUST have a matching `.md` file at `deps/<org>/<tool>.md`.
@@ -125,8 +115,6 @@ For MCP servers (`type: mcp`) — use `templates/dep-mcp.md` as base, must inclu
 For plain deps (`type: dep`) — use `templates/dep-tool.md` as base, must include:
 - `## Key Commands` — most important CLI commands
 - `## Common Usage` — typical usage patterns
-
----
 
 ### setup-symlinks.sh Registration
 
@@ -148,8 +136,6 @@ DECLARED=(
 If you skip either step, `setup-symlinks.sh` will emit a `WARN` for undeclared dirs.
 
 Note: `core` and `agent` are built-in capabilities — do NOT add `link` entries for them. They have real files, not symlinks.
-
----
 
 ## Examples
 
@@ -214,8 +200,6 @@ url = "http://localhost:3333"
 timeout_seconds = 30
 tools = []
 ```
-
----
 
 ## References
 

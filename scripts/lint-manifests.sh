@@ -137,6 +137,16 @@ if system_content:
     if date_match:
         errors.append("SYSTEM_HAS_DATE: '{{DATE}}' in system prompt — breaks prompt caching (system must be stable run-to-run). Move to `welcome` field.")
 
+    # System prompt length cap — production sweet spot 200-1000 words; >1500 risks context rot
+    sys_word_count = len(system_content.split())
+    SOFT_LIMIT = 1500
+    HARD_LIMIT = 3000
+    if sys_word_count > HARD_LIMIT:
+        errors.append(f"SYSTEM_TOO_LONG: system prompt is {sys_word_count} words (hard limit {HARD_LIMIT}). Context rot at this length degrades rule recall. Move documentation to skills or reference files.")
+    elif sys_word_count > SOFT_LIMIT:
+        # Soft warning — surfaces but doesn't fail
+        print(f"SYSTEM_LENGTH_WARN ({path}): system is {sys_word_count} words (soft target {SOFT_LIMIT}). Consider extracting reference content into skills.", file=sys.stderr)
+
 # Check for capabilities declaration
 has_capabilities = bool(re.search(r'^capabilities\s*=\s*\[', raw_text, re.MULTILINE))
 

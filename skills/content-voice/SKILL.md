@@ -25,15 +25,11 @@ rules:
   - semantic(polish this content to read like a real person wrote it)
 ---
 
-# Human Writing Voice
-
 ## Overview
 
 AI-generated text has measurable signatures that readers and search engines detect. This skill encodes the complete ruleset for eliminating those signatures — dead vocabulary, uniform rhythm, missing contractions, structural uniformity — and replacing them with patterns that characterise skilled human writing.
 
 Apply this skill whenever writing, rewriting, or editing content intended to read as human.
-
----
 
 ## Instructions
 
@@ -84,8 +80,6 @@ Trailing participles — never end sentences with these:
 
 Rewrite as a separate sentence instead.
 
----
-
 ### Voice Rules
 
 Contractions — always
@@ -120,11 +114,9 @@ The shape of the text adapts to where it lives. The same idea looks different in
 
 - Replies and comments — prose. 1–4 sentences for most. No headers, no numbered lists, no bullet stacks, no bold mid-sentence. People don't write replies as slide decks; AI does by default. Match the surrounding chain — if everyone is writing 1-line lowercase replies, a 6-line structured response stands out as a bot.
 - Posts and threads — each post is a standalone piece of prose. No "1/12" markers, no "🧵", no thread-promo intros. Write each one like a single considered post.
-- Long articles, blogs, docs — structure is fine *when it serves reading*. Headers break sections that earn it; bullets handle truly enumerable lists (3+ genuinely parallel items); bold marks the rare phrase that needs marking. The test: strip the formatting — does the reader lose anything? If not, drop it.
+- Long articles, blogs, docs — structure is fine when it serves reading. Headers break sections that earn it; bullets handle truly enumerable lists (3+ genuinely parallel items); bold marks the rare phrase that needs marking. The test: strip the formatting — does the reader lose anything? If not, drop it.
 
 Lists, headers, and bold are cheap — they're what AI reaches for whenever it isn't sure what to write. Use them only when they earn their place.
-
----
 
 ### Transitions
 
@@ -133,8 +125,6 @@ Don't use a transition when the logic is clear — just start the next idea. Whe
 ✅ "But." / "The problem is —" / "Here's what that looks like." / "Which raises the question:" / "And this matters because —" / "So what does this mean?" / "The catch?" / "Plus,"
 
 ❌ Never: "Furthermore," "Moreover," "Additionally," "Consequently," "It's worth noting"
-
----
 
 ### Conclusions
 
@@ -146,8 +136,6 @@ Never open a conclusion with:
 - "To wrap up,"
 
 End by circling back to the opening, posing a question, making a prediction, or just stopping. A conclusion that recaps all main points is an AI pattern.
-
----
 
 ## Examples
 

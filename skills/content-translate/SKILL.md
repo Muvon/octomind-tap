@@ -14,8 +14,6 @@ rules:
   - match(localiz(?:e|ation|ing|ed))
 ---
 
-# Content Translation & Localization
-
 ## Overview
 
 Translate documents, code comments, UI strings, and structured content between languages while preserving original formatting, adapting terminology to the target domain, and maintaining consistency across large files. This skill handles everything from single paragraphs to multi-file projects by splitting work into coherent batches, tracking terminology across segments, and validating output quality.
@@ -260,23 +258,17 @@ Validation: All 23 glossary terms consistent. All code blocks intact.
 
 **Source**:
 ```markdown
----
 title: "Deployment Guide"
 description: "How to deploy to production"
 author: "DevOps Team"
----
-
 # Deployment Guide
 ```
 
 **Target** (French):
 ```markdown
----
 title: "Guide de déploiement"
 description: "Comment déployer en production"
 author: "DevOps Team"
----
-
 # Guide de déploiement
 ```
 

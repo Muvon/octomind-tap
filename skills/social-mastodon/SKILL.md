@@ -14,8 +14,6 @@ rules:
   - match(\bthe\s+fediverse\b)
 ---
 
-# Mastodon Publishing Playbook
-
 ## Overview
 
 Mastodon (and the wider Fediverse) runs on ActivityPub, not a single company. There is no algorithm. Timelines are strictly chronological. Posts don't get "boosted" by the platform — they get boosted by humans, or they don't move at all. Discovery is powered by hashtags, boosts, and instance-local curation — in that order.
@@ -248,8 +246,6 @@ Each post stands alone, each is tagged, chronological timeline works with it.
 - Screenshot-dunking. The Fediverse remembers. Callout culture doesn't work the way it does on X — it rebounds.
 - Gratuitous tag stacking. `#life #mood #thoughts #random` is a tell.
 
----
-
 ## Thread-Vibe Matching (Replies)
 
 Mastodon reply culture is slower and more deliberate than X or Threads. Before replying, read the existing reply chain and the local timeline context. The vibe is set by the instance culture as much as by the individual thread.
@@ -270,8 +266,6 @@ Vibe calibration by post type:
 | Personal / creative post | Warmer, shorter, first-person |
 | CW'd sensitive topic | Match the care level; keep it measured |
 | Accessibility-focused post | Especially careful; this community notices and values care |
-
----
 
 ## Human Imperfection Protocol
 
@@ -309,8 +303,6 @@ Calibration check before posting:
 2. Read the instance's local timeline — what's the general formality level?
 3. Does your reply have 0–1 structural imperfections (informal phrasing, not typos)?
 4. Would a thoughtful FOSS-community member typing this at their desk plausibly have written exactly this?
-
----
 
 ## Examples
 
@@ -394,7 +386,7 @@ The CW is honest about the content and length. Users who want it, expand. Users 
 
 ### Example 5 — Thread-vibe matching (technical thread)
 
-Post: *"Discovered today that Gtk4 on Wayland exposes a new compositor-side protocol for fractional scaling that avoids the double-rounding bug we've been chasing since 2023."*
+Post: "Discovered today that Gtk4 on Wayland exposes a new compositor-side protocol for fractional scaling that avoids the double-rounding bug we've been chasing since 2023."
 
 Reply chain vibe: technical, 2–4 sentences, proper punctuation, specific version numbers.
 
@@ -408,11 +400,9 @@ Good reply (matches technical register, very low imperfection):
 
 What works: informal opener (`Been hitting`) is the only structural imperfection, specific hardware setup, concrete symptom, no typos, no casual slang, matches the technical depth of the thread.
 
----
-
 ### Example 6 — Reply with calibrated imperfection (personal/creative thread)
 
-Post: *"Finally got the old ThinkPad running NetBSD current with a working Wayland session."*
+Post: "Finally got the old ThinkPad running NetBSD current with a working Wayland session."
 
 Reply chain vibe: warm, personal, 1–3 sentences, casual but not sloppy.
 
@@ -423,8 +413,6 @@ Good reply (low imperfection, matches warm-but-careful register):
 > The X61 keyboard is genuinely one of the best ever made. Still have mine from 2009 — the travel is something modern laptops just don't do.
 
 What works: no imperfections here because the thread is warm but careful (Mastodon culture values craftsmanship), specific model name, personal connection, no hype language, reads as a thoughtful human response.
-
----
 
 ## Pre-Publish Checklist
 

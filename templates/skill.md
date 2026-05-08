@@ -28,17 +28,9 @@ compatibility: "Describe environment requirements: intended product (e.g. Octomi
 #   tags: "tag1 tag2"
 ---
 
-# My Skill Name
-
-<!-- Canonical section order (2026 standard — see tap-skill-authoring):
-     Overview → Mental model → Rules → Examples → Checklist → Composition / References
-     Overview at the top (primacy), Checklist near the end (recency). -->
-
 ## Overview
 
 Describe the skill's purpose in 2–4 sentences. Name the problem, the trigger, and the outcome. No fluff.
-
----
 
 ## Mental model
 
@@ -46,8 +38,6 @@ Describe the skill's purpose in 2–4 sentences. Name the problem, the trigger, 
      the rules read as a system, not a list. Skip if the skill is purely mechanical. -->
 
 The core principle that governs all the rules below: ...
-
----
 
 ## Rules
 
@@ -73,8 +63,6 @@ The core principle that governs all the rules below: ...
 2. Step two — description
 3. Step three — description
 
----
-
 ## Examples
 
 <!-- Bad → Good is the strongest format. Show the AI tell, then the fix. -->
@@ -97,8 +85,6 @@ What changed: <one-line explanation>
 
 <!-- Describe what makes this tricky and how to handle it. -->
 
----
-
 ## Checklist
 
 <!-- Recency: this is the last actionable thing the model sees, so it acts as a final gate.
@@ -107,8 +93,6 @@ What changed: <one-line explanation>
 - [ ] <verifiable check>
 - [ ] <verifiable check>
 - [ ] <verifiable check>
-
----
 
 ## Composition / References
 

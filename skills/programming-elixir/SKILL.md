@@ -10,8 +10,6 @@ rules:
   - content(elixir)
 ---
 
-# Elixir Development
-
 ## Conventions
 
 - Idiomatic Elixir — pattern matching over conditionals, pipes over nesting

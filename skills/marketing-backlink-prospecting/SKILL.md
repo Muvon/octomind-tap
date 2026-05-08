@@ -29,15 +29,11 @@ rules:
   - semantic(how to do outreach for backlinks without getting penalized)
 ---
 
-# Backlink Prospecting & Qualification
-
 ## Overview
 
 Most "free backlink" attempts fail in one of two ways: they spray submissions across generic directories and forums (which earn nothing and risk penalties), or they over-rely on a single tactic (only HARO, only guest posts) and stall. This skill is the funnel that prevents both. It organizes free-link opportunities by category and risk profile, encodes a per-target qualification rubric so prospects get manually filtered before any outreach, and bakes in Google's actual link-spam guardrails (March 2026 update — devaluation in minutes, not months) so the work doesn't trigger algorithmic demotion or manual actions.
 
 Use this AFTER the site's niche and audience are clear and BEFORE any outreach email is written. The deliverable is a prioritized prospect list with per-category outreach approach. Outreach copy, on-page wrappers, and tracking instrumentation are out of scope — composing those belongs to the orchestrating agent.
-
----
 
 ## Instructions
 
@@ -73,7 +69,7 @@ Categories, ordered by risk-adjusted ROI:
 
 ##### A. Reclamation (highest ROI, lowest risk)
 
-The site is *already mentioned*; the only step is asking for the link. Conversion rate sits at 30–60% — far higher than any cold tactic.
+The site is already mentioned; the only step is asking for the link. Conversion rate sits at 30–60% — far higher than any cold tactic.
 
 - Unlinked brand mentions — `"[brand]" -site:[your-domain.com]`. Filter for posts that mention the brand in body copy without linking. Highest priority: Tier-1 publications (Forbes, Times, Fortune) — these rarely accept cold outreach for guest posts but will reclaim a link they meant to add.
 - Broken backlinks pointing to your site — pages that linked to a URL on your site that's now 404. Either restore the URL or 301 it; no outreach needed.
@@ -139,7 +135,7 @@ Links here are usually `rel="ugc"` or nofollow — but they're now load-bearing 
 - Paid-link networks disguised as guest-post networks
 - Reciprocal-link schemes ("we link, you link" en masse)
 - Auto-generated content sites
-- Casino / pharma / porn / sketchy-finance neighborhoods (unless that *is* your niche)
+- Casino / pharma / porn / sketchy-finance neighborhoods (unless that is your niche)
 
 #### Stage 3 — Qualify Each Prospect (Rubric)
 
@@ -266,7 +262,7 @@ These are direct from Google's spam policy. Treat as kill-rules, not guidelines.
 - "Forum comments with optimized links in the post or signature" — keyword-anchor signature spam = violation
 - "Excessive reciprocal link exchanges without genuine partnership value" — link swap networks = violation
 
-What's *allowed*:
+What's allowed:
 - Paid links with `rel="sponsored"` or `rel="nofollow"` — Google is explicit: "It's not a violation of our policies to have such links as long as they are qualified."
 - User-generated content links with `rel="ugc"` (forums, comments)
 - Genuine editorial endorsement
@@ -280,9 +276,9 @@ Traditional backlinks are no longer the dominant predictor of LLM citation. The 
 - ChatGPT favors Wikipedia (47.9% of top citations) and encyclopedic content.
 - Google AI Overviews cite YouTube + multimodal heavily (23.3%).
 - Brand search volume outweighs traditional backlinks as an LLM citation predictor.
-- Citation volatility is now measured in *weeks* — a single algorithm tweak can shift citation share 50% in under a month.
+- Citation volatility is now measured in weeks — a single algorithm tweak can shift citation share 50% in under a month.
 
-Implication for prospecting: the deliverable should be reframed as *visibility prospecting*, not pure link acquisition. Weight community engagement (Reddit, Stack Exchange) higher when AI-search visibility is the goal — even though those links are usually nofollow/ugc, they directly drive citation share. For pure organic-rank goals, traditional backlinks still dominate; for omnichannel visibility (search + AI), both lanes matter.
+Implication for prospecting: the deliverable should be reframed as visibility prospecting, not pure link acquisition. Weight community engagement (Reddit, Stack Exchange) higher when AI-search visibility is the goal — even though those links are usually nofollow/ugc, they directly drive citation share. For pure organic-rank goals, traditional backlinks still dominate; for omnichannel visibility (search + AI), both lanes matter.
 
 ### Tools — what's free and what isn't
 
@@ -303,8 +299,6 @@ Implication for prospecting: the deliverable should be reframed as *visibility p
 | Hunter.io / Apollo (limited free) | Freemium | Editor email discovery |
 
 Tools that require payment for what matters (full backlink graphs, advanced filters): Ahrefs, Semrush, Majestic. Mention but treat as out-of-scope for "free" prospecting.
-
----
 
 ## Examples
 
@@ -384,8 +378,6 @@ Response:
 > 100 links in 30 days as the goal itself is the problem. Pick one of the two paths above and the prospecting funnel runs against that goal instead.
 
 Do not soften. The honest answer is the only useful one.
-
----
 
 ## References
 

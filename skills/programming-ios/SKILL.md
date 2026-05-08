@@ -15,8 +15,6 @@ rules:
   - file(*.xcodeproj)
 ---
 
-# iOS Development
-
 ## Conventions
 
 - SwiftUI first — UIKit only for components without SwiftUI equivalent

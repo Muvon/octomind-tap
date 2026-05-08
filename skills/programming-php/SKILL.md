@@ -10,8 +10,6 @@ rules:
   - content(php)
 ---
 
-# PHP Development
-
 ## Conventions
 
 - `declare(strict_types=1)` — ALWAYS first statement in every PHP file

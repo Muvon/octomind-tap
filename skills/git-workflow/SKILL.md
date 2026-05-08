@@ -6,13 +6,9 @@ license: Apache-2.0
 compatibility: "Requires git. Works with any git-based project."
 ---
 
-# Git Workflow Skill
-
 ## Overview
 
 This skill encodes git commit conventions (Conventional Commits), branch naming rules, and workflow best practices. Activate it when you need to commit changes, name a branch, clean up history, or review git practices in a project.
-
----
 
 ## Instructions
 
@@ -41,7 +37,7 @@ Types:
 Rules:
 - Summary line: max 72 characters, imperative mood ("add" not "added")
 - No period at end of summary
-- Body: wrap at 72 characters, explain *why* not *what*
+- Body: wrap at 72 characters, explain why not what
 - Reference issues in footer: `Fixes #123`, `Closes #456`
 
 ### Branch Naming
@@ -64,8 +60,6 @@ Use kebab-case. Keep it short but descriptive. Match the commit type.
 3. Rebase before merging — keep history linear: `git rebase main`
 4. Squash WIP commits before opening a PR
 5. Tag releases with semantic versioning: `v1.2.3`
-
----
 
 ## Examples
 
@@ -119,8 +113,6 @@ git diff --staged
 git tag -a v1.2.3 -m "Release v1.2.3"
 git push origin v1.2.3
 ```
-
----
 
 ## References
 

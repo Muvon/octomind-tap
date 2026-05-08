@@ -7,15 +7,11 @@ compatibility: "Requires: any Octomind tap with a skills/ directory."
 domains: octomind
 ---
 
-# Tap Skill Authoring
-
 ## Overview
 
 A skill is a reusable instruction pack stored under `skills/<name>/SKILL.md`. When activated in an Octomind session via `skill(action="use", name="<name>")`, the skill's full content is injected into the AI's context — giving it domain-specific knowledge, conventions, and workflows on demand.
 
 Skills are not agents — they don't define a role or model. They are context injections: focused, composable knowledge packs that any agent can load on demand.
-
----
 
 ## Instructions
 
@@ -112,12 +108,28 @@ Section authoring rules:
 - References — Within-domain skills, external authoritative sources, spec links. Don't list every blog post you read.
 
 Token discipline (Claude 4.7 / 2026):
-- Skills get loaded into limited context — keep total under ~3000 tokens (≈ 2000 words) where possible
-- Beyond that, recall on individual rules degrades (context rot)
+- Target: under 3000 words. Anthropic recommends "under 500 lines" for optimal performance.
+- Hard cap: 4500 words. Above this, `lint-skills.sh` fails with `BODY_TOO_LONG` and the skill must be split via progressive disclosure (SKILL.md as navigator + `reference/*.md` files loaded on demand).
+- Beyond ~3000 words, recall on individual rules starts degrading (context rot)
 - Cut decorative prose; if a sentence doesn't make a rule clearer, delete it
 - Be explicit — Claude 4.7 doesn't bridge implicit gaps anymore
 
----
+Markdown discipline (token waste — hard-blocked by `lint-skills.sh`):
+- No `# H1` at the top of the body. Frontmatter `title:` is the canonical title; an H1 duplicates it. Body starts with `## Overview` directly.
+- No `**bold**` outside code. Use `## H2` and `### H3` headers for structure; the model doesn't need bold for emphasis.
+- No `*italic*` and no `***bold-italic***`. Pure decoration, zero semantic value.
+- No `---` horizontal-rule separators inside the body. `## H2` headers already mark sections; HR is visual noise.
+- Tables and code fences stay — they are structural, not decorative.
+
+The rule of thumb: every character ships to the model on every activation. If removing it doesn't change what the model would do, remove it.
+
+Bloat prevention (the three patterns that cause skills to outgrow the cap):
+
+1. Default to skip — for every paragraph longer than 2 sentences, ask: "what specifically does this tell the model that it doesn't already know?" If the answer is general industry context, history, or motivation that Claude already has, cut it. Skills are checklists for the model that already knows the domain, not textbooks. Anthropic's stance: "Default assumption: Claude is already very smart. Only add context Claude doesn't already have."
+2. Examples cap — keep 2–3 best examples in SKILL.md (bad → good with one-line caption per pair). The rest go in `reference/examples.md` and load on demand. An Examples section over ~800 words is almost always duplicating rules.
+3. Reference content goes in `reference/*.md`, not in SKILL.md — long tables of values, exhaustive option lists, full schema dumps, and platform-history detail belong in `reference/*.md` files that are loaded only when the model needs them. SKILL.md is the navigator: rules + decision guide + 2–3 examples + pointers.
+
+When a skill exceeds the soft 3000-word warning, audit before adding more. The fix is almost always trimming teach-mode paragraphs in Instructions, not extracting structure into more references.
 
 ### Auto-Activation Rules
 
@@ -141,16 +153,12 @@ rules:
 
 Skills without `rules:` are manual-only — they never auto-activate.
 
----
-
 ### Validate Script
 
 A `validate` script at `skills/<name>/validate` checks LLM output quality at the end of each assistant turn:
 - Must be executable (`chmod +x`)
 - exit 0 → output is valid
 - exit non-zero → stderr is fed back to the LLM for correction (retries capped by `[skills] max_retries`)
-
----
 
 ### Quality Principles
 
@@ -168,12 +176,10 @@ Skills are domain-scoped instruction packs. They are loaded by an agent in a spe
 
 - `domains:` — single domain wherever possible. `domains: marketing content launch` couples the skill to three roles at once and is almost always wrong; pick the one that owns this skill's deliverable.
 - `compatibility:` — environment requirements only (tools, OS, network). Do NOT use it to declare "Pairs with X agent" — pairing is the orchestrator's job.
-- Body — never name agents from other domains (`content:*`, `developer:*`, `marketing:*`). If the work needs to be handed off, describe it as a downstream concern (e.g. "outreach copy is owned by another domain") without pinning a specific agent.
+- Body — never name agents from other domains (`content:`, `developer:`, `marketing:*`). If the work needs to be handed off, describe it as a downstream concern (e.g. "outreach copy is owned by another domain") without pinning a specific agent.
 - Within-domain skill references are fine when genuinely useful (a marketing skill mentioning a sibling marketing skill), but keep them minimal — the orchestrator decides composition.
 
 The architectural reason: a skill that names downstream agents bakes in routing decisions that belong to the agent that loaded it. When the orchestrator changes (e.g., a different marketing agent runs the same skill, or the content domain reuses it), those names become wrong. Keeping skills domain-isolated lets the agent layer compose them freely without rewriting skill bodies.
-
----
 
 ### Creation Workflow
 
@@ -197,8 +203,6 @@ The architectural reason: a skill that names downstream agents bakes in routing 
 - [ ] Is the `name` field an exact match for the directory name?
 - [ ] Is the `compatibility` field accurate?
 - [ ] Does `bash scripts/lint-skills.sh skills/<name>` pass clean?
-
----
 
 ## Examples
 
@@ -250,8 +254,6 @@ temperature = 0.1
 
 # ✅ CORRECT — skills are pure instruction content, no TOML config
 ```
-
----
 
 ## References
 

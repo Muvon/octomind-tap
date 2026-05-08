@@ -12,8 +12,6 @@ rules:
   - content(react)
 ---
 
-# React Development
-
 ## Conventions
 
 - Hooks-first — functional components + hooks only, no class components

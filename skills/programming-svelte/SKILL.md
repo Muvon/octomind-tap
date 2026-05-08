@@ -13,8 +13,6 @@ rules:
   - content(svelte)
 ---
 
-# Svelte Development
-
 ## Conventions
 
 - Svelte 5 runes first — `$state`, `$derived`, `$effect`, `$props`

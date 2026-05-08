@@ -11,8 +11,6 @@ rules:
   - content(rust)
 ---
 
-# Rust Development
-
 ## Conventions
 
 - Idiomatic Rust — follow Rust conventions and community best practices

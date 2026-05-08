@@ -10,8 +10,6 @@ rules:
   - content(golang)
 ---
 
-# Go Development
-
 ## Conventions
 
 - Simplicity above all — Go's greatest strength is readability
