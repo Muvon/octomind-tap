@@ -13,7 +13,7 @@ domains: octomind
 
 A skill is a reusable instruction pack stored under `skills/<name>/SKILL.md`. When activated in an Octomind session via `skill(action="use", name="<name>")`, the skill's full content is injected into the AI's context — giving it domain-specific knowledge, conventions, and workflows on demand.
 
-Skills are **not agents** — they don't define a role or model. They are **context injections**: focused, composable knowledge packs that any agent can load on demand.
+Skills are not agents — they don't define a role or model. They are context injections: focused, composable knowledge packs that any agent can load on demand.
 
 ---
 
@@ -82,18 +82,46 @@ rules:
 | `metadata` | optional | Arbitrary key-value mapping (author, version, tags, etc.). |
 | `allowed-tools` | optional | Space-delimited pre-approved tools (experimental). |
 
-### Body Structure
+### Body Structure (mandatory section order — 2026 standard)
 
-1. **Overview** — What problem this solves, when to use it (2–4 sentences)
-2. **Instructions** — Core rules, workflows, decision guides (the main content)
-3. **Examples** — Concrete input/output pairs (most valuable part)
-4. **References** — Links to docs, standards, or bundled reference files
+Skills are loaded into agent context as Markdown. They follow a fixed section order grounded in the U-shape attention curve: the start (Overview) and the end (Checklist + References) get the most attention, the middle holds the bulk knowledge with clear headers as retrieval anchors.
+
+```
+1. Overview              ← primacy: why this skill, when to activate (2–4 sentences)
+2. Mental model          ← core principles or governing concepts (the framing)
+3. Rules / Instructions  ← the actual rule content — tables, bullets, decision guides
+4. Examples              ← concrete bad → good or input → output pairs
+5. Diagnostic / Checklist ← recency: verifiable checks before shipping
+6. Composition / References ← how this skill pairs with siblings (within-domain only) + external sources
+```
+
+Why this order:
+- Overview first — reader (human or AI) needs to know if this skill applies before reading rules
+- Mental model before rules — gives the framing so individual rules make sense
+- Rules in the middle, but headed with clear `## H2` anchors so they survive "lost in the middle"
+- Examples after rules so the rules are concrete by the time they're seen
+- Checklist near the end — recency: it's the last actionable thing the model sees, so it acts as a final gate
+- References last — outbound links, lowest attention need
+
+Section authoring rules:
+- Overview — 2–4 sentences. Names the problem, the trigger, and the outcome. No fluff.
+- Mental model — Optional but recommended for any skill with >3 rules. Without it, rules read as a list; with it, they read as a system.
+- Rules — Tables for decisions, bullet lists for sequential rules, prose only when the why is non-obvious. Never write paragraph-after-paragraph.
+- Examples — Bad → Good is the strongest format. Show the AI tell, then the fix. One concrete example beats three abstract rules.
+- Checklist — Verifiable items only. "Score 0–10 on each dimension" beats "Make sure quality is high."
+- References — Within-domain skills, external authoritative sources, spec links. Don't list every blog post you read.
+
+Token discipline (Claude 4.7 / 2026):
+- Skills get loaded into limited context — keep total under ~3000 tokens (≈ 2000 words) where possible
+- Beyond that, recall on individual rules degrades (context rot)
+- Cut decorative prose; if a sentence doesn't make a rule clearer, delete it
+- Be explicit — Claude 4.7 doesn't bridge implicit gaps anymore
 
 ---
 
 ### Auto-Activation Rules
 
-Skills with both `rules:` and `domains:` can auto-activate without the AI calling the skill tool. Logic: **OR between items, AND within a single item**.
+Skills with both `rules:` and `domains:` can auto-activate without the AI calling the skill tool. Logic: OR between items, AND within a single item.
 
 ```yaml
 rules:
@@ -126,13 +154,13 @@ A `validate` script at `skills/<name>/validate` checks LLM output quality at the
 
 ### Quality Principles
 
-1. **Specific beats generic** — "Rust error handling" is more useful than "Rust development"
-2. **Instructions over descriptions** — Tell the AI what to DO, not just describe the domain
-3. **Examples are gold** — Every non-obvious rule needs a concrete example
-4. **One concern per skill** — Don't bundle unrelated knowledge; compose multiple skills instead
-5. **Body must be actionable** — If the AI can't follow the instructions directly, rewrite them
-6. **Compatibility matters** — Be explicit about what tools/environment the skill requires
-7. **Stay in your domain** — A skill belongs to one domain (its `domains:` field), and its body must not reach into others. No "hand off to `content:article`", no "companion agent: `marketing:seo`", no `developer:typescript` build-agent references. The orchestrating agent composes domains; the skill stays focused on the work that lives inside its own. Cross-domain pollution makes skills brittle and creates implicit coupling that the agent layer can't override.
+1. Specific beats generic — "Rust error handling" is more useful than "Rust development"
+2. Instructions over descriptions — Tell the AI what to DO, not just describe the domain
+3. Examples are gold — Every non-obvious rule needs a concrete example
+4. One concern per skill — Don't bundle unrelated knowledge; compose multiple skills instead
+5. Body must be actionable — If the AI can't follow the instructions directly, rewrite them
+6. Compatibility matters — Be explicit about what tools/environment the skill requires
+7. Stay in your domain — A skill belongs to one domain (its `domains:` field), and its body must not reach into others. No "hand off to `content:article`", no "companion agent: `marketing:seo`", no `developer:typescript` build-agent references. The orchestrating agent composes domains; the skill stays focused on the work that lives inside its own. Cross-domain pollution makes skills brittle and creates implicit coupling that the agent layer can't override.
 
 ### Domain Isolation (the hard rule)
 
@@ -161,8 +189,11 @@ The architectural reason: a skill that names downstream agents bakes in routing 
 ### Review Checklist
 
 - [ ] Does the description tell you exactly when to activate it?
+- [ ] Body follows the canonical section order? (Overview → Mental model → Rules → Examples → Checklist → Composition / References)
+- [ ] Checklist section near the end? (recency — it's the final gate before the model acts)
 - [ ] Are the instructions specific enough to follow without guessing?
 - [ ] Are there examples for the non-obvious parts?
+- [ ] Total skill body under ~2000 words? (context rot threshold for skills)
 - [ ] Is the `name` field an exact match for the directory name?
 - [ ] Is the `compatibility` field accurate?
 - [ ] Does `bash scripts/lint-skills.sh skills/<name>` pass clean?

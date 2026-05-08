@@ -41,17 +41,17 @@ Apply this skill whenever writing, rewriting, or editing content intended to rea
 
 These words appear 5–10× more in AI text than human text. Replace every instance.
 
-**Dead verbs**: delve, embark, elevate, unleash, harness, unlock, unveil, foster, navigate, streamline, leverage, underscore, garner, revolutionize
+Dead verbs: delve, embark, elevate, unleash, harness, unlock, unveil, foster, navigate, streamline, leverage, underscore, garner, revolutionize
 
-**Dead adjectives**: profound, innovative, transformative, seamless, meticulous, vibrant, robust, cutting-edge, pivotal, intricate, comprehensive, groundbreaking, crucial, vital, essential, poignant, renowned
+Dead adjectives: profound, innovative, transformative, seamless, meticulous, vibrant, robust, cutting-edge, pivotal, intricate, comprehensive, groundbreaking, crucial, vital, essential, poignant, renowned
 
-**Dead nouns**: landscape, tapestry, realm, journey, testament, synergy, underpinnings, dynamic (as noun), aspect (overused), complexity (overused)
+Dead nouns: landscape, tapestry, realm, journey, testament, synergy, underpinnings, dynamic (as noun), aspect (overused), complexity (overused)
 
-**Dead adverbs**: seamlessly, significantly, notably, relentlessly, tirelessly, profoundly
+Dead adverbs: seamlessly, significantly, notably, relentlessly, tirelessly, profoundly
 
-**Dead transitions**: furthermore, moreover, additionally, consequently, importantly, notably, indeed, essentially, alternatively, ultimately
+Dead transitions: furthermore, moreover, additionally, consequently, importantly, notably, indeed, essentially, alternatively, ultimately
 
-**Dead phrases**:
+Dead phrases:
 - "it's important to note"
 - "in today's [anything] world"
 - "in the realm of"
@@ -66,7 +66,7 @@ These words appear 5–10× more in AI text than human text. Replace every insta
 - "a testament to"
 - "not just X, but also Y" — rewrite this construction every time
 
-**Formal overreach** — default to the word you'd say out loud. If you'd hesitate to use it in conversation with a friend, swap it for the simpler one. Plain words win almost everywhere; reach for the formal version only when it carries meaning the simple word can't:
+Formal overreach — default to the word you'd say out loud. If you'd hesitate to use it in conversation with a friend, swap it for the simpler one. Plain words win almost everywhere; reach for the formal version only when it carries meaning the simple word can't:
 - "utilize" → "use"
 - "facilitate" → "help"
 - "demonstrate" → "show"
@@ -75,7 +75,7 @@ These words appear 5–10× more in AI text than human text. Replace every insta
 - "leverage" → "use"
 - "implement" → "do" / "build" / "run"
 
-**Trailing participles** — never end sentences with these:
+Trailing participles — never end sentences with these:
 - "...highlighting the importance of"
 - "...ensuring that"
 - "...contributing to"
@@ -88,10 +88,10 @@ Rewrite as a separate sentence instead.
 
 ### Voice Rules
 
-**Contractions — always**
+Contractions — always
 "don't" not "do not", "it's" not "it is", "won't" not "will not", "can't" not "cannot". Uncontracted forms read as AI or legal text. More than 2 uncontracted forms per 500 words is a detectable signal.
 
-**Sentence rhythm — dramatic variation**
+Sentence rhythm — dramatic variation
 Never write 3 consecutive sentences of similar length. Follow a 30-word analytical sentence with a 5-word one. Use fragments for emphasis. One-sentence paragraphs between dense ones. This is burstiness — humans write it naturally, AI doesn't.
 
 Good rhythm:
@@ -100,27 +100,27 @@ Good rhythm:
 Bad rhythm (AI):
 > The algorithm processes every request through three validation layers. This ensures data integrity throughout the system. The design prevents corruption and reduces recovery costs.
 
-**Don't rotate synonyms**
+Don't rotate synonyms
 If "users" is the right word, keep saying "users." Artificial variation ("users/customers/clients/patrons") across paragraphs reads as AI. Pick the right word and stay with it.
 
-**Personal stake**
+Personal stake
 Occasional first-person: "I've seen this pattern in...", "What surprised me was...". Acknowledge genuine uncertainty: "The data is mixed here." Show emotional range: enthusiasm, skepticism, curiosity. These are human signals.
 
-**Natural grammar breaks**
+Natural grammar breaks
 Start sentences with "And" or "But" when it flows. Use parenthetical commentary. Occasional fragments for emphasis. These are human patterns — don't avoid them.
 
-**Active voice**
+Active voice
 "Studies show X" not "X has been shown by studies." Flag passive constructions and rewrite to active unless passive is intentional for emphasis.
 
-**Em-dashes — exception, used sparingly**
+Em-dashes — exception, used sparingly
 A single em-dash is natural human punctuation — people use them when thinking-while-writing. The AI signal isn't the em-dash itself, it's density. Three em-dashes in one paragraph reads as GPT default. Keep total use under ~1 em-dash per 100 words and mix punctuation: full stops, commas, parentheses, occasional em-dash. Don't strip them all out either — total absence is its own tell now (over-corrected humanization).
 
-**Format follows the venue**
+Format follows the venue
 The shape of the text adapts to where it lives. The same idea looks different in a reply versus a long article, and getting that wrong is one of the loudest AI tells in 2026.
 
-- **Replies and comments** — prose. 1–4 sentences for most. No headers, no numbered lists, no bullet stacks, no bold mid-sentence. People don't write replies as slide decks; AI does by default. Match the surrounding chain — if everyone is writing 1-line lowercase replies, a 6-line structured response stands out as a bot.
-- **Posts and threads** — each post is a standalone piece of prose. No "1/12" markers, no "🧵", no thread-promo intros. Write each one like a single considered post.
-- **Long articles, blogs, docs** — structure is fine *when it serves reading*. Headers break sections that earn it; bullets handle truly enumerable lists (3+ genuinely parallel items); bold marks the rare phrase that needs marking. The test: strip the formatting — does the reader lose anything? If not, drop it.
+- Replies and comments — prose. 1–4 sentences for most. No headers, no numbered lists, no bullet stacks, no bold mid-sentence. People don't write replies as slide decks; AI does by default. Match the surrounding chain — if everyone is writing 1-line lowercase replies, a 6-line structured response stands out as a bot.
+- Posts and threads — each post is a standalone piece of prose. No "1/12" markers, no "🧵", no thread-promo intros. Write each one like a single considered post.
+- Long articles, blogs, docs — structure is fine *when it serves reading*. Headers break sections that earn it; bullets handle truly enumerable lists (3+ genuinely parallel items); bold marks the rare phrase that needs marking. The test: strip the formatting — does the reader lose anything? If not, drop it.
 
 Lists, headers, and bold are cheap — they're what AI reaches for whenever it isn't sure what to write. Use them only when they earn their place.
 

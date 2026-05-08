@@ -38,11 +38,11 @@ Strong ads aren't written from scratch — they're written into a framework that
 
 ### Core Rules
 
-- **Pick the framework before writing the script.** Trying to pick mid-draft means the writer reverts to default narration.
-- **Every framework needs an explicit CTA.** Implicit "the offer is the rest of the video" loses ~30% conversion.
-- **Match framework to audience awareness, not your preference.** A cold audience can't follow PAS — they don't yet feel the problem.
-- **One framework per piece.** Mixing AIDA + PAS halfway through makes the piece muddled.
-- **Specifics, not adjectives.** "47% faster" beats "much faster". Numbers, names, time spans.
+- Pick the framework before writing the script. Trying to pick mid-draft means the writer reverts to default narration.
+- Every framework needs an explicit CTA. Implicit "the offer is the rest of the video" loses ~30% conversion.
+- Match framework to audience awareness, not your preference. A cold audience can't follow PAS — they don't yet feel the problem.
+- One framework per piece. Mixing AIDA + PAS halfway through makes the piece muddled.
+- Specifics, not adjectives. "47% faster" beats "much faster". Numbers, names, time spans.
 
 ### Framework Catalog
 
@@ -52,13 +52,13 @@ Old, durable, works for awareness-stage audiences.
 
 | Beat | Job | Time in 30s ad |
 |---|---|---|
-| **A**ttention | Hook (see `video-hooks`) | 0–2s |
-| **I**nterest | Reveal what's coming, plant curiosity | 2–8s |
-| **D**esire | Show the outcome / transformation | 8–22s |
-| **A**ction | Single, specific CTA | 22–30s |
+| Attention | Hook (see `video-hooks`) | 0–2s |
+| Interest | Reveal what's coming, plant curiosity | 2–8s |
+| Desire | Show the outcome / transformation | 8–22s |
+| Action | Single, specific CTA | 22–30s |
 
-**When to use:** brand-awareness ads, product launches to a wide audience, top-of-funnel.
-**Avoid for:** retargeting, performance ads with sophisticated audiences.
+When to use: brand-awareness ads, product launches to a wide audience, top-of-funnel.
+Avoid for: retargeting, performance ads with sophisticated audiences.
 
 #### PAS — Problem, Agitation, Solution
 
@@ -66,13 +66,13 @@ The workhorse of direct-response. Works when the audience already has the pain.
 
 | Beat | Job | Time in 30s ad |
 |---|---|---|
-| **P**roblem | Name the pain, mirror the audience's frustration | 0–6s |
-| **A**gitation | Twist the knife — show what happens if it's not solved | 6–18s |
-| **S**olution | Reveal the fix, demo, prove | 18–26s |
+| Problem | Name the pain, mirror the audience's frustration | 0–6s |
+| Agitation | Twist the knife — show what happens if it's not solved | 6–18s |
+| Solution | Reveal the fix, demo, prove | 18–26s |
 | CTA | One specific action | 26–30s |
 
-**When to use:** Performance ads, problem-aware to most-aware audiences, B2B.
-**Avoid for:** broad awareness — cold audience tunes out the problem.
+When to use: Performance ads, problem-aware to most-aware audiences, B2B.
+Avoid for: broad awareness — cold audience tunes out the problem.
 
 #### BAB — Before, After, Bridge
 
@@ -80,12 +80,12 @@ Transformation-driven. Strong for D2C, fitness, finance, productivity.
 
 | Beat | Job |
 |---|---|
-| **B**efore | Show life with the problem (specific, sensory) |
-| **A**fter | Show life without it (specific, sensory) |
-| **B**ridge | The product / system that gets you there |
+| Before | Show life with the problem (specific, sensory) |
+| After | Show life without it (specific, sensory) |
+| Bridge | The product / system that gets you there |
 
-**When to use:** transformation products, weight-loss / finance / fitness / productivity, lifestyle.
-**Avoid for:** pure information products (no transformation arc).
+When to use: transformation products, weight-loss / finance / fitness / productivity, lifestyle.
+Avoid for: pure information products (no transformation arc).
 
 #### 4Us — Useful, Urgent, Unique, Ultra-specific
 
@@ -106,11 +106,11 @@ Translation engine. Use to convert a feature list into copy.
 
 | Layer | Question | Example |
 |---|---|---|
-| **F**eature | What it has | "M3 Pro chip with 12-core CPU" |
-| **A**dvantage | What it does | "Compiles 2x faster than M2" |
-| **B**enefit | What it means for the user | "Ship code while the demo is still loading" |
+| Feature | What it has | "M3 Pro chip with 12-core CPU" |
+| Advantage | What it does | "Compiles 2x faster than M2" |
+| Benefit | What it means for the user | "Ship code while the demo is still loading" |
 
-**Rule:** the script lives at the **B**enefit layer. F and A are research notes.
+Rule: the script lives at the Benefit layer. F and A are research notes.
 
 #### Hook → Story → Offer (HSO)
 
@@ -122,28 +122,28 @@ The dominant short-form social structure.
 | Story | One specific narrative — first-person, real or composite. ~70% of total runtime. |
 | Offer | Product reveal + CTA, ~20% of runtime |
 
-**When to use:** TikTok / Reels / Shorts UGC and creator-style ads. Default for short-form.
-**Avoid for:** B2B explainer, anything where a story would feel forced.
+When to use: TikTok / Reels / Shorts UGC and creator-style ads. Default for short-form.
+Avoid for: B2B explainer, anything where a story would feel forced.
 
 ### Audience Awareness — pick framework by stage (Schwartz)
 
 | Awareness | Framework | Reason |
 |---|---|---|
-| **Unaware** (no problem felt) | HSO with curiosity hook | Cold audience won't sit through PAS |
-| **Problem-aware** | PAS or BAB | They feel the pain, agitate it |
-| **Solution-aware** | BAB or AIDA | They know solutions exist, differentiate |
-| **Product-aware** | FAB-driven AIDA, with comparison | They know your category, why YOU |
-| **Most-aware** (your fans) | Direct offer — skip framework, lead with deal | Don't sell to people who already bought |
+| Unaware (no problem felt) | HSO with curiosity hook | Cold audience won't sit through PAS |
+| Problem-aware | PAS or BAB | They feel the pain, agitate it |
+| Solution-aware | BAB or AIDA | They know solutions exist, differentiate |
+| Product-aware | FAB-driven AIDA, with comparison | They know your category, why YOU |
+| Most-aware (your fans) | Direct offer — skip framework, lead with deal | Don't sell to people who already bought |
 
 ### Workflow
 
-1. **Identify audience awareness stage** from the brief (or ask — don't guess).
-2. **Pick the framework** from the table above.
-3. **Pre-write the offer** before the body — ensures the body builds toward something specific.
-4. **Draft each beat**, time-boxed to the ad length.
-5. **Run every claim through the 4Us check.**
-6. **Read aloud at 1.5x speed.** If it sounds AI / scripted at speed, rewrite for natural cadence.
-7. **Show the script with timestamps**, not just lines. Time is the unit, not paragraphs.
+1. Identify audience awareness stage from the brief (or ask — don't guess).
+2. Pick the framework from the table above.
+3. Pre-write the offer before the body — ensures the body builds toward something specific.
+4. Draft each beat, time-boxed to the ad length.
+5. Run every claim through the 4Us check.
+6. Read aloud at 1.5x speed. If it sounds AI / scripted at speed, rewrite for natural cadence.
+7. Show the script with timestamps, not just lines. Time is the unit, not paragraphs.
 
 ### Decision Guide
 

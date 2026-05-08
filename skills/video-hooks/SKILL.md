@@ -36,13 +36,13 @@ Short-form video lives or dies in the first 1.5 seconds. The hook is the only se
 
 ### Core Rules
 
-- **The hook is the first 1.5s of video, not the first sentence of the script.** It is *visual + audible + on-screen text* together. Treat all three as the hook.
-- **Earn the next second**, not the next minute. Each beat (1.5s, 3s, 5s) needs its own retention reason.
-- **Never open with the brand.** Brand goes in the resolution, not the open. Brand-first opens have ~30–40% lower 3s retention.
-- **Never open with "Hi guys" / "In this video" / "Today I'll show you".** These are skip triggers — the algorithm has trained users to expect filler after them.
-- **Show motion in frame 1.** A still opener loses ~20% of viewers vs. a moving opener (camera shake, zoom, subject motion, or quick cut).
-- **Caption visible by frame 5.** ~85% of feed scrolls are sound-off — the hook must read silently.
-- **One claim per hook.** Two ideas = no idea.
+- The hook is the first 1.5s of video, not the first sentence of the script. It is *visual + audible + on-screen text* together. Treat all three as the hook.
+- Earn the next second, not the next minute. Each beat (1.5s, 3s, 5s) needs its own retention reason.
+- Never open with the brand. Brand goes in the resolution, not the open. Brand-first opens have ~30–40% lower 3s retention.
+- Never open with "Hi guys" / "In this video" / "Today I'll show you". These are skip triggers — the algorithm has trained users to expect filler after them.
+- Show motion in frame 1. A still opener loses ~20% of viewers vs. a moving opener (camera shake, zoom, subject motion, or quick cut).
+- Caption visible by frame 5. ~85% of feed scrolls are sound-off — the hook must read silently.
+- One claim per hook. Two ideas = no idea.
 
 ### Hook Pattern Catalog
 
@@ -62,21 +62,21 @@ Short-form video lives or dies in the first 1.5 seconds. The hook is the only se
 
 ### Visual Hook Devices (stack on top of script)
 
-- **Hard cut at 0:00.5** — first frame is mid-action, not establishing.
-- **On-screen text larger than usual** (font size 80–100pt for 1080×1920).
-- **Pattern-interrupt object** — something visually unexpected in frame 1 (a banana, a hand, a face mid-expression).
-- **Speed ramp** — slow-mo for 0.3s then snap to real-time.
-- **Camera move** — zoom-in or push-in at 0.0–0.5s; static cameras lose attention.
-- **Caption animation** — words appearing in time with speech (auto-caption-style); higher retention than burned-flat text.
+- Hard cut at 0:00.5 — first frame is mid-action, not establishing.
+- On-screen text larger than usual (font size 80–100pt for 1080×1920).
+- Pattern-interrupt object — something visually unexpected in frame 1 (a banana, a hand, a face mid-expression).
+- Speed ramp — slow-mo for 0.3s then snap to real-time.
+- Camera move — zoom-in or push-in at 0.0–0.5s; static cameras lose attention.
+- Caption animation — words appearing in time with speech (auto-caption-style); higher retention than burned-flat text.
 
 ### Workflow
 
-1. **Read the brief** — product, audience, awareness level (cold / warm / retargeting).
-2. **Pick 3 patterns from the catalog** that fit the audience and awareness level.
-3. **Write 3 hook variants** — one per pattern. Each ≤ 12 words on screen, ≤ 8 words spoken.
-4. **For each variant, specify**: visual (frame 1 description), on-screen text, voiceover line, motion device.
-5. **Score each on**: pattern-interrupt strength (1–5), claim specificity (1–5), caption readability sound-off (1–5).
-6. **Pick the top scorer** — but ship at least 2 variants for A/B testing.
+1. Read the brief — product, audience, awareness level (cold / warm / retargeting).
+2. Pick 3 patterns from the catalog that fit the audience and awareness level.
+3. Write 3 hook variants — one per pattern. Each ≤ 12 words on screen, ≤ 8 words spoken.
+4. For each variant, specify: visual (frame 1 description), on-screen text, voiceover line, motion device.
+5. Score each on: pattern-interrupt strength (1–5), claim specificity (1–5), caption readability sound-off (1–5).
+6. Pick the top scorer — but ship at least 2 variants for A/B testing.
 
 ### Decision Guide
 
@@ -95,42 +95,42 @@ Short-form video lives or dies in the first 1.5 seconds. The hook is the only se
 
 ### Example 1: SaaS dev tool, cold TikTok audience
 
-**Brief:** Promote a CLI tool that auto-generates database migrations.
-**Audience:** Backend devs, mostly cold.
-**Pattern picks:** Pattern-Interrupt, Contrarian, Stat Punch.
+Brief: Promote a CLI tool that auto-generates database migrations.
+Audience: Backend devs, mostly cold.
+Pattern picks: Pattern-Interrupt, Contrarian, Stat Punch.
 
-**Variant A — Pattern-Interrupt**
+Variant A — Pattern-Interrupt
 - Frame 1: Terminal mid-typing, a migration error fills the screen in red.
 - On-screen text: `your migrations are lying to you`
 - Voice: `Your migrations are lying to you.`
 - Motion: hard zoom-in on the error.
 
-**Variant B — Contrarian**
+Variant B — Contrarian
 - Frame 1: Hand crossing out the words "Write SQL by hand" on whiteboard.
 - On-screen text: `STOP writing migrations by hand`
 - Voice: `Stop writing migrations by hand. There's a better way.`
 - Motion: quick whip-pan to the laptop screen.
 
-**Variant C — Stat Punch**
+Variant C — Stat Punch
 - Frame 1: Big number `73%` filling the screen.
 - On-screen text: `73% of prod outages start in a migration`
 - Voice: `Seventy-three percent of prod outages start in a migration. Here's how to stop being one of them.`
 - Motion: number scales up from 0 to 73 in 0.5s.
 
-**Pick:** B for cold dev audience — Contrarian + clear visual, no claim that needs sourcing.
+Pick: B for cold dev audience — Contrarian + clear visual, no claim that needs sourcing.
 
 ### Example 2: D2C skincare, retargeting audience
 
-**Brief:** Cart-abandoners who viewed the SKU but didn't buy.
-**Pattern picks:** Direct Address, Confession.
+Brief: Cart-abandoners who viewed the SKU but didn't buy.
+Pattern picks: Direct Address, Confession.
 
-**Variant A — Direct Address**
+Variant A — Direct Address
 - Frame 1: Mid-shot of a person looking straight to camera, finger pointing.
 - On-screen text: `you ← yes, you who left this in your cart`
 - Voice: `You — yes, you, who left this in your cart yesterday.`
 - Motion: subject leans into camera.
 
-**Variant B — Confession**
+Variant B — Confession
 - Frame 1: Founder unboxing a return.
 - On-screen text: `nobody told me this would happen with [product]`
 - Voice: `Nobody told me this would happen the second week of using it.`

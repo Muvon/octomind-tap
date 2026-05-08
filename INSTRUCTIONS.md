@@ -110,12 +110,36 @@ tools = []
 | `capabilities = [...]` | Required at top level; drives everything |
 | `[[roles]]` | Exactly one entry |
 | `name` | Must NOT be set — injected at runtime from the tag |
-| `system` | Required; be as detailed as possible — specificity prevents AI drift |
-| `welcome` | Required; use `{{CWD}}` for working directory |
+| `system` | Required; XML-tagged blocks in canonical order (see below). Stable run-to-run for prompt caching. |
+| `welcome` | Required; use `{{CWD}}` and `{{DATE}}` here only — these break caching if used in `system` |
 | `temperature` | Required; 0.1–0.3 for technical, 0.4–0.6 for general |
 | `top_p` | Required; 0.9 for most cases |
 | `top_k` | Required; 0 to disable, 10–40 for more deterministic output |
 | `workflow` | Optional; `"workflow_name"` activates a workflow pipeline before main session |
+
+### System Prompt Structure (2026 standard — XML-tagged blocks)
+
+System prompts must use XML-tagged blocks in a fixed U-shape order. Identity goes first (primacy), critical rules go last (recency); the middle relies on tag anchors to survive "lost in the middle."
+
+```
+<identity>          who/what (3–5 lines)
+<voice>             tone (omit for technical agents)
+<scope>             ✅ own / ❌ route elsewhere
+<workflow>          numbered steps + sub-protocols
+<rules>             tables, decision matrices, domain knowledge
+<examples>          good/bad pairs (omit if N/A)
+<output_format>     artifact shape, file paths, schemas
+<interaction>      trigger → response patterns
+<critical>          NEVER / ALWAYS lists only
+```
+
+**Hard rules enforced by `lint-manifests.sh`:**
+- No `**bold**` outside code — XML tags provide structure
+- No `##` or `#` markdown headers — XML tags replace them (only `### Subsection` allowed inside an XML block when there are 2+ subsections)
+- No `{{CWD}}` or `{{DATE}}` anywhere in `system` — they break prompt caching (system must be stable run-to-run); place them in `welcome` only
+- Target: 200–1000 words total. Beyond ~1500 words, context rot degrades recall.
+
+See `skills/tap-agent-authoring/SKILL.md` for the full authoring spec, rationale, and anti-patterns.
 
 ### Workflows & Layers (Multi-Step Pipelines)
 
@@ -331,10 +355,19 @@ domains: developer devops
 ## Overview
 ...
 
-## Instructions
+## Mental model       (optional but recommended for skills with >3 rules)
+...
+
+## Rules / Instructions
 ...
 
 ## Examples
+...
+
+## Checklist
+...
+
+## Composition / References
 ...
 ```
 
@@ -344,6 +377,14 @@ Optional fields:
 - `capabilities` — capabilities to auto-load when skill activates (space-delimited or array)
 - `domains` — agent categories for auto-activation scoping (omit for manual-only)
 - `allowed-tools` — space-delimited pre-approved tools
+
+**Section order matters (U-shape):** Overview at top (primacy), Checklist near the end (recency — final gate before action). The middle holds bulk knowledge with `## H2` anchors that survive lost-in-the-middle.
+
+**Hard rules enforced by `lint-skills.sh`:**
+- No `**bold**` in body outside code — markdown headers and lists provide structure
+- Target: under ~2000 words. Beyond that, context rot hits skill recall.
+
+See `skills/tap-skill-authoring/SKILL.md` for the full authoring spec.
 
 ### Skill Scripts (Optional)
 
@@ -401,19 +442,23 @@ bin/load <domain>:<spec>
 
 ### Quality Criteria — Agent is "Done" When
 
-- [ ] All lints pass (`lint-manifests.sh`)
+- [ ] All lints pass (`lint-manifests.sh`) — including the markdown/cache guardrails
+- [ ] System prompt uses XML-tagged blocks in canonical order (`<identity>` → … → `<critical>`)
+- [ ] No `**bold**` or `##` headers inside `system` (XML tags are the structure)
+- [ ] No `{{CWD}}` or `{{DATE}}` inside `system` — those go in `welcome` only (caching)
 - [ ] Every capability in `capabilities = [...]` has a `capabilities/<name>/default.toml`
 - [ ] `bin/load <domain>:<spec>` resolves without errors
 - [ ] All required dep scripts exist under `deps/` for every `require` entry in used capabilities
 - [ ] All dep scripts pass linting (`lint-deps.sh`) — includes `# type:` header and companion `.md`
-- [ ] System prompt is detailed and domain-focused — covers what the agent does, what it won't do, and key decision rules
+- [ ] System prompt is domain-focused and covers what the agent does, what it won't do, and key decision rules
 - [ ] `welcome` message is descriptive and includes `{{CWD}}`
 
 ### Quality Criteria — Skill is "Done" When
 
-- [ ] `lint-skills.sh` passes
+- [ ] `lint-skills.sh` passes — including `**bold**` markdown guardrail
 - [ ] `name` in frontmatter matches directory name exactly
-- [ ] Body has Overview + Instructions + Examples sections
+- [ ] Body follows the canonical section order (Overview → Mental model → Rules → Examples → Checklist → Composition / References)
+- [ ] Checklist sits near the end (recency position) — not buried mid-body
 - [ ] Instructions are actionable (tell the AI what to DO, not just describe the domain)
 - [ ] **Domain-isolated** — `domains:` is a single value where possible; body does NOT reference agents from other domains (`content:article`, `developer:typescript`, `marketing:seo`, etc.); `compatibility:` describes environment only, not skill pairings. Cross-domain composition is the orchestrating agent's job.
 

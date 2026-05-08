@@ -51,18 +51,18 @@ This skill provides a structured approach to code review: what to check, how to 
 
 ### Giving Feedback
 
-**Be specific:** Point to the exact line and explain the concern.
+Be specific: Point to the exact line and explain the concern.
 
-**Distinguish severity:**
+Distinguish severity:
 - `nit:` — minor style preference, take it or leave it
 - `suggestion:` — improvement worth considering
 - `question:` — genuinely unclear, needs explanation
 - `issue:` — must be addressed before merge
 - `blocker:` — serious correctness or security problem
 
-**Be constructive:** Suggest an alternative, don't just say "this is wrong."
+Be constructive: Suggest an alternative, don't just say "this is wrong."
 
-**Praise good work:** Acknowledge clever solutions or clean refactors.
+Praise good work: Acknowledge clever solutions or clean refactors.
 
 ### Receiving Feedback
 
@@ -73,9 +73,9 @@ This skill provides a structured approach to code review: what to check, how to 
 
 ### PR Size Guidelines
 
-- **Ideal:** < 400 lines changed
-- **Acceptable:** 400–800 lines (with good description)
-- **Needs splitting:** > 800 lines — break into smaller PRs
+- Ideal: < 400 lines changed
+- Acceptable: 400–800 lines (with good description)
+- Needs splitting: > 800 lines — break into smaller PRs
 
 Large PRs get shallow reviews. Smaller PRs get better feedback faster.
 

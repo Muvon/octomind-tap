@@ -22,9 +22,9 @@ rules:
 
 Reddit is not one platform — it's thousands of communities each with their own rules, culture, and moderators. A post that hits the front page of one subreddit gets instantly removed from another. This skill encodes the ranking mechanics, the universal rules of thumb, and the per-community research loop that separates "contributing member" from "spam account."
 
-As of 2026, a second filter sits on top of all that: **AI-content automods**. Subs like r/SaaS, r/startups, r/Entrepreneur, r/programming, r/webdev, r/MachineLearning and most large subs run automod rules and bot accounts (often visible in the moderator list — names like `evasion-guard`, `scanslop`, `ai-detector-bot`) that pattern-match LLM-written text and silently remove it. Removal messages typically read *"Low-Effort/AI content is auto-removed"*. The post or comment looks live to the author and is invisible to everyone else. Beating these detectors is now a hard prerequisite for anything you post.
+As of 2026, a second filter sits on top of all that: AI-content automods. Subs like r/SaaS, r/startups, r/Entrepreneur, r/programming, r/webdev, r/MachineLearning and most large subs run automod rules and bot accounts (often visible in the moderator list — names like `evasion-guard`, `scanslop`, `ai-detector-bot`) that pattern-match LLM-written text and silently remove it. Removal messages typically read *"Low-Effort/AI content is auto-removed"*. The post or comment looks live to the author and is invisible to everyone else. Beating these detectors is now a hard prerequisite for anything you post.
 
-Pair with `content-voice` for the general human-voice ruleset (dead vocabulary, rhythm, contractions). This skill adds the **Reddit-specific** layer: the platform's voice norms, the things detectors flag in this specific environment, and how surviving comments actually read.
+Pair with `content-voice` for the general human-voice ruleset (dead vocabulary, rhythm, contractions). This skill adds the Reddit-specific layer: the platform's voice norms, the things detectors flag in this specific environment, and how surviving comments actually read.
 
 ---
 
@@ -34,28 +34,28 @@ Pair with `content-voice` for the general human-voice ruleset (dead vocabulary, 
 
 Reddit ranks posts and comments with different math. Both penalize corporate behaviour and reward early, organic engagement.
 
-**Post ranking (Hot sort — the default feed)**
+Post ranking (Hot sort — the default feed)
 
 Score is roughly: `log(upvotes - downvotes) × time_decay_factor`. The log function means the first 10 upvotes matter far more than going from 90 to 100. Time decay halves visibility every few hours.
 
 Inputs that actually move ranking:
-- **Vote velocity in the first 1–2 hours.** A post with 50 upvotes in the first hour outranks one with 200 upvotes spread over 6 hours. The golden window is shorter than most platforms.
-- **Upvote ratio.** If the ratio drops below ~70%, the post is effectively buried. Downvotes hurt far more than upvotes help once you're above a threshold.
-- **Comment count and depth.** Posts with ongoing discussion stay in Hot longer. 1 comment with 5 replies beats 5 one-line comments.
-- **Account trust score.** New accounts (< 30 days, low karma) are throttled invisibly. Their posts often land in a "new-queue jail" that mods have to manually approve.
-- **Subreddit activity baseline.** A post needs more velocity in r/programming (huge) than in r/rust (niche) to trend.
+- Vote velocity in the first 1–2 hours. A post with 50 upvotes in the first hour outranks one with 200 upvotes spread over 6 hours. The golden window is shorter than most platforms.
+- Upvote ratio. If the ratio drops below ~70%, the post is effectively buried. Downvotes hurt far more than upvotes help once you're above a threshold.
+- Comment count and depth. Posts with ongoing discussion stay in Hot longer. 1 comment with 5 replies beats 5 one-line comments.
+- Account trust score. New accounts (< 30 days, low karma) are throttled invisibly. Their posts often land in a "new-queue jail" that mods have to manually approve.
+- Subreddit activity baseline. A post needs more velocity in r/programming (huge) than in r/rust (niche) to trend.
 
-**Comment ranking (Best sort — the default)**
+Comment ranking (Best sort — the default)
 
-Comments use a **Wilson confidence interval**: not just upvotes minus downvotes, but statistical confidence given the sample size. A comment with 10 upvotes and 1 downvote ranks above one with 1 upvote and 0 downvotes, even though raw ratio is worse — more data = more confidence.
+Comments use a Wilson confidence interval: not just upvotes minus downvotes, but statistical confidence given the sample size. A comment with 10 upvotes and 1 downvote ranks above one with 1 upvote and 0 downvotes, even though raw ratio is worse — more data = more confidence.
 
-Implication: **early comments compound.** First 3 substantive comments on a post capture most of the reply-karma that post will ever produce.
+Implication: early comments compound. First 3 substantive comments on a post capture most of the reply-karma that post will ever produce.
 
 ---
 
 ### The 90/10 Rule (non-negotiable)
 
-At least **90% of your activity on Reddit must be non-promotional.** Comments, discussion, helping people, sharing things you didn't make. The other 10% can be yours.
+At least 90% of your activity on Reddit must be non-promotional. Comments, discussion, helping people, sharing things you didn't make. The other 10% can be yours.
 
 Break this and:
 - Mods shadow-remove your posts in their subreddit
@@ -74,13 +74,13 @@ There is no way around this. Burner accounts get detected. Buying karma accounts
 
 ### Subreddit-First Research (always before posting)
 
-Every subreddit has a culture. Posting a "Show HN"-style project launch in r/programming gets you roasted; posting the same thing in r/SideProject gets upvoted. **Read before you post.** Minimum 10 minutes per target subreddit:
+Every subreddit has a culture. Posting a "Show HN"-style project launch in r/programming gets you roasted; posting the same thing in r/SideProject gets upvoted. Read before you post. Minimum 10 minutes per target subreddit:
 
-1. **Read the sidebar and rules.** Every subreddit has its own rules pinned. Many ban self-promotion outright, require flair, require minimum account age, or have specific formatting. Violating any of these = auto-removal, often with a ban.
-2. **Check the last 20 posts.** What titles are getting upvotes? What's the vibe — technical, casual, sarcastic, earnest? Match the register.
-3. **Check the pinned posts and weekly threads.** Many subs have a "Self-Promotion Saturday" or "Showcase Sunday" thread. Your post belongs there, not as a standalone submission.
-4. **Check removed posts via reveddit.com or similar** to see what mods quietly take down. Often that's where self-promotion actually goes to die — it looks live to you, invisible to everyone else.
-5. **Scan the top comments on similar posts.** What do they push back on? Pre-empt it in your post.
+1. Read the sidebar and rules. Every subreddit has its own rules pinned. Many ban self-promotion outright, require flair, require minimum account age, or have specific formatting. Violating any of these = auto-removal, often with a ban.
+2. Check the last 20 posts. What titles are getting upvotes? What's the vibe — technical, casual, sarcastic, earnest? Match the register.
+3. Check the pinned posts and weekly threads. Many subs have a "Self-Promotion Saturday" or "Showcase Sunday" thread. Your post belongs there, not as a standalone submission.
+4. Check removed posts via reveddit.com or similar to see what mods quietly take down. Often that's where self-promotion actually goes to die — it looks live to you, invisible to everyone else.
+5. Scan the top comments on similar posts. What do they push back on? Pre-empt it in your post.
 
 Output before writing:
 - Subreddit: r/_______
@@ -96,39 +96,39 @@ Output before writing:
 
 Reddit titles are the entire package for most users — most scroll the feed without expanding. Rules:
 
-- **State the thing.** "My experience migrating 200k LOC from Python to Go" beats "A journey of migration."
-- **No clickbait.** "You won't believe what happened when..." = downvote reflex. Reddit trained itself off this years ago.
-- **No "How to X in Y steps."** Reddit users have seen 10,000 of these. They read as SEO spam.
-- **No emoji.** None. Not even a single rocket.
-- **Specific over vague.** Numbers, names, tools, time windows. "6 months into building my own search engine: 3 things I got wrong" > "Lessons learned building a product."
-- **No ALL CAPS words** except proper acronyms (API, LLM). Caps read as ad copy.
-- **Keep it under ~80 characters.** Long titles truncate on mobile. The hook has to land early.
-- **Don't name your product in the title** unless the subreddit explicitly allows it (e.g. r/SideProject). "I built a CLI for X" is fine; "[MyProduct]: The best CLI for X" gets removed.
+- State the thing. "My experience migrating 200k LOC from Python to Go" beats "A journey of migration."
+- No clickbait. "You won't believe what happened when..." = downvote reflex. Reddit trained itself off this years ago.
+- No "How to X in Y steps." Reddit users have seen 10,000 of these. They read as SEO spam.
+- No emoji. None. Not even a single rocket.
+- Specific over vague. Numbers, names, tools, time windows. "6 months into building my own search engine: 3 things I got wrong" > "Lessons learned building a product."
+- No ALL CAPS words except proper acronyms (API, LLM). Caps read as ad copy.
+- Keep it under ~80 characters. Long titles truncate on mobile. The hook has to land early.
+- Don't name your product in the title unless the subreddit explicitly allows it (e.g. r/SideProject). "I built a CLI for X" is fine; "[MyProduct]: The best CLI for X" gets removed.
 
 ---
 
 ### Post Body Structure (by subreddit type)
 
-**Technical / discussion subs (r/programming, r/MachineLearning, r/devops)**
+Technical / discussion subs (r/programming, r/MachineLearning, r/devops)
 - Open with the specific thing. No preamble.
 - Include code, logs, metrics, or diagrams inline. Text-only posts get less traction than posts with concrete artifacts.
 - Name exact versions, tools, and dates. Credibility comes from specificity.
 - End with a real question or a specific thing you want feedback on. Not "thoughts?" — something pointed.
 - Markdown is mandatory: code fences, bullet lists, bold for key terms.
 
-**Project-share subs (r/SideProject, r/IndieHackers, r/webdev "showcase")**
+Project-share subs (r/SideProject, r/IndieHackers, r/webdev "showcase")
 - Be upfront you made it. First line or first paragraph.
 - Share what you learned, not what you sell. Revenue numbers, MRR, failures, tech stack — all good.
 - Include screenshots. Text-only project posts flop.
 - Don't link aggressively. One link, in-body, not repeated.
-- **Name a real limitation of the thing you built.** Uniformly positive descriptions read as marketing or LLM output. A specific con — "the search is slow on >10k records", "auth still doesn't have SSO" — does more for trust than any amount of polish.
+- Name a real limitation of the thing you built. Uniformly positive descriptions read as marketing or LLM output. A specific con — "the search is slow on >10k records", "auth still doesn't have SSO" — does more for trust than any amount of polish.
 
-**Question subs (r/learnprogramming, r/AskReddit, domain subs)**
+Question subs (r/learnprogramming, r/AskReddit, domain subs)
 - Title is the question itself. Clear, specific, not "help pls."
 - Body adds context: what you tried, what happened, what you expected. Minimal version.
 - Never post a question answerable by 30 seconds of Googling. Mods remove these.
 
-**Story/experience subs (r/cscareerquestions, industry subs)**
+Story/experience subs (r/cscareerquestions, industry subs)
 - First paragraph sets scene: role, years, stakes.
 - Middle paragraphs are the specifics. What happened, what people said, what you did.
 - End with the open question or the moral that isn't really a moral. Readers like to draw the lesson themselves.
@@ -137,16 +137,16 @@ Reddit titles are the entire package for most users — most scroll the feed wit
 
 ### Thread-Vibe Matching (read before you write)
 
-Before drafting any reply or comment, **scan the thread first**. This is not optional — it's the single most effective anti-detection move because it makes your output structurally match the community's actual behaviour in that moment.
+Before drafting any reply or comment, scan the thread first. This is not optional — it's the single most effective anti-detection move because it makes your output structurally match the community's actual behaviour in that moment.
 
-**What to read:**
+What to read:
 - The top 5–8 comments (or all of them if the thread is small)
 - The OP's writing style — length, punctuation habits, whether they use caps, how casual they are
 - The dominant reply length: are people writing 2-line zingers or 6-paragraph essays?
 - The emotional register: sarcastic? earnest? technical? venting?
 - Any recurring phrases, in-jokes, or sub-specific slang
 
-**What to extract before writing:**
+What to extract before writing:
 
 | Signal | What to match |
 |--------|--------------|
@@ -157,26 +157,26 @@ Before drafting any reply or comment, **scan the thread first**. This is not opt
 | Markdown | If nobody uses bold/bullets, don't |
 | Tone | Match the dominant register (sarcastic, earnest, technical, casual) |
 
-**Hard rule:** if the thread is full of 1–3 line replies, your 8-line structured comment will stand out as AI-generated even if every word is perfect. **Short thread = short reply.** Long thread = you have room to breathe.
+Hard rule: if the thread is full of 1–3 line replies, your 8-line structured comment will stand out as AI-generated even if every word is perfect. Short thread = short reply. Long thread = you have room to breathe.
 
 ---
 
 ### Human Imperfection Protocol (replies and comments)
 
-This is the most important section for social interactions. Posts and thread titles can be more polished — they're written with more care and often edited before submitting. **Replies and comments are typed fast, on a phone, in the middle of something else.** They should read that way.
+This is the most important section for social interactions. Posts and thread titles can be more polished — they're written with more care and often edited before submitting. Replies and comments are typed fast, on a phone, in the middle of something else. They should read that way.
 
-**The goal is not to look like a bad writer. It's to look like a real person who types quickly.**
+The goal is not to look like a bad writer. It's to look like a real person who types quickly.
 
 #### Imperfections to inject (pick 1–2 per reply, not all at once)
 
-**Typos (realistic ones — adjacent keys, missed letters, transpositions):**
+Typos (realistic ones — adjacent keys, missed letters, transpositions):
 - `teh` → `the`, `hte` → `the`, `taht` → `that`, `jsut` → `just`
 - `becuase` → `because`, `recieve` → `receive`, `definately` → `definitely`
 - `youre` → `you're` (missing apostrophe), `dont` → `don't`, `cant` → `can't`
 - Doubled letters: `thiss`, `iss`, `andd`
 - Missing space: `alot` instead of `a lot`, `infact` instead of `in fact`
 
-**Grammar that reads human, not broken:**
+Grammar that reads human, not broken:
 - Run-on sentences joined with "and" or "but" where a period would be "correct"
 - Starting a sentence with "And" or "But" or "So" — very common in casual writing
 - Ending a thought mid-sentence and starting fresh: "the thing is. its just not worth it"
@@ -184,7 +184,7 @@ This is the most important section for social interactions. Posts and thread tit
 - Missing comma in a compound sentence: "I tried that once and it didnt work at all"
 - Casual abbreviation without consistency: "you" in one sentence, "u" in the next (only in very casual threads)
 
-**Rhythm and structure:**
+Rhythm and structure:
 - One sentence that's noticeably shorter than the others. Like this.
 - A thought that trails off with "..." when you're not sure how to finish it
 - "edit: typo" or "edit: meant to say X" at the end (use sparingly — once per session max)
@@ -214,36 +214,36 @@ This is the most important section for social interactions. Posts and thread tit
 
 Comments are where most Reddit karma actually comes from, and where mods form their read on whether your account is a real member or a promo bot.
 
-- **Answer the question asked.** Don't steer the conversation to your topic.
-- **Top-comment early or don't bother.** After the first 3 substantive comments, you're buried unless your comment is exceptional.
-- **Specific > general.** "In my experience with Postgres 16 the fsync cost actually went down after the commit-group changes" beats "Postgres is generally fast."
-- **Don't link in comments unless asked** — and when asked, link once, no UTM parameters, no tracking.
-- **Agree with the top comment? Don't just say 'this' — add the next layer.** Extension > echo.
-- **Disagree? Cite the specific claim you disagree with.** "Disagree on point 2 — here's why" beats a general "no."
-- **Never start with 'As someone who has worked in X…' unless you actually have.** Reddit detects credentialing theatre instantly. Fabricated specifics are worse than vague comments — a fake-precise claim ("ran this in production at a 10k-employee bank") attracts replies asking *which* bank, and the silence that follows is what mods and classifier bots escalate on. If you don't have the experience, write from the angle of what you've actually read or seen, and say so.
-- **Include a real con when recommending something you have a stake in.** Bots and marketing copy are uniformly positive. Real recommendations name a specific trade-off — "the mobile app is weak", "scaling past ~50k rows the planner gives up", "onboarding took me a week to figure out". Vague hedges ("not for everyone") don't count; the con has to be concrete enough that someone could verify or push back on it.
-- **Edit-to-add is fine and human.** "Edit: to clarify…" reads normal. Silent edits on controversial comments read sketchy.
+- Answer the question asked. Don't steer the conversation to your topic.
+- Top-comment early or don't bother. After the first 3 substantive comments, you're buried unless your comment is exceptional.
+- Specific > general. "In my experience with Postgres 16 the fsync cost actually went down after the commit-group changes" beats "Postgres is generally fast."
+- Don't link in comments unless asked — and when asked, link once, no UTM parameters, no tracking.
+- Agree with the top comment? Don't just say 'this' — add the next layer. Extension > echo.
+- Disagree? Cite the specific claim you disagree with. "Disagree on point 2 — here's why" beats a general "no."
+- Never start with 'As someone who has worked in X…' unless you actually have. Reddit detects credentialing theatre instantly. Fabricated specifics are worse than vague comments — a fake-precise claim ("ran this in production at a 10k-employee bank") attracts replies asking *which* bank, and the silence that follows is what mods and classifier bots escalate on. If you don't have the experience, write from the angle of what you've actually read or seen, and say so.
+- Include a real con when recommending something you have a stake in. Bots and marketing copy are uniformly positive. Real recommendations name a specific trade-off — "the mobile app is weak", "scaling past ~50k rows the planner gives up", "onboarding took me a week to figure out". Vague hedges ("not for everyone") don't count; the con has to be concrete enough that someone could verify or push back on it.
+- Edit-to-add is fine and human. "Edit: to clarify…" reads normal. Silent edits on controversial comments read sketchy.
 
 ---
 
 ### Surviving AI Detection on Reddit (the 2026 reality)
 
-Most large subs now run two kinds of AI filtering: **automod regex/keyword rules** (cheap, fast, brittle) and **classifier bots** (slower, smarter, trained on labelled LLM samples). You have to beat both. The signature that gets caught isn't one phrase — it's the *cumulative shape* of the writing.
+Most large subs now run two kinds of AI filtering: automod regex/keyword rules (cheap, fast, brittle) and classifier bots (slower, smarter, trained on labelled LLM samples). You have to beat both. The signature that gets caught isn't one phrase — it's the *cumulative shape* of the writing.
 
-**The structural tells detectors look for:**
+The structural tells detectors look for:
 
-1. **Tri-colon listing** — "X, Y, and Z" three-item parallels stacked across paragraphs. Humans write uneven lists: pairs, fours, single items, run-ons. Three balanced clauses in a row reads LLM.
-2. **Symmetrical paragraph length.** AI writes paragraphs of similar size. Real Redditors write one-line zingers next to four-line rants next to a single sentence-fragment.
-3. **The "It's not X, it's Y" reframe** — when used cleanly. (The donk8r-style "the question isn't X — it's Y" works because it's *colloquial* and contains a personal anchor; the corporate version "It's not just about features, it's about experience" is dead on arrival.)
-4. **Bullet-list-heavy posts.** Comments with 3+ bullets read as ChatGPT output unless the question explicitly asked for a list. Most native Reddit comments are prose, even when listing things.
-5. **Headers in comments.** Almost no human uses `## Headers` in a Reddit comment. Mods flag them on sight.
-6. **Bold mid-sentence.** `Building cheaper and faster with **AI tools** just compresses the timeline` — the random bold inside flowing text is an LLM tic.
-7. **Closing summary line.** AI loves to end with a one-line tl;dr restating the post. Most Redditors just stop, or trail off mid-thought, or end on a question.
-8. **No typos, no contractions, no slang.** Humans on Reddit type fast. "gonna", "ngl", "tbh", "imo", "pretty much", "kinda", missed apostrophes, occasional run-on sentences — these are camouflage.
-9. **Em-dashes everywhere.** A single em-dash is fine and human. Three em-dashes in one paragraph is GPT signature. Mix in parentheses, commas, and full stops.
-10. **Hedge phrases on every claim.** "It's worth noting", "that said", "with that in mind", "ultimately", "at the end of the day". One per comment is fine. Three is a tell.
+1. Tri-colon listing — "X, Y, and Z" three-item parallels stacked across paragraphs. Humans write uneven lists: pairs, fours, single items, run-ons. Three balanced clauses in a row reads LLM.
+2. Symmetrical paragraph length. AI writes paragraphs of similar size. Real Redditors write one-line zingers next to four-line rants next to a single sentence-fragment.
+3. The "It's not X, it's Y" reframe — when used cleanly. (The donk8r-style "the question isn't X — it's Y" works because it's *colloquial* and contains a personal anchor; the corporate version "It's not just about features, it's about experience" is dead on arrival.)
+4. Bullet-list-heavy posts. Comments with 3+ bullets read as ChatGPT output unless the question explicitly asked for a list. Most native Reddit comments are prose, even when listing things.
+5. Headers in comments. Almost no human uses `## Headers` in a Reddit comment. Mods flag them on sight.
+6. Bold mid-sentence. `Building cheaper and faster with AI tools just compresses the timeline` — the random bold inside flowing text is an LLM tic.
+7. Closing summary line. AI loves to end with a one-line tl;dr restating the post. Most Redditors just stop, or trail off mid-thought, or end on a question.
+8. No typos, no contractions, no slang. Humans on Reddit type fast. "gonna", "ngl", "tbh", "imo", "pretty much", "kinda", missed apostrophes, occasional run-on sentences — these are camouflage.
+9. Em-dashes everywhere. A single em-dash is fine and human. Three em-dashes in one paragraph is GPT signature. Mix in parentheses, commas, and full stops.
+10. Hedge phrases on every claim. "It's worth noting", "that said", "with that in mind", "ultimately", "at the end of the day". One per comment is fine. Three is a tell.
 
-**The lexical tells detectors look for:**
+The lexical tells detectors look for:
 
 Beyond the `content-voice` dead-vocabulary list — these are extra-flagged on Reddit:
 
@@ -254,23 +254,23 @@ Beyond the `content-voice` dead-vocabulary list — these are extra-flagged on R
 - Conclusion telegraphs: "In conclusion", "To wrap up", "The bottom line"
 - The phrase "real moat" / "real question" / "real X" used cleanly — only works with a personal anchor (see Example 6)
 
-**Tactics that pass detectors:**
+Tactics that pass detectors:
 
-1. **Anchor with a specific lived detail in the first 1–2 sentences.** "I've been building software for 20 years and the pattern I keep seeing…" / "Ran into this last week on a Postgres 14 cluster…" / "Spent six months on this exact problem in 2023." Detectors weight comments lower when there's a verifiable, specific autobiographical claim.
-2. **Reference another commenter by username.** "jonathancheckwise is right that…" / "Disagree with what u/foo said about X." Real Reddit threading. Bots almost never do this.
-3. **Quote a fragment of someone else's comment.** "if you can clone it in 3 hours, so can everyone else" — using their words inside your reply signals you read the thread.
-4. **Use one casual reduction per comment.** "imo", "ngl", "tbh", "fwiw", "ymmv", "iirc", lowercase "i" mid-sentence, contraction without apostrophe ("its" for "it's" once), or a sentence fragment. *One.* Multiple tics in one comment = trying too hard, also flagged.
-5. **Vary sentence length aggressively.** Three words. Then one that runs much longer because you're explaining a thing. Short.
-6. **Drop the closing summary.** End on the example, the question, or a half-thought. Not "In short, X" or "The takeaway is Y."
-7. **Skip the headers and bullets** unless the question structurally calls for them. Prose wins on Reddit.
-8. **Write the comment, then delete the first sentence.** AI-trained openers ("Great question!", "This is an interesting point", "I think there are a few things to consider") almost always live in sentence #1.
-9. **Disagree with part of what you're replying to.** Pure agreement reads sycophantic and AI-shaped. A small, specific pushback ("agree on most of this but the part about X is overstated because…") reads as a thinking human.
-10. **Run the draft through a 'would I actually type this on my phone at 11pm' filter.** If no, cut it down.
-11. **Pre-empt the sub's known controversy directly.** If the topic, tool, or stance you're writing about is divisive in this community — and you can usually tell from a 5-minute scroll of recent threads — name that disagreement up front instead of pretending consensus. "I know [X] gets mixed reviews here, here's my honest read after [specific time/context]" reads like a member of the community talking to other members. Bots paper over disagreement; humans acknowledge it. Bonus effect: it pre-empts downvote brigading from the camp that disagrees, because they recognise you've already heard their argument.
+1. Anchor with a specific lived detail in the first 1–2 sentences. "I've been building software for 20 years and the pattern I keep seeing…" / "Ran into this last week on a Postgres 14 cluster…" / "Spent six months on this exact problem in 2023." Detectors weight comments lower when there's a verifiable, specific autobiographical claim.
+2. Reference another commenter by username. "jonathancheckwise is right that…" / "Disagree with what u/foo said about X." Real Reddit threading. Bots almost never do this.
+3. Quote a fragment of someone else's comment. "if you can clone it in 3 hours, so can everyone else" — using their words inside your reply signals you read the thread.
+4. Use one casual reduction per comment. "imo", "ngl", "tbh", "fwiw", "ymmv", "iirc", lowercase "i" mid-sentence, contraction without apostrophe ("its" for "it's" once), or a sentence fragment. *One.* Multiple tics in one comment = trying too hard, also flagged.
+5. Vary sentence length aggressively. Three words. Then one that runs much longer because you're explaining a thing. Short.
+6. Drop the closing summary. End on the example, the question, or a half-thought. Not "In short, X" or "The takeaway is Y."
+7. Skip the headers and bullets unless the question structurally calls for them. Prose wins on Reddit.
+8. Write the comment, then delete the first sentence. AI-trained openers ("Great question!", "This is an interesting point", "I think there are a few things to consider") almost always live in sentence #1.
+9. Disagree with part of what you're replying to. Pure agreement reads sycophantic and AI-shaped. A small, specific pushback ("agree on most of this but the part about X is overstated because…") reads as a thinking human.
+10. Run the draft through a 'would I actually type this on my phone at 11pm' filter. If no, cut it down.
+11. Pre-empt the sub's known controversy directly. If the topic, tool, or stance you're writing about is divisive in this community — and you can usually tell from a 5-minute scroll of recent threads — name that disagreement up front instead of pretending consensus. "I know [X] gets mixed reviews here, here's my honest read after [specific time/context]" reads like a member of the community talking to other members. Bots paper over disagreement; humans acknowledge it. Bonus effect: it pre-empts downvote brigading from the camp that disagrees, because they recognise you've already heard their argument.
 
-**Per-sub calibration:** the level of AI suspicion varies. r/SaaS, r/startups, r/Entrepreneur, r/MachineLearning, r/programming, r/cscareerquestions are *high-suspicion*. r/SideProject, r/IndieHackers, niche hobby subs are mid. Default to high-suspicion behaviour everywhere; relax only after you've read recent successful posts.
+Per-sub calibration: the level of AI suspicion varies. r/SaaS, r/startups, r/Entrepreneur, r/MachineLearning, r/programming, r/cscareerquestions are *high-suspicion*. r/SideProject, r/IndieHackers, niche hobby subs are mid. Default to high-suspicion behaviour everywhere; relax only after you've read recent successful posts.
 
-**Account-level signals.** Detectors don't just look at the text — they look at the account. New account + first-comment-is-on-r/SaaS-with-marketing-language = removed regardless of how human the text reads. Build comment history in low-stakes subs first (r/AskReddit, hobby subs, your home country sub) before commenting in high-suspicion business subs.
+Account-level signals. Detectors don't just look at the text — they look at the account. New account + first-comment-is-on-r/SaaS-with-marketing-language = removed regardless of how human the text reads. Build comment history in low-stakes subs first (r/AskReddit, hobby subs, your home country sub) before commenting in high-suspicion business subs.
 
 ---
 
@@ -278,20 +278,20 @@ Beyond the `content-voice` dead-vocabulary list — these are extra-flagged on R
 
 Site-wide spam filter + subreddit automod catch these automatically:
 
-**Account-level signals:**
+Account-level signals:
 - New account (< 1 week) or low total karma (< 50)
 - Account with only 1 subreddit of activity
 - Account with comment-only history that suddenly posts a self-link
 - Recently posted the same domain in another sub
 
-**Content-level signals:**
+Content-level signals:
 - Link to a domain flagged by the subreddit (often your own domain if posted before)
 - Title or body containing banned words (varies per sub)
 - Link shorteners (bit.ly, t.co, etc.) — often auto-removed
 - Affiliate links or UTM tracking parameters
 - Text that matches known promotional patterns ("check out my new," "just launched," "I'd love your feedback on", "I'm excited to share")
 
-**AI-content signals (2026 — the new automod layer):**
+AI-content signals (2026 — the new automod layer):
 - Em-dash density above ~1 per 100 words
 - Tri-colon parallel structure ("X, Y, and Z" three times in close range)
 - Markdown headers (`##`) in a comment
@@ -308,9 +308,9 @@ If your post disappears within minutes: check modmail, check your post on old.re
 
 ### Cross-Posting and Reposting
 
-- **Cross-posting to 5+ subreddits in one day triggers spam filter.** Space them out over days; customize the title and body per subreddit.
-- **Never post the same image/link to multiple subs simultaneously** — Reddit's deduplication algo buries duplicates even if the first one did well.
-- **Reposting your own content** after a month is fine in many subs if the original didn't land; different title, different opening line.
+- Cross-posting to 5+ subreddits in one day triggers spam filter. Space them out over days; customize the title and body per subreddit.
+- Never post the same image/link to multiple subs simultaneously — Reddit's deduplication algo buries duplicates even if the first one did well.
+- Reposting your own content after a month is fine in many subs if the original didn't land; different title, different opening line.
 
 ---
 
@@ -318,20 +318,20 @@ If your post disappears within minutes: check modmail, check your post on old.re
 
 Detectors and mods don't only read the text — they read the account's behaviour around it. Bots post and disappear; real authors hang around. The first hour after posting is part of the post.
 
-- **Answer the first 2–3 comments within an hour.** Even if it's "good point, I'd missed that" or "no I tried that and it didn't work because…". Silent OPs on commented threads are a known classifier signal.
-- **Edit the post with corrections when commenters catch something.** "edit: u/foo pointed out X, fixed" reads as a real person updating their thinking. It also tells the mod queue this is an active thread, not a drive-by.
-- **Concede where you're wrong.** "Yeah you're right, that part was sloppy" outperforms defending every point. Bots don't concede; humans do.
-- **If you can't be at the keyboard for the hour after posting, don't post yet.** Better to wait for a window when you can engage live than to publish into silence.
+- Answer the first 2–3 comments within an hour. Even if it's "good point, I'd missed that" or "no I tried that and it didn't work because…". Silent OPs on commented threads are a known classifier signal.
+- Edit the post with corrections when commenters catch something. "edit: u/foo pointed out X, fixed" reads as a real person updating their thinking. It also tells the mod queue this is an active thread, not a drive-by.
+- Concede where you're wrong. "Yeah you're right, that part was sloppy" outperforms defending every point. Bots don't concede; humans do.
+- If you can't be at the keyboard for the hour after posting, don't post yet. Better to wait for a window when you can engage live than to publish into silence.
 
 ---
 
 ### Timing
 
 Reddit is heavily US-skewed. For English subs:
-- **Best windows**: weekdays 8–11 AM ET and 6–9 PM ET
-- **Sunday evening ET** is often the single strongest window for weekly discussion posts
-- **Avoid Friday afternoon / Saturday** for anything you want real engagement on — the active demographic drops off
-- **Niche subs (r/rust, r/emacs, etc.)** don't follow this — check their own activity patterns
+- Best windows: weekdays 8–11 AM ET and 6–9 PM ET
+- Sunday evening ET is often the single strongest window for weekly discussion posts
+- Avoid Friday afternoon / Saturday for anything you want real engagement on — the active demographic drops off
+- Niche subs (r/rust, r/emacs, etc.) don't follow this — check their own activity patterns
 
 ---
 
@@ -347,13 +347,13 @@ Reddit is heavily US-skewed. For English subs:
 - [ ] Posted in a peak window for the sub
 - [ ] Ready to respond to the first comment within 30 minutes
 - [ ] Post doesn't sound like marketing if read aloud
-- [ ] **Strip-test (project/recommendation posts):** if the product/project mention is removed, is the post still useful to a reader? If no, it's marketing wearing humble clothes — rewrite around the actual lesson, or don't post
-- [ ] **Honest-con check (project/recommendation posts):** at least one specific, concrete trade-off named — not a vague hedge
-- [ ] **Engagement window:** can be at the keyboard for the next hour to reply to first 2–3 comments — if not, postpone
-- [ ] **Thread-vibe check (replies/comments):** scanned the thread, matched dominant length and tone, no markdown if nobody else uses it
-- [ ] **Imperfection check (replies/comments):** 1–2 realistic imperfections present — typo, missing apostrophe, run-on, or casual grammar — not in the first word, not in a technical term
-- [ ] **AI-detection pass**: opens with a specific lived detail, no headers in comments, no bold in prose, < 1 em-dash per 100 words, at least one contraction, no closing summary, no dead vocabulary, no tri-colon parallel structure, no "It's worth noting" / "That said" openers
-- [ ] **Sub is high-suspicion (r/SaaS, r/startups, r/Entrepreneur, r/programming, r/MachineLearning)?** Comment quotes another commenter or references a username, includes one casual reduction (imo/ngl/tbh/fwiw), and varies sentence length deliberately
+- [ ] Strip-test (project/recommendation posts): if the product/project mention is removed, is the post still useful to a reader? If no, it's marketing wearing humble clothes — rewrite around the actual lesson, or don't post
+- [ ] Honest-con check (project/recommendation posts): at least one specific, concrete trade-off named — not a vague hedge
+- [ ] Engagement window: can be at the keyboard for the next hour to reply to first 2–3 comments — if not, postpone
+- [ ] Thread-vibe check (replies/comments): scanned the thread, matched dominant length and tone, no markdown if nobody else uses it
+- [ ] Imperfection check (replies/comments): 1–2 realistic imperfections present — typo, missing apostrophe, run-on, or casual grammar — not in the first word, not in a technical term
+- [ ] AI-detection pass: opens with a specific lived detail, no headers in comments, no bold in prose, < 1 em-dash per 100 words, at least one contraction, no closing summary, no dead vocabulary, no tri-colon parallel structure, no "It's worth noting" / "That said" openers
+- [ ] Sub is high-suspicion (r/SaaS, r/startups, r/Entrepreneur, r/programming, r/MachineLearning)? Comment quotes another commenter or references a username, includes one casual reduction (imo/ngl/tbh/fwiw), and varies sentence length deliberately
 
 ---
 
@@ -361,13 +361,13 @@ Reddit is heavily US-skewed. For English subs:
 
 ### Example 1: Title craft
 
-**Bad (marketing, vague, clickbait):**
+Bad (marketing, vague, clickbait):
 > 🚀 You won't believe how we scaled our platform to 10M users — a success story!
 
-**Bad (SEO-spam listicle):**
+Bad (SEO-spam listicle):
 > Top 10 Ways to Scale Your Backend in 2026
 
-**Good (specific, neutral, a story someone wants to read):**
+Good (specific, neutral, a story someone wants to read):
 > Scaling Postgres from 40GB to 4TB: what broke, what we changed, what we'd do differently
 
 What works: real numbers, neutral tone, implicit stakes, offers a story and lessons without selling them.
@@ -376,17 +376,17 @@ What works: real numbers, neutral tone, implicit stakes, offers a story and less
 
 ### Example 2: Self-promotion that doesn't get removed
 
-**Bad (pure promo — gets filtered):**
+Bad (pure promo — gets filtered):
 > Hey r/webdev! I just launched [MyApp], the best CRM for freelancers. Check it out! 🎉
 
-**Good (post-mortem with the product as part of the story):**
+Good (post-mortem with the product as part of the story):
 > 6 months building a CRM for freelancers — MRR, tech stack, the two features I wish I'd cut
 >
 > Built this after freelancing for 3 years and hating every existing CRM. Some numbers, lessons, and honest mistakes below.
 >
-> **Stack**: Next.js 15, Postgres, Redis, Stripe, Resend
-> **MRR after 6 months**: $1,840
-> **Feature I built and regret**: AI-generated invoices…
+> Stack: Next.js 15, Postgres, Redis, Stripe, Resend
+> MRR after 6 months: $1,840
+> Feature I built and regret: AI-generated invoices…
 >
 > *(link to site at the bottom, no UTM)*
 
@@ -398,10 +398,10 @@ What works: post is about the journey, not the pitch. Product URL appears once. 
 
 Someone posts in r/rust: *"Is tokio really necessary or can I just use threads?"*
 
-**Bad (generic, authority-theatre, no specifics):**
+Bad (generic, authority-theatre, no specifics):
 > As someone who has worked extensively with Rust, tokio is essential for any serious async workload. Threads don't scale.
 
-**Good (specific, domain-aware, honest about trade-offs):**
+Good (specific, domain-aware, honest about trade-offs):
 > Depends on your workload. If you're I/O bound and handling >~10k concurrent connections, tokio is hard to beat — the overhead per task is tiny compared to a thread's ~2MB stack.
 >
 > If you're CPU-bound or running <1k concurrent tasks, `std::thread` + a channel is simpler and often faster. Threads also debug way better — stack traces, backtraces, no `.await` gymnastics.
@@ -414,10 +414,10 @@ What works: opens on the answer, gives concrete numbers, acknowledges the altern
 
 ### Example 4: Ask-question post
 
-**Bad (vague, no context, unanswerable):**
+Bad (vague, no context, unanswerable):
 > Help with Postgres?
 
-**Good (specific, shows effort, asks a real question):**
+Good (specific, shows effort, asks a real question):
 > Postgres 16 — can `VACUUM FULL` be safely run on a 400GB table with replication lag concerns?
 >
 > Setup: primary + 2 async replicas, ~30MB/s write throughput, nightly 4-hour maintenance window. Table is bloated (~40% dead tuples), `pg_repack` keeps OOM-ing.
@@ -442,13 +442,13 @@ Triggers: exclamation marks, "just launched," emoji, UTM tracking, "would love y
 
 Original draft (will be auto-removed in r/SaaS, r/startups, r/Entrepreneur — every detector tell present):
 
-> **The real moat is distribution and iteration speed.** Building software has fundamentally changed in recent years, and the patterns we're seeing are clear:
+> The real moat is distribution and iteration speed. Building software has fundamentally changed in recent years, and the patterns we're seeing are clear:
 >
 > - The first mover figures out the market exists
 > - The second mover figures out what people actually want
 > - The third mover with the best distribution wins
 >
-> Building cheaper and faster with **AI tools** simply compresses the timeline. It's important to note that the question is no longer "can I build it?" — it's "can I out-distribute and out-iterate?" Ultimately, in today's competitive landscape, distribution is everything.
+> Building cheaper and faster with AI tools simply compresses the timeline. It's important to note that the question is no longer "can I build it?" — it's "can I out-distribute and out-iterate?" Ultimately, in today's competitive landscape, distribution is everything.
 
 What's wrong: bold opener, three balanced bullets, header-style emphasis, "It's important to note", "Ultimately", "in today's competitive landscape", closing summary, zero personal anchor, zero contractions where they'd naturally appear, three em-dashes, no reference to the post or other commenters.
 
@@ -475,9 +475,9 @@ Imagine a reply in r/SaaS like this:
 
 > Excellent point! AI is fundamentally reshaping the SaaS landscape in profound ways. Here are three key considerations:
 >
-> 1. **Distribution matters more than ever** — with reduced build costs, the bottleneck shifts to customer acquisition.
-> 2. **Iteration speed is paramount** — teams that ship faster can navigate complex market dynamics more effectively.
-> 3. **Real wedges trump features** — having a genuine, defensible advantage is crucial in today's competitive environment.
+> 1. Distribution matters more than ever — with reduced build costs, the bottleneck shifts to customer acquisition.
+> 2. Iteration speed is paramount — teams that ship faster can navigate complex market dynamics more effectively.
+> 3. Real wedges trump features — having a genuine, defensible advantage is crucial in today's competitive environment.
 >
 > Ultimately, success in this space requires a holistic approach combining technical excellence with strategic distribution.
 
@@ -502,7 +502,7 @@ What changed: lowercase opener, real disagreement, specific number (4 products, 
 
 ### Example 8: Thread-vibe matching in action
 
-**The thread** (r/cscareerquestions, fast-moving, casual):
+The thread (r/cscareerquestions, fast-moving, casual):
 > OP: "is it worth learning rust in 2026 or just stick with go"
 > Reply 1: "go tbh, rust is overkill for most jobs"
 > Reply 2: "depends what you want to do"
@@ -510,15 +510,15 @@ What changed: lowercase opener, real disagreement, specific number (4 products, 
 
 Every reply is 1 line. No punctuation at the end. Lowercase. No markdown.
 
-**Bad reply (ignores thread vibe — will read as AI or try-hard):**
+Bad reply (ignores thread vibe — will read as AI or try-hard):
 > This is a great question! In my experience, the choice between Rust and Go depends heavily on your career goals:
 >
-> - **Rust** is ideal for systems programming, embedded, and performance-critical applications
-> - **Go** is better suited for backend services, cloud infrastructure, and general web development
+> - Rust is ideal for systems programming, embedded, and performance-critical applications
+> - Go is better suited for backend services, cloud infrastructure, and general web development
 >
 > Ultimately, Go will get you hired faster, but Rust is worth learning if you're passionate about systems.
 
-**Good reply (matches thread vibe):**
+Good reply (matches thread vibe):
 > rust if you care about the craft, go if you want to get hired in 6 months
 
 One line. No caps. No punctuation. Matches the thread exactly.
@@ -527,12 +527,12 @@ One line. No caps. No punctuation. Matches the thread exactly.
 
 ### Example 9: Realistic imperfections in a reply
 
-**Context:** r/SaaS, someone asks "how do you handle churn in the early days?"
+Context: r/SaaS, someone asks "how do you handle churn in the early days?"
 
-**Too perfect (reads AI):**
+Too perfect (reads AI):
 > In the early days, churn is almost always a signal problem, not a product problem. The customers who churn fastest are usually the ones who had the wrong expectations going in. I'd focus on tightening the onboarding conversation — specifically the questions you ask before someone signs up — rather than adding features to retain people who were never a good fit.
 
-**With realistic imperfections (reads human):**
+With realistic imperfections (reads human):
 > in the early days churn is almost always a signal problem, not a product problem. the customers who churn fastest are usually the ones who had the wrong expectations going in. i'd focus on tightening the onboarding conversation — specificaly the questions you ask before someone signs up — rather than adding features to retain people who were never a good fit.
 
 What changed: lowercase opener, lowercase `i`, one realistic typo (`specificaly`), no closing summary. Same idea, reads like someone typed it on their phone.
@@ -541,19 +541,19 @@ What changed: lowercase opener, lowercase `i`, one realistic typo (`specificaly`
 
 ### Example 10: Calibrating imperfection level by reply type
 
-**Scenario:** r/webdev, a long technical thread about CSS container queries. Thread has a mix of short and medium replies, mostly lowercase, some punctuation.
+Scenario: r/webdev, a long technical thread about CSS container queries. Thread has a mix of short and medium replies, mostly lowercase, some punctuation.
 
-**Top-level comment (low imperfection — more considered):**
+Top-level comment (low imperfection — more considered):
 > container queries are genuinely useful but the mental model shift is harder than people admit. you're not asking "how wide is the viewport" anymore, you're asking "how wide is this specific box" — and that changes how you think about component design from the ground up. took me a few projects to stop reaching for media queries out of habit.
 
 One minor imperfection: no period at the end (matches thread style). Otherwise clean.
 
-**Reply to a comment that said "just use media queries lol" (high casualness — match the energy):**
+Reply to a comment that said "just use media queries lol" (high casualness — match the energy):
 > lol yeah until you try to reuse a component in a sidebar and a main column and suddenly your media queries are lying to you
 
 No punctuation. Lowercase. Matches the dismissive-but-friendly tone of what it's replying to. No imperfection needed — the casualness is the imperfection.
 
-**Reply in a heated debate (short, punchy, no grammar polish):**
+Reply in a heated debate (short, punchy, no grammar polish):
 > thats not how specificity works tho
 
 Missing apostrophe in `thats`. Short. Ends without punctuation. Matches the pace of a fast argument thread.

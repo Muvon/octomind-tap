@@ -31,8 +31,7 @@ capabilities = ["core", "filesystem", "codesearch", "programming-python"]
 
 [[roles]]
 system = """
-<System prompt — the agent's personality, knowledge, and behavior rules>
-Working directory: {{CWD}}
+<XML-tagged system prompt — see "System Prompt Structure" below>
 """
 welcome = "<Emoji> <Short greeting>. Working in {{CWD}}"
 temperature = 0.3
@@ -74,21 +73,86 @@ top_k = 0
 
 ---
 
-### Writing Good System Prompts
+### System Prompt Structure (mandatory — 2026 standard)
 
-The system prompt is the most important part of an agent. Structure it:
+System prompts must use XML-tagged blocks in a fixed order. This is grounded in three findings: (1) the U-shape attention curve — beginning and end of the prompt get the most attention, the middle gets "lost"; (2) Anthropic's published guidance that XML tags are the preferred structuring method for Claude; (3) Claude Opus 4.7 follows instructions more literally than 4.6 — implicit gaps don't get bridged anymore, so structure has to be explicit.
 
-1. **Identity** — Who is this agent? One sentence: role + expertise + style.
-2. **Domain knowledge** — Specific best practices, patterns, tools, and conventions for the domain.
-3. **Execution protocol** — How the agent should work (parallel execution, planning, tool usage).
-4. **Scope discipline** — What the agent does and doesn't do.
-5. **Never / Always** — Hard rules that prevent common mistakes.
+The eight-block order, top to bottom:
 
-**Good patterns:**
-- **Be specific, not generic** — "Use `uv run pytest` for testing" beats "Run the tests"
-- **Include tool commands** — List the actual CLI commands for the domain (cargo, kubectl, npm, etc.)
-- **Set boundaries** — "Fix X" means fix X only, not refactor the neighborhood
-- **Reference examples** — Study `developer:general` for the execution protocol pattern
+```
+<identity>          ← primacy: who/what (3–5 lines, role + expertise + style)
+<voice>             ← tone, register, formality (omit if technical agent)
+<scope>             ← what's owned / what routes elsewhere
+<workflow>          ← numbered steps for the main pipeline
+<rules>             ← decision rules, tables, domain knowledge
+<examples>          ← good/bad pairs (omit if not applicable)
+<output_format>     ← exact artifact shape, file location, schema
+<interaction>       ← trigger → response patterns
+<critical>          ← recency: NEVER / ALWAYS lists only
+```
+
+Why this order:
+- `<identity>` first because primacy: the model commits to role early
+- `<critical>` last because recency: the tail is load-bearing — it's the last thing the model sees before the user message and gets disproportionate attention
+- `<workflow>` and `<rules>` in the middle have to do their work via clear tagging, since middle-of-prompt content is the "lost" zone — the XML tags act as retrieval anchors
+
+Where {{CWD}}, {{DATE}}, and other dynamic placeholders go (and where they don't):
+
+The system prompt must be STABLE run-to-run. Anything that changes between runs breaks prompt caching, which costs real money and latency on every call.
+
+- `{{CWD}}` and `{{DATE}}` change every run — they belong in the `welcome` field ONLY.
+- The harness pipes working directory and current date as separate runtime context. Putting them in `system` duplicates that state AND breaks the cache.
+- The rule: if a placeholder's value changes from one session to the next, it does not belong in `system`. System is identity + rules + structure — all stable. Welcome handles "where am I, when am I" dynamics.
+- Static placeholders like `{{INPUT:KEY}}` and `{{ENV:KEY}}` typically don't appear in system anyway — they live in MCP server config.
+
+The lint enforces this: `{{CWD}}` or `{{DATE}}` anywhere inside `system = """..."""` is a hard error.
+
+Block-by-block authoring rules:
+
+- `<identity>` — One paragraph. Role, expertise, style. Don't bury this; the model uses it to pick its register.
+- `<voice>` — Only include if voice/tone matters (content, marketing, video, creative agents). Omit for pure technical agents (developer, devops, security) where voice is uniform.
+- `<scope>` — Two lists: ✅ Own / ❌ Don't own (route to <other-agent>). Required for any agent that sits next to siblings (e.g. `marketing:seo` vs `content:seo`).
+- `<workflow>` — Numbered steps (1, 2, 3…). Each step is one sentence + optional sub-bullets. Don't write paragraphs.
+- `<rules>` — Tables and bullet lists win here. Decision matrices, parameter ranges, vocabulary lists. This is the agent's domain knowledge.
+- `<examples>` — Bad → Good pairs are the strongest format. Skip this block if the agent's output is freeform.
+- `<output_format>` — Exact structure of the artifact. If the agent saves files, name the path pattern (`./video-out/<slug>/script.md`). If the agent returns markdown blocks, show the schema.
+- `<interaction>` — Trigger patterns. "When user says X → do Y". Especially "Ambiguous → ask ONE clarifying question."
+- `<critical>` — Two named lists: NEVER and ALWAYS. Hard fails on top, must-dos on bottom. Nothing else — no CWD/DATE placeholders, no preamble.
+
+Token discipline (Claude 4.7 / 2026):
+- 200–1000 words for the full system prompt is the production sweet spot
+- Beyond 1500 words you risk context rot — model recall on rules degrades
+- Be explicit — Claude 4.7 doesn't bridge implicit gaps the way 4.6 did
+- Static content first for prompt caching (saves up to 90% cost on repeat sessions)
+- No decorative prose — every line must do work; if you can cut it without losing meaning, cut it
+
+Authoring patterns that work:
+- Specific over generic — "Use `uv run pytest` for testing" beats "Run the tests"
+- Tool commands inline — actual CLI commands for the domain (cargo, kubectl, npm, etc.)
+- Set boundaries explicitly — "Fix X" means fix X only, not refactor the neighborhood
+- Reference example agents — study `developer:general` for execution protocol; `agents/content/article.toml` for content-style structure
+
+Anti-patterns that break the structure:
+- Free-form markdown sections without `<tag>` wrappers — defeats the U-shape strategy
+- `IDENTITY` / `WORKFLOW` as plain `##` headers — Claude treats them as content, not structural anchors
+- Long preambles before `<identity>` (e.g. "Welcome to this agent...") — wastes the primacy slot
+- Critical rules buried in the middle — they get "lost"
+- `<critical>` block with paragraphs of explanation — keep it tight: NEVER / ALWAYS bullet lists, that's it
+
+Markdown discipline inside XML blocks (token economy — mandatory):
+
+The XML tag IS the structural anchor. Markdown decoration that duplicates that role is pure token waste — every `**` and `###` ships to the model on every call. Strip the noise:
+
+- No `### subsection` heading at the top of an XML block. The opening tag already names the section. `<voice>` followed immediately by `### Voice & Tone` is redundant — drop the H3.
+- **`### subsection` is fine *only* when an XML block has 2+ genuinely distinct sub-areas** (e.g. `<workflow>` containing `### Research protocol` + `### Memory protocol` + numbered steps). Single-subsection blocks should flow as plain prose under the tag.
+- No `bold` on bullet leads. `- Active voice — "Studies show X"` becomes `- Active voice — "Studies show X"`. The em-dash already separates lead from explanation. Bold adds tokens, not meaning.
+- No `bold` on inline emphasis unless the emphasis is genuinely load-bearing (a hard rule, a critical warning). Default: drop it.
+- Keep tables. `|---|---|` markdown tables are real structure — they carry decision matrices and stay.
+- Keep code fences. Triple-backtick blocks are essential for output schemas, command examples.
+- Keep numbered lists. `1. Step` becomes `1. Step` — but the numbering stays.
+- No `---` separators between content inside an XML block. Use blank lines.
+
+The test: would removing this markdown change the model's understanding of the rule? If no, drop it.
 
 ### Temperature Guidelines by Domain
 
@@ -218,6 +282,11 @@ Before writing any agent manifest, verify:
 - [ ] `# Description:` comment present? (20–160 chars)
 - [ ] Is there a similar agent to reference for prompt structure?
 - [ ] Do all needed capabilities exist? If not, use `tap-capability-authoring` skill first.
+- [ ] System prompt uses XML-tagged blocks in the canonical order? (`<identity>` → `<voice>` → `<scope>` → `<workflow>` → `<rules>` → `<examples>` → `<output_format>` → `<interaction>` → `<critical>`)
+- [ ] `<identity>` is the first thing the model sees? (no preamble before it)
+- [ ] `<critical>` is last and contains NEVER/ALWAYS lists only? (no CWD/DATE placeholders inside system)
+- [ ] `{{CWD}}` and `{{DATE}}` appear in the `welcome` field, NOT in `system`?
+- [ ] Total system prompt under ~1500 words? (context rot threshold)
 - [ ] Is the system prompt specific enough? (domain knowledge, tools, patterns)
 - [ ] Are temperature/top_p appropriate for the domain?
 - [ ] Does the welcome message include an emoji + `{{CWD}}`?
@@ -229,7 +298,7 @@ Before writing any agent manifest, verify:
 
 ## Examples
 
-### Example 1: Minimal correct agent
+### Example 1: Minimal correct agent (2026 XML structure)
 
 ```toml
 # agents/developer/rust.toml
@@ -241,8 +310,48 @@ capabilities = ["core", "filesystem", "codesearch", "programming-rust"]
 
 [[roles]]
 system = """
-You are an expert Rust developer...
-Working directory: {{CWD}}
+<identity>
+Expert Rust developer. You write idiomatic, safe, performant Rust — borrow checker–friendly, zero-cost abstractions, no unsafe unless justified in a comment.
+</identity>
+
+<scope>
+✅ Own: Rust code, Cargo workflows, async with tokio, error handling with thiserror/anyhow, no_std embedded, FFI bindings.
+❌ Don't own: cross-language glue beyond FFI signatures (route to language-specific agent), infra/deployment (route to devops:*).
+</scope>
+
+<workflow>
+1. **Read context** — `cargo metadata`, `Cargo.toml`, surrounding modules.
+2. **Plan** — for non-trivial changes, present an outline before writing.
+3. **Write** — idiomatic Rust, prefer iterators over loops, `Result` over panic.
+4. **Verify** — `cargo check`, `cargo clippy`, `cargo test`.
+</workflow>
+
+<rules>
+- Errors: `thiserror` for libraries, `anyhow` for binaries. Never `unwrap()` outside tests/examples.
+- Async: tokio is the default runtime. Don't mix runtimes.
+- Lints: `cargo clippy -- -D warnings` must pass clean.
+- No `unsafe` blocks without a SAFETY comment naming the invariant.
+</rules>
+
+<output_format>
+Code edits via Edit/Write tools. After non-trivial changes, run `cargo check` and report the result.
+</output_format>
+
+<interaction>
+- New task → confirm the scope before editing if files >3 will change.
+- Ambiguous spec → ask ONE clarifying question, then proceed.
+</interaction>
+
+<critical>
+NEVER:
+- Add `unsafe` without a SAFETY comment.
+- `unwrap()` in production code paths.
+- Disable clippy lints to silence warnings — fix the underlying issue.
+
+ALWAYS:
+- Run `cargo check` after edits.
+- Use the simplest type that fits — don't reach for `Box<dyn>` when a generic works.
+</critical>
 """
 welcome = "🦀 Rust developer ready. Working in {{CWD}}"
 temperature = 0.1

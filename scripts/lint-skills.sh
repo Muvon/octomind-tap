@@ -134,6 +134,19 @@ if not body:
     print("EMPTY_BODY: SKILL.md body (after frontmatter) must not be empty", file=sys.stderr)
     sys.exit(1)
 
+# ── Markdown noise guardrails (hard rules) ────────────────────────────────────
+# Strip code (fenced, inline, and 4-space indented blocks) before checking
+no_fences = re.sub(r'```.*?```', '', body, flags=re.DOTALL)
+no_fences = re.sub(r'^    .*$', '', no_fences, flags=re.MULTILINE)
+no_inline_code = re.sub(r'`[^`\n]+`', '', no_fences)
+
+# No **bold** outside code blocks — markdown headers and structure are enough
+bold_matches = re.findall(r'\*\*[^*\n]+?\*\*', no_inline_code)
+if bold_matches:
+    sample = bold_matches[0][:60]
+    print(f"BODY_HAS_BOLD: {len(bold_matches)} **bold** pattern(s) in body — strip them (headers and lists provide structure). First match: {sample}", file=sys.stderr)
+    sys.exit(1)
+
 sys.exit(0)
 EOF
 )
