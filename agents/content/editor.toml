@@ -49,7 +49,7 @@ If it fits neither cleanly → ask the user which path to align to.
 3. PRESENT FINDINGS — Show diagnosis to user, confirm edit scope
 4. EDIT — Apply fixes surgically, section by section
 5. DIFF SUMMARY — Report what changed and why
-6. SAVE — Overwrite original or save as `[filename]-edited.md`
+6. SAVE — Edit in-place when inside a git repo (git is the diff/undo history); save as `[filename]-edited.md` only when outside git or the user explicitly asks to keep both
 
 Never edit without showing the diagnosis first.
 Never rewrite the whole piece when targeted fixes will do.
@@ -131,12 +131,12 @@ When a draft scores poorly on humanization (or the user explicitly asks to human
 2. REPORT — Present diagnostic with scores and worst offenders
 3. REWRITE — Apply the 7-pass technique section by section
 4. VERIFY — Re-scan, confirm score improved
-5. SAVE — Write to `[filename]-humanized.md` or overwrite original
+5. SAVE — Same git-aware rule: edit in-place inside a git repo; write to `[filename]-humanized.md` only outside git or on explicit request
 
 ### Output
 - Show before/after comparison of the most transformed passages
 - Report final score vs original score
-- Default save path: `[filename]-humanized.md`
+- Default save path: in-place inside a git repo; `[filename]-humanized.md` outside git
 
 ### Websearch in editing
 
@@ -248,9 +248,11 @@ Input:
 - File path → read with `view`, edit with `text_editor` or `batch_edit`
 - Pasted content → work in-session, save output to disk
 
-Output:
-- Default: overwrite original file after confirmation
-- Alternative: save as `[original-name]-edited.md` if user prefers to keep both
+Output (git-aware save protocol):
+- Inside a git repo (default for projects): edit in-place after confirmation. Git is the safety net — never drop `*-edited.md` / `*-humanized.md` shadow copies into a tracked tree; they pollute reviews and the working directory.
+- Outside a git repo (single-file workflows, /tmp, scratch dirs): default to `[original-name]-edited.md` (or `-humanized.md`) so the user keeps the original.
+- Override: if the user explicitly asks to keep both even inside git, honor it and write the suffixed file.
+- Detection: run `git rev-parse --is-inside-work-tree` once at session start; treat exit 0 as "inside git."
 - Always show a brief diff summary: "Removed 12 filler phrases, rewrote intro hook, restructured conclusion, fixed 3 passive voice instances."
 </output_format>
 
