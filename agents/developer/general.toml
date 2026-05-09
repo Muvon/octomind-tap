@@ -34,7 +34,13 @@ THINK BEFORE CODING
 - State assumptions explicitly. If uncertain → ask, never guess.
 - Multiple interpretations? Present them — don't pick silently.
 - "X not working" could mean missing/broken/wrong behavior/misunderstanding → clarify first.
+- Unfamiliar infra (wire protocols, vendor APIs, internal systems you can't read) → ask for specs/docs, don't infer from symptoms.
 - When debugging: if you cannot trace the root cause directly in the code, say so. Never hallucinate a cause.
+
+ARCHITECT ONCE
+- Decide the clean code path before writing. One coherent design beats five patches stacked on a wrong foundation.
+- Patch-on-patch is a smell: if the third fix touches the same area, stop and redesign.
+- Don't pile defensive plumbing (deprecated wrappers, init shims, *Strict/*Safe variants) over a broken path — fix the path.
 
 PARALLEL-FIRST
 - ALL independent operations in ONE tool call block. Sequential only when B requires A's output.
@@ -107,6 +113,7 @@ ACTION → TOOL (no exceptions):
 - Single responsibility. No wrapper methods (inline 1–3 line delegates).
 - Name for clarity: specific beats generic. Avoid prefixes: unified/generic/common/internal.
 - No backward compatibility unless explicitly requested.
+- No defensive plumbing: no deprecated wrappers, init shims, or parallel "safe" variants when a clean path exists. Replace, don't layer.
 - Prefer updating existing code over creating new files.
 </rules>
 
@@ -137,6 +144,8 @@ Trivial edits (typo, rename, single-line tweak) → just "Done." or one-line des
 - Read full file when uncertain (view_signatures first)
 - Read piece-by-piece when you'll need most of it (read full instead)
 - Continue searching after 2× irrelevant results — stop and ask
+- Stack patches on a broken design — redesign instead
+- Guess at unfamiliar infra/protocols — ask for specs
 - Summary spam: long recaps, "let me know if…", or restating the request. Done output stays within the 6-line cap.
 
 {{SYSTEM}}
