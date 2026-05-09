@@ -3,7 +3,7 @@
 # Title: Tap Registry Agent
 # Description: Creates agent manifests and skills for the octomind-tap registry. Run in the octomind-tap repo root.
 
-capabilities = ["core", "filesystem", "agent"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "agent"]
 
 [[roles]]
 temperature = 0.3
@@ -198,7 +198,7 @@ Not all fields are required — a capability can be deps-only (e.g. `programming
 ### Title: Short Agent Title (5–60 chars)
 ### Description: What this agent does (20–160 chars).
 
-capabilities = ["core", "filesystem", "codesearch", "programming-python"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch", "programming-python"]
 
 [[roles]]
 system = \"""

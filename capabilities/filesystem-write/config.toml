@@ -1,0 +1,9 @@
+# capabilities/filesystem-write/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"edit a file on disk",
+	"write a file",
+	"modify file contents",
+	"create a new file",
+]

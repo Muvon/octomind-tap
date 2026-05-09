@@ -3,7 +3,7 @@
 # Title: Thai Law Specialist
 # Description: Thai law specialist. Royal Gazette legislation covering PDPA, Computer Crime Act, Cybersecurity Act, and Civil and Commercial Code.
 
-capabilities = ["core", "filesystem", "websearch", "legal-th"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "legal-th"]
 
 [[roles]]
 temperature = 0.2

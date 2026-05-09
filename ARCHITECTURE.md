@@ -17,7 +17,7 @@ allowed_tools = ["core:*", "octofs:*", "octocode:*"]
 
 New (the only way):
 ```toml
-capabilities = ["core", "filesystem", "codesearch"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch"]
 ```
 
 `bin/load <domain>:<spec>` resolves capabilities at runtime and injects the full `[roles.mcp]` block automatically. Never write `[roles.mcp]` by hand in any manifest.
@@ -36,7 +36,7 @@ Use prefix naming to group related capabilities: `programming-python`, `programm
 
 ```
 agents/developer/rust.toml
-  └── capabilities = ["core", "filesystem", "codesearch", "programming-rust"]
+  └── capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch", "programming-rust"]
            │
            ▼
   bin/load developer:rust
@@ -64,7 +64,9 @@ Symlinks are managed by `scripts/setup-symlinks.sh` which **always force-creates
 |----------------|------------------------|-------------------------------------------------------|
 | `core`         | default                | `plan` task tracker                                   |
 | `agent`        | default                | `agent_*` delegation tools                            |
-| `filesystem`   | octofs                 | `view`, `shell`, `text_editor`, `workdir` |
+| `filesystem-read`  | octofs                 | `view`, `workdir` (read-only)             |
+| `filesystem-write` | octofs                 | `text_editor`, `batch_edit`, `extract_lines` |
+| `shell`            | octofs                 | `shell` (command execution)               |
 | `codesearch`   | octocode               | `semantic_search`, `structural_search`, `graphrag`, `view_signatures`      |
 | `memory`       | octobrain              | `remember`, `memorize`                                |
 | `websearch`    | tavily                 | web search and content extraction                     |
@@ -369,7 +371,7 @@ All agents and capabilities require `# Title:` and `# Description:` comment line
 # Title: Short Agent Title
 # Description: One-line description of what this agent does.
 
-capabilities = ["core", "filesystem", "programming-python"]   # REQUIRED
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "programming-python"]   # REQUIRED
 
 [[roles]]
 system = """

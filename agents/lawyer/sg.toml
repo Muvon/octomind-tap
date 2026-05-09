@@ -3,7 +3,7 @@
 # Title: Singapore Law Specialist
 # Description: Singapore law specialist. 523 Acts from Singapore Statutes Online covering contracts, employment, criminal, company, and property law.
 
-capabilities = ["core", "filesystem", "websearch", "legal-sg"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "legal-sg"]
 
 [[roles]]
 temperature = 0.2

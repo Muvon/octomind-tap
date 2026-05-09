@@ -3,7 +3,7 @@
 # Title: German Law Specialist
 # Description: German law specialist. 91,843 provisions, 5,000 court decisions, EU cross-references. Covers BGB, HGB, StGB, DSGVO, and more.
 
-capabilities = ["core", "filesystem", "websearch", "legal-de"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "legal-de"]
 
 [[roles]]
 temperature = 0.2

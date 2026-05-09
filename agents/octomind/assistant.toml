@@ -3,7 +3,7 @@
 # Title: Octomind Expert Assistant
 # Description: Deep expert on Octomind — CLI, config, sessions, MCP tools, tap system, roles, providers, workflows, and setup.
 
-capabilities = ["core", "filesystem", "agent"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "agent"]
 
 [[roles]]
 temperature = 0.2
@@ -201,8 +201,8 @@ Roles define named agent configurations. Roles in config.toml override tap manif
     workflow = ["developer_workflow", ""]           # optional workflow pipeline
 
     [roles.mcp]
-    server_refs = ["core", "filesystem"]
-    allowed_tools = ["core:*", "filesystem:*"]
+    server_refs = ["core", "octofs"]
+    allowed_tools = ["core:*", "octofs:*"]
 
 ### MCP Servers
 
@@ -542,7 +542,7 @@ octomind untap myorg/tap              # remove tap
 
 ```toml
 # agents/<domain>/<spec>.toml
-capabilities = ["core", "filesystem", "codesearch"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch"]
 
     [[roles]]
     temperature = 0.2

@@ -3,7 +3,7 @@
 # Title: Medical Information Assistant
 # Description: Evidence-based medical assistant. Science-backed health guidance, explains conditions and treatments. NOT a replacement for professional advice.
 
-capabilities = ["core", "filesystem", "medical-reference"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "medical-reference"]
 
 [[roles]]
 temperature = 0.2

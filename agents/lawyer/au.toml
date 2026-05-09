@@ -3,7 +3,7 @@
 # Title: Australian Law Specialist
 # Description: Australian law specialist. 1,253 federal Acts from legislation.gov.au, covering contracts, employment, criminal, property, family, business, consumer, and more.
 
-capabilities = ["core", "filesystem", "websearch", "legal-au"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "legal-au"]
 
 [[roles]]
 temperature = 0.2

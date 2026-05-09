@@ -59,8 +59,8 @@ top_p = 0.9
 top_k = 0
 
 [roles.mcp]
-server_refs = ["core", "filesystem", "agent"]
-allowed_tools = ["core:*", "filesystem:*", "agent_*"]
+server_refs = ["core", "octofs", "agent"]
+allowed_tools = ["core:*", "octofs:*", "agent_*"]
 ```
 
 ### 3. Test locally
@@ -125,7 +125,7 @@ Include a short description of:
 | `server_refs` | Tools provided |
 |---------------|----------------|
 | `core` | `plan` |
-| `filesystem` | `view`, `text_editor`, `batch_edit`, `extract_lines`, `shell`, `workdir`, `ast_grep` |
+| `octofs` | `view`, `text_editor`, `batch_edit`, `extract_lines`, `shell`, `workdir` |
 | `agent` | `agent_*` (delegate to configured layers) |
 | `octocode` | `semantic_search`, `remember`, `memorize`, `view_signatures`, `graphrag` and more |
 

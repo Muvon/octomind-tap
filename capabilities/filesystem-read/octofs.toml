@@ -1,0 +1,20 @@
+# capabilities/filesystem-read/octofs.toml
+# Capability: filesystem-read
+# Provider: octofs — Octomind's native filesystem MCP server (read-only subset)
+# Title: Filesystem (Read)
+# Description: Read-only file and directory access via octofs: view, workdir.
+
+[deps]
+require = ["muvon/octofs"]
+
+[roles.mcp]
+server_refs = ["octofs"]
+allowed_tools = ["octofs:view", "octofs:workdir"]
+
+[[mcp.servers]]
+name = "octofs"
+type = "stdio"
+command = "octofs"
+args = ["mcp"]
+timeout_seconds = 300
+tools = []

@@ -3,7 +3,7 @@
 # Title: Behavioral Specification Writer
 # Description: Explores codebase, researches best practices, clarifies requirements interactively, and produces detailed behavioral specifications for developer handoff.
 
-capabilities = ["core", "filesystem", "codesearch", "memory", "websearch"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch", "memory", "websearch"]
 
 [[roles]]
 temperature = 0.3

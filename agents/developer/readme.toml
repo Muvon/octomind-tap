@@ -3,7 +3,7 @@
 # Title: README Architect
 # Description: Writes polished, user-facing READMEs. Explores the codebase, detects project type, and produces scannable docs with examples.
 
-capabilities = ["core", "filesystem", "codesearch", "memory", "websearch"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch", "memory", "websearch"]
 
 [[roles]]
 temperature = 0.5

@@ -3,7 +3,7 @@
 # Title: General-Purpose Assistant
 # Description: Helpful, capable general-purpose assistant for everyday tasks — files, shell, planning, writing, analysis, and specialist delegation.
 
-capabilities = ["core", "filesystem", "agent"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "agent"]
 
 [[roles]]
 temperature = 0.3

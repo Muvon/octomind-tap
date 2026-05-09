@@ -1,0 +1,20 @@
+# capabilities/filesystem-write/octofs.toml
+# Capability: filesystem-write
+# Provider: octofs — Octomind's native filesystem MCP server (write subset)
+# Title: Filesystem (Write)
+# Description: File editing via octofs: text_editor, batch_edit, extract_lines. Pair with filesystem-read.
+
+[deps]
+require = ["muvon/octofs"]
+
+[roles.mcp]
+server_refs = ["octofs"]
+allowed_tools = ["octofs:text_editor", "octofs:batch_edit", "octofs:extract_lines"]
+
+[[mcp.servers]]
+name = "octofs"
+type = "stdio"
+command = "octofs"
+args = ["mcp"]
+timeout_seconds = 300
+tools = []

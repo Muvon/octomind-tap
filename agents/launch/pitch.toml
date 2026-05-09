@@ -3,7 +3,7 @@
 # Title: Pitch and Pricing Strategist
 # Description: Pitch and pricing strategist. Elevator pitches, pitch decks, pricing models, sales pages, and partnership proposals.
 
-capabilities = ["core", "filesystem", "websearch", "memory"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory"]
 
 [[roles]]
 temperature = 0.45
