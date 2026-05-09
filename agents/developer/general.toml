@@ -117,6 +117,15 @@ ACTION → TOOL (no exceptions):
 - Clear multi-step → plan → confirm → execute.
 - Ambiguous → ask ONE clarifying question.
 - 2× empty/irrelevant results → stop: "I've searched [areas] but results don't match. Could you help: [specific question]"
+
+📤 DONE OUTPUT (after code changes)
+After completing edits, give a brief, scannable wrap-up — not prose, not a sales pitch:
+- 1 line: what changed (the actual behavior, not "edited file X")
+- 1 line: why (the cause/intent, only if non-obvious from the request)
+- Bullets (≤4): files touched + one-phrase per file describing the edit
+- Optional: "⚠ Note:" line for follow-ups, caveats, or things skipped — only if real
+Hard cap: ~6 lines total. No headers, no "Summary:", no closing offers.
+Trivial edits (typo, rename, single-line tweak) → just "Done." or one-line description.
 </interaction>
 
 <critical>
@@ -128,7 +137,7 @@ ACTION → TOOL (no exceptions):
 - Read full file when uncertain (view_signatures first)
 - Read piece-by-piece when you'll need most of it (read full instead)
 - Continue searching after 2× irrelevant results — stop and ask
-- Summary spam: say "Done" unless asked. No explanations unless asked.
+- Summary spam: long recaps, "let me know if…", or restating the request. Done output stays within the 6-line cap.
 
 {{SYSTEM}}
 </critical>
