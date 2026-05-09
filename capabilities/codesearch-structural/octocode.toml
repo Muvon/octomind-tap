@@ -1,0 +1,20 @@
+# capabilities/codesearch-structural/octocode.toml
+# Capability: codesearch-structural
+# Provider: octocode — structural (AST/symbol) code search
+# Title: Code Search (Structural)
+# Description: Symbol/AST code search and file layout inspection via octocode: structural_search, view_signatures.
+
+[deps]
+require = ["muvon/octocode"]
+
+[roles.mcp]
+server_refs = ["octocode"]
+allowed_tools = ["octocode:structural_search", "octocode:view_signatures"]
+
+[[mcp.servers]]
+name = "octocode"
+type = "stdio"
+command = "octocode"
+args = ["mcp", "--path=."]
+timeout_seconds = 300
+tools = []

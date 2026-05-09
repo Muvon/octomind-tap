@@ -3,7 +3,7 @@
 # Title: Code Change Brief
 # Description: Transforms code changes (diff, commit, paste) into structured review cards — behavioral impact, not line-by-line commentary.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch", "versioning"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "versioning"]
 
 [[roles]]
 temperature = 0.2

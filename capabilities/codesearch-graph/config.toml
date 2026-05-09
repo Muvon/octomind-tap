@@ -1,0 +1,6 @@
+# capabilities/codesearch-graph/config.toml
+triggers = [
+	"trace code dependencies",
+	"find what calls this function",
+	"graph traversal of code",
+]

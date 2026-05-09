@@ -1,0 +1,6 @@
+# capabilities/codesearch-semantic/config.toml
+triggers = [
+	"find code by what it does",
+	"search code by description",
+	"natural-language code search",
+]

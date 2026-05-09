@@ -3,7 +3,7 @@
 # Title: Docker Specialist
 # Description: Docker and container specialist. Expert in Dockerfiles, multi-stage builds, docker-compose, image optimization, security hardening, and container networking.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch", "websearch", "docker"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "websearch", "docker"]
 
 [[roles]]
 temperature = 0.15

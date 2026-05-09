@@ -23,7 +23,7 @@ Use this skill whenever you are creating or editing an agent manifest.
 # Title: Short Agent Title (5–60 chars)
 # Description: What this agent does (20–160 chars).
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch", "programming-python"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "programming-python"]
 
 [[roles]]
 system = """
@@ -292,7 +292,7 @@ Before writing any agent manifest, verify:
 # Title: Rust Developer
 # Description: Expert Rust developer. Writes idiomatic, safe, performant Rust code.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch", "programming-rust"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "programming-rust"]
 
 [[roles]]
 system = """

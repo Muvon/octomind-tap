@@ -1,0 +1,20 @@
+# capabilities/codesearch-graph/octocode.toml
+# Capability: codesearch-graph
+# Provider: octocode — code dependency graph search
+# Title: Code Search (Graph)
+# Description: Code relationship and dependency-graph traversal via octocode: graphrag.
+
+[deps]
+require = ["muvon/octocode"]
+
+[roles.mcp]
+server_refs = ["octocode"]
+allowed_tools = ["octocode:graphrag"]
+
+[[mcp.servers]]
+name = "octocode"
+type = "stdio"
+command = "octocode"
+args = ["mcp", "--path=."]
+timeout_seconds = 300
+tools = []

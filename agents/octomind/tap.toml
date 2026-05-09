@@ -152,8 +152,12 @@ Not all fields are required — a capability can be deps-only (e.g. `programming
 |------------------------|------------------|---------------------------------------------------------|
 | `core`                 | (built-in)       | `plan` task tracker                                   |
 | `agent`                | (built-in)       | `agent_*` delegation tools                            |
-| `filesystem`           | octofs           | `view`, `shell`, `text_editor`, `workdir`             |
-| `codesearch`           | octocode         | `semantic_search`, `structural_search`, `graphrag`, `view_signatures` |
+| `filesystem-read`      | octofs           | `view`, `workdir`                                     |
+| `filesystem-write`     | octofs           | `text_editor`, `batch_edit`, `extract_lines`          |
+| `shell`                | octofs           | `shell` (command execution)                           |
+| `codesearch-semantic`   | octocode         | `semantic_search`                                    |
+| `codesearch-structural` | octocode         | `structural_search`, `view_signatures`               |
+| `codesearch-graph`      | octocode         | `graphrag`                                            |
 | `memory`               | octobrain        | `remember`, `memorize`                                |
 | `websearch`            | tavily           | web search and content extraction                     |
 | `versioning`           | git              | git operations via MCP                                |
@@ -198,7 +202,7 @@ Not all fields are required — a capability can be deps-only (e.g. `programming
 ### Title: Short Agent Title (5–60 chars)
 ### Description: What this agent does (20–160 chars).
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch", "programming-python"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "programming-python"]
 
 [[roles]]
 system = \"""

@@ -126,7 +126,7 @@ Agents declare **capabilities** instead of hardcoding MCP servers. This decouple
 
 ### How it works
 
-1. An agent declares `capabilities = ["filesystem-read", "filesystem-write", "codesearch", "websearch"]` at the top of its manifest.
+1. An agent declares `capabilities = ["filesystem-read", "filesystem-write", "codesearch-semantic", "codesearch-structural", "websearch"]` at the top of its manifest.
 2. At runtime, `bin/load <domain>:<spec>` resolves each capability to `capabilities/<name>/default.toml`.
 3. `default.toml` is a symlink pointing to the active provider (e.g. `octofs.toml`, `tavily.toml`).
 4. `bin/load` merges all `[deps]`, `server_refs`, `allowed_tools`, and `[[mcp.servers]]` blocks into the final manifest output.
@@ -140,7 +140,9 @@ Agents declare **capabilities** instead of hardcoding MCP servers. This decouple
 | `filesystem-read`  | `view`, `workdir` | `octofs.toml` |
 | `filesystem-write` | `text_editor`, `batch_edit`, `extract_lines` | `octofs.toml` |
 | `shell`            | `shell` (command execution) | `octofs.toml` |
-| `codesearch` | `semantic_search`, `structural_search`, `graphrag`, `view_signatures` | `octocode.toml` |
+| `codesearch-semantic` | `semantic_search` | `octocode.toml` |
+| `codesearch-structural` | `structural_search`, `view_signatures` | `octocode.toml` |
+| `codesearch-graph` | `graphrag` | `octocode.toml` |
 | `memory` | `remember`, `memorize` | `octobrain.toml` |
 | `websearch` | web search tool | `tavily.toml` |
 | `versioning` | git operations via shell | `git.toml` |
@@ -170,7 +172,7 @@ bash scripts/validate-capabilities.sh
 ```toml
 # agents/developer/rust.toml
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch", "versioning"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "versioning"]
 
 [[roles]]
 system = "..."

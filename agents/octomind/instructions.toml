@@ -3,7 +3,7 @@
 # Title: INSTRUCTIONS.md Generator
 # Description: INSTRUCTIONS.md generator. Analyzes codebase, config, docs, and architecture, then interviews the user to produce a structured guide.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch", "memory"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory"]
 
 [[roles]]
 temperature = 0.25

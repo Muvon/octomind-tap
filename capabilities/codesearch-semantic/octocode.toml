@@ -1,0 +1,20 @@
+# capabilities/codesearch-semantic/octocode.toml
+# Capability: codesearch-semantic
+# Provider: octocode — semantic (natural-language) code search
+# Title: Code Search (Semantic)
+# Description: Natural-language code search via octocode: semantic_search.
+
+[deps]
+require = ["muvon/octocode"]
+
+[roles.mcp]
+server_refs = ["octocode"]
+allowed_tools = ["octocode:semantic_search"]
+
+[[mcp.servers]]
+name = "octocode"
+type = "stdio"
+command = "octocode"
+args = ["mcp", "--path=."]
+timeout_seconds = 300
+tools = []
