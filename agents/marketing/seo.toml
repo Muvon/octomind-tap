@@ -3,7 +3,7 @@
 # Title: Off-Page SEO & Growth Strategist
 # Description: Off-page SEO and growth. Link-building, free tools for backlinks, programmatic SEO, digital PR, embed distribution. For on-page or keywords use content:seo.
 
-capabilities = ["core", "filesystem", "websearch", "webfetch", "memory"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch", "memory"]
 
 [[roles]]
 temperature = 0.3

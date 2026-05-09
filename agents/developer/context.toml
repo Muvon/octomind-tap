@@ -3,7 +3,7 @@
 # Title: Context Curator
 # Description: Explores codebase, recalls memories, and narrows entry points. Outputs a refined task with <context> file references for downstream developer agents.
 
-capabilities = ["core", "filesystem", "codesearch", "memory"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch", "memory"]
 
 [[roles]]
 temperature = 0.2

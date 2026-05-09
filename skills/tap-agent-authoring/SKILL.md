@@ -23,7 +23,7 @@ Use this skill whenever you are creating or editing an agent manifest.
 # Title: Short Agent Title (5–60 chars)
 # Description: What this agent does (20–160 chars).
 
-capabilities = ["core", "filesystem", "codesearch", "programming-python"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch", "programming-python"]
 
 [[roles]]
 system = """
@@ -292,7 +292,7 @@ Before writing any agent manifest, verify:
 # Title: Rust Developer
 # Description: Expert Rust developer. Writes idiomatic, safe, performant Rust code.
 
-capabilities = ["core", "filesystem", "codesearch", "programming-rust"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch", "programming-rust"]
 
 [[roles]]
 system = """
@@ -348,7 +348,7 @@ top_k = 0
 ### Example 2: Agent with model override
 
 ```toml
-capabilities = ["core", "filesystem", "websearch"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch"]
 
 [[roles]]
 system = """..."""

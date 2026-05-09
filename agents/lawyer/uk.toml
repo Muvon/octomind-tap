@@ -3,7 +3,7 @@
 # Title: UK Law Specialist
 # Description: UK law specialist. English, Welsh, Scottish, and Northern Irish legislation with EU cross-references. Contracts, employment, and more.
 
-capabilities = ["core", "filesystem", "websearch", "legal-uk"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "legal-uk"]
 
 [[roles]]
 temperature = 0.2

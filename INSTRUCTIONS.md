@@ -55,7 +55,7 @@ Agents declare **what they need**, not how to get it:
 
 ```toml
 # ✅ correct — capability-based
-capabilities = ["core", "filesystem", "codesearch", "programming-rust"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch", "programming-rust"]
 
 [[roles]]
 system = "..."

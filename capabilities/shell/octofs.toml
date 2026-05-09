@@ -1,0 +1,20 @@
+# capabilities/shell/octofs.toml
+# Capability: shell
+# Provider: octofs — Octomind's native shell execution MCP server
+# Title: Shell
+# Description: Execute shell commands via octofs (not technically filesystem — separate concern).
+
+[deps]
+require = ["muvon/octofs"]
+
+[roles.mcp]
+server_refs = ["octofs"]
+allowed_tools = ["octofs:shell"]
+
+[[mcp.servers]]
+name = "octofs"
+type = "stdio"
+command = "octofs"
+args = ["mcp"]
+timeout_seconds = 300
+tools = []

@@ -3,7 +3,7 @@
 # Title: Article Writer
 # Description: Long-form article writer. Researches via web, builds outlines, drafts authoritative content to disk. SEO-aware and source-backed.
 
-capabilities = ["core", "filesystem", "websearch", "memory"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory"]
 
 [[roles]]
 temperature = 0.7

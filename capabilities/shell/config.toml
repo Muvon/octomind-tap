@@ -1,0 +1,8 @@
+# capabilities/shell/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"execute a shell command",
+	"run a CLI tool",
+	"invoke a binary",
+]

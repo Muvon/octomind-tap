@@ -3,7 +3,7 @@
 # Title: Canadian Law Specialist
 # Description: Canadian law specialist. Federal legislation with bilingual (EN/FR) support covering common law, Quebec civil law, and Charter rights.
 
-capabilities = ["core", "filesystem", "websearch", "legal-ca"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "legal-ca"]
 
 [[roles]]
 temperature = 0.2

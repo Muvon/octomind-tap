@@ -3,7 +3,7 @@
 # Title: US Law Specialist
 # Description: US law specialist. Federal and 50-state legislation, case law via CourtListener. Covers contracts, employment, criminal, IP, and more.
 
-capabilities = ["core", "filesystem", "websearch", "legal-us"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "legal-us"]
 
 [[roles]]
 temperature = 0.2

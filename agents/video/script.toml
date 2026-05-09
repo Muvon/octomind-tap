@@ -3,7 +3,7 @@
 # Title: Video Script Writer
 # Description: Short-form and long-form video script writer. Hooks, beats, CTAs, on-screen text, voiceover lines, b-roll cues. No generation — pure script artifact.
 
-capabilities = ["core", "filesystem", "websearch", "memory"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory"]
 
 [[roles]]
 temperature = 0.75

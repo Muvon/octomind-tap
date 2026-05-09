@@ -3,7 +3,7 @@
 # Title: Product Opportunity Explorer
 # Description: Product opportunity explorer. Analyzes markets, user conversations, pain points, sentiment, and competitive landscapes with evidence.
 
-capabilities = ["core", "filesystem", "websearch", "memory", "browser"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory", "browser"]
 
 [[roles]]
 temperature = 0.3
