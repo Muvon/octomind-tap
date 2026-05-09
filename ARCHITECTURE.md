@@ -17,7 +17,7 @@ allowed_tools = ["core:*", "octofs:*", "octocode:*"]
 
 New (the only way):
 ```toml
-capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph"]
 ```
 
 `bin/load <domain>:<spec>` resolves capabilities at runtime and injects the full `[roles.mcp]` block automatically. Never write `[roles.mcp]` by hand in any manifest.
@@ -36,7 +36,7 @@ Use prefix naming to group related capabilities: `programming-python`, `programm
 
 ```
 agents/developer/rust.toml
-  └── capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch", "programming-rust"]
+  └── capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "programming-rust"]
            │
            ▼
   bin/load developer:rust
@@ -67,7 +67,9 @@ Symlinks are managed by `scripts/setup-symlinks.sh` which **always force-creates
 | `filesystem-read`  | octofs                 | `view`, `workdir` (read-only)             |
 | `filesystem-write` | octofs                 | `text_editor`, `batch_edit`, `extract_lines` |
 | `shell`            | octofs                 | `shell` (command execution)               |
-| `codesearch`   | octocode               | `semantic_search`, `structural_search`, `graphrag`, `view_signatures`      |
+| `codesearch-semantic`   | octocode               | `semantic_search` (natural-language code search) |
+| `codesearch-structural` | octocode               | `structural_search`, `view_signatures` (AST/symbol search + file layout) |
+| `codesearch-graph`      | octocode               | `graphrag` (dependency-graph traversal)   |
 | `memory`       | octobrain              | `remember`, `memorize`                                |
 | `websearch`    | tavily                 | web search and content extraction                     |
 | `versioning`   | git                    | git operations                                        |

@@ -542,7 +542,7 @@ octomind untap myorg/tap              # remove tap
 
 ```toml
 # agents/<domain>/<spec>.toml
-capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph"]
 
     [[roles]]
     temperature = 0.2

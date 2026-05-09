@@ -3,7 +3,7 @@
 # Title: Autonomous Developer
 # Description: Fully autonomous developer — context, build, review, score loop with auto-commit and PR. No human-in-the-loop.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch", "memory", "versioning"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory", "versioning"]
 
 [[roles]]
 workflow = "autopilot"

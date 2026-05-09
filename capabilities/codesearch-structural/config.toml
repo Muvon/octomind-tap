@@ -1,0 +1,7 @@
+# capabilities/codesearch-structural/config.toml
+triggers = [
+	"find a function or symbol",
+	"locate a class or method",
+	"view file signatures",
+	"AST search",
+]
