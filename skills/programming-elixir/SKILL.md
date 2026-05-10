@@ -1,7 +1,7 @@
 ---
 name: programming-elixir
 title: "Elixir Development"
-description: "Elixir/OTP conventions, pattern matching, GenServer, supervision trees, Phoenix, and functional programming best practices. Auto-activates in Elixir projects."
+description: "OTP-first architecture, pattern matching, supervision design, and Phoenix conventions. Auto-activates in Elixir projects."
 license: Apache-2.0
 compatibility: "Requires Elixir and Erlang/OTP."
 domains: developer
@@ -10,54 +10,71 @@ rules:
   - content(elixir)
 ---
 
-## Conventions
+## Mental model
 
-- Idiomatic Elixir — pattern matching over conditionals, pipes over nesting
-- "Let it crash" — don't defensively catch errors; let supervisors restart
-- `{:ok, _}` / `{:error, _}` tuples — NOT exceptions for control flow
-- Immutability — all data is immutable; "updating" returns new data
-- OTP first — use GenServer/Supervisor/Agent/Task
-- `@impl true` on ALL behaviour callbacks
-- `defp` for internal functions — only expose what's needed
-- `@spec` on all public functions
+Elixir is a functional language built on the BEAM, a runtime designed for concurrency, isolation, and fault tolerance. The big architectural lever is OTP — supervision trees and lightweight processes — not language features. "Let it crash" is not a slogan; it's the design: code the happy path, let supervisors restart on failure, and avoid defensive programming. Most maintenance pain comes from treating processes like threads, from rescuing too eagerly, and from spreading business logic across GenServers when plain modules would do.
 
-## Pattern Matching
+## Functional core
 
-- Multi-clause functions over `if`/`else`/`case` nesting
-- Destructure in function arguments — not inside body
-- Guards (`when is_binary/is_integer`) for type constraints
+- Pure functions in modules form the bulk of a codebase; processes are for state, isolation, and concurrency — not for organization
+- Multi-clause functions with pattern matching replace `if`/`else`/`case` chains
+- Pipe (`|>`) when data flows linearly; `then/2` when the value isn't the first argument
+- `with` for happy-path chains of `{:ok, _}` / `{:error, _}` — the canonical control-flow construct for fallible pipelines
+- Tagged tuples for return values: `{:ok, value}` / `{:error, reason}` — never raise for expected outcomes
+- Structs (`defstruct`) for typed data; `@type` and `@spec` on the public API
 
-## Pipe Operator
+## OTP architecture
 
-- Data flows left to right: `user |> Map.get(:email) |> String.downcase()`
-- First argument is always piped
-- Use `then/1` when piped value isn't the first argument
+- A supervision tree is the application skeleton — children listed in the `Application` module's `start/2`
+- Each process has one job; if a process needs to do two things, it's two processes
+- `GenServer` for stateful services with a clear public API (`MyServer.call(...)` wrapping `GenServer.call`)
+- `DynamicSupervisor` for children started at runtime; `PartitionSupervisor` for sharded workloads
+- `Task` and `Task.Supervisor` for one-shot async work
+- Choose restart strategies deliberately: `:one_for_one` for independent children, `:rest_for_one` when later children depend on earlier ones
+- Let processes crash on unexpected input — the supervisor restarts cleaner state than rescue blocks paper over
 
-## Error Handling
+## Concurrency patterns
 
-- `with` blocks for chaining failable operations
-- `{:ok, _}` / `{:error, _}` for expected failures
-- `raise`/`rescue` ONLY at system boundaries
-- Provide context: `{:error, {:not_found, id}}`
+- Processes are cheap (millions on a node) — spawn freely when isolation helps
+- Send messages, don't share state; the BEAM gives you message-passing for free
+- Long-running work in a `Task` under a supervisor, not in a controller or LiveView callback
+- Backpressure via GenStage / Flow / Broadway when producers can outpace consumers
+- Time-outs on every `GenServer.call`; the default 5 seconds is rarely what you want for slow operations
 
-## OTP Patterns
+## Error handling
 
-- GenServer: always provide client API wrapping `GenServer.call`/`cast`
-- Supervisor: `:one_for_one` default, `:rest_for_one` for dependent children
-- Agent: for simple state when GenServer is overkill
-- Task / Task.Supervisor: for async one-off work
-- DynamicSupervisor: for children started at runtime
+- `with` for chained fallible operations — one path for success, one clause per failure shape
+- Tagged tuples for expected failures; `raise` only for genuinely exceptional conditions
+- Provide context in errors: `{:error, {:not_found, %{type: :user, id: id}}}` beats `{:error, :not_found}`
+- Rescue at system boundaries (HTTP handlers, message consumers) where you must respond to the outside world
+
+## Ecto and persistence
+
+- Schemas describe database shape; changesets validate and cast at the boundary
+- Keep query composition explicit: small named functions returning queryables, composed at the call site
+- Multi-step writes use `Ecto.Multi` so the whole transaction rolls back on failure
+- Avoid putting business logic in changesets — they validate data, they don't make decisions
+- Migrations are forward-only in production; design rollback as a new migration
+
+## Phoenix and LiveView
+
+- Contexts (`Accounts`, `Billing`, `Inventory`) are the public API for a domain — controllers and LiveViews call contexts, not Ecto directly
+- LiveView holds UI state in `socket.assigns`; long work goes to a `Task` and streams results back via `handle_info`
+- Streams (`stream/3`) for large lists — they avoid sending the full collection on every diff
+- Channels for low-level WebSocket needs that LiveView doesn't fit
+- Function components and slots for composable UI; keep template logic minimal
 
 ## Testing
 
-- ExUnit with `async: true` for concurrent tests
-- `describe` blocks to group related tests
-- `setup` / `setup_all` for fixtures
-- `assert` with pattern matching: `assert {:ok, %User{}} = fetch_user(id)`
-- Mox for behaviour-based mocking
+- ExUnit with `async: true` for tests that don't touch shared state — the BEAM's isolation makes most tests parallelizable
+- Pattern-match in `assert`: `assert {:ok, %User{name: "Ada"}} = create_user(params)`
+- `describe` blocks group tests around a function; `setup` and `setup_all` for fixtures
+- Mox for behaviour-based mocks; define a behaviour, swap implementations in tests
+- Test contexts and pure modules directly; LiveView/controller tests are integration tests
 
-## Common Pitfalls
+## Common pitfalls
 
-- `%{map | key: val}` only updates EXISTING keys — use `Map.put/3` for new
-- Atoms from user input are never GC'd — use `String.to_existing_atom/1`
-- Enum vs Stream: use Stream for large/lazy collections
+- `%{map | key: val}` only updates existing keys — `Map.put/3` for new
+- `String.to_atom/1` on user input leaks memory (atoms aren't garbage-collected) — use `String.to_existing_atom/1`
+- `Enum` materializes; `Stream` is lazy — use `Stream` for large or infinite sequences
+- A `GenServer` that calls itself synchronously deadlocks — use `cast`, or restructure

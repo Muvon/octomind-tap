@@ -1,9 +1,9 @@
 ---
 name: programming-python
 title: "Python Development"
-description: "Python conventions, type hints, modern tooling (uv, ruff, mypy, pytest), and best practices. Auto-activates in Python projects."
+description: "Pythonic architecture, type-driven design, and library choices that scale beyond scripts. Auto-activates in Python projects."
 license: Apache-2.0
-compatibility: "Requires Python 3.10+ and uv."
+compatibility: "Requires Python 3.10+."
 capabilities: programming-python
 domains: developer
 rules:
@@ -14,82 +14,61 @@ rules:
   - content(python)
 ---
 
-## Conventions
+## Mental model
 
-- Idiomatic Python — follow PEP 8, PEP 20, and community conventions
-- Type hints everywhere — annotate all functions, methods, and variables
-- Strict mypy — target `mypy --strict` compliance
-- Ruff for linting and formatting — replaces flake8, isort, black
-- pytest for testing — fixtures, parametrize, markers
-- uv for dependency management — fast, modern, replaces pip/venv
-- Dataclasses and Pydantic — prefer over raw dicts for structured data
-- Pathlib over os.path — always use `pathlib.Path`
+Python is dynamic but reads best when written as if it were typed. The cost of "just a script" compounds quickly — pick a layout, type annotations, and a data-modeling library on day one. Most maintenance pain comes from `dict`-based data flying through call chains and from mutable global state.
 
-## Type System
+## Type-driven design
 
-- `from __future__ import annotations` for forward references
-- Prefer `X | Y` over `Union[X, Y]` (Python 3.10+)
-- Use `TypeVar`, `Generic`, `Protocol` for advanced typing
-- Never use `Any` unless absolutely unavoidable — use `object` instead
-- Use `TypedDict` for typed dicts, `NamedTuple` for tuples
-- PHPDoc-style type comments are NOT acceptable — use annotations
+- Annotate every public function signature and dataclass field — types are documentation that the type checker enforces
+- Model data with `dataclass(frozen=True, slots=True)` for plain records; `pydantic.BaseModel` when you need validation, coercion, or serialization at boundaries
+- `TypedDict` for dicts that cross module boundaries; `Protocol` for structural interfaces ("anything with `.read()`")
+- Prefer `X | None` over an implicit `None` default; explicit optionals catch the forgotten check
+- Treat `Any` as a code smell — `object` plus a narrowing `isinstance` is almost always better
 
-## Error Handling
+## Architecture
 
-- Use specific exceptions — never bare `except:`
-- Create custom exception hierarchies for libraries
-- Use `contextlib.suppress()` for intentional suppression
-- Provide context in exception messages
-- Use `ExceptionGroup` (Python 3.11+) for multiple errors
+- Module boundaries reflect data flow, not file size — one module per cohesive concern (parsing, persistence, transport)
+- Dependency direction goes inward: domain logic must not import from web/CLI/DB layers; inject those via callables or protocols
+- Pure functions in the core, side effects at the edge — makes testing trivial and refactoring safe
+- A package's `__init__.py` declares the public surface (`__all__`) and re-exports it; consumers should never reach into submodules
+- Avoid singletons and module-level mutable state; configuration is a value passed in, not a global to mutate
 
-## Async Patterns
+## Async and concurrency
 
-- `asyncio` for I/O-bound concurrency
-- `async def` / `await` — never mix sync and async carelessly
-- Use `asyncio.gather()` for parallel async tasks
-- Use async context managers and async iterators
-- `httpx` for async HTTP (not `requests`)
-- Never block the event loop — use `run_in_executor` for CPU work
+- Pick one model per process: `asyncio` for I/O-bound, `multiprocessing` / `concurrent.futures` for CPU-bound, threads only for blocking C extensions
+- Don't mix sync and async libraries in an async path (`requests` inside `async def` blocks the loop — use `httpx.AsyncClient`)
+- `asyncio.TaskGroup` (3.11+) for structured concurrency; falling back to `gather` requires explicit cancellation handling
+- CPU work in an async program goes through `asyncio.to_thread` or a process pool — never inline
+- The GIL means threads don't speed up Python code; use them for I/O wait or to call into release-the-GIL native libraries
 
-## Data & Collections
+## Error handling
 
-- Prefer list/dict/set comprehensions over `map`/`filter`
-- Use `itertools` and `functools` — don't reinvent
-- `dataclasses` for simple data containers
-- Pydantic for validated, serializable models
-- Use `slots=True` in dataclasses for memory efficiency
-- Prefer `tuple` over `list` for immutable sequences
+- Define a small exception hierarchy rooted at one base class per package — callers catch the base, you add specific subclasses freely
+- Raise specific, never bare `Exception`; catch specific, never bare `except:`
+- Exceptions carry context — include the offending value in the message, use `raise NewError(...) from original` to preserve the chain
+- Use `contextlib.suppress` for genuinely intentional ignores; an empty `except` block is a bug
 
-## Testing
+## Standard library first
 
-- pytest — not unittest
-- Fixtures for setup/teardown (`conftest.py`)
-- `@pytest.mark.parametrize` for data-driven tests
-- `pytest-cov` for coverage
-- Use `hypothesis` for property-based testing
-- Mock with `pytest-mock` (`mocker` fixture)
-- Tests in `tests/` directory, mirroring `src/` structure
+- `pathlib.Path` for filesystem work; `os.path` is legacy
+- `dataclasses`, `enum`, `functools` (cache, partial, reduce), `itertools` (chain, groupby, islice)
+- `contextlib` (contextmanager, ExitStack, suppress) — write your own context managers freely
+- `logging` with `logger = logging.getLogger(__name__)` per module; configure once at the entry point, never `print` for diagnostics
 
-## Dependencies & Packaging
+## Ecosystem defaults
 
-- uv for everything: `uv init`, `uv add`, `uv run`, `uv sync`
-- `pyproject.toml` — single source of truth
-- Pin versions in `uv.lock` for reproducibility
-- Separate dev dependencies: `uv add --dev pytest ruff mypy`
-- Use optional dependency groups for extras
+- Project + envs: `uv` (`uv init`, `uv add`, `uv run`) — replaces pip/poetry/venv
+- HTTP: `httpx` (sync and async share the same API)
+- Web: `FastAPI` for APIs, `Starlette` for raw ASGI, `Django` for batteries-included apps
+- Data validation at boundaries: `pydantic` v2
+- Testing: `pytest` with fixtures and `parametrize`; `hypothesis` for property tests
+- CLI: `typer` (type-hint-driven) or `click`
+- Background work: `arq`, `dramatiq`, or `celery` depending on scale
 
-## Code Organization
+## Project layout
 
-- `src/` layout for packages (`src/mypackage/`)
-- `__init__.py` exposes public API only
-- One class/module per file when >150 lines
-- Use `__all__` to define public API
-- `pyproject.toml` for all project metadata (no `setup.py`)
-
-## Performance
-
-- Profile before optimizing — cProfile, py-spy
-- Use generators for large sequences (memory efficiency)
-- `functools.lru_cache` / `functools.cache` for memoization
-- numpy/pandas for numerical work — never pure Python loops on arrays
-- Use `__slots__` for memory-critical classes
+- `src/<package>/` layout from day one — prevents accidentally importing local files instead of the installed package during tests
+- All metadata in `pyproject.toml`; no `setup.py`, no `requirements.txt` for new projects
+- One package per repo for a library; a service may have multiple packages but one top-level entry point
+- Tests in `tests/` mirroring the package structure; integration vs unit by directory, not by marker alone

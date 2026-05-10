@@ -1,7 +1,7 @@
 ---
 name: programming-rust
 title: "Rust Development"
-description: "Rust conventions, idiomatic patterns, cargo tooling, and best practices. Auto-activates in Rust projects with Cargo.toml."
+description: "Idiomatic Rust architecture, ownership patterns, and ecosystem choices that survive long-term maintenance. Auto-activates in Rust projects."
 license: Apache-2.0
 compatibility: "Requires cargo and rustc toolchain."
 capabilities: programming-rust
@@ -11,73 +11,58 @@ rules:
   - content(rust)
 ---
 
-## Conventions
+## Mental model
 
-- Idiomatic Rust — follow Rust conventions and community best practices
-- Ownership & borrowing — leverage Rust's memory safety guarantees, prefer references over cloning
-- Zero-cost abstractions — use iterators, closures, generics effectively
-- Error handling — use `Result<T, E>` and `?` operator, never `.unwrap()` in production code
-- Safety first — minimize `unsafe` blocks, document invariants with `/// # Safety` when necessary
-- Lint-clean — code must be free of clippy warnings
-- Formatted — code must follow rustfmt style
-- Documentation — document public APIs with `///` doc comments
+Rust pushes design decisions to compile time. Most "Rust pain" comes from fighting the borrow checker after a bad architectural choice — usually shared mutable state that should have been ownership transfer, an actor, or a channel. Design data flow first; lifetimes and clones fall out cleanly when ownership is clear.
 
-## Code Organization
+## Ownership and data flow
 
-- `lib.rs` for library code, `main.rs` for binaries
-- `mod.rs` for module directories (or inline `module_name.rs` alongside directory)
-- One struct/trait per file when >100 lines
-- Use `pub mod` for public module exports, keep internal modules private
-- Workspace (`Cargo.toml` with `[workspace]`) for multi-crate projects
+- Default to owned types in struct fields (`String`, `Vec<T>`, `PathBuf`) — borrowed fields force lifetime parameters that infect every caller
+- Borrow in function signatures: take `&str` / `&[T]` / `&Path`, return owned values; callers decide when to clone
+- Reach for `Cow<'a, T>` only when measurement shows allocation pressure — premature `Cow` costs more in API complexity than it saves
+- Interior mutability (`RefCell`, `Mutex`) is a signal the design has shared state — first ask whether ownership transfer or message passing fits
+- `Arc<Mutex<T>>` held across `.await` is a deadlock waiting to happen — prefer `tokio::sync::Mutex`, an actor with a channel, or splitting the state
 
-## Error Handling
+## Error design
 
-- `thiserror` for library errors — derive `Error` with `#[error("...")]`
-- `anyhow` for application errors — `anyhow::Result` + `.context("...")`
-- Implement `std::error::Error` for custom error types
-- Provide context with `.context()` or `.with_context(|| ...)`
-- Never use `.unwrap()` or `.expect()` in library code — return `Result`
-- Use `?` operator for propagation, not explicit `match` on every error
+- One error enum per crate boundary, derived with `thiserror`; variants describe the failure domain, not the underlying cause
+- Convert foreign errors at the boundary with `#[from]` — don't let `std::io::Error` leak through every layer
+- Applications wrap with `anyhow::Context` at the call site where context is meaningful, not at function definitions
+- Errors are part of the API — adding a variant is a breaking change; use `#[non_exhaustive]` from day one
 
-## Performance
+## Traits and abstraction
 
-- Prefer iterators over indexed loops — iterators optimize better
-- Use `Cow<str>` / `Cow<[T]>` to avoid unnecessary cloning
-- `Arc<T>` for shared ownership across threads, `Rc<T>` for single-threaded
-- Use `&'static str` for compile-time strings, avoid `String` when possible
-- Benchmark before optimizing — `cargo bench` with criterion
-- Preallocate with `Vec::with_capacity()` when size is known
+- Define a trait when there are two real implementations, not in anticipation; generics are easy to add, hard to remove
+- Static dispatch (`fn f<T: Trait>`) is the default; `Box<dyn Trait>` only when the type must be erased (heterogeneous collections, plugin boundaries)
+- Keep traits small and orthogonal — `Read`, `Write`, `Iterator` are the model; avoid god traits
+- Newtype pattern (`struct UserId(u64)`) for domain types — prevents mixing semantically different primitives
 
-## Safety
+## Async architecture
 
-- Minimize `unsafe` blocks — prefer safe abstractions
-- Document safety invariants: `/// # Safety` section explaining why it's sound
-- Use `RefCell<T>` for interior mutability when safe
-- Prefer safe abstractions (`std::sync::Mutex`, `RwLock`) over raw pointers
-- Use `#[repr(C)]` only for FFI types
+- Pick one runtime per binary; libraries should stay runtime-agnostic where possible or feature-gate the runtime
+- Model long-lived state as actors: a task owns the state, others send messages over `mpsc`/`oneshot` — eliminates `Arc<Mutex<_>>`
+- `tokio::select!` for cancellation and multiplexing; ensure each branch is cancel-safe (no half-applied mutation across awaits)
+- CPU work belongs in `spawn_blocking` or `rayon`, never on the async runtime
+- Backpressure is the caller's responsibility — bounded channels and limited streams, not unbounded queues
 
-## Testing
+## Module and crate layout
 
-- `#[test]` for unit tests, `#[cfg(test)] mod tests` at bottom of file
-- Use `assert!`, `assert_eq!`, `assert_ne!` with descriptive messages
-- Property-based testing with `proptest` for complex invariants
-- Integration tests in `tests/` directory (separate compilation unit)
-- Use `#[should_panic]` for testing error paths
-- `cargo test -- --nocapture` to see println output in tests
+- One concept per module; module names are nouns, not verbs (`parser`, not `parsing`)
+- Workspace from the start for anything non-trivial — split by deployment unit (binary, lib, proc-macro), not by layer
+- `pub(crate)` is the default visibility for internal items; `pub` only for the deliberate API surface
+- Re-export at the crate root what consumers need; don't force them to navigate the internal module tree
 
-## Dependencies
+## Testing approach
 
-- Keep `Cargo.toml` organized: `[dependencies]`, `[dev-dependencies]`, `[build-dependencies]`
-- Use workspace for multi-crate projects — shared dependency versions
-- Pin versions for reproducible builds
-- Review dependencies for security: `cargo audit`
-- Prefer well-maintained crates with strong type safety
+- Unit tests live in `#[cfg(test)] mod tests` next to the code they exercise
+- Integration tests in `tests/` exercise the public API as an external consumer would — they catch accidental API breakage
+- Property tests (`proptest`, `quickcheck`) for parsers, codecs, and anything with algebraic invariants
+- `insta` for snapshot tests on rendered output (errors, generated code, serialized formats)
 
-## Async Rust
+## Ecosystem defaults
 
-- `tokio` or `async-std` as runtime — pick one, be consistent
-- `async fn` returns `impl Future` — understand the lifetime implications
-- Use `tokio::spawn` for concurrent tasks, `tokio::join!` for parallel await
-- Never block the async runtime — use `spawn_blocking` for CPU work
-- `Pin<Box<dyn Future>>` for trait objects returning futures
-- Cancel safety: understand that dropping a future cancels it
+- Serialization: `serde` with `serde_json` / `bincode` / `toml`
+- HTTP server: `axum` or `actix-web`; client: `reqwest`
+- Database: `sqlx` (compile-checked queries) or `diesel` (typed query builder)
+- CLI: `clap` with derive macros
+- Observability: `tracing` + `tracing-subscriber` — structured spans beat `log` for async code
