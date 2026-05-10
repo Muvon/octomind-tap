@@ -1,19 +1,15 @@
 ---
 name: prompt-engineering
 title: "Prompt Engineering — SOTA 2026 Toolkit"
-description: "Generate, improve, analyze, and debug LLM prompts using state-of-the-art 2026 techniques. Covers Anthropic's official priority order, reasoning patterns (CoT, ToT, ReAct, self-consistency, step-back, plan-and-solve), agentic design, structured outputs, popular frameworks (RACE, CRAFT, CRISPE), token-efficiency, evaluation, and the 12 documented failure modes with fixes. Activate when the user wants help writing a prompt, fixing a prompt that misbehaves, analyzing why a prompt fails, choosing a technique for their goal, or designing an agent's system prompt."
+description: "Generate, improve, analyze, and debug LLM prompts. Activate only when the user explicitly asks to write, rewrite, optimize, diagnose, or design a prompt/system prompt, or names a prompt-engineering technique."
 license: Apache-2.0
 compatibility: "Works with any LLM. Anthropic-specific notes flagged inline (Claude 4.7 behavior, XML tags, effort levels, structured outputs)."
 domains: assistant
 rules:
-  - content(prompt)
-  - content(prompts)
-  - content(prompting)
-  - match(\bprompt\s+engineer\w*)
-  - match(\bsystem\s+prompt\b)
-  - match(\b(write|design|build|craft|improve|fix|debug|analyze|optimize)\s+(a\s+|the\s+|my\s+|this\s+)?prompt\b)
-  - match(\b(better|improve|optimize)\s+(my|this|the)\s+prompt\b)
-  - match(\b(few|N)[-\s]?shot\b)
+  - match(\bprompt\s+engineer(?:ing|ed|er)?\b)
+  - match(\b(write|rewrite|design|build|craft|improve|fix|debug|analy[sz]e|optimi[sz]e|structure)\b.{0,80}\b(a\s+|the\s+|my\s+|this\s+|an\s+)?(system\s+prompt|agent\s+prompt|prompt|prompts|prompting)\b)
+  - match(\b(system\s+prompt|agent\s+prompt|prompt|prompts|prompting)\b.{0,80}\b(write|rewrite|design|build|craft|improve|fix|debug|analy[sz]e|optimi[sz]e|structure)\b)
+  - match(\b(few|one|zero|multi|N)[-\s]?shot\b)
   - match(\bchain[-\s]of[-\s]thought\b|\bcot\b)
   - match(\btree[-\s]of[-\s]thought\b|\btot\b)
   - match(\breact\s+(prompt|agent|pattern)\b)
@@ -21,12 +17,6 @@ rules:
   - match(\bstep[-\s]back\s+prompt\w*)
   - match(\bdspy\b)
   - match(\bprompt\s+(template|framework|pattern)\b)
-  - semantic(help me write a better prompt for my task)
-  - semantic(my prompt keeps giving wrong answers — what is wrong with it)
-  - semantic(what prompt technique should I use for this problem)
-  - semantic(how do I structure a system prompt for an agent)
-  - semantic(turn this rough idea into a working prompt)
-  - semantic(reduce token usage of my prompt without losing quality)
 ---
 
 ## Overview
