@@ -10,7 +10,7 @@ require = ["brave/brave-search"]
 
 [roles.mcp]
 server_refs = ["brave-search"]
-allowed_tools = []
+allowed_tools = ["brave-search:brave_web_search"]
 
 [[mcp.servers]]
 name = "brave-search"
