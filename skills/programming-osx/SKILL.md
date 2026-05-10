@@ -1,9 +1,9 @@
 ---
 name: programming-osx
 title: "macOS Development"
-description: "macOS platform patterns, SwiftUI for Mac, AppKit integration, sandboxing, notarization, and distribution practices. Auto-activates for Mac app projects."
+description: "macOS app architecture: SwiftUI for Mac, AppKit interop, sandboxing, and distribution. Auto-activates for Mac app projects."
 license: Apache-2.0
-compatibility: "Requires Xcode 16+ and macOS 15+ SDK."
+compatibility: "Requires Xcode 16+ and macOS 14+ SDK."
 capabilities: programming-swift
 domains: developer
 rules:
@@ -14,73 +14,68 @@ rules:
   - match(mac.+app|macos.+app|osx.+app|desktop.+app)
 ---
 
-## Conventions
+## Mental model
 
-- SwiftUI for Mac first — AppKit only for advanced window management and legacy APIs
-- NavigationSplitView for sidebar-detail patterns — the canonical Mac layout
-- Settings scene for app preferences window — SwiftUI-native replacement for custom NSWindow-based preferences
-- MenuBarExtra for menu bar utilities — no AppDelegate boilerplate needed
-- Window and WindowGroup scenes for multi-window management
-- Respect system appearance — support light/dark mode, accent colors, vibrancy
-- Human Interface Guidelines for Mac — toolbar, sidebar, inspector patterns
+A modern Mac app is SwiftUI-first with AppKit as the escape hatch for advanced window management, custom NSView work, and APIs SwiftUI doesn't cover. The Mac-specific design vocabulary — toolbars, sidebars, inspectors, multiple windows, menu bar commands, drag and drop — must feel native. Cross-platform code (with iOS) belongs in a shared SPM target; platform-specific UI lives in a Mac-only target.
 
 ## SwiftUI on macOS
 
-- NavigationSplitView with two or three columns — sidebar, content, detail
-- .inspector(isPresented:) modifier for right-panel property inspectors
-- Toolbar with .toolbar {} — placement: .primaryAction, .navigation, .automatic
-- Table for multi-column sortable, selectable data display — native Mac pattern
-- .focusedSceneValue for routing menu bar commands to the active window/document
-- .commands modifier for custom menu items with keyboard shortcuts (CommandMenu, Button)
-- .defaultSize, .windowResizability, .windowStyle for window dimension and chrome control
-- @SceneStorage for persisting per-scene state across launches; system restores window frames automatically
-- @Environment(\.openWindow) for programmatic window creation — openWindow(id:) or openWindow(value:)
-- @Environment(\.dismissWindow) and @Environment(\.pushWindow) for window lifecycle control
+- `NavigationSplitView` (two or three columns) is the canonical sidebar/content/detail layout
+- `Settings` scene for the preferences window — replaces the old `NSWindowController`-based pattern
+- `MenuBarExtra` for menu-bar utilities — no `AppDelegate` boilerplate needed
+- `WindowGroup` and `Window` scenes for multi-window apps; `@Environment(\.openWindow)` and `\.dismissWindow` for programmatic control
+- `.inspector(isPresented:)` for the right-side property panel
+- `.toolbar { ToolbarItem(placement: ...) { ... } }` for native toolbar items
+- `.commands { CommandMenu("...") { ... } }` for custom menu items with keyboard shortcuts
+- `Table` for multi-column sortable selectable data — the native Mac data display
+- `@SceneStorage` for per-scene persistence; the system restores window frames automatically
 
-## AppKit Integration
+## AppKit interop
 
-- NSViewRepresentable / NSViewControllerRepresentable for embedding AppKit views in SwiftUI
-- NSWindow access via NSApplication.shared.windows for frame, level, behavior control
-- NSHostingController / NSHostingView to embed SwiftUI inside AppKit-based apps
-- NSPasteboard for clipboard operations, NSDraggingDestination for drag and drop
-- Combine AppKit lifecycle events (NSApplication notifications) with SwiftUI via NotificationCenter
+- `NSViewRepresentable` / `NSViewControllerRepresentable` to embed AppKit in SwiftUI
+- `NSHostingController` / `NSHostingView` to embed SwiftUI in AppKit-first apps
+- Reach for `NSWindow` directly via `NSApplication.shared.windows` only for what SwiftUI can't express (window level, collection behavior, custom drag regions)
+- `NSPasteboard` for clipboard, `NSItemProvider` / drag-and-drop APIs for drops
+- Bridge AppKit notifications (`NSWorkspace`, `NSApplication.willTerminateNotification`) via `NotificationCenter` into SwiftUI
 
-## Menu Bar Apps
+## Menu bar apps
 
-- MenuBarExtra scene with .menuBarExtraStyle(.window) for popover-style UI
-- Info.plist: LSUIElement = true (Application is agent) to hide dock icon
-- NSApp.setActivationPolicy(.accessory) for runtime dock icon visibility control
-- Provide explicit quit action in UI — menu bar apps have no Dock quit option
-- NSStatusBar for advanced status item customization beyond MenuBarExtra capabilities
+- `MenuBarExtra` with `.menuBarExtraStyle(.window)` for popover-style UI, `.menu` for a plain menu
+- `LSUIElement = true` in Info.plist to hide the Dock icon; `NSApp.setActivationPolicy(.accessory)` to toggle at runtime
+- Always provide an explicit quit affordance — there's no Dock to quit from
+- `NSStatusBar` for advanced status-item customization beyond what `MenuBarExtra` exposes
 
-## Security & Sandboxing
+## Security and sandboxing
 
-- App Sandbox entitlements — enable only capabilities the app actually uses
-- Hardened Runtime required for notarization — prevents unsigned code loading
-- Security-scoped bookmarks for persistent file access outside sandbox container
-- Keychain Services for credential storage — never store secrets in plaintext or UserDefaults
-- com.apple.security.temporary-exception.* entitlements as absolute last resort
+- App Sandbox is the default for App Store apps — enable only entitlements actually needed
+- Hardened Runtime is required for notarization; it blocks unsigned code loading
+- Security-scoped bookmarks for persistent file access across launches outside the container
+- Keychain Services (or `SecKey`/`SecItem`) for credentials — never `UserDefaults` or plaintext
+- Temporary-exception entitlements (`com.apple.security.temporary-exception.*`) are a last resort and may block App Store review
 
 ## Distribution
 
-- Notarization required for apps distributed outside App Store — Apple scans for malware
-- Developer ID code signing for direct distribution — codesign with proper identity
-- App Store distribution via Xcode Organizer or xcodebuild export
-- Installer packages with productbuild for multi-component installations
-- Sparkle framework for auto-update mechanism outside App Store
-- DMG or ZIP for simple app distribution — staple notarization ticket before shipping
+- App Store: archive via Xcode Organizer or `xcodebuild -exportArchive`
+- Direct distribution: Developer ID code signing + notarization + stapling — unsigned/un-notarized apps trip Gatekeeper
+- Sparkle framework for auto-update outside the App Store; ship `appcast.xml` from a stable URL
+- DMG with custom layout for polished installs; ZIP for simple distribution
 
-## System Extensions
+## System extensions and entitlements
 
-- Network Extensions — App Proxy, Packet Tunnel, Content Filter, DNS Proxy providers
-- Endpoint Security framework — file monitoring, process control, antivirus/EDR
-- DriverKit for user-space hardware drivers — modern replacement for kernel extensions (kexts)
-- System extensions require provisioning profile, entitlements, and notarization
-- OSSystemExtensionRequest for installation — user must approve in System Settings
+- Network Extensions (App Proxy, Packet Tunnel, Content Filter, DNS Proxy) — each has its own entitlement and review
+- Endpoint Security for file/process monitoring; DriverKit replaces kexts for hardware drivers
+- System extensions require provisioning, entitlements, and user approval in System Settings
+- `OSSystemExtensionRequest` to install at runtime; handle the approval-pending state explicitly
 
 ## Testing
 
-- Swift Testing (@Test, #expect) for unit and integration tests
-- XCTest UI testing with XCUIApplication for Mac-specific interactions (menus, toolbars)
-- Test sandbox entitlements separately — sandbox restrictions affect runtime behavior
-- Accessibility Inspector for verifying VoiceOver and keyboard navigation compatibility
+- Swift Testing (`@Test`, `#expect`) for unit and integration tests
+- XCUITest with `XCUIApplication` for menu, toolbar, and window automation
+- Test under sandbox — disabling it for tests hides bugs that show up in production
+- Accessibility Inspector to verify VoiceOver and keyboard navigation before shipping
+
+## Project layout
+
+- Cross-platform domain code in a shared SPM target; macOS UI in a macOS-only target
+- One Mac app target per product; helper tools (XPC services, login items, extensions) are separate targets
+- Resources scoped per target — Mac assets and iOS assets share a catalog only if they're identical
