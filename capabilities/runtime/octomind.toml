@@ -1,0 +1,15 @@
+# capabilities/runtime/octomind.toml
+# Capability: runtime
+# Provider: octomind
+# Title: Octomind Runtime Control
+# Description: High-trust Octomind runtime controls for MCP server management, skill activation, and scheduled session actions.
+
+[roles.mcp]
+server_refs = ["runtime"]
+allowed_tools = ["runtime:*"]
+
+[[mcp.servers]]
+name = "runtime"
+type = "builtin"
+timeout_seconds = 30
+tools = []
