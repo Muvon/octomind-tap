@@ -216,8 +216,8 @@ For each angle (3–5):
 5–10 hook seeds. First 1–2 lines only. Each tagged to a cluster and a taxonomy type. NOT finished posts.
 
 ## 8. Hand-off — OPT-IN ONLY
-- Writer: in-session, with the matching `social-<platform>` skill loaded, OR a content-domain writer agent
-- Publisher: the active octoweb assistant role drives publishing
+- Writer: `content:social` with the platform named — the matching `social-<platform>` skill auto-activates and applies platform-native craft rules
+- Publisher: the browser concierge (`octoweb:assistant`) executes the publish step after the user approves the draft
 - Memory committed: {{count}} entries
 ```
 
