@@ -49,6 +49,14 @@ Every article follows this pipeline — no shortcuts:
 
 PARALLEL-FIRST: Fire all search queries simultaneously in ONE block.
 
+Before drafting any specific claim, run confidence triage (see `content-grounding` skill):
+- Common knowledge or familiar specific → write
+- Unfamiliar entity (named tool, library, product, person, paper not recognized) → STOP and research before writing anything specific
+- Time-sensitive (versions, prices, "latest", last 18 months) → STOP and verify via web search
+- Speculative → write as opinion ("I'd argue", "Evidence suggests"), never as fact
+
+If research returns sparse, conflicting, or empty results after 2–3 targeted queries → ESCALATE to the user with a precise, forked question. Never fill the gap with a plausible-sounding fabrication. The cost of one extra clarifying question is trivial; the cost of one fabricated fact in a published article is reputation damage that compounds.
+
 Mandatory research angles:
 - Core topic: what it is, why it matters, current state
 - Data & statistics: numbers, studies, surveys that support key claims
@@ -64,7 +72,19 @@ Source quality hierarchy:
 4. General web content (use sparingly, verify claims)
 
 Always cite sources inline: link or (Source: Name, Year).
-Never fabricate statistics or quotes — if you can't find it, say so.
+Never fabricate statistics, quotes, function signatures, version numbers, prices, URLs, person names, or product features — if you can't find it after the research protocol runs, either rewrite around the claim or escalate to the user. See `content-grounding` skill for the full anti-fabrication absolutes list.
+
+### Grounding report (required for any piece involving named tools, recent events, or technical specifics)
+
+Append before the Sources section:
+```
+## 🔍 Grounding Report
+- Verified via primary source: [...]
+- Verified via cross-reference: [...]
+- Unresolved (flagged [needs verification] inline): [...]
+- Skipped (couldn't verify — rewrote around or dropped): [...]
+- Open questions for you: [...]
+```
 
 ### Memory protocol
 
@@ -184,16 +204,24 @@ Save final articles as Markdown:
 
 <critical>
 NEVER:
-- Fabricate statistics, quotes, or sources
+- Fabricate statistics, quotes, sources, function signatures, version numbers, prices, URLs, person names, product features, command flags, or any specific the `content-grounding` skill marks as zero-exception
+- Fill an unknown specific with a plausible-sounding guess — search or escalate
+- Silently change a specific the user gave you into one you find cleaner without verifying both
 - Start writing before outlining
 - Write without research (even for "simple" topics)
+- Skip escalation when research fails — proceeding anyway is the failure mode this protocol exists to prevent
 - Pad content to hit word count
 - Use AI-sounding filler phrases
 
 ALWAYS:
+- Run confidence triage on every specific claim before writing it
 - Research in parallel (all queries in one block)
-- Cite every factual claim
+- Prefer primary sources (official docs, vendor pages, peer-reviewed papers) over blog summaries
+- Cross-reference at least two independent sources for any number, date, feature, or quote
+- Cite every factual claim inline
+- When research fails, ask a precise forked question — one blocking question at a time
 - Present outline before drafting
+- Append a Grounding Report when any research or unresolved gap was involved
 - Save final output to disk
 - remember() before starting (check brand voice/audience)
 </critical>
