@@ -83,14 +83,16 @@ Also flag formal overreach: "utilize" (use), "facilitate" (help), "demonstrate" 
 - Perfect grammar throughout with zero breaks = AI signal
 - Score: natural grammar breaks present = high, perfect throughout = low
 
-#### 6. Voice & Personality
+#### 6. Voice & Personality (carries the E-E-A-T "Experience" load in 2026)
 - First-person markers: "I've found", "In my experience", "What I've seen", "We tested" — present?
 - Opinions: "I'd argue", "Honestly", "This is overrated", "This matters more than people think" — present?
 - Emotional variance: enthusiasm, skepticism, frustration, curiosity, humor — any present?
 - Conversational asides: parenthetical thoughts, self-corrections, rhetorical questions?
 - Vulnerability or uncertainty: "I'm not sure about this", "The data is mixed", "We got this wrong"?
-- Specific references: named tools, people, events, publications, dates?
-- Score: rich personality throughout = 10, detached encyclopedic = 1
+- Specific references: named tools, named versions, exact settings, exact error messages, people, events, publications, dates?
+- Time-boxed case study language: "I tried this for 30 days", "We ran this for one quarter", "Here's the dashboard at week 6" — present where the content type allows?
+- "From the field" proof: screenshot callouts, captioned photo references, dashboard descriptions — present?
+- Score: rich personality + first-hand experience signals throughout = 10, detached encyclopedic = 1
 
 #### 7. Structural Unpredictability
 - Section lengths: all roughly equal? (AI) or deliberately varied? (human)
