@@ -3,13 +3,19 @@ output_dir: checkpoints
 run_name: embed-bge-small-v1
 
 train:
-  epochs: 5
+  epochs: 3
   batch_size: 64
   learning_rate: 2.0e-5
   warmup_ratio: 0.1
   weight_decay: 0.01
   max_seq_length: 128
   seed: 42
+  # Save the checkpoint with the highest dev MRR@10, not the final epoch.
+  # MNRL converges fast; later epochs can drift past the optimum.
+  evaluation_steps: 0   # 0 = evaluate at end of each epoch
+  save_best_model: true
+  # Mixed precision on GPU only — no-op on CPU.
+  use_amp: true
 
 data:
   pairs_path: data/pairs.jsonl

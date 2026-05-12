@@ -3,13 +3,16 @@ output_dir: checkpoints
 run_name: rerank-jina-turbo-v1
 
 train:
-  epochs: 3
+  epochs: 2
   batch_size: 32
   learning_rate: 2.0e-5
   warmup_ratio: 0.1
   weight_decay: 0.01
   max_seq_length: 128
   seed: 42
+  evaluation_steps: 0   # 0 = evaluate at end of each epoch
+  save_best_model: true
+  use_amp: true
 
 data:
   triplets_path: data/triplets.jsonl
