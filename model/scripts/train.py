@@ -25,8 +25,19 @@ from pathlib import Path
 import torch
 import yaml
 from sentence_transformers import InputExample, SentenceTransformer
-from sentence_transformers.evaluation import InformationRetrievalEvaluator
-from sentence_transformers.losses import MultipleNegativesRankingLoss
+
+# v3+ relocated losses/evaluation under `sentence_transformer.{losses,evaluation}`;
+# older versions re-export at the package top. Try the new paths first to avoid
+# deprecation warnings, fall back for compatibility.
+try:
+    from sentence_transformers.sentence_transformer.losses import MultipleNegativesRankingLoss
+except ImportError:
+    from sentence_transformers.losses import MultipleNegativesRankingLoss
+
+try:
+    from sentence_transformers.sentence_transformer.evaluation import InformationRetrievalEvaluator
+except ImportError:
+    from sentence_transformers.evaluation import InformationRetrievalEvaluator
 from torch.utils.data import DataLoader
 
 warnings.filterwarnings("ignore", category=FutureWarning)

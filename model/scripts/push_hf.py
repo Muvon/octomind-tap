@@ -1,6 +1,15 @@
-"""Upload an ONNX-exported model (embedding or reranker) to HuggingFace Hub.
+"""Upload a trained checkpoint (embedding or reranker) to HuggingFace Hub.
 
-Reads HF_TOKEN from the environment. Creates the repo if it doesn't exist.
+Pushes the checkpoint root as-is, which contains:
+  - `model.safetensors` + `config.json` + tokenizer  (consumed by octomind
+    today via octolib's candle-based HuggingFace provider)
+  - `onnx/`                                          (optional, present if
+    export_onnx.py / export_onnx_reranker.py was run; available for any
+    ORT-based consumer — fastembed user-defined, edge runtimes, etc.)
+
+Both formats live in the same HF repo so consumers can pick.
+
+Reads HF_TOKEN from the environment. Creates the repo if missing.
 """
 
 from __future__ import annotations
@@ -18,10 +27,9 @@ base_model: BAAI/bge-small-en-v1.5
 library_name: sentence-transformers
 tags:
 - sentence-transformers
-- onnx
-- fastembed
 - octomind
 - embeddings
+- bert
 ---
 
 # {repo}
@@ -29,47 +37,48 @@ tags:
 Fine-tuned BGE-small-en-v1.5 (33M params, 384-dim) for octomind capability
 auto-activation.
 
-Trained on trigger phrases from the octomind-tap capabilities catalog with
-rule-based + LLM paraphrase augmentation, using `MultipleNegativesRankingLoss`
-on both in-capability pairs and hard-negative triplets mined from
-confusable neighboring capabilities.
+Trained on trigger phrases from the octomind-tap capabilities + skills
+catalog with rule-based + LLM paraphrase augmentation, using
+`MultipleNegativesRankingLoss` on both in-class pairs and hard-negative
+triplets mined from confusable neighboring labels.
 
-## Use with fastembed
+## Use
 
-Point `MODEL_NAME` in `octomind/src/embeddings/mod.rs` at `{repo}` and rebuild.
+Wired into octomind via octolib's HuggingFace embedding provider (candle
+backend). Set `MODEL_NAME` in `octomind/src/embeddings/mod.rs` to `{repo}`.
 
 ## Paired reranker
 
-For higher precision use the matching reranker `muvon/octomind-rerank`
-as a second stage after this model's retrieval.
+`muvon/octomind-rerank` is the second-stage cross-encoder trained on the
+same hard-negative data.
 """
 
 RERANK_CARD = """---
 license: apache-2.0
-base_model: jinaai/jina-reranker-v1-turbo-en
+base_model: cross-encoder/ms-marco-MiniLM-L-6-v2
 library_name: sentence-transformers
 tags:
 - cross-encoder
-- onnx
-- fastembed
 - octomind
 - reranker
+- bert
 ---
 
 # {repo}
 
-Fine-tuned Jina reranker v1 turbo (33M params, English) for octomind
-capability auto-activation. Designed as the second stage after the
-`muvon/octomind-embed` bi-encoder retrieves the top-N candidates.
+Fine-tuned MS-MARCO MiniLM-L-6 cross-encoder (22M params, English) for
+octomind capability auto-activation. Designed as the second stage after
+the `muvon/octomind-embed` bi-encoder retrieves the top-N candidates.
 
 Trained with `BinaryCrossEntropyLoss` over (anchor, positive) and
-(anchor, hard_negative) pairs derived from the octomind-tap capabilities
-catalog. The hard negatives target the specific confusable neighbors the
-bi-encoder cannot reliably separate alone (e.g. shell vs programming-rust).
+(anchor, hard_negative) pairs from the octomind-tap catalog. The hard
+negatives target the confusable neighbors the bi-encoder alone cannot
+reliably separate.
 
-## Use with fastembed
+## Use
 
-Wired in via `octolib::reranker` with `RerankProviderType::FastEmbed`.
+Wired into octomind via octolib's HuggingFace reranker provider (candle
+backend).
 """
 
 
@@ -77,15 +86,15 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run", type=Path, required=True, help="checkpoint dir from train.py or train_reranker.py")
     ap.add_argument("--repo", type=str, required=True, help="<namespace>/<repo>")
-    ap.add_argument("--subdir", type=str, default="onnx", help="subdir under --run to upload")
-    ap.add_argument("--type", choices=["embed", "rerank"], default="embed",
-                    help="model type (selects model card template)")
+    ap.add_argument("--type", choices=["embed", "rerank"], required=True,
+                    help="model type — selects the model-card template")
     ap.add_argument("--private", action="store_true")
     args = ap.parse_args()
 
-    src = args.run / args.subdir
-    if not src.is_dir():
-        raise SystemExit(f"missing {src}; run export_onnx{'_reranker' if args.type == 'rerank' else ''}.py first")
+    if not args.run.is_dir():
+        raise SystemExit(f"checkpoint dir not found: {args.run}")
+    if not (args.run / "model.safetensors").exists():
+        raise SystemExit(f"missing model.safetensors in {args.run} — is this a trained checkpoint?")
 
     token = os.environ.get("HF_TOKEN")
     if not token:
@@ -94,13 +103,17 @@ def main() -> int:
     api = HfApi(token=token)
     api.create_repo(args.repo, exist_ok=True, private=args.private)
 
-    readme = src / "README.md"
-    if not readme.exists():
-        template = RERANK_CARD if args.type == "rerank" else EMBED_CARD
-        readme.write_text(template.format(repo=args.repo))
+    readme = args.run / "README.md"
+    template = RERANK_CARD if args.type == "rerank" else EMBED_CARD
+    readme.write_text(template.format(repo=args.repo))
 
-    print(f"uploading {src} → {args.repo}")
-    api.upload_folder(folder_path=str(src), repo_id=args.repo, repo_type="model")
+    print(f"uploading {args.run} → {args.repo}")
+    api.upload_folder(
+        folder_path=str(args.run),
+        repo_id=args.repo,
+        repo_type="model",
+        ignore_patterns=["train_config.yaml", "checkpoint-*", "runs/", "*.log"],
+    )
     print(f"done: https://huggingface.co/{args.repo}")
     return 0
 

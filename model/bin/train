@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Full fine-tuning pipeline: (optional augment) -> build -> train -> eval.
+# Full fine-tuning pipeline: (optional augment) -> build -> train -> eval -> ONNX export.
 #
 # Usage:
 #   bin/train                       # bi-encoder only (default)
@@ -8,10 +8,13 @@
 #   bin/train --llm                 # also generate LLM paraphrases first
 #   bin/train --llm --resume        # resume an interrupted LLM augmentation run
 #   bin/train --skip-build          # reuse existing data/, just train + eval
+#   bin/train --skip-export         # skip the ONNX export step
 #
 # Examples:
-#   bin/train --llm --all           # full deep run: augment + both models
+#   bin/train --llm --all           # full deep run: augment + train both + export
 #   bin/train --reranker            # add reranker after embed already trained
+#
+# After completion, prints the exact upload commands for both models.
 
 set -euo pipefail
 
@@ -19,6 +22,7 @@ cd "$(dirname "$0")/.."
 
 LLM=0
 SKIP_BUILD=0
+SKIP_EXPORT=0
 RESUME=""
 TRAIN_EMBED=1
 TRAIN_RERANK=0
@@ -35,6 +39,10 @@ while [ $# -gt 0 ]; do
       ;;
     --skip-build)
       SKIP_BUILD=1
+      shift
+      ;;
+    --skip-export)
+      SKIP_EXPORT=1
       shift
       ;;
     --reranker)
@@ -72,7 +80,6 @@ if [ $TRAIN_EMBED -eq 1 ]; then
 
   RUN=$(ls -td checkpoints/embed-*/ 2>/dev/null | head -1)
   if [ -z "$RUN" ]; then
-    # fall back to legacy unprefixed run names
     RUN=$(ls -td checkpoints/*/ 2>/dev/null | grep -v "rerank-" | head -1)
   fi
   if [ -z "$RUN" ]; then
@@ -89,6 +96,12 @@ if [ $TRAIN_EMBED -eq 1 ]; then
   echo
   echo "==> eval fine-tuned ($RUN)"
   $PY scripts/eval.py --run "$RUN"
+
+  if [ $SKIP_EXPORT -eq 0 ]; then
+    echo
+    echo "==> export_onnx.py"
+    $PY scripts/export_onnx.py --run "$RUN"
+  fi
 fi
 
 if [ $TRAIN_RERANK -eq 1 ]; then
@@ -103,22 +116,39 @@ if [ $TRAIN_RERANK -eq 1 ]; then
   RERANK_RUN=${RERANK_RUN%/}
   echo "==> reranker checkpoint: $RERANK_RUN"
 
+  # Pair with the fine-tuned bi-encoder if we have one — that's the actual
+  # production pipeline. Falls back to base BGE if no embed checkpoint
+  # exists (e.g. user ran `bin/train --reranker` standalone).
+  EMBED_FOR_EVAL=$(ls -td checkpoints/embed-*/ 2>/dev/null | head -1)
+  EMBED_FOR_EVAL=${EMBED_FOR_EVAL%/}
+  if [ -n "$EMBED_FOR_EVAL" ]; then
+    EMBED_ARGS="--embed-model $EMBED_FOR_EVAL"
+    echo "==> using fine-tuned bi-encoder for rerank eval: $EMBED_FOR_EVAL"
+  else
+    EMBED_ARGS=""
+    echo "==> no fine-tuned bi-encoder found; rerank eval pairs with base BGE"
+  fi
+
   echo
-  echo "==> eval reranker base (jinaai/jina-reranker-v1-turbo-en)"
-  $PY scripts/eval_reranker.py --run "$RERANK_RUN" --base
+  echo "==> eval reranker base (BAAI/bge-reranker-base)"
+  $PY scripts/eval_reranker.py --run "$RERANK_RUN" --base $EMBED_ARGS
 
   echo
   echo "==> eval reranker fine-tuned ($RERANK_RUN)"
-  $PY scripts/eval_reranker.py --run "$RERANK_RUN"
+  $PY scripts/eval_reranker.py --run "$RERANK_RUN" $EMBED_ARGS
+
+  if [ $SKIP_EXPORT -eq 0 ]; then
+    echo
+    echo "==> export_onnx_reranker.py"
+    $PY scripts/export_onnx_reranker.py --run "$RERANK_RUN"
+  fi
 fi
 
 echo
 echo "Done."
 if [ $TRAIN_EMBED -eq 1 ]; then
-  echo "  Export embedding:  $PY scripts/export_onnx.py --run \$RUN"
-  echo "  Upload embedding:  HF_TOKEN=... $PY scripts/push_hf.py --run \$RUN --repo muvon/octomind-embed"
+  echo "  Upload embedding:  HF_TOKEN=... $PY scripts/push_hf.py --run $RUN --repo muvon/octomind-embed --type embed"
 fi
 if [ $TRAIN_RERANK -eq 1 ]; then
-  echo "  Export reranker:   $PY scripts/export_onnx_reranker.py --run \$RERANK_RUN"
-  echo "  Upload reranker:   HF_TOKEN=... $PY scripts/push_hf.py --run \$RERANK_RUN --repo muvon/octomind-rerank --type rerank"
+  echo "  Upload reranker:   HF_TOKEN=... $PY scripts/push_hf.py --run $RERANK_RUN --repo muvon/octomind-rerank --type rerank"
 fi

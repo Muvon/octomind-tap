@@ -1,6 +1,6 @@
-base_model: jinaai/jina-reranker-v1-turbo-en
+base_model: BAAI/bge-reranker-base
 output_dir: checkpoints
-run_name: rerank-jina-turbo-v1
+run_name: rerank-bge-base-v1
 
 train:
   epochs: 2
