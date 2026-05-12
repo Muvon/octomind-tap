@@ -2,9 +2,9 @@
 # Capability metadata: trigger phrases for deterministic auto-activation.
 
 triggers = [
-	"compile a Rust project",
-	"run cargo commands",
-	"execute Rust code",
-	"build a Rust crate",
-	"check cargo dependencies",
+	"write idiomatic Rust code",
+	"fix borrow checker and lifetime errors",
+	"design traits, generics, and lifetimes in Rust",
+	"resolve Cargo.toml dependency and feature flag issues",
+	"work with async Rust, tokio, and Send/Sync bounds",
 ]

@@ -2,9 +2,9 @@
 # Capability metadata: trigger phrases for deterministic auto-activation.
 
 triggers = [
-	"run a Python script",
-	"execute python code",
-	"manage pip packages",
-	"run a python REPL",
-	"install a python library",
+	"write idiomatic Python code",
+	"fix Python exceptions and tracebacks",
+	"use type hints, dataclasses, and typing",
+	"manage virtual environments and pip dependencies",
+	"work with asyncio, decorators, and context managers",
 ]

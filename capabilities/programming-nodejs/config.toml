@@ -2,9 +2,9 @@
 # Capability metadata: trigger phrases for deterministic auto-activation.
 
 triggers = [
-	"run a Node.js script",
-	"manage npm packages",
-	"execute javascript code",
-	"install a node module",
-	"check node version",
+	"write modern JavaScript or TypeScript for Node.js",
+	"debug Node.js runtime errors and stack traces",
+	"work with async/await, Promises, and the event loop",
+	"resolve npm or pnpm dependency issues",
+	"configure package.json and tsconfig.json",
 ]
