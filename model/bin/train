@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+# Full fine-tuning pipeline: (optional augment) -> build -> train -> eval.
+#
+# Usage:
+#   bin/train                 # rule-based augmentation only (free, fast)
+#   bin/train --llm           # also generate LLM paraphrases (needs ANTHROPIC_API_KEY)
+#   bin/train --llm --resume  # resume an interrupted LLM augmentation run
+#   bin/train --skip-build    # reuse existing data/, just train + eval
+#
+# Prints a base-vs-finetuned comparison so you can see if precision actually
+# improved before bothering to export/upload.
+
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+LLM=0
+SKIP_BUILD=0
+RESUME=""
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --llm)
+      LLM=1
+      shift
+      ;;
+    --resume)
+      RESUME="--resume"
+      shift
+      ;;
+    --skip-build)
+      SKIP_BUILD=1
+      shift
+      ;;
+    *)
+      echo "unknown arg: $1" >&2
+      exit 2
+      ;;
+  esac
+done
+
+PY=${PY:-uv run python}
+
+if [ $LLM -eq 1 ] && [ $SKIP_BUILD -eq 0 ]; then
+  echo "==> augment_llm.py (anthropic)"
+  $PY scripts/augment_llm.py $RESUME
+fi
+
+if [ $SKIP_BUILD -eq 0 ]; then
+  echo "==> build_dataset.py"
+  $PY scripts/build_dataset.py
+fi
+
+echo "==> train.py"
+$PY scripts/train.py
+
+# Latest checkpoint directory (most recent mtime).
+RUN=$(ls -td checkpoints/*/ 2>/dev/null | head -1)
+if [ -z "$RUN" ]; then
+  echo "no checkpoint found in checkpoints/" >&2
+  exit 1
+fi
+RUN=${RUN%/}
+echo "==> checkpoint: $RUN"
+
+echo
+echo "==> eval base (BAAI/bge-small-en-v1.5)"
+$PY scripts/eval.py --run "$RUN" --base
+
+echo
+echo "==> eval fine-tuned ($RUN)"
+$PY scripts/eval.py --run "$RUN"
+
+echo
+echo "Done. To export and upload:"
+echo "  $PY scripts/export_onnx.py --run $RUN"
+echo "  HF_TOKEN=... $PY scripts/push_hf.py --run $RUN --repo <org>/<name>"
