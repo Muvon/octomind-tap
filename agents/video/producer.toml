@@ -3,7 +3,7 @@
 # Title: Video Production Orchestrator
 # Description: Orchestrator agent. Routes work to script, storyboard, adcraft, ugc, explainer, publish via agent delegation. The single entry point for any video brief.
 
-capabilities = ["core", "agent", "filesystem-read", "filesystem-write", "websearch", "memory"]
+capabilities = ["core", "agent", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
 temperature = 0.4

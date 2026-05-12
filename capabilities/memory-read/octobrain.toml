@@ -1,0 +1,23 @@
+# capabilities/memory-read/octobrain.toml
+# Capability: memory-read
+# Provider: octobrain — read-only memory subset
+# Title: Memory (Read)
+# Description: Semantic recall and relationship-graph traversal via octobrain. Pair with memory-write to also persist memories.
+
+[deps]
+require = ["muvon/octobrain"]
+
+[roles.mcp]
+server_refs = ["octobrain"]
+allowed_tools = [
+  "octobrain:remember",
+  "octobrain:memory_graph",
+]
+
+[[mcp.servers]]
+name = "octobrain"
+type = "stdio"
+command = "octobrain"
+args = ["mcp"]
+timeout_seconds = 300
+tools = []

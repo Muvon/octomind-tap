@@ -3,7 +3,7 @@
 # Title: Content Editor
 # Description: Content editor and humanizer. Diagnoses structural and stylistic issues, polishes drafts, and transforms AI-sounding text into genuinely human writing.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
 temperature = 0.4

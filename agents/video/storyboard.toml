@@ -3,7 +3,7 @@
 # Title: Video Storyboard Planner
 # Description: Beat-by-beat shot planner. Aspect, length, shot list, transitions, music brief, asset checklist plus optional one frame per beat via image generation.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory", "image-gen"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write", "image-gen"]
 
 [[roles]]
 temperature = 0.6

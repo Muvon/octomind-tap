@@ -41,7 +41,8 @@ link "shell" "octofs.toml"
 link "codesearch-semantic" "octocode.toml"
 link "codesearch-structural" "octocode.toml"
 link "codesearch-graph" "octocode.toml"
-link "memory" "octobrain.toml"
+link "memory-read" "octobrain.toml"
+link "memory-write" "octobrain.toml"
 link "websearch" "tavily.toml"
 link "versioning" "git.toml"
 link "programming-python" "uv.toml"
@@ -86,7 +87,7 @@ link "payments" "stripe.toml"
 link "scraping" "firecrawl.toml"
 link "task-management" "linear.toml"
 link "translation" "deepl.toml"
-link "webfetch" "fetch.toml"
+link "webfetch" "octobrain.toml"
 # ── Video / media production capabilities ────────────────────────────────────
 link "video-gen" "runway.toml"
 link "voice" "elevenlabs.toml"
@@ -106,7 +107,7 @@ link "runtime" "octomind.toml"
 
 # Detect capability dirs that have NO mapping declared above
 echo ""
-DECLARED=("filesystem-read" "filesystem-write" "shell" "codesearch-semantic" "codesearch-structural" "codesearch-graph" "memory" "websearch" "versioning" "core" "agent" "runtime" "programming-python" "programming-rust" "programming-nodejs" "docker" "kubernetes" "svelte" "medical-reference" "market-data" "legal-au" "legal-ca" "legal-de" "legal-fr" "legal-in" "legal-sg" "legal-th" "legal-uk" "legal-us" "octoweb" "browser" "messaging-slack" "messaging-discord" "messaging-telegram" "messaging-whatsapp" "messaging-linkedin" "messaging-instagram" "messaging-email" "messaging-sms" "calendar" "customer-management" "database-postgres" "database-sqlite" "devdocs" "ecommerce" "edge-hosting" "error-tracking" "highlights" "maps" "payments" "scraping" "task-management" "translation" "webfetch" "video-gen" "voice" "avatar" "lipsync" "music" "composition" "captions" "stock" "image-gen" "publish-tiktok" "publish-instagram" "publish-youtube")
+DECLARED=("filesystem-read" "filesystem-write" "shell" "codesearch-semantic" "codesearch-structural" "codesearch-graph" "memory-read" "memory-write" "websearch" "versioning" "core" "agent" "runtime" "programming-python" "programming-rust" "programming-nodejs" "docker" "kubernetes" "svelte" "medical-reference" "market-data" "legal-au" "legal-ca" "legal-de" "legal-fr" "legal-in" "legal-sg" "legal-th" "legal-uk" "legal-us" "octoweb" "browser" "messaging-slack" "messaging-discord" "messaging-telegram" "messaging-whatsapp" "messaging-linkedin" "messaging-instagram" "messaging-email" "messaging-sms" "calendar" "customer-management" "database-postgres" "database-sqlite" "devdocs" "ecommerce" "edge-hosting" "error-tracking" "highlights" "maps" "payments" "scraping" "task-management" "translation" "webfetch" "video-gen" "voice" "avatar" "lipsync" "music" "composition" "captions" "stock" "image-gen" "publish-tiktok" "publish-instagram" "publish-youtube")
 for dir in "$CAP_ROOT"/*/; do
   cap="$(basename "$dir")"
   found=0

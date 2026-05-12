@@ -3,7 +3,7 @@
 # Title: Brand Strategist
 # Description: Brand strategist. Naming, positioning, messaging, voice and tone, taglines, and landing page copy. Turns ideas into sharp brand identities.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
 temperature = 0.6

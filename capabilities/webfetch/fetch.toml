@@ -14,7 +14,7 @@ allowed_tools = ["fetch:*"]
 [[mcp.servers]]
 name = "fetch"
 type = "stdio"
-command = "npx"
-args = ["-y", "@modelcontextprotocol/server-fetch"]
+command = "uvx"
+args = ["mcp-server-fetch"]
 timeout_seconds = 60
 tools = []

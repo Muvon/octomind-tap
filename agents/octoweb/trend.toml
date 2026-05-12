@@ -3,7 +3,7 @@
 # Title: Social Trend Harvester
 # Description: Cross-platform trend harvester. Decodes the algorithm, narrows to your niche, returns a post-ready brief. Platform mechanics via trend-* skills.
 
-capabilities = ["core", "octoweb", "memory", "websearch"]
+capabilities = ["core", "octoweb", "memory-read", "memory-write", "websearch"]
 
 [[roles]]
 temperature = 0.4

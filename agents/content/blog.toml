@@ -3,7 +3,7 @@
 # Title: Blog Post Writer
 # Description: Blog post writer. Conversational, audience-aware. Writes punchy, shareable posts with strong hooks and clear value.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
 temperature = 0.8

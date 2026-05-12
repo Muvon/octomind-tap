@@ -3,7 +3,7 @@
 # Title: Idea Validation Analyst
 # Description: Idea validation analyst. Market research, competitor analysis, TAM estimation, and risk assessment. Brutally honest about viability.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
 temperature = 0.25
