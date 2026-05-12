@@ -1,0 +1,20 @@
+# capabilities/webfetch/octobrain.toml
+# Capability: webfetch
+# Provider: octobrain knowledge tool
+# Title: Web Fetch (octobrain)
+# Description: Fetch URLs and local files (.html .txt .md .pdf .docx) via octobrain — semantic chunking for big sources, full-read fallback.
+
+[deps]
+require = ["muvon/octobrain"]
+
+[roles.mcp]
+server_refs = ["octobrain"]
+allowed_tools = ["octobrain:knowledge"]
+
+[[mcp.servers]]
+name = "octobrain"
+type = "stdio"
+command = "octobrain"
+args = ["mcp"]
+timeout_seconds = 300
+tools = []

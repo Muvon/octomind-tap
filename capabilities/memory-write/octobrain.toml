@@ -1,0 +1,24 @@
+# capabilities/memory-write/octobrain.toml
+# Capability: memory-write
+# Provider: octobrain — write subset (mutations)
+# Title: Memory (Write)
+# Description: Create, delete, and relate memories via octobrain: memorize, forget, relate. Pair with memory-read.
+
+[deps]
+require = ["muvon/octobrain"]
+
+[roles.mcp]
+server_refs = ["octobrain"]
+allowed_tools = [
+  "octobrain:memorize",
+  "octobrain:forget",
+  "octobrain:relate",
+]
+
+[[mcp.servers]]
+name = "octobrain"
+type = "stdio"
+command = "octobrain"
+args = ["mcp"]
+timeout_seconds = 300
+tools = []

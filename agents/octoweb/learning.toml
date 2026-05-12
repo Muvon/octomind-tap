@@ -3,7 +3,7 @@
 # Title: Octopus Background Learner
 # Description: Silent background agent that periodically observes browsing activity and memorizes behavioral patterns for the main assistant.
 
-capabilities = ["core", "memory"]
+capabilities = ["core", "memory-read", "memory-write"]
 
 [[roles]]
 temperature = 0.3

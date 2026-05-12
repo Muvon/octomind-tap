@@ -1,0 +1,10 @@
+# capabilities/memory-write/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"remember this for later",
+	"store knowledge in memory",
+	"forget this memory",
+	"relate two memories",
+	"connect these memories",
+]

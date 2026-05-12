@@ -3,7 +3,7 @@
 # Title: Zero-Budget Launch Strategist
 # Description: Zero-budget launch strategist. Product Hunt playbooks, community building, organic growth, cold outreach, and social proof tactics.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
 temperature = 0.4

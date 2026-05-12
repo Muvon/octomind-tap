@@ -4,9 +4,12 @@ Official Anthropic MCP server for web content retrieval. Fetches URLs and conver
 
 ## MCP Server
 
-- **Package**: `@modelcontextprotocol/server-fetch`
+- **Package**: `mcp-server-fetch` (Python, published on PyPI)
 - **Transport**: stdio
-- **Command**: `npx -y @modelcontextprotocol/server-fetch`
+- **Command**: `uvx mcp-server-fetch`
+- **Runtime**: requires `uv` / `uvx` (https://github.com/astral-sh/uv). Install once with `brew install uv` or `curl -LsSf https://astral.sh/uv/install.sh | sh`.
+
+> Note: there is no `@modelcontextprotocol/server-fetch` npm package. The official fetch server is Python-based and shipped via PyPI. Earlier `npx` invocations 404 against the npm registry.
 
 ## Authentication
 
@@ -24,8 +27,8 @@ None required.
 [[mcp.servers]]
 name = "fetch"
 type = "stdio"
-command = "npx"
-args = ["-y", "@modelcontextprotocol/server-fetch"]
+command = "uvx"
+args = ["mcp-server-fetch"]
 timeout_seconds = 60
 tools = []
 ```

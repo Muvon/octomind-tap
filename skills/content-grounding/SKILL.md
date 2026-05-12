@@ -3,7 +3,7 @@ name: content-grounding
 title: "Fact Grounding & Anti-Hallucination"
 description: "Confidence triage, mandatory research triggers, source verification, and clarification escalation for content writing and editing. Prevents fabricated facts about unfamiliar tools, products, people, versions, prices, or recent events. Applies before any specific claim is written."
 license: Apache-2.0
-compatibility: "Octomind content agents. Requires websearch (and ideally webfetch) capabilities."
+compatibility: "Octomind content agents. Requires websearch and the webfetch capability for live source verification."
 capabilities: websearch webfetch
 domains: content
 rules:
@@ -71,8 +71,9 @@ If a trigger fires and you proceed without research, that is a protocol violatio
 2. Prefer primary sources. Official docs, the GitHub README, the vendor's pricing page, a press release on the company domain, the person's own bio, the peer-reviewed paper PDF. Treat blog summaries and listicles as secondary — they often repeat each other's mistakes.
 3. Cross-reference at least two independent sources for any specific number, date, feature, or quote. One source can be wrong; two agreeing primary sources is the floor.
 4. If sources conflict, search deeper for the primary source or surface the conflict to the user. Don't pick a side silently.
-5. For genuinely new or niche subjects, webfetch the user-provided URL or the official site directly. Don't paraphrase what you can fetch verbatim.
+5. For genuinely new or niche subjects, fetch the user-provided URL or the official site directly via the `webfetch` capability. Don't paraphrase what you can fetch verbatim — quote or excerpt the source.
 6. Parallel-first. Fire the discovery queries in one block — official docs query, GitHub query, recent news query, pricing/release query — then read what came back.
+7. Re-consult sources as you write. When drafting long-form, re-fetch the primary source whenever a section needs a specific fact, instead of relying on what you remember from the first read. Grounded writing means every claim resolves to a source the agent re-read, not to the model's training memory.
 
 ### Escalation: when research fails
 

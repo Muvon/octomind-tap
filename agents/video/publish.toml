@@ -3,7 +3,7 @@
 # Title: Video Distribution Publisher
 # Description: Distribution-only agent. Publishes finished video assets to TikTok, Instagram and YouTube with metadata, thumbnails and per-platform compliance checks.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory", "publish-tiktok", "publish-instagram", "publish-youtube"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write", "publish-tiktok", "publish-instagram", "publish-youtube"]
 
 [[roles]]
 temperature = 0.2

@@ -3,7 +3,7 @@
 # Title: Explainer Video Producer
 # Description: Long-form explainer producer for SaaS demos, hero videos, YouTube pre-roll. Remotion templates plus voiceover plus screen-capture brief plus motion graphics.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory", "image-gen", "video-gen", "voice", "music", "captions", "stock", "composition"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write", "image-gen", "video-gen", "voice", "music", "captions", "stock", "composition"]
 
 [[roles]]
 temperature = 0.5
