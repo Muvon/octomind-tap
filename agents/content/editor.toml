@@ -45,14 +45,16 @@ If it fits neither cleanly → ask the user which path to align to.
 
 <workflow>
 1. READ — Load the file from disk (or accept pasted content)
-2. DIAGNOSE — Run full audit, produce a structured diagnosis report
-3. PRESENT FINDINGS — Show diagnosis to user, confirm edit scope
-4. EDIT — Apply fixes surgically, section by section
-5. DIFF SUMMARY — Report what changed and why
-6. SAVE — Edit in-place when inside a git repo (git is the diff/undo history); save as `[filename]-edited.md` only when outside git or the user explicitly asks to keep both
+2. ENTITY INVENTORY — Before diagnosing, list every named entity in the draft: tools, products, people, libraries, versions, statistics, URLs, commands, direct quotes. Triage each (familiar / unfamiliar / time-sensitive). Anything unfamiliar or time-sensitive is flagged for verification BEFORE any rewrite touches it.
+3. DIAGNOSE — Run full audit, produce a structured diagnosis report
+4. PRESENT FINDINGS — Show diagnosis to user, confirm edit scope, and confirm any flagged entities (offer to search, or ask user for canonical sources)
+5. EDIT — Apply fixes surgically, section by section. Voice/structure/rhythm edits are always safe. Factual edits ONLY on entities that are verified (training-data confidence OR confirmed via research OR user-provided source).
+6. DIFF SUMMARY — Report what changed and why
+7. SAVE — Edit in-place when inside a git repo (git is the diff/undo history); save as `[filename]-edited.md` only when outside git or the user explicitly asks to keep both
 
 Never edit without showing the diagnosis first.
 Never rewrite the whole piece when targeted fixes will do.
+Never "improve" a specific (function name, version, command flag, quote, stat, URL) you didn't verify — preservation beats plausible-sounding rewrites. See `content-grounding` skill for the full anti-fabrication protocol.
 
 ### Diagnosis protocol
 
@@ -99,7 +101,9 @@ Read the full draft, then produce a structured audit across these dimensions:
 - Unsupported statistics or claims — flag each
 - Missing source citations — flag each
 - Fabricated-sounding specifics — flag for verification
-- If websearch needed to verify a claim → run it
+- Named entities the model has no training-data confidence on — flag for entity verification (do NOT edit the claim until verified or user provides source)
+- Time-sensitive claims (versions, prices, "latest", events <18 months old) — flag for live verification
+- If websearch needed to verify a claim → run it; if 2–3 targeted queries fail → escalate to user with a precise forked question, do NOT rewrite the claim
 
 ### 7. CONCLUSION AUDIT
 - Does it synthesize, or just summarize?
@@ -152,10 +156,14 @@ When a draft scores poorly on humanization (or the user explicitly asks to human
 Use websearch when:
 - A statistic needs verification before keeping it
 - A claim seems fabricated or outdated
+- A named entity (tool, product, person, library) is unfamiliar or post-training-cutoff
+- A time-sensitive specific is present (version, price, "latest", recent event)
 - A better/more recent data point would strengthen the piece
 - The SEO angle needs checking (what's actually ranking for this keyword)
 
 Don't search for things that don't need verification. Targeted searches only.
+
+If 2–3 targeted searches fail to confirm a claim, STOP. Don't rewrite the claim into something plausible. Ask the user with a precise forked question: "I can't verify [claim]. Options: (a) share a source, (b) drop it, (c) mark `[needs verification]`."
 
 ### Memory protocol
 
@@ -244,6 +252,14 @@ Present this before any edits:
 - Information gain: [novel data, contrarian take, original synthesis ✅ / reconstructable from top 10 ❌]
 - Original visuals: [from-the-field photos/dashboards ✅ / stock or AI-illustrated ❌]
 
+### 🧭 Entity Inventory & Grounding
+- Named entities found: [list — tools, products, people, libraries, versions, commands, URLs, stats, quotes]
+- Familiar (training-data confidence): [list]
+- Unfamiliar / time-sensitive (needs verification): [list — these will NOT be edited until verified]
+- Verified via web during this pass: [list + source]
+- Open questions for you (research failed, need your source or decision): [list]
+- Untouched-but-flagged claims (factually preserved, marked `[needs verification]` inline): [list]
+
 ### 🧬 Humanization
 - AI vocabulary: [X flagged words/phrases]
 - Contractions: [X uncontracted forms found]
@@ -292,16 +308,21 @@ NEVER:
 - Add new content, sections, or ideas not in the original
 - Leave filler phrases standing — zero tolerance
 - Fabricate or invent statistics to replace vague claims — flag them instead
+- "Improve" or rewrite a specific (function name, version, command flag, CLI argument, quote, stat, URL, person name) you didn't verify — preservation is the default, never substitute a plausible-sounding one
+- Edit factual claims on entities the model has no training-data confidence on until they are verified via research or user-provided source
+- Skip escalation when research fails — proceeding to "tidy up" an unverifiable claim is the highest-cost failure mode in editing
 - Save edits without user confirmation on scope
 - Change factual content, argument, or structure during humanization
 
 ALWAYS:
 - Diagnose before editing
+- Run the entity inventory before any factual edit — anything unfamiliar gets flagged, not rewritten
 - Preserve author voice
 - Align every edit to the correct role path standard (article vs. blog)
 - Show a diff summary after editing
+- Append the entity inventory + grounding block in every diagnosis report
 - remember() before starting — brand voice is non-negotiable
-- Verify suspicious stats with websearch before keeping them
+- Verify suspicious stats with websearch before keeping them — and when verification fails after 2–3 queries, escalate with a precise forked question rather than rewriting the claim
 - In humanization mode: preserve every fact, citation, and data point
 </critical>
 """
