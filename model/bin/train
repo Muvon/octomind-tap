@@ -2,13 +2,16 @@
 # Full fine-tuning pipeline: (optional augment) -> build -> train -> eval.
 #
 # Usage:
-#   bin/train                 # rule-based augmentation only (free, fast)
-#   bin/train --llm           # also generate LLM paraphrases (needs ANTHROPIC_API_KEY)
-#   bin/train --llm --resume  # resume an interrupted LLM augmentation run
-#   bin/train --skip-build    # reuse existing data/, just train + eval
+#   bin/train                       # bi-encoder only (default)
+#   bin/train --reranker            # reranker only (requires existing dataset)
+#   bin/train --all                 # both bi-encoder and reranker
+#   bin/train --llm                 # also generate LLM paraphrases first
+#   bin/train --llm --resume        # resume an interrupted LLM augmentation run
+#   bin/train --skip-build          # reuse existing data/, just train + eval
 #
-# Prints a base-vs-finetuned comparison so you can see if precision actually
-# improved before bothering to export/upload.
+# Examples:
+#   bin/train --llm --all           # full deep run: augment + both models
+#   bin/train --reranker            # add reranker after embed already trained
 
 set -euo pipefail
 
@@ -17,6 +20,8 @@ cd "$(dirname "$0")/.."
 LLM=0
 SKIP_BUILD=0
 RESUME=""
+TRAIN_EMBED=1
+TRAIN_RERANK=0
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -30,6 +35,16 @@ while [ $# -gt 0 ]; do
       ;;
     --skip-build)
       SKIP_BUILD=1
+      shift
+      ;;
+    --reranker)
+      TRAIN_EMBED=0
+      TRAIN_RERANK=1
+      shift
+      ;;
+    --all)
+      TRAIN_EMBED=1
+      TRAIN_RERANK=1
       shift
       ;;
     *)
@@ -51,27 +66,59 @@ if [ $SKIP_BUILD -eq 0 ]; then
   $PY scripts/build_dataset.py
 fi
 
-echo "==> train.py"
-$PY scripts/train.py
+if [ $TRAIN_EMBED -eq 1 ]; then
+  echo "==> train.py (bi-encoder)"
+  $PY scripts/train.py
 
-# Latest checkpoint directory (most recent mtime).
-RUN=$(ls -td checkpoints/*/ 2>/dev/null | head -1)
-if [ -z "$RUN" ]; then
-  echo "no checkpoint found in checkpoints/" >&2
-  exit 1
+  RUN=$(ls -td checkpoints/embed-*/ 2>/dev/null | head -1)
+  if [ -z "$RUN" ]; then
+    # fall back to legacy unprefixed run names
+    RUN=$(ls -td checkpoints/*/ 2>/dev/null | grep -v "rerank-" | head -1)
+  fi
+  if [ -z "$RUN" ]; then
+    echo "no embedding checkpoint found in checkpoints/" >&2
+    exit 1
+  fi
+  RUN=${RUN%/}
+  echo "==> embedding checkpoint: $RUN"
+
+  echo
+  echo "==> eval base (BAAI/bge-small-en-v1.5)"
+  $PY scripts/eval.py --run "$RUN" --base
+
+  echo
+  echo "==> eval fine-tuned ($RUN)"
+  $PY scripts/eval.py --run "$RUN"
 fi
-RUN=${RUN%/}
-echo "==> checkpoint: $RUN"
+
+if [ $TRAIN_RERANK -eq 1 ]; then
+  echo "==> train_reranker.py (cross-encoder)"
+  $PY scripts/train_reranker.py
+
+  RERANK_RUN=$(ls -td checkpoints/rerank-*/ 2>/dev/null | head -1)
+  if [ -z "$RERANK_RUN" ]; then
+    echo "no reranker checkpoint found in checkpoints/" >&2
+    exit 1
+  fi
+  RERANK_RUN=${RERANK_RUN%/}
+  echo "==> reranker checkpoint: $RERANK_RUN"
+
+  echo
+  echo "==> eval reranker base (jinaai/jina-reranker-v1-turbo-en)"
+  $PY scripts/eval_reranker.py --run "$RERANK_RUN" --base
+
+  echo
+  echo "==> eval reranker fine-tuned ($RERANK_RUN)"
+  $PY scripts/eval_reranker.py --run "$RERANK_RUN"
+fi
 
 echo
-echo "==> eval base (BAAI/bge-small-en-v1.5)"
-$PY scripts/eval.py --run "$RUN" --base
-
-echo
-echo "==> eval fine-tuned ($RUN)"
-$PY scripts/eval.py --run "$RUN"
-
-echo
-echo "Done. To export and upload:"
-echo "  $PY scripts/export_onnx.py --run $RUN"
-echo "  HF_TOKEN=... $PY scripts/push_hf.py --run $RUN --repo <org>/<name>"
+echo "Done."
+if [ $TRAIN_EMBED -eq 1 ]; then
+  echo "  Export embedding:  $PY scripts/export_onnx.py --run \$RUN"
+  echo "  Upload embedding:  HF_TOKEN=... $PY scripts/push_hf.py --run \$RUN --repo muvon/octomind-embed"
+fi
+if [ $TRAIN_RERANK -eq 1 ]; then
+  echo "  Export reranker:   $PY scripts/export_onnx_reranker.py --run \$RERANK_RUN"
+  echo "  Upload reranker:   HF_TOKEN=... $PY scripts/push_hf.py --run \$RERANK_RUN --repo muvon/octomind-rerank --type rerank"
+fi
