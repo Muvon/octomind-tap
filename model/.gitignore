@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.venv/
+.uv/
+uv.lock
+data/*.jsonl
+checkpoints/
+wandb/
+.cache/
+*.onnx
+.ruff_cache/
+.mypy_cache/
