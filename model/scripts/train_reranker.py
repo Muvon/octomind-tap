@@ -1,17 +1,34 @@
 """Fine-tune a cross-encoder reranker on hard-negative triplets.
 
-Base: `jinaai/jina-reranker-v1-turbo-en` (33M, English-only, fastembed-ready).
+Base: `cross-encoder/ms-marco-MiniLM-L-6-v2` — 22M params, 6-layer MiniLM,
+natively trained as a cross-encoder on MS-MARCO. Loads cleanly into the
+standard `BertForSequenceClassification` head and is blazing fast on CPU.
 
-Loss: `BinaryCrossEntropyLoss`. Each triplet (anchor, positive, negative)
-produces TWO training rows:
+Loss: `MultipleNegativesRankingLoss` — CONTRASTIVE/RANKING objective.
 
-  (anchor, positive)  → label 1
-  (anchor, negative)  → label 0
+Critical detail: an earlier version used `BinaryCrossEntropyLoss`
+(pointwise classification: "is this pair relevant? yes/no") and produced
+held-out AP 0.98 BUT broke at runtime — when fed five plausible-looking
+capability triggers, the model output near-identical high scores for all
+five and got the top-1 wrong. The eval metric measured binary
+classification, not ranking under competition. The runtime task IS
+ranking, so we need a ranking loss.
 
-A CEBinaryClassificationEvaluator runs each epoch on a held-out 10%
-split of the same triplets. We save only the checkpoint with the
-highest average precision (AP) — cross-encoders, like bi-encoders,
-can drift past the optimum after 2-3 epochs.
+`MultipleNegativesRankingLoss` (CE variant) optimizes:
+
+  score(anchor, positive) > score(anchor, every_other_doc_in_batch)
+
+via softmax + cross-entropy. With our triplets (anchor, positive,
+hard_negative), the explicit negative is also stacked in alongside the
+in-batch negatives. This is the same pattern used for production
+rerankers (e.g. BGE-reranker, Cohere rerank).
+
+Dataset columns for CE MNRL: `query`, `positive`, optionally `negative`.
+No `label` column — the loss is fully contrastive.
+
+A `CrossEncoderClassificationEvaluator` still runs each epoch on a 10%
+triplet split for sanity-check binary AP, but the model is now actually
+trained to RANK.
 """
 
 from __future__ import annotations
@@ -26,11 +43,16 @@ from pathlib import Path
 
 import torch
 import yaml
-from sentence_transformers import InputExample
-from sentence_transformers.cross_encoder import CrossEncoder
-from sentence_transformers.cross_encoder.evaluation import CEBinaryClassificationEvaluator
-from sentence_transformers.cross_encoder.losses import BinaryCrossEntropyLoss
-from torch.utils.data import DataLoader
+from datasets import Dataset
+from sentence_transformers.cross_encoder import (
+    CrossEncoder,
+    CrossEncoderTrainer,
+    CrossEncoderTrainingArguments,
+)
+from sentence_transformers.cross_encoder.evaluation import (
+    CrossEncoderClassificationEvaluator,
+)
+from sentence_transformers.cross_encoder.losses import MultipleNegativesRankingLoss
 
 warnings.filterwarnings("ignore", category=FutureWarning)
 
@@ -44,17 +66,34 @@ def load_triplet_rows(path: Path) -> list[tuple[str, str, str]]:
     return rows
 
 
-def to_examples(rows: list[tuple[str, str, str]]) -> list[InputExample]:
-    out: list[InputExample] = []
+def rows_to_dataset(rows: list[tuple[str, str, str]]) -> Dataset:
+    """One row per triplet: anchor / positive / negative.
+
+    MultipleNegativesRankingLoss reads:
+      - column 0 (`query`): the anchor
+      - column 1 (`positive`): the matching doc
+      - column 2+ (optional): explicit hard negatives, used IN ADDITION TO
+        in-batch negatives. Each row's positives become other rows' negatives
+        automatically via batch construction.
+    No `label` column — the loss is contrastive softmax/cross-entropy.
+    """
+    queries: list[str] = []
+    positives: list[str] = []
+    negatives: list[str] = []
     for a, p, n in rows:
-        out.append(InputExample(texts=[a, p], label=1.0))
-        out.append(InputExample(texts=[a, n], label=0.0))
-    return out
+        queries.append(a)
+        positives.append(p)
+        negatives.append(n)
+    return Dataset.from_dict({"query": queries, "positive": positives, "negative": negatives})
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--config", type=Path, default=Path(__file__).resolve().parents[1] / "configs" / "reranker.yaml")
+    ap.add_argument(
+        "--config",
+        type=Path,
+        default=Path(__file__).resolve().parents[1] / "configs" / "reranker.yaml",
+    )
     args = ap.parse_args()
 
     cfg = yaml.safe_load(args.config.read_text())
@@ -77,33 +116,31 @@ def main() -> int:
     train_rows = rows[n_eval:]
     print(f"split: train={len(train_rows)} triplets, eval={len(eval_rows)} triplets")
 
-    train_examples = to_examples(train_rows)
-    eval_sentence_pairs: list[list[str]] = []
+    train_ds = rows_to_dataset(train_rows)
+
+    eval_pairs: list[list[str]] = []
     eval_labels: list[int] = []
     for a, p, n in eval_rows:
-        eval_sentence_pairs.append([a, p])
-        eval_labels.append(1)
-        eval_sentence_pairs.append([a, n])
-        eval_labels.append(0)
+        eval_pairs.append([a, p]); eval_labels.append(1)
+        eval_pairs.append([a, n]); eval_labels.append(0)
 
-    model = CrossEncoder(cfg["base_model"], num_labels=1, max_length=train_cfg["max_seq_length"])
+    model = CrossEncoder(
+        cfg["base_model"],
+        num_labels=1,
+        max_length=train_cfg["max_seq_length"],
+    )
 
-    loader = DataLoader(train_examples, shuffle=True, batch_size=train_cfg["batch_size"], drop_last=True)
-    loss = BinaryCrossEntropyLoss(model)
+    loss = MultipleNegativesRankingLoss(model)
 
-    evaluator = CEBinaryClassificationEvaluator(
-        sentence_pairs=eval_sentence_pairs,
+    evaluator = CrossEncoderClassificationEvaluator(
+        sentence_pairs=eval_pairs,
         labels=eval_labels,
         name="rerank-holdout",
         show_progress_bar=False,
     )
 
-    steps_per_epoch = len(loader)
-    warmup_steps = int(steps_per_epoch * train_cfg["epochs"] * train_cfg["warmup_ratio"])
-    evaluation_steps = int(train_cfg.get("evaluation_steps", 0)) or steps_per_epoch
-
-    use_amp = bool(train_cfg.get("use_amp", False)) and torch.cuda.is_available()
-    if use_amp:
+    use_fp16 = bool(train_cfg.get("use_amp", False)) and torch.cuda.is_available()
+    if use_fp16:
         print("mixed precision (FP16): enabled (CUDA detected)")
 
     run_name = cfg["run_name"]
@@ -111,23 +148,38 @@ def main() -> int:
     out_dir = root / cfg["output_dir"] / f"{run_name}-{timestamp}"
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    print(f"training cross-encoder for {train_cfg['epochs']} epochs (batch={train_cfg['batch_size']})")
-    print(f"evaluation every {evaluation_steps} steps; save_best_model={train_cfg.get('save_best_model', True)}")
-
-    model.fit(
-        train_dataloader=loader,
-        loss_fct=loss,
-        evaluator=evaluator,
-        evaluation_steps=evaluation_steps,
-        epochs=train_cfg["epochs"],
-        warmup_steps=warmup_steps,
-        optimizer_params={"lr": train_cfg["learning_rate"]},
+    targs = CrossEncoderTrainingArguments(
+        output_dir=str(out_dir),
+        num_train_epochs=train_cfg["epochs"],
+        per_device_train_batch_size=train_cfg["batch_size"],
+        per_device_eval_batch_size=train_cfg["batch_size"],
+        learning_rate=train_cfg["learning_rate"],
+        warmup_ratio=train_cfg["warmup_ratio"],
         weight_decay=train_cfg["weight_decay"],
-        output_path=str(out_dir),
-        save_best_model=bool(train_cfg.get("save_best_model", True)),
-        use_amp=use_amp,
-        show_progress_bar=True,
+        fp16=use_fp16,
+        eval_strategy="epoch",
+        save_strategy="epoch",
+        save_total_limit=2,
+        load_best_model_at_end=bool(train_cfg.get("save_best_model", True)),
+        metric_for_best_model="eval_rerank-holdout_average_precision",
+        greater_is_better=True,
+        logging_steps=50,
+        report_to=[],
+        seed=train_cfg["seed"],
+        dataloader_pin_memory=torch.cuda.is_available(),
     )
+
+    trainer = CrossEncoderTrainer(
+        model=model,
+        args=targs,
+        train_dataset=train_ds,
+        loss=loss,
+        evaluator=evaluator,
+    )
+
+    print(f"training cross-encoder for {train_cfg['epochs']} epochs (batch={train_cfg['batch_size']})")
+    trainer.train()
+    trainer.save_model(str(out_dir))
 
     (out_dir / "train_config.yaml").write_text(yaml.safe_dump(cfg))
     print(f"saved fine-tuned reranker to {out_dir}")

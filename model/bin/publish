@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+# Publish the latest trained checkpoints to HuggingFace Hub.
+#
+# Auto-detects the most recent embed-* and rerank-* checkpoints under
+# checkpoints/, validates them, and uploads each to its target repo with
+# safetensors + ONNX + tokenizer + model card.
+#
+# Usage:
+#   HF_TOKEN=hf_... bin/publish                          # both models
+#   HF_TOKEN=hf_... bin/publish --embed-only             # just embedding
+#   HF_TOKEN=hf_... bin/publish --rerank-only            # just reranker
+#   HF_TOKEN=hf_... bin/publish --org muvon              # override namespace (default: muvon)
+#   HF_TOKEN=hf_... bin/publish --private                # private repos
+#   HF_TOKEN=hf_... bin/publish --dry-run                # print what would happen, don't upload
+#
+# After upload the runtime at `octomind/src/embeddings/mod.rs` picks up the
+# new weights on first launch via hf_hub.
+
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+ORG="muvon"
+PUBLISH_EMBED=1
+PUBLISH_RERANK=1
+PRIVATE=""
+DRY_RUN=0
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --embed-only)
+      PUBLISH_RERANK=0
+      shift
+      ;;
+    --rerank-only)
+      PUBLISH_EMBED=0
+      shift
+      ;;
+    --org)
+      ORG="$2"
+      shift 2
+      ;;
+    --private)
+      PRIVATE="--private"
+      shift
+      ;;
+    --dry-run)
+      DRY_RUN=1
+      shift
+      ;;
+    *)
+      echo "unknown arg: $1" >&2
+      exit 2
+      ;;
+  esac
+done
+
+if [ -z "${HF_TOKEN:-}" ] && [ $DRY_RUN -eq 0 ]; then
+  echo "error: set HF_TOKEN (read+write scope)" >&2
+  exit 1
+fi
+
+PY=${PY:-uv run python}
+
+publish_one() {
+  local pattern="$1"
+  local repo="$2"
+  local type="$3"
+
+  local run
+  run=$(ls -td checkpoints/${pattern}*/ 2>/dev/null | head -1)
+  if [ -z "$run" ]; then
+    echo "no $pattern checkpoint found in checkpoints/" >&2
+    return 1
+  fi
+  run=${run%/}
+
+  if [ ! -f "$run/model.safetensors" ]; then
+    echo "missing model.safetensors in $run — is this a trained checkpoint?" >&2
+    return 1
+  fi
+
+  local has_onnx=""
+  if [ -d "$run/onnx" ]; then
+    has_onnx="(includes ONNX)"
+  fi
+
+  echo "==> $type: $run → hf.co/$repo $has_onnx"
+
+  if [ $DRY_RUN -eq 1 ]; then
+    echo "    [dry-run] would upload safetensors, config, tokenizer, model card${has_onnx:+, onnx/}"
+    return 0
+  fi
+
+  $PY scripts/push_hf.py --run "$run" --repo "$repo" --type "$type" $PRIVATE
+}
+
+if [ $PUBLISH_EMBED -eq 1 ]; then
+  publish_one "embed-" "$ORG/octomind-embed" "embed"
+fi
+
+if [ $PUBLISH_RERANK -eq 1 ]; then
+  publish_one "rerank-" "$ORG/octomind-rerank" "rerank"
+fi
+
+echo
+echo "Done."
+if [ $DRY_RUN -eq 0 ]; then
+  [ $PUBLISH_EMBED -eq 1 ] && echo "  https://huggingface.co/$ORG/octomind-embed"
+  [ $PUBLISH_RERANK -eq 1 ] && echo "  https://huggingface.co/$ORG/octomind-rerank"
+fi

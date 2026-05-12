@@ -21,35 +21,36 @@ typically widens top1/top2 by 2-5x.
 
 ## Pipeline
 
-    capabilities/*/config.toml
-              │
-              ▼
+    capabilities/*/config.toml  +  skills/*/SKILL.md
+                       │
+                       ▼
     scripts/augment_llm.py     (optional) →  data/intents.jsonl
-              │
-              ▼
+                       │
+                       ▼
     scripts/build_dataset.py   →  data/pairs.jsonl, triplets.jsonl, holdout.jsonl
-              │
-              ├──▶ scripts/train.py            →  checkpoints/embed-<ts>/
-              │         │
-              │         ▼
-              │    scripts/eval.py             →  top-k retrieval accuracy
-              │         │
-              │         ▼
-              │    scripts/export_onnx.py     →  checkpoints/embed-<ts>/onnx/
-              │         │
-              │         ▼
-              │    scripts/push_hf.py         →  hf.co/muvon/octomind-embed
-              │
-              └──▶ scripts/train_reranker.py  →  checkpoints/rerank-<ts>/
-                        │
-                        ▼
-                   scripts/eval_reranker.py   →  top-k after rerank
-                        │
-                        ▼
-                   scripts/export_onnx_reranker.py → checkpoints/rerank-<ts>/onnx/
-                        │
-                        ▼
-                   scripts/push_hf.py --type rerank → hf.co/muvon/octomind-rerank
+                       │
+       ┌───────────────┴───────────────┐
+       ▼                               ▼
+    scripts/train.py            scripts/train_reranker.py
+       │                               │
+       ▼                               ▼
+    scripts/eval.py             scripts/eval_reranker.py
+       │                               │
+       ▼                               ▼
+    scripts/export_onnx.py      scripts/export_onnx_reranker.py
+       │                               │
+       ▼                               ▼
+    scripts/push_hf.py          scripts/push_hf.py --type rerank
+       │                               │
+       ▼                               ▼
+    hf.co/muvon/octomind-embed  hf.co/muvon/octomind-rerank
+
+Each HF repo holds BOTH formats:
+- `model.safetensors` + config + tokenizer at the root → consumed by octomind today via octolib's candle-based HuggingFace provider.
+- `onnx/` subdir → available for ORT-based consumers (fastembed user-defined, edge runtimes, browser onnxruntime-web).
+
+`bin/train` runs both training and export by default. Use `--skip-export`
+to skip ONNX export if you don't need it.
 
 ## Setup
 

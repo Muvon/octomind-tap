@@ -1,8 +1,12 @@
-"""Export the fine-tuned sentence-transformer to ONNX for fastembed.
+"""Export the fine-tuned sentence-transformer to ONNX.
 
-fastembed expects an ONNX bundle with model.onnx + tokenizer files. Optimum's
-ORTModelForFeatureExtraction handles the export end-to-end. The resulting
-directory can be uploaded to HuggingFace as-is and loaded by fastembed.
+Optional second artifact alongside safetensors. Octomind currently loads
+safetensors directly via candle, but we publish ONNX too so the model can
+be consumed by ORT-based runtimes (fastembed user-defined path, edge
+deployments, browser via onnxruntime-web, etc).
+
+Output goes under `<run>/onnx/`. The push step uploads the entire
+checkpoint root, so both formats end up on HF.
 """
 
 from __future__ import annotations
