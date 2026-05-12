@@ -1,17 +1,13 @@
 """Fine-tune BGE-small on (anchor, positive) pairs and (anchor, positive,
 negative) triplets.
 
-Two losses combined:
+Two MNRL objectives combined:
 
-  - MultipleNegativesRankingLoss on pairs.jsonl:
-      "phrases describing the SAME capability should be closer than phrases
-       describing DIFFERENT capabilities in the batch"
-  - MultipleNegativesRankingLoss on triplets.jsonl (uses explicit hard negs):
-      "this anchor/positive pair must beat this specific HARD negative"
+  - pairs.jsonl    → in-batch negatives only.
+  - triplets.jsonl → in-batch negatives + one explicit HARD negative per row.
 
-We use MNRL for both because it's the standard for this task. With
-triplets, MNRL also benefits from in-batch negatives AND the explicit
-hard negative — both contribute gradient.
+Both contribute gradient; the triplet objective is what teaches the model
+to separate confusable clusters (e.g. shell vs programming-rust).
 """
 
 from __future__ import annotations
@@ -19,16 +15,17 @@ from __future__ import annotations
 import argparse
 import json
 import random
+import warnings
 from datetime import datetime
 from pathlib import Path
 
+import torch
 import yaml
-from sentence_transformers import (
-    InputExample,
-    SentenceTransformer,
-    losses,
-)
+from sentence_transformers import InputExample, SentenceTransformer
+from sentence_transformers.losses import MultipleNegativesRankingLoss
 from torch.utils.data import DataLoader
+
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 
 def load_pairs(path: Path) -> list[InputExample]:
@@ -81,14 +78,22 @@ def main() -> int:
     model = SentenceTransformer(cfg["base_model"])
     model.max_seq_length = train_cfg["max_seq_length"]
 
-    pair_loader = DataLoader(pairs, shuffle=True, batch_size=train_cfg["batch_size"], drop_last=True)
-    pair_loss = losses.MultipleNegativesRankingLoss(model)
+    pin_memory = torch.cuda.is_available()
+    pair_loader = DataLoader(
+        pairs, shuffle=True, batch_size=train_cfg["batch_size"], drop_last=True, pin_memory=pin_memory
+    )
+    pair_loss = MultipleNegativesRankingLoss(model)
     objectives = [(pair_loader, pair_loss)]
 
     if triplets:
-        # Smaller batch for triplets since each example carries 3 texts.
-        trip_loader = DataLoader(triplets, shuffle=True, batch_size=max(8, train_cfg["batch_size"] // 2), drop_last=True)
-        trip_loss = losses.MultipleNegativesRankingLoss(model)
+        trip_loader = DataLoader(
+            triplets,
+            shuffle=True,
+            batch_size=max(8, train_cfg["batch_size"] // 2),
+            drop_last=True,
+            pin_memory=pin_memory,
+        )
+        trip_loss = MultipleNegativesRankingLoss(model)
         objectives.append((trip_loader, trip_loss))
 
     steps_per_epoch = max(len(loader) for loader, _ in objectives)
@@ -111,7 +116,7 @@ def main() -> int:
     )
 
     (out_dir / "train_config.yaml").write_text(yaml.safe_dump(cfg))
-    print(f"saved fine-tuned model to {out_dir}")
+    print(f"saved fine-tuned embedding model to {out_dir}")
     return 0
 
 

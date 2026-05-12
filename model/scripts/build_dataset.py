@@ -174,19 +174,89 @@ def expand_trigger(trigger: str, rng: random.Random) -> list[str]:
 # ---------------------------------------------------------------------------
 
 
-def load_triggers(caps_dir: Path) -> dict[str, list[str]]:
+_SEMANTIC_RE = re.compile(r"semantic\(\s*['\"]?(.+?)['\"]?\s*\)")
+
+
+def load_capability_triggers(caps_dir: Path) -> dict[str, list[str]]:
+    """Read `triggers = [...]` from each capability's config.toml."""
     out: dict[str, list[str]] = {}
+    if not caps_dir.exists():
+        return out
     for cap_dir in sorted(p for p in caps_dir.iterdir() if p.is_dir()):
         cfg = cap_dir / "config.toml"
         if not cfg.exists():
             continue
         data = tomllib.loads(cfg.read_text())
         triggers = [t.strip() for t in data.get("triggers", []) if t.strip()]
-        if len(triggers) >= 2:
+        if triggers:
             out[cap_dir.name] = triggers
-        else:
-            print(f"[skip] {cap_dir.name}: needs >=2 triggers, has {len(triggers)}", file=sys.stderr)
     return out
+
+
+def load_skill_semantic_phrases(skills_dir: Path) -> dict[str, list[str]]:
+    """Read `semantic(...)` rules from each SKILL.md frontmatter.
+
+    Skills use the same embedding model for their `Semantic { phrase }` rule
+    type — see `octomind/src/mcp/core/skill_auto.rs`. The phrases are the
+    same kind of supervision signal as capability triggers, just sourced
+    from a different file format.
+    """
+    out: dict[str, list[str]] = {}
+    if not skills_dir.exists():
+        return out
+    for skill_dir in sorted(p for p in skills_dir.iterdir() if p.is_dir()):
+        md = skill_dir / "SKILL.md"
+        if not md.exists():
+            continue
+        text = md.read_text()
+        # Frontmatter only — between first two `---` lines.
+        if not text.startswith("---"):
+            continue
+        end = text.find("\n---", 3)
+        if end == -1:
+            continue
+        frontmatter = text[3:end]
+        phrases = [m.group(1).strip() for m in _SEMANTIC_RE.finditer(frontmatter)]
+        phrases = [p for p in phrases if p]
+        if phrases:
+            out[skill_dir.name] = phrases
+    return out
+
+
+def load_all_triggers(caps_dir: Path, skills_dir: Path) -> dict[str, list[str]]:
+    """Merge capability triggers and skill semantic phrases under one label
+    space. If a name exists in both (e.g. `programming-rust` has a capability
+    AND a skill), their phrases are concatenated into one label — they
+    describe the same domain so combining sharpens that cluster.
+    """
+    caps = load_capability_triggers(caps_dir)
+    skills = load_skill_semantic_phrases(skills_dir)
+
+    merged: dict[str, list[str]] = {}
+    for name, phrases in caps.items():
+        merged[name] = list(phrases)
+    for name, phrases in skills.items():
+        if name in merged:
+            seen = set(merged[name])
+            merged[name].extend(p for p in phrases if p not in seen)
+        else:
+            merged[name] = list(phrases)
+
+    filtered: dict[str, list[str]] = {}
+    for name, phrases in merged.items():
+        if len(phrases) >= 2:
+            filtered[name] = phrases
+        else:
+            print(f"[skip] {name}: needs >=2 phrases, has {len(phrases)}", file=sys.stderr)
+
+    n_cap_only = sum(1 for n in caps if n not in skills)
+    n_skill_only = sum(1 for n in skills if n not in caps)
+    n_both = sum(1 for n in caps if n in skills)
+    print(
+        f"sources: {n_cap_only} capabilities, {n_skill_only} skills, "
+        f"{n_both} merged (same name in both) → {len(filtered)} labels"
+    )
+    return filtered
 
 
 def load_llm_intents(path: Path) -> dict[str, list[tuple[str, str]]]:
@@ -301,6 +371,7 @@ def main() -> int:
     root = Path(__file__).resolve().parents[1]
     repo = Path(__file__).resolve().parents[2]
     ap.add_argument("--caps", type=Path, default=repo / "capabilities")
+    ap.add_argument("--skills", type=Path, default=repo / "skills")
     ap.add_argument("--intents", type=Path, default=root / "data" / "intents.jsonl",
                     help="optional LLM-generated paraphrases (from augment_llm.py)")
     ap.add_argument("--pairs-out", type=Path, default=root / "data" / "pairs.jsonl")
@@ -317,11 +388,10 @@ def main() -> int:
     ap.add_argument("--skip-negatives", action="store_true")
     args = ap.parse_args()
 
-    triggers_by_cap = load_triggers(args.caps)
+    triggers_by_cap = load_all_triggers(args.caps, args.skills)
     if not triggers_by_cap:
         print("No capabilities with triggers found.", file=sys.stderr)
         return 1
-    print(f"loaded {len(triggers_by_cap)} capabilities with >=2 triggers")
 
     llm_by_cap = load_llm_intents(args.intents)
     if llm_by_cap:
