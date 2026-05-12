@@ -50,13 +50,43 @@ Combining these improves AI visibility by 30–40%:
 6. Technical infrastructure — schema markup, proper crawl access, fast loading
 7. Fresh content — AI-surfaced URLs are 25.7% fresher than traditional search results
 
+### Information Gain (2026 ranking gate)
+
+Every piece must add something the top 10 results don't already say. Google's 2026 systems reward novel contribution; generic summaries get demoted as AI-derivable filler.
+
+Before drafting, identify the gain:
+- Original data, survey, internal benchmark, or measurement
+- First-hand case study with specifics (numbers, screenshots, timestamps)
+- Contrarian take supported by evidence
+- Synthesis across sources nobody else has combined
+- Practitioner detail the ranking pages skip (edge cases, gotchas, real cost)
+
+If the draft could be reconstructed by an LLM reading the top 10 alone, it has no information gain. Send it back to research, not to publish.
+
+### Experience signals (the "E" Google amplified in 2026)
+
+Google's March 2026 update made first-hand Experience outweigh comprehensive-but-impersonal content. Bake at least one of these into every article that allows it:
+
+- "From the Field" block — original photos, screenshots (blur sensitive data), short video, or a captioned step-through of the team actually doing the thing
+- Time-boxed case study framing — "I tried this for 30 days", "We ran this for one quarter across 12 clients", "Here's the dashboard at week 6"
+- Named-tool specifics — exact versions, exact settings, exact error messages encountered, not abstracted summaries
+- Failure honesty — what didn't work, what we'd do differently, where the data is mixed
+
+Stock photos, AI-illustrated heroes, and "Admin" bylines actively work against this. Every article needs a real human author with credentials, bio, and outbound LinkedIn/publication link.
+
 ### Content Structure Rules
 
 Answer-first sections
 Lead every section with the key takeaway in 1–2 sentences, then elaborate. 44.2% of all AI citations come from the first 30% of text. If an AI engine reads only the first sentence of each section, the reader should still get the full answer.
 
+Featured snippet block (40–50 words after each H2)
+Immediately after each H2, place a tight 40–50 word direct answer to the heading's question. This is the unit Google extracts for Position Zero and the unit AI Overviews quote verbatim. It sits before the longer ~150-word elaboration. Make it self-contained — no "as discussed above", no pronouns referring to earlier sections.
+
 Extractable passages (~150 words)
 Each major point should be a self-contained 134–167 word unit that works as a standalone answer. If someone read only that paragraph, they'd get the complete answer.
+
+Voice-search H2s
+Phrase H2s the way users actually speak the query, not the way SEO tools rank tokens. "What is topical authority?" beats "Topical Authority". "How to set up FAQ schema" beats "FAQ Schema Setup". Voice/AI assistants match conversational phrasing.
 
 Data density
 At least one concrete number, percentage, or statistic per major section. Numerical data gets cited more. Flag data-free sections.
@@ -95,6 +125,16 @@ Pages with comprehensive JSON-LD schema are 2–3x more likely to be cited by AI
 4. Organization Schema — builds entity recognition:
 ```json
 {"@context":"https://schema.org","@type":"Organization","name":"...","url":"...","logo":"...","sameAs":["..."]}
+```
+
+5. Person/Author Schema — author authority is now a ranking signal. Every byline needs credentials and outbound links:
+```json
+{"@context":"https://schema.org","@type":"Person","name":"...","jobTitle":"...","worksFor":{"@type":"Organization","name":"..."},"sameAs":["https://linkedin.com/in/...","https://twitter.com/..."],"alumniOf":"...","knowsAbout":["..."]}
+```
+
+6. Review / AggregateRating Schema — for any page that hosts user reviews, product comparisons, or testimonials. Drives star displays in SERPs and is consumed directly by AI Overviews to assess brand sentiment:
+```json
+{"@context":"https://schema.org","@type":"AggregateRating","ratingValue":"4.7","reviewCount":"312","bestRating":"5"}
 ```
 
 Always use JSON-LD (not microdata). Apply all applicable schemas together for maximum citation probability.

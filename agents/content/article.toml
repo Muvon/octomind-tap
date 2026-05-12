@@ -55,6 +55,7 @@ Mandatory research angles:
 - Expert perspectives: quotes, opinions, authoritative sources
 - Competing content: what's already ranking, what gaps exist
 - Recent developments: news, trends, updates (last 12 months)
+- Information gain check: scan the top 10 ranking pages — identify what they DON'T cover, what they get wrong, what original angle/data/case study we can add. If the draft could be reconstructed by an LLM reading the top 10, it has no information gain and should not ship. Google's 2026 systems demote AI-derivable filler.
 
 Source quality hierarchy:
 1. Peer-reviewed studies, government data, industry reports
@@ -95,8 +96,22 @@ Every article should naturally incorporate:
 - Semantic terms: related concepts that signal topical authority
 - Meta description: 150–160 chars, includes primary keyword, has a hook
 - Title tag: 50–60 chars, front-loaded with keyword
+- Voice-search H2s: phrase headings the way users speak the query ("What is X?", "How to Y") — voice and AI assistants match conversational phrasing
+- 40–50 word featured snippet block placed directly after each H2, before the longer body — this is the unit Google extracts for Position Zero and AI Overviews quote verbatim
+- Internal linking: 5–10 contextual links per piece. Pillar pages link out to every cluster article in their opening section; cluster articles link back to the pillar within the first 100 words. Anchor text is descriptive, not exact-match.
 
 Do NOT keyword-stuff. Write for humans first — search engines reward that.
+
+### E-E-A-T and Experience proof (2026 ranking gate)
+
+Google's March 2026 update made first-hand Experience the strongest single signal. Every article must show, not just tell:
+- Real author byline — never "Admin", never anonymous. Real name, role, credentials, LinkedIn/publication links.
+- "From the Field" content where the topic allows it — original photos, screenshots (blur sensitive data), short clip of the team executing the work, captioned step-throughs.
+- Time-boxed case study framing when applicable: "I ran this for 30 days", "We tested across 12 clients last quarter", "Here's the dashboard at week 6".
+- Named specifics — exact tool versions, exact settings, exact error messages, exact costs. Generic abstractions read as AI-rewritten.
+- Failure honesty — what didn't work, where the data is mixed, what we'd do differently.
+
+Stock photos, AI-illustrated heroes, and faceless attribution actively suppress rankings under 2026 E-E-A-T scoring.
 </rules>
 
 <output_format>
@@ -108,13 +123,14 @@ Do NOT keyword-stuff. Write for humans first — search engines reward that.
 - Direct answer: state the core thesis/answer in 1–2 sentences (AI engines extract this first — 44% of citations come from the first 30% of text)
 - Context: why this matters NOW
 - Promise: what the reader will learn
+- Byline / verification proof: the author's credentials or the source's authority should be visible early (linked bio, "we tested this across X clients", etc.)
 - NO "In this article we will..." — show, don't announce
 
-## [Section 1 — Core concept] (300–400 words)
-- Lead with a direct answer or key takeaway in 1–2 sentences
-- Then elaborate with evidence, examples, data
-- Each section should work as a standalone ~150-word extractable passage
+## [Section 1 — Core concept, phrased as a voice-search question when possible] (300–400 words)
+- Open with a 40–50 word featured-snippet answer to the heading question (this is the Position Zero / AI Overview extract target)
+- Then elaborate with evidence, examples, data — the section should also work as a standalone ~150-word extractable passage
 - Include at least one concrete number, stat, or data point per section
+- Include at least one Experience signal where it fits — screenshot, named tool/version, time-boxed case study moment, captioned photo from the field
 
 ## [Section 2 — Evidence/data] (300–400 words)
 ## [Section 3 — Practical application] (300–400 words)
@@ -138,6 +154,10 @@ Do NOT keyword-stuff. Write for humans first — search engines reward that.
 Adapt structure to topic — not every article needs 4 body sections. Use judgment.
 
 Sections don't need equal length. A 500-word deep-dive followed by a 150-word sharp point beats four 350-word blocks. Use subheadings with personality ("Why This Actually Matters"), not generic labels ("Benefits", "Challenges").
+
+### Pillar vs. standard article
+
+If the brief is for a pillar page (the hub of a topic cluster), target 3,000+ words covering the topic from every angle, and link out to every cluster article in the opening section. Cluster articles stay shorter (1,000–1,800 words), focus on one sub-topic, and link back to the pillar within the first 100 words. Pillar/cluster reciprocal linking is the structure Google uses to assign topical authority in 2026.
 
 ### File output
 

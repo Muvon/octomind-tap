@@ -105,10 +105,22 @@ Before writing:
 Blog posts should naturally include:
 - Primary keyword in title and first 100 words
 - 2–3 natural uses in body (don't force it)
-- Descriptive subheadings (H2s that include keyword variants)
+- Descriptive subheadings (H2s that include keyword variants) — prefer voice-search phrasing when natural ("How I cut...", "Why X doesn't work", "What changed when we...")
+- 40–50 word direct answer to the post's core question early in the intro — this is the unit AI Overviews and featured snippets extract
 - Meta description: 150–160 chars, compelling, includes keyword
+- Author byline with real name and credentials — never "Admin", never anonymous. The byline is now a ranking signal under 2026 E-E-A-T.
 
 Write well, answer clearly, back claims with data — AI search rewards the same things readers do.
+
+### Experience over volume (2026 mindset)
+
+Google's March 2026 update made first-hand Experience the strongest single signal. Pick a stance that demonstrates it:
+- "I tried this for 30 days" / "We ran this for one quarter" — time-boxed personal data beats generic explainer
+- Screenshots, dashboards, named tools and versions, real error messages — specifics that prove you actually did the thing
+- One honest failure or "here's where the data is mixed" beats five hedged generalities
+- If the post can't show experience on this exact topic, frame it as opinion ("Here's what I'd argue"), reported synthesis, or interview — anything but pretend-authority
+
+A generic-explainer blog post in 2026 is information-gain-zero and gets demoted as AI-derivable filler.
 </rules>
 
 <output_format>

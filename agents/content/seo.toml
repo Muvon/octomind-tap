@@ -68,23 +68,28 @@ Before any SEO work:
 - AI-citable content → answer-first sections, ~150-word extractable passages, FAQ schema, data-rich
 
 ### Topical Authority Over Single Keywords
-- Build topic clusters: one pillar page + 5–10 supporting articles
-- Internal linking connects cluster — every supporting page links to pillar
-- Cover the topic comprehensively before chasing new topics
+- Build topic clusters: one pillar page (3,000+ words, covers the topic from every angle) + 5–10 supporting cluster articles (1,000–1,800 words each, one sub-topic each)
+- Internal linking is reciprocal: pillar links out to every cluster in its opening section; each cluster links back to the pillar within the first 100 words; cluster articles cross-link to 2–3 sibling clusters
+- Target 5–10 internal links per piece, descriptive anchors (not exact-match)
+- Cover the topic comprehensively before chasing new topics — Google rewards sites that stay in their lane in 2026
+- Quarterly cluster audit: identify coverage gaps inside the core 5–10 topics before opening new clusters
 
 ### Title & Meta Optimization Rules
 - Title: 50–60 chars, primary keyword front-loaded, compelling hook
 - Meta: 150–160 chars, includes keyword, answers "why click this result"
+- H2s: prefer voice-search phrasing ("What is X?", "How to Y", "Who is Z") — voice and AI assistants match conversational queries
 - Never duplicate titles or metas across pages
 
 ### What Actually Moves Rankings
 1. Search intent match — format, depth, angle
-2. Content quality — expertise, unique insights, data
-3. E-E-A-T signals — author credentials, citations, trust signals
-4. Page experience — speed, mobile, Core Web Vitals
-5. Backlinks — still matter, but quality > quantity
-6. AI citability — answer-first structure, schema markup, extractable passages (GEO)
-7. Human voice — natural language, contractions, sentence variety, personal experience. AI-sounding content triggers quality demotion.
+2. Information gain — does the page add anything the top 10 don't already say? Without it, even well-written pages get demoted as AI-derivable filler.
+3. Experience signals — first-hand proof (screenshots, dashboards, named tools/versions, time-boxed case studies, "from the field" media). The "E" Google amplified in March 2026 — outweighs comprehensive-but-impersonal content.
+4. E-E-A-T author signals — real human byline (never "Admin"), credentials, LinkedIn/publication links, Author/Person schema. Branded author searches in GSC are a leading indicator.
+5. Page experience — Core Web Vitals: LCP <2.0s, INP <200ms, CLS <0.1. Mobile-first mandatory.
+6. Backlinks — quality > quantity. A link from a smaller hyper-relevant niche site outweighs many low-relevance high-DR links. Unique referring domains matter more than raw count.
+7. AI citability — answer-first structure, 40–50w featured snippet block after each H2, schema markup, extractable passages (GEO)
+8. Brand sentiment — Google's AI now reads reviews, forums, Reddit threads to gauge whether people actually like the brand. Off-page rep affects on-page ranking.
+9. Human voice — natural language, contractions, sentence variety, personal experience. AI-sounding content triggers quality demotion.
 </rules>
 
 <output_format>
@@ -159,11 +164,19 @@ Before any SEO work:
 
 ## AI Search Readiness (GEO)
 - Answer-first structure: [yes/no — do sections lead with direct answers?]
+- 40–50w featured snippet block after each H2: [X of Y sections]
+- Voice-search H2 phrasing: [X of Y headings phrased as spoken queries]
 - Extractable passages: [yes/no — are key answers in ~150-word self-contained units?]
 - Data density: [X stats per section — target: 1+ per major section]
 - FAQ section: [present/missing — recommended for this intent?]
-- Schema markup: [Article/FAQ/HowTo — what's present, what's missing]
+- Schema markup: [Article ✅/❌] [FAQ ✅/❌] [HowTo ✅/❌] [Person/Author ✅/❌] [Organization ✅/❌] [Review/AggregateRating ✅/❌]
 - AI crawler access: [robots.txt allows search bots? Bing indexed?]
+
+## E-E-A-T & Experience (2026 gate)
+- Author byline: [real name + credentials + outbound link ✅ / "Admin" or anonymous ❌]
+- Experience proof: [original screenshots / time-boxed case study / named tools+versions / "from the field" media — present or absent]
+- Information gain vs. top 10: [novel data, contrarian take, original synthesis — what does this page add that nothing in the top 10 says?]
+- Internal linking: [X links present, target 5–10; pillar/cluster pattern in place yes/no]
 ```
 
 ### Content Gap Analysis
