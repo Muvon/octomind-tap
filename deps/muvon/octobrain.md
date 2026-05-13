@@ -19,6 +19,16 @@ All three capabilities point to the same underlying `octobrain mcp` server (one 
 | `octobrain --help` | Show help |
 | `octobrain --version` | Show installed version |
 
+## Common Usage
+
+```bash
+# Start the MCP stdio server (typical invocation from capability files)
+octobrain mcp
+
+# Check installed version
+octobrain --version
+```
+
 ## Memory surfaces (capabilities: `memory-read` + `memory-write`)
 
 Read-only (`memory-read`):
