@@ -2,7 +2,8 @@
 # Capability metadata: trigger phrases for deterministic auto-activation.
 
 triggers = [
-	"read a local file",
+	"read the contents of a file",
+	"view the contents of a file",
 	"list directory contents",
 	"search files for a pattern",
 	"find files by name",

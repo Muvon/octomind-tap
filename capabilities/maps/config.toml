@@ -1,10 +1,14 @@
 # capabilities/maps/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
 
+# Triggers must be unambiguously about real-world location / navigation /
+# Google Maps data. Avoid bare "find a place" or "search business" phrasing
+# that also fits generic web search and causes false-positive activations.
 triggers = [
-	"find directions between two places",
-	"search for a place on the map",
-	"get geocoding for an address",
-	"look up nearby businesses",
-	"calculate driving distance",
+	"how do I drive from here to there",
+	"give me directions on the map",
+	"what's the address of these coordinates",
+	"how far is it between these two places",
+	"restaurants near this location on the map",
+	"how long does it take to get there by car",
 ]

@@ -15,7 +15,7 @@ allowed_tools = ["google-maps:*"]
 name = "google-maps"
 type = "stdio"
 command = "npx"
-args = ["-y", "@modelcontextprotocol/server-google-maps"]
-timeout_seconds = 60
+args = ["-y", "@cablate/mcp-google-map", "--stdio"]
+timeout_seconds = 120
 env = { GOOGLE_MAPS_API_KEY = "{{ENV:GOOGLE_MAPS_API_KEY}}" }
 tools = []
