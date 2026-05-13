@@ -1,8 +1,21 @@
 # capabilities/shell/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Shell is the umbrella for "execute a command in the terminal". Triggers
+# intentionally mix generic verbs with concrete tool examples (`cargo`,
+# `swift`, `npm`, `pytest`, …) so the embedding model learns that a user
+# saying "run swift build" wants SHELL, not the programming-swift skill.
+# Programming-* capabilities own language/code expertise; shell owns
+# command execution regardless of which language's CLI is invoked.
 
 triggers = [
 	"execute a shell command",
 	"run a CLI tool",
 	"invoke a binary",
+	"run a build command in the terminal",
+	"execute a test runner from the command line",
+	"run `cargo build` or `swift build` or `pytest`",
+	"invoke a language-specific tool like npm, pip, go, or cargo",
+	"run a one-off command and capture its stdout",
+	"execute a script or shell pipeline",
 ]
