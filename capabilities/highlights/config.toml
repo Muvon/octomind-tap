@@ -1,9 +1,14 @@
 # capabilities/highlights/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
 
+# Scope: Readwise reading highlights — books, articles, saved documents.
+# Avoid generic words like "important", "save", "mark", "annotate" — they
+# false-positive on code edits and note-taking requests.
+
 triggers = [
-	"annotate this code with a highlight",
-	"save a highlighted snippet",
-	"review previous highlights",
-	"mark this section as important",
+	"search my readwise highlights",
+	"find a quote from a book I read",
+	"list my readwise books",
+	"get highlights from this article in readwise",
+	"show my saved readwise documents",
 ]
