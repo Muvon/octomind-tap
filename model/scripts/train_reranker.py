@@ -66,6 +66,50 @@ def load_triplet_rows(path: Path) -> list[tuple[str, str, str]]:
     return rows
 
 
+def _reset_classifier_head(cross_encoder: CrossEncoder) -> None:
+    """Reinitialize the model's classification head, leaving the encoder
+    backbone untouched.
+
+    Handles both architectures we use:
+      - BERT (`BertForSequenceClassification`): `classifier` is a single
+        `nn.Linear(hidden, num_labels)`.
+      - XLM-RoBERTa (`XLMRobertaForSequenceClassification`): `classifier`
+        is `XLMRobertaClassificationHead` with `.dense` + `.out_proj` linears.
+    """
+    import torch.nn as nn
+
+    hf_model = cross_encoder.model
+    classifier = getattr(hf_model, "classifier", None)
+    if classifier is None:
+        raise RuntimeError(
+            "could not find `.classifier` attribute on the loaded model — "
+            "head reset not supported for this architecture"
+        )
+
+    reset_targets: list[nn.Linear] = []
+    if isinstance(classifier, nn.Linear):
+        reset_targets.append(classifier)
+    else:
+        # XLM-RoBERTa-style head: dense + out_proj
+        for name in ("dense", "out_proj"):
+            sub = getattr(classifier, name, None)
+            if isinstance(sub, nn.Linear):
+                reset_targets.append(sub)
+
+    if not reset_targets:
+        raise RuntimeError(
+            f"classifier head shape unrecognized: {type(classifier).__name__} — "
+            "head reset not supported"
+        )
+
+    for lin in reset_targets:
+        nn.init.normal_(lin.weight, std=0.02)
+        if lin.bias is not None:
+            nn.init.zeros_(lin.bias)
+
+    print(f"classifier head reset ({len(reset_targets)} linear layer(s)) — training from scratch on the head")
+
+
 def rows_to_dataset(rows: list[tuple[str, str, str]]) -> Dataset:
     """One row per triplet: anchor / positive / negative.
 
@@ -129,6 +173,15 @@ def main() -> int:
         num_labels=1,
         max_length=train_cfg["max_seq_length"],
     )
+
+    # Optionally reset the pre-trained classifier head before training.
+    # MS-MARCO cross-encoders ship with a saturated head — any plausibly-
+    # relevant pair scores ≈ +9 logit — and a few epochs of fine-tuning
+    # cannot break that calibration. Resetting wipes the head so the model
+    # has to learn discrimination from scratch on our domain. The encoder
+    # backbone stays intact, so we still benefit from MS-MARCO pre-training.
+    if cfg.get("reset_classifier_head", False):
+        _reset_classifier_head(model)
 
     loss = MultipleNegativesRankingLoss(model)
 

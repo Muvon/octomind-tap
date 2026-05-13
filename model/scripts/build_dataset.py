@@ -296,6 +296,77 @@ def cap_max_pairs(items: list[str], cap: int) -> list[tuple[str, str]]:
 
 
 # ---------------------------------------------------------------------------
+# Cross-domain shell augmentation
+# ---------------------------------------------------------------------------
+#
+# Critical disambiguation signal: "run/execute/invoke <language-specific-tool>"
+# must route to `shell`, not to `programming-<that-language>`. The user's
+# intent is command execution; the programming capability is for code-level
+# help (architecture, debugging, idioms).
+#
+# Without these synthetic surfaces in the training set, the embedding model
+# weights the strong domain noun ("swift", "cargo", "pytest") over the
+# generic verb ("run") and routes incorrectly. These pairs teach the model
+# that for run/execute/invoke verbs, the verb dominates the tool name.
+
+_SHELL_TOOLS: list[str] = [
+    # Build / package
+    "cargo build", "cargo test", "cargo run", "cargo check",
+    "swift build", "swift test", "swift package update",
+    "npm install", "npm run build", "npm test", "pnpm install", "yarn install",
+    "pip install -r requirements.txt", "pip install <pkg>", "uv sync", "uv run",
+    "go build", "go test ./...", "go run main.go",
+    "mvn install", "gradle build",
+    "make", "make test", "make clean",
+    "bun install", "bun run",
+    "composer install",
+    # Containers / infra
+    "docker build", "docker compose up", "docker ps",
+    "kubectl get pods", "kubectl apply -f",
+    "terraform plan", "terraform apply",
+    # Scripts / tests
+    "pytest", "pytest -k <name>", "jest", "vitest",
+    "bash script.sh", "sh ./setup",
+    "ruby script.rb",
+    "node script.js",
+    "python script.py",
+    "./run.sh",
+    # Common one-offs
+    "ls -la", "grep -r foo .", "find . -name '*.rs'",
+    "git status", "git log", "git diff",
+]
+
+_SHELL_VERB_TEMPLATES: list[str] = [
+    "run {tool}",
+    "execute {tool}",
+    "invoke {tool}",
+    "I need to run {tool}",
+    "can you run {tool}",
+    "please execute {tool}",
+    "run {tool} in the terminal",
+    "fire off {tool}",
+    "kick off {tool}",
+    "run {tool} for me",
+    "how do I run {tool}",
+    "{tool} isn't working, can you run it",
+]
+
+
+def synth_shell_surfaces() -> list[str]:
+    """Generate cross-domain shell-execution surfaces.
+
+    These belong to the `shell` label even though they name tools from
+    other capability domains (cargo, swift, npm, …). They're the model's
+    only signal that "run <programming-tool>" → shell, not → programming-X.
+    """
+    out: set[str] = set()
+    for tool in _SHELL_TOOLS:
+        for tpl in _SHELL_VERB_TEMPLATES:
+            out.add(tpl.format(tool=tool))
+    return sorted(out)
+
+
+# ---------------------------------------------------------------------------
 # Hard negative mining
 # ---------------------------------------------------------------------------
 
@@ -361,6 +432,107 @@ def mine_hard_negatives(
     return written
 
 
+def mine_hard_negatives_from_retriever(
+    triplets_path: Path,
+    train_surfaces: dict[str, list[str]],
+    embed_model: str,
+    top_k_candidates: int,
+    per_pair: int,
+    max_per_label: int,
+    seed: int,
+) -> int:
+    """Mine hard negatives by running the bi-encoder over training queries
+    and taking its top-K WRONG retrievals as the hard negative pool.
+
+    Rationale: the centroid-based mining picks negatives by inter-centroid
+    similarity (computed once over averaged trigger vectors). That gives
+    domain-neighbor capabilities as a class, not specific phrases the
+    bi-encoder actually retrieves at inference. With this function, the
+    negatives ARE the retrieval competitors — train-time and inference-time
+    distributions match. Standard technique from BGE / ColBERT training
+    recipes.
+
+    `embed_model` should be the FINE-TUNED bi-encoder checkpoint that
+    powers retrieval in production. Mining with that model produces
+    negatives matching its mistake patterns.
+    """
+    import numpy as np
+    from sentence_transformers import SentenceTransformer
+
+    print(f"loading bi-encoder for retrieval-based negative mining: {embed_model}")
+    model = SentenceTransformer(embed_model)
+
+    labels = sorted(train_surfaces.keys())
+
+    # Flatten all surfaces into a single corpus, tracking per-surface label.
+    corpus_texts: list[str] = []
+    corpus_labels: list[str] = []
+    text_to_idx: dict[tuple[str, str], int] = {}
+    label_indices: dict[str, list[int]] = {label: [] for label in labels}
+    for label in labels:
+        for s in train_surfaces[label]:
+            idx = len(corpus_texts)
+            corpus_texts.append(s)
+            corpus_labels.append(label)
+            text_to_idx[(label, s)] = idx
+            label_indices[label].append(idx)
+
+    print(f"encoding {len(corpus_texts)} surfaces for retrieval...")
+    corpus_vecs = model.encode(
+        corpus_texts,
+        normalize_embeddings=True,
+        batch_size=64,
+        convert_to_numpy=True,
+        show_progress_bar=False,
+    )
+
+    rng = random.Random(seed)
+    written = 0
+
+    with triplets_path.open("w") as fp:
+        for label in labels:
+            surfaces = train_surfaces[label]
+            if len(surfaces) < 2:
+                continue
+            own_indices = label_indices[label]
+            label_written = 0
+            pairs = cap_max_pairs(surfaces, max_per_label)
+            rng.shuffle(pairs)
+
+            for a, p in pairs:
+                if label_written >= max_per_label:
+                    break
+
+                a_idx = text_to_idx[(label, a)]
+                # Cosine vs entire corpus, mask own-label entries.
+                scores = corpus_vecs @ corpus_vecs[a_idx]
+                scores = scores.copy()
+                for own in own_indices:
+                    scores[own] = -np.inf
+                # Top-K wrong retrievals (this is what the bi-encoder
+                # actually surfaces at inference time as competitors).
+                top_wrong = np.argsort(-scores)[:top_k_candidates]
+                if len(top_wrong) == 0:
+                    continue
+
+                for _ in range(per_pair):
+                    if label_written >= max_per_label:
+                        break
+                    neg_idx = int(rng.choice(top_wrong))
+                    neg = corpus_texts[neg_idx]
+                    neg_label = corpus_labels[neg_idx]
+                    fp.write(json.dumps({
+                        "anchor": a,
+                        "positive": p,
+                        "negative": neg,
+                        "label": label,
+                        "neg_label": neg_label,
+                    }) + "\n")
+                    written += 1
+                    label_written += 1
+    return written
+
+
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
@@ -386,6 +558,23 @@ def main() -> int:
     ap.add_argument("--neg-per-pair", type=int, default=2)
     ap.add_argument("--max-triplets-per-cap", type=int, default=200)
     ap.add_argument("--skip-negatives", action="store_true")
+    ap.add_argument(
+        "--neg-embed-model",
+        type=str,
+        default=None,
+        help=(
+            "Path or HF id of a bi-encoder to use for retrieval-based hard-negative mining. "
+            "When provided, hard negatives are the bi-encoder's actual top-K WRONG retrievals "
+            "per training query (matches train-time and inference-time distributions). "
+            "When omitted, falls back to centroid-similarity mining with the base BGE-small."
+        ),
+    )
+    ap.add_argument(
+        "--neg-top-k-candidates",
+        type=int,
+        default=20,
+        help="(retrieval mode) per-anchor top-K wrong retrievals to sample negatives from.",
+    )
     args = ap.parse_args()
 
     triggers_by_cap = load_all_triggers(args.caps, args.skills)
@@ -426,6 +615,14 @@ def main() -> int:
                 # Also expand the LLM intent with templates for extra surface.
                 surfaces.update(expand_trigger(intent, rng))
 
+            # 3. Cross-domain shell surfaces — for the `shell` label only.
+            # These are synthetic "run <TOOL>" patterns covering language-
+            # specific CLIs (cargo, swift, npm, …). They teach the model
+            # that the verb dominates the tool name for routing decisions.
+            if label == "shell":
+                for s in synth_shell_surfaces():
+                    surfaces.add(s)
+
             surfaces_list = sorted(surfaces)
             train_surfaces[label] = surfaces_list
 
@@ -460,16 +657,28 @@ def main() -> int:
         print("skipping hard-negative mining (--skip-negatives)")
         return 0
 
-    triplets = mine_hard_negatives(
-        args.triplets_out,
-        train_surfaces,
-        args.base_model,
-        args.neg_top_k_caps,
-        args.neg_per_pair,
-        args.max_triplets_per_cap,
-        args.seed,
-    )
-    print(f"wrote {triplets} hard-negative triplets to {args.triplets_out}")
+    if args.neg_embed_model:
+        triplets = mine_hard_negatives_from_retriever(
+            args.triplets_out,
+            train_surfaces,
+            args.neg_embed_model,
+            args.neg_top_k_candidates,
+            args.neg_per_pair,
+            args.max_triplets_per_cap,
+            args.seed,
+        )
+        print(f"wrote {triplets} retrieval-aligned hard-negative triplets to {args.triplets_out}")
+    else:
+        triplets = mine_hard_negatives(
+            args.triplets_out,
+            train_surfaces,
+            args.base_model,
+            args.neg_top_k_caps,
+            args.neg_per_pair,
+            args.max_triplets_per_cap,
+            args.seed,
+        )
+        print(f"wrote {triplets} centroid-based hard-negative triplets to {args.triplets_out}")
     return 0
 
 

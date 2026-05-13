@@ -26,6 +26,7 @@ SKIP_EXPORT=0
 RESUME=""
 TRAIN_EMBED=1
 TRAIN_RERANK=0
+REALIGN_NEGS=0
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -55,6 +56,15 @@ while [ $# -gt 0 ]; do
       TRAIN_RERANK=1
       shift
       ;;
+    --realign-negs)
+      # Re-mine triplets.jsonl using the most recent FT bi-encoder so the
+      # reranker's training negatives match its inference-time competitors.
+      # Implies a dataset rebuild even if --skip-build was set; only the
+      # triplets path is affected (pairs.jsonl is rewritten with the same
+      # content).
+      REALIGN_NEGS=1
+      shift
+      ;;
     *)
       echo "unknown arg: $1" >&2
       exit 2
@@ -69,9 +79,21 @@ if [ $LLM -eq 1 ] && [ $SKIP_BUILD -eq 0 ]; then
   $PY scripts/augment_llm.py $RESUME
 fi
 
-if [ $SKIP_BUILD -eq 0 ]; then
+BUILD_EXTRA_ARGS=""
+if [ $REALIGN_NEGS -eq 1 ]; then
+  LATEST_EMBED=$(ls -td checkpoints/embed-*/ 2>/dev/null | head -1)
+  LATEST_EMBED=${LATEST_EMBED%/}
+  if [ -z "$LATEST_EMBED" ]; then
+    echo "--realign-negs needs a fine-tuned bi-encoder in checkpoints/embed-*/ but none was found" >&2
+    exit 1
+  fi
+  echo "==> using fine-tuned bi-encoder for retrieval-aligned negative mining: $LATEST_EMBED"
+  BUILD_EXTRA_ARGS="--neg-embed-model $LATEST_EMBED"
+fi
+
+if [ $SKIP_BUILD -eq 0 ] || [ $REALIGN_NEGS -eq 1 ]; then
   echo "==> build_dataset.py"
-  $PY scripts/build_dataset.py
+  $PY scripts/build_dataset.py $BUILD_EXTRA_ARGS
 fi
 
 if [ $TRAIN_EMBED -eq 1 ]; then

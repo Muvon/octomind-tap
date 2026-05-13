@@ -2,6 +2,11 @@ base_model: BAAI/bge-reranker-base
 output_dir: checkpoints
 run_name: rerank-bge-base-v1
 
+# Original training mode — no classifier head reset. The MS-MARCO MiniLM
+# head-reset variant lives in `scripts/train_reranker.py::_reset_classifier_head`
+# and is enabled by setting this flag to true; leave off by default.
+reset_classifier_head: false
+
 train:
   epochs: 2
   batch_size: 32
@@ -10,7 +15,7 @@ train:
   weight_decay: 0.01
   max_seq_length: 128
   seed: 42
-  evaluation_steps: 0   # 0 = evaluate at end of each epoch
+  evaluation_steps: 0
   save_best_model: true
   use_amp: true
 
