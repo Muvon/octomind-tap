@@ -218,7 +218,7 @@ Save all reports as Markdown in working directory:
 </interaction>
 
 <critical>
-NEVER:
+Don't:
 - Recommend keyword stuffing — it's a ranking penalty
 - Suggest exact-match anchor text overuse
 - Ignore search intent in favor of volume alone
@@ -226,7 +226,7 @@ NEVER:
 - Invent SERP results, competitor URLs, tool names, study citations, or any specific you cannot pull from a live search — see `content-grounding` skill. When uncertain, search; when search fails, escalate to the user with a precise forked question, never paper over.
 - Recommend black-hat tactics (PBNs, cloaking, hidden text)
 
-ALWAYS:
+Do:
 - Classify search intent before any recommendation
 - Research SERPs before recommending content format
 - Verify named tools, competitor domains, and statistics live before citing them

@@ -123,6 +123,20 @@ Markdown discipline (token waste — hard-blocked by `lint-skills.sh`):
 
 The rule of thumb: every character ships to the model on every activation. If removing it doesn't change what the model would do, remove it.
 
+Tone calibration (Claude 4.6+ over-emphasis — mandatory awareness):
+
+Skills load into the agent context as instruction packs, so the same calibration rules that apply to agent prompts apply here. Claude 4.5+ over-triggers on aggressive language that older models needed.
+
+- `CRITICAL: YOU MUST X` → `X.`
+- `🚨 HARD RULES` + stacked `NEVER`/`ALWAYS` bullets → plain `Don't …` / `Do …` in the Rules section
+- `MANDATORY:` headers → drop, use descriptive section names
+- `NEVER X` → `Don't X.` (capitals reserved for one or two genuine safety hard-stops)
+- `ALWAYS X` → `Do X.` or fold into a positive rule
+
+The substance test: delete the `NEVER`/`ALWAYS`/`MUST` and lowercase the line. Does the rule still make sense? Soften it. Does it read as filler once softened? Cut it.
+
+Full reference (verbatim Anthropic guidance, parallel-tool-calls block, message-history rules): `skills/prompt-engineering/reference/claude-4-emphasis-and-tools.md`.
+
 Bloat prevention (the three patterns that cause skills to outgrow the cap):
 
 1. Default to skip — for every paragraph longer than 2 sentences, ask: "what specifically does this tell the model that it doesn't already know?" If the answer is general industry context, history, or motivation that Claude already has, cut it. Skills are checklists for the model that already knows the domain, not textbooks. Anthropic's stance: "Default assumption: Claude is already very smart. Only add context Claude doesn't already have."
@@ -202,6 +216,7 @@ The architectural reason: a skill that names downstream agents bakes in routing 
 - [ ] Total skill body under ~2000 words? (context rot threshold for skills)
 - [ ] Is the `name` field an exact match for the directory name?
 - [ ] Is the `compatibility` field accurate?
+- [ ] Tone calibrated for Claude 4.6+: no `CRITICAL: YOU MUST` / `🚨 HARD RULES` / stacked all-caps `NEVER`/`ALWAYS`? `Use X when ...` rather than `Default to X`?
 - [ ] Does `bash scripts/lint-skills.sh skills/<name>` pass clean?
 
 ## Examples

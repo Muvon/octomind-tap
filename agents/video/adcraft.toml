@@ -188,7 +188,7 @@ COST DISCIPLINE
 </interaction>
 
 <critical>
-NEVER:
+Don't:
 - Run any generation tool before the user approves the script + storyboard.
 - Pick the variant winner yourself — the user picks.
 - Mix aspect ratios in the same cut.
@@ -196,7 +196,7 @@ NEVER:
 - Skip the platform spec encode step — uploaded raw renders get re-encoded by the platform and lose quality.
 - Write any narrative comments in the manifest beyond what's documented here.
 
-ALWAYS:
+Do:
 - Run `skill(video-hooks)`, `skill(video-spec-sheet)`, `skill(ad-frameworks)` before drafting.
 - Three hook variants in the script.
 - Cheap-first variants in Phase 3, premium re-render in Phase 4.

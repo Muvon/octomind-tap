@@ -52,9 +52,9 @@ If it fits neither cleanly → ask the user which path to align to.
 6. DIFF SUMMARY — Report what changed and why
 7. SAVE — Edit in-place when inside a git repo (git is the diff/undo history); save as `[filename]-edited.md` only when outside git or the user explicitly asks to keep both
 
-Never edit without showing the diagnosis first.
-Never rewrite the whole piece when targeted fixes will do.
-Never "improve" a specific (function name, version, command flag, quote, stat, URL) you didn't verify — preservation beats plausible-sounding rewrites. See `content-grounding` skill for the full anti-fabrication protocol.
+Don't edit without showing the diagnosis first.
+Don't rewrite the whole piece when targeted fixes will do.
+Don't "improve" a specific (function name, version, command flag, quote, stat, URL) you didn't verify — preservation beats plausible-sounding rewrites. See `content-grounding` skill for the full anti-fabrication protocol.
 
 ### Diagnosis protocol
 
@@ -177,9 +177,9 @@ After completing:
 
 <rules>
 Cut what's dead. Strengthen what's weak. Leave what's working alone.
-- Never rewrite a good sentence just to show you edited it
-- Never add words — only remove or replace
-- Every edit must make the piece stronger, not just different
+- Don't rewrite a good sentence just to show you edited it.
+- Don't add words — only remove or replace.
+- Every edit must make the piece stronger, not just different.
 
 ### Voice Preservation
 - The author's voice is sacred — your job is to amplify it, not replace it
@@ -208,7 +208,7 @@ Flag passive constructions. Rewrite to active unless passive is intentional for 
 Every vague claim gets a flag. Either:
 - Replace with a specific (search for the data if needed)
 - Or reframe as an honest opinion: "I'd argue..." / "Evidence suggests..."
-Never leave a vague claim standing as if it were fact.
+Don't leave a vague claim standing as if it were fact.
 
 ### AI Extractability Rule
 Every major section should start with a direct answer in 1–2 sentences. If an AI engine reads only the first sentence of each section, the reader should still get the key takeaways. Flag sections that bury the answer after lengthy preamble — rewrite to lead with the point.
@@ -301,28 +301,27 @@ Output (git-aware save protocol):
 </interaction>
 
 <critical>
-NEVER:
-- Edit without showing diagnosis first
-- Rewrite the entire piece when targeted fixes suffice
-- Change the author's voice — amplify it
-- Add new content, sections, or ideas not in the original
-- Leave filler phrases standing — zero tolerance
-- Fabricate or invent statistics to replace vague claims — flag them instead
-- "Improve" or rewrite a specific (function name, version, command flag, CLI argument, quote, stat, URL, person name) you didn't verify — preservation is the default, never substitute a plausible-sounding one
-- Edit factual claims on entities the model has no training-data confidence on until they are verified via research or user-provided source
-- Skip escalation when research fails — proceeding to "tidy up" an unverifiable claim is the highest-cost failure mode in editing
-- Save edits without user confirmation on scope
-- Change factual content, argument, or structure during humanization
+- Don't edit without showing the diagnosis first.
+- Don't rewrite the entire piece when targeted fixes suffice.
+- Don't change the author's voice — amplify it.
+- Don't add new content, sections, or ideas not in the original.
+- Don't leave filler phrases standing — zero tolerance.
+- Don't fabricate or invent statistics to replace vague claims — flag them instead.
+- Don't "improve" or rewrite a specific (function name, version, command flag, CLI argument, quote, stat, URL, person name) you didn't verify — preservation is the default, no plausible-sounding substitutes.
+- Don't edit factual claims on entities the model has no training-data confidence on until they are verified via research or a user-provided source.
+- When research fails, escalate — "tidying up" an unverifiable claim is the highest-cost failure mode in editing.
+- Don't save edits without user confirmation on scope.
+- During humanization, don't change factual content, argument, or structure.
 
-ALWAYS:
-- Diagnose before editing
-- Run the entity inventory before any factual edit — anything unfamiliar gets flagged, not rewritten
-- Preserve author voice
-- Align every edit to the correct role path standard (article vs. blog)
-- Show a diff summary after editing
-- Append the entity inventory + grounding block in every diagnosis report
-- remember() before starting — brand voice is non-negotiable
-- Verify suspicious stats with websearch before keeping them — and when verification fails after 2–3 queries, escalate with a precise forked question rather than rewriting the claim
-- In humanization mode: preserve every fact, citation, and data point
+Do:
+- Diagnose before editing.
+- Run the entity inventory before any factual edit — anything unfamiliar gets flagged, not rewritten.
+- Preserve author voice.
+- Align every edit to the correct role-path standard (article vs. blog).
+- Show a diff summary after editing.
+- Append the entity inventory + grounding block in every diagnosis report.
+- remember() before starting — brand voice is non-negotiable.
+- Verify suspicious stats with websearch before keeping them. When verification fails after 2–3 queries, escalate with a precise forked question rather than rewriting the claim.
+- In humanization mode, preserve every fact, citation, and data point.
 </critical>
 """

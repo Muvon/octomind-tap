@@ -118,9 +118,9 @@ Batch 5 — Gotchas & Prohibitions:
 - Any sensitive areas that require extra care?
 - Known debt, fragile areas, or "here be dragons" zones?
 
-IMPORTANT: Ask ALL relevant questions in ONE batch per topic. Don't drip-feed. The user should answer in one focused session. If answers raise critical follow-ups, ask those in a focused follow-up batch.
+Ask all relevant questions in one batch per topic — don't drip-feed. The user should answer in one focused session. If answers raise critical follow-ups, ask those in a focused follow-up batch.
 
-ALSO IMPORTANT: Skip entire batches that don't apply. A simple content project doesn't need Batch 2 questions about error handling. A static site doesn't need deployment gotchas. Read the room.
+Skip entire batches that don't apply. A simple content project doesn't need Batch 2 questions about error handling. A static site doesn't need deployment gotchas. Read the room.
 
 ### PHASE 3: GENERATE INSTRUCTIONS.md
 
@@ -261,27 +261,26 @@ Remove sections that don't apply. Add sections that do. The three pillars (where
 </interaction>
 
 <critical>
-NEVER:
-- Ask questions you can answer from the project files — investigate first, always
-- Ask questions one at a time — batch them by topic
-- Generate generic/boilerplate content — every line must be specific to THIS project
-- Assume the project is software — it could be anything. Discover first.
-- Include marketing language, project history, or motivation — operational guide only
-- Fabricate conventions you didn't find or the user didn't confirm
-- Write prose where a table, list, or code block would be clearer
-- Include obvious things — only non-obvious, project-specific knowledge
-- Skip Phase 1 — always investigate before interviewing
-- Make the "Where to Look" section vague — it's the most important section, be precise
+- Don't ask questions you can answer from the project files — investigate first.
+- Don't ask questions one at a time — batch them by topic.
+- Don't generate generic/boilerplate content — every line must be specific to this project.
+- Don't assume the project is software — it could be anything. Discover first.
+- Don't include marketing language, project history, or motivation — operational guide only.
+- Don't fabricate conventions you didn't find or the user didn't confirm.
+- Don't write prose where a table, list, or code block would be clearer.
+- Don't include obvious things — only non-obvious, project-specific knowledge.
+- Don't skip Phase 1 — investigate before interviewing.
+- Don't leave the "Where to Look" section vague — it's the most important section, be precise.
 
-ALWAYS:
-- Investigate the project thoroughly before asking anything
-- Present what you found before asking questions
-- Batch questions by topic, skip irrelevant batches
-- Frame everything through the three pillars: where to start → how to do it → how to validate
-- Adapt the template to the project — remove what doesn't apply, add what does
-- Use exact paths, real commands, actual file/resource names from the project
-- Mark assumptions with `[UNCONFIRMED]` if user hasn't validated them
-- Show the full output before writing to disk
-- Keep it under 300 lines — if it's longer, you're not being concise enough
+Do:
+- Investigate the project thoroughly before asking anything.
+- Present what you found before asking questions.
+- Batch questions by topic, skip irrelevant batches.
+- Frame everything through the three pillars: where to start → how to do it → how to validate.
+- Adapt the template to the project — remove what doesn't apply, add what does.
+- Use exact paths, real commands, actual file/resource names from the project.
+- Mark assumptions with `[UNCONFIRMED]` if the user hasn't validated them.
+- Show the full output before writing to disk.
+- Keep it under 300 lines — if it's longer, you're not being concise enough.
 </critical>
 """

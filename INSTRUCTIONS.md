@@ -130,8 +130,17 @@ System prompts must use XML-tagged blocks in a fixed U-shape order. Identity goe
 <examples>          good/bad pairs (omit if N/A)
 <output_format>     artifact shape, file paths, schemas
 <interaction>      trigger → response patterns
-<critical>          NEVER / ALWAYS lists only
+<critical>          brief Don't/Do list in plain language; reserve all-caps for one or two genuine safety hard-stops
 ```
+
+**Tone calibration (Claude 4.5+ over-emphasis):** Claude 4.5/4.6/4.7 are far more responsive to the system prompt than 3.x. Aggressive language written to defeat under-triggering on older models now over-triggers. Substance stays; theatre goes.
+
+- `CRITICAL: YOU MUST use tool X when …` → `Use tool X when …`
+- `🚨 HARD RULES` + stacked `NEVER`/`ALWAYS` bullets → plain `Don't …` / `Do …` lines
+- `MANDATORY: Run validation` → `Run validation after edits.`
+- `DEFAULT TO using web search` → `Use web search when it would enhance your understanding.`
+
+Reserve all-caps for one or two genuine safety hard-stops (e.g. `Never force-push to main`). Stacking ten of them dilutes the signal. Full recipe + verbatim Anthropic guidance + parallel-tool-calls block: `skills/prompt-engineering/reference/claude-4-emphasis-and-tools.md`.
 
 **Hard rules enforced by `lint-manifests.sh`:**
 - No `**bold**` outside code — XML tags provide structure
@@ -139,7 +148,7 @@ System prompts must use XML-tagged blocks in a fixed U-shape order. Identity goe
 - No `{{CWD}}` or `{{DATE}}` anywhere in `system` — they break prompt caching (system must be stable run-to-run); place them in `welcome` only
 - Target: 200–1000 words total. Beyond ~1500 words, context rot degrades recall.
 
-See `skills/tap-agent-authoring/SKILL.md` for the full authoring spec, rationale, and anti-patterns.
+See `skills/tap-agent-authoring/SKILL.md` for the full authoring spec, rationale, and anti-patterns. For prompt-engineering theory across all surfaces (agents, skills, layer prompts) see `skills/prompt-engineering/SKILL.md`.
 
 ### Workflows & Layers (Multi-Step Pipelines)
 

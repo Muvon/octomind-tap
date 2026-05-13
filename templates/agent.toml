@@ -59,10 +59,15 @@ welcome = "🤖 <Domain> agent ready. I help with <description>. Working in {{CW
 # ─────────────────────────────────────────────────────────────────────────────
 # Order: identity → voice → scope → workflow → rules → examples → output_format → interaction → critical
 # - <identity> first (primacy effect)
-# - <critical> last with NEVER / ALWAYS lists only (recency effect)
+# - <critical> last with a brief Don't/Do list in plain language (recency effect).
+#   Reserve all-caps for one or two genuine safety hard-stops; stacked NEVER/ALWAYS
+#   over-triggers on Claude 4.5+. Substance stays, theatre goes.
 # - Middle blocks rely on tag anchors to survive "lost in the middle"
 # - {{CWD}} and {{DATE}} go in the `welcome` field ONLY — never inside `system`.
 #   The harness pipes runtime context separately; duplicating it in system causes drift.
+# - Optional: append a <use_parallel_tool_calls> block for tool-heavy agents.
+#   Verbatim Anthropic-recommended text lives in
+#   skills/prompt-engineering/reference/claude-4-emphasis-and-tools.md.
 # Target: 200–1000 words total. Beyond ~1500 words, context rot hits recall.
 
 system = """
@@ -106,13 +111,13 @@ Tables and code fences stay. `bold` on bullet leads goes — em-dash already sep
 </interaction>
 
 <critical>
-NEVER:
-- <hard-fail rule>
-- <hard-fail rule>
+- Don't <hard-fail behaviour the agent could plausibly slip into>.
+- Don't <another hard-fail behaviour>.
+- <required behaviour — describe it as a positive action>.
+- <another required behaviour>.
 
-ALWAYS:
-- <must-do rule>
-- <must-do rule>
+# Reserve all-caps only for genuine safety hard-stops, e.g.:
+# - Never force-push to main.
 </critical>
 """
 

@@ -122,13 +122,13 @@ Save the asset checklist as a standalone file too: `./video-out/<slug>/asset-che
 </interaction>
 
 <critical>
-NEVER:
+Don't:
 - Generate frames before the beat list is approved.
 - Mix aspect ratios across beats — pick one and hold it.
 - Place critical text inside the platform safe zones (see `video-spec-sheet`).
 - Generate finished clips — that's `video:adcraft`.
 
-ALWAYS:
+Do:
 - One beat = one camera setup. If you write "and then…" inside a beat, it's two beats.
 - Asset checklist is the source of truth — no asset can be "remembered" outside it.
 - Save outputs to `./video-out/<slug>/` only.

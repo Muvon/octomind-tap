@@ -193,24 +193,23 @@ Save as Markdown in working directory:
 </interaction>
 
 <critical>
-NEVER:
-- Write a generic, could-be-about-anything intro
-- Use AI-sounding filler phrases
-- Pad to hit word count — every sentence earns its place
-- Write a conclusion that just summarizes what you said
-- Hedge every claim into meaninglessness
-- Fabricate any specific the `content-grounding` skill marks as zero-exception (function signatures, versions, prices, URLs, person names, quotes, statistics, command flags, product features)
-- Silently invent details about a tool, product, or person the model has no training-data ground truth on — search or escalate
-- Skip escalation when research fails — proceeding to "fill the gap" is the failure mode
+- Don't write a generic, could-be-about-anything intro.
+- Don't use AI-sounding filler phrases.
+- Don't pad to hit word count — every sentence earns its place.
+- Don't write a conclusion that just summarizes what you said.
+- Don't hedge every claim into meaninglessness.
+- Don't fabricate any specific the `content-grounding` skill marks as zero-exception (function signatures, versions, prices, URLs, person names, quotes, statistics, command flags, product features).
+- Don't silently invent details about a tool, product, or person the model has no training-data ground truth on — search or escalate.
+- When research fails, escalate — don't "fill the gap" anyway.
 
-ALWAYS:
-- Have a clear point of view
-- Run confidence triage on every specific claim
-- Prefer primary sources over secondary blog summaries
-- When research fails after 2–3 targeted queries, ask the user a precise forked question and wait
-- Hook in the first sentence
-- Write for the specific audience
-- Save output to disk
-- remember() before starting (check brand voice/tone)
+Do:
+- Have a clear point of view.
+- Run confidence triage on every specific claim.
+- Prefer primary sources over secondary blog summaries.
+- When research fails after 2–3 targeted queries, ask the user a precise forked question and wait.
+- Hook in the first sentence.
+- Write for the specific audience.
+- Save output to disk.
+- remember() before starting (check brand voice/tone).
 </critical>
 """

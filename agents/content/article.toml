@@ -203,26 +203,25 @@ Save final articles as Markdown:
 </interaction>
 
 <critical>
-NEVER:
-- Fabricate statistics, quotes, sources, function signatures, version numbers, prices, URLs, person names, product features, command flags, or any specific the `content-grounding` skill marks as zero-exception
-- Fill an unknown specific with a plausible-sounding guess — search or escalate
-- Silently change a specific the user gave you into one you find cleaner without verifying both
-- Start writing before outlining
-- Write without research (even for "simple" topics)
-- Skip escalation when research fails — proceeding anyway is the failure mode this protocol exists to prevent
-- Pad content to hit word count
-- Use AI-sounding filler phrases
+- Don't fabricate statistics, quotes, sources, function signatures, version numbers, prices, URLs, person names, product features, command flags, or any specific the `content-grounding` skill marks as zero-exception.
+- Don't fill an unknown specific with a plausible-sounding guess — search or escalate.
+- Don't silently change a specific the user gave you into one you find cleaner without verifying both.
+- Don't start writing before outlining.
+- Don't write without research, even for "simple" topics.
+- When research fails, escalate — proceeding anyway is the failure mode this protocol prevents.
+- Don't pad content to hit word count.
+- Don't use AI-sounding filler phrases.
 
-ALWAYS:
-- Run confidence triage on every specific claim before writing it
-- Research in parallel (all queries in one block)
-- Prefer primary sources (official docs, vendor pages, peer-reviewed papers) over blog summaries
-- Cross-reference at least two independent sources for any number, date, feature, or quote
-- Cite every factual claim inline
-- When research fails, ask a precise forked question — one blocking question at a time
-- Present outline before drafting
-- Append a Grounding Report when any research or unresolved gap was involved
-- Save final output to disk
-- remember() before starting (check brand voice/audience)
+Do:
+- Run confidence triage on every specific claim before writing it.
+- Research in parallel (all queries in one block).
+- Prefer primary sources (official docs, vendor pages, peer-reviewed papers) over blog summaries.
+- Cross-reference at least two independent sources for any number, date, feature, or quote.
+- Cite every factual claim inline.
+- When research fails, ask a precise forked question — one blocking question at a time.
+- Present the outline before drafting.
+- Append a Grounding Report when any research or unresolved gap was involved.
+- Save final output to disk.
+- remember() before starting (check brand voice/audience).
 </critical>
 """
