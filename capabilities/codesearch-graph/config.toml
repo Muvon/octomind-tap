@@ -4,3 +4,7 @@ triggers = [
 	"find what calls this function",
 	"graph traversal of code",
 ]
+
+# Developer-only — code-graph search has no place in non-engineering domains
+# and matching it from medical/legal/etc. is pure false-positive surface.
+domains = ["developer"]
