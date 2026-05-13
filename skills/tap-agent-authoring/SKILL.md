@@ -82,7 +82,7 @@ The eight-block order, top to bottom:
 <examples>          ← good/bad pairs (omit if not applicable)
 <output_format>     ← exact artifact shape, file location, schema
 <interaction>       ← trigger → response patterns
-<critical>          ← recency: NEVER / ALWAYS lists only
+<critical>          ← recency: brief Don't/Do list in plain language; reserve all-caps for one or two genuine safety hard-stops
 ```
 
 Why this order:
@@ -111,7 +111,7 @@ Block-by-block authoring rules:
 - `<examples>` — Bad → Good pairs are the strongest format. Skip this block if the agent's output is freeform.
 - `<output_format>` — Exact structure of the artifact. If the agent saves files, name the path pattern (`./video-out/<slug>/script.md`). If the agent returns markdown blocks, show the schema.
 - `<interaction>` — Trigger patterns. "When user says X → do Y". Especially "Ambiguous → ask ONE clarifying question."
-- `<critical>` — Two named lists: NEVER and ALWAYS. Hard fails on top, must-dos on bottom. Nothing else — no CWD/DATE placeholders, no preamble.
+- `<critical>` — Brief Don't/Do list in plain language: things the model could plausibly get wrong if not warned, and the corresponding correct action. Reserve all-caps `NEVER`/`ALWAYS` for one or two genuine safety hard-stops (e.g. `Never force-push to main`); stacking more dilutes attention on Claude 4.6+ (see "Tone calibration"). No CWD/DATE placeholders, no preamble, no `🚨 HARD RULES` theatre.
 
 Token discipline (Claude 4.7 / 2026):
 - Target: 200–1000 words for the full system prompt is the production sweet spot
@@ -132,8 +132,24 @@ Anti-patterns that break the structure:
 - `IDENTITY` / `WORKFLOW` as plain `##` headers — Claude treats them as content, not structural anchors
 - Long preambles before `<identity>` (e.g. "Welcome to this agent...") — wastes the primacy slot
 - Critical rules buried in the middle — they get "lost"
-- `<critical>` block with paragraphs of explanation — keep it tight: NEVER / ALWAYS bullet lists, that's it
+- `<critical>` block with paragraphs of explanation — keep it tight: brief Don't/Do bullets, that's it
+- Stacked theatrical emphasis — `🚨 HARD RULES`, `CRITICAL: YOU MUST`, ten bullets all starting `NEVER` or `ALWAYS`. On Claude 4.5+ this over-triggers and dilutes signal. See "Tone calibration" below.
 - Embedding reference documentation (CLI commands, config schema, API listings) inside the system prompt — this ships to the model on every activation, even for unrelated questions. Reference content belongs in skills loaded on demand, not in `system`. The agent's system prompt is identity + behaviour + scope; everything that's "the user might ask about" goes in skills.
+
+Tone calibration (Claude 4.6+ over-emphasis, mandatory awareness):
+
+Claude 4.5+ is far more responsive to the system prompt than 3.x. Aggressive language written to defeat under-triggering on older models now over-triggers. Substance stays; theatre goes.
+
+- `CRITICAL: YOU MUST use tool X when …` → `Use tool X when …`
+- `🚨 HARD RULES` + 10 stacked `NEVER` bullets → `<critical>` with plain `Don't …` / `Do …` lines
+- `MANDATORY: Run validation` → `Run validation after edits.`
+- `NEVER assert X you haven't verified` → `Don't assert X you haven't verified.`
+- `DEFAULT TO using web search` → `Use web search when it would enhance your understanding.`
+- `After every 3 tool calls, summarize progress` → drop on 4.7 (internalised)
+
+Reserve all-caps and "must" for one or two genuine safety hard-stops (e.g. `Never force-push to main`). The substance test: delete the `NEVER`/`ALWAYS`/`MUST` and lowercase the line. Does the rule still make sense? Soften it. Does it read as filler once softened? Cut it.
+
+Full reference (verbatim Anthropic guidance, parallel-tool-calls block, message-history rules): `skills/prompt-engineering/reference/claude-4-emphasis-and-tools.md`.
 
 Markdown discipline inside XML blocks (token economy — mandatory):
 
@@ -272,7 +288,8 @@ Before writing any agent manifest, verify:
 - [ ] Do all needed capabilities exist? If not, use `tap-capability-authoring` skill first.
 - [ ] System prompt uses XML-tagged blocks in the canonical order? (`<identity>` → `<voice>` → `<scope>` → `<workflow>` → `<rules>` → `<examples>` → `<output_format>` → `<interaction>` → `<critical>`)
 - [ ] `<identity>` is the first thing the model sees? (no preamble before it)
-- [ ] `<critical>` is last and contains NEVER/ALWAYS lists only? (no CWD/DATE placeholders inside system)
+- [ ] `<critical>` is last and contains a brief Don't/Do list in plain language? (no `🚨 HARD RULES` theatre, no CWD/DATE placeholders, no stacked all-caps `NEVER`/`ALWAYS` — reserve those for one or two genuine safety hard-stops)
+- [ ] Tone calibrated for Claude 4.6+: `Use X when ...` rather than `Default to X` / `CRITICAL: YOU MUST X`?
 - [ ] `{{CWD}}` and `{{DATE}}` appear in the `welcome` field, NOT in `system`?
 - [ ] Total system prompt under ~1500 words? (context rot threshold)
 - [ ] Is the system prompt specific enough? (domain knowledge, tools, patterns)
@@ -329,14 +346,11 @@ Code edits via Edit/Write tools. After non-trivial changes, run `cargo check` an
 </interaction>
 
 <critical>
-NEVER:
-- Add `unsafe` without a SAFETY comment.
-- `unwrap()` in production code paths.
-- Disable clippy lints to silence warnings — fix the underlying issue.
-
-ALWAYS:
+- Don't add `unsafe` without a SAFETY comment naming the invariant.
+- Don't use `unwrap()` in production code paths.
+- Don't disable clippy lints to silence warnings — fix the underlying issue.
 - Run `cargo check` after edits.
-- Use the simplest type that fits — don't reach for `Box<dyn>` when a generic works.
+- Use the simplest type that fits — reach for `Box<dyn>` only when a generic doesn't work.
 </critical>
 """
 welcome = "🦀 Rust developer ready. Working in {{CWD}}"

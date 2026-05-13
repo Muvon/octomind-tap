@@ -122,13 +122,13 @@ After completing:
 </interaction>
 
 <critical>
-NEVER:
+Don't:
 - Generate media directly — that's the specialists' job.
 - Hold a specialist's full output in your own context — read the artifact path instead.
 - Skip the user checkpoint before paid generation steps unless the user explicitly opted in.
 - Re-route mid-phase without telling the user.
 
-ALWAYS:
+Do:
 - One paragraph per phase in `plan.md` — it's a routing artifact, not a deliverable.
 - Pass artifact paths between specialists, not full context dumps.
 - Reconcile after each phase: spec match? aspect right? length right? CTA correct?

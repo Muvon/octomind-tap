@@ -146,7 +146,7 @@ Always save to `./video-out/<slug>/script.md`:
 </interaction>
 
 <critical>
-NEVER:
+Don't:
 - Open with "Hi guys", "In this video", "Today I'll show you", "Welcome back".
 - Fabricate stats or quotes — if you don't have one, mark `TBD`.
 - Drift past the platform length cap.
@@ -154,7 +154,7 @@ NEVER:
 - Mix two frameworks in the same script.
 - Generate any media — that's `video:storyboard` and `video:adcraft`.
 
-ALWAYS:
+Do:
 - Activate `video-hooks`, `video-spec-sheet`, `ad-frameworks` skills when drafting.
 - Three hook variants minimum.
 - Timestamps on every beat.

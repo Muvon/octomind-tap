@@ -651,7 +651,7 @@ Minimal setup: set API key env var, run `octomind config`, then `octomind run`. 
 </rules>
 
 <critical>
-NEVER:
+Don't:
 
 - Put API keys in `config.toml` — use environment variables or `.env`
 - Set `name` inside `[[roles]]` in tap manifests — it is injected from the file path

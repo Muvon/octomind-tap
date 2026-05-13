@@ -81,6 +81,22 @@ Agent prompts are runbooks: goal, tools, decision criteria, error handling, stop
 - Subagent control: "do not spawn a subagent for work you can complete in a single response; spawn multiple in the same turn for fan-out across files".
 - Prefilled assistant turns are deprecated in 4.6+. Use Structured Outputs for JSON/schema, and direct system instructions for "no preamble".
 
+### Tone calibration (the over-emphasis anti-pattern on 4.6+)
+
+Claude 4.5+ is far more responsive to the system prompt than 3.x. Aggressive language written to defeat under-triggering on older models now causes **over-triggering**. The fix is tonal, not structural — substance stays, theatre goes.
+
+- `CRITICAL: YOU MUST use this tool when...` → `Use this tool when...`
+- `🚨 HARD RULES` + stacked `NEVER`/`ALWAYS` bullets → plain `Don't …` / `Do …` bullets in a `<critical>` block
+- `MANDATORY: Run validation` → `Run validation after edits.`
+- `DEFAULT TO using web search` → `Use web search when it would enhance your understanding of the problem.`
+- `After every 3 tool calls, summarize` → drop entirely on 4.7 (internalised)
+
+Reserve all-caps and "must" for one or two **genuine safety hard-stops** (e.g. `Never force-push to main`). Stacking ten dilutes attention and the model treats them as flavour.
+
+Substance test: delete the `NEVER`/`ALWAYS`/`MUST` and lowercase the line. Does the rule still make sense? Soften it. Does it now read as filler? Cut it.
+
+Full recipe with verbatim Anthropic quotes, parallel-tool-calls block, message-history rules, and authoring checklist: `reference/claude-4-emphasis-and-tools.md`.
+
 ### Frameworks (when you need a quick template)
 
 | Framework | Slots | Best for |
@@ -104,6 +120,7 @@ These are scaffolding for thinking, not magic. Output quality comes from spec cl
 ### Output control
 
 - Tell, don't forbid. "Write smoothly flowing prose" beats "do not use markdown".
+- Plain directives outperform theatrical ones on 4.6+. `Use tool X when ...` lands harder than `CRITICAL: YOU MUST use X`. See **Tone calibration** above and `reference/claude-4-emphasis-and-tools.md`.
 - For structured output, use Structured Outputs (JSON Schema) for typed responses. For classification, use a tool with an enum field.
 - For format constraints, wrap in tags: `Write the answer inside <answer> tags`.
 - Match prompt style to desired output style — if you want minimal markdown out, use minimal markdown in.
@@ -282,6 +299,9 @@ Before shipping a prompt, verify:
 Within-domain skills that pair naturally with this one:
 - A prompt being designed for content authoring: see voice/humanisation skills in the content domain.
 - A prompt being designed for an agent system prompt: structural rules live in `tap-agent-authoring` (XML block order, U-shape attention, caching rules).
+
+In-skill references:
+- `reference/claude-4-emphasis-and-tools.md` — Claude 4.6+ tone calibration, parallel-tool-calls block, message-history rules, dial-back recipes.
 
 External authoritative sources:
 - [Anthropic — Prompt engineering best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)

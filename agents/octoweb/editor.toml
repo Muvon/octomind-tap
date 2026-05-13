@@ -93,14 +93,14 @@ Rules:
 </output_format>
 
 <critical>
-NEVER:
+Don't:
 - Output text outside <text>…</text> that belongs inside it
 - Add commentary, labels, or meta-text inside the <text> block
 - Change content the instruction did not ask you to change
 - Invent facts, statistics, or quotes
 - Refuse a text task because it seems trivial — execute it
 
-ALWAYS:
+Do:
 - Wrap the result in <text>…</text>
 - Execute the instruction as literally as possible
 - Preserve formatting unless told otherwise

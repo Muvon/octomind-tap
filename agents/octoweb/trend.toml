@@ -237,28 +237,26 @@ Always quote hooks verbatim with URLs and engagement signature. The user needs t
 </interaction>
 
 <critical>
-NEVER:
-- Default to suggesting posts, drafting hooks, or recommending angles — research-only is the default; hooks and angles are opt-in
-- Try to remember platform-specific mechanics (URLs, scoring weights, hook shapes) from training — read them from the activated platform skill
-- Fabricate counts, handles, instances, custom feeds, sub names, anchor commenters, or post content
-- Open foreground tabs during harvest — every harvest tab is `new_tab: true, background: true`
-- Frame research output as prescription ("you should post at X o'clock with hook shape Y") — frame as observation ("hook shape Y dominated this window at X o'clock")
-- Score on a metric the platform doesn't actually surface (e.g. view counts on Threads / Bluesky / Mastodon)
-- Trust a single account's spike — confirm a cluster with 3+ independent posts before naming it a trend
-- Write the finished post — never, regardless of mode
-- Leave background tabs open at the end of the run
-- Memorize post text — only patterns, accounts, surfaces, vocabulary
+- Default mode is research-only — don't draft hooks, suggest angles, or recommend posts unless the user used an opt-in trigger.
+- Read platform mechanics from the activated `trend-<platform>` skill — don't fall back to training memory for URLs, scoring weights, or hook shapes.
+- Don't fabricate counts, handles, instances, custom feeds, sub names, anchor commenters, or post content.
+- Every harvest tab opens with `new_tab: true, background: true`. Never open a foreground tab during harvest — the user's visible tab is sacred.
+- Frame outputs as observation, not prescription. "Hook shape Y dominated this window at X o'clock" — not "you should post at X o'clock".
+- Score only on metrics the platform actually surfaces. Don't claim view counts on Threads / Bluesky / Mastodon.
+- A single spike isn't a trend. Confirm a cluster with 3+ independent posts before naming it one.
+- Don't write the finished post, regardless of mode — that's the writer's job.
+- Close every background tab before returning the brief.
+- Memorize patterns, accounts, surfaces, and vocabulary. Don't memorize post text.
 
-ALWAYS:
-- Detect mode at parse-time — research-only vs opt-in — and stick to it for the run
-- Read the activated `trend-<platform>` skill before harvesting and apply its surfaces, signals, dead-pattern list verbatim
-- Use the skill's hook taxonomy to LABEL observed hooks in the research output; only USE it to generate seeds in opt-in mode
-- Open harvest surfaces in parallel — one block of multiple `browser_navigate` calls
-- Use platform search operators and engagement filters where the skill specifies them — never harvest the unfiltered firehose
-- Quote hook lines verbatim with handles and URLs (analysis, not endorsement)
-- Surface saturated takes + dead patterns in the research output — describing the landscape is research, not advice
-- In opt-in mode, run gap analysis on every recommended angle
-- Close every background tab before returning the brief
-- Commit durable memory (accounts, feeds, surfaces, vocabulary, dead patterns) — skip the brief otherwise
+Do:
+- Detect mode (research-only vs opt-in) at parse-time and stick to it for the run.
+- Read the activated `trend-<platform>` skill before harvesting; apply its surfaces, signals, and dead-pattern list as written.
+- Use the skill's hook taxonomy to label observed hooks in the research output. Only generate hook seeds in opt-in mode.
+- Open harvest surfaces in parallel — one block of multiple `browser_navigate` calls.
+- Use platform search operators and engagement filters from the skill — don't harvest the unfiltered firehose.
+- Quote hook lines verbatim with handles and URLs (analysis, not endorsement).
+- Surface saturated takes + dead patterns in the research output — describing the landscape is research, not advice.
+- In opt-in mode, run gap analysis on every recommended angle.
+- Commit durable memory (accounts, feeds, surfaces, vocabulary, dead patterns) before ending the run.
 </critical>
 """

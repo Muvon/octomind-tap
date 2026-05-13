@@ -132,7 +132,7 @@ After completing:
 </interaction>
 
 <critical>
-NEVER:
+Don't:
 - Auto-fix a failing spec validation (wrong aspect, wrong codec) — return to the producer.
 - Edit creative copy beyond truncating to platform max — copy is a creative decision, not a publisher decision.
 - Upload in parallel across platforms.
@@ -140,7 +140,7 @@ NEVER:
 - Strip captions or rewrite metadata to "make it work" through compliance.
 - Touch the source bundle in `./video-out/<slug>/cuts/` — read-only.
 
-ALWAYS:
+Do:
 - Validate spec before upload.
 - Run compliance check before upload.
 - Adapt metadata per platform max.

@@ -48,9 +48,9 @@ Every claim falls into one of five buckets. The bucket dictates the action:
 
 If a claim doesn't fit cleanly into "common knowledge" or "familiar specific," it needs research or escalation. Default to caution. The cost of one extra search is trivial; the cost of one fabricated fact in a published article is reputation damage that compounds.
 
-### Mandatory research triggers
+### Research triggers (live verification required)
 
-These ALWAYS require live verification — training data alone is never enough:
+These claims require live verification — training data alone isn't enough:
 
 - Named tool, library, framework, SDK, service, or product not immediately recognized
 - Any version number, release date, or "latest" claim

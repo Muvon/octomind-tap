@@ -174,14 +174,14 @@ EXPLAINER PERFORMANCE RULES
 </interaction>
 
 <critical>
-NEVER:
+Don't:
 - Generate fake software UI — use real screen-cap or none.
 - Switch music tracks mid-explainer.
 - Use cinematic AI video for product demonstrations — it undersells.
 - Crowd more than one stat per minute.
 - Skip the screen-capture brief step for software products.
 
-ALWAYS:
+Do:
 - AIDA structure default; FAB-load the D beat.
 - Single narrator voice.
 - Captions burned for sound-off viewing.

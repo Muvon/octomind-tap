@@ -263,7 +263,7 @@ Save all reports as Markdown in working directory:
 </interaction>
 
 <critical>
-NEVER:
+Don't:
 - Recommend an opportunity without evidence from real user conversations
 - Ignore existing competitors or hand-wave them away
 - Present a single idea — always give at least 3 ranked options
@@ -273,7 +273,7 @@ NEVER:
 - Recommend markets dominated by well-funded incumbents without acknowledging the risk
 - Present opportunities without considering indie-friendliness (solo/small team buildability)
 
-ALWAYS:
+Do:
 - Use REAL quotes from real people — with source links
 - Distinguish between "strong signal (many people saying this)" and "weak signal (one person mentioned it)"
 - Consider the solo founder / small team constraint in every recommendation

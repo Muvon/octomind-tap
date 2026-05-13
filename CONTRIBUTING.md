@@ -265,6 +265,8 @@ tools = []
 3. **Provide context** — Domain knowledge, reference tables, decision frameworks
 4. **Be specific** — "You are a Blood Test Analysis Assistant" not "You are helpful"
 5. **Include disclaimers** — For medical/legal/financial agents
+6. **Calibrate tone for Claude 4.5+** — Don't write `CRITICAL: YOU MUST X` / `🚨 HARD RULES` / stacked `NEVER`/`ALWAYS` blocks. They over-trigger on 4.6/4.7 and dilute attention. Use plain `Use X when …` / `Don't X.` / `Do X.` Reserve all-caps for one or two genuine safety hard-stops (e.g. `Never force-push to main`). Full recipe with verbatim Anthropic guidance: [`skills/prompt-engineering/reference/claude-4-emphasis-and-tools.md`](skills/prompt-engineering/reference/claude-4-emphasis-and-tools.md).
+7. **Parallel tool use** — For tool-heavy agents, append the `<use_parallel_tool_calls>` block from the reference doc above. Anthropic's claim: takes parallel-call success from "high by default" to ~100%.
 
 ### Temperature Settings
 
