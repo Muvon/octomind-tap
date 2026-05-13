@@ -163,7 +163,7 @@ Not all fields are required — a capability can be deps-only (e.g. `programming
 | `versioning`           | git              | git operations via MCP                                |
 | `programming-python`   | uv               | Python runtime (uv, uvx)                              |
 | `programming-rust`     | cargo            | Rust toolchain (cargo, rustc, clippy, rustfmt)        |
-| `programming-nodejs`   | node             | Node.js runtime (node, npm, npx)                      |
+| `programming-nodejs`   | bun              | JS/TS runtime — Bun (bun, bunx) replaces node/npm/npx |
 | `docker`               | docker           | Docker CLI (docker, docker-compose)                   |
 | `kubernetes`           | kubernetes       | Kubernetes CLI (kubectl, helm)                        |
 | `svelte`               | svelte           | Svelte/SvelteKit documentation MCP                    |

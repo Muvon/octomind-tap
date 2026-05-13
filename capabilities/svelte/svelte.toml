@@ -2,10 +2,10 @@
 # Capability: svelte
 # Provider: @sveltejs/mcp — official Svelte/SvelteKit documentation
 # Title: Svelte
-# Description: Official Svelte/SvelteKit documentation via MCP server.
+# Description: Official Svelte/SvelteKit documentation via MCP server (runs with bunx).
 
 [deps]
-require = ["sveltejs/svelte"]
+require = ["oven-sh/bun"]
 
 [roles.mcp]
 server_refs = ["svelte"]
@@ -14,7 +14,7 @@ allowed_tools = ["svelte:*"]
 [[mcp.servers]]
 name = "svelte"
 type = "stdio"
-command = "npx"
-args = ["-y", "@sveltejs/mcp"]
+command = "bunx"
+args = ["@sveltejs/mcp"]
 timeout_seconds = 60
 tools = []

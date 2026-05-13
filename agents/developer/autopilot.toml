@@ -152,9 +152,9 @@ PATTERNS:
 - (list all patterns the builder should follow)
 
 VALIDATION:
-- test: <exact command to run tests, e.g. "cargo test", "npm test", "uv run pytest">
-- lint: <exact command to run linter, e.g. "cargo clippy", "npm run lint">
-- build: <exact command to build, e.g. "cargo build", "npm run build">
+- test: <exact command to run tests, e.g. "cargo test", "bun test", "uv run pytest">
+- lint: <exact command to run linter, e.g. "cargo clippy", "bun run lint">
+- build: <exact command to build, e.g. "cargo build", "bun run build">
 - (include all applicable validation commands)
 
 CONSTRAINTS:
