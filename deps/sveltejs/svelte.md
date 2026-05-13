@@ -6,7 +6,7 @@ Official Svelte/SvelteKit documentation and tooling MCP server.
 
 - **Package**: `@sveltejs/mcp`
 - **Transport**: stdio
-- **Command**: `npx -y @sveltejs/mcp`
+- **Command**: `bunx @sveltejs/mcp`
 
 ## Authentication
 
@@ -28,14 +28,14 @@ API key (optional, for Voyage embeddings)
 [[mcp.servers]]
 name = "svelte"
 type = "stdio"
-command = "npx"
-args = ["-y", "@sveltejs/mcp"]
+command = "bunx"
+args = ["@sveltejs/mcp"]
 timeout_seconds = 60
 env = { VOYAGE_API_KEY = "your-value" }
 tools = []
 ```
 
-**Notes:** Official Svelte package.
+**Notes:** Official Svelte package. Uses `bunx` (Bun's npx replacement) for faster cold-start and native TypeScript support.
 
 ## Links
 

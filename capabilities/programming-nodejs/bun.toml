@@ -1,0 +1,8 @@
+# capabilities/programming-nodejs/bun.toml
+# Capability: programming-nodejs
+# Provider: Bun (oven-sh/bun) — modern all-in-one JS/TS runtime
+# Title: Bun Runtime
+# Description: Bun runtime with bun/bunx — drop-in for node/npm/npx/yarn/pnpm/vite.
+
+[deps]
+require = ["oven-sh/bun"]

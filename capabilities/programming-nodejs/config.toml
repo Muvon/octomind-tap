@@ -2,9 +2,10 @@
 # Capability metadata: trigger phrases for deterministic auto-activation.
 
 triggers = [
-	"write modern JavaScript or TypeScript for Node.js",
-	"debug Node.js runtime errors and stack traces",
+	"write modern JavaScript or TypeScript",
+	"run a Node.js, Bun, or Deno script",
 	"work with async/await, Promises, and the event loop",
-	"resolve npm or pnpm dependency issues",
+	"resolve npm, pnpm, yarn, or bun dependency issues",
 	"configure package.json and tsconfig.json",
+	"bundle or build a JS/TS project with bun, vite, or esbuild",
 ]

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # dep: sveltejs/svelte
 # type: mcp
-# description: Svelte MCP Server — official Svelte/SvelteKit documentation and tooling
-# check: npx
+# description: Svelte MCP Server — runs @sveltejs/mcp via bunx
+# check: bunx
 # https://github.com/sveltejs/ai-tools
 
 set -euo pipefail
@@ -11,12 +11,12 @@ set -euo pipefail
 DEPS_LIB="$(cd "$(dirname "${BASH_SOURCE[0]}")/../lib" && pwd)"
 source "$DEPS_LIB/platform.sh"
 
-# Fast path — npx is available (node is installed)
-if pkg_check npx; then
+# Fast path — bunx is available
+if pkg_check bunx; then
   exit 0
 fi
 
-# Ensure node is available
-install_dep nodejs/node
+# Ensure bun is available (provides bunx)
+install_dep oven-sh/bun
 
-info "Svelte MCP Server requires Node.js — already available via npx"
+info "Svelte MCP Server runs via 'bunx @sveltejs/mcp'."
