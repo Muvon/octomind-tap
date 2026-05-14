@@ -83,7 +83,7 @@ Agent prompts are runbooks: goal, tools, decision criteria, error handling, stop
 
 ### Tone calibration (the over-emphasis anti-pattern on 4.6+)
 
-Claude 4.5+ is far more responsive to the system prompt than 3.x. Aggressive language written to defeat under-triggering on older models now causes **over-triggering**. The fix is tonal, not structural — substance stays, theatre goes.
+Claude 4.5+ is far more responsive to the system prompt than 3.x. Aggressive language written to defeat under-triggering on older models now causes over-triggering. The fix is tonal, not structural — substance stays, theatre goes.
 
 - `CRITICAL: YOU MUST use this tool when...` → `Use this tool when...`
 - `🚨 HARD RULES` + stacked `NEVER`/`ALWAYS` bullets → plain `Don't …` / `Do …` bullets in a `<critical>` block
@@ -91,7 +91,7 @@ Claude 4.5+ is far more responsive to the system prompt than 3.x. Aggressive lan
 - `DEFAULT TO using web search` → `Use web search when it would enhance your understanding of the problem.`
 - `After every 3 tool calls, summarize` → drop entirely on 4.7 (internalised)
 
-Reserve all-caps and "must" for one or two **genuine safety hard-stops** (e.g. `Never force-push to main`). Stacking ten dilutes attention and the model treats them as flavour.
+Reserve all-caps and "must" for one or two genuine safety hard-stops (e.g. `Never force-push to main`). Stacking ten dilutes attention and the model treats them as flavour.
 
 Substance test: delete the `NEVER`/`ALWAYS`/`MUST` and lowercase the line. Does the rule still make sense? Soften it. Does it now read as filler? Cut it.
 
@@ -120,7 +120,7 @@ These are scaffolding for thinking, not magic. Output quality comes from spec cl
 ### Output control
 
 - Tell, don't forbid. "Write smoothly flowing prose" beats "do not use markdown".
-- Plain directives outperform theatrical ones on 4.6+. `Use tool X when ...` lands harder than `CRITICAL: YOU MUST use X`. See **Tone calibration** above and `reference/claude-4-emphasis-and-tools.md`.
+- Plain directives outperform theatrical ones on 4.6+. `Use tool X when ...` lands harder than `CRITICAL: YOU MUST use X`. See the "Tone calibration" section above and `reference/claude-4-emphasis-and-tools.md`.
 - For structured output, use Structured Outputs (JSON Schema) for typed responses. For classification, use a tool with an enum field.
 - For format constraints, wrap in tags: `Write the answer inside <answer> tags`.
 - Match prompt style to desired output style — if you want minimal markdown out, use minimal markdown in.

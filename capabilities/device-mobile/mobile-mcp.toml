@@ -1,0 +1,22 @@
+# capabilities/device-mobile/mobile-mcp.toml
+# Capability: device-mobile
+# Provider: Mobile MCP — iOS & Android device automation (real + simulator)
+# Title: Mobile Device Automation
+# Description: Drive iOS & Android devices and simulators — apps, taps, swipes, type, screenshots.
+# https://github.com/mobile-next/mobile-mcp
+
+[deps]
+require = ["mobile-next/mobile-mcp"]
+
+[roles.mcp]
+server_refs = ["mobile-mcp"]
+allowed_tools = ["mobile-mcp:*"]
+
+[[mcp.servers]]
+name = "mobile-mcp"
+type = "stdio"
+command = "npx"
+args = ["-y", "@mobilenext/mobile-mcp@latest"]
+timeout_seconds = 120
+env = { MOBILEMCP_DISABLE_TELEMETRY = "1" }
+tools = []
