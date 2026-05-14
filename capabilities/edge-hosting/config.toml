@@ -8,3 +8,5 @@ triggers = [
 	"manage a cloudflare site",
 	"look up cloudflare worker logs",
 ]
+
+domains = ["devops"]

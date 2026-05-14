@@ -7,3 +7,5 @@ triggers = [
 	"research Australian legal regulation",
 	"check Australian court precedent",
 ]
+
+domains = ["lawyer"]

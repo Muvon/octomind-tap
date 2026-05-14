@@ -8,3 +8,5 @@ triggers = [
 	"see what changed between commits",
 	"track changes in version control",
 ]
+
+domains = ["developer", "devops"]

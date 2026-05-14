@@ -9,3 +9,5 @@ triggers = [
 	"pull or push images to a docker registry",
 	"manage docker volumes and networks",
 ]
+
+domains = ["devops", "developer"]

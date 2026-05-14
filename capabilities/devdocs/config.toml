@@ -7,3 +7,5 @@ triggers = [
 	"read the reference for this function",
 	"show me documentation for this framework",
 ]
+
+domains = ["developer"]

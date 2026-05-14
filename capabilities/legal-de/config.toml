@@ -7,3 +7,5 @@ triggers = [
 	"research German legal regulation",
 	"check German court precedent",
 ]
+
+domains = ["lawyer"]

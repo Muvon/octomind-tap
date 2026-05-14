@@ -7,3 +7,5 @@ triggers = [
 	"research Singapore legal regulation",
 	"check Singapore court precedent",
 ]
+
+domains = ["lawyer"]

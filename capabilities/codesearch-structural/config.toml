@@ -5,3 +5,5 @@ triggers = [
 	"view file signatures",
 	"AST search",
 ]
+
+domains = ["developer", "devops", "security"]

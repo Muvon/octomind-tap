@@ -12,3 +12,5 @@ triggers = [
 	"get highlights from this article in readwise",
 	"show my saved readwise documents",
 ]
+
+domains = ["video", "content"]

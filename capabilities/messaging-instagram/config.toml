@@ -6,3 +6,5 @@ triggers = [
 	"send a direct message on instagram",
 	"look at my instagram feed",
 ]
+
+domains = ["marketing"]

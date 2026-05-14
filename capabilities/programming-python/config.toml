@@ -8,3 +8,5 @@ triggers = [
 	"manage virtual environments and pip dependencies",
 	"work with asyncio, decorators, and context managers",
 ]
+
+domains = ["developer"]

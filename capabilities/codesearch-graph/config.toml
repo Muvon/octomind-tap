@@ -5,6 +5,9 @@ triggers = [
 	"graph traversal of code",
 ]
 
-# Developer-only — code-graph search has no place in non-engineering domains
-# and matching it from medical/legal/etc. is pure false-positive surface.
-domains = ["developer"]
+# Code-graph search is for engineering roles. Includes devops (terraform/
+# k8s graph traversal) and security (auditing call paths) alongside the
+# obvious developer domain. Locks out medical/legal/marketing/etc. so
+# generic "find X" prompts in those roles don't pull a code-search false
+# positive via the embedding's keyword-leak behaviour.
+domains = ["developer", "devops", "security"]
