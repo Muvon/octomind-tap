@@ -1,0 +1,21 @@
+# capabilities/device-computer/desktop-automation.toml
+# Capability: device-computer
+# Provider: Desktop Automation (RobotJS) — local computer mouse / keyboard / screen
+# Title: Desktop UI Automation
+# Description: Drive the local computer UI — mouse, keyboard, screenshots — via RobotJS (macOS / Linux / Windows).
+# https://github.com/tanob/mcp-desktop-automation
+
+[deps]
+require = ["tanob/desktop-automation"]
+
+[roles.mcp]
+server_refs = ["desktop-automation"]
+allowed_tools = ["desktop-automation:*"]
+
+[[mcp.servers]]
+name = "desktop-automation"
+type = "stdio"
+command = "npx"
+args = ["-y", "mcp-desktop-automation"]
+timeout_seconds = 60
+tools = []

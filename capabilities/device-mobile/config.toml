@@ -1,0 +1,17 @@
+# capabilities/device-mobile/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Triggers must be unambiguously about driving a real or simulated mobile
+# device (iOS / Android) — not generic "mobile-friendly" / responsive-web
+# phrasing. Keep them concrete UI-automation intents.
+
+triggers = [
+	"automate my iPhone to open an app and tap through a flow",
+	"drive the Android emulator and take screenshots",
+	"install this app on the iOS simulator and launch it",
+	"tap and swipe through the app on my connected phone",
+	"type text into the search field on the Android app",
+	"reproduce this bug on the iPhone simulator step by step",
+]
+
+domains = ["device", "developer"]

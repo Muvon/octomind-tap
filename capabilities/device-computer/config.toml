@@ -1,0 +1,17 @@
+# capabilities/device-computer/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Triggers must be unambiguously about driving the local computer's
+# native UI — clicking, typing, screenshotting at the OS level. Avoid
+# phrasing that overlaps with shell, browser, or filesystem capabilities.
+
+triggers = [
+	"automate clicks and keystrokes on my desktop",
+	"take a screenshot of my screen and click that button",
+	"move the mouse and type into the active window on my computer",
+	"control the cursor and keyboard to drive a native app",
+	"capture my screen and interact with the desktop UI",
+	"automate a native desktop application by clicking through it",
+]
+
+domains = ["device", "developer"]
