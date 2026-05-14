@@ -8,3 +8,5 @@ triggers = [
 	"look at the schema of a sqlite database",
 	"open a .db file and read tables",
 ]
+
+domains = ["developer"]

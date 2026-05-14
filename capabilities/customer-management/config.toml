@@ -8,3 +8,5 @@ triggers = [
 	"manage CRM data",
 	"track a sales deal",
 ]
+
+domains = ["marketing", "finance"]

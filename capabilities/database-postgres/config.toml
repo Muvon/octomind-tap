@@ -9,3 +9,5 @@ triggers = [
 	"check rows in a postgres table",
 	"run SQL against postgres",
 ]
+
+domains = ["developer", "devops"]

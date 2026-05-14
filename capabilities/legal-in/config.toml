@@ -7,3 +7,5 @@ triggers = [
 	"research Indian legal regulation",
 	"check Indian court precedent",
 ]
+
+domains = ["lawyer"]

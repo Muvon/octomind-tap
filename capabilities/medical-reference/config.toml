@@ -9,8 +9,8 @@ triggers = [
 ]
 
 # Domain binding. Hard-bound: only loads when the active role's domain part
-# (e.g. `medical:general` → `"medical"`) is in this list. Empty/missing =
+# (e.g. `doctor:general` → `"doctor"`) is in this list. Empty/missing =
 # available to every role (filesystem-style universal). Out-of-domain access
 # is rejected by auto-activation, `capability list/discover/enable`, and
 # `OCTOMIND_CAPABILITIES` env loading — no bypass.
-domains = ["medical"]
+domains = ["doctor"]

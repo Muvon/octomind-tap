@@ -8,3 +8,5 @@ triggers = [
 	"find recent crashes in production",
 	"track exception frequency",
 ]
+
+domains = ["developer", "devops", "security"]

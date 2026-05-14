@@ -7,3 +7,5 @@ triggers = [
 	"crawl a web domain",
 	"extract structured data from a page",
 ]
+
+domains = ["browser", "developer"]

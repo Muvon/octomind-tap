@@ -10,3 +10,5 @@ triggers = [
 	"scale a kubernetes deployment",
 	"apply a kubectl manifest",
 ]
+
+domains = ["devops"]

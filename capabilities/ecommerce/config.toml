@@ -8,3 +8,5 @@ triggers = [
 	"check inventory levels",
 	"create a new product on shopify",
 ]
+
+domains = ["finance", "marketing"]

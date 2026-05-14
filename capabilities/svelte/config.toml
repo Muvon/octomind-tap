@@ -7,3 +7,5 @@ triggers = [
 	"Svelte best practices",
 	"research a Svelte feature",
 ]
+
+domains = ["developer"]

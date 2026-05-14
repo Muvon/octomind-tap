@@ -8,3 +8,5 @@ triggers = [
 	"track ticker performance",
 	"fetch quote for a stock symbol",
 ]
+
+domains = ["finance"]

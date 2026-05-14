@@ -8,3 +8,5 @@ triggers = [
 	"manage stripe customers",
 	"create a stripe invoice",
 ]
+
+domains = ["finance"]

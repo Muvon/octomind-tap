@@ -9,3 +9,5 @@ triggers = [
 	"take a screenshot of a webpage",
 	"scrape the rendered content of a page",
 ]
+
+domains = ["browser", "developer"]

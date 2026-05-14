@@ -4,3 +4,5 @@ triggers = [
 	"search code by description",
 	"natural-language code search",
 ]
+
+domains = ["developer", "devops", "security"]

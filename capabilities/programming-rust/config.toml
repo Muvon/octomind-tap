@@ -8,3 +8,5 @@ triggers = [
 	"resolve Cargo.toml dependency and feature flag issues",
 	"work with async Rust, tokio, and Send/Sync bounds",
 ]
+
+domains = ["developer"]

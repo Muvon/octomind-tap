@@ -9,3 +9,5 @@ triggers = [
 	"configure package.json and tsconfig.json",
 	"bundle or build a JS/TS project with bun, vite, or esbuild",
 ]
+
+domains = ["developer"]

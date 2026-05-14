@@ -8,3 +8,5 @@ triggers = [
 	"check US court precedent",
 	"look up federal regulations",
 ]
+
+domains = ["lawyer"]
