@@ -1,7 +1,7 @@
 ---
 name: trend-x
 title: "X (Twitter) Trend Harvester Playbook"
-description: "Platform-specific intel for harvesting X (Twitter) trends — current ranking signals (Grok-era weights), harvest URLs with min_faves/min_retweets filters, scoring rubric on view ratios, hook taxonomy that's currently winning, and dead patterns the algorithm suppresses in 2026. Activates inside an octoweb:trend session whenever the user names X / Twitter."
+description: "Platform-specific intel for harvesting X (Twitter) trends — current ranking signals (Phoenix out-of-network retrieval, Grox content classifier, media-weighted scoring, replier-reputation reply weights, Author Diversity Scorer, 4000-char long-form weight), harvest URLs with min_faves/min_retweets filters, scoring rubric on view ratios, hook taxonomy that's currently winning, and dead patterns the algorithm suppresses. Activates inside an octoweb:trend session whenever the user names X / Twitter."
 license: Apache-2.0
 compatibility: "Octoweb browser access. Requires signed-in X session in the user's browser for For You / Explore surfaces; logged-out works for search."
 capabilities: octoweb memory
@@ -20,18 +20,27 @@ This skill carries the platform-specific mechanics the `octoweb:trend` agent nee
 
 ## Mental model
 
-The 2026 X algorithm is a Grok-tone-reading + engagement-weighted ranker on top of an aggressive time-decay curve. A post's score halves every ~6 hours. The first 30 minutes decide whether it gets amplified or buried. Reply-with-author-reply is weighted ~150× a like — conversation that loops back is the dominant positive signal. External links in the root post are suppressed ~50%. Optimize for replies-that-trigger-author-replies, not likes.
+The For You feed is a two-source system: in-network (Thunder, accounts you follow) plus out-of-network (Phoenix retrieval over a global corpus). Phoenix is a Grok-based transformer that predicts P(like)/P(reply)/P(repost)/P(click) per post; the weighted combination is the final score. Hydrators feed media detection, mutual-follow scores, brand-safety, and engagement counts straight into the ranker. The Grox content-understanding pipeline classifies spam, post category, and recycled hook shapes. The Author Diversity Scorer attenuates repeated authors in one feed.
+
+What this means for harvesting:
+- Time decay halves the score every ~6 hours; the first 30 minutes decide amplification.
+- Reply-with-author-reply is ~150× a like, and replies are now weighted by replier reputation — count alone is no longer a fair signal.
+- Media-attached posts now carry a structural ~2× weight via the media hydrator; text-only posts are penalised relative to text+media.
+- Out-of-network retrieval (Phoenix) means small accounts can break out without in-network traction — sub-10k accounts now get roughly 3× more out-of-network than in-network reach.
+- External links in the root post are suppressed ~50%.
+- Optimize for replies-that-trigger-author-replies, paired with media, from a consistent daily cadence.
 
 ## Rules
 
-### Current engagement weights (Grok-era, 2026)
+### Current engagement weights
 
 | Signal | Weight vs like | Implication |
 |---|---|---|
 | Reply with author-reply | ~150× | Loop-back conversation is the dominant signal |
-| Reply | ~27× | Any reply still dominates likes |
+| Reply | ~27× (replier-rep weighted) | Replies are now weighted by replier reputation, not raw count — reply farming dies |
 | Quote post | ~20× | Creates a second ranked object |
 | Repost | ~20× | Distribution intent |
+| Media attached (image/video) | ~2× signal boost | Media-detection hydrator feeds the ranker directly; text-only is structurally penalised |
 | Bookmark | ~10× | "Save for later" — bookmark-bait works honestly |
 | Profile click | high | Reader wants more |
 | Like | 1× | Cheap signal |
@@ -40,10 +49,15 @@ The 2026 X algorithm is a Grok-tone-reading + engagement-weighted ranker on top 
 | "Not interested" | –10 | Enough kills the post |
 
 Other levers:
+- Author Diversity Scorer: 4+ posts/day from one author get attenuated in-feed — cap 2/day. Harvest signal: discount accounts spamming 5+/day, their per-post weight is suppressed.
+- Out-of-network (Phoenix retrieval): sub-10k accounts now reach ~3× more out-of-network than pre-May. Micro-breakouts are real signal, not noise — weight them heavily.
+- Grox content classifier: detects recycled viral templates, generic AI-tool roundups, motivational fluff without specifics — they get demoted even with high raw engagement.
+- Mutual-follow / engagement-pod reweighting: mutual-follow scores are a diversity signal now, not a boost. Pod-pumped posts no longer rank.
 - External links in root post: ~50% reach penalty. Always put links in a self-reply.
 - 2+ hashtags: spam-classified. Zero or one community tag.
 - Premium / Premium+: 2–4× base reach; Premium+ replies surface first.
 - Account reputation (TweepCred) gates everything — low-rep accounts are invisible.
+- Consistency over volume: Phoenix uses engagement-history embeddings, so daily cadence beats bursts.
 
 ### Harvest surfaces (run in parallel)
 
@@ -84,6 +98,13 @@ Drop everything below 3 on either axis.
 
 ### Dead patterns (suppressed or read as AI tells in 2026)
 
+- Text-only posts (no media) — structurally lower signal than text+media
+- Recycled viral templates — Grox classifier flags hook shapes used 50× this week
+- Generic AI-tool roundups without an original POV
+- Motivational fluff without specifics (no numbers, names, or proof)
+- "What do you think?" / "Thoughts?" / "Agree?" closers — engagement-bait closers are flagged
+- Engagement pods / mutual-follow pumping — pod amplification no longer ranks
+- 4+ posts/day from one author — Author Diversity Scorer attenuates
 - "This 👇" / "Read this 🧵" / "Thread 👇" lead-ins
 - Numbered thread markers ("1/12", "2/12")
 - "Unpopular opinion:" prefix — just state the opinion
@@ -96,22 +117,29 @@ Drop everything below 3 on either axis.
 
 ### Format prescriptions
 
-| Goal | Format | Length |
+| Goal | Format | Length / spec |
 |---|---|---|
-| State a take, get replies | Single post | 71–100 chars (17% higher engagement) OR 240–259 chars (max likes) |
-| Teach / narrate / list | Thread | 4–8 posts; threads earn ~2.1–3× engagement over singles |
-| Grow from zero | Reply under 20k–200k anchor accounts in niche | 1 post, high specificity |
-| Link to external content | Root post hook (no link) + reply with link | Standard |
+| State a take, get replies | Single post + media | 71–100 chars (17% higher engagement) OR 240–259 chars (max likes). Media required for full weight |
+| Deep breakdown of a trending topic | Long-form post (Premium, up to 4000 chars) | Heavier signal weight than threads for evergreen explainers |
+| Teach / narrate / list | Thread with narrative arc | 4–8 posts; Phoenix reads full thread context now, so setup → friction → resolution wins over disconnected hits |
+| Tactical playbook | Hook + 5–8 numbered steps + closer | Currently outperforming generic threads; pair with media |
+| Personal proof | "$X → $Y in Z weeks" + breakdown + screenshot | Highest-converting format for follower growth |
+| Visual story | Image carousel | 3–7 slides, one bold claim per slide |
+| Show real work | Short video (<90s) | Media weight + dwell time |
+| Grow from zero | Reply under 20k–200k anchor accounts in niche | 1 post, high specificity. Out-of-network discovery 3× boost amplifies strong replies |
+| Link to external content | Root post hook + media (no link) + reply with link | Standard |
 | Signal boost | Quote post with commentary | Commentary must add, not echo |
 
-For users <10k followers, weight reply-under-anchor plays higher than original-post plays.
+For users <10k followers, weight reply-under-anchor plays AND original posts with media equally — out-of-network Phoenix retrieval now gives micro-accounts ~3× more reach for strong originals.
 
 ### Timing
 
 - Best windows: Tue–Thu 8–10 AM and 5–6 PM local. Breaking-news niches skew 7–8 AM.
-- Frequency: 3–5 posts/day spaced 2–3 hours apart for growth accounts. Sub-10k: 1–2 posts + 20 replies beats 5 posts alone.
-- Never burst — 5 posts in 10 minutes dilutes engagement across all of them.
-- One thread per day max.
+- Frequency: hard cap 2 posts/day (Author Diversity Scorer attenuates 4+/day). 1 strong post + 20 substantive replies beats 5 mediocre posts.
+- Consistency over volume — daily 1–2 posts every day beats bursts of 5/day twice a week. Phoenix uses engagement-history embeddings to build a reader-profile match.
+- Author-reply window — reply to every comment in the first 30 minutes; author-reply is the ~150× signal and stacks velocity during amplification.
+- Never burst — even 2 posts within 10 minutes dilute each other.
+- One thread OR one long-form per day max.
 
 ### Saturated-take detection
 
@@ -160,5 +188,6 @@ Before returning the X section of the brief:
 ## Composition / References
 
 - Pairs with `social-x` (content domain) for the actual post writing once the brief is in hand — same algorithm knowledge, applied to drafting instead of harvesting.
-- X Search operators reference: `min_faves`, `min_retweets`, `min_replies`, `lang:en`, `since:`, `until:`, `filter:replies`, `-filter:replies`.
+- X Search operators reference: `min_faves`, `min_retweets`, `min_replies`, `lang:en`, `since:`, `until:`, `filter:replies`, `-filter:replies`, `filter:media`, `filter:images`, `filter:videos` (use the media filters to harvest the current winning formats).
+- X For You feed algorithm (Phoenix retrieval, Grox classifier, media hydrators, Author Diversity Scorer): https://github.com/xai-org/x-algorithm
 - Use the agent's universal output schema; this skill only supplies the parameters that go into it.

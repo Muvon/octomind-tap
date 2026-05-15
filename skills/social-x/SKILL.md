@@ -1,7 +1,7 @@
 ---
 name: social-x
 title: "X (Twitter) Publishing Playbook"
-description: "Ground-truth 2026 playbook for writing posts, threads, and replies on X (Twitter). Covers algorithm signals (Grok ranking, reply weight, time decay), hook formulas, single-post anatomy, thread structure, reply-first growth, trend research for a niche, and a pre-publish checklist. Activate whenever drafting anything destined for X."
+description: "Ground-truth playbook for writing posts, threads, and replies on X. Covers the current algorithm (Phoenix out-of-network retrieval, Grok-based ranking, media-weighted scoring, replier-reputation reply weights, author-diversity attenuation, 4000-char long-form weight), hook formulas, single-post anatomy, thread structure, reply-first growth, trend research for a niche, and a pre-publish checklist. Activate whenever drafting anything destined for X."
 license: Apache-2.0
 compatibility: "Octomind content agents. Platform-specific to X/Twitter."
 domains: content
@@ -25,17 +25,18 @@ Pair this with `content-voice` for human voice rules. This skill handles what wi
 
 ## Instructions
 
-### The 2026 Algorithm — What Actually Matters
+### The Algorithm — What Actually Matters
 
-Since the January 2026 Grok update, X's ranking pipeline reads every post for tone and quality, then scores it on predicted engagement. The weights below are the public leak + post-Grok adjustments. Optimise for the top of this list, not the bottom.
+The For You feed has two sources: in-network (Thunder, accounts you follow) plus out-of-network (Phoenix retrieval over a global corpus). Phoenix — a Grok-based transformer — scores P(like)/P(reply)/P(repost)/P(click) per post. Hydrators feed media detection, mutual-follow scores, brand-safety, and engagement counts into the ranker. The Grox pipeline classifies spam, post category, and policy violations. Optimise for the top of this list, not the bottom.
 
 | Signal | Weight vs. a like | Why it matters |
 |---|---|---|
-| Reply with author-reply | ~150× | Conversation that loops back is the strongest positive signal |
-| Reply | ~27× | Any reply still dominates |
-| Repost | ~20× | Shows distribution intent |
-| Bookmark | ~10× | "Save for later" = high quality; bookmark-bait works |
+| Reply with author-reply | ~150× | Loop-back conversation is the dominant positive signal — and replies are now weighted by who replied (high-rep replier > many low-rep) |
+| Reply | ~27× (replier-rep weighted) | Any reply still dominates likes; reply farming dies because replier reputation is now in the score |
+| Repost | ~20× | Distribution intent |
 | Quote post | ~20× | Creates a second ranked object |
+| Bookmark | ~10× | "Save for later" = high quality; bookmark-bait works when honest |
+| Media attached (image/video) | ~2× signal boost | Media-detection hydrator feeds the ranker; text-only posts are structurally penalised |
 | Profile click after reading | high | Reader wants more from you |
 | Like | 1× (baseline) | Cheap signal, low weight |
 | Mute | –74 | Kills reach |
@@ -43,18 +44,31 @@ Since the January 2026 Grok update, X's ranking pipeline reads every post for to
 | "Not interested" | –10 | Enough of these and the post is dead |
 
 Other levers that move the needle:
-- Time decay — a post's score halves every ~6 hours. The first 30 minutes decide whether it's amplified or buried.
-- Engagement velocity — 10 replies in 15 minutes beats 10 replies in 3 hours. Post when your audience is awake.
-- External links — suppressed roughly by half. Never put a link in the root post. Reply to your own post with the link.
-- Premium / Premium+ — 2–4× base reach, up to ~10× in some niches. Premium+ replies surface first in conversations.
+- Author Diversity Scorer — attenuates repeated authors in one feed. 4+ posts/day cannibalises your own reach. Hard cap: 2 posts/day.
+- Out-of-network discovery — Phoenix surfaces posts from accounts the reader doesn't follow. Sub-10k accounts now get ~3× more out-of-network than in-network reach. A strong post can break out with zero in-network traction.
+- Consistency > volume — Phoenix uses engagement-history embeddings, so 1–2 posts every day builds a stronger reader-profile match than bursts of 5/day twice a week.
+- Time decay — score halves every ~6 hours. The first 30 minutes decide amplification.
+- Engagement velocity — 10 replies in 15 minutes beats 10 replies in 3 hours. Author-reply in the first 30 minutes is the strongest velocity signal.
+- External links — suppressed ~50% in the root post. Reply to your own post with the link.
+- Premium / Premium+ — 2–4× base reach; Premium+ replies surface first.
 - Grok tone read — snark is fine; pure negativity/attack content is suppressed. Constructive contrarian > cynical.
-- Hashtags — dead. Use at most one, and only if it's a genuine community tag. Two or more triggers spam detection.
+- Hashtags — dead. Zero or one community tag. 2+ triggers spam classification.
+- Grox content classifier — flags recycled viral templates, generic AI-tool roundups, and motivational fluff. Hook shapes used 50× this week get demoted.
+- Mutual-follow / engagement-pod reweighting — mutual-follow scores are a diversity signal, not a boost. Pods no longer move ranking.
 - Account reputation (TweepCred) — low-rep accounts are invisible even to their own followers. Build rep with consistent replies and author-reply conversations.
 
 ### What Kills Posts in 2026 (deprecated patterns)
 
 These all trigger suppression or just bounce off the modern feed. Do not produce any of them:
 
+- Spam-volume posting — 4+ posts/day triggers Author Diversity attenuation
+- Text-only posts — structurally lower-signal. Always pair text with image, screenshot, chart, or short video
+- Reply farming on volume — replies are weighted by replier reputation; 50 low-rep replies move less than 5 high-rep ones
+- Engagement pods / mutual-follow pumping — mutual-follow is a diversity signal, not a boost
+- Recycled viral templates — Grox flags hook shapes used 50× this week
+- Generic AI-tool roundups without an original POV
+- "What do you think?" / "Thoughts?" / "Agree?" closers — engagement-bait closers are flagged
+- Motivational fluff without specifics — no numbers, names, or proof
 - Engagement bait: "retweet if you agree," "like if you relate"
 - Lead-in pointers: "This 👇", "Read this 🧵", "Thread 👇"
 - Emoji bullets as formatting: 🚀 ⚡ 💎 at the start of lines
@@ -68,12 +82,17 @@ These all trigger suppression or just bounce off the modern feed. Do not produce
 
 ### Post Types — Pick the Right One
 
-| Goal | Format | Length |
+| Goal | Format | Length / spec |
 |---|---|---|
-| State a take, get replies | Single post | 71–100 chars (17% higher engagement) or 240–259 chars (max likes) |
-| Teach / narrate / list | Thread | 4–8 posts (sweet spot); threads get ~2.1–3× engagement over singles |
-| Grow from zero | Reply under bigger accounts in your niche | 1 post, high specificity |
-| Link to external content | Root post with hook + no link + reply with link | Standard |
+| State a take, get replies | Single post + media | 71–100 chars (17% higher engagement) or 240–259 chars (max likes). Attach an image |
+| Deep breakdown of a trending topic | Long-form post (Premium) | Up to 4000 chars; heavier weight than threads for evergreen explainers |
+| Teach / narrate / list | Thread with narrative arc | 4–8 posts; Phoenix reads full thread context — setup → friction → resolution beats disconnected bangers |
+| Tactical playbook | Hook + 5–8 numbered steps + closer | One post or thread; numbered steps are winning right now |
+| Personal proof | "$X → $Y in Z weeks" + breakdown + screenshot | Highest-converting format for follower growth |
+| Visual story | Image carousel | 3–7 slides, one bold claim per slide; gets out-of-network amplification |
+| Show real work | Short video (<90s) | Real work, not promo. Media weight + dwell time |
+| Grow from zero | Reply under 20k–200k anchor accounts | 1 post, high specificity. Out-of-network 3× boost amplifies strong replies |
+| Link to external content | Root hook + media + no link + reply with link | Standard |
 | Pure signal boost | Quote post with commentary | Commentary must add, not echo |
 
 ### Single Post — The Anatomy
@@ -193,10 +212,33 @@ Output of the research pass, before writing:
 
 ### Timing & Frequency
 
-- Best windows (2026 data) — Tue–Thu, 8–10 AM local and 5–6 PM local. Breaking-news niches skew earlier (7–8 AM).
-- Frequency — 3–5 posts/day spaced 2–3 hours apart is the documented sweet spot for growth accounts. Sub-10k: 1–2 posts/day + 20 replies is more effective than 5 posts/day alone.
-- Do not post in bursts. Five posts in ten minutes dilutes engagement across all of them.
-- One thread per day max. Threads consume reply budget; posting two threads in a day caps both.
+- Best windows — Tue–Thu, 8–10 AM and 5–6 PM local. Breaking-news niches skew 7–8 AM.
+- Frequency — hard cap 2 posts/day. Author Diversity attenuates 4+/day. 1 strong post + 20 substantive replies beats 5 mediocre posts.
+- Consistency beats volume — Phoenix engagement-history embeddings reward daily cadence over weekly bursts.
+- Author-reply window — reply to every comment in the first 30 minutes; each one is the ~150× signal.
+- Never burst — two posts within 10 minutes dilute each other.
+- One thread OR one long-form per day max.
+
+### Tone of Voice That Wins
+
+Grok reads tone; the classifier flags abstract/motivational/aggregator content. Calibrate:
+
+- First-person specific — "I built X / shipped Y / burned Z" beats "founders should…"
+- Concrete numbers and names — "Claude wrote 12k lines, I reviewed 400" beats "AI helps with coding"
+- Builder energy over motivational fluff — show the artifact, not the inspirational frame
+- One strong opinion per post, not three hedged ones — hedging reads as low-confidence
+- "Here's what I shipped" over "here's what's possible" — proof beats prediction
+- Direct second-person ("you") over generic third person ("founders", "people", "we")
+- Contrarian only with personal proof you can defend in replies
+
+### The Daily Play
+
+1. Cap at 2 posts/day (Author Diversity)
+2. Always pair text with media — image, screenshot, chart, carousel, or video
+3. Reply to every comment in the first 30 minutes — author-reply is the ~150× signal
+4. First-person specific, one bold opinion + proof per post
+5. Trust out-of-network discovery — sub-10k accounts get ~3× more out-of-network than in-network reach
+6. Show up daily — Phoenix rewards consistent cadence over bursts
 
 ### Bios, Pinned Posts, and the Profile
 
@@ -271,16 +313,22 @@ Before shipping any post, go through this. Fail on any one → rewrite.
 - [ ] First line creates a gap the reader has to close
 - [ ] Exactly one idea — not two, not three
 - [ ] Specific over generic — real numbers, names, moments
+- [ ] First-person specific ("I built/shipped/burned X") not abstract third-person
 - [ ] Active voice, present tense where possible
 - [ ] Stakes visible: what was lost / gained / avoided
-- [ ] Under 150 words for a single post; under 8 posts for a thread
-- [ ] No dead AI vocabulary, no engagement bait, no thread markers
+- [ ] Media attached — image, screenshot, chart, carousel, or video
+- [ ] Hook shape isn't a recycled template from the last 7 days (Grox flags repeats)
+- [ ] No "What do you think?" / "Thoughts?" / "Agree?" closer
+- [ ] Under 150 words for a short single; up to 4000 chars for long-form; under 8 posts for a thread
+- [ ] No dead AI vocabulary, no engagement bait, no thread markers, no motivational fluff
 - [ ] No hashtags (or at most one community tag)
 - [ ] No external link in the root post; link goes in reply
 - [ ] Reads like you talking, not writing
 - [ ] If contrarian: you actually believe it and can defend it in replies
-- [ ] For threads: post #2 and #3 re-hook independently
-- [ ] Scheduled for a peak window for your audience
+- [ ] Threads: post #2 and #3 re-hook independently AND the thread has a setup → friction → resolution arc
+- [ ] Today's post count ≤ 2 (Author Diversity cap)
+- [ ] Scheduled for a peak window
+- [ ] Plan to reply to every comment in the first 30 minutes (~150× signal)
 - [ ] Reply only: scanned the reply chain for length/tone/vibe before writing
 - [ ] Reply only: 0–2 natural imperfections calibrated to context (medium for fast threads, low for technical)
 
@@ -422,4 +470,4 @@ What works: one small imperfection (no period after "boundaries" before the line
 - AgentSkills spec: https://agentskills.io/specification
 - Companion skill: `content-voice` (human voice rules — always co-activate)
 - Companion skill: `content-humanize` (AI-detection diagnostic if rewriting AI-generated drafts)
-- X algorithm open source: https://github.com/twitter/the-algorithm
+- X For You feed algorithm (Phoenix retrieval, Grox classifier, media hydrators, Author Diversity Scorer): https://github.com/xai-org/x-algorithm
