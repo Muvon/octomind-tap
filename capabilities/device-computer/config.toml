@@ -14,4 +14,4 @@ triggers = [
 	"automate a native desktop application by clicking through it",
 ]
 
-domains = ["device", "developer"]
+domains = ["device"]
