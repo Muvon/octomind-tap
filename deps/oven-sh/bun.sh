@@ -45,6 +45,10 @@ case "$OS" in
         ;;
     esac
     ;;
+  windows)
+    # Official PowerShell installer — installs to %USERPROFILE%\.bun\bin\bun.exe
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "irm bun.sh/install.ps1 | iex"
+    ;;
 esac
 
 # Ensure ~/.bun/bin is on PATH for verification
