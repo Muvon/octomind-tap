@@ -261,6 +261,7 @@ These are direct from Google's spam policy. Treat as kill-rules, not guidelines.
 - "Low-quality directory or bookmark site links" — generic directories = violation
 - "Forum comments with optimized links in the post or signature" — keyword-anchor signature spam = violation
 - "Excessive reciprocal link exchanges without genuine partnership value" — link swap networks = violation
+- Manufactured "brand mentions" floods — Google's 2026 AI optimization guide is explicit: "Seeking inauthentic 'mentions' across the web isn't as helpful as it might seem." Mention-farming for AI-citation lift fails; the same source-quality signal that gates organic citation gates AI citation. Engineer real mentions (genuine engagement, real expert presence, real product/data placements), not synthetic mention campaigns.
 
 What's allowed:
 - Paid links with `rel="sponsored"` or `rel="nofollow"` — Google is explicit: "It's not a violation of our policies to have such links as long as they are qualified."

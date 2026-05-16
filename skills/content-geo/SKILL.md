@@ -35,7 +35,7 @@ AI-referred traffic is growing +527% YoY with 4.4x higher conversion rates than 
 - Seer Interactive: organic CTR -61% on triggered queries (1.76% → 0.61%).
 - Search Engine Journal-cited field study: outbound organic clicks -38% on AI-Overview queries, with zero-click rising from 54% to 72%, effects strongest when AIO appears at the top.
 
-The new primary metric is **citation share** — how often your brand appears as a source inside the generative answer — not blue-link rank. Tools tracking citation frequency, share of voice, and AI referral traffic: Otterly.ai, Semrush AI Toolkit, Ahrefs Brand Radar, Rankability. Probe manually too: 10 fixed niche queries logged monthly across ChatGPT / Perplexity / Claude / Gemini reveals citation drift early.
+The new primary metric is citation share — how often your brand appears as a source inside the generative answer, not blue-link rank. Tools tracking citation frequency, share of voice, and AI referral traffic: Otterly.ai, Semrush AI Toolkit, Ahrefs Brand Radar, Rankability. Probe manually too: 10 fixed niche queries logged monthly across ChatGPT / Perplexity / Claude / Gemini reveals citation drift early.
 
 ## Instructions
 
@@ -48,6 +48,13 @@ The new primary metric is **citation share** — how often your brand appears as
 | Perplexity | Real-time web search | Correlates with Google top-10 results 91% of the time |
 
 ChatGPT accounts for 87.4% of all AI referral traffic — Bing Webmaster Tools submission is critical.
+
+### How AI search retrieves content (Google's named mechanics)
+
+Google's 2026 AI optimization guide names two mechanics worth designing for:
+
+- RAG / grounding — AI answers are built on top of Google's core Search index. Google states plainly: "The best practices for SEO continue to be relevant because our generative AI features on Google Search are rooted in our core Search ranking and quality systems." The signals that earn organic positions are the same signals that earn AI citations.
+- Query fan-out — for a single user prompt, Google's AI generates multiple concurrent sub-queries (Google's own example: a weeds question expands to "best herbicides for lawns" and "how to prevent dandelions from growing back"). Implication for content design: cover the semantic neighborhood, not just the headline phrase. Question variants, related entities, comparison framings, and intent-adjacent long-tails need surface area inside the same cluster so fan-out lands on your pages.
 
 ### The Seven Pillars of GEO
 
@@ -76,7 +83,7 @@ If the draft could be reconstructed by an LLM reading the top 10 alone, it has n
 
 ### Experience signals (the "E" Google amplified in 2026)
 
-Google's March 2026 core update (rolled out March 27 → April 8) made first-hand Experience outweigh comprehensive-but-impersonal content. The update's measured impact: 80% of top-3 results shifted, nearly 1 in 4 top-10 pages fell out of the top 100, and **73% of post-update YMYL top results now display detailed author credentials** (up from 58% before the cycle). Visibility flowed to primary sources, official institutions, and specialist publishers — and away from intermediary "list/aggregator" pages that rephrase the existing top results without adding original signal. Bake at least one of these into every article that allows it:
+Google's March 2026 core update (rolled out March 27 → April 8) made first-hand Experience outweigh comprehensive-but-impersonal content. The update's measured impact: 80% of top-3 results shifted, nearly 1 in 4 top-10 pages fell out of the top 100, and 73% of post-update YMYL top results now display detailed author credentials (up from 58% before the cycle). Visibility flowed to primary sources, official institutions, and specialist publishers — and away from intermediary "list/aggregator" pages that rephrase the existing top results without adding original signal. Bake at least one of these into every article that allows it:
 
 - "From the Field" block — original photos, screenshots (blur sensitive data), short video, or a captioned step-through of the team actually doing the thing
 - Time-boxed case study framing — "I tried this for 30 days", "We ran this for one quarter across 12 clients", "Here's the dashboard at week 6"
@@ -94,7 +101,7 @@ Featured snippet block (40–50 words after each H2)
 Immediately after each H2, place a tight 40–50 word direct answer to the heading's question. This is the unit Google extracts for Position Zero and the unit AI Overviews quote verbatim. It sits before the longer ~150-word elaboration. Make it self-contained — no "as discussed above", no pronouns referring to earlier sections.
 
 Extractable passages (~150 words)
-Each major point should be a self-contained 134–167 word unit that works as a standalone answer. If someone read only that paragraph, they'd get the complete answer.
+Each major point should be a self-contained 134–167 word unit that works as a standalone answer. If someone read only that paragraph, they'd get the complete answer. This is natural answer-unit structure, not "chunking" — Google's 2026 AI optimization guide explicitly warns against artificially fragmenting content into tiny pieces to chase AI features. The unit comes from how the topic decomposes for a real reader, not from a mechanical word-count cut.
 
 Voice-search H2s
 Phrase H2s the way users actually speak the query, not the way SEO tools rank tokens. "What is topical authority?" beats "Topical Authority". "How to set up FAQ schema" beats "FAQ Schema Setup". Voice/AI assistants match conversational phrasing.
@@ -116,7 +123,7 @@ Author bylines with real credentials, first-hand examples, expert quotes with at
 
 ### Schema Markup
 
-Pages with comprehensive JSON-LD schema are 2–3x more likely to be cited by AI. Apply in order of impact:
+Schema is not strictly required for AI citation — Google's 2026 AI optimization guide clarifies that no special markup is needed for generative AI search. Comprehensive JSON-LD still pays: it strengthens rich-results eligibility, entity recognition, and the indexed-signal pipeline AI features draw on via RAG. Treat schema as a force multiplier on the same SEO foundation, not a separate AI-only lever. Apply in order of impact:
 
 1. FAQ Schema — highest single impact, directly extracted by AI:
 ```json
@@ -152,11 +159,11 @@ Always use JSON-LD (not microdata). Apply all applicable schemas together for ma
 
 ### Helpful Content System — continuous, not occasional
 
-The Helpful Content Update was folded into the main core ranking algorithm; in 2026 it is a **continuous real-time signal**, not a periodic refresh. There is no longer a "recovery window" to wait for — every change is evaluated as it indexes. Practical implication: don't ship content that fails the information-gain test "for now and refresh later" — Google sees the same demotion signal the day it goes live.
+The Helpful Content Update was folded into the main core ranking algorithm; in 2026 it operates as a continuous real-time signal, not a periodic refresh. There is no longer a "recovery window" to wait for — every change is evaluated as it indexes. Practical implication: don't ship content that fails the information-gain test "for now and refresh later" — Google sees the same demotion signal the day it goes live.
 
 ### Site Reputation Abuse — algorithmic since August 2025
 
-What started as a manual-action-only policy in March 2024 became fully algorithmic with the August 2025 Spam Update. Google now detects when a section of a site is topically independent from the parent domain and treats it as a separate entity — stripping the parent's authority transfer. The lifespan of a spammy "parasite" page on a high-DA host has dropped from ~9 months to **6–8 weeks**. Treat any "rank by riding a DA-90 host's authority" idea as both unethical and short-lived; pitch placements only where the topical fit is genuine.
+What started as a manual-action-only policy in March 2024 became fully algorithmic with the August 2025 Spam Update. Google now detects when a section of a site is topically independent from the parent domain and treats it as a separate entity — stripping the parent's authority transfer. The lifespan of a spammy "parasite" page on a high-DA host has dropped from ~9 months to roughly 6–8 weeks. Treat any "rank by riding a DA-90 host's authority" idea as both unethical and short-lived; pitch placements only where the topical fit is genuine.
 
 ### AI Crawler Setup
 
@@ -175,7 +182,11 @@ Training crawlers (GPTBot, Google-Extended) are optional — they train models b
 
 Bing Webmaster Tools — submit sitemap to Bing, not just Google Search Console. Critical for ChatGPT visibility.
 
-llms.txt — emerging standard for AI crawlers. Low adoption (~10% of domains), no proven citation impact yet. Nice to have, not critical.
+llms.txt — skip it. Google's 2026 AI optimization guide is explicit: "you don't need to create new machine readable files, AI text files, markup, or Markdown." Near-zero adoption among the search engines that actually drive AI citations; building one is wasted effort that signals "I read an llms.txt thinkpiece" more than it signals optimization.
+
+### Agentic experiences (emerging — Google's forward-looking note)
+
+Google's 2026 guide flags autonomous AI agents — systems that book reservations, compare specs, transact on behalf of users — as the next surface to design for. Two concrete asks land today: keep the DOM clean and the accessibility tree well-formed (agents inspect both during automated browsing), and track the Universal Commerce Protocol (UCP) as it firms up for product/ecommerce surfaces. No new markup is required; this is normal semantic HTML and a11y hygiene paying compound interest as the agentic layer matures.
 
 ## Examples
 

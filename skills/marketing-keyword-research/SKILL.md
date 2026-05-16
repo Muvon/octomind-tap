@@ -31,8 +31,6 @@ rules:
 
 Most keyword research dies at the head term. A site with DR 25 chasing "project management software" (KD 72) loses to Asana and Monday.com forever — but the same audience also searches "free task tracker for two-person agencies" (KD 8, weak SERPs, transactional intent) and that's the keyword class that converts on month-three traffic instead of year-three. This skill is the funnel that finds those keywords reliably: it forces the seed → modifier expansion → SERP-mined patterns → competitor-gap pass, then qualifies survivors against a SERP-authority rubric that beats raw KD scores, and outputs a prioritized brief mapped to content types and intent.
 
-Use BEFORE any content brief, calendar, or pillar-cluster plan. The deliverable is a keyword brief; writing, on-page wrapping, schema, and link-building are out of scope and belong to other domains.
-
 ## Mental model
 
 Long-tail wins on three compounding axes that head-term chasing loses:
@@ -40,17 +38,18 @@ Long-tail wins on three compounding axes that head-term chasing loses:
 1. SERP authority profile beats KD score. KD is a dumb average — what matters is whether the actual top-10 are beatable. A "KD 35" keyword with three 1,500-word generic AI posts on top is more winnable than a "KD 18" keyword where the top 3 are a Wikipedia page, a 5-year-old definitive guide, and the official product page.
 2. Intent specificity is the conversion lever. "[head term]" attracts everyone; "[head term] for [audience] under [constraint]" attracts only buyers. A 100-volume long-tail with 8% conversion beats a 10,000-volume head term with 0.2%.
 3. Long-tail clusters earn topical authority. Five 200-volume long-tails covering the same sub-topic, internally linked to a pillar, signal expertise more than one head-term page. The Helpful Content System (folded into core algorithm 2024) and information-gain scoring both reward depth, original data, and entity-coverage breadth — not surface listicles.
+4. Query fan-out makes long-tail coverage the design itself. Google's 2026 AI optimization guide confirms AI features fire concurrent sub-queries per prompt (Google's example: a weeds prompt expands to "best herbicides for lawns" + "how to prevent dandelions growing back"). Long-tail clusters are literally what fan-out hits — seed → modifier expansion now designs for fan-out coverage, not volume.
 
-The funnel below operationalizes those three axes. Skip any stage and you're back to keyword-research-as-brainstorm — picking what feels obvious, missing what's winnable.
+The funnel below operationalizes those four axes. Skip any stage and you're back to keyword-research-as-brainstorm — picking what feels obvious, missing what's winnable.
 
 ### 2026 algorithmic context (kill-rules upstream of the funnel)
 
 | Reality | Implication for keyword selection |
 |---|---|
-| Helpful Content System is core algorithm (continuous real-time signal post-2024 integration; March 2026 core update further amplified primary sources over intermediaries — 80% of top-3 results shifted, 1 in 4 top-10 pages fell out of top 100) | Topical depth and original perspective beat breadth. Generic AI-summary content is actively suppressed; pick keywords where your unique angle / data / experience fills a gap. |
+| Helpful Content System now core algorithm (continuous real-time signal; March 2026 core update amplified primary sources over intermediaries — 80% of top-3 shifted) | Topical depth and original perspective beat breadth. Generic AI-summary content is actively suppressed; pick keywords where your unique angle / data / experience fills a gap. |
 | Information-gain reward (Google patent + observable behavior) | New content needs to add something the existing top 10 doesn't have. If you can't articulate the new info, the keyword isn't yours yet. |
-| Site Reputation Abuse update (Aug 2024, expanded) | "Best [X] [year]" listicles on Forbes / CNN / Times brand pages now rank artificially. Score realism conservatively on these SERPs unless the user has DR ≥ 50 or a niche-brand-page play. |
-| AI Overview proliferation (~30% of informational SERPs in 2026; 64.8% of all Google searches now end without a click — 83% on AIO-triggered queries; Pew Research measured -46.7% CTR decline, Seer measured -61%) | Even at rank 1, expect 38–61% organic CTR drop on AIO-saturated queries. Either weight transactional / commercial-investigation higher, or write to win the AI citation (extractable answer + schema) instead of the click. Track citation share (Otterly.ai, Semrush AI Toolkit, Ahrefs Brand Radar) as a primary metric alongside rank. |
+| Site Reputation Abuse update (Aug 2024, expanded) | "Best [X] [year]" listicles on Forbes/CNN/Times brand pages rank artificially. Score conservatively on these SERPs unless DR ≥ 50 or a niche-brand-page play. |
+| AI Overview proliferation (~30% of informational SERPs; 64.8% zero-click overall, 83% on AIO-triggered queries; Pew -46.7% CTR, Seer -61%) | Expect 38–61% organic CTR drop at rank 1 on AIO-saturated queries. Weight transactional intent higher or write to win the citation (extractable answer + schema). Track citation share (Otterly.ai, Semrush AI Toolkit, Ahrefs Brand Radar) alongside rank. |
 | Brand search volume now outweighs backlinks as an LLM-citation predictor | Long-term: brand-building keywords (your-brand + modifier) become a defensive cluster. Short-term: long-tails still convert. |
 | Reddit / community SERPs are now load-bearing for AI citations (~40% of LLM citations) | When the top 5 organic results are Reddit threads, the keyword is community-owned — engage there in parallel with publishing. |
 
@@ -64,10 +63,10 @@ The funnel below operationalizes those three axes. Skip any stage and you're bac
 - Information gain is the on-page kill rule. If you cannot name what the new piece adds that the top 10 doesn't have (data, perspective, structure, freshness), the keyword isn't yours yet. Picking the keyword without an angle is the same mistake as picking a head term without DR.
 - Intent must match the site's commercial position. Informational keywords on a transactional product page = mismatch (won't rank, won't convert). Commercial-investigation keywords on a thin glossary page = mismatch. Always classify intent BEFORE assigning content type.
 - Five+ candidates per sub-topic, not one. Single-keyword targeting anchors to whatever came first. Always generate five long-tails per sub-topic and rank — even if four are dead ends, the comparison clarifies why the survivor wins.
-- Zero-volume keywords are a real category in 2026. AI-search shifts demand to long-tail queries that traditional volume tools mark "0". A "0-volume" keyword that ranks for 12 related semantic queries can earn 200+ visits/month. Don't auto-strike on volume = 0; check related-keyword overlap.
+- Zero-volume keywords are a real category in 2026. AI-search shifts demand to long-tails that volume tools mark "0". A 0-volume keyword ranking for 12 related semantic queries can earn 200+ visits/month. Don't auto-strike on volume = 0; check related-keyword overlap.
 - GEO is not a separate discipline anymore — it's the second axis of every modern keyword. Definition / question / comparison / list queries that produce extractable answers earn AI-search citations even when traditional rank is mid-page. Note GEO potential per keyword; the on-page execution (answer-first, FAQ schema, extractable passages) is owned by another domain.
 - Output a brief, not a verdict. The deliverable is a written keyword brief covering: prioritized list, intent + content-type mapping, cluster grouping, entity-coverage notes, and content-calendar slot. Writing, schema, internal-link wiring, and outreach belong to downstream domains.
-- Compound over spike. Prefer evergreen long-tails (definitions, how-tos, tool-fit comparisons) over trend-cycle keywords. A 2026-trend keyword decays in 12 months; "how to [permanent task]" compounds for years.
+- Compound over spike. Prefer evergreen long-tails over trend-cycle keywords. Trend keywords decay in 12 months; "how to [permanent task]" compounds for years.
 
 ### The funnel
 
@@ -173,7 +172,7 @@ A long-tail that scores 1 on realism is automatically demoted to P3 regardless o
 
 #### Stage 6 — Output the keyword brief
 
-Use the canonical template at `references/brief-template.md`. The brief covers: site profile, method notes, priority keywords (P0–P3 tables with volume / KD / SERP realism / intent / GEO / AIO presence / content type / cluster columns), topical clusters with entity-coverage notes, GEO notes (question / definition / comparison / Reddit-dominated / Bing-priority queries), algorithmic risk notes (Site Reputation Abuse, HCS, AIO cannibalization), existing-content audit (cannibalization, GSC page-2 quick wins), and open items handed to downstream domains (content briefs, internal linking, schema, GEO writing, backlink prospecting, AI search visibility tracking).
+Use the canonical template at `references/brief-template.md`. The brief covers: site profile, method notes, P0–P3 priority tables (volume, KD, SERP realism, intent, GEO, AIO, content type, cluster), topical clusters with entity-coverage notes, GEO notes (question / definition / comparison / Reddit / Bing queries), risk notes (Site Reputation Abuse, HCS, AIO cannibalization), existing-content audit (cannibalization, GSC page-2 wins), and open items for downstream domains (briefs, internal linking, schema, GEO writing, link prospecting, AI search tracking).
 
 The brief is the deliverable. Anything not in the brief — content writing, schema wiring, internal-link execution, outreach copy — is downstream and belongs to other domains.
 

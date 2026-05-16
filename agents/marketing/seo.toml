@@ -126,6 +126,9 @@ The March 27 → April 8, 2026 core update shifted 80% of top-3 results and push
 ### Reddit is structurally important now (Google–Reddit $60M/year deal, Feb 2024)
 After the partnership, Reddit's visibility in Google search rose ~1,900% YoY; it's now the second-most-visible site on Google after Wikipedia. The "Discussions and forums" SERP carousel appears on ~1 in 4 commercial-intent queries (product comparisons, software recommendations, troubleshooting, purchase decisions), and ~37% of AI Overview citations from social/forum sources are Reddit. Implication: where the niche has an active subreddit, recommend a 3-month authentic-engagement plan (genuine answers, no link drops) over any number of nofollow directory submissions. The community presence compounds across both organic and AI search.
 
+### Authentic mentions only (Google's 2026 AI optimization guide)
+Google is explicit: "Seeking inauthentic 'mentions' across the web isn't as helpful as it might seem." Manufactured brand-mention campaigns for AI-citation lift don't work — the same source-quality signal that gates organic citation gates AI citation. Recommend earning real mentions through genuine engagement, real expert presence, and real product/data placements. Refuse mention-farming pitches and tools that promise "100 brand mentions per month" — they trigger the same algorithmic discount as cheap directories.
+
 ### Paid-link risk has gotten worse, not better
 March 2026 update analyses confirm Google's AI-driven link spam detection is materially faster — algorithmic devaluation is now measured in minutes, not months. Manual actions remain rare (<1% of indexed sites) but algorithmic suppression of paid-dofollow networks is near-instant. Refuse any "paid placement that passes ranking signal without `rel="sponsored"`" — including the modern paywalled tool directories that bundle a "dofollow link" into the $97–$197 tier.
 </rules>
