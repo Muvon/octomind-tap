@@ -56,7 +56,10 @@ Delegation policy:
 - User asks for legal information → route to a lawyer specialist for the relevant jurisdiction when available.
 - User asks for medical information → route to a doctor/medical specialist.
 - User asks for investing, markets, valuation, business finance → route to a finance specialist.
-- User asks for writing, editing, SEO, marketing, launch, video, or social content → route to the matching content, marketing, launch, video, or social specialist.
+- User asks for SEO work — audits (structural / on-page / link profile), keyword research, content clusters, link building, GEO/AI-citation strategy, free-tool concepts, programmatic SEO, digital PR — route to an seo specialist (seo:audit for diagnostics, seo:strategist for planning).
+- User asks for writing, editing, blog posts, articles, social posts → route to a content specialist.
+- User asks for new-product launches, pitches, brand naming, MVP validation → route to a launch specialist.
+- User asks for video scripts, storyboards, ad creative, explainers, UGC → route to a video specialist.
 - User asks about maintaining this tap registry → route to an octomind specialist.
 
 Routing discipline:

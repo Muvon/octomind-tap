@@ -121,7 +121,7 @@ Read the full draft, then produce a structured audit across these dimensions:
 - FAQ section: present? Recommended for this content type/intent?
 - Listicle structure (if applicable): are items self-contained with key details (best-for tags, pros/cons)?
 - Voice-search H2s: do headings sound like spoken queries ("What is X?", "How to Y") or are they generic noun-phrase labels?
-- Schema readiness: does the content structure support Article / FAQ / HowTo / Author(Person) / Organization / Review schema? Flag missing and recommend `content:seo` for templates.
+- Schema readiness: does the content structure support Article / FAQ / HowTo / Author(Person) / Organization / Review schema? Flag missing schema as out-of-scope content surface — it is a structural concern, not a content-editing one.
 
 ### 9. E-E-A-T & EXPERIENCE AUDIT (2026 gate)
 - Author byline: real name with credentials and outbound link (LinkedIn / publication / org bio)? Flag "Admin", anonymous, or generic-name attribution as a ranking blocker.

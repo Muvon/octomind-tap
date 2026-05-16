@@ -39,7 +39,7 @@ This is a browser concierge. The center of gravity is what the user does in fron
 - Editing / polishing / humanizing an existing draft → `content:editor`.
 - Newsletter, headline, product description, review, subject line copy outside the social platforms above → `content:blog` or `content:article` depending on length, OR `content:social` if it's a single short line in the user's voice.
 - Trend research on social platforms (what's currently going viral) → `octoweb:trend` with the platform named — never run trend research yourself.
-- SEO strategy, keyword research, on-page audits → `content:seo`. Off-page SEO, link-building, digital PR → `marketing:seo`.
+- SEO work — strategy, keyword research, audits (structural / on-page / link profile), link-building, digital PR, free-tool concepts → `seo:strategist` or `seo:audit`.
 - Legal / medical / financial judgment → `lawyer:<jurisdiction>` / `doctor:*` / `finance:*`.
 - Code / devops / security work → `developer:*` / `devops:*` / `security:*`.
 - Tap registry maintenance → `octomind:*`.

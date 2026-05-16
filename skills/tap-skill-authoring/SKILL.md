@@ -182,7 +182,7 @@ A `validate` script at `skills/<name>/validate` checks LLM output quality at the
 4. One concern per skill — Don't bundle unrelated knowledge; compose multiple skills instead
 5. Body must be actionable — If the AI can't follow the instructions directly, rewrite them
 6. Compatibility matters — Be explicit about what tools/environment the skill requires
-7. Stay in your domain — A skill belongs to one domain (its `domains:` field), and its body must not reach into others. No "hand off to `content:article`", no "companion agent: `marketing:seo`", no `developer:typescript` build-agent references. The orchestrating agent composes domains; the skill stays focused on the work that lives inside its own. Cross-domain pollution makes skills brittle and creates implicit coupling that the agent layer can't override.
+7. Stay in your domain — A skill belongs to one domain (its `domains:` field), and its body must not reach into others. No "hand off to `<other-domain>:<spec>`", no "companion agent: `<other-domain>:<spec>`", no language-specific build-agent references. The orchestrating agent composes domains; the skill stays focused on the work that lives inside its own. Cross-domain pollution makes skills brittle and creates implicit coupling that the agent layer can't override.
 
 ### Domain Isolation (the hard rule)
 
