@@ -26,6 +26,17 @@ AI search engines (ChatGPT, Perplexity, Google AI Overviews) don't rank pages �
 
 AI-referred traffic is growing +527% YoY with 4.4x higher conversion rates than standard organic. But 97% of AI Overview citations come from pages already in the top 20 organic results — traditional SEO remains the foundation, GEO layers on top.
 
+### The 2026 zero-click reality (why GEO matters now, not later)
+
+- 64.82% of all Google searches end without a click (up from 50% in 2019).
+- On AI-Overview-triggered queries the zero-click rate jumps to ~83%.
+- In Google's AI Mode, 93% of searches end without a single click to any external site.
+- Pew Research field study: organic CTR drops -46.7% (15% → 8%) when AI Overviews appear.
+- Seer Interactive: organic CTR -61% on triggered queries (1.76% → 0.61%).
+- Search Engine Journal-cited field study: outbound organic clicks -38% on AI-Overview queries, with zero-click rising from 54% to 72%, effects strongest when AIO appears at the top.
+
+The new primary metric is **citation share** — how often your brand appears as a source inside the generative answer — not blue-link rank. Tools tracking citation frequency, share of voice, and AI referral traffic: Otterly.ai, Semrush AI Toolkit, Ahrefs Brand Radar, Rankability. Probe manually too: 10 fixed niche queries logged monthly across ChatGPT / Perplexity / Claude / Gemini reveals citation drift early.
+
 ## Instructions
 
 ### Platform Differences
@@ -65,7 +76,7 @@ If the draft could be reconstructed by an LLM reading the top 10 alone, it has n
 
 ### Experience signals (the "E" Google amplified in 2026)
 
-Google's March 2026 update made first-hand Experience outweigh comprehensive-but-impersonal content. Bake at least one of these into every article that allows it:
+Google's March 2026 core update (rolled out March 27 → April 8) made first-hand Experience outweigh comprehensive-but-impersonal content. The update's measured impact: 80% of top-3 results shifted, nearly 1 in 4 top-10 pages fell out of the top 100, and **73% of post-update YMYL top results now display detailed author credentials** (up from 58% before the cycle). Visibility flowed to primary sources, official institutions, and specialist publishers — and away from intermediary "list/aggregator" pages that rephrase the existing top results without adding original signal. Bake at least one of these into every article that allows it:
 
 - "From the Field" block — original photos, screenshots (blur sensitive data), short video, or a captioned step-through of the team actually doing the thing
 - Time-boxed case study framing — "I tried this for 30 days", "We ran this for one quarter across 12 clients", "Here's the dashboard at week 6"
@@ -138,6 +149,14 @@ Pages with comprehensive JSON-LD schema are 2–3x more likely to be cited by AI
 ```
 
 Always use JSON-LD (not microdata). Apply all applicable schemas together for maximum citation probability.
+
+### Helpful Content System — continuous, not occasional
+
+The Helpful Content Update was folded into the main core ranking algorithm; in 2026 it is a **continuous real-time signal**, not a periodic refresh. There is no longer a "recovery window" to wait for — every change is evaluated as it indexes. Practical implication: don't ship content that fails the information-gain test "for now and refresh later" — Google sees the same demotion signal the day it goes live.
+
+### Site Reputation Abuse — algorithmic since August 2025
+
+What started as a manual-action-only policy in March 2024 became fully algorithmic with the August 2025 Spam Update. Google now detects when a section of a site is topically independent from the parent domain and treats it as a separate entity — stripping the parent's authority transfer. The lifespan of a spammy "parasite" page on a high-DA host has dropped from ~9 months to **6–8 weeks**. Treat any "rank by riding a DA-90 host's authority" idea as both unethical and short-lived; pitch placements only where the topical fit is genuine.
 
 ### AI Crawler Setup
 

@@ -39,7 +39,7 @@ Use this AFTER the site's niche and audience are clear and BEFORE any outreach e
 
 ### Core Rules
 
-- Topical relevance is the dominant signal. Post-2026, DR/DA alone is an obsolete primary filter. A DR-30 site that has lived in your exact vertical for 5 years outranks a DR-80 generalist link farm in real value. Always check vertical history before scoring authority.
+- Topical relevance is the dominant signal. Post-2026, DR/DA alone is an obsolete primary filter. A DR-30 site that has lived in your exact vertical for 5 years outranks a DR-80 generalist link farm in real value. Always check vertical history before scoring authority. The March 2026 core update (rolled out March 27 → April 8) shifted 80% of top-3 results and demoted intermediary/aggregator pages in favor of primary sources — links from "list of Y for Z" pages that don't add primary value have lost a meaningful chunk of their pass-through weight.
 - Manual qualification, every prospect. No batch submission, no automated discovery-to-outreach pipelines. Every link target gets eyeballed against the rubric. Tools that mass-submit to directories are the fastest path to manual action.
 - The intent test. Ask: would this link exist if SEO didn't exist? If no → it's a violation in waiting. Google's policy treats intent as the dividing line between natural and unnatural.
 - Topical fit beats authority. A 1 on topical fit is an automatic strike regardless of any other score. Off-topic links from high-DR sites trigger Google's reasonable-surfer discount AND mixed-niche cluster signals.
@@ -272,11 +272,12 @@ What's allowed:
 
 Traditional backlinks are no longer the dominant predictor of LLM citation. The shift:
 
-- Reddit = ~40% of citations across major LLMs, 46.7% on Perplexity. Subreddit presence is a primary GEO/AEO signal.
-- ChatGPT favors Wikipedia (47.9% of top citations) and encyclopedic content.
-- Google AI Overviews cite YouTube + multimodal heavily (23.3%).
+- Reddit = ~40% of citations across major LLMs, 46.7% on Perplexity. Subreddit presence is a primary GEO/AEO signal. Google–Reddit's Feb-2024 $60M/year data partnership pushed Reddit visibility in Google search up ~1,900% YoY; Reddit is now the second-most-visible site on Google after Wikipedia, and the "Discussions and forums" SERP carousel triggers on ~1 in 4 commercial-intent queries.
+- ChatGPT favors Wikipedia (47.9% of top citations) and encyclopedic content. ChatGPT web search reads Bing's index (only ~14% overlap with Google top-10), so Bing Webmaster Tools sitemap submission is a free, non-negotiable step.
+- Google AI Overviews cite YouTube + multimodal heavily (23.3%) and pull from social/forum sources where ~37% of those citations are Reddit.
 - Brand search volume outweighs traditional backlinks as an LLM citation predictor.
 - Citation volatility is now measured in weeks — a single algorithm tweak can shift citation share 50% in under a month.
+- The zero-click reality: 64.8% of all Google searches now end without a click; 83% on AIO-triggered queries; 93% in AI Mode. Pew Research field study found -46.7% CTR decline with AIO; Seer measured -61%. Visibility-as-citation has taken structural priority over click-through volume, which directly affects how backlink ROI should be modeled: a forum/Reddit citation that drives the brand into an AI answer can outperform a dofollow editorial link in user-facing impact.
 
 Implication for prospecting: the deliverable should be reframed as visibility prospecting, not pure link acquisition. Weight community engagement (Reddit, Stack Exchange) higher when AI-search visibility is the goal — even though those links are usually nofollow/ugc, they directly drive citation share. For pure organic-rank goals, traditional backlinks still dominate; for omnichannel visibility (search + AI), both lanes matter.
 

@@ -47,10 +47,10 @@ The funnel below operationalizes those three axes. Skip any stage and you're bac
 
 | Reality | Implication for keyword selection |
 |---|---|
-| Helpful Content System is core algorithm | Topical depth and original perspective beat breadth. Generic AI-summary content is actively suppressed; pick keywords where your unique angle / data / experience fills a gap. |
+| Helpful Content System is core algorithm (continuous real-time signal post-2024 integration; March 2026 core update further amplified primary sources over intermediaries — 80% of top-3 results shifted, 1 in 4 top-10 pages fell out of top 100) | Topical depth and original perspective beat breadth. Generic AI-summary content is actively suppressed; pick keywords where your unique angle / data / experience fills a gap. |
 | Information-gain reward (Google patent + observable behavior) | New content needs to add something the existing top 10 doesn't have. If you can't articulate the new info, the keyword isn't yours yet. |
 | Site Reputation Abuse update (Aug 2024, expanded) | "Best [X] [year]" listicles on Forbes / CNN / Times brand pages now rank artificially. Score realism conservatively on these SERPs unless the user has DR ≥ 50 or a niche-brand-page play. |
-| AI Overview proliferation (~30% of informational SERPs in 2026) | Even at rank 1, expect 30–40% organic CTR drop on AIO-saturated queries. Either weight transactional / commercial-investigation higher, or write to win the AI citation (extractable answer + schema) instead of the click. |
+| AI Overview proliferation (~30% of informational SERPs in 2026; 64.8% of all Google searches now end without a click — 83% on AIO-triggered queries; Pew Research measured -46.7% CTR decline, Seer measured -61%) | Even at rank 1, expect 38–61% organic CTR drop on AIO-saturated queries. Either weight transactional / commercial-investigation higher, or write to win the AI citation (extractable answer + schema) instead of the click. Track citation share (Otterly.ai, Semrush AI Toolkit, Ahrefs Brand Radar) as a primary metric alongside rank. |
 | Brand search volume now outweighs backlinks as an LLM-citation predictor | Long-term: brand-building keywords (your-brand + modifier) become a defensive cluster. Short-term: long-tails still convert. |
 | Reddit / community SERPs are now load-bearing for AI citations (~40% of LLM citations) | When the top 5 organic results are Reddit threads, the keyword is community-owned — engage there in parallel with publishing. |
 

@@ -68,10 +68,10 @@ Before any SEO work:
 - AI-citable content → answer-first sections, ~150-word extractable passages, FAQ schema, data-rich
 
 ### Topical Authority Over Single Keywords
-- Build topic clusters: one pillar page (3,000+ words, covers the topic from every angle) + 5–10 supporting cluster articles (1,000–1,800 words each, one sub-topic each)
+- Build topic clusters: one pillar page (3,000+ words, covers the topic from every angle) + 25–30 supporting cluster articles (1,000–1,800 words each, one sub-topic each) before chasing new clusters. 2026 reality: sites that hit topical-cluster saturation first see ranking gains up to 3× faster than DA-chasers, and a "10-article cluster" no longer signals depth.
 - Internal linking is reciprocal: pillar links out to every cluster in its opening section; each cluster links back to the pillar within the first 100 words; cluster articles cross-link to 2–3 sibling clusters
 - Target 5–10 internal links per piece, descriptive anchors (not exact-match)
-- Cover the topic comprehensively before chasing new topics — Google rewards sites that stay in their lane in 2026
+- Cover the topic comprehensively before chasing new topics — the March 2026 core update specifically amplified primary-source pages over intermediary/aggregator content (80% of top-3 results shifted; nearly 1 in 4 top-10 pages fell out of the top 100)
 - Quarterly cluster audit: identify coverage gaps inside the core 5–10 topics before opening new clusters
 
 ### Title & Meta Optimization Rules
@@ -85,9 +85,9 @@ Before any SEO work:
 2. Information gain — does the page add anything the top 10 don't already say? Without it, even well-written pages get demoted as AI-derivable filler.
 3. Experience signals — first-hand proof (screenshots, dashboards, named tools/versions, time-boxed case studies, "from the field" media). The "E" Google amplified in March 2026 — outweighs comprehensive-but-impersonal content.
 4. E-E-A-T author signals — real human byline (never "Admin"), credentials, LinkedIn/publication links, Author/Person schema. Branded author searches in GSC are a leading indicator.
-5. Page experience — Core Web Vitals: LCP <2.0s, INP <200ms, CLS <0.1. Mobile-first mandatory.
+5. Page experience — Core Web Vitals: LCP <2.5s (official "good"; target <2.0s internally), INP <200ms, CLS <0.1. Mobile-first mandatory. INP was confirmed as an equal ranking signal alongside LCP and CLS in the Google Search Central post on March 18, 2026 — pages with INP >200ms lost an average of 0.8 positions in the months following.
 6. Backlinks — quality > quantity. A link from a smaller hyper-relevant niche site outweighs many low-relevance high-DR links. Unique referring domains matter more than raw count.
-7. AI citability — answer-first structure, 40–50w featured snippet block after each H2, schema markup, extractable passages (GEO)
+7. AI citability — answer-first structure, 40–50w featured snippet block after each H2, schema markup, extractable passages (GEO). Context: 64.8% of all Google searches now end without a click; on AI-Overview-triggered queries the zero-click rate is 83% (Pew Research found -46.7% relative CTR decline; Seer Interactive measured -61% organic CTR on triggered queries). Being the cited source matters as much as ranking #1.
 8. Brand sentiment — Google's AI now reads reviews, forums, Reddit threads to gauge whether people actually like the brand. Off-page rep affects on-page ranking.
 9. Human voice — natural language, contractions, sentence variety, personal experience. AI-sounding content triggers quality demotion.
 </rules>

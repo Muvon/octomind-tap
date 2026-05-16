@@ -1,5 +1,8 @@
 # capabilities/translation/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+domains = [
+	"content"
+]
 
 triggers = [
 	"translate text from one language to another",

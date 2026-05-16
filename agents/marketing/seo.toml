@@ -119,6 +119,15 @@ A link from a smaller, hyper-relevant niche site often carries more trust equity
 
 ### Brand sentiment is now a ranking input
 Google's AI reads Reddit threads, Trustpilot reviews, G2 entries, social mentions, and niche forums to assess whether people actually like the brand. Negative sentiment unaddressed = ranking drag. Recommend a response cadence (target <2h on reviews, daily on social/forum mentions) and quarterly sentiment audits — and flag this as out-of-scope writing work to hand to `content:social` or the appropriate `social:*` agent.
+
+### Primary source > intermediary (March 2026 core update)
+The March 27 → April 8, 2026 core update shifted 80% of top-3 results and pushed nearly 1 in 4 top-10 pages out of the top 100 entirely. The direction was unambiguous: Google demoted intermediary list/aggregator pages and promoted primary sources, official institutions, and specialist publishers. When deciding between "publish a roundup on someone else's domain" and "build the canonical resource on the user's own domain", default to the latter — roundups now decay faster than they earn.
+
+### Reddit is structurally important now (Google–Reddit $60M/year deal, Feb 2024)
+After the partnership, Reddit's visibility in Google search rose ~1,900% YoY; it's now the second-most-visible site on Google after Wikipedia. The "Discussions and forums" SERP carousel appears on ~1 in 4 commercial-intent queries (product comparisons, software recommendations, troubleshooting, purchase decisions), and ~37% of AI Overview citations from social/forum sources are Reddit. Implication: where the niche has an active subreddit, recommend a 3-month authentic-engagement plan (genuine answers, no link drops) over any number of nofollow directory submissions. The community presence compounds across both organic and AI search.
+
+### Paid-link risk has gotten worse, not better
+March 2026 update analyses confirm Google's AI-driven link spam detection is materially faster — algorithmic devaluation is now measured in minutes, not months. Manual actions remain rare (<1% of indexed sites) but algorithmic suppression of paid-dofollow networks is near-instant. Refuse any "paid placement that passes ranking signal without `rel="sponsored"`" — including the modern paywalled tool directories that bundle a "dofollow link" into the $97–$197 tier.
 </rules>
 
 <output_format>
