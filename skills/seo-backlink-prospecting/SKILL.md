@@ -1,10 +1,10 @@
 ---
-name: marketing-backlink-prospecting
+name: seo-backlink-prospecting
 title: "Backlink Prospecting & Qualification — Find Safe Free Places"
-description: "Operational funnel for finding and qualifying SAFE free places to place backlinks. Encodes the prospect categories (reclamation, resource pages, broken links, journalist requests, communities, aggregators, niche directories), the per-target qualification rubric (topical fit, real traffic, outbound profile, page context, anchor naturalness, reachability), Google's link-spam guardrails (penalty triggers, rel attribution rules), and the 2026 AI-search citation overlay (Reddit/community as Perplexity/ChatGPT citation sources). Use AFTER niche/audience are clear and BEFORE any outreach. Stays in the marketing lane: produces a prospect brief — outreach copy and on-page wrappers belong to other domains."
+description: "Operational funnel for finding and qualifying SAFE free places to place backlinks. Encodes the prospect categories (reclamation, resource pages, broken links, journalist requests, communities, aggregators, niche directories), the per-target qualification rubric (topical fit, real traffic, outbound profile, page context, anchor naturalness, reachability), Google's link-spam guardrails (penalty triggers, rel attribution rules), and the 2026 AI-search citation overlay (Reddit/community as Perplexity/ChatGPT citation sources). Use AFTER niche/audience are clear and BEFORE any outreach. Stays in the SEO lane: produces a prospect brief — outreach copy and on-page wrappers are downstream concerns owned elsewhere."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Requires websearch and webfetch for prospect discovery and qualification."
-domains: marketing
+domains: seo
 rules:
   - session(seo)
   - content(backlink)
@@ -59,7 +59,7 @@ Force concrete answers before generating any prospect list. If unclear, stop and
 2. Audience — who visits today? What do they search for?
 3. Existing link profile — rough count, top referring domains, any past penalty history. (Run `site:[domain]` and check Search Console if accessible.)
 4. Brand mentions — does the brand get mentioned online already? (Search `"[brand]" -site:[domain]` to surface.)
-5. Linkable assets — what does the site already publish that's link-worthy? (Original data, tools, comprehensive guides, calculators.) If nothing yet → flag that prospecting will be uphill until at least one asset exists; recommend the `marketing-tool-discovery` skill in parallel.
+5. Linkable assets — what does the site already publish that's link-worthy? (Original data, tools, comprehensive guides, calculators.) If nothing yet → flag that prospecting will be uphill until at least one asset exists; recommend the `seo-tool-discovery` skill in parallel.
 
 #### Stage 2 — Generate Prospect Lists by Category (parallel)
 
@@ -374,7 +374,7 @@ Response:
 >
 > Two honest paths:
 >
-> - Slow path (recommended for new domains): publish 3–5 substantial assets first (one of them a tool, see `marketing-tool-discovery`). Spend 30 days building reclamation + community presence. Earn 5–15 high-fit links in month 1. Compound from there.
+> - Slow path (recommended for new domains): publish 3–5 substantial assets first (one of them a tool, see `seo-tool-discovery`). Spend 30 days building reclamation + community presence. Earn 5–15 high-fit links in month 1. Compound from there.
 > - Fast path (only if newsworthy): if you have unique data or a genuine PR hook, do a coordinated digital PR push via SOS / Qwoted / #JournoRequest. 10–30 high-quality links in 30 days IS realistic, but the prerequisite is a real story, not a request.
 >
 > 100 links in 30 days as the goal itself is the problem. Pick one of the two paths above and the prospecting funnel runs against that goal instead.

@@ -1,7 +1,7 @@
 ---
 name: browser-backlink-submission
 title: "Browser Backlink Submission Execution"
-description: "Operational playbook for EXECUTING backlink submissions via a headless browser — driving directory/listing/Web2.0 forms with Playwright, mapping a single site profile to per-target fields, handling signup + email verification + captchas, throttling to avoid spam flags, and producing an auditable submission log. Activate ONLY when the user has a qualified prospect list and wants the browser to actually submit. Prospect discovery and qualification belong to marketing-backlink-prospecting; copy/anchor writing belongs to content skills via tap."
+description: "Operational playbook for EXECUTING backlink submissions via a headless browser — driving directory/listing/Web2.0 forms with Playwright, mapping a single site profile to per-target fields, handling signup + email verification + captchas, throttling to avoid spam flags, and producing an auditable submission log. Activate ONLY when the user has a qualified prospect list and wants the browser to actually submit. Prospect discovery, qualification, and anchor/description copy are upstream concerns — this skill is execution-only."
 license: Apache-2.0
 compatibility: "Requires browser:general agent with browser (Playwright) capability and filesystem-write. Assumes a prospect list already qualified for safety and topical fit."
 domains: browser
@@ -25,7 +25,7 @@ metadata:
 
 ## Overview
 
-Given a qualified prospect list and a single source-of-truth site profile, drive each target's submission form to completion, capture evidence, and emit an auditable log. This skill is execution-only — it assumes prospects are already vetted (use `marketing-backlink-prospecting` first) and assumes anchor / description copy is either pre-supplied or fetched from a content specialist via `tap`.
+Given a qualified prospect list and a single source-of-truth site profile, drive each target's submission form to completion, capture evidence, and emit an auditable log. This skill is execution-only — it assumes prospects are already vetted upstream and assumes anchor / description copy is either pre-supplied or fetched via the agent's main loop.
 
 Outcome: a `submission-log.json` with one row per attempt (status, evidence, live URL once verified) plus screenshots under `./out/backlinks/`. No fabricated successes, no fire-and-forget, no link-farm targets ever.
 
@@ -133,10 +133,10 @@ The user (or an upstream step) supplies one JSON file. If any required field is 
 }
 ```
 
-### Hand-offs (use `tap`)
+### Out-of-scope handling
 
-- Need fresh, on-topic descriptions per niche → `tap(action="run", role="content:<...>", prompt="...")` or `content-humanize` skill output via the agent's main loop. Do NOT write copy here.
-- Need to qualify fresh prospects mid-run → stop, escalate to `marketing-backlink-prospecting`. This skill does not vet new targets on the fly.
+- Need fresh, on-topic descriptions per niche → stop; copy authoring is an upstream concern, do NOT write copy here.
+- Need to qualify fresh prospects mid-run → stop. This skill does not vet new targets on the fly; prospect vetting is an upstream concern.
 - Q&A / forum / community work → out of scope. Persona / on-topic answers are not this skill's job.
 
 ## Examples
@@ -179,7 +179,7 @@ Form filled cleanly, "Submit" button reveals an hCaptcha challenge. Stop. Screen
 ## Composition / References
 
 - Pairs with `browser-form-filling-patterns` (selector resilience, file uploads, multi-step forms) — base layer.
-- Run after `marketing-backlink-prospecting` has produced a vetted prospect list. This skill does not discover prospects.
-- For copy generation (descriptions, anchor variants), call out to a content specialist via `tap`; do not author copy inside this skill.
+- Runs only after an upstream prospect-vetting step has produced a qualified list — this skill does not discover or qualify prospects.
+- Copy generation (descriptions, anchor variants) is an upstream concern — do not author copy inside this skill.
 - [Google Search Essentials — Link spam](https://developers.google.com/search/docs/essentials/spam-policies#link-spam)
 - [Google: Qualifying outbound links to your site](https://developers.google.com/search/docs/essentials/spam-policies#user-generated-spam)

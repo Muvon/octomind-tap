@@ -1,10 +1,10 @@
 ---
-name: marketing-tool-discovery
+name: seo-tool-discovery
 title: "Free-Tool Discovery for Backlinks & Traffic"
-description: "Validation funnel for deciding WHICH free tool to build for backlinks, embeds, and AI-search citation. Encodes the data-moat-first methodology: niche-fit gate, data inventory, 5-candidate scoring across niche/moat/SEO/feasibility/monetization, alignment checklist, and a strategy brief. Use BEFORE any tool-build work to avoid building commodity tools that earn nothing. Skip if the user has already validated the concept and just wants to build. Stays in the marketing lane: produces the brief — the build itself is owned by other domains."
+description: "Validation funnel for deciding WHICH free tool to build for backlinks, embeds, and AI-search citation. Encodes the data-moat-first methodology: niche-fit gate, data inventory, 5-candidate scoring across niche/moat/SEO/feasibility/monetization, alignment checklist, and a strategy brief. Use BEFORE any tool-build work to avoid building commodity tools that earn nothing. Skip if the user has already validated the concept and just wants to build. Stays in the SEO lane: produces the brief — the build itself is a downstream concern owned elsewhere."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Requires websearch and webfetch for competitor and SERP scans."
-domains: marketing
+domains: seo
 rules:
   - session(seo)
   - content(backlink)
