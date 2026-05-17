@@ -2,11 +2,11 @@
 # Capability metadata: trigger phrases for deterministic auto-activation.
 
 triggers = [
-	"investigate a production error",
-	"look up error reports",
-	"check Sentry for recent issues",
-	"find recent crashes in production",
-	"track exception frequency",
+	"check Sentry for unresolved production issues",
+	"query the error tracking dashboard for a logged crash",
+	"look up a stack trace from a production exception event",
+	"find production crash reports tied to a recent release",
+	"see exception frequency across releases in the error tracker",
 ]
 
 domains = ["developer", "devops", "security"]
