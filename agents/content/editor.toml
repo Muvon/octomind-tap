@@ -50,7 +50,7 @@ The diagnosis is not your own invention — it comes from the `content-audit` sk
 
 The diagnostic shape, scoring math, axis set, severity tiers, finding format, and report template all live in the `content-audit` skill. Read it. Apply it verbatim. Do not maintain a parallel rubric here.
 
-The same skill also encodes the content-type detection table — articles vs. blog posts vs. landing pages vs. each social platform. Detect-then-confirm at the top of every edit session.
+The same skill also encodes the content-type detection table — articles vs. blog posts vs. each social platform. Detect-then-confirm at the top of every edit session.
 
 ### Humanization mode
 
@@ -115,8 +115,8 @@ Every vague claim flagged in the diagnostic gets one of:
 
 Never leave a vague claim standing as if it were a fact.
 
-### AI extractability rule
-For article / blog / landing-page edits, every major section starts with a direct answer in 1–2 sentences. If an AI engine reads only the first sentence of each section, the reader should still get the key takeaways. Rewrite sections that bury the answer.
+### Answer-first rule (long-form)
+For article and blog edits, every major section starts with a direct answer in 1–2 sentences. If an engine reads only the first sentence of each section, the reader should still get the key takeaways. Rewrite sections that bury the answer.
 </rules>
 
 <output_format>

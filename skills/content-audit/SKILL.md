@@ -1,9 +1,9 @@
 ---
 name: content-audit
 title: "Content Audit Rubric & Scoring Harness"
-description: "Read-only audit harness for content. Detects the content type (X post / X thread / LinkedIn / Threads / Bluesky / Mastodon / Hacker News / Reddit / blog / article / landing page), routes to the matching platform skill plus the cross-cutting voice/humanize/grounding/GEO checks, scores it on per-axis 0–10 + overall 0–100, and emits a canonical findings report with severity tiers, evidence, and suggested rewrites. For X surfaces also emits a Phoenix-style verdict (Pass / Borderline / Likely-Suppressed / Kill-Switch-Risk). Used by both content:audit (read-only) and content:editor (diagnose-then-edit) — single source of truth for the diagnostic shape."
+description: "Read-only audit harness for content quality. Detects the content type (X post / X thread / LinkedIn / Threads / Bluesky / Mastodon / Hacker News / Reddit post, or blog / article), routes to the matching social-* skill plus the cross-cutting voice/humanize/grounding/geo checks, scores per-axis 0–10 + overall 0–100, emits a canonical findings report with severity tiers, evidence, and suggested rewrites. For X surfaces also emits a Phoenix-style verdict (Pass / Borderline / Likely-Suppressed / Kill-Switch-Risk). Single source of truth for the diagnostic shape — used by content:audit (read-only) and content:editor (diagnose-then-edit)."
 license: Apache-2.0
-compatibility: "Composes with all social-*, seo-content-audit, markup-landing-page, and content-voice/humanize/grounding/geo skills. Read-only — never mutates source files. Requires filesystem-read for file inputs."
+compatibility: "Composes with content-domain skills only: social-*, content-voice, content-humanize, content-grounding, content-geo. Read-only — never mutates source files. Requires filesystem-read for file inputs."
 domains: content
 rules:
   - content(audit)
@@ -11,7 +11,7 @@ rules:
   - content(review)
   - content(diagnose)
   - session(audit)
-  - match(\b(audit|score|review|diagnose|grade|critique)\s+(this|my|the|a)\s+(post|thread|tweet|article|blog|draft|page|landing|copy)\b)
+  - match(\b(audit|score|review|diagnose|grade|critique)\s+(this|my|the|a)\s+(post|thread|tweet|article|blog|draft|copy)\b)
   - match(\b(how\s+(good|strong|viral)\s+is\s+this)\b)
   - match(\b(will\s+this\s+(work|rank|perform|land))\b)
   - match(\b(check|inspect)\s+.{0,40}before\s+(posting|publishing|shipping)\b)
@@ -46,15 +46,16 @@ Read the input. Match against these signatures. If signal is ambiguous, ask the 
 |---|---|---|
 | ≤ 280 chars, no thread markers, single block | X post | `social-x` + cross-cutting |
 | 2+ blocks separated by blank lines or "—" / "Post N" markers, each ≤ 280 chars | X thread | `social-x` + cross-cutting |
-| ≤ 3000 chars, no SEO frontmatter, conversational | LinkedIn post | `social-linkedin` + cross-cutting |
+| ≤ 3000 chars, conversational, no formal sections | LinkedIn post | `social-linkedin` + cross-cutting |
 | Similar to X but with different platform context cue | Threads / Bluesky / Mastodon / Reddit / HN | matching `social-<platform>` + cross-cutting |
-| 600–1200 words, opinionated, conversational, no heavy citations | Blog post | `seo-content-audit` + cross-cutting + `content-geo` |
-| 1500–3000+ words, sections, citations, formal voice | Article | `seo-content-audit` + cross-cutting + `content-geo` |
-| HTML / page-shaped / hero+sections+CTA | Landing page | `markup-landing-page` + cross-cutting + `content-geo` |
+| 600–1200 words, opinionated, conversational | Blog post (content quality) | cross-cutting + `content-geo` |
+| 1500–3000+ words, sections, citations, formal voice | Article (content quality) | cross-cutting + `content-geo` |
 
 Cross-cutting skills always loaded: `content-voice`, `content-humanize`, `content-grounding`.
 
 Don't guess between blog and article — confirm if borderline. Don't guess platform if no cue — ask which one.
+
+This audit covers content quality — voice, hook, dwell, slop, structure, specificity, grounding, safety, topic fit, and answer-first structure for long-form. The rubric stays focused on what makes the writing itself work.
 
 ### Inputs the audit accepts
 
@@ -84,27 +85,25 @@ Every audit returns the same axis set. Weight per axis varies by content type �
 | Structure | Format-appropriate sectioning, one-idea-per-unit, transitions, conclusion landing. |
 | Grounding | Fabrication risk on named entities, stats, quotes, versions, URLs. |
 | Safety + brand-safety | PTOS category risk (X-specific); ad-adjacency risk (MediumRisk verdict). |
-| Topic fit | Niche/embedding fit (X); search-intent match (SEO). |
-| SEO + GEO | On-page SEO, answer-first structure, extractable passages, FAQ, schema-readiness. Article/blog/landing only. |
-| E-E-A-T + information gain | Author byline, experience proof, novel signal vs. top 10. Article/blog/landing only. |
+| Topic fit | Niche/embedding fit and audience-cluster match for the content's intended surface. |
+| Answer-first / GEO | Each section leads with the answer in 1–2 sentences; extractable passages; sourced from `content-geo`. Blog and article only. |
 
 ### Axis weights by content type
 
 Normalise the per-axis 0–10 scores using these weights to get the 0–100 overall.
 
-| Axis | X post/thread | LinkedIn | Blog | Article | Landing page |
-|---|---|---|---|---|---|
-| Hook | 20 | 15 | 12 | 10 | 18 |
-| Dwell risk | 15 | 12 | 8 | 6 | 12 |
-| Slop risk | 15 | 12 | 10 | 8 | 8 |
-| Voice | 10 | 10 | 12 | 10 | 8 |
-| Specificity | 10 | 10 | 12 | 12 | 10 |
-| Structure | 5 | 10 | 12 | 12 | 12 |
-| Grounding | 10 | 10 | 10 | 12 | 8 |
-| Safety + brand-safety | 10 | 8 | 4 | 4 | 4 |
-| Topic fit | 5 | 8 | 4 | 4 | 4 |
-| SEO + GEO | — | 5 | 12 | 12 | 12 |
-| E-E-A-T + information gain | — | — | 4 | 10 | 4 |
+| Axis | X post/thread | LinkedIn | Blog | Article |
+|---|---|---|---|---|
+| Hook | 20 | 18 | 14 | 12 |
+| Dwell risk | 18 | 14 | 10 | 8 |
+| Slop risk | 15 | 14 | 12 | 10 |
+| Voice | 10 | 10 | 14 | 12 |
+| Specificity | 10 | 10 | 14 | 14 |
+| Structure | 5 | 10 | 14 | 14 |
+| Grounding | 10 | 10 | 12 | 14 |
+| Safety + brand-safety | 7 | 6 | 4 | 4 |
+| Topic fit | 5 | 8 | 4 | 4 |
+| Answer-first / GEO | — | — | 2 | 8 |
 
 Weights sum to 100. Any axis flagged "Unscored" is dropped and the remainder re-normalised; report the dropped weight as "{N} pts unscored" so the reader sees coverage.
 
@@ -252,7 +251,7 @@ Phoenix verdict: Borderline — Dwell-risk axis at 4 is the choke point
 
 ### Example — blog post audit (abbreviated structure)
 
-Same report shape; SEO + GEO + E-E-A-T axes populated; Phoenix verdict line omitted; band verdict from overall score.
+Same report shape; Answer-first / GEO axis populated; Phoenix verdict line omitted; band verdict from overall score.
 
 ## Checklist
 
@@ -271,14 +270,12 @@ Before returning a report:
 
 ## Composition / References
 
-Within-domain platform skills the harness composes with:
+Content-domain skills the harness composes with:
 - `social-x`, `social-linkedin`, `social-threads`, `social-bluesky`, `social-mastodon`, `social-hackernews`, `social-reddit` — platform rulebooks
-- `seo-content-audit` — on-page SEO / GEO / E-E-A-T for blog and article
-- `markup-landing-page` — landing-page structural rules
 - `content-voice` — voice / AI-pattern check
-- `content-humanize` — 8-dimension humanization diagnostic (when slop_risk score is low)
+- `content-humanize` — 8-dimension humanization diagnostic (when Slop-risk score is low)
 - `content-grounding` — fact-grounding triage for the Grounding axis
-- `content-geo` — answer-first / extractable / schema for the SEO+GEO axis
+- `content-geo` — answer-first / extractable structure for the Answer-first / GEO axis
 
 Used by agents:
 - `content:audit` — read-only orchestrator, produces report only
