@@ -210,10 +210,89 @@ suggests the operating point with highest gate_acc whose
 `null_fpr ≤ target`. Copy-paste the recommended constants into
 `capability.rs:772/781` and the matching pair in `skill.rs:66/78`.
 
-## Manual steps
+## When to retrain
+
+You MUST retrain (and republish) whenever the supervision set changes:
+
+| Change                                                       | Retrain? |
+| ------------------------------------------------------------ | -------- |
+| Added a new capability (`capabilities/<new>/config.toml`)    | yes      |
+| Removed a capability                                         | yes      |
+| Edited `triggers = [...]` in any `config.toml`               | yes      |
+| Added or edited `semantic(...)` rules in any `SKILL.md`      | yes      |
+| Edited the `_oos` curated phrases in `build_dataset.py`      | yes      |
+| Pure agent / playbook / docs change, no triggers touched     | no       |
+| Code change in `octomind/` runtime only                      | no       |
+| Threshold/margin tweak in `capability.rs` / `skill.rs`       | no (just rebuild octomind) |
+
+Run from `model/`:
+
+    ANTHROPIC_API_KEY=... bin/train --llm --resume --iterations 2
+
+`--resume` is passed to `augment_llm.py`: it skips `(label, trigger)`
+pairs already paraphrased in `data/intents.jsonl`, so you only pay for
+the NEW triggers. Without `--resume` you re-augment everything (same
+result, costs ~$1-2 extra).
+
+After it finishes:
+
+    HF_TOKEN=hf_... bin/publish        # gate-protected, blocks on regression
+
+Then update the runtime baseline:
+
+    uv run python scripts/eval_gate.py --model muvon/octomind-embed \
+        --write-baseline eval_baselines.json
+
+## Resuming an interrupted training
+
+The trainer auto-checkpoints at the end of each epoch
+(`save_strategy="epoch"`, `save_total_limit=2`). If you lose the SSH
+session, get OOM'd, or the box reboots mid-run:
+
+    # check what got saved
+    ls checkpoints/embed-*/checkpoint-*
+
+If you see `checkpoint-N/` directories — there's state to resume:
+
+    uv run python scripts/train.py --resume
+
+That picks up the LATEST `checkpoints/embed-*/` run dir, finds the
+highest-numbered `checkpoint-N`, and continues from there. Use
+`--resume-from <path>` to target a specific run dir.
+
+`--resume` works only for the modern `train.py` path (CachedMNRL +
+GIST + Matryoshka). The `--legacy` path has no checkpoint-resume.
+
+If the interruption hit AT iter 1, run `--resume` once to finish iter 1,
+then manually continue iter 2:
+
+    # 1. finish iter 1
+    uv run python scripts/train.py --resume
+
+    # 2. re-mine triplets with iter-1 model
+    ITER1=$(ls -td checkpoints/embed-*/ | head -1 | sed 's:/$::')
+    uv run python scripts/build_dataset.py --neg-embed-model "$ITER1"
+
+    # 3. train iter 2 fresh
+    uv run python scripts/train.py
+
+    # 4. eval + export
+    ITER2=$(ls -td checkpoints/embed-*/ | head -1 | sed 's:/$::')
+    uv run python scripts/eval.py        --run "$ITER2"
+    uv run python scripts/eval_gate.py   --model "$ITER2"
+    uv run python scripts/export_onnx.py --run "$ITER2"
+
+**Always run training in tmux/nohup** so disconnects don't kill the
+foreground process:
+
+    tmux new -s train
+    bin/train --llm --resume --iterations 2
+    # Ctrl+B then D to detach.  Reattach: tmux attach -t train
+
+## Manual steps (per-stage, if you want fine control)
 
     uv run python scripts/build_eval_seed.py
-    uv run python scripts/augment_llm.py
+    uv run python scripts/augment_llm.py --resume
     uv run python scripts/build_dataset.py
     uv run python scripts/build_dataset.py --neg-embed-model checkpoints/embed-<ts>  # iter 2
     uv run python scripts/train.py
