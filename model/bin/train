@@ -1,20 +1,29 @@
 #!/usr/bin/env bash
 # Full fine-tuning pipeline: (optional augment) -> build -> train -> eval -> ONNX export.
 #
+# Embed-only flow (reranker is intentionally not built — production has
+# confirmed it does not help at the current capability count).
+#
 # Usage:
-#   bin/train                       # bi-encoder only (default)
-#   bin/train --reranker            # reranker only (requires existing dataset)
-#   bin/train --all                 # both bi-encoder and reranker
-#   bin/train --llm                 # also generate LLM paraphrases first
-#   bin/train --llm --resume        # resume an interrupted LLM augmentation run
-#   bin/train --skip-build          # reuse existing data/, just train + eval
-#   bin/train --skip-export         # skip the ONNX export step
+#   bin/train                          # one-shot bi-encoder run
+#   bin/train --llm                    # also generate LLM paraphrases first
+#   bin/train --llm --resume           # resume an interrupted LLM augmentation run
+#   bin/train --iterations N           # iterative hard-negative re-mining (N rounds)
+#   bin/train --skip-build             # reuse existing data/, just train + eval
+#   bin/train --skip-export            # skip the ONNX export step
+#   bin/train --legacy                 # plain model.fit() loop with MNRL (diagnostic)
 #
-# Examples:
-#   bin/train --llm --all           # full deep run: augment + train both + export
-#   bin/train --reranker            # add reranker after embed already trained
+# Iterative re-mining (recommended for the production run):
 #
-# After completion, prints the exact upload commands for both models.
+#   bin/train --llm --iterations 2
+#
+# Round 1: build with centroid-similarity mining (base BGE-small).
+# Round 2+: re-mine triplets using the bi-encoder FT'd in the previous
+#           round — negatives now MATCH the FT model's retrieval mistakes
+#           at inference time, which is the BGE / NV-Retriever recipe.
+# https://bge-model.com/tutorial/7_Finetuning/7.2.1.html
+#
+# After completion, prints the exact upload command for the embedding model.
 
 set -euo pipefail
 
@@ -24,9 +33,8 @@ LLM=0
 SKIP_BUILD=0
 SKIP_EXPORT=0
 RESUME=""
-TRAIN_EMBED=1
-TRAIN_RERANK=0
-REALIGN_NEGS=0
+ITERATIONS=1
+LEGACY_FLAG=""
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -46,23 +54,12 @@ while [ $# -gt 0 ]; do
       SKIP_EXPORT=1
       shift
       ;;
-    --reranker)
-      TRAIN_EMBED=0
-      TRAIN_RERANK=1
-      shift
+    --iterations)
+      ITERATIONS="$2"
+      shift 2
       ;;
-    --all)
-      TRAIN_EMBED=1
-      TRAIN_RERANK=1
-      shift
-      ;;
-    --realign-negs)
-      # Re-mine triplets.jsonl using the most recent FT bi-encoder so the
-      # reranker's training negatives match its inference-time competitors.
-      # Implies a dataset rebuild even if --skip-build was set; only the
-      # triplets path is affected (pairs.jsonl is rewritten with the same
-      # content).
-      REALIGN_NEGS=1
+    --legacy)
+      LEGACY_FLAG="--legacy"
       shift
       ;;
     *)
@@ -72,105 +69,116 @@ while [ $# -gt 0 ]; do
   esac
 done
 
+if ! [[ $ITERATIONS =~ ^[0-9]+$ ]] || [ "$ITERATIONS" -lt 1 ]; then
+  echo "error: --iterations must be a positive integer" >&2
+  exit 2
+fi
+
 PY=${PY:-uv run python}
+
+# ---------------------------------------------------------------------------
+# Phase 0a: bootstrap the real-user eval set (once, idempotent)
+# ---------------------------------------------------------------------------
+
+if [ ! -f data/eval_real.jsonl ]; then
+  echo "==> build_eval_seed.py (first run — no data/eval_real.jsonl yet)"
+  $PY scripts/build_eval_seed.py
+fi
+
+# ---------------------------------------------------------------------------
+# Phase 0b: LLM paraphrase augmentation (optional, once)
+# ---------------------------------------------------------------------------
 
 if [ $LLM -eq 1 ] && [ $SKIP_BUILD -eq 0 ]; then
   echo "==> augment_llm.py (anthropic)"
   $PY scripts/augment_llm.py $RESUME
 fi
 
-BUILD_EXTRA_ARGS=""
-if [ $REALIGN_NEGS -eq 1 ]; then
-  LATEST_EMBED=$(ls -td checkpoints/embed-*/ 2>/dev/null | head -1)
-  LATEST_EMBED=${LATEST_EMBED%/}
-  if [ -z "$LATEST_EMBED" ]; then
-    echo "--realign-negs needs a fine-tuned bi-encoder in checkpoints/embed-*/ but none was found" >&2
-    exit 1
+# ---------------------------------------------------------------------------
+# Phase 1: build dataset (round 1 uses centroid mining — no FT model yet)
+# ---------------------------------------------------------------------------
+
+if [ $SKIP_BUILD -eq 0 ]; then
+  echo "==> build_dataset.py (round 1: centroid hard-neg mining)"
+  $PY scripts/build_dataset.py
+fi
+
+# ---------------------------------------------------------------------------
+# Phase 2: iterative train + re-mine
+# ---------------------------------------------------------------------------
+#
+# In a single-iteration run this is just "train once". With
+# --iterations N, each round trains a new checkpoint, then rebuilds
+# triplets.jsonl using that checkpoint's retrieval mistakes as the
+# hard-negative source. The bi-encoder's training and inference
+# distributions converge over rounds — typically 2 rounds is the
+# sweet spot; 3+ shows diminishing returns and risks overfitting on
+# the specific holdout.
+
+LAST_RUN=""
+for ((i = 1; i <= ITERATIONS; i++)); do
+  echo
+  echo "================================================================"
+  echo "  iteration $i / $ITERATIONS"
+  echo "================================================================"
+
+  if [ $i -gt 1 ]; then
+    # Rebuild triplets only — pairs.jsonl/holdout.jsonl are unchanged.
+    # The --neg-embed-model flag tells build_dataset.py to use the
+    # PREVIOUS round's FT bi-encoder for retrieval-based mining.
+    echo "==> rebuild triplets (round $i: retrieval-aligned mining with $LAST_RUN)"
+    $PY scripts/build_dataset.py --neg-embed-model "$LAST_RUN"
   fi
-  echo "==> using fine-tuned bi-encoder for retrieval-aligned negative mining: $LATEST_EMBED"
-  BUILD_EXTRA_ARGS="--neg-embed-model $LATEST_EMBED"
-fi
 
-if [ $SKIP_BUILD -eq 0 ] || [ $REALIGN_NEGS -eq 1 ]; then
-  echo "==> build_dataset.py"
-  $PY scripts/build_dataset.py $BUILD_EXTRA_ARGS
-fi
-
-if [ $TRAIN_EMBED -eq 1 ]; then
-  echo "==> train.py (bi-encoder)"
-  $PY scripts/train.py
+  echo "==> train.py (bi-encoder, iter $i)"
+  $PY scripts/train.py $LEGACY_FLAG
 
   RUN=$(ls -td checkpoints/embed-*/ 2>/dev/null | head -1)
-  if [ -z "$RUN" ]; then
-    RUN=$(ls -td checkpoints/*/ 2>/dev/null | grep -v "rerank-" | head -1)
-  fi
+  RUN=${RUN%/}
   if [ -z "$RUN" ]; then
     echo "no embedding checkpoint found in checkpoints/" >&2
     exit 1
   fi
-  RUN=${RUN%/}
-  echo "==> embedding checkpoint: $RUN"
+  echo "==> checkpoint: $RUN"
+  LAST_RUN="$RUN"
+done
 
+# ---------------------------------------------------------------------------
+# Phase 3: evaluate
+# ---------------------------------------------------------------------------
+
+echo
+echo "==> eval base (BAAI/bge-small-en-v1.5) — for comparison"
+$PY scripts/eval.py --run "$LAST_RUN" --base
+
+echo
+echo "==> eval fine-tuned ($LAST_RUN) — holdout distribution"
+$PY scripts/eval.py --run "$LAST_RUN"
+
+# Real-user eval (the production gate). Only runs if the eval set
+# exists — otherwise nudges the user to build it.
+if [ -f data/eval_real.jsonl ]; then
   echo
-  echo "==> eval base (BAAI/bge-small-en-v1.5)"
-  $PY scripts/eval.py --run "$RUN" --base
-
+  echo "==> eval_gate.py — real-user distribution (publish gate)"
+  # Informational only here (no --baseline written); bin/publish enforces.
+  $PY scripts/eval_gate.py --model "$LAST_RUN" || true
+else
   echo
-  echo "==> eval fine-tuned ($RUN)"
-  $PY scripts/eval.py --run "$RUN"
-
-  if [ $SKIP_EXPORT -eq 0 ]; then
-    echo
-    echo "==> export_onnx.py"
-    $PY scripts/export_onnx.py --run "$RUN"
-  fi
+  echo "==> eval_real.jsonl missing — skipping real-user eval"
+  echo "    build it once with:  $PY scripts/build_eval_seed.py"
 fi
 
-if [ $TRAIN_RERANK -eq 1 ]; then
-  echo "==> train_reranker.py (cross-encoder)"
-  $PY scripts/train_reranker.py
+# ---------------------------------------------------------------------------
+# Phase 4: ONNX export
+# ---------------------------------------------------------------------------
 
-  RERANK_RUN=$(ls -td checkpoints/rerank-*/ 2>/dev/null | head -1)
-  if [ -z "$RERANK_RUN" ]; then
-    echo "no reranker checkpoint found in checkpoints/" >&2
-    exit 1
-  fi
-  RERANK_RUN=${RERANK_RUN%/}
-  echo "==> reranker checkpoint: $RERANK_RUN"
-
-  # Pair with the fine-tuned bi-encoder if we have one — that's the actual
-  # production pipeline. Falls back to base BGE if no embed checkpoint
-  # exists (e.g. user ran `bin/train --reranker` standalone).
-  EMBED_FOR_EVAL=$(ls -td checkpoints/embed-*/ 2>/dev/null | head -1)
-  EMBED_FOR_EVAL=${EMBED_FOR_EVAL%/}
-  if [ -n "$EMBED_FOR_EVAL" ]; then
-    EMBED_ARGS="--embed-model $EMBED_FOR_EVAL"
-    echo "==> using fine-tuned bi-encoder for rerank eval: $EMBED_FOR_EVAL"
-  else
-    EMBED_ARGS=""
-    echo "==> no fine-tuned bi-encoder found; rerank eval pairs with base BGE"
-  fi
-
+if [ $SKIP_EXPORT -eq 0 ]; then
   echo
-  echo "==> eval reranker base (BAAI/bge-reranker-base)"
-  $PY scripts/eval_reranker.py --run "$RERANK_RUN" --base $EMBED_ARGS
-
-  echo
-  echo "==> eval reranker fine-tuned ($RERANK_RUN)"
-  $PY scripts/eval_reranker.py --run "$RERANK_RUN" $EMBED_ARGS
-
-  if [ $SKIP_EXPORT -eq 0 ]; then
-    echo
-    echo "==> export_onnx_reranker.py"
-    $PY scripts/export_onnx_reranker.py --run "$RERANK_RUN"
-  fi
+  echo "==> export_onnx.py"
+  $PY scripts/export_onnx.py --run "$LAST_RUN"
 fi
 
 echo
 echo "Done."
-if [ $TRAIN_EMBED -eq 1 ]; then
-  echo "  Upload embedding:  HF_TOKEN=... $PY scripts/push_hf.py --run $RUN --repo muvon/octomind-embed --type embed"
-fi
-if [ $TRAIN_RERANK -eq 1 ]; then
-  echo "  Upload reranker:   HF_TOKEN=... $PY scripts/push_hf.py --run $RERANK_RUN --repo muvon/octomind-rerank --type rerank"
-fi
+echo "  Upload:        HF_TOKEN=... bin/publish --embed-only"
+echo "  Calibrate τ/δ: $PY scripts/calibrate_thresholds.py --model $LAST_RUN"

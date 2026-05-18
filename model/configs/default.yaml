@@ -4,7 +4,16 @@ run_name: embed-bge-small-v1
 
 train:
   epochs: 3
-  batch_size: 64
+  # Effective batch size for in-batch negatives. CachedMNRL processes
+  # `mini_batch_size` chunks at a time and accumulates gradients via the
+  # GradCache trick, so this can be much larger than the GPU could hold
+  # in a normal forward pass. 256 gives much sharper contrast than the
+  # old 64 without raising VRAM (mini_batch_size below is the real cap).
+  batch_size: 256
+  # Real per-step GPU memory load. 32 fits on a single A10/L4; bump to 64
+  # on >= 24 GB. On CPU, set to 16. Does NOT change the effective
+  # in-batch-negatives count — that's `batch_size` above.
+  mini_batch_size: 32
   learning_rate: 2.0e-5
   warmup_ratio: 0.1
   weight_decay: 0.01
@@ -17,9 +26,60 @@ train:
   # Mixed precision on GPU only — no-op on CPU.
   use_amp: true
 
+# Loss configuration. Defaults reflect the SOTA recipe; flip any to false
+# to fall back to the older path.
+loss:
+  # Cached MNRL: same loss, but with GradCache so we get bigger effective
+  # batches (= more in-batch negatives = wider margins) at the same VRAM.
+  # https://huggingface.co/blog/train-sentence-transformers
+  cached: true
+  # GISTEmbedLoss: a frozen guide model decides which in-batch candidates
+  # are *true* negatives and excludes the rest from the contrastive loss.
+  # Eliminates false-negative noise from semantically-near labels
+  # (legal-*, programming-*, messaging-*, codesearch-*). Doubles VRAM
+  # vs cached MNRL because the guide is also loaded. Set to false on
+  # tight-memory machines.
+  # https://arxiv.org/abs/2402.16829
+  gist: true
+  # Guide model. BGE-small-en-v1.5 has the right inductive bias and is
+  # cheap. Keep this in sync with the base model family unless you
+  # specifically want cross-family guidance.
+  gist_guide: BAAI/bge-small-en-v1.5
+  # Matryoshka: same model usable at multiple dimensions without
+  # recomputing. Lets the runtime pick a tradeoff later (cache size vs
+  # quality). Information concentrates at the front of the vector.
+  # https://sbert.net/examples/sentence_transformer/training/matryoshka/README.html
+  matryoshka: true
+  matryoshka_dims: [384, 256, 192, 128, 96]
+  # Weight schedule for the Matryoshka dims (same order as above). Higher
+  # weights on the bigger dims keep full-precision quality first.
+  matryoshka_weights: [1.0, 1.0, 1.0, 1.0, 1.0]
+
 data:
   pairs_path: data/pairs.jsonl
   holdout_ratio: 0.2
+  # Add an out-of-domain sink label (`_oos`) with curated chitchat /
+  # vague / non-actionable phrases. The model learns to embed these
+  # *away* from any real-cap cluster, which lowers per-cap scores for
+  # those inputs and lets the runtime's absolute threshold catch them.
+  # https://rbcborealis.com/research-blogs/ood-detection-ii-open-set-recognition-ood-labels-and-outlier-detection/
+  oos_label: true
+  # Fraction of training surfaces per label that get a multi-turn /
+  # context-laden prefix attached (e.g. "earlier I was setting up X.
+  # Now: ..."). Real user prompts often presume conversation context.
+  # https://arxiv.org/html/2411.14252v1
+  multi_turn_ratio: 0.15
 
 eval:
   top_k: [1, 3, 5]
+  # Path to the frozen "real user" eval set, scored by eval_gate.py.
+  # Different distribution from `holdout.jsonl` — see build_eval_seed.py.
+  real_set_path: data/eval_real.jsonl
+  # Recorded baselines (top-1, FPR on NULL, mean margin). eval_gate.py
+  # blocks publish on regression.
+  baselines_path: eval_baselines.json
+  # Runtime-mirror constants (mirror octomind/src/mcp/core/capability.rs).
+  # Used by eval_gate.py and calibrate_thresholds.py.
+  runtime_top_k: 3
+  runtime_threshold: 0.55
+  runtime_margin: 0.08

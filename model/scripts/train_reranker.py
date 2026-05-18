@@ -4,7 +4,11 @@ Base: `cross-encoder/ms-marco-MiniLM-L-6-v2` — 22M params, 6-layer MiniLM,
 natively trained as a cross-encoder on MS-MARCO. Loads cleanly into the
 standard `BertForSequenceClassification` head and is blazing fast on CPU.
 
-Loss: `MultipleNegativesRankingLoss` — CONTRASTIVE/RANKING objective.
+Loss: `CachedMultipleNegativesRankingLoss` — CONTRASTIVE/RANKING objective
+with GradCache so the effective in-batch-negatives count is much larger
+than what fits in VRAM in a single forward pass. More competing negatives
+per anchor = sharper top-1 vs top-2 separation, which is exactly the
+runtime metric (margin gate over the bi-encoder's top-N candidates).
 
 Critical detail: an earlier version used `BinaryCrossEntropyLoss`
 (pointwise classification: "is this pair relevant? yes/no") and produced
@@ -14,7 +18,7 @@ five and got the top-1 wrong. The eval metric measured binary
 classification, not ranking under competition. The runtime task IS
 ranking, so we need a ranking loss.
 
-`MultipleNegativesRankingLoss` (CE variant) optimizes:
+`(Cached)MultipleNegativesRankingLoss` (CE variant) optimizes:
 
   score(anchor, positive) > score(anchor, every_other_doc_in_batch)
 
@@ -52,7 +56,10 @@ from sentence_transformers.cross_encoder import (
 from sentence_transformers.cross_encoder.evaluation import (
     CrossEncoderClassificationEvaluator,
 )
-from sentence_transformers.cross_encoder.losses import MultipleNegativesRankingLoss
+from sentence_transformers.cross_encoder.losses import (
+    CachedMultipleNegativesRankingLoss,
+    MultipleNegativesRankingLoss,
+)
 
 warnings.filterwarnings("ignore", category=FutureWarning)
 
@@ -183,7 +190,28 @@ def main() -> int:
     if cfg.get("reset_classifier_head", False):
         _reset_classifier_head(model)
 
-    loss = MultipleNegativesRankingLoss(model)
+    # Pick the cached vs uncached variant based on config. Cached gets us
+    # bigger effective batches at the same VRAM by using GradCache: a no-
+    # grad first pass populates the similarity matrix, then a second pass
+    # with gradients only fills in the cells we actually backprop through.
+    # Falls back to the legacy in-memory MNRL if `cached: false` is set
+    # in the YAML (diagnostic only — cached is the production recipe).
+    use_cached = bool(cfg.get("loss", {}).get("cached", True))
+    if use_cached:
+        mini_batch_size = int(train_cfg.get("mini_batch_size", 32))
+        num_negatives = int(cfg.get("loss", {}).get("num_negatives", 4))
+        print(
+            f"loss: CachedMultipleNegativesRankingLoss "
+            f"(num_negatives={num_negatives})"
+        )
+        loss = CachedMultipleNegativesRankingLoss(
+            model,
+            num_negatives=num_negatives,
+            mini_batch_size=mini_batch_size,
+        )
+    else:
+        print("loss: MultipleNegativesRankingLoss (legacy, no caching)")
+        loss = MultipleNegativesRankingLoss(model)
 
     evaluator = CrossEncoderClassificationEvaluator(
         sentence_pairs=eval_pairs,
