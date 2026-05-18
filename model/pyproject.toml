@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Fine-tune BGE-small for octomind-tap capability auto-activation"
 requires-python = ">=3.10"
 dependencies = [
-    "sentence-transformers>=3.0.0",
+    "sentence-transformers>=4.0.0",
     "torch>=2.2.0",
     "datasets>=2.18.0",
     "accelerate>=0.30.0",

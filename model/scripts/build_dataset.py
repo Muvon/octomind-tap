@@ -127,6 +127,46 @@ TEMPLATES: list[str] = [
     # terminal / terse phrasings
     "{t_lc}?",
     "{t}.",
+    # ---- real-user style (WildChat / ShareGPT distribution) -----------
+    # Short utterances and abbreviations dominate the long-tail of real
+    # chat data — ~30% of WildChat messages are short imperatives or
+    # one-line questions. Casual register and dropped articles too.
+    "i want to {t_lc}",       # lowercase i — common in chat
+    "wanna {t_lc}",
+    "gotta {t_lc}",
+    "need to {t_lc}",
+    "just {t_lc}",
+    "trying {t_lc}",
+    # bug-report / problem-statement frame
+    "{t_lc} but it's not working",
+    "{t_lc} isn't working",
+    "can't {t_lc}",
+    "unable to {t_lc}",
+    # acceptance-style ("ok now do X") follow-up framing — train the
+    # model that a leading "now"/"next" still names the same intent.
+    "now {t_lc}",
+    "next, {t_lc}",
+    "ok now {t_lc}",
+    "and then {t_lc}",
+]
+
+
+# Multi-turn-shaped prefixes. Real chats often presume prior context —
+# the latest user message references work from earlier turns. Training
+# on a slice of surfaces with such prefixes teaches the embedding to
+# attend to the intent tail, not the leading conversational filler.
+# https://arxiv.org/html/2411.14252v1
+MULTI_TURN_PREFIXES: list[str] = [
+    "earlier we set up the project; now {t_lc}",
+    "following up: {t_lc}",
+    "as I was saying — {t_lc}",
+    "back to what we discussed: {t_lc}",
+    "ok so given that context, {t_lc}",
+    "ignore the previous output. {t_lc}",
+    "let's try again — {t_lc}",
+    "scratch that. {t_lc}",
+    "alright, {t_lc}",
+    "circling back: {t_lc}",
 ]
 
 
@@ -367,6 +407,191 @@ def synth_shell_surfaces() -> list[str]:
 
 
 # ---------------------------------------------------------------------------
+# Out-of-domain ("_oos") sink label
+# ---------------------------------------------------------------------------
+#
+# Real user chats include a lot of low-signal traffic — chitchat,
+# acknowledgments, vague asks, paste-without-instruction — that the
+# embedding model should NOT route to any capability. Without an
+# explicit OOS cluster, those inputs land near whichever real cap
+# happens to share surface vocabulary, and the runtime threshold has
+# to do all the heavy lifting on its own.
+#
+# Training on a `_oos` label lets the encoder learn a dedicated cluster
+# for "no real intent" — real-cap cosines for these inputs drop, the
+# 0.55 floor catches them, and false-positive activation rate falls.
+# We never register `_oos` as a runtime capability; it exists only in
+# the training set as a separator force.
+#
+# Phrases informed by the WildChat / LMSYS-Chat distribution of
+# information-seeking + chitchat + acknowledgments + sarcasm/feedback.
+# https://arxiv.org/html/2405.01470v1
+# https://arxiv.org/html/2410.01627v1
+
+_OOS_CHITCHAT: list[str] = [
+    "good morning",
+    "good afternoon",
+    "good evening",
+    "hi there",
+    "hello",
+    "hey",
+    "yo",
+    "sup",
+    "what's up",
+    "how's it going",
+    "how are you",
+    "how are you doing",
+    "thanks",
+    "thank you",
+    "thx",
+    "ty",
+    "appreciate it",
+    "cheers",
+    "ok",
+    "okay",
+    "alright",
+    "got it",
+    "understood",
+    "makes sense",
+    "cool",
+    "nice",
+    "perfect",
+    "great",
+    "awesome",
+    "lol",
+    "haha",
+    "interesting",
+    "hmm",
+    "huh",
+    "ah ok",
+    "I see",
+    "noted",
+    "sounds good",
+    "sure",
+    "yes",
+    "no",
+    "maybe",
+    "I don't know",
+    "not sure",
+    "let me think",
+    "one sec",
+    "hold on",
+    "give me a moment",
+    "back in a bit",
+    "be right back",
+    "brb",
+]
+
+_OOS_VAGUE: list[str] = [
+    "help",
+    "help me",
+    "any ideas",
+    "any idea",
+    "what should I do",
+    "what now",
+    "what's next",
+    "where do we go from here",
+    "I'm stuck",
+    "stuck",
+    "this is hard",
+    "I don't get it",
+    "I don't understand",
+    "explain",
+    "explain this",
+    "what is this",
+    "what does this mean",
+    "huh what",
+    "wait what",
+    "can you clarify",
+    "I'm confused",
+    "lost",
+    "fix it",
+    "do something",
+    "make it work",
+    "just do it",
+    "figure it out",
+    "you decide",
+]
+
+_OOS_FEEDBACK_SARCASM: list[str] = [
+    "that didn't work",
+    "still broken",
+    "doesn't work",
+    "nope",
+    "not working",
+    "still failing",
+    "same error",
+    "no change",
+    "no luck",
+    "great, now what",
+    "you sure about that",
+    "are you serious",
+    "really?",
+    "that's not right",
+    "wrong answer",
+    "try again",
+    "do it again",
+    "never mind",
+    "forget it",
+]
+
+_OOS_PASTE_DUMP: list[str] = [
+    # Long pastes with no instruction — researchers note these
+    # are a common misclassification source (intent has to be
+    # *inferred* from content).
+    "Error: ENOENT: no such file or directory, open '/var/log/app.log'",
+    "Traceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\nNameError: name 'x' is not defined",
+    "{\"status\":500,\"message\":\"internal server error\"}",
+    "TypeError: Cannot read property 'foo' of undefined",
+    "warning: unused variable `x` at src/main.rs:42",
+    "Segmentation fault (core dumped)",
+    "panic: runtime error: index out of range",
+]
+
+_OOS_OFF_TOPIC: list[str] = [
+    "what's the weather today",
+    "tell me a joke",
+    "what time is it",
+    "who won the game last night",
+    "should I get pizza or sushi",
+    "recommend a movie",
+    "translate hello to spanish",
+    "is the earth round",
+    "summarize the news",
+    "give me a fun fact",
+    "what's your favorite color",
+]
+
+
+def synth_oos_surfaces() -> list[str]:
+    """All curated OOS phrases. De-duplicated, sorted for reproducibility."""
+    s: set[str] = set()
+    for bucket in (_OOS_CHITCHAT, _OOS_VAGUE, _OOS_FEEDBACK_SARCASM,
+                   _OOS_PASTE_DUMP, _OOS_OFF_TOPIC):
+        for p in bucket:
+            s.add(p)
+    return sorted(s)
+
+
+# ---------------------------------------------------------------------------
+# Multi-turn surface expansion
+# ---------------------------------------------------------------------------
+
+
+def maybe_multi_turn(surface: str, rng: random.Random, ratio: float) -> str | None:
+    """With probability `ratio`, wrap `surface` in a multi-turn prefix
+    referencing prior conversation context. Returns the new surface or
+    None to keep the original."""
+    if ratio <= 0 or not surface:
+        return None
+    if rng.random() >= ratio:
+        return None
+    tpl = rng.choice(MULTI_TURN_PREFIXES)
+    t_lc = lowercase_first_word(surface)
+    return tpl.format(t_lc=t_lc).strip()
+
+
+# ---------------------------------------------------------------------------
 # Hard negative mining
 # ---------------------------------------------------------------------------
 
@@ -440,6 +665,7 @@ def mine_hard_negatives_from_retriever(
     per_pair: int,
     max_per_label: int,
     seed: int,
+    pos_aware_frac: float = 0.95,
 ) -> int:
     """Mine hard negatives by running the bi-encoder over training queries
     and taking its top-K WRONG retrievals as the hard negative pool.
@@ -455,6 +681,16 @@ def mine_hard_negatives_from_retriever(
     `embed_model` should be the FINE-TUNED bi-encoder checkpoint that
     powers retrieval in production. Mining with that model produces
     negatives matching its mistake patterns.
+
+    `pos_aware_frac` implements NV-Retriever's positive-aware mining
+    rule: a candidate is only accepted as a hard negative if its
+    cosine to the anchor is below `pos_aware_frac * cos(anchor,
+    positive)`. Set to 0.95 (the paper's reported optimum) to filter
+    out *false* hard negatives — items that score >= the positive
+    are almost certainly mislabeled near-duplicates of the positive,
+    and training against them collapses the margin we're trying to
+    widen. Set to 1.0 to disable.
+    https://arxiv.org/pdf/2407.15831
     """
     import numpy as np
     from sentence_transformers import SentenceTransformer
@@ -504,15 +740,26 @@ def mine_hard_negatives_from_retriever(
                     break
 
                 a_idx = text_to_idx[(label, a)]
+                p_idx = text_to_idx[(label, p)]
                 # Cosine vs entire corpus, mask own-label entries.
                 scores = corpus_vecs @ corpus_vecs[a_idx]
                 scores = scores.copy()
+                pos_score = float(corpus_vecs[p_idx] @ corpus_vecs[a_idx])
+                # NV-Retriever positive-aware filter: drop candidates that
+                # score above `pos_aware_frac * pos_score` (likely false
+                # negatives — semantically equivalent to the positive but
+                # under a different label).
+                if pos_aware_frac < 1.0:
+                    ceiling = pos_aware_frac * pos_score
+                    scores[scores > ceiling] = -np.inf
                 for own in own_indices:
                     scores[own] = -np.inf
                 # Top-K wrong retrievals (this is what the bi-encoder
-                # actually surfaces at inference time as competitors).
-                top_wrong = np.argsort(-scores)[:top_k_candidates]
-                if len(top_wrong) == 0:
+                # actually surfaces at inference time as competitors),
+                # after the false-negative filter.
+                order = np.argsort(-scores)
+                top_wrong = [int(i) for i in order if scores[i] != -np.inf][:top_k_candidates]
+                if not top_wrong:
                     continue
 
                 for _ in range(per_pair):
@@ -559,6 +806,34 @@ def main() -> int:
     ap.add_argument("--max-triplets-per-cap", type=int, default=200)
     ap.add_argument("--skip-negatives", action="store_true")
     ap.add_argument(
+        "--oos-label",
+        action="store_true",
+        default=True,
+        help="add an `_oos` sink label with curated chitchat / vague / paste-dump phrases "
+             "so the model learns a dedicated out-of-domain cluster.",
+    )
+    ap.add_argument(
+        "--no-oos-label",
+        dest="oos_label",
+        action="store_false",
+        help="disable the _oos sink label (not recommended).",
+    )
+    ap.add_argument(
+        "--multi-turn-ratio",
+        type=float,
+        default=0.15,
+        help="fraction of training surfaces per label that get a multi-turn / "
+             "context-laden prefix attached. 0 disables.",
+    )
+    ap.add_argument(
+        "--pos-aware-frac",
+        type=float,
+        default=0.95,
+        help="(retrieval mode) accept a hard negative only if its score is <= "
+             "POS_AWARE_FRAC * positive_score. 0.95 = NV-Retriever default; "
+             "1.0 disables (every top-K candidate is accepted).",
+    )
+    ap.add_argument(
         "--neg-embed-model",
         type=str,
         default=None,
@@ -597,15 +872,45 @@ def main() -> int:
     holdout_rows: list[tuple[str, str]] = []  # (intent, label)
     pair_count = 0
 
+    # ---- OOS sink injection ----
+    # `_oos` is a synthetic label that never appears as a runtime capability.
+    # Its sole purpose during training is to give chitchat / vague / paste-
+    # dump phrases their own cluster, so real-cap cosines for those inputs
+    # drop and the runtime floor catches them. We splice it into the same
+    # `triggers_by_cap` map so the standard MNRL + hard-neg pipeline picks
+    # it up without special-casing downstream.
+    if args.oos_label:
+        oos_phrases = synth_oos_surfaces()
+        if "_oos" in triggers_by_cap:
+            # Merge if the catalog also defines _oos (treat as concat).
+            seen = set(triggers_by_cap["_oos"])
+            triggers_by_cap["_oos"].extend(p for p in oos_phrases if p not in seen)
+        else:
+            triggers_by_cap["_oos"] = oos_phrases
+        print(f"OOS sink: injected {len(oos_phrases)} curated phrases under label '_oos'")
+
     with args.pairs_out.open("w") as fp_train, args.holdout_out.open("w") as fp_hold:
         for label, triggers in triggers_by_cap.items():
-            train_trigs, hold_trigs = split_triggers(triggers, args.holdout_ratio, args.seed)
+            # The OOS label doesn't participate in holdout — its job is
+            # training-time separation; evaluation of abstention happens via
+            # `eval_real.jsonl` with `label: null`, not via holdout.
+            if label == "_oos":
+                train_trigs = list(triggers)
+                hold_trigs = []
+            else:
+                train_trigs, hold_trigs = split_triggers(triggers, args.holdout_ratio, args.seed)
 
             # ---- TRAINING SURFACES ----
             # 1. Rule-based expansions of every training trigger.
             surfaces: set[str] = set()
             for t in train_trigs:
-                surfaces.update(expand_trigger(t, rng))
+                if label == "_oos":
+                    # OOS phrases are *already* user-shaped — adding
+                    # imperative/question templates ("how do I {oos}")
+                    # makes nonsensical surfaces that confuse training.
+                    surfaces.add(t)
+                else:
+                    surfaces.update(expand_trigger(t, rng))
 
             # 2. LLM intents whose source IS NOT in the holdout.
             for source, intent in llm_by_cap.get(label, []):
@@ -622,6 +927,20 @@ def main() -> int:
             if label == "shell":
                 for s in synth_shell_surfaces():
                     surfaces.add(s)
+
+            # 4. Multi-turn-shaped surfaces. For a fraction of the existing
+            # surfaces, attach a context-laden prefix (e.g. "earlier we set
+            # up X; now ..."). Trains the embedding to attend to the
+            # actionable tail when the message references prior turns.
+            # Skipped for `_oos` and `shell`-synth where the surfaces are
+            # already structured to be self-contained.
+            if label not in ("_oos",) and args.multi_turn_ratio > 0:
+                multi_turn_extras: set[str] = set()
+                for s in surfaces:
+                    mt = maybe_multi_turn(s, rng, args.multi_turn_ratio)
+                    if mt is not None:
+                        multi_turn_extras.add(mt)
+                surfaces.update(multi_turn_extras)
 
             surfaces_list = sorted(surfaces)
             train_surfaces[label] = surfaces_list
@@ -666,8 +985,13 @@ def main() -> int:
             args.neg_per_pair,
             args.max_triplets_per_cap,
             args.seed,
+            pos_aware_frac=args.pos_aware_frac,
         )
-        print(f"wrote {triplets} retrieval-aligned hard-negative triplets to {args.triplets_out}")
+        mode = "positive-aware" if args.pos_aware_frac < 1.0 else "raw top-K"
+        print(
+            f"wrote {triplets} retrieval-aligned hard-negative triplets "
+            f"({mode}, frac={args.pos_aware_frac}) to {args.triplets_out}"
+        )
     else:
         triplets = mine_hard_negatives(
             args.triplets_out,
