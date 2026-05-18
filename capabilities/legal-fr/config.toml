@@ -1,11 +1,21 @@
 # capabilities/legal-fr/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# French legal vocabulary: Conseil d'État, Cour de cassation, Code civil,
+# Code pénal, Journal Officiel (JO), Légifrance, lois et décrets.
 
 triggers = [
 	"look up French case law",
 	"find a French statute",
 	"research French legal regulation",
 	"check French court precedent",
+	"search the Cour de cassation",
+	"look up an article of the Code civil",
+	"find an article in the Code pénal",
+	"check a Conseil d'État decision",
+	"research a French loi or décret",
+	"look up a regulation on Légifrance",
+	"find a publication in the Journal Officiel (JO)",
 ]
 
 domains = ["lawyer"]

@@ -1,11 +1,23 @@
 # capabilities/medical-reference/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Medical reference lookup: conditions, drugs, dosing, interactions,
+# ICD/CPT codes, clinical guidelines. Distinct from general web search
+# by emphasizing clinical / pharmaceutical vocabulary.
 
 triggers = [
 	"look up a medical condition",
 	"find drug interactions",
 	"check medical reference data",
 	"research a clinical topic",
+	"look up an ICD-10 code",
+	"find the recommended dosage for a medication",
+	"check drug contraindications",
+	"look up symptoms of a disease",
+	"find clinical practice guidelines for a condition",
+	"check pharmacokinetics of a drug",
+	"look up a CPT procedure code",
+	"research treatment options for a diagnosis",
 ]
 
 # Domain binding. Hard-bound: only loads when the active role's domain part

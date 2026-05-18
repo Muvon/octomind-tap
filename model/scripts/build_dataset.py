@@ -170,6 +170,91 @@ MULTI_TURN_PREFIXES: list[str] = [
 ]
 
 
+# QWERTY adjacency for realistic typos. Mirrors build_eval_seed.py's
+# _KEY_ADJACENCY — kept in sync so eval and training augmentation use
+# the same noise model.
+_KEY_ADJACENCY: dict[str, str] = {
+    "a": "s", "s": "d", "d": "f", "f": "g", "g": "h", "h": "j",
+    "j": "k", "k": "l",
+    "q": "w", "w": "e", "e": "r", "r": "t", "t": "y", "y": "u",
+    "u": "i", "i": "o", "o": "p",
+    "z": "x", "x": "c", "c": "v", "v": "b", "b": "n", "n": "m",
+}
+
+# Chat-register substitutions — real users abbreviate these constantly.
+_CHAT_SUBS: list[tuple[str, str]] = [
+    (" you ", " u "),
+    (" your ", " ur "),
+    (" you're ", " ur "),
+    (" you are ", " u r "),
+    (" for ", " 4 "),
+    (" to ", " 2 "),
+    (" please ", " pls "),
+    (" because ", " bc "),
+    (" with ", " w/ "),
+    (" without ", " w/o "),
+    (" something ", " smth "),
+    (" can you ", " cn u "),
+    (" could you ", " cld u "),
+]
+
+
+def realistic_typo(s: str, rng: random.Random) -> str | None:
+    """Return ONE realistic chat-style mistype, or None if no applicable
+    pattern. Patterns: chat-register sub, adjacent-letter swap, doubled
+    letter, dropped trailing letter, QWERTY key-slip.
+
+    Used during training-data expansion to teach the embedding to be
+    invariant to common typing noise. Mirrors `_realistic_typo` in
+    build_eval_seed.py — same noise model in training and eval.
+    """
+    if not s:
+        return None
+
+    pattern = rng.randint(0, 4)
+
+    if pattern == 0:
+        padded = " " + s + " "
+        applicable = [(src, dst) for src, dst in _CHAT_SUBS if src in padded]
+        if applicable:
+            src, dst = rng.choice(applicable)
+            return padded.replace(src, dst, 1).strip()
+
+    words = s.split()
+    candidates = [
+        i for i, w in enumerate(words)
+        if len(w) >= 4 and all(c.isalpha() or c in "-'" for c in w)
+    ]
+    if not candidates:
+        return None
+    idx = rng.choice(candidates)
+    w = words[idx]
+
+    if pattern == 1 and len(w) >= 4:
+        pos = rng.randint(1, len(w) - 2)
+        w = w[:pos] + w[pos + 1] + w[pos] + w[pos + 2:]
+    elif pattern == 2 and len(w) >= 3:
+        pos = rng.randint(1, len(w) - 1)
+        w = w[:pos] + w[pos] + w[pos:]
+    elif pattern == 3 and len(w) >= 4:
+        w = w[:-1]
+    elif pattern == 4 and len(w) >= 3:
+        pos = rng.randint(0, len(w) - 1)
+        c = w[pos].lower()
+        if c in _KEY_ADJACENCY:
+            slip = _KEY_ADJACENCY[c]
+            if w[pos].isupper():
+                slip = slip.upper()
+            w = w[:pos] + slip + w[pos + 1:]
+        else:
+            return None
+    else:
+        return None
+
+    words[idx] = w
+    return " ".join(words)
+
+
 def lowercase_first_word(s: str) -> str:
     """Lowercase only the first whitespace-delimited word, preserving the
     rest (so proper nouns inside the phrase keep their casing)."""
@@ -826,6 +911,15 @@ def main() -> int:
              "context-laden prefix attached. 0 disables.",
     )
     ap.add_argument(
+        "--typo-ratio",
+        type=float,
+        default=0.10,
+        help="fraction of training surfaces per label that get a realistic "
+             "chat-style typo variant added (adjacent-swap, doubled letter, "
+             "trailing-letter drop, QWERTY key-slip, chat abbreviations). "
+             "0 disables. Eval_real typo_casual rate measures this directly.",
+    )
+    ap.add_argument(
         "--pos-aware-frac",
         type=float,
         default=0.95,
@@ -941,6 +1035,22 @@ def main() -> int:
                     if mt is not None:
                         multi_turn_extras.add(mt)
                 surfaces.update(multi_turn_extras)
+
+            # 5. Realistic typo variants. For a fraction of the existing
+            # surfaces, add a chat-style mistyped variant (swap, doubled
+            # letter, dropped trailing, key-slip, chat abbreviations).
+            # Teaches the embedding invariance to the common typing
+            # noise of real chat. Skipped for `_oos` (its phrases are
+            # already chat-shaped and not template-expanded).
+            if label != "_oos" and args.typo_ratio > 0:
+                typo_extras: set[str] = set()
+                for s in surfaces:
+                    if rng.random() >= args.typo_ratio:
+                        continue
+                    typoed = realistic_typo(s, rng)
+                    if typoed and typoed != s:
+                        typo_extras.add(typoed)
+                surfaces.update(typo_extras)
 
             surfaces_list = sorted(surfaces)
             train_surfaces[label] = surfaces_list

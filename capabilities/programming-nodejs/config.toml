@@ -1,5 +1,8 @@
 # capabilities/programming-nodejs/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Node.js / JS / TS specific vocabulary: event loop, Promises, npm/pnpm/yarn/bun,
+# Express/Fastify/Hono, package.json, tsconfig, ESM vs CJS, streams.
 
 triggers = [
 	"write modern JavaScript or TypeScript",
@@ -8,6 +11,12 @@ triggers = [
 	"resolve npm, pnpm, yarn, or bun dependency issues",
 	"configure package.json and tsconfig.json",
 	"bundle or build a JS/TS project with bun, vite, or esbuild",
+	"set up an Express, Fastify, or Hono server",
+	"fix a TypeScript type error",
+	"convert a CommonJS module to ESM",
+	"work with Node.js streams and backpressure",
+	"design a monorepo with pnpm workspaces or turborepo",
+	"debug an unhandled Promise rejection in Node",
 ]
 
 domains = ["developer"]

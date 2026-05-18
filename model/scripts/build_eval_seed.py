@@ -102,20 +102,104 @@ def _lower_first(s: str) -> str:
     return head.lower() + ((" " + tail) if tail else "")
 
 
-def _typo_lite(s: str) -> str:
-    """Light typo pass: drop one vowel from a long-ish word. Cheap and
-    deterministic — same input always yields the same output."""
+_KEY_ADJACENCY: dict[str, str] = {
+    # QWERTY rightward slip — what people actually mistype when typing
+    # fast. Not an alphabet-shift; only realistic finger-near-finger
+    # mistakes (e.g. "deploy" → "deplot" because t is left of y).
+    "a": "s", "s": "d", "d": "f", "f": "g", "g": "h", "h": "j",
+    "j": "k", "k": "l",
+    "q": "w", "w": "e", "e": "r", "r": "t", "t": "y", "y": "u",
+    "u": "i", "i": "o", "o": "p",
+    "z": "x", "x": "c", "c": "v", "v": "b", "b": "n", "n": "m",
+}
+
+# Chat-register substitutions — realistic abbreviations real users type.
+_CHAT_SUBS: list[tuple[str, str]] = [
+    (" you ", " u "),
+    (" your ", " ur "),
+    (" you're ", " ur "),
+    (" you are ", " u r "),
+    (" for ", " 4 "),
+    (" to ", " 2 "),
+    (" please ", " pls "),
+    (" because ", " bc "),
+    (" with ", " w/ "),
+    (" without ", " w/o "),
+    (" something ", " smth "),
+]
+
+
+def _realistic_typo(s: str) -> str:
+    """Apply ONE realistic chat-style mistype to a long-ish word, deterministic
+    on input so each eval row gets a stable variant.
+
+    Patterns (picked round-robin by content hash, NOT random — same input
+    always yields the same output, so eval is reproducible):
+
+      0. chat-register substitution ("you" → "u", "to" → "2")
+      1. swap two adjacent letters mid-word ("deploy" → "depoly")
+      2. double a letter ("deploy" → "deeploy")
+      3. drop the trailing letter ("deploy" → "deplo")
+      4. QWERTY key-slip on one interior letter ("deploy" → "deploh")
+
+    Vowel-deletion is intentionally NOT used — it produces strings the
+    model never saw in training and is unrepresentative of how users
+    actually mistype.
+    """
+    if not s:
+        return s
+
+    # Deterministic pattern choice from content hash.
+    pattern = (sum(ord(c) for c in s)) % 5
+
+    # Pattern 0: chat-register substitution. Cheap, very common in real chat.
+    if pattern == 0:
+        padded = " " + s + " "
+        for src, dst in _CHAT_SUBS:
+            if src in padded:
+                return padded.replace(src, dst, 1).strip()
+        # No chat-sub applicable; fall through to a word-level mistype.
+
     words = s.split()
-    out = []
-    for w in words:
-        if len(w) >= 6 and any(v in w[1:-1].lower() for v in "aeiou"):
-            # remove the first interior vowel
-            for i, c in enumerate(w[1:-1], start=1):
-                if c.lower() in "aeiou":
-                    w = w[:i] + w[i+1:]
-                    break
-        out.append(w)
-    return " ".join(out)
+    # Pick the longest alphabetic word with len >= 4 — biases the typo to
+    # content words, not to "i", "to", "is".
+    candidates = [
+        i for i, w in enumerate(words)
+        if len(w) >= 4 and all(c.isalpha() or c in "-'" for c in w)
+    ]
+    if not candidates:
+        return s
+    idx = max(candidates, key=lambda i: len(words[i]))
+    w = words[idx]
+
+    # Index into the word at a stable position derived from word content.
+    pos = max(1, min(len(w) - 2, (sum(ord(c) for c in w)) % (len(w) - 2 + 1)))
+
+    if pattern == 1 and len(w) >= 4:
+        # Swap adjacent: "deploy" → "depoly"
+        w = w[:pos] + w[pos + 1] + w[pos] + w[pos + 2:]
+    elif pattern == 2 and len(w) >= 3:
+        # Double a letter: "deploy" → "deeploy"
+        w = w[:pos] + w[pos] + w[pos:]
+    elif pattern == 3 and len(w) >= 4:
+        # Drop trailing letter: "deploy" → "deplo"
+        w = w[:-1]
+    elif pattern == 4 and len(w) >= 3:
+        # QWERTY key-slip: "deploy" → "deplot"
+        c = w[pos].lower()
+        if c in _KEY_ADJACENCY:
+            slip = _KEY_ADJACENCY[c]
+            if w[pos].isupper():
+                slip = slip.upper()
+            w = w[:pos] + slip + w[pos + 1:]
+    # else: pattern matched but word too short → leave unchanged.
+
+    words[idx] = w
+    return " ".join(words)
+
+
+# Backwards-compatible alias for any external caller.
+_typo_lite = _realistic_typo
 
 
 REAL_USER_TRANSFORMS: list[tuple[str, str]] = [
@@ -276,12 +360,48 @@ EDGE_POSITIVES: list[tuple[str, str, str]] = [
     ("please execute the deploy script", "shell", "cross_domain_shell"),
     ("fire off make clean", "shell", "cross_domain_shell"),
 
-    # multi-turn shaped: clear domain in the tail
+    # multi-turn shaped: clear domain in the tail. Each prompt opens with
+    # a conversational prefix referencing prior turns, then names the
+    # actual intent. Real users do this constantly — the model must
+    # ignore the lead-in and attend to the task in the tail.
     ("earlier we were setting up postgres, now check the schema", "database-postgres", "multi_turn"),
     ("following up on the deploy: roll it back", "shell", "multi_turn"),
     ("back to the docker question — show running containers", "docker", "multi_turn"),
     ("alright, now query the postgres table", "database-postgres", "multi_turn"),
     ("ok scratch that. let's search the codebase", "codesearch-semantic", "multi_turn"),
+    ("circling back: what does this URL return", "webfetch", "multi_turn"),
+    ("next up: show the kubernetes pods", "kubernetes", "multi_turn"),
+    ("ok now find what calls this function", "codesearch-graph", "multi_turn"),
+    ("alright, fire off the test suite", "shell", "multi_turn"),
+    ("following up — scrape that careers page", "scraping", "multi_turn"),
+    ("back to what we discussed: build the rust crate", "shell", "multi_turn"),
+    ("scratch that, let's check sqlite instead", "database-sqlite", "multi_turn"),
+    ("ignore the previous step. fetch the staging URL", "webfetch", "multi_turn"),
+    ("now do the same but for postgres", "database-postgres", "multi_turn"),
+    ("same as before, just with docker compose this time", "docker", "multi_turn"),
+    ("alright, now save this conversation context", "memory-write", "multi_turn"),
+    ("circling back: recall what I told you about the project", "memory-read", "multi_turn"),
+    ("next step — google for similar libraries", "websearch", "multi_turn"),
+    ("ok now where in the codebase do we handle auth", "codesearch-semantic", "multi_turn"),
+    ("back to the front-end task: open the browser", "browser", "multi_turn"),
+    ("following the migration plan — run the SQL script", "shell", "multi_turn"),
+    ("alright last step: error tracking, show recent issues", "error-tracking", "multi_turn"),
+    ("now check the schedule for tomorrow", "calendar", "multi_turn"),
+    ("ok back on track: deploy to edge", "edge-hosting", "multi_turn"),
+    ("scratch the previous — let's draft a webpage now", "browser", "multi_turn"),
+
+    # follow-up shaped: "ok now X" / "and then X" — the leading filler
+    # is conversational noise; the tail names the intent.
+    ("and then push to docker registry", "docker", "follow_up"),
+    ("now run the tests", "shell", "follow_up"),
+    ("ok and commit the changes", "shell", "follow_up"),
+    ("next, check the postgres logs", "database-postgres", "follow_up"),
+    ("then deploy it", "shell", "follow_up"),
+    ("now read what's at this URL", "webfetch", "follow_up"),
+    ("after that, save this to memory", "memory-write", "follow_up"),
+    ("and now trace the call graph for that handler", "codesearch-graph", "follow_up"),
+    ("ok now find the auth module", "codesearch-semantic", "follow_up"),
+    ("then crawl the docs site", "scraping", "follow_up"),
 ]
 
 EDGE_AMBIGUOUS: list[tuple[str, str]] = [

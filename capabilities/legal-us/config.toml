@@ -1,5 +1,7 @@
 # capabilities/legal-us/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# US legal vocabulary: USC, CFR, SCOTUS, federal/state, USDC, Title-X.
 
 triggers = [
 	"look up US case law",
@@ -7,6 +9,13 @@ triggers = [
 	"research US legal regulation",
 	"check US court precedent",
 	"look up federal regulations",
+	"find a SCOTUS decision",
+	"search US Code (USC) title",
+	"look up the Code of Federal Regulations (CFR)",
+	"find a US Circuit Court ruling",
+	"check Supreme Court precedent in the US",
+	"research a federal statute by US Code section",
+	"look up state law in California / New York / Texas",
 ]
 
 domains = ["lawyer"]

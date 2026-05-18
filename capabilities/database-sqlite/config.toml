@@ -1,5 +1,10 @@
 # capabilities/database-sqlite/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# SQLite-specific vocabulary: .db / .sqlite files, in-process, WAL mode,
+# PRAGMAs, no server, ATTACH DATABASE, schema introspection via sqlite_master.
+# Differentiated from `database-postgres` by emphasizing the file-based,
+# embedded, single-process nature.
 
 triggers = [
 	"query a sqlite database",
@@ -7,6 +12,13 @@ triggers = [
 	"run SQL against a sqlite db",
 	"look at the schema of a sqlite database",
 	"open a .db file and read tables",
+	"check sqlite_master for table definitions",
+	"set PRAGMA journal_mode = WAL on a SQLite db",
+	"vacuum and analyze a sqlite database",
+	"migrate a SQLite schema",
+	"attach a second SQLite database with ATTACH",
+	"export rows from a sqlite table to CSV",
+	"check indexes on a SQLite table",
 ]
 
 domains = ["developer"]

@@ -1,8 +1,25 @@
 # capabilities/codesearch-semantic/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# codesearch-semantic finds code by MEANING / DESCRIPTION. Differentiated from:
+#   - `codesearch-structural` → find by symbol/AST shape (function name, class)
+#   - `codesearch-graph`      → find callers / dependencies / call graph
+# Triggers emphasize "by what it does", "code that handles X", "where in the
+# codebase is the logic for Y" — natural-language semantic intent, NOT a
+# specific name or symbol lookup.
+
 triggers = [
 	"find code by what it does",
 	"search code by description",
 	"natural-language code search",
+	"where in the codebase do we handle X",
+	"find the part of the code that does payment processing",
+	"locate the logic for user authentication",
+	"semantic search across the repo",
+	"find functions that do something similar to this description",
+	"where is the retry logic implemented",
+	"find the module responsible for caching",
+	"search the codebase by intent, not by symbol name",
 ]
 
 domains = ["developer", "devops", "security"]

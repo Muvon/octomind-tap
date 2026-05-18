@@ -1,5 +1,8 @@
 # capabilities/programming-rust/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Rust-specific vocabulary: borrow checker, lifetimes, traits, generics,
+# tokio, Send/Sync, Cargo, std::sync, ownership, async fn in traits.
 
 triggers = [
 	"write idiomatic Rust code",
@@ -7,6 +10,13 @@ triggers = [
 	"design traits, generics, and lifetimes in Rust",
 	"resolve Cargo.toml dependency and feature flag issues",
 	"work with async Rust, tokio, and Send/Sync bounds",
+	"refactor Rust code to avoid clones and unnecessary allocations",
+	"design an error type with thiserror or anyhow",
+	"fix a `cannot borrow as mutable` compile error",
+	"choose between Arc<Mutex<T>> and an actor pattern in Rust",
+	"set up a Cargo workspace with multiple crates",
+	"write a procedural macro in Rust",
+	"profile and optimize Rust performance",
 ]
 
 domains = ["developer"]

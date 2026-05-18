@@ -1,11 +1,27 @@
 # capabilities/scraping/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# scraping is MULTI-PAGE, STRUCTURED-DATA extraction. Differentiated from:
+#   - `webfetch`  → single URL, raw content
+#   - `websearch` → search-engine query
+# Triggers emphasize crawl, multiple pages, structured/tabular data,
+# dataset building, follow-the-links workflows.
 
 triggers = [
 	"scrape a website",
 	"extract content from web pages",
 	"crawl a web domain",
 	"extract structured data from a page",
+	"scrape multiple pages from a site",
+	"extract product listings from an e-commerce site",
+	"parse HTML tables into structured data",
+	"follow links on a domain and collect content",
+	"build a dataset from website content",
+	"crawl pagination across a site",
+	"harvest fields from a list of pages",
+	"scrape job postings from a careers site",
+	"extract every article URL from a news site",
+	"turn a website into a CSV / JSON dataset",
 ]
 
 domains = ["browser", "developer"]

@@ -1,11 +1,22 @@
 # capabilities/legal-in/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Indian legal vocabulary: Supreme Court of India (SCI), Indian Penal
+# Code (IPC), CrPC, High Court rulings, Constitution of India, Indian
+# Kanoon, Acts of Parliament of India.
 
 triggers = [
 	"look up Indian case law",
 	"find an Indian statute",
 	"research Indian legal regulation",
 	"check Indian court precedent",
+	"search a Supreme Court of India judgment",
+	"look up a section of the Indian Penal Code (IPC)",
+	"find a provision in the Code of Criminal Procedure (CrPC)",
+	"check a High Court ruling in Delhi / Bombay / Madras",
+	"research an Act of Parliament of India",
+	"look up the Constitution of India",
+	"search a case on Indian Kanoon",
 ]
 
 domains = ["lawyer"]

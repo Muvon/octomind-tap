@@ -1,5 +1,8 @@
 # capabilities/messaging-slack/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Slack-specific vocabulary: workspaces, public/private channels, threads,
+# DMs, app integrations, work-team register.
 
 triggers = [
 	"send a slack message",
@@ -7,4 +10,10 @@ triggers = [
 	"search slack history",
 	"look up a slack thread",
 	"list slack channels",
+	"DM someone on slack",
+	"reply in a slack thread",
+	"post to the team's slack channel",
+	"check unread slack messages",
+	"send a slack notification via the bot",
+	"pin a message in slack",
 ]

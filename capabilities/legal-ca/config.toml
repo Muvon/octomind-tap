@@ -1,11 +1,21 @@
 # capabilities/legal-ca/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Canadian legal vocabulary: Supreme Court of Canada (SCC), federal RSC,
+# provincial statutes, CanLII, Quebec Civil Code, Charter of Rights.
 
 triggers = [
 	"look up Canadian case law",
 	"find a Canadian statute",
 	"research Canadian legal regulation",
 	"check Canadian court precedent",
+	"search the Supreme Court of Canada (SCC)",
+	"look up a federal Revised Statutes of Canada (RSC) section",
+	"find a provincial statute in Ontario / BC / Alberta",
+	"research a Quebec Civil Code article",
+	"check Federal Court of Canada rulings",
+	"look up the Canadian Charter of Rights and Freedoms",
+	"search a decision on CanLII",
 ]
 
 domains = ["lawyer"]

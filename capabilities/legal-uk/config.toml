@@ -1,11 +1,21 @@
 # capabilities/legal-uk/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# UK legal vocabulary: Acts of Parliament, UKSC, statutory instruments,
+# Crown Court, House of Commons, common-law tradition.
 
 triggers = [
 	"look up UK case law",
 	"find a UK statute",
 	"research UK legal regulation",
 	"check UK court precedent",
+	"find a UK Supreme Court (UKSC) judgment",
+	"look up an Act of Parliament",
+	"search a UK statutory instrument (SI)",
+	"check English Court of Appeal rulings",
+	"look up Crown Court precedent in England and Wales",
+	"find a Scottish case in the Court of Session",
+	"research a regulation under UK legislation.gov.uk",
 ]
 
 domains = ["lawyer"]
