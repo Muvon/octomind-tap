@@ -24,14 +24,14 @@ For You has two candidate pools: in-network (Thunder, posts from followed accoun
 
 What this means for harvesting (the parts that matter, not the parts you read in blog posts):
 
-- **Engagement is predicted, not observed.** Phoenix scores a post based on what *each specific viewer's* embedding suggests they'll do. So virality = "post embedding matches lots of viewers' embedding clusters," not "post got lots of likes." Account-tier × engagement ratios still tell the story, but adjust your interpretation accordingly.
-- **Scroll-past is a negative signal.** Posts that fail to earn dwell are actively penalised, not neutral. A post with 100k views and a 0.5% engagement ratio is worse-than-average; the viewers it reached mostly *scrolled past it*, dragging the author's predicted-engagement profile down.
-- **Author diversity is per-feed-render, not per-day.** Accounts that burst-post (multiple in minutes) cannibalise their own slots in any given feed render; daily volume is fine. Don't discount accounts on daily volume alone — look at gap-between-posts.
-- **Mutual-follow Jaccard and "following-replied-users" are direct ranking inputs.** A reply from a high-graph-overlap account cascades the post into more feeds. Big breakouts often correlate with a high-overlap account quoting/replying within the first hour.
-- **Banger Initial Screen + slop_score** decide which posts get extra boosted candidate pools. AI-templated or recycled-shape posts get demoted regardless of raw engagement. When you cluster harvested posts, flag the ones that look like templates — they're operating below their apparent reach.
-- **Freshness is a hard age cutoff, not a continuous decay.** Inside the freshness window, posts compete freely on embedding match; outside, they're filtered out. "Time-decayed score" is the wrong mental model.
-- **Video has a binary duration floor.** Sub-threshold clips score zero on the video axis. Cluster video posts by duration when harvesting.
-- **7 PTOS kill-switches** (ViolentMedia, AdultContent, Spam, Illegal&Regulated, HateOrAbuse, ViolentSpeech, SuicideOrSelfHarm) drop posts entirely. `MediumRisk` brand-safety verdict quietly excludes posts from ad-eligible feed surfaces.
+- Engagement is predicted, not observed. Phoenix scores a post based on what each specific viewer's embedding suggests they'll do. So virality = "post embedding matches lots of viewers' embedding clusters," not "post got lots of likes." Account-tier × engagement ratios still tell the story, but adjust your interpretation accordingly.
+- Scroll-past is a negative signal. Posts that fail to earn dwell are actively penalised, not neutral. A post with 100k views and a 0.5% engagement ratio is worse-than-average; the viewers it reached mostly scrolled past it, dragging the author's predicted-engagement profile down.
+- Author diversity is per-feed-render, not per-day. Accounts that burst-post (multiple in minutes) cannibalise their own slots in any given feed render; daily volume is fine. Don't discount accounts on daily volume alone — look at gap-between-posts.
+- Mutual-follow Jaccard and "following-replied-users" are direct ranking inputs. A reply from a high-graph-overlap account cascades the post into more feeds. Big breakouts often correlate with a high-overlap account quoting/replying within the first hour.
+- Banger Initial Screen + slop_score decide which posts get extra boosted candidate pools. AI-templated or recycled-shape posts get demoted regardless of raw engagement. When you cluster harvested posts, flag the ones that look like templates — they're operating below their apparent reach.
+- Freshness is a hard age cutoff, not a continuous decay. Inside the freshness window, posts compete freely on embedding match; outside, they're filtered out. "Time-decayed score" is the wrong mental model.
+- Video has a binary duration floor. Sub-threshold clips score zero on the video axis. Cluster video posts by duration when harvesting.
+- 7 PTOS kill-switches (ViolentMedia, AdultContent, Spam, Illegal&Regulated, HateOrAbuse, ViolentSpeech, SuicideOrSelfHarm) drop posts entirely. `MediumRisk` brand-safety verdict quietly excludes posts from ad-eligible feed surfaces.
 
 ## Rules
 
@@ -39,30 +39,30 @@ What this means for harvesting (the parts that matter, not the parts you read in
 
 The ranker sums positive-weighted predicted actions and subtracts negative-weighted ones. Exact weights are runtime params — these are the structural facts, not invented multipliers.
 
-**Positive-weighted (in the scorer's canonical order — higher up = lower marginal value):**
-- `favorite` (like) → cheap, easy to predict, lowest signal per unit. **Discount raw likes when assessing breakouts.**
+Positive-weighted (in the scorer's canonical order — higher up = lower marginal value):
+- `favorite` (like) → cheap, easy to predict, lowest signal per unit. Discount raw likes when assessing breakouts.
 - `reply`, `retweet`, `quote`, `quoted_click` → distribution-intent actions. Posts heavy on these are doing the real work.
 - `share`, `share_via_dm`, `share_via_copy_link` → rare and high-signal. DM/copy-link shares are nearly invisible in public metrics but matter to the ranker.
 - `click`, `profile_click`, `photo_expand` → depth signals. Profile clicks are the highest-intent of the three.
-- `vqv` / `quoted_vqv` (video quality view) → **only counts if video > duration floor**. Discount short clips.
+- `vqv` / `quoted_vqv` (video quality view) → only counts if video > duration floor. Discount short clips.
 - `dwell` (binary), `dwell_time`, `click_dwell_time` → attention scored both as a flag and continuously.
 - `follow_author` → highest-intent action; the actual growth lever.
 
-**Negative-weighted (these subtract):**
+Negative-weighted (these subtract):
 - `not_interested`, `block_author`, `mute_author`, `report` → hostile actions.
-- `not_dwelled` → **scroll-past is a negative score, not neutral.** A high-view, low-engagement-ratio post is in the red, not in the gray.
+- `not_dwelled` → scroll-past is a negative score, not neutral. A high-view, low-engagement-ratio post is in the red, not in the gray.
 
-**Bookmarks are not in the scored set in the open code.** Treat bookmark counts as a soft proxy for "save-worthy" content but don't weight them as a ranking signal.
+Bookmarks are not in the scored set in the open code. Treat bookmark counts as a soft proxy for "save-worthy" content but don't weight them as a ranking signal.
 
 ### Harvest implications
 
-- **Read engagement-to-view ratio as a "post survived `not_dwelled`" check.** Anything under ~2% on a high-view post implies most viewers scrolled past — algorithmically a negative outcome regardless of absolute view count.
-- **Weight reply/quote/share counts above likes by an order of magnitude** when ranking what to study. Like-heavy posts with low reply-and-share are often Phoenix mis-fires, not signal.
-- **Flag posts with high follow-conversion** (followers gained per impression, when visible) — this is the action Phoenix weights highest in the positive direction.
-- **Author diversity is per-feed-render.** Don't discount accounts on daily count alone; discount accounts on burst pattern (multiple posts within minutes).
-- **Banger / slop classifiers:** when you cluster posts and find shapes that look templated — same skeleton, parallel bullets, AI-cliché phrasing — flag them as below-ceiling content. They under-perform even when raw numbers look fine.
-- **Mutual-follow Jaccard cascade:** when a post breaks out, check which connected accounts replied or quoted in the first hour. That's the cascade mechanism, not raw reply count.
-- **Premium / TweepCred / 2× reach for blue-checks / "engagement pods don't work":** none of these are in the open code as stated by public X advice. Don't propagate them as facts.
+- Read engagement-to-view ratio as a "post survived `not_dwelled`" check. Anything under ~2% on a high-view post implies most viewers scrolled past — algorithmically a negative outcome regardless of absolute view count.
+- Weight reply/quote/share counts above likes by an order of magnitude when ranking what to study. Like-heavy posts with low reply-and-share are often Phoenix mis-fires, not signal.
+- Flag posts with high follow-conversion (followers gained per impression, when visible) — this is the action Phoenix weights highest in the positive direction.
+- Author diversity is per-feed-render. Don't discount accounts on daily count alone; discount accounts on burst pattern (multiple posts within minutes).
+- Banger / slop classifiers: when you cluster posts and find shapes that look templated — same skeleton, parallel bullets, AI-cliché phrasing — flag them as below-ceiling content. They under-perform even when raw numbers look fine.
+- Mutual-follow Jaccard cascade: when a post breaks out, check which connected accounts replied or quoted in the first hour. That's the cascade mechanism, not raw reply count.
+- Premium / TweepCred / 2× reach for blue-checks / "engagement pods don't work": none of these are in the open code as stated by public X advice. Don't propagate them as facts.
 
 ### Harvest surfaces (run in parallel)
 
@@ -103,24 +103,24 @@ Drop everything below 3 on either axis.
 
 ### Dead patterns (algorithmically penalised or below-ceiling)
 
-- **Wall-of-text posts** — earn `not_dwelled` (negative weight); high views ≠ amplification
-- **Sub-threshold video** — scores zero on video axis; treat as image-without-expand
-- **Recycled viral templates** — Banger Initial Screen / slop_score flags hook shapes; below 0.4 quality_score = no boost track
-- **Generic AI-tool roundups** without an original POV — slop-classifier territory
-- **Motivational fluff without specifics** (no numbers, names, or proof) — slop + low dwell combo
-- **"What do you think?" / "Thoughts?" / "Agree?" closers** — predict to scroll-past, not engagement
-- **Burst posting** (multiple posts within minutes) — author diversity decays second-and-onwards in any feed render. Daily volume is fine; clustering is not.
-- **Posts in the 7 PTOS categories** — full removal from feeds (not soft suppression)
-- **`MediumRisk` brand-safety verdict** — quiet exclusion from ad-eligible feed surfaces
-- **"This 👇" / "Read this 🧵" / "Thread 👇" lead-ins**
-- **Numbered thread markers** ("1/12", "2/12")
-- **"Unpopular opinion:" prefix** — just state the opinion
-- **Emoji bullets** (🚀 🔥 ⚡ as line starters)
-- **Hashtag stacks** (2+ hashtags) — read as low-quality by the LLM spam screen
-- **AI vocabulary in hook**: delve, leverage, unlock, harness, unveil, seamless, cutting-edge — direct slop_score triggers
-- **"Here's a thread on..." intros**
-- **Engagement bait** ("RT if you agree", "Like if you relate")
-- **Off-niche posts** — Phoenix's hash-based embedding for an account is sticky; off-niche posts hit the wrong embedding neighborhood and underperform structurally
+- Wall-of-text posts — earn `not_dwelled` (negative weight); high views ≠ amplification
+- Sub-threshold video — scores zero on video axis; treat as image-without-expand
+- Recycled viral templates — Banger Initial Screen / slop_score flags hook shapes; below 0.4 quality_score = no boost track
+- Generic AI-tool roundups without an original POV — slop-classifier territory
+- Motivational fluff without specifics (no numbers, names, or proof) — slop + low dwell combo
+- "What do you think?" / "Thoughts?" / "Agree?" closers — predict to scroll-past, not engagement
+- Burst posting (multiple posts within minutes) — author diversity decays second-and-onwards in any feed render. Daily volume is fine; clustering is not.
+- Posts in the 7 PTOS categories — full removal from feeds (not soft suppression)
+- `MediumRisk` brand-safety verdict — quiet exclusion from ad-eligible feed surfaces
+- "This 👇" / "Read this 🧵" / "Thread 👇" lead-ins
+- Numbered thread markers ("1/12", "2/12")
+- "Unpopular opinion:" prefix — just state the opinion
+- Emoji bullets (🚀 🔥 ⚡ as line starters)
+- Hashtag stacks (2+ hashtags) — read as low-quality by the LLM spam screen
+- AI vocabulary in hook: delve, leverage, unlock, harness, unveil, seamless, cutting-edge — direct slop_score triggers
+- "Here's a thread on..." intros
+- Engagement bait ("RT if you agree", "Like if you relate")
+- Off-niche posts — Phoenix's hash-based embedding for an account is sticky; off-niche posts hit the wrong embedding neighborhood and underperform structurally
 
 ### Format prescriptions
 
@@ -137,16 +137,16 @@ Drop everything below 3 on either axis.
 | Link to external content | Root post hook + media (no link) + reply with link | Standard |
 | Signal boost | Quote post with commentary | Commentary must add, not echo |
 
-For users <10k followers, weight reply-under-anchor plays equally with original posts that pass the Banger Initial Screen. The "small-account OON boost" people quote is folklore — the new-user OON multiplier in the code belongs to the *viewer's* account age, not the author's. Small accounts grow through embedding fit and connected-account cascades, not a follower-count multiplier.
+For users <10k followers, weight reply-under-anchor plays equally with original posts that pass the Banger Initial Screen. The "small-account OON boost" people quote is folklore — the new-user OON multiplier in the code belongs to the viewer's account age, not the author's. Small accounts grow through embedding fit and connected-account cascades, not a follower-count multiplier.
 
 ### Timing (for inferring posting cadence from harvested accounts)
 
-- **Best windows**: Tue–Thu mornings and evenings local are still strong, but the algorithm's freshness window is what actually matters — posts succeed when target audiences load feeds in the few hours after publication.
-- **Daily cadence beats bursts.** Phoenix's embedding sharpens with consistent activity. 1–2 posts every day beats 5 posts on Tuesday + nothing else.
-- **No daily-count cap in code.** Discount accounts on burst pattern, not volume.
-- **Never burst** — two posts within minutes cannibalise each other inside any single feed render (author diversity decay).
-- **Reply presence in the first hour matters.** Connected replies cascade the post into more feeds. When you cluster breakouts, check whether the author was replying in the first hour vs. absent.
-- **One thread OR one long-form per day** — both compete for the same author-diversity slot.
+- Best windows: Tue–Thu mornings and evenings local are still strong, but the algorithm's freshness window is what actually matters — posts succeed when target audiences load feeds in the few hours after publication.
+- Daily cadence beats bursts. Phoenix's embedding sharpens with consistent activity. 1–2 posts every day beats 5 posts on Tuesday + nothing else.
+- No daily-count cap in code. Discount accounts on burst pattern, not volume.
+- Never burst — two posts within minutes cannibalise each other inside any single feed render (author diversity decay).
+- Reply presence in the first hour matters. Connected replies cascade the post into more feeds. When you cluster breakouts, check whether the author was replying in the first hour vs. absent.
+- One thread OR one long-form per day — both compete for the same author-diversity slot.
 
 ### Saturated-take detection
 
