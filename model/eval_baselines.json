@@ -1,0 +1,456 @@
+{
+  "model": "checkpoints/embed-bge-small-v1-20260518-131235",
+  "n_eval": 854,
+  "n_positives": 764,
+  "n_nulls": 90,
+  "top1_acc": 0.9384816753926701,
+  "top3_acc": 0.9764397905759162,
+  "gate_acc": 0.774869109947644,
+  "abstain_on_pos": 0.16361256544502617,
+  "null_fpr": 0.03333333333333333,
+  "mean_top1_margin": 0.13856382890392713,
+  "per_kind": {
+    "ambiguous": {
+      "n": 8,
+      "correct": 8,
+      "rate": 1.0
+    },
+    "chitchat": {
+      "n": 28,
+      "correct": 28,
+      "rate": 1.0
+    },
+    "compound": {
+      "n": 2,
+      "correct": 1,
+      "rate": 0.5
+    },
+    "cross_domain_shell": {
+      "n": 7,
+      "correct": 6,
+      "rate": 0.8571428571428571
+    },
+    "follow_up": {
+      "n": 225,
+      "correct": 184,
+      "rate": 0.8177777777777778
+    },
+    "multi_turn": {
+      "n": 5,
+      "correct": 2,
+      "rate": 0.4
+    },
+    "off_topic": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "paste_dump": {
+      "n": 9,
+      "correct": 9,
+      "rate": 1.0
+    },
+    "positive": {
+      "n": 450,
+      "correct": 377,
+      "rate": 0.8377777777777777
+    },
+    "sarcastic_feedback": {
+      "n": 14,
+      "correct": 13,
+      "rate": 0.9285714285714286
+    },
+    "typo_casual": {
+      "n": 75,
+      "correct": 22,
+      "rate": 0.29333333333333333
+    },
+    "vague": {
+      "n": 21,
+      "correct": 21,
+      "rate": 1.0
+    }
+  },
+  "per_label_recall": {
+    "ad-frameworks": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "agent": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "ai-agent-design": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "ai-cost-finops": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "ai-evals-design": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "ai-prompt-injection-defense": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "ai-rag-patterns": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "browser": {
+      "n": 10,
+      "correct": 6,
+      "rate": 0.6
+    },
+    "browser-backlink-submission": {
+      "n": 10,
+      "correct": 6,
+      "rate": 0.6
+    },
+    "browser-social-account-maintenance": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "calendar": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "codesearch-graph": {
+      "n": 10,
+      "correct": 5,
+      "rate": 0.5
+    },
+    "codesearch-semantic": {
+      "n": 11,
+      "correct": 3,
+      "rate": 0.2727272727272727
+    },
+    "codesearch-structural": {
+      "n": 10,
+      "correct": 6,
+      "rate": 0.6
+    },
+    "content-grounding": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "content-humanize": {
+      "n": 10,
+      "correct": 6,
+      "rate": 0.6
+    },
+    "content-voice": {
+      "n": 10,
+      "correct": 1,
+      "rate": 0.1
+    },
+    "core": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "customer-management": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "database-postgres": {
+      "n": 12,
+      "correct": 12,
+      "rate": 1.0
+    },
+    "database-sqlite": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "devdocs": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "device-computer": {
+      "n": 10,
+      "correct": 4,
+      "rate": 0.4
+    },
+    "device-mobile": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "docker": {
+      "n": 11,
+      "correct": 9,
+      "rate": 0.8181818181818182
+    },
+    "ecommerce": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "edge-hosting": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "error-tracking": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "filesystem-read": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "filesystem-write": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "highlights": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "kubernetes": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "legal-au": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "legal-ca": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "legal-de": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "legal-fr": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "legal-in": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "legal-sg": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "legal-th": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "legal-uk": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "legal-us": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "maps": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "market-data": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "medical-reference": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "memory-read": {
+      "n": 10,
+      "correct": 6,
+      "rate": 0.6
+    },
+    "memory-write": {
+      "n": 10,
+      "correct": 2,
+      "rate": 0.2
+    },
+    "messaging-discord": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "messaging-email": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "messaging-instagram": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "messaging-linkedin": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "messaging-slack": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "messaging-sms": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "messaging-telegram": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "messaging-whatsapp": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "payments": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "programming-nodejs": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "programming-python": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "programming-rust": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "scraping": {
+      "n": 10,
+      "correct": 2,
+      "rate": 0.2
+    },
+    "seo-backlink-prospecting": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "seo-content-audit": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "seo-guest-posting": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "seo-keyword-research": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "seo-link-audit": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "seo-structural-audit": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "seo-tool-discovery": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "shell": {
+      "n": 20,
+      "correct": 17,
+      "rate": 0.85
+    },
+    "svelte": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "task-management": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "translation": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "versioning": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "video-hooks": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "video-spec-sheet": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "webfetch": {
+      "n": 10,
+      "correct": 0,
+      "rate": 0.0
+    },
+    "websearch": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    }
+  },
+  "settings": {
+    "top_k": 3,
+    "threshold": 0.55,
+    "margin": 0.08
+  }
+}
