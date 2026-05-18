@@ -1,11 +1,21 @@
 # capabilities/legal-de/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# German legal vocabulary: Bundesgerichtshof (BGH), BGB, StGB, GG,
+# Bundesverfassungsgericht (BVerfG), Verordnungen, Gesetz im Bundesgesetzblatt.
 
 triggers = [
 	"look up German case law",
 	"find a German statute",
 	"research German legal regulation",
 	"check German court precedent",
+	"search a Bundesgerichtshof (BGH) decision",
+	"look up a section of the BGB (Bürgerliches Gesetzbuch)",
+	"find a paragraph in the German StGB (Strafgesetzbuch)",
+	"check a Bundesverfassungsgericht (BVerfG) ruling",
+	"research a German Verordnung",
+	"look up the Grundgesetz (GG)",
+	"find a German federal law in the Bundesgesetzblatt",
 ]
 
 domains = ["lawyer"]

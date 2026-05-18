@@ -1,11 +1,21 @@
 # capabilities/legal-au/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Australian legal vocabulary: High Court of Australia, Commonwealth Acts,
+# Federal Court, State-level statutes, AustLII.
 
 triggers = [
 	"look up Australian case law",
 	"find an Australian statute",
 	"research Australian legal regulation",
 	"check Australian court precedent",
+	"search the High Court of Australia",
+	"look up a Commonwealth Act",
+	"check Federal Court of Australia rulings",
+	"find a New South Wales or Victorian statute",
+	"research a regulation on AustLII",
+	"look up Australian Consumer Law (ACL) provisions",
+	"find a Family Court of Australia decision",
 ]
 
 domains = ["lawyer"]

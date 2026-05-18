@@ -1,5 +1,8 @@
 # capabilities/messaging-email/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Email-specific vocabulary: inbox, threads, attachments, CC/BCC, drafts,
+# formal correspondence register.
 
 triggers = [
 	"send an email",
@@ -7,4 +10,11 @@ triggers = [
 	"read recent emails",
 	"search for an email",
 	"compose a reply",
+	"draft an email",
+	"reply to a thread",
+	"forward this email",
+	"add a CC and send",
+	"attach a file and send via email",
+	"archive an email",
+	"mark unread emails as read",
 ]

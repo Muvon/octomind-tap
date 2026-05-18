@@ -1,10 +1,21 @@
 # capabilities/messaging-instagram/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Instagram-specific vocabulary: visual posts, stories, reels, hashtags,
+# DMs, follower interactions. Differentiated from the other messaging-*
+# caps by emphasizing the visual / social-photo register.
 
 triggers = [
 	"post to instagram",
 	"send a direct message on instagram",
 	"look at my instagram feed",
+	"share a photo to my instagram story",
+	"publish a reel to instagram",
+	"reply to an instagram DM",
+	"check instagram comments",
+	"schedule an instagram post",
+	"add hashtags and post to instagram",
+	"read instagram messages",
 ]
 
 domains = ["marketing"]

@@ -1,8 +1,26 @@
 # capabilities/codesearch-graph/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# codesearch-graph finds code by RELATIONSHIPS / CALL FLOW. Differentiated from:
+#   - `codesearch-semantic`   → by meaning / description
+#   - `codesearch-structural` → by symbol/AST shape (function name, class)
+# Triggers emphasize CALLERS, CALLEES, DEPENDENCIES, REACHABILITY, IMPACT —
+# anything that traverses the relationship graph between code entities.
+
 triggers = [
 	"trace code dependencies",
 	"find what calls this function",
 	"graph traversal of code",
+	"who calls this method",
+	"find all callers of foo()",
+	"what depends on this module",
+	"show the call chain from A to B",
+	"find every function that uses this struct",
+	"trace the import graph for this file",
+	"find the call path that reaches this error",
+	"impact analysis if I change this function",
+	"reverse-lookup the consumers of this API",
+	"build the dependency graph for this package",
 ]
 
 # Code-graph search is for engineering roles. Includes devops (terraform/

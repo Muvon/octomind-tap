@@ -1,9 +1,26 @@
 # capabilities/codesearch-structural/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# codesearch-structural finds code by SYMBOL / AST SHAPE. Differentiated from:
+#   - `codesearch-semantic` → by meaning / description
+#   - `codesearch-graph`    → by call relationships / dependencies
+# Triggers emphasize SPECIFIC NAMES — find this function, find this class,
+# show me signatures of, where is this symbol declared.
+
 triggers = [
 	"find a function or symbol",
 	"locate a class or method",
 	"view file signatures",
 	"AST search",
+	"where is the function `foo` defined",
+	"find all methods named `process`",
+	"show the signature of this class",
+	"list every function in this module",
+	"find a symbol by exact name",
+	"jump to the definition of `bar`",
+	"grep-like search but for AST nodes",
+	"find every enum variant of this type",
+	"locate where this struct is declared",
 ]
 
 domains = ["developer", "devops", "security"]

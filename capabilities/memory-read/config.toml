@@ -1,5 +1,10 @@
 # capabilities/memory-read/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# memory-read is the READ-ONLY side of the memory store. Differentiated from:
+#   - `memory-write` → save/store/persist/delete/link (mutating)
+# Triggers emphasize RETRIEVAL verbs: recall, search, find, load, explore,
+# fetch — no state changes.
 
 triggers = [
 	"recall something I told you before",
@@ -7,4 +12,11 @@ triggers = [
 	"find related memories",
 	"load context from memory",
 	"explore the memory graph",
+	"what do you remember about this project",
+	"look up a past conversation",
+	"retrieve relevant context from memory",
+	"find what we discussed earlier",
+	"search the knowledge graph for related entries",
+	"fetch a memory by topic",
+	"what did I tell you about X",
 ]

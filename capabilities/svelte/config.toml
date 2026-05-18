@@ -1,11 +1,22 @@
 # capabilities/svelte/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Svelte / SvelteKit specific: component syntax, reactivity, stores,
+# load functions, +page.svelte routing, runes.
 
 triggers = [
 	"look up Svelte documentation",
 	"build a Svelte component",
 	"Svelte best practices",
 	"research a Svelte feature",
+	"set up a SvelteKit route",
+	"write a Svelte store",
+	"use Svelte 5 runes",
+	"convert a React component to Svelte",
+	"work with +page.svelte and +page.server.ts",
+	"add reactivity with $state in Svelte",
+	"build a form action in SvelteKit",
+	"deploy a SvelteKit app",
 ]
 
 domains = ["developer"]

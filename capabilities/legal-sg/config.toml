@@ -1,11 +1,21 @@
 # capabilities/legal-sg/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Singapore legal vocabulary: Court of Appeal, Singapore Statutes Online,
+# MAS regulations, Cap. references, Penal Code (Singapore), High Court.
 
 triggers = [
 	"look up Singapore case law",
 	"find a Singapore statute",
 	"research Singapore legal regulation",
 	"check Singapore court precedent",
+	"search the Singapore Court of Appeal",
+	"look up a chapter (Cap.) of the Singapore Statutes",
+	"find a Singapore High Court judgment",
+	"check MAS (Monetary Authority of Singapore) regulations",
+	"research a Singapore Penal Code section",
+	"look up an Act on Singapore Statutes Online",
+	"find a Singapore Subsidiary Legislation reference",
 ]
 
 domains = ["lawyer"]
