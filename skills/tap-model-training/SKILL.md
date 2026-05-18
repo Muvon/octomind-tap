@@ -1,11 +1,11 @@
 ---
-name: octomind-tap-training
+name: tap-model-training
 title: "octomind-tap: train and publish the embed model"
 description: "Operational playbook for training, evaluating, and publishing `muvon/octomind-embed` — the BGE-small-en-v1.5 fine-tune that powers octomind's capability auto-activation. Covers when to retrain (after any change to `capabilities/*/config.toml` triggers or `skills/*/SKILL.md` semantic phrases), the full pipeline (LLM augmentation, dataset build, iterative hard-negative mining, CachedMNRL + GISTEmbed + Matryoshka loss stack, holdout + eval_real evaluation, ONNX export, HuggingFace publish), how to resume an interrupted training, how to calibrate the runtime threshold/margin from eval_real, and how to update the publish baseline. Use whenever the user adds/removes/edits capability triggers or skill semantic rules, asks about retraining the tap model, or reports false-positive/false-negative auto-activation issues."
 license: Apache-2.0
 compatibility: "octomind-tap repo with `model/` subdirectory. Requires Python 3.11+ (for onnxruntime wheels), `uv` for dependency management, ANTHROPIC_API_KEY for LLM augmentation, HF_TOKEN with read+write scope for publish, and ~30min-6h compute (GPU vs CPU) per training run."
 capabilities: core
-domains: developer
+domains: octomind
 rules:
   - file(model/scripts/train.py)
   - file(model/bin/train)
