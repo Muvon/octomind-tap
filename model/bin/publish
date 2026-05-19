@@ -1,41 +1,40 @@
 #!/usr/bin/env bash
-# Publish the latest trained checkpoints to HuggingFace Hub.
+# Publish the latest trained checkpoint to HuggingFace Hub.
 #
-# Auto-detects the most recent embed-* and rerank-* checkpoints under
-# checkpoints/, validates them, and uploads each to its target repo with
-# safetensors + ONNX + tokenizer + model card.
+# Auto-detects the most recent embed-* checkpoint under checkpoints/,
+# runs the publish gate (`eval_gate.py`) against the frozen
+# data/eval_real.jsonl, and uploads safetensors + ONNX + tokenizer +
+# model card if the gate passes.
+#
+# Reranker upload is intentionally NOT supported here — production has
+# confirmed the cross-encoder doesn't help at the current capability
+# count. If that changes, restore the previous --rerank-only path.
 #
 # Usage:
-#   HF_TOKEN=hf_... bin/publish                          # both models
-#   HF_TOKEN=hf_... bin/publish --embed-only             # just embedding
-#   HF_TOKEN=hf_... bin/publish --rerank-only            # just reranker
-#   HF_TOKEN=hf_... bin/publish --org muvon              # override namespace (default: muvon)
-#   HF_TOKEN=hf_... bin/publish --private                # private repos
-#   HF_TOKEN=hf_... bin/publish --dry-run                # print what would happen, don't upload
+#   HF_TOKEN=hf_... bin/publish                          # bi-encoder, with gate
+#   HF_TOKEN=hf_... bin/publish --org muvon              # override namespace
+#   HF_TOKEN=hf_... bin/publish --private                # private repo
+#   HF_TOKEN=hf_... bin/publish --dry-run                # print, don't upload
+#   HF_TOKEN=hf_... bin/publish --force                  # bypass the gate (use sparingly)
+#   HF_TOKEN=hf_... bin/publish --skip-gate              # alias for --force
+#   HF_TOKEN=hf_... bin/publish --baseline path.json     # custom baseline file
 #
-# After upload the runtime at `octomind/src/embeddings/mod.rs` picks up the
-# new weights on first launch via hf_hub.
+# After upload the runtime at octomind/src/embeddings/mod.rs picks up
+# the new weights on first launch via hf_hub.
 
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
 ORG="muvon"
-PUBLISH_EMBED=1
-PUBLISH_RERANK=1
 PRIVATE=""
 DRY_RUN=0
+FORCE=0
+BASELINE_PATH=""
 
 while [ $# -gt 0 ]; do
   case "$1" in
-    --embed-only)
-      PUBLISH_RERANK=0
-      shift
-      ;;
-    --rerank-only)
-      PUBLISH_EMBED=0
-      shift
-      ;;
+    --embed-only) shift ;; # accepted for compat, embed is the only mode now
     --org)
       ORG="$2"
       shift 2
@@ -47,6 +46,14 @@ while [ $# -gt 0 ]; do
     --dry-run)
       DRY_RUN=1
       shift
+      ;;
+    --force | --skip-gate)
+      FORCE=1
+      shift
+      ;;
+    --baseline)
+      BASELINE_PATH="$2"
+      shift 2
       ;;
     *)
       echo "unknown arg: $1" >&2
@@ -62,50 +69,78 @@ fi
 
 PY=${PY:-uv run python}
 
-publish_one() {
-  local pattern="$1"
-  local repo="$2"
-  local type="$3"
-
-  local run
-  run=$(ls -td checkpoints/${pattern}*/ 2>/dev/null | head -1)
-  if [ -z "$run" ]; then
-    echo "no $pattern checkpoint found in checkpoints/" >&2
-    return 1
-  fi
-  run=${run%/}
-
-  if [ ! -f "$run/model.safetensors" ]; then
-    echo "missing model.safetensors in $run — is this a trained checkpoint?" >&2
-    return 1
-  fi
-
-  local has_onnx=""
-  if [ -d "$run/onnx" ]; then
-    has_onnx="(includes ONNX)"
-  fi
-
-  echo "==> $type: $run → hf.co/$repo $has_onnx"
-
-  if [ $DRY_RUN -eq 1 ]; then
-    echo "    [dry-run] would upload safetensors, config, tokenizer, model card${has_onnx:+, onnx/}"
-    return 0
-  fi
-
-  $PY scripts/push_hf.py --run "$run" --repo "$repo" --type "$type" $PRIVATE
-}
-
-if [ $PUBLISH_EMBED -eq 1 ]; then
-  publish_one "embed-" "$ORG/octomind-embed" "embed"
+RUN=$(ls -td checkpoints/embed-*/ 2>/dev/null | head -1)
+RUN=${RUN%/}
+if [ -z "$RUN" ]; then
+  echo "no embed-* checkpoint found in checkpoints/" >&2
+  exit 1
 fi
 
-if [ $PUBLISH_RERANK -eq 1 ]; then
-  publish_one "rerank-" "$ORG/octomind-rerank" "rerank"
+if [ ! -f "$RUN/model.safetensors" ]; then
+  echo "missing model.safetensors in $RUN — is this a trained checkpoint?" >&2
+  exit 1
 fi
+
+HAS_ONNX=""
+[ -d "$RUN/onnx" ] && HAS_ONNX="(includes ONNX)"
+
+# ---------------------------------------------------------------------------
+# Publish gate
+# ---------------------------------------------------------------------------
+#
+# Blocks the upload on regression against the recorded baseline at
+# eval_baselines.json (or --baseline override). On first ever run there
+# is no baseline — the gate is informational, and you should record
+# the baseline AFTER promotion with:
+#
+#   uv run python scripts/eval_gate.py --model <HF id of current shipped> \
+#       --write-baseline eval_baselines.json
+#
+# Skipping the gate is supported for emergencies (--force / --skip-gate)
+# but should be the rare exception. Each skipped publish increases the
+# odds of a silent regression slipping into production.
+
+if [ $FORCE -eq 1 ]; then
+  echo "==> publish gate: SKIPPED (--force)"
+else
+  if [ -f data/eval_real.jsonl ]; then
+    echo "==> publish gate: scoring $RUN on data/eval_real.jsonl"
+    GATE_ARGS="--model $RUN"
+    if [ -n "$BASELINE_PATH" ]; then
+      GATE_ARGS="$GATE_ARGS --baseline $BASELINE_PATH"
+    fi
+    if ! $PY scripts/eval_gate.py $GATE_ARGS; then
+      echo
+      echo "Publish blocked by eval_gate."
+      echo "Re-run with --force to override (and document why)."
+      exit 1
+    fi
+  else
+    echo "==> publish gate: data/eval_real.jsonl missing — gate cannot run"
+    echo "    build it once with:  $PY scripts/build_eval_seed.py"
+    echo "    aborting; re-run with --force to bypass."
+    exit 1
+  fi
+fi
+
+# ---------------------------------------------------------------------------
+# Upload
+# ---------------------------------------------------------------------------
+
+REPO="$ORG/octomind-embed"
+echo
+echo "==> upload: $RUN  →  hf.co/$REPO  $HAS_ONNX"
+
+if [ $DRY_RUN -eq 1 ]; then
+  echo "    [dry-run] would upload safetensors, config, tokenizer, model card${HAS_ONNX:+, onnx/}"
+  exit 0
+fi
+
+$PY scripts/push_hf.py --run "$RUN" --repo "$REPO" --type embed $PRIVATE
 
 echo
 echo "Done."
-if [ $DRY_RUN -eq 0 ]; then
-  [ $PUBLISH_EMBED -eq 1 ] && echo "  https://huggingface.co/$ORG/octomind-embed"
-  [ $PUBLISH_RERANK -eq 1 ] && echo "  https://huggingface.co/$ORG/octomind-rerank"
-fi
+echo "  https://huggingface.co/$REPO"
+echo
+echo "Record the new baseline AFTER you confirm the rollout in production:"
+echo "  $PY scripts/eval_gate.py --model $REPO --write-baseline eval_baselines.json"

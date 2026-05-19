@@ -1,11 +1,20 @@
 # capabilities/messaging-linkedin/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# LinkedIn-specific vocabulary: professional network, InMail, connection
+# requests, profile lookups, career updates, B2B outreach.
 
 triggers = [
 	"post on linkedin",
 	"send a linkedin message",
 	"look up a linkedin profile",
 	"share a linkedin update",
+	"send an InMail on linkedin",
+	"send a connection request on linkedin",
+	"publish an article to linkedin",
+	"reply to a linkedin comment",
+	"check my linkedin notifications",
+	"share a post to my linkedin network",
 ]
 
 domains = ["marketing"]

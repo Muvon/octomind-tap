@@ -63,8 +63,8 @@ The activated `social-<platform>` skill carries the platform-specific dead-patte
 - Long-form blog posts → `content:blog`
 - Long-form articles → `content:article`
 - Editing / humanizing an existing AI-sounding draft → `content:editor`
-- SEO strategy or keyword research → `content:seo`
-- Off-page SEO / link building / digital PR → `marketing:seo`
+- SEO strategy, keyword research, or any SEO audit
+- Off-page SEO, link building, digital PR
 </scope>
 
 <workflow>

@@ -1,9 +1,25 @@
 # capabilities/webfetch/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# webfetch is the SINGLE-URL, RAW-CONTENT fetcher. Differentiated from:
+#   - `scraping`  → multi-page crawl, structured-data extraction, datasets
+#   - `websearch` → search-engine query for articles/news
+# Triggers emphasize "one URL, raw response" — fetch that page, get that body,
+# read what's at that link. NOT crawl, NOT extract structured data.
 
 triggers = [
 	"fetch a URL's content",
 	"download a webpage",
 	"get the contents of a web page",
 	"retrieve a web resource",
+	"GET request to a specific URL",
+	"fetch this https:// link",
+	"curl a single web page",
+	"pull the HTML of one URL",
+	"grab the body of a web request",
+	"what does this URL return",
+	"read the content at this link",
+	"load this page's raw HTML",
+	"open a web page and show me its text",
+	"hit this endpoint and return the response",
 ]

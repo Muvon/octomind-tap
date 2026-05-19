@@ -1,5 +1,10 @@
 # capabilities/filesystem-read/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# filesystem-read is READ-ONLY filesystem operations. Differentiated from:
+#   - `filesystem-write` → create/edit/delete/rename (mutating)
+# Triggers emphasize READ verbs: read, view, show, list, find (by name),
+# grep contents — no state changes.
 
 triggers = [
 	"read the contents of a file",
@@ -7,4 +12,11 @@ triggers = [
 	"list directory contents",
 	"search files for a pattern",
 	"find files by name",
+	"show me what's in this file",
+	"cat a file",
+	"ls a directory",
+	"glob files matching a pattern",
+	"grep for a string across files",
+	"open and read a file",
+	"check what files are in this folder",
 ]

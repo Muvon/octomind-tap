@@ -1,10 +1,10 @@
 ---
-name: marketing-keyword-research
+name: seo-keyword-research
 title: "Long-Tail Keyword Research — Low-Competition Discovery"
-description: "Operational funnel for discovering high-intent, low-competition long-tail keywords (4+ word phrases with weak SERP defenders) — the keyword class that actually ranks for new and mid-authority sites without massive backlink spend. Encodes the discovery method (seed → modifier expansion → Google autocomplete + 'People Also Ask' + Reddit/forum mining + competitor SERP-gap), the qualification rubric that goes beyond KD scores (top-10 SERP authority profile, content-fit gap, intent match, traffic-potential vs ranking-realism, query freshness), the 2026 GEO overlay (definition + question + comparison queries that earn AI-search citations), and the kill-rules (head-term traps, fake-volume keywords, branded-SERPs, paid-ads-dominated SERPs). Use BEFORE writing any content brief, calendar, or pillar-cluster plan. Stays in the marketing lane: produces a keyword brief — content writing, on-page wrapping, and link-building belong to other domains."
+description: "Operational funnel for discovering high-intent, low-competition long-tail keywords (4+ word phrases with weak SERP defenders) — the keyword class that actually ranks for new and mid-authority sites without massive backlink spend. Encodes the discovery method (seed → modifier expansion → Google autocomplete + 'People Also Ask' + Reddit/forum mining + competitor SERP-gap), the qualification rubric that goes beyond KD scores (top-10 SERP authority profile, content-fit gap, intent match, traffic-potential vs ranking-realism, query freshness), the 2026 GEO overlay (definition + question + comparison queries that earn AI-search citations), and the kill-rules (head-term traps, fake-volume keywords, branded-SERPs, paid-ads-dominated SERPs). Use BEFORE writing any content brief, calendar, or pillar-cluster plan. Stays in the SEO lane: produces a keyword brief — content writing, on-page wrapping, and link-building are downstream concerns owned elsewhere."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Free path requires websearch + webfetch (Google autocomplete, 'People Also Ask' scrape, Reddit search, competitor SERP review). Optional MCP data sources: Ahrefs, SE Ranking, Serpstat, Google Search Console for volume + KD numbers."
-domains: marketing
+domains: seo
 rules:
   - session(seo)
   - content(keyword)
@@ -317,8 +317,8 @@ In-skill references (load on demand):
 - `references/brief-template.md` — canonical Stage 6 brief output template + field definitions
 
 Within-domain pairings:
-- Pairs with the sibling marketing skill that prospects backlinks for the cluster pillar pages (priority for any P0 cluster that lacks link equity).
-- Pairs with the sibling marketing skill that validates free-tool ideas — when a keyword cluster surfaces a recurring user problem (calculator, checker, generator), it's a tool-build trigger.
+- Pairs with the sibling SEO skill that prospects backlinks for the cluster pillar pages (priority for any P0 cluster that lacks link equity).
+- Pairs with the sibling SEO skill that validates free-tool ideas — when a keyword cluster surfaces a recurring user problem (calculator, checker, generator), it's a tool-build trigger.
 
 Downstream concerns (owned by other domains, not this skill):
 - GEO content writing (answer-first structure, FAQ schema, extractable passages) — the brief flags GEO-eligible keywords; the writing pattern lives elsewhere.

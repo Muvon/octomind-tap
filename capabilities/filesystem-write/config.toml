@@ -1,9 +1,22 @@
 # capabilities/filesystem-write/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# filesystem-write is MUTATING filesystem operations. Differentiated from:
+#   - `filesystem-read` → read/view/list/search files (read-only)
+# Triggers emphasize MUTATION verbs: create, write, edit, modify, delete,
+# rename, append, overwrite.
 
 triggers = [
 	"edit a file on disk",
 	"write a file",
 	"modify file contents",
 	"create a new file",
+	"overwrite an existing file",
+	"append a line to a file",
+	"delete a file from disk",
+	"rename a file",
+	"make a new directory",
+	"remove a folder",
+	"save text to a file",
+	"patch the contents of this source file",
 ]

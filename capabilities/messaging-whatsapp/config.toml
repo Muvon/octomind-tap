@@ -1,8 +1,18 @@
 # capabilities/messaging-whatsapp/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# WhatsApp-specific vocabulary: phone-tied accounts, end-to-end encrypted
+# chats, business catalog, status updates, voice notes, groups.
 
 triggers = [
 	"send a whatsapp message",
 	"post on whatsapp",
 	"read recent whatsapp messages",
+	"reply on whatsapp",
+	"send a whatsapp voice note",
+	"DM someone on whatsapp business",
+	"check whatsapp groups",
+	"post a whatsapp status",
+	"send a whatsapp message to a customer's phone number",
+	"read messages from a whatsapp group chat",
 ]

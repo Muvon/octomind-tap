@@ -1,11 +1,24 @@
 # capabilities/devdocs/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# devdocs is API/library/framework REFERENCE lookup. Differentiated from:
+#   - `codesearch-semantic` → searches THIS codebase, not external docs
+#   - `websearch`           → general web search, not curated dev docs
+# Triggers emphasize official API references, function signatures,
+# library/framework docs — not source code in the user's repo.
 
 triggers = [
 	"look up the documentation for this API",
 	"find the docs for this library",
 	"read the reference for this function",
 	"show me documentation for this framework",
+	"what's the signature of this stdlib function",
+	"look up the official API reference",
+	"find the docs page for this method",
+	"show MDN docs for this Web API",
+	"find the official documentation for this language feature",
+	"look up the reference for a third-party SDK",
+	"check the docs for the correct usage of this function",
 ]
 
 domains = ["developer"]

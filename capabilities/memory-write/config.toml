@@ -1,5 +1,10 @@
 # capabilities/memory-write/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# memory-write is the MUTATING side of the memory store. Differentiated from:
+#   - `memory-read` → recall/search/load existing memories (no writes)
+# Triggers emphasize MUTATION verbs: save, store, persist, delete, link,
+# update, capture — anything that *changes* the memory graph.
 
 triggers = [
 	"remember this for later",
@@ -7,4 +12,13 @@ triggers = [
 	"forget this memory",
 	"relate two memories",
 	"connect these memories",
+	"save this fact to long-term memory",
+	"persist this information across sessions",
+	"capture this conversation context for future reference",
+	"delete an old memory entry",
+	"link two memory nodes together",
+	"update an existing memory",
+	"add a new entry to the knowledge graph",
+	"wipe a specific memory",
+	"record this decision in memory",
 ]

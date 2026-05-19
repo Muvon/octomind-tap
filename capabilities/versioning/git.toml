@@ -4,6 +4,13 @@
 # Title: Git Version Control
 # Description: Git repository operations — log, diff, status, commit, branch via MCP.
 # Provides tools: git_log, git_diff, git_status, git_commit, git_branch, etc.
+#
+# Repository resolution:
+# - Uses `git rev-parse --show-toplevel` to find the git root, so the MCP works
+#   from any subdirectory inside a git repo (not just the root).
+# - If the working directory is not inside any git repo, the server exits
+#   cleanly with a stderr note instead of crashing with a misleading "." error.
+#   Agents that included `versioning` will simply have no git_* tools available.
 
 [deps]
 require = ["modelcontextprotocol/git"]
@@ -15,7 +22,7 @@ allowed_tools = ["git_*"]
 [[mcp.servers]]
 name = "git"
 type = "stdio"
-command = "uvx"
-args = ["mcp-server-git", "--repository", "."]
+command = "sh"
+args = ["-c", "GIT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null); if [ -z \"$GIT_ROOT\" ]; then echo 'git MCP skipped: not inside a git repository' >&2; exit 0; fi; exec uvx mcp-server-git --repository \"$GIT_ROOT\""]
 timeout_seconds = 60
 tools = []

@@ -105,7 +105,7 @@ Block-by-block authoring rules:
 
 - `<identity>` — One paragraph. Role, expertise, style. Don't bury this; the model uses it to pick its register.
 - `<voice>` — Only include if voice/tone matters (content, marketing, video, creative agents). Omit for pure technical agents (developer, devops, security) where voice is uniform.
-- `<scope>` — Two lists: ✅ Own / ❌ Don't own (route to <other-agent>). Required for any agent that sits next to siblings (e.g. `marketing:seo` vs `content:seo`).
+- `<scope>` — Two lists: ✅ Own / ❌ Don't own. Required for any agent that sits next to siblings (e.g. `seo:audit` vs `seo:strategist`, or `content:article` vs `content:blog`). Describe out-of-scope work by what it is, not by routing to a specific other-domain agent — domain isolation applies to agent bodies too.
 - `<workflow>` — Numbered steps (1, 2, 3…). Each step is one sentence + optional sub-bullets. Don't write paragraphs.
 - `<rules>` — Tables and bullet lists win here. Decision matrices, parameter ranges, vocabulary lists. This is the agent's domain knowledge.
 - `<examples>` — Bad → Good pairs are the strongest format. Skip this block if the agent's output is freeform.

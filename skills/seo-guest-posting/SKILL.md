@@ -1,10 +1,10 @@
 ---
-name: marketing-guest-posting
+name: seo-guest-posting
 title: "Guest Posting — Editorial Pitches & Safe Link Strategy"
-description: "Operational skill for landing genuine editorial guest posts that earn high-quality contextual links without triggering the Oct-2025 spam update on guest-post farms. Encodes the 7-stage workflow (author tier-mapping, discovery operators, 11-point site qualification, content-gap topic ideation, 80–150-word pitch architecture, post writing standards by tier, internal-link strategy, anchor distribution, follow-up). Bakes in Google's hard kill-rules (paid networks, repetitive exact-match anchors, duplicate content, AI-content farms), the data-backed anchor distribution (40-50% branded, <10% exact-match, 68% penalty reduction with diversification), and link-placement rules (1-2 contextual body + 1 bio = 387% more referral traffic than bio-only). Use BEFORE writing any pitch. Stays in the marketing lane: produces strategy, target list, topics, pitch brief — does not write the email or post itself."
+description: "Operational skill for landing genuine editorial guest posts that earn high-quality contextual links without triggering the Oct-2025 spam update on guest-post farms. Encodes the 7-stage workflow (author tier-mapping, discovery operators, 11-point site qualification, content-gap topic ideation, 80–150-word pitch architecture, post writing standards by tier, internal-link strategy, anchor distribution, follow-up). Bakes in Google's hard kill-rules (paid networks, repetitive exact-match anchors, duplicate content, AI-content farms), the data-backed anchor distribution (40-50% branded, <10% exact-match, 68% penalty reduction with diversification), and link-placement rules (1-2 contextual body + 1 bio = 387% more referral traffic than bio-only). Use BEFORE writing any pitch. Stays in the SEO lane: produces strategy, target list, topics, pitch brief — does not write the email or post itself."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Requires websearch and webfetch for discovery and qualification."
-domains: marketing
+domains: seo
 rules:
   - session(seo)
   - content(guest post)
@@ -46,7 +46,7 @@ This skill encodes the 7-stage workflow for doing exactly that: map your authori
 - Each post must be unique. Duplicate content across publications is its own violation category. Re-pitching the same topic to multiple sites = OK only if each post is independently written.
 - One pitch, one topic-set. Don't blast the same 3-topic pitch to 50 sites. Each pitch is researched per-publication, references their actual content, fills a specific gap they have.
 - AI-written drafts are detectable and devalued. The Oct 2025 update specifically targets thin AI content farms. Use AI for outlining/research support if needed, but ship human-written prose at publication standard.
-- Output a brief, not a finished email. This skill produces the strategy, target list, topics, and pitch architecture. The actual email and post writing happen elsewhere — stay in the marketing lane.
+- Output a brief, not a finished email. This skill produces the strategy, target list, topics, and pitch architecture. The actual email and post writing are downstream concerns owned elsewhere.
 
 ### The 7-Stage Workflow
 

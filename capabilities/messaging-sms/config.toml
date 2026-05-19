@@ -1,8 +1,19 @@
 # capabilities/messaging-sms/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# SMS-specific vocabulary: phone numbers, text messages, carriers, OTP
+# delivery, short codes, MMS. Differentiated from chat platforms by
+# emphasizing phone-network delivery and short-form texting.
 
 triggers = [
 	"send an SMS",
 	"send a text message",
 	"look up sms history",
+	"text someone on their phone number",
+	"send a one-time password via SMS",
+	"send an OTP text",
+	"deliver an MMS to a phone number",
+	"send a transactional text message",
+	"check recent sms messages",
+	"reply to a text from a customer",
 ]

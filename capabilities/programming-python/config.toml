@@ -1,5 +1,8 @@
 # capabilities/programming-python/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Python-specific vocabulary: type hints, pep 8, pip/poetry/uv, pytest,
+# asyncio, dataclasses, decorators, context managers, GIL, numpy/pandas.
 
 triggers = [
 	"write idiomatic Python code",
@@ -7,6 +10,13 @@ triggers = [
 	"use type hints, dataclasses, and typing",
 	"manage virtual environments and pip dependencies",
 	"work with asyncio, decorators, and context managers",
+	"refactor Python code to be more Pythonic",
+	"write a pytest test with fixtures and parametrize",
+	"fix a TypeError or AttributeError in Python",
+	"set up a uv / poetry / pip project structure",
+	"optimize NumPy / Pandas data manipulation",
+	"design a class with __slots__, dunder methods, or descriptors",
+	"resolve a Python import or circular-dependency issue",
 ]
 
 domains = ["developer"]

@@ -46,8 +46,14 @@ def main() -> int:
     with pairs_path.open() as f:
         for line in f:
             row = json.loads(line)
-            triggers_by_cap[row["label"]].add(row["anchor"])
-            triggers_by_cap[row["label"]].add(row["positive"])
+            label = row["label"]
+            # `_oos` is a training-only sink (not a runtime capability)
+            # — exclude from eval so the metrics mirror what production
+            # actually scores against.
+            if label == "_oos":
+                continue
+            triggers_by_cap[label].add(row["anchor"])
+            triggers_by_cap[label].add(row["positive"])
 
     holdout: list[tuple[str, str]] = []
     with holdout_path.open() as f:

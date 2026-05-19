@@ -9,7 +9,15 @@ reset_classifier_head: false
 
 train:
   epochs: 2
-  batch_size: 32
+  # Effective in-batch-negatives count. CachedMNRL's GradCache lets us
+  # push this well above what fits in VRAM in a single forward pass —
+  # bigger batches = more competing negatives per anchor = sharper top-1
+  # vs top-2 separation, which is exactly the runtime margin metric.
+  batch_size: 128
+  # Real per-step GPU/CPU memory load for the cached pass. Tune for your
+  # device: 32 fits on most single GPUs, drop to 16 on CPU. Independent
+  # of `batch_size` — the cache trick shrinks per-step VRAM only.
+  mini_batch_size: 32
   learning_rate: 2.0e-5
   warmup_ratio: 0.1
   weight_decay: 0.01
@@ -18,6 +26,18 @@ train:
   evaluation_steps: 0
   save_best_model: true
   use_amp: true
+
+loss:
+  # CachedMultipleNegativesRankingLoss: same contrastive ranking objective
+  # as the original MNRL but with the GradCache trick so we can train at
+  # effective batch_size=128+ on a single GPU. Drop to false for a
+  # diagnostic run on the plain MNRL.
+  cached: true
+  # How many of the highest-scoring in-batch (and explicit hard-neg)
+  # candidates to USE as negatives in the loss. Default 4 mirrors the
+  # `CachedMultipleNegativesRankingLoss` library default and is also the
+  # value used in BGE-reranker's training recipe.
+  num_negatives: 4
 
 data:
   triplets_path: data/triplets.jsonl

@@ -1,0 +1,466 @@
+{
+  "model": "muvon/octomind-embed",
+  "n_eval": 904,
+  "n_positives": 814,
+  "n_nulls": 90,
+  "top1_acc": 0.9545454545454546,
+  "top3_acc": 0.9852579852579852,
+  "gate_acc": 0.7972972972972973,
+  "abstain_on_pos": 0.15724815724815724,
+  "null_fpr": 0.03333333333333333,
+  "mean_top1_margin": 0.13615570273945538,
+  "per_kind": {
+    "ambiguous": {
+      "n": 8,
+      "correct": 7,
+      "rate": 0.875
+    },
+    "chitchat": {
+      "n": 28,
+      "correct": 28,
+      "rate": 1.0
+    },
+    "compound": {
+      "n": 2,
+      "correct": 0,
+      "rate": 0.0
+    },
+    "cross_domain_shell": {
+      "n": 7,
+      "correct": 6,
+      "rate": 0.8571428571428571
+    },
+    "follow_up": {
+      "n": 241,
+      "correct": 193,
+      "rate": 0.8008298755186722
+    },
+    "multi_turn": {
+      "n": 25,
+      "correct": 9,
+      "rate": 0.36
+    },
+    "off_topic": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "paste_dump": {
+      "n": 9,
+      "correct": 9,
+      "rate": 1.0
+    },
+    "positive": {
+      "n": 462,
+      "correct": 394,
+      "rate": 0.8528138528138528
+    },
+    "sarcastic_feedback": {
+      "n": 14,
+      "correct": 14,
+      "rate": 1.0
+    },
+    "typo_casual": {
+      "n": 77,
+      "correct": 47,
+      "rate": 0.6103896103896104
+    },
+    "vague": {
+      "n": 21,
+      "correct": 21,
+      "rate": 1.0
+    }
+  },
+  "per_label_recall": {
+    "ad-frameworks": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "agent": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "ai-agent-design": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "ai-cost-finops": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "ai-evals-design": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "ai-prompt-injection-defense": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "ai-rag-patterns": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "browser": {
+      "n": 12,
+      "correct": 6,
+      "rate": 0.5
+    },
+    "browser-backlink-submission": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "browser-social-account-maintenance": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "calendar": {
+      "n": 11,
+      "correct": 11,
+      "rate": 1.0
+    },
+    "codesearch-graph": {
+      "n": 12,
+      "correct": 9,
+      "rate": 0.75
+    },
+    "codesearch-semantic": {
+      "n": 13,
+      "correct": 9,
+      "rate": 0.6923076923076923
+    },
+    "codesearch-structural": {
+      "n": 10,
+      "correct": 6,
+      "rate": 0.6
+    },
+    "content-audit": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "content-grounding": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "content-humanize": {
+      "n": 10,
+      "correct": 5,
+      "rate": 0.5
+    },
+    "content-voice": {
+      "n": 10,
+      "correct": 1,
+      "rate": 0.1
+    },
+    "core": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "customer-management": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "database-postgres": {
+      "n": 14,
+      "correct": 14,
+      "rate": 1.0
+    },
+    "database-sqlite": {
+      "n": 11,
+      "correct": 11,
+      "rate": 1.0
+    },
+    "devdocs": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "device-computer": {
+      "n": 10,
+      "correct": 4,
+      "rate": 0.4
+    },
+    "device-mobile": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "docker": {
+      "n": 13,
+      "correct": 11,
+      "rate": 0.8461538461538461
+    },
+    "ecommerce": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "edge-hosting": {
+      "n": 11,
+      "correct": 11,
+      "rate": 1.0
+    },
+    "error-tracking": {
+      "n": 11,
+      "correct": 6,
+      "rate": 0.5454545454545454
+    },
+    "filesystem-read": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "filesystem-write": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "highlights": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "kubernetes": {
+      "n": 11,
+      "correct": 8,
+      "rate": 0.7272727272727273
+    },
+    "legal-au": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "legal-ca": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "legal-de": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "legal-fr": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "legal-in": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "legal-sg": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "legal-th": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "legal-uk": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "legal-us": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "maps": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "market-data": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "medical-reference": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "memory-read": {
+      "n": 11,
+      "correct": 8,
+      "rate": 0.7272727272727273
+    },
+    "memory-write": {
+      "n": 12,
+      "correct": 7,
+      "rate": 0.5833333333333334
+    },
+    "messaging-discord": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "messaging-email": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "messaging-instagram": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "messaging-linkedin": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "messaging-slack": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "messaging-sms": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "messaging-telegram": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "messaging-whatsapp": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "payments": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "programming-nodejs": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "programming-python": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "programming-rust": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "scraping": {
+      "n": 12,
+      "correct": 7,
+      "rate": 0.5833333333333334
+    },
+    "seo-backlink-prospecting": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "seo-content-audit": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "seo-guest-posting": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "seo-keyword-research": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "seo-link-audit": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "seo-structural-audit": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "seo-tool-discovery": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "shell": {
+      "n": 26,
+      "correct": 15,
+      "rate": 0.5769230769230769
+    },
+    "svelte": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "tap-model-training": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "task-management": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "translation": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "versioning": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "video-hooks": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "video-spec-sheet": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "webfetch": {
+      "n": 13,
+      "correct": 4,
+      "rate": 0.3076923076923077
+    },
+    "websearch": {
+      "n": 11,
+      "correct": 7,
+      "rate": 0.6363636363636364
+    }
+  },
+  "settings": {
+    "top_k": 3,
+    "threshold": 0.55,
+    "margin": 0.08
+  }
+}

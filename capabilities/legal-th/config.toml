@@ -1,11 +1,22 @@
 # capabilities/legal-th/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Thai legal vocabulary: Constitutional Court of Thailand, Civil and
+# Commercial Code, Criminal Code (Thailand), Supreme Court of Thailand
+# (Dika), Royal Gazette, Office of the Council of State.
 
 triggers = [
 	"look up Thai case law",
 	"find a Thai statute",
 	"research Thai legal regulation",
 	"check Thai court precedent",
+	"search the Supreme Court of Thailand (Dika) judgments",
+	"look up a section of the Thai Civil and Commercial Code",
+	"find a provision in the Thai Criminal Code",
+	"check a Constitutional Court of Thailand ruling",
+	"research a Thai ministerial regulation",
+	"look up a law in the Royal Gazette of Thailand",
+	"find a Thai administrative court decision",
 ]
 
 domains = ["lawyer"]

@@ -1,8 +1,19 @@
 # capabilities/messaging-telegram/config.toml
 # Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Telegram-specific vocabulary: channels (broadcast), bots, groups,
+# stickers, forwarded messages. Differentiated by emphasizing the
+# channel/bot ecosystem unique to Telegram.
 
 triggers = [
 	"send a telegram message",
 	"post in a telegram channel",
 	"read telegram messages",
+	"broadcast to a telegram channel",
+	"reply to a telegram chat",
+	"send a message via a telegram bot",
+	"forward a telegram post",
+	"check messages in a telegram group",
+	"DM someone on telegram",
+	"publish an update to my telegram channel",
 ]
