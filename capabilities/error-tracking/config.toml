@@ -3,10 +3,10 @@
 
 triggers = [
 	"check Sentry for unresolved production issues",
-	"query the error tracking dashboard for a logged crash",
-	"look up a stack trace from a production exception event",
-	"find production crash reports tied to a recent release",
-	"see exception frequency across releases in the error tracker",
+	"query the error tracking dashboard for a logged crash in Sentry",
+	"use Sentry to look up a stack trace from a production exception event",
+	"find production crash reports tied to a recent release by using Sentry",
+	"see exception frequency across releases in the Sentry error tracker",
 ]
 
-domains = ["developer", "devops", "security"]
+domains = ["devops", "security"]

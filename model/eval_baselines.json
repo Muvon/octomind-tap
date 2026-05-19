@@ -1,19 +1,19 @@
 {
-  "model": "checkpoints/embed-bge-small-v1-20260518-131235",
-  "n_eval": 854,
-  "n_positives": 764,
+  "model": "muvon/octomind-embed",
+  "n_eval": 904,
+  "n_positives": 814,
   "n_nulls": 90,
-  "top1_acc": 0.9384816753926701,
-  "top3_acc": 0.9764397905759162,
-  "gate_acc": 0.774869109947644,
-  "abstain_on_pos": 0.16361256544502617,
+  "top1_acc": 0.9545454545454546,
+  "top3_acc": 0.9852579852579852,
+  "gate_acc": 0.7972972972972973,
+  "abstain_on_pos": 0.15724815724815724,
   "null_fpr": 0.03333333333333333,
-  "mean_top1_margin": 0.13856382890392713,
+  "mean_top1_margin": 0.13615570273945538,
   "per_kind": {
     "ambiguous": {
       "n": 8,
-      "correct": 8,
-      "rate": 1.0
+      "correct": 7,
+      "rate": 0.875
     },
     "chitchat": {
       "n": 28,
@@ -22,8 +22,8 @@
     },
     "compound": {
       "n": 2,
-      "correct": 1,
-      "rate": 0.5
+      "correct": 0,
+      "rate": 0.0
     },
     "cross_domain_shell": {
       "n": 7,
@@ -31,14 +31,14 @@
       "rate": 0.8571428571428571
     },
     "follow_up": {
-      "n": 225,
-      "correct": 184,
-      "rate": 0.8177777777777778
+      "n": 241,
+      "correct": 193,
+      "rate": 0.8008298755186722
     },
     "multi_turn": {
-      "n": 5,
-      "correct": 2,
-      "rate": 0.4
+      "n": 25,
+      "correct": 9,
+      "rate": 0.36
     },
     "off_topic": {
       "n": 10,
@@ -51,19 +51,19 @@
       "rate": 1.0
     },
     "positive": {
-      "n": 450,
-      "correct": 377,
-      "rate": 0.8377777777777777
+      "n": 462,
+      "correct": 394,
+      "rate": 0.8528138528138528
     },
     "sarcastic_feedback": {
       "n": 14,
-      "correct": 13,
-      "rate": 0.9285714285714286
+      "correct": 14,
+      "rate": 1.0
     },
     "typo_casual": {
-      "n": 75,
-      "correct": 22,
-      "rate": 0.29333333333333333
+      "n": 77,
+      "correct": 47,
+      "rate": 0.6103896103896104
     },
     "vague": {
       "n": 21,
@@ -94,13 +94,13 @@
     },
     "ai-evals-design": {
       "n": 10,
-      "correct": 7,
-      "rate": 0.7
+      "correct": 8,
+      "rate": 0.8
     },
     "ai-prompt-injection-defense": {
       "n": 10,
-      "correct": 9,
-      "rate": 0.9
+      "correct": 10,
+      "rate": 1.0
     },
     "ai-rag-patterns": {
       "n": 10,
@@ -108,14 +108,14 @@
       "rate": 0.7
     },
     "browser": {
-      "n": 10,
+      "n": 12,
       "correct": 6,
-      "rate": 0.6
+      "rate": 0.5
     },
     "browser-backlink-submission": {
       "n": 10,
-      "correct": 6,
-      "rate": 0.6
+      "correct": 7,
+      "rate": 0.7
     },
     "browser-social-account-maintenance": {
       "n": 10,
@@ -123,24 +123,29 @@
       "rate": 0.7
     },
     "calendar": {
-      "n": 10,
-      "correct": 9,
-      "rate": 0.9
+      "n": 11,
+      "correct": 11,
+      "rate": 1.0
     },
     "codesearch-graph": {
-      "n": 10,
-      "correct": 5,
-      "rate": 0.5
+      "n": 12,
+      "correct": 9,
+      "rate": 0.75
     },
     "codesearch-semantic": {
-      "n": 11,
-      "correct": 3,
-      "rate": 0.2727272727272727
+      "n": 13,
+      "correct": 9,
+      "rate": 0.6923076923076923
     },
     "codesearch-structural": {
       "n": 10,
       "correct": 6,
       "rate": 0.6
+    },
+    "content-audit": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
     },
     "content-grounding": {
       "n": 10,
@@ -149,8 +154,8 @@
     },
     "content-humanize": {
       "n": 10,
-      "correct": 6,
-      "rate": 0.6
+      "correct": 5,
+      "rate": 0.5
     },
     "content-voice": {
       "n": 10,
@@ -164,18 +169,18 @@
     },
     "customer-management": {
       "n": 10,
-      "correct": 7,
-      "rate": 0.7
+      "correct": 8,
+      "rate": 0.8
     },
     "database-postgres": {
-      "n": 12,
-      "correct": 12,
+      "n": 14,
+      "correct": 14,
       "rate": 1.0
     },
     "database-sqlite": {
-      "n": 10,
-      "correct": 9,
-      "rate": 0.9
+      "n": 11,
+      "correct": 11,
+      "rate": 1.0
     },
     "devdocs": {
       "n": 10,
@@ -189,38 +194,38 @@
     },
     "device-mobile": {
       "n": 10,
-      "correct": 9,
-      "rate": 0.9
+      "correct": 10,
+      "rate": 1.0
     },
     "docker": {
-      "n": 11,
-      "correct": 9,
-      "rate": 0.8181818181818182
+      "n": 13,
+      "correct": 11,
+      "rate": 0.8461538461538461
     },
     "ecommerce": {
       "n": 10,
-      "correct": 9,
-      "rate": 0.9
+      "correct": 8,
+      "rate": 0.8
     },
     "edge-hosting": {
-      "n": 10,
-      "correct": 10,
+      "n": 11,
+      "correct": 11,
       "rate": 1.0
     },
     "error-tracking": {
-      "n": 10,
-      "correct": 9,
-      "rate": 0.9
+      "n": 11,
+      "correct": 6,
+      "rate": 0.5454545454545454
     },
     "filesystem-read": {
       "n": 10,
-      "correct": 9,
-      "rate": 0.9
+      "correct": 7,
+      "rate": 0.7
     },
     "filesystem-write": {
       "n": 10,
-      "correct": 10,
-      "rate": 1.0
+      "correct": 9,
+      "rate": 0.9
     },
     "highlights": {
       "n": 10,
@@ -228,14 +233,14 @@
       "rate": 1.0
     },
     "kubernetes": {
-      "n": 10,
+      "n": 11,
       "correct": 8,
-      "rate": 0.8
+      "rate": 0.7272727272727273
     },
     "legal-au": {
       "n": 10,
-      "correct": 9,
-      "rate": 0.9
+      "correct": 7,
+      "rate": 0.7
     },
     "legal-ca": {
       "n": 10,
@@ -249,13 +254,13 @@
     },
     "legal-fr": {
       "n": 10,
-      "correct": 9,
-      "rate": 0.9
+      "correct": 8,
+      "rate": 0.8
     },
     "legal-in": {
       "n": 10,
-      "correct": 9,
-      "rate": 0.9
+      "correct": 10,
+      "rate": 1.0
     },
     "legal-sg": {
       "n": 10,
@@ -284,8 +289,8 @@
     },
     "market-data": {
       "n": 10,
-      "correct": 7,
-      "rate": 0.7
+      "correct": 8,
+      "rate": 0.8
     },
     "medical-reference": {
       "n": 10,
@@ -293,29 +298,29 @@
       "rate": 1.0
     },
     "memory-read": {
-      "n": 10,
-      "correct": 6,
-      "rate": 0.6
+      "n": 11,
+      "correct": 8,
+      "rate": 0.7272727272727273
     },
     "memory-write": {
-      "n": 10,
-      "correct": 2,
-      "rate": 0.2
+      "n": 12,
+      "correct": 7,
+      "rate": 0.5833333333333334
     },
     "messaging-discord": {
       "n": 10,
-      "correct": 7,
-      "rate": 0.7
+      "correct": 8,
+      "rate": 0.8
     },
     "messaging-email": {
       "n": 10,
-      "correct": 10,
-      "rate": 1.0
+      "correct": 8,
+      "rate": 0.8
     },
     "messaging-instagram": {
       "n": 10,
-      "correct": 9,
-      "rate": 0.9
+      "correct": 8,
+      "rate": 0.8
     },
     "messaging-linkedin": {
       "n": 10,
@@ -329,23 +334,23 @@
     },
     "messaging-sms": {
       "n": 10,
-      "correct": 8,
-      "rate": 0.8
+      "correct": 9,
+      "rate": 0.9
     },
     "messaging-telegram": {
       "n": 10,
-      "correct": 7,
-      "rate": 0.7
+      "correct": 10,
+      "rate": 1.0
     },
     "messaging-whatsapp": {
       "n": 10,
-      "correct": 8,
-      "rate": 0.8
+      "correct": 10,
+      "rate": 1.0
     },
     "payments": {
       "n": 10,
-      "correct": 9,
-      "rate": 0.9
+      "correct": 10,
+      "rate": 1.0
     },
     "programming-nodejs": {
       "n": 10,
@@ -354,28 +359,28 @@
     },
     "programming-python": {
       "n": 10,
-      "correct": 7,
-      "rate": 0.7
+      "correct": 8,
+      "rate": 0.8
     },
     "programming-rust": {
       "n": 10,
-      "correct": 7,
-      "rate": 0.7
+      "correct": 9,
+      "rate": 0.9
     },
     "scraping": {
-      "n": 10,
-      "correct": 2,
-      "rate": 0.2
+      "n": 12,
+      "correct": 7,
+      "rate": 0.5833333333333334
     },
     "seo-backlink-prospecting": {
       "n": 10,
-      "correct": 7,
-      "rate": 0.7
+      "correct": 8,
+      "rate": 0.8
     },
     "seo-content-audit": {
       "n": 10,
-      "correct": 7,
-      "rate": 0.7
+      "correct": 8,
+      "rate": 0.8
     },
     "seo-guest-posting": {
       "n": 10,
@@ -384,8 +389,8 @@
     },
     "seo-keyword-research": {
       "n": 10,
-      "correct": 9,
-      "rate": 0.9
+      "correct": 10,
+      "rate": 1.0
     },
     "seo-link-audit": {
       "n": 10,
@@ -394,8 +399,8 @@
     },
     "seo-structural-audit": {
       "n": 10,
-      "correct": 7,
-      "rate": 0.7
+      "correct": 8,
+      "rate": 0.8
     },
     "seo-tool-discovery": {
       "n": 10,
@@ -403,19 +408,24 @@
       "rate": 0.7
     },
     "shell": {
-      "n": 20,
-      "correct": 17,
-      "rate": 0.85
+      "n": 26,
+      "correct": 15,
+      "rate": 0.5769230769230769
     },
     "svelte": {
       "n": 10,
       "correct": 10,
       "rate": 1.0
     },
+    "tap-model-training": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
     "task-management": {
       "n": 10,
-      "correct": 9,
-      "rate": 0.9
+      "correct": 10,
+      "rate": 1.0
     },
     "translation": {
       "n": 10,
@@ -424,8 +434,8 @@
     },
     "versioning": {
       "n": 10,
-      "correct": 7,
-      "rate": 0.7
+      "correct": 9,
+      "rate": 0.9
     },
     "video-hooks": {
       "n": 10,
@@ -434,18 +444,18 @@
     },
     "video-spec-sheet": {
       "n": 10,
-      "correct": 10,
-      "rate": 1.0
+      "correct": 9,
+      "rate": 0.9
     },
     "webfetch": {
-      "n": 10,
-      "correct": 0,
-      "rate": 0.0
+      "n": 13,
+      "correct": 4,
+      "rate": 0.3076923076923077
     },
     "websearch": {
-      "n": 10,
+      "n": 11,
       "correct": 7,
-      "rate": 0.7
+      "rate": 0.6363636363636364
     }
   },
   "settings": {
