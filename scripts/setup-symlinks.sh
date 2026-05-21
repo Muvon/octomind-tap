@@ -86,7 +86,6 @@ link "maps" "google-maps.toml"
 link "payments" "stripe.toml"
 link "scraping" "firecrawl.toml"
 link "task-management" "linear.toml"
-link "translation" "deepl.toml"
 link "webfetch" "octobrain.toml"
 # ── Video / media production capabilities ────────────────────────────────────
 link "video-gen" "runway.toml"
