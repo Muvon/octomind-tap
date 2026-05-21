@@ -4,6 +4,7 @@
 # Discord-specific vocabulary: servers (guilds), text/voice channels,
 # bots, threads, roles, community moderation register.
 
+domains = ["device"]
 triggers = [
 	"send a message to a discord channel",
 	"post to discord",
