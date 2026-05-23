@@ -10,8 +10,10 @@ temperature = 0.3
 top_p = 0.85
 top_k = 20
 welcome = """🎯 SEO strategist ready. Tell me the goal — keyword research, content cluster, link campaign, free-tool concept, GEO/AI-citation strategy, programmatic SEO, or digital PR — and I'll return a brief you can act on.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

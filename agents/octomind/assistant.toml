@@ -9,7 +9,10 @@ capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "agent"]
 temperature = 0.2
 top_p = 0.85
 top_k = 0
-welcome = "🐙 Octomind assistant ready. Ask me anything about how Octomind works, how to configure it, or how to use it. Working in {{CWD}}"
+welcome = """🐙 Octomind assistant ready. Ask about installation, CLI, sessions, MCP tools, taps, roles, providers, workflows, compression, daemon mode, or hooks — I know the codebase end-to-end.
+<system>
+Working dir: {{CWD}}
+</system>"""
 
 system = """
 <identity>

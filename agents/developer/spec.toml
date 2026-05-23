@@ -10,8 +10,10 @@ temperature = 0.3
 top_p = 0.9
 top_k = 0
 welcome = """📐 Spec agent ready. Describe a feature, change, or task — I'll explore the codebase, ask the right questions, and produce a complete behavioral specification.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

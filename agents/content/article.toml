@@ -10,8 +10,10 @@ temperature = 0.7
 top_p = 0.9
 top_k = 40
 welcome = """✍️ Article writer ready. Give me a topic and I'll research, outline, and draft a publication-ready article.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

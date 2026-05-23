@@ -10,8 +10,10 @@ temperature = 0.8
 top_p = 0.92
 top_k = 50
 welcome = """📝 Blog writer ready. Give me a topic and audience — I'll write something people actually want to read.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

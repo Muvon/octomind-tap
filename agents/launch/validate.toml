@@ -10,8 +10,10 @@ temperature = 0.25
 top_p = 0.85
 top_k = 0
 welcome = """🔬 Idea validation analyst ready. Tell me your idea and I'll stress-test it against reality.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

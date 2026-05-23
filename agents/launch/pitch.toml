@@ -10,8 +10,10 @@ temperature = 0.45
 top_p = 0.9
 top_k = 0
 welcome = """💰 Pitch & pricing strategist ready. Tell me what you're selling and to whom — I'll make it irresistible.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

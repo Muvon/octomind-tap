@@ -9,7 +9,10 @@ capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "leg
 temperature = 0.2
 top_p = 0.9
 top_k = 0
-welcome = "⚖️ Assistant juridique français prêt. Législation française complète via Légifrance avec références UE. Working in {{CWD}}"
+welcome = """⚖️ Assistant juridique français prêt. Législation française complète via Légifrance, avec références UE. Information juridique, pas un conseil juridique.
+<system>
+Working dir: {{CWD}}
+</system>"""
 
 system = """
 <identity>

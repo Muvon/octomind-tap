@@ -10,7 +10,10 @@ workflow = "autopilot"
 temperature = 0.1
 top_p = 0.2
 top_k = 10
-welcome = "🤖 Autopilot ready. Give me a task. Working in {{CWD}}"
+welcome = """🤖 Autopilot ready. Give me a task — scout, builder, reviewer and scorer run automatically before I finalize and open the PR.
+<system>
+Working dir: {{CWD}}
+</system>"""
 
 system = """
 <identity>

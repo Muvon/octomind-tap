@@ -10,8 +10,10 @@ temperature = 0.1
 top_p = 0.2
 top_k = 10
 welcome = """Hello! Octomind ready to serve you.
+<system>
 Working dir: {{CWD}} (Role: developer)
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

@@ -10,8 +10,10 @@ temperature = 0.2
 top_p = 0.9
 top_k = 0
 welcome = """📚 Doc custodian ready. Tell me what to do — audit, sync, or write — or just point me at a project and I'll find what's stale.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

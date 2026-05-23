@@ -9,7 +9,10 @@ capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "leg
 temperature = 0.2
 top_p = 0.9
 top_k = 0
-welcome = "⚖️ UK Legal Assistant ready. English, Welsh, Scottish & Northern Irish law with live legislation search. Working in {{CWD}}"
+welcome = """⚖️ UK legal research ready. Law of England & Wales, Scotland, and Northern Ireland — live legislation from legislation.gov.uk with EU cross-references. Information, not advice.
+<system>
+Working dir: {{CWD}}
+</system>"""
 
 system = """
 <identity>

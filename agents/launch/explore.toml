@@ -10,8 +10,10 @@ temperature = 0.3
 top_p = 0.9
 top_k = 0
 welcome = """🔭 Product opportunity explorer ready. Describe a problem space, market, or rough idea — I'll dig deep into real user conversations, competitor gaps, and untapped opportunities.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

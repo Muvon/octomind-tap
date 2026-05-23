@@ -10,8 +10,10 @@ temperature = 0.1
 top_p = 0.9
 top_k = 0
 welcome = """📒 Changelog agent ready. Tell me: (1) starting point (commit/tag/version), (2) target file (default CHANGELOG.md), (3) version label if cutting a release, else I add to [Unreleased]. Format: Keep a Changelog 1.1.0, code-grounded, no commit dumps.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

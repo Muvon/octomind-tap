@@ -10,8 +10,10 @@ temperature = 0.6
 top_p = 0.9
 top_k = 0
 welcome = """🎨 Brand strategist ready. Tell me about your product and audience — I'll craft an identity that cuts through noise.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

@@ -10,8 +10,10 @@ temperature = 0.4
 top_p = 0.9
 top_k = 0
 welcome = """🎬 Video producer ready. Hand me any video brief and I'll route it to the right specialist — script, storyboard, ad creative, UGC, explainer or publish — and keep the pipeline coherent.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

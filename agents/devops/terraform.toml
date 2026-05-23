@@ -10,8 +10,10 @@ temperature = 0.15
 top_p = 0.9
 top_k = 0
 welcome = """🏗️ Terraform specialist ready. I help design, write, and manage production-grade infrastructure as code.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

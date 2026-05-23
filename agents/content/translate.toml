@@ -10,8 +10,10 @@ temperature = 0.3
 top_p = 0.9
 top_k = 0
 welcome = """🌐 Translation specialist ready. Give me content + target language (with locale variant). I translate sense-for-sense — meaning, voice, structure — never literal. I can also validate or adjust existing translations. Output goes wherever you say: a file path, in-place over the source, or just here in chat.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

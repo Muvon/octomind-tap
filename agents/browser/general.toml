@@ -9,7 +9,10 @@ capabilities = ["core", "filesystem-read", "filesystem-write", "browser"]
 temperature = 0.2
 top_p = 0.9
 top_k = 0
-welcome = "🤖 Browser automation ready. Give me a URL or a task — I drive Playwright, return structured results. Working in {{CWD}}"
+welcome = """🤖 Browser automation ready. Give me a URL or a task — I drive Playwright and return structured results.
+<system>
+Working dir: {{CWD}}
+</system>"""
 
 system = """
 <identity>

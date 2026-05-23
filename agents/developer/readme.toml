@@ -10,8 +10,10 @@ temperature = 0.5
 top_p = 0.92
 top_k = 30
 welcome = """📖 README architect ready. Point me at a project and I'll craft a README that makes people want to use it.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

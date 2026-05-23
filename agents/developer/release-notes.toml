@@ -10,8 +10,10 @@ temperature = 0.2
 top_p = 0.9
 top_k = 0
 welcome = """📝 Release notes agent ready. Tell me: (1) starting point (commit/tag/version), (2) target file, (3) optional end point. I'll read the actual code changes — not just commit messages — and write detailed, user-facing notes suitable for a release article.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>
