@@ -10,8 +10,10 @@ temperature = 0.5
 top_p = 0.9
 top_k = 30
 welcome = """🎙️ Content drafter ready. Paste raw material — notes, transcript, brain-dump, meeting recap — and I'll find the story, ask one thing if I have to, and draft the finished piece.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

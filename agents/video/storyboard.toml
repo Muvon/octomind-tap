@@ -10,8 +10,10 @@ temperature = 0.6
 top_p = 0.9
 top_k = 40
 welcome = """🎞️ Storyboard planner ready. Hand me a brief or a finished script and I'll lay out every shot — frame, motion, on-screen text, audio bed, transition — plus optional generated frames.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

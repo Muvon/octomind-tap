@@ -10,8 +10,10 @@ temperature = 0.7
 top_p = 0.9
 top_k = 40
 welcome = """🎙️ UGC ad producer ready. Tell me the product, the persona, and the offer — I'll build a performance-ready avatar UGC ad with lipsync and b-roll.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

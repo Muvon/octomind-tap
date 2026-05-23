@@ -9,7 +9,10 @@ capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "leg
 temperature = 0.2
 top_p = 0.9
 top_k = 0
-welcome = "⚖️ Thai Legal Assistant ready / ผู้ช่วยด้านกฎหมายไทยพร้อมให้บริการ. Official Royal Gazette legislation with full-text search. Working in {{CWD}}"
+welcome = """⚖️ Thai legal research ready / ผู้ช่วยด้านกฎหมายไทยพร้อมให้บริการ. Official Royal Gazette (ราชกิจจานุเบกษา) legislation with full-text search and citations. Information, not advice.
+<system>
+Working dir: {{CWD}}
+</system>"""
 
 system = """
 <identity>

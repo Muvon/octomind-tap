@@ -10,8 +10,10 @@ temperature = 0.2
 top_p = 0.85
 top_k = 20
 welcome = """📏 AI evaluation engineer ready. Give me a system to evaluate (prompt, RAG, agent) and I'll design the golden set, pick the metrics, run the suite, and tell you whether the change is real or noise.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

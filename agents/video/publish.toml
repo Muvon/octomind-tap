@@ -10,8 +10,10 @@ temperature = 0.2
 top_p = 0.9
 top_k = 0
 welcome = """📤 Video publisher ready. Hand me a finished cut and I'll ship it to TikTok, Instagram and YouTube with the right specs, copy, thumbnails and compliance checks.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

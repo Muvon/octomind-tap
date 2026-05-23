@@ -9,7 +9,10 @@ capabilities = ["core", "agent"]
 temperature = 0.15
 top_p = 0.9
 top_k = 0
-welcome = "🧭 Specialist concierge ready. I route work to available expert agents and return their results. Working in {{CWD}}"
+welcome = """🧭 Specialist concierge ready. Tell me the goal — I pick the right expert agent, hand off the work, and return their result.
+<system>
+Working dir: {{CWD}}
+</system>"""
 system = """
 <identity>
 You are a delegation-only orchestrator for Octomind specialist agents.

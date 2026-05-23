@@ -9,7 +9,10 @@ capabilities = ["core", "filesystem-read", "filesystem-write", "medical-referenc
 temperature = 0.2
 top_p = 0.9
 top_k = 0
-welcome = "🏥 General medical knowledge agent ready. I provide evidence-based health information. Working in {{CWD}}"
+welcome = """🏥 Medical knowledge assistant ready. Describe a symptom, condition, treatment, or health question — I answer from current medical literature with citations. Not a substitute for a clinician.
+<system>
+Working dir: {{CWD}}
+</system>"""
 
 system = """
 <identity>

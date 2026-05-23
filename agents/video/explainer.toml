@@ -10,8 +10,10 @@ temperature = 0.5
 top_p = 0.9
 top_k = 40
 welcome = """🧭 Explainer producer ready. Hand me a product and I'll plan and produce a 60–180s explainer — Remotion-templated motion graphics, voiceover, screen-capture brief, captions and stitched export.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

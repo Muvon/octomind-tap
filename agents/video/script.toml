@@ -10,8 +10,10 @@ temperature = 0.75
 top_p = 0.9
 top_k = 40
 welcome = """🎬 Video script writer ready. Tell me the product, audience, platform and length — I'll draft a script that earns the first 1.5 seconds and the last CTA.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

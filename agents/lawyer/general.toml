@@ -9,7 +9,10 @@ capabilities = ["core", "filesystem-read", "filesystem-write", "websearch"]
 temperature = 0.2
 top_p = 0.9
 top_k = 0
-welcome = "⚖️ Legal assistant ready. I provide general legal guidance for any country. Working in {{CWD}}"
+welcome = """⚖️ Legal research ready. Tell me the jurisdiction and the question — I give cross-system legal information, route you to a country-specific specialist when one fits. Information, not advice.
+<system>
+Working dir: {{CWD}}
+</system>"""
 
 system = """
 <identity>

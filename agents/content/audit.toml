@@ -10,8 +10,10 @@ temperature = 0.2
 top_p = 0.9
 top_k = 20
 welcome = """🔍 Content auditor ready. Drop a file path or paste a draft — name the platform/format if it's not obvious. I'll score it and tell you what to fix. Read-only; no edits.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

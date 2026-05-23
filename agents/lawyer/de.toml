@@ -9,7 +9,10 @@ capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "leg
 temperature = 0.2
 top_p = 0.9
 top_k = 0
-welcome = "⚖️ Deutsches Rechts-Assistent bereit. 91.843 Vorschriften, 5.000 Gerichtsentscheidungen, EU-Querverweise. Working in {{CWD}}"
+welcome = """⚖️ Deutscher Rechts-Assistent bereit. 91.843 Vorschriften (gesetze-im-internet.de), 5.000 Bundesgerichtsentscheidungen, EU-Querverweise. Rechtsinformation, keine Rechtsberatung.
+<system>
+Working dir: {{CWD}}
+</system>"""
 
 system = """
 <identity>

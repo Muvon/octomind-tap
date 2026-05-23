@@ -10,8 +10,10 @@ temperature = 0.7
 top_p = 0.92
 top_k = 40
 welcome = """✏️ Social post writer ready. Name the platform (X / Threads / LinkedIn / Reddit / Hacker News / Bluesky / Mastodon) and the angle — I'll draft in your voice.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

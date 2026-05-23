@@ -9,7 +9,10 @@ capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "leg
 temperature = 0.2
 top_p = 0.9
 top_k = 0
-welcome = "⚖️ Indian Legal Assistant ready. 846 Central Acts, Constitution of India, IPC, CPC and more. Working in {{CWD}}"
+welcome = """⚖️ Indian legal research ready. 846 Central Acts from indiacode.nic.in — Constitution, IPC, CPC, CrPC, Evidence Act and more. State-level law on request. Information, not advice.
+<system>
+Working dir: {{CWD}}
+</system>"""
 
 system = """
 <identity>

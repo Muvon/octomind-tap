@@ -9,8 +9,10 @@ temperature = 0.15
 top_p = 0.9
 top_k = 0
 welcome = """📊 Financial analyst agent ready. I help interpret financial statements and analyze company performance.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

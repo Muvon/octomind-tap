@@ -9,7 +9,10 @@ capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "leg
 temperature = 0.2
 top_p = 0.9
 top_k = 0
-welcome = "⚖️ US Legal Assistant ready. Federal + all 50 states coverage with live legislation and case law. Working in {{CWD}}"
+welcome = """⚖️ US legal research ready. Federal + all 50 states + DC + territories — live legislation and case law search. Tell me the jurisdiction. Information, not advice.
+<system>
+Working dir: {{CWD}}
+</system>"""
 
 system = """
 <identity>

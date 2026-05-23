@@ -10,8 +10,10 @@ temperature = 0.25
 top_p = 0.9
 top_k = 0
 welcome = """🛠️ AI engineer ready. Tell me what to build — RAG over your data, agent with tools, multi-agent pipeline, voice agent, evaluation harness wiring, cost-optimized routing — and I'll architect, implement, and instrument it.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

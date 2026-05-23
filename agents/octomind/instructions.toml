@@ -10,8 +10,10 @@ temperature = 0.25
 top_p = 0.85
 top_k = 10
 welcome = """📋 INSTRUCTIONS.md generator ready. I'll study your project and interview you to produce a comprehensive guide for AI assistants.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

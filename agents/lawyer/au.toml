@@ -9,7 +9,10 @@ capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "leg
 temperature = 0.2
 top_p = 0.9
 top_k = 0
-welcome = "⚖️ Australian Legal Assistant ready. 1,253 federal Acts with full-text search and EU cross-references. Working in {{CWD}}"
+welcome = """⚖️ Australian legal research ready. 1,253 federal Acts from legislation.gov.au with full-text search. Federal scope — confirm a solicitor for state/territory specifics. Information, not advice.
+<system>
+Working dir: {{CWD}}
+</system>"""
 
 system = """
 <identity>

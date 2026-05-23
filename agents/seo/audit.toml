@@ -10,8 +10,10 @@ temperature = 0.2
 top_p = 0.85
 top_k = 20
 welcome = """🔬 SEO auditor ready. Point me at a URL, sitemap, or list of pages — I'll diagnose structural, on-page, and link-profile issues, then return a prioritized fix list.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

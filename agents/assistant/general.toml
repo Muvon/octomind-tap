@@ -9,7 +9,10 @@ capabilities = ["core", "filesystem-read", "filesystem-write", "agent"]
 temperature = 0.3
 top_p = 0.9
 top_k = 0
-welcome = "🤖 Assistant ready. How can I help? Working in {{CWD}}"
+welcome = """🤖 Assistant ready. Ask me anything — I think it through, research what I need to, and give you a clean answer.
+<system>
+Working dir: {{CWD}}
+</system>"""
 
 system = """
 <identity>

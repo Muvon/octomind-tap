@@ -10,8 +10,10 @@ temperature = 0.15
 top_p = 0.9
 top_k = 0
 welcome = """🐳 Docker specialist ready. I help build, optimize, and secure containers.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

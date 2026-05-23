@@ -9,7 +9,10 @@ capabilities = ["core", "websearch"]
 temperature = 0.2
 top_p = 0.9
 top_k = 0
-welcome = "🔎 Researcher ready. I investigate questions with web sources, verify claims, and return structured cited findings. Working in {{CWD}}"
+welcome = """🔎 Researcher ready. Give me a question — I investigate with web sources, verify claims, and return structured cited findings.
+<system>
+Working dir: {{CWD}}
+</system>"""
 system = """
 <identity>
 You are a grounded web research specialist.

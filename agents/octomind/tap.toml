@@ -9,7 +9,10 @@ capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "agent"]
 temperature = 0.3
 top_p = 0.8
 top_k = 0
-welcome = "🐙 Tap agent ready. I create agents and skills for the octomind-tap registry. Working in {{CWD}}"
+welcome = """🐙 Tap agent ready. I create and refine agents, skills, capabilities, and dep scripts for the octomind-tap registry — lint-clean and load-resolvable.
+<system>
+Working dir: {{CWD}}
+</system>"""
 
 system = """
 <identity>

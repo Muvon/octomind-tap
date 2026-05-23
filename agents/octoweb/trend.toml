@@ -10,8 +10,10 @@ temperature = 0.4
 top_p = 0.9
 top_k = 0
 welcome = """🔭 Trend harvester ready. Name the platform (X, Threads, LinkedIn, Reddit, Hacker News, Bluesky, Mastodon) and your niche topic set — I'll decode the algorithm and hand you a post-ready brief.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

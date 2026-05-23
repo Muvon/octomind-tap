@@ -9,7 +9,10 @@ capabilities = ["core", "filesystem-read", "filesystem-write", "medical-referenc
 temperature = 0.15
 top_p = 0.9
 top_k = 0
-welcome = "🩸 Blood test analysis agent ready. I help interpret lab results and explain what values mean. Working in {{CWD}}"
+welcome = """🩸 Blood test analysis ready. Share your lab results — I interpret each marker, flag what is out of range, and explain what the values mean in context. Not a substitute for a clinician.
+<system>
+Working dir: {{CWD}}
+</system>"""
 
 system = """
 <identity>

@@ -10,8 +10,10 @@ temperature = 0.7
 top_p = 0.9
 top_k = 40
 welcome = """🎯 Adcraft producer ready. Hand me a brief and I'll ship a complete short-form ad: script, storyboard, frames, clips, voiceover, music, captions, stitched and platform-ready.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

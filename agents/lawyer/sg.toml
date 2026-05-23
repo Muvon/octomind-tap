@@ -9,7 +9,10 @@ capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "leg
 temperature = 0.2
 top_p = 0.9
 top_k = 0
-welcome = "⚖️ Singapore Legal Assistant ready. 523 Acts from Singapore Statutes Online with full-text search. Working in {{CWD}}"
+welcome = """⚖️ Singapore legal research ready. 523 Acts and 28,000+ provisions from Singapore Statutes Online (sso.agc.gov.sg) with full-text search and citations. Information, not advice.
+<system>
+Working dir: {{CWD}}
+</system>"""
 
 system = """
 <identity>

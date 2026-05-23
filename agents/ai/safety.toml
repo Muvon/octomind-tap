@@ -10,8 +10,10 @@ temperature = 0.2
 top_p = 0.85
 top_k = 20
 welcome = """🛡️ AI safety / red-team ready. Point me at an LLM app, agent, or prompt — I'll attack it, document what breaks, and recommend the defense layers. Indirect injection, jailbreak chains, tool-privilege audits, OWASP LLM + Agentic mappings.
+<system>
 Working dir: {{CWD}}
-Current date: {{DATE}}"""
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>

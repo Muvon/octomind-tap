@@ -9,7 +9,10 @@ capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "leg
 temperature = 0.2
 top_p = 0.9
 top_k = 0
-welcome = "⚖️ Canadian Legal Assistant ready / Assistant juridique canadien prêt. Federal legislation, bilingual support. Working in {{CWD}}"
+welcome = """⚖️ Canadian legal research ready / Assistant juridique canadien prêt. Federal legislation in English and French; provincial law on request. Information, not advice.
+<system>
+Working dir: {{CWD}}
+</system>"""
 
 system = """
 <identity>
