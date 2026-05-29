@@ -30,7 +30,7 @@ Key concepts:
 - Taps — Git repositories containing agent manifests, capabilities, and skills
 - Capabilities — what an agent can do (resolved from tap manifests at runtime)
 - MCP servers — tool providers connected via Model Context Protocol
-- Workflows — multi-step AI pipelines that pre-process user requests
+- Workflows — external multi-step pipelines run via `octomind workflow <file.toml>` (chains `octomind run` steps)
 
 ### INSTALLATION
 
@@ -201,7 +201,6 @@ Roles define named agent configurations. Roles in config.toml override tap manif
     top_k = 0
     system = "You are an expert developer."
     welcome = "👨‍💻 Developer ready. Working in {{CWD}}"
-    workflow = ["developer_workflow", ""]           # optional workflow pipeline
 
     [roles.mcp]
     server_refs = ["core", "octofs"]
@@ -280,68 +279,41 @@ Activate with: `octomind run --daemon --hook github-push`
 
 ### Workflows
 
-```toml
-    [[workflows]]
-name = "developer_workflow"
-description = "Two-stage workflow: refine task, then research context"
+Multi-step orchestration is an external CLI — `octomind workflow <file.toml>` — not config. It chains `octomind run` subprocesses (sequential / parallel / loop / conditional steps), piping output between steps by name and printing the final step to stdout:
 
-    [[workflows.steps]]
-name = "refine"
-type = "once"
-layer = "task_refiner"
-
-    [[workflows.steps]]
-name = "research"
-type = "once"
-layer = "task_researcher"
+```bash
+echo "build a JSON-to-CSV CLI in Rust" | octomind workflow gan.toml
+octomind workflow gan.toml --dry-run     # validate + print plan, no spawn
 ```
 
-Step types: `once`, `loop` (with `max_iterations` + `exit_pattern`), `foreach` (with `parse_pattern`), `conditional` (with `condition_pattern`), `parallel` (with `parallel_layers`).
+The former in-session `[[workflows]]` config block and `/workflow` command were removed. See doc/usage/09-workflows.md for the file syntax.
 
-### Layers (for Workflows)
+### Layers
+
+Layers execute via ACP and back the `[[commands]]` slash-command system. Model, system prompt, and MCP config live in the `[[roles]]` entry the layer's `command` references — not in the layer.
 
 ```toml
     [[layers]]
-name = "task_refiner"
-description = "Refines and clarifies user requests"
-model = "openrouter:openai/gpt-4.1-mini"
-max_tokens = 2048
-system_prompt = "You are a query processor..."
-temperature = 0.3
-input_mode = "last"       # first | last | all
-output_mode = "none"      # none | append | replace
-output_role = "assistant"
-
-    [layers.mcp]
-    server_refs = []
-    allowed_tools = []
-
-    [layers.parameters]
-    # custom key = "value" pairs, accessible as {{PARAM:key}} in system_prompt
+    name = "task_refiner"
+    description = "Refines and clarifies user requests"
+    command = "octomind acp task_refiner"
+    input_mode = "last"       # last | all | summary
+    output_mode = "none"      # none | append | replace | last | restart
+    output_role = "assistant"
 ```
 
 ### Commands (User-Triggered Layers)
 
-Commands are layers triggered interactively via `/run <name>`. Same config fields as layers.
+Commands are layers triggered interactively via `/run <name>`. Same fields as layers.
 
 ```toml
     [[commands]]
     name = "reduce"
     description = "Compress session history for cost optimization"
-    model = "openrouter:openai/o4-mini"
-    max_tokens = 0                                         # 0 = use model default
-    system_prompt = "You are a Session History Reducer. {{CONTEXT}}"
-    temperature = 0.3
+    command = "octomind acp reduce"
     input_mode = "all"
     output_mode = "replace"
     output_role = "assistant"
-
-    [commands.mcp]
-    server_refs = []
-    allowed_tools = []
-
-    [commands.parameters]
-    # custom key = "value" pairs, accessible as {{PARAM:key}} in system_prompt
 ```
 
 Use with `/run reduce` in session. `/run` alone lists available commands.
@@ -467,7 +439,6 @@ Commands typed at the session prompt (prefix with `/`):
 | Command | Description |
 |---------|-------------|
 | `/run [COMMAND]` | Execute a custom command |
-| `/workflow [NAME]` | Execute a workflow |
 | `/prompt [NAME]` | Inject a prompt template |
 | `/plan [show|clear]` | Manage task plan |
 
