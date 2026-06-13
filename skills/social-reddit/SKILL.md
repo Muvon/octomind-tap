@@ -60,8 +60,7 @@ Every subreddit has its own culture — same post lands wildly different in r/pr
 1. Read the sidebar and rules. Every subreddit has its own rules pinned. Many ban self-promotion outright, require flair, require minimum account age, or have specific formatting. Violating any of these = auto-removal, often with a ban.
 2. Check the last 20 posts. What titles are getting upvotes? What's the vibe — technical, casual, sarcastic, earnest? Match the register.
 3. Check the pinned posts and weekly threads. Many subs have a "Self-Promotion Saturday" or "Showcase Sunday" thread. Your post belongs there, not as a standalone submission.
-4. Check removed posts via reveddit.com or similar to see what mods quietly take down. Often that's where self-promotion actually goes to die — it looks live to you, invisible to everyone else.
-5. Scan the top comments on similar posts. What do they push back on? Pre-empt it in your post.
+4. Scan the top comments on similar posts. What do they push back on? Pre-empt it in your post.
 
 Output before writing:
 - Subreddit: r/_______
@@ -267,7 +266,7 @@ AI-content signals (2026 — the new automod layer):
 - Zero contractions in a comment longer than 100 words
 - Closing tl;dr-style summary line
 
-If your post disappears within minutes: check modmail, check your post on old.reddit.com logged out, or use reveddit.com.
+If your post disappears within minutes: check modmail, and open the post URL in a logged-out browser session — if it shows as removed there, mods took it down.
 
 ### Cross-Posting and Reposting
 
@@ -378,5 +377,4 @@ For more examples (self-promotion, ask posts, automod removals, thread-vibe matc
 
 - AgentSkills spec: https://agentskills.io/specification
 - Reddit content policy: https://www.redditinc.com/policies/content-policy
-- Reveddit (see removed posts): https://reveddit.com
 - Companion skill: `content-voice` — especially critical for Reddit, which detects corporate tone instantly
