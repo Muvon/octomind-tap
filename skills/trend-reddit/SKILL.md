@@ -3,7 +3,7 @@ name: trend-reddit
 title: "Reddit Trend Harvester Playbook"
 description: "Platform-specific intel for harvesting Reddit trends across niche subreddits — upvote-velocity ranking, harvest URLs per-sub (hot/rising/top/new), mod-rules pre-flight that prevents removed posts, per-sub culture map for tech / AI / startup niches, title patterns and dead patterns in 2026. Activates inside an octoweb:trend session whenever the user names Reddit."
 license: Apache-2.0
-compatibility: "Octoweb browser access. Logged-out works for most surfaces; logged-in needed for personalized feeds. Old-Reddit URL fallback if new Reddit lazy-loads slowly."
+compatibility: "Octoweb browser access. Logged-out works for most surfaces; logged-in needed for personalized feeds."
 capabilities: octoweb memory
 domains: octoweb
 rules:
@@ -54,7 +54,7 @@ Plus pan-Reddit:
 
 Cap parallel tabs at 8–12. Run multiple harvest passes if more subs needed.
 
-If new Reddit lazy-loads too slowly via octoweb, swap to `old.reddit.com` URLs — simpler DOM, faster scrape.
+If a feed lazy-loads slowly, scroll incrementally and wait for posts to render before extracting — stay on `www.reddit.com`.
 
 ### Mod-rules pre-flight (mandatory)
 
@@ -177,5 +177,4 @@ Before returning the Reddit section of the brief:
 ## Composition / References
 
 - Pairs with `social-reddit` (content domain) for writing the actual submission body from the brief.
-- Old-Reddit URL fallback: `old.reddit.com/r/<sub>/...` — simpler DOM, faster scrape when octoweb struggles with new Reddit lazy-load.
 - Use the agent's universal output schema.
