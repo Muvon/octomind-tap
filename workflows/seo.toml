@@ -1,0 +1,39 @@
+# Title: SEO — Audit to Strategy Brief
+#
+# Public workflow: diagnose a site or page, then turn the findings into a
+# prioritized SEO strategy brief. Public roles only.
+
+name        = "seo"
+description = "Audit a site or page for SEO issues, then turn the findings into a prioritized strategy brief (keywords, content clusters, link/GEO campaigns)."
+
+# ── 1. Audit ─────────────────────────────────────────────────────────────────
+[[steps]]
+name    = "audit"
+role    = "seo:audit"
+session = "fresh"
+prompt  = """
+Run an SEO audit across structural/technical, on-page, and link-profile surfaces
+for the target below. Return prioritized findings with evidence and fix direction.
+
+<target>
+{{input}}
+</target>
+"""
+
+# ── 2. Strategy brief ────────────────────────────────────────────────────────
+[[steps]]
+name    = "strategy"
+role    = "seo:strategist"
+session = "fresh"
+prompt  = """
+Turn the audit findings into a prioritized SEO strategy brief: keyword research,
+content clusters, link campaigns, and GEO/AI-citation opportunities.
+
+<target>
+{{input}}
+</target>
+
+<audit>
+{{audit}}
+</audit>
+"""

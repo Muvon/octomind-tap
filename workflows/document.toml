@@ -1,0 +1,66 @@
+# Title: Document — Generate Docs From Changes
+#
+# Public workflow: draft README, changelog, and release-notes updates from the
+# current changes in parallel, then a combined doc summary. Public roles only.
+
+name        = "document"
+description = "Draft README, changelog, and release-notes updates from the current changes in parallel, then combine them into one doc plan."
+
+# ── 1. Parallel doc drafts ───────────────────────────────────────────────────
+[[steps]]
+name     = "drafts"
+parallel = true
+
+  [[steps.run]]
+  name    = "readme"
+  role    = "developer:readme"
+  session = "fresh"
+  prompt  = """
+Update the README to reflect the current unstaged changes and this intent:
+
+{{input}}
+"""
+
+  [[steps.run]]
+  name    = "changelog"
+  role    = "developer:changelog"
+  session = "fresh"
+  prompt  = """
+Write changelog entries for the current unstaged changes and this intent:
+
+{{input}}
+"""
+
+  [[steps.run]]
+  name    = "release"
+  role    = "developer:release-notes"
+  session = "fresh"
+  prompt  = """
+Draft release notes for the current unstaged changes and this intent:
+
+{{input}}
+"""
+
+# ── 2. Combined doc plan ─────────────────────────────────────────────────────
+[[steps]]
+name    = "summary"
+role    = "developer:doc"
+session = "fresh"
+prompt  = """
+Combine the documentation drafts below into a single coherent doc update plan.
+
+README:
+<readme>
+{{readme}}
+</readme>
+
+Changelog:
+<changelog>
+{{changelog}}
+</changelog>
+
+Release notes:
+<release>
+{{release}}
+</release>
+"""

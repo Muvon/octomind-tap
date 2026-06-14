@@ -1,0 +1,139 @@
+# Title: Launch — Idea to Go-to-Market Kit
+#
+# Public workflow: take a raw product idea, research the market, validate it
+# honestly, and — only if it greenlights — produce a full launch kit. Built-in
+# kill-switch via a conditional gate. Public roles only.
+#
+# Note: chains several specialist runs — token/time-heavy by design.
+
+name        = "launch"
+description = "Take a product idea from market exploration to an honest go/no-go, then — only if viable — produce brand, pitch, ads, and a zero-budget launch plan."
+
+# ── 1. Explore the market ────────────────────────────────────────────────────
+[[steps]]
+name    = "explore"
+role    = "launch:explore"
+session = "fresh"
+prompt  = """
+Explore the market opportunity for this idea: analyze the landscape, pain points,
+sentiment, and competitors with evidence.
+
+<idea>
+{{input}}
+</idea>
+"""
+
+# ── 2. Validate viability (honest go/no-go) ──────────────────────────────────
+[[steps]]
+name    = "validate"
+role    = "launch:validate"
+session = "fresh"
+prompt  = """
+Validate this idea brutally honestly: market size, competition, risks, and real
+viability. Use the exploration findings.
+
+<idea>
+{{input}}
+</idea>
+
+<exploration>
+{{explore}}
+</exploration>
+
+End your response with exactly one verdict line:
+- DECISION-GREENLIGHT  (if genuinely worth pursuing)
+- DECISION-KILL        (if not viable as-is)
+"""
+
+# ── 3. Gate: build the kit only on greenlight ────────────────────────────────
+[[steps]]
+name        = "gate"
+conditional = true
+condition   = { output = "validate", contains = "DECISION-GREENLIGHT" }
+on_match    = ["brand", "pitch", "ads", "bootstrap"]
+on_no_match = ["pivot"]
+
+  [[steps.run]]
+  name    = "brand"
+  role    = "launch:brand"
+  session = "fresh"
+  prompt  = """
+Create the brand identity for this validated idea: name options, positioning,
+messaging, voice/tone, tagline, and landing-page copy.
+
+<idea>
+{{input}}
+</idea>
+
+<validation>
+{{validate}}
+</validation>
+"""
+
+  [[steps.run]]
+  name    = "pitch"
+  role    = "launch:pitch"
+  session = "fresh"
+  prompt  = """
+Write the pitch and pricing: elevator pitch, pitch-deck outline, pricing model,
+and sales-page copy. Stay consistent with the brand.
+
+<idea>
+{{input}}
+</idea>
+
+<brand>
+{{brand}}
+</brand>
+"""
+
+  [[steps.run]]
+  name    = "ads"
+  role    = "launch:ads"
+  session = "fresh"
+  prompt  = """
+Produce launch ad creative: platform-specific copy and creative briefs for the
+channels that best fit this product. Stay on-brand.
+
+<idea>
+{{input}}
+</idea>
+
+<brand>
+{{brand}}
+</brand>
+"""
+
+  [[steps.run]]
+  name    = "bootstrap"
+  role    = "launch:bootstrap"
+  session = "fresh"
+  prompt  = """
+Write a zero-budget launch plan: Product Hunt playbook, community building,
+organic growth, cold outreach, and social proof tactics.
+
+<idea>
+{{input}}
+</idea>
+
+<brand>
+{{brand}}
+</brand>
+"""
+
+  [[steps.run]]
+  name    = "pivot"
+  role    = "launch:explore"
+  session = "fresh"
+  prompt  = """
+The idea did not validate. Based on the findings, propose the 3 strongest pivots
+or adjacent opportunities worth exploring instead, with the evidence for each.
+
+<idea>
+{{input}}
+</idea>
+
+<validation>
+{{validate}}
+</validation>
+"""
