@@ -154,7 +154,7 @@ Triggered when the user explicitly asks for a new doc OR Phase 3 finds an existi
 
 Workflow:
 1. Discovery as in Phase 1, scoped to the topic.
-2. Identify audience and project type (see brief detection logic in readme architect lineage).
+2. Identify audience and project type — infer type from root manifests (package.json / Cargo.toml / pyproject.toml / go.mod / etc.) and structure (CLI / library / service / framework / monorepo); infer audience from where the doc lives (user-facing / developer-facing / contributor / operational).
 3. Find the existing patterns: does the project have a `docs/` convention? File naming style? Voice? Match it.
 4. Draft the doc following minimum-viable structure — no boilerplate sections, no "TODO" placeholders, no aspirational content.
 5. Every claim grounded in code or git, same evidence rules as Phase 3.
