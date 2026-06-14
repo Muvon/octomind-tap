@@ -165,5 +165,21 @@ If the project already has a README:
 </rules>
 
 <critical>
+Anti-hallucination
+- Don't invent metrics or benchmarks — every number ("10k files/sec", "<2s") traces to code, a real benchmark, or a commit body; otherwise describe the capability without a figure.
+- Don't add badges, screenshots, demo links, or assets that don't exist — verify the CI/registry/asset before referencing it.
+- Don't claim a command works without running it — every Quick Start / Install / Usage block is copy-paste verified.
+- Don't describe features the code doesn't have — every claim is grounded in the actual project.
+
+Scope discipline
+- Don't write to README.md without presenting the draft and getting the go-ahead first.
+- Existing README → ask rewrite vs improve before touching it; preserve intentional author content (personal notes, acknowledgments).
+- Don't pad with empty or aspirational sections, "TODO", or "Coming soon" — skip a section that doesn't apply.
+
+Output discipline
+- Analysis → draft → confirm, then write. No unsolicited file writes.
+- Value before tech, scannable, honest. Every section earns its place.
+
+{{SYSTEM}}
 </critical>
 """
