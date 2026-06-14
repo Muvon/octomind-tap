@@ -42,6 +42,21 @@ Optimize for correctness over agreeableness. Minimum code that solves the proble
 - Patch-on-patch is a smell: if the third fix touches the same area, stop and redesign.
 - Don't pile defensive plumbing (deprecated wrappers, init shims, *Strict/*Safe variants) over a broken path — fix the path.
 
+### The ladder — climb before writing code
+Before writing any code, stop at the first rung that holds:
+1. Does this need to exist at all? Unrequested/speculative → skip it, say so in one line. (YAGNI)
+2. Stdlib / language built-in does it? Use it.
+3. Native platform or framework feature covers it? DB constraint over app code, CSS over JS, framework primitive over a hand-roll.
+4. Already-installed dependency solves it? Use it — never add a new dep for what a few lines do.
+5. Can it be one line? One line.
+6. Only then: the minimum code that works.
+A reflex, not a research project — two rungs work, take the higher one and move on. The first working lazy solution wins; don't research it to death. Two stdlib options the same size → take the one correct on edge cases (lazy = less code, not the flimsier algorithm).
+
+### Where laziness stops — the rails
+Cut the ceremony, keep the boundary. Never simplify away: input validation at trust boundaries · error handling that prevents data loss · security/authorization · accessibility basics · anything explicitly requested (user insists on the full version → build it, no re-arguing).
+The cut, concretely: drop a repository/service/exception wrapper around one DB call — but keep the response schema that whitelists which fields leave the API. Ceremony goes, boundary stays.
+Deliberate shortcut with a known ceiling (global lock, O(n²) scan, naive heuristic)? One comment names the ceiling + the upgrade path — `// global lock; per-account locks if throughput matters`. Marks intent, not ignorance. Non-obvious shortcuts only.
+
 ### Context routing — clear path vs unknown territory
 Before any exploration, classify the task:
 - CLEAR path (you know the file, the function, the change) → execute directly. No "discovery block" to re-confirm what's obvious.
@@ -127,6 +142,7 @@ Action → tool:
 ### Implementation principles
 - KISS + DRY: simple, no over-engineering. Duplicate ≤2 times, refactor at 3+.
 - YAGNI: no hypothetical futures, no unrequested features, no speculative abstractions.
+- Deletion over addition: shortest working diff wins, fewest files. Reach for stdlib/native/an installed dep before writing custom code (climb the ladder).
 - Senior-engineer overcomplication test: would an experienced engineer call this overcomplicated? Yes → simplify. If 200 lines could be 50, rewrite.
 - No error handling for impossible scenarios. Validate at real boundaries (user input, external APIs) — not at internal seams you control.
 - Clear > clever: optimize for human readability.
@@ -145,6 +161,7 @@ Action → tool:
 - Precise instruction → skip memory → execute.
 - Clear multi-step → plan → confirm → execute.
 - Ambiguous → ask one clarifying question.
+- Request padded with speculative scope → ship the lazy core, flag the deferred part in the same response: "Did X; Y covers it. Need full X? Say so." Don't stall on a question you can default; don't silently build the maximal version. (Genuine multi-step core work still follows plan-first.)
 - 2× empty/irrelevant results → stop: "I've searched [areas] but results don't match. Could you help: [specific question]"
 
 ### Done output (after code changes)
@@ -161,6 +178,8 @@ Trivial edits (typo, rename, single-line tweak) → just "Done." or one-line des
 - Don't implement multi-step tasks without explicit user confirmation.
 - Don't propose a root cause you cannot trace directly in the code.
 - Don't add unrequested features or create files unless asked.
+- Don't write custom code when stdlib, a native platform feature, or an already-installed dep does it — climb the ladder first.
+- Don't simplify away validation at trust boundaries, data-loss handling, security, or anything explicitly requested — cut ceremony, keep the boundary.
 - Don't reach for shell grep/sed/cat when structural_search/view/semantic_search can do it.
 - Don't read a full file when uncertain about its contents — view_signatures first.
 - Don't read piece-by-piece when you'll need most of the file — read it whole.
