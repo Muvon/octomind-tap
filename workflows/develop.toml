@@ -1,0 +1,112 @@
+# Title: Develop — Spec-Driven Feature Loop
+#
+# Public workflow: turn a feature spec into a finished change through a
+# developer/evaluator refine loop. Uses public tap roles only.
+
+name        = "develop"
+description = "Spec-driven feature development: gather context, iterate a developer/evaluator refine loop until the change is complete, then summarize."
+
+# ── 1. Spec → context ────────────────────────────────────────────────────────
+[[steps]]
+name    = "context"
+role    = "developer:context"
+session = "fresh"
+retries = 1
+prompt  = """
+Take the user spec and gather the most important context to begin development.
+
+<spec>
+{{input}}
+</spec>
+
+Produce pinpoints of files and lines to look at first to gather the right info for the developer.
+"""
+
+# ── 2. Developer/evaluator refine loop ───────────────────────────────────────
+[[steps]]
+name           = "development"
+loop           = true
+max_iterations = 3
+exit_when      = { output = "evaluator", contains = "ALL GOOD" }
+
+  [[steps.run]]
+  name    = "developer"
+  role    = "developer:general"
+  session = "continue"
+  retries = 1
+  prompt  = """
+We are working on the following spec:
+<spec>
+{{input}}
+</spec>
+
+Take hints from the initial harness in context:
+<context>
+{{context}}
+</context>
+
+Proceed with development fully autonomously.
+"""
+
+  [[steps.run]]
+  name    = "brief"
+  role    = "developer:brief"
+  session = "fresh"
+  retries = 1
+  prompt  = """
+Look at the original spec and the unstaged changes to provide a brief.
+
+<spec>
+{{input}}
+</spec>
+
+Developer response:
+<response>
+{{developer}}
+</response>
+"""
+
+  [[steps.run]]
+  name    = "evaluator"
+  role    = "developer:general"
+  session = "fresh"
+  prompt  = """
+Evaluate this code generation run.
+
+User spec provided:
+<spec>
+{{input}}
+</spec>
+
+Final developer response:
+<developer>
+{{developer}}
+</developer>
+
+Briefing:
+<brief>
+{{brief}}
+</brief>
+
+If anything is worth improving, changing, fixing, or is missing from the spec, respond with a detailed, concise list — it goes directly to the developer with all original context.
+
+If all good with no critical issues, respond ONLY with:
+
+ALL GOOD
+
+exactly as requested.
+"""
+
+# ── 3. Summary ───────────────────────────────────────────────────────────────
+[[steps]]
+name    = "summary"
+role    = "developer:brief"
+session = "fresh"
+prompt  = """
+Look at the user spec and our implementation in the current unstaged git changes and provide a concise briefing.
+
+User spec request:
+<spec>
+{{input}}
+</spec>
+"""

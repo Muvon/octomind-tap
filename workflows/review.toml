@@ -1,0 +1,58 @@
+# Title: Review — Change Review With Conditional Verdict
+#
+# Public workflow: review the current unstaged changes against the request,
+# then branch into an approval note or a prioritized fix list. Public roles only.
+
+name        = "review"
+description = "Review the current unstaged changes against the request, then branch to an approval note or a prioritized fix list."
+
+# ── 1. Review ────────────────────────────────────────────────────────────────
+[[steps]]
+name    = "review"
+role    = "developer:general"
+session = "fresh"
+prompt  = """
+Review the current unstaged git changes against this request:
+
+<request>
+{{input}}
+</request>
+
+Report correctness bugs and concrete cleanups. If the changes are correct and complete with no issues, respond ONLY with:
+
+ALL GOOD
+
+Otherwise, list the issues in priority order.
+"""
+
+# ── 2. Conditional verdict ───────────────────────────────────────────────────
+[[steps]]
+name        = "verdict"
+conditional = true
+condition   = { output = "review", contains = "ALL GOOD" }
+on_match    = ["approve"]
+on_no_match = ["fixes"]
+
+  [[steps.run]]
+  name    = "approve"
+  role    = "developer:brief"
+  session = "fresh"
+  prompt  = """
+The review passed. Write a short approval note summarizing what the change does, based on:
+
+<review>
+{{review}}
+</review>
+"""
+
+  [[steps.run]]
+  name    = "fixes"
+  role    = "developer:general"
+  session = "fresh"
+  prompt  = """
+The review found issues. Turn them into a concise, prioritized fix list a developer can act on directly:
+
+<review>
+{{review}}
+</review>
+"""

@@ -1,0 +1,28 @@
+# Title: Plan and Build
+#
+# A public, two-step workflow: turn a request into a short implementation
+# spec, then implement that spec. Both steps use public tap roles only.
+
+name        = "plan-and-build"
+description = "Draft a concise implementation spec from the request, then implement it."
+
+[[steps]]
+name = "plan"
+role = "developer:spec"
+prompt = """
+Produce a concise, actionable implementation spec for the following request.
+Focus on the concrete changes needed — files, functions, and edge cases.
+Do not write the implementation yet.
+
+{{input}}
+"""
+
+[[steps]]
+name = "build"
+role = "developer:general"
+prompt = """
+Implement the following spec end to end in the current project.
+Make the changes precisely; touch only what the spec requires.
+
+{{plan}}
+"""

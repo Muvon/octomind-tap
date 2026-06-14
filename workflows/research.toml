@@ -1,0 +1,77 @@
+# Title: Research — Question to Cited Report
+#
+# Public workflow: investigate a question from three independent angles in
+# parallel, then synthesize a single grounded, cited report. Public roles only.
+
+name        = "research"
+description = "Investigate a question from background, evidence, and counter-argument angles in parallel, then synthesize one grounded, cited report."
+
+# ── 1. Parallel angle research ───────────────────────────────────────────────
+[[steps]]
+name     = "angles"
+parallel = true
+
+  [[steps.run]]
+  name    = "background"
+  role    = "assistant:researcher"
+  session = "fresh"
+  prompt  = """
+Research the background and current landscape of this question. Return structured,
+cited findings.
+
+<question>
+{{input}}
+</question>
+"""
+
+  [[steps.run]]
+  name    = "evidence"
+  role    = "assistant:researcher"
+  session = "fresh"
+  prompt  = """
+Research the strongest evidence, data, and expert positions that bear on this
+question. Return structured, cited findings.
+
+<question>
+{{input}}
+</question>
+"""
+
+  [[steps.run]]
+  name    = "counter"
+  role    = "assistant:researcher"
+  session = "fresh"
+  prompt  = """
+Research counter-arguments, risks, caveats, and credible dissenting views on this
+question. Return structured, cited findings.
+
+<question>
+{{input}}
+</question>
+"""
+
+# ── 2. Synthesize ────────────────────────────────────────────────────────────
+[[steps]]
+name    = "report"
+role    = "assistant:general"
+session = "fresh"
+prompt  = """
+Synthesize the three research passes below into a single, balanced, well-structured
+report that answers the question. Preserve citations and flag any disagreements.
+
+<question>
+{{input}}
+</question>
+
+<background>
+{{background}}
+</background>
+
+<evidence>
+{{evidence}}
+</evidence>
+
+<counter>
+{{counter}}
+</counter>
+"""

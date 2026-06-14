@@ -1,0 +1,80 @@
+# Title: Debug — Bug Report to Verified Fix
+#
+# Public workflow: locate a bug's root cause, then iterate a fix ⇄ verify loop in
+# the current repository until it's confirmed fixed, and summarize. Operates on
+# the current directory. Public roles only.
+
+name        = "debug"
+description = "Locate a bug's root cause in the current repo, iterate a fix/verify loop until it's confirmed fixed, then summarize the change."
+
+# ── 1. Locate root cause ─────────────────────────────────────────────────────
+[[steps]]
+name    = "locate"
+role    = "developer:context"
+session = "fresh"
+retries = 1
+prompt  = """
+Locate the root cause of this bug in the current repository. Pinpoint the exact
+files and lines involved and explain the failure.
+
+<bug>
+{{input}}
+</bug>
+"""
+
+# ── 2. Fix ⇄ verify loop ─────────────────────────────────────────────────────
+[[steps]]
+name           = "repair"
+loop           = true
+max_iterations = 3
+exit_when      = { output = "verify", contains = "VERIFIED-FIXED" }
+
+  [[steps.run]]
+  name    = "fix"
+  role    = "developer:general"
+  session = "continue"
+  retries = 1
+  prompt  = """
+Fix this bug in the current repository. Use the located root cause. (On later
+rounds you will receive the verifier's findings — address every one.)
+
+<bug>
+{{input}}
+</bug>
+
+<root-cause>
+{{locate}}
+</root-cause>
+"""
+
+  [[steps.run]]
+  name    = "verify"
+  role    = "developer:general"
+  session = "fresh"
+  prompt  = """
+Verify whether this bug is fully fixed in the current unstaged changes — check the
+behavior and any relevant tests.
+
+<bug>
+{{input}}
+</bug>
+
+If it is fully and correctly fixed, respond with exactly:
+
+VERIFIED-FIXED
+
+Otherwise list what is still wrong and do NOT write that token.
+"""
+
+# ── 3. Summary ───────────────────────────────────────────────────────────────
+[[steps]]
+name    = "summary"
+role    = "developer:brief"
+session = "fresh"
+prompt  = """
+Summarize the fix in the current unstaged changes against the original bug.
+
+<bug>
+{{input}}
+</bug>
+"""

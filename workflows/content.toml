@@ -1,0 +1,76 @@
+# Title: Content — Brief to Published Piece
+#
+# Public workflow: turn a brief into a researched draft, then refine it through
+# an audit ⇄ edit quality loop until it passes, and derive promo posts. Operates
+# on the current directory (roles read/write the piece on disk). Public roles only.
+#
+# Note: chains several specialist runs — token/time-heavy by design.
+
+name        = "content"
+description = "Turn a brief into a researched, audited, publish-ready article in the current directory — refined by an edit/audit loop — then derive promo social posts."
+
+# ── 1. Draft ─────────────────────────────────────────────────────────────────
+[[steps]]
+name    = "draft"
+role    = "content:article"
+session = "fresh"
+prompt  = """
+Research and write a complete, source-backed article to a file in the current
+directory for this brief:
+
+<brief>
+{{input}}
+</brief>
+"""
+
+# ── 2. Audit ⇄ edit quality loop ─────────────────────────────────────────────
+[[steps]]
+name           = "polish"
+loop           = true
+max_iterations = 3
+exit_when      = { output = "audit", contains = "AUDIT-PASS" }
+
+  [[steps.run]]
+  name    = "editor"
+  role    = "content:editor"
+  session = "continue"
+  prompt  = """
+Improve the article in the current directory for this brief. Apply surgical fixes,
+preserve voice, and humanize any AI-sounding text. (On later rounds you will
+receive the auditor's findings — address every one.)
+
+<brief>
+{{input}}
+</brief>
+"""
+
+  [[steps.run]]
+  name    = "audit"
+  role    = "content:audit"
+  session = "fresh"
+  prompt  = """
+Audit the article in the current directory against this brief. Score every axis.
+
+<brief>
+{{input}}
+</brief>
+
+If every axis meets the publishing bar, end your response with exactly:
+
+AUDIT-PASS
+
+Otherwise list the prioritized fixes and do NOT write that token.
+"""
+
+# ── 3. Promo posts ───────────────────────────────────────────────────────────
+[[steps]]
+name    = "promote"
+role    = "content:social"
+session = "fresh"
+prompt  = """
+Write cross-platform promo posts for the finished article in the current directory.
+
+<brief>
+{{input}}
+</brief>
+"""

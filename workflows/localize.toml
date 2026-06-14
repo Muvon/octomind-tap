@@ -1,0 +1,57 @@
+# Title: Localize — One Text, Many Markets
+#
+# Public workflow: translate a single input into several locales in parallel, with
+# locale-aware cultural adaptation (never literal). Fork the sub-steps to change
+# the target languages. Public roles only.
+
+name        = "localize"
+description = "Translate one input into Spanish, French, German, and Japanese in parallel with locale-aware cultural adaptation."
+
+# ── Parallel locale translation ──────────────────────────────────────────────
+[[steps]]
+name     = "translate"
+parallel = true
+
+  [[steps.run]]
+  name    = "spanish"
+  role    = "content:translate"
+  session = "fresh"
+  prompt  = """
+Translate the following into Spanish (es), sense-for-sense with locale-aware
+cultural adaptation. Preserve meaning, voice, and structure.
+
+{{input}}
+"""
+
+  [[steps.run]]
+  name    = "french"
+  role    = "content:translate"
+  session = "fresh"
+  prompt  = """
+Translate the following into French (fr), sense-for-sense with locale-aware
+cultural adaptation. Preserve meaning, voice, and structure.
+
+{{input}}
+"""
+
+  [[steps.run]]
+  name    = "german"
+  role    = "content:translate"
+  session = "fresh"
+  prompt  = """
+Translate the following into German (de), sense-for-sense with locale-aware
+cultural adaptation. Preserve meaning, voice, and structure.
+
+{{input}}
+"""
+
+  [[steps.run]]
+  name    = "japanese"
+  role    = "content:translate"
+  session = "fresh"
+  prompt  = """
+Translate the following into Japanese (ja), sense-for-sense with locale-aware
+cultural adaptation. Preserve meaning, voice, and structure.
+
+{{input}}
+"""
