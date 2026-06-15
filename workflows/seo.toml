@@ -1,10 +1,11 @@
 # Title: SEO — Audit to Strategy Brief
 #
-# Public workflow: diagnose a site or page, then turn the findings into a
-# prioritized SEO strategy brief. Public roles only.
+# Public workflow: diagnose a site or page across technical, on-page, off-page,
+# and GEO/AI-citation lenses in one pass, then turn the evidence-bound findings
+# into a tiered, traceable, KPI-tagged strategy brief. Public roles only.
 
 name        = "seo"
-description = "Audit a site or page for SEO issues, then turn the findings into a prioritized strategy brief (keywords, content clusters, link/GEO campaigns)."
+description = "Audit a site or page across technical, on-page, off-page, and GEO lenses, then turn the evidence-bound findings into a tiered, finding-traceable, KPI-tagged SEO strategy brief."
 
 # ── 1. Audit ─────────────────────────────────────────────────────────────────
 [[steps]]
@@ -12,12 +13,24 @@ name    = "audit"
 role    = "seo:audit"
 session = "fresh"
 prompt  = """
-Run an SEO audit across structural/technical, on-page, and link-profile surfaces
-for the target below. Return prioritized findings with evidence and fix direction.
+Run ONE multi-lens SEO audit of the target below, covering all four lenses in a
+single pass: TECHNICAL (crawlability, indexability, render, Core Web Vitals,
+structured data, internal-link graph, robots/sitemaps), ON-PAGE (title/H1/meta,
+content depth, E-E-A-T, thin/duplicate content, schema coverage), OFF-PAGE
+(backlinks, brand mentions, authority gaps vs competitors), and GEO/AEO (is the
+content AI-extractable: answer/TL;DR blocks, FAQ/HowTo schema, original
+stats/quotes/citations, AI-citation presence).
+
+Emit a flat, prioritized findings list. Give every finding a stable ID (F1, F2,
+…) and tag it: {id, lens, evidence_url, observation, impact:H/L, effort:H/L}.
+Every finding MUST cite a concrete URL or observed signal — if a check could not
+run, mark it Unverified, never invent a finding.
 
 <target>
 {{input}}
 </target>
+
+Output only the audit report with its tagged, ID'd findings — no strategy.
 """
 
 # ── 2. Strategy brief ────────────────────────────────────────────────────────
@@ -26,14 +39,32 @@ name    = "strategy"
 role    = "seo:strategist"
 session = "fresh"
 prompt  = """
-Turn the audit findings into a prioritized SEO strategy brief: keyword research,
-content clusters, link campaigns, and GEO/AI-citation opportunities.
+Turn the audit findings below into a prioritized SEO strategy brief.
 
-<target>
-{{input}}
-</target>
+Sequence the work by tier and keep that order: Tier 1 = crawl/index/critical
+technical (these gate everything — schedule first); Tier 2 = on-page/content
+quality and keyword gaps on high-traffic pages; Tier 3 = off-page links/brand and
+GEO/AI-visibility. Float high-impact/low-effort quick wins to the top within each
+tier. Build the forward plan from Tier 2/3 findings: keyword research mapped to a
+topic-cluster model (1 pillar per core topic + cluster pages, bidirectional
+internal links, no cannibalizing overlap), an off-page/link shortlist, and the
+GEO content tactics needed to win AI citations.
+
+Rules:
+- Every recommendation must reference the audit finding ID(s) it addresses. Do
+  not invent work that maps to no finding.
+- Every action carries its validation KPI so success is verifiable later —
+  classic (indexed pages, organic clicks/impressions, keyword position, Core Web
+  Vitals pass-rate, referring-domain growth) and GEO (AI citation rate, AI
+  share-of-voice across ChatGPT/Perplexity/AI Overviews/Gemini, AI-referred
+  sessions, prompt coverage).
+
+Close with the final roadmap: a sequenced action list (Tier 1 → 2 → 3, quick
+wins surfaced) with the validation KPI attached to each item.
 
 <audit>
 {{audit}}
 </audit>
+
+Output only the strategy brief — no preamble, no commentary.
 """

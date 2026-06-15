@@ -186,7 +186,7 @@ All checked before any step runs (hard-fail):
 - Every `{{var}}` references `input` or a step that completes before the referencing step.
 - Parallel: ≥2 sub-steps. Loop: ≥1 sub-step and an `exit_when` with `contains` or `matches`. Conditional: a `condition` with `contains` or `matches`, plus `on_match` and/or `on_no_match` whose names all exist among the block's sub-steps.
 - `matches` regexes compile; `exit_when.output` / `condition.output` reference known steps.
-- `model` and `workdir`, when set on any step, are non-empty. Workdir *existence* is checked at execution time, not pre-flight.
+- `model` and `workdir`, when set on any step, are non-empty. Workdir existence is checked at execution time, not pre-flight.
 
 Role existence is not checked at pre-flight — an unknown role fails when its subprocess spawns. Verify roles exist, and test each step's prompt standalone via `octomind run`, before composing.
 

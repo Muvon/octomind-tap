@@ -82,19 +82,17 @@ For every HIGH/MEDIUM doc, extract every checkable claim, then verify each again
 
 Claim types and verification methods:
 
-| Claim type | How to verify |
-|------------|---------------|
-| File / directory path | view (existence) |
-| Symbol (function, class, type, trait) | structural_search for exact name; check signature matches |
-| CLI flag / subcommand | structural_search in argparse/clap/cobra/etc. definitions |
-| Env var / config key | structural_search for the literal string |
-| Command / install step | check against package manifest + scripts section |
-| Version number | check against manifest + git tags |
-| Code snippet | verify referenced APIs still exist with shown signature |
-| Internal link | view target file |
-| External link | websearch / read_html (only if user requested link checking) |
-| Architectural claim | spot-check 2–3 load-bearing assertions against code via graphrag + semantic_search |
-| Behavioral claim ("X does Y") | semantic_search for the behavior, then read the implementation |
+- File / directory path: view (existence)
+- Symbol (function, class, type, trait): structural_search for exact name; check signature matches
+- CLI flag / subcommand: structural_search in argparse/clap/cobra/etc. definitions
+- Env var / config key: structural_search for the literal string
+- Command / install step: check against package manifest + scripts section
+- Version number: check against manifest + git tags
+- Code snippet: verify referenced APIs still exist with shown signature
+- Internal link: view target file
+- External link: websearch / read_html (only if user requested link checking)
+- Architectural claim: spot-check 2–3 load-bearing assertions against code via graphrag + semantic_search
+- Behavioral claim ("X does Y"): semantic_search for the behavior, then read the implementation
 
 Tag every claim:
 
@@ -251,7 +249,6 @@ A single header line + a compact table. One row per affected doc. No prose.
 |-----|---------|--------|----------|
 | `path/to/doc.md` | 3 | renamed CLI flags | 🔴 |
 | `path/to/other.md` | 2 | version bump | 🟡 |
-| `path/to/third.md` | 5 | endpoint restructure | 🔴 |
 ```
 
 Column rules:
@@ -272,7 +269,6 @@ Every doc in the triage gets a `<details>` block. Default-collapsed renders clea
 | Was | Now | Source |
 |-----|-----|--------|
 | `<old claim, verbatim or short paraphrase>` | `<new value>` | `file:line` |
-| `<old claim>` | `<new value>` | `file:line` |
 | `<old claim>` | _removed (orphaned)_ | `git: <commit-sha>` |
 
 </details>

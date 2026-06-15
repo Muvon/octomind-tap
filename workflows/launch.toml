@@ -40,16 +40,25 @@ viability. Use the exploration findings.
 {{explore}}
 </exploration>
 
-End your response with exactly one verdict line:
-- DECISION-GREENLIGHT  (if genuinely worth pursuing)
-- DECISION-KILL        (if not viable as-is)
+Before the verdict, commit in writing to the pass/fail bar so you cannot
+rationalize it afterward: state the minimum problem severity, the minimum
+obtainable 18-24mo market (SOM), and the willingness-to-pay signal required to
+pursue this. Then score the idea against that bar. Label every market number an
+estimate with its assumption; flag any figure you could not source. Greenlight
+only when the evidence clears the bar you set; otherwise kill it.
+
+Output the full validation, then on a new final line emit exactly one verdict and
+nothing after it:
+DECISION-GREENLIGHT
+or
+DECISION-KILL
 """
 
 # ── 3. Gate: build the kit only on greenlight ────────────────────────────────
 [[steps]]
 name        = "gate"
 conditional = true
-condition   = { output = "validate", contains = "DECISION-GREENLIGHT" }
+condition   = { output = "validate", matches = '(?m)^DECISION-GREENLIGHT' }
 on_match    = ["brand", "pitch", "ads", "bootstrap"]
 on_no_match = ["pivot"]
 
