@@ -1,174 +1,83 @@
 # Title: Localize — One Text, Many Markets
 #
-# Public workflow: transcreate a single input into several locales in parallel,
-# then back-translation-QA each locale in parallel — each QA emits a per-locale
-# adequacy verdict. Fork the sub-steps to change target languages. Public roles only.
+# Public workflow: resolve the target locales from the input (or a default set),
+# transcreate the input into every locale in parallel via dynamic fan-out — one
+# translator branch per locale — then QA them all in one pass. Public roles only.
+#
+# Requires octomind with dynamic `match` fan-out support.
 
 name        = "localize"
-description = "Transcreate one input into Spanish, French, German, and Japanese in parallel, then back-translation-QA each locale in parallel, emitting a per-locale adequacy verdict."
+description = "Resolve target locales from the input (or default), transcreate the input into each locale in parallel via dynamic fan-out, then QA all locales in one pass with a per-locale verdict."
 
-# ── 1. Parallel transcreation ────────────────────────────────────────────────
+# ── 1. Plan: resolve the target locales ──────────────────────────────────────
 [[steps]]
-name     = "transcreate"
-parallel = true
+name    = "plan"
+role    = "assistant:general"
+session = "fresh"
+prompt  = """
+Determine the target locales for translating the text below.
 
-  [[steps.run]]
-  name    = "spanish"
-  role    = "content:translate"
-  session = "fresh"
-  prompt  = """
-Transcreate the following into Spanish (es-ES), sense-for-sense with locale-aware
-cultural adaptation — recreate the impact, never literal. Preserve meaning, voice,
-and structure; keep code, placeholders, and URLs verbatim.
-
-<source>
+<input>
 {{input}}
-</source>
+</input>
 
-Output only the Spanish translation.
+If the input names specific target languages or locales, use exactly those.
+Otherwise default to: es-ES, fr-FR, de-DE, ja-JP. Emit ONE BCP-47 tag per locale,
+each on its own line wrapped in a <locale> tag, and nothing else:
+
+<locale>es-ES</locale>
+<locale>fr-FR</locale>
+
+Output only the <locale>…</locale> lines.
 """
 
-  [[steps.run]]
-  name    = "french"
-  role    = "content:translate"
-  session = "fresh"
-  prompt  = """
-Transcreate the following into French (fr-FR), sense-for-sense with locale-aware
-cultural adaptation — recreate the impact, never literal. Preserve meaning, voice,
-and structure; keep code, placeholders, and URLs verbatim.
-
-<source>
-{{input}}
-</source>
-
-Output only the French translation.
-"""
-
-  [[steps.run]]
-  name    = "german"
-  role    = "content:translate"
-  session = "fresh"
-  prompt  = """
-Transcreate the following into German (de-DE), sense-for-sense with locale-aware
-cultural adaptation — recreate the impact, never literal. Preserve meaning, voice,
-and structure; keep code, placeholders, and URLs verbatim.
-
-<source>
-{{input}}
-</source>
-
-Output only the German translation.
-"""
-
-  [[steps.run]]
-  name    = "japanese"
-  role    = "content:translate"
-  session = "fresh"
-  prompt  = """
-Transcreate the following into Japanese (ja-JP), sense-for-sense with locale-aware
-cultural adaptation — recreate the impact, never literal. Preserve meaning, voice,
-and structure; keep code, placeholders, and URLs verbatim.
-
-<source>
-{{input}}
-</source>
-
-Output only the Japanese translation.
-"""
-
-# ── 2. Parallel back-translation QA ──────────────────────────────────────────
-# Each QA runs content:translate in VALIDATE mode in a fresh session — a reverse
-# pass that catches dropped meaning, mistranslation, register drift, and broken
-# placeholders. For stronger QA, set `model` on each sub-step to a different
-# provider than your transcreation default so it doesn't share the same blind spots.
+# ── 2. Transcreate each locale (dynamic fan-out: one branch per locale) ───────
+# `match` maps the single translator template over every <locale> the plan
+# emitted. Inside the template, {{translate}} is the current locale (the loop
+# variable bound to the block name). min_success = 1 so one flaky locale can't
+# sink the rest; downstream, {{translator}} holds all branch outputs joined.
 [[steps]]
-name     = "qa"
-parallel = true
+name         = "translate"
+parallel     = true
+match        = "(?s)<locale>(.*?)</locale>"
+min_success  = 1
+max_parallel = 4
 
   [[steps.run]]
-  name    = "spanish_qa"
+  name    = "translator"
   role    = "content:translate"
   session = "fresh"
   prompt  = """
-VALIDATE this Spanish (es-ES) transcreation against the source. Back-translate the
-critical passages and check meaning fidelity, register/tone, and cultural fit. Any
-mistranslation, dropped/added meaning, register drift, broken placeholder, or
-cultural misfire is a critical finding. List findings severity-ordered with the
-fix direction.
+Transcreate the text below into {{translate}} — sense-for-sense with locale-aware
+cultural adaptation; recreate the impact, never literal. Preserve meaning, voice,
+and structure; keep code, placeholders, and URLs verbatim.
 
 <source>
 {{input}}
 </source>
 
-<translation>
-{{spanish}}
-</translation>
-
-End with exactly one line: QA-VERDICT: ADEQUATE or QA-VERDICT: REVISE. Nothing after it.
+Begin with the locale tag on its own line: [{{translate}}]
+Then output only the translation.
 """
 
-  [[steps.run]]
-  name    = "french_qa"
-  role    = "content:translate"
-  session = "fresh"
-  prompt  = """
-VALIDATE this French (fr-FR) transcreation against the source. Back-translate the
-critical passages and check meaning fidelity, register/tone, and cultural fit. Any
-mistranslation, dropped/added meaning, register drift, broken placeholder, or
-cultural misfire is a critical finding. List findings severity-ordered with the
-fix direction.
+# ── 3. QA all locales in one pass ────────────────────────────────────────────
+[[steps]]
+name    = "qa"
+role    = "content:translate"
+session = "fresh"
+prompt  = """
+QA the transcreations below against the source. For each locale, back-translate
+the critical passages and check meaning fidelity, register/tone, cultural fit, and
+that code, placeholders, and URLs are intact.
 
 <source>
 {{input}}
 </source>
 
-<translation>
-{{french}}
-</translation>
+<translations>
+{{translator}}
+</translations>
 
-End with exactly one line: QA-VERDICT: ADEQUATE or QA-VERDICT: REVISE. Nothing after it.
-"""
-
-  [[steps.run]]
-  name    = "german_qa"
-  role    = "content:translate"
-  session = "fresh"
-  prompt  = """
-VALIDATE this German (de-DE) transcreation against the source. Back-translate the
-critical passages and check meaning fidelity, register/tone, and cultural fit. Any
-mistranslation, dropped/added meaning, register drift, broken placeholder, or
-cultural misfire is a critical finding. List findings severity-ordered with the
-fix direction.
-
-<source>
-{{input}}
-</source>
-
-<translation>
-{{german}}
-</translation>
-
-End with exactly one line: QA-VERDICT: ADEQUATE or QA-VERDICT: REVISE. Nothing after it.
-"""
-
-  [[steps.run]]
-  name    = "japanese_qa"
-  role    = "content:translate"
-  session = "fresh"
-  prompt  = """
-VALIDATE this Japanese (ja-JP) transcreation against the source. Back-translate the
-critical passages and check meaning fidelity, register/tone, and cultural fit. Any
-mistranslation, dropped/added meaning, register drift, broken placeholder, or
-cultural misfire is a critical finding. List findings severity-ordered with the
-fix direction.
-
-<source>
-{{input}}
-</source>
-
-<translation>
-{{japanese}}
-</translation>
-
-End with exactly one line: QA-VERDICT: ADEQUATE or QA-VERDICT: REVISE. Nothing after it.
+For each locale, list any findings severity-ordered, then end that locale's block
+with one line: QA-VERDICT <locale>: ADEQUATE or QA-VERDICT <locale>: REVISE.
 """

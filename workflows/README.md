@@ -17,7 +17,7 @@ Build / repo (operate on the current directory):
 |------|--------------|-----------|
 | [`develop`](./develop.toml) | Spec-driven feature dev: context → developer/evaluator loop with a build/test gate (exit on `VERDICT: APPROVED`) → summary | `loop` |
 | [`debug`](./debug.toml) | Reproduce + pin root cause → fix/verify loop until a test proves it fixed → summary | `loop` |
-| [`review`](./review.toml) | Review changes → independently verify each finding → branch on a deterministic verdict to an approval note or a fix list | `conditional` |
+| [`review`](./review.toml) | Review changes through 3 lenses in parallel → independently verify + dedup findings → branch on a deterministic verdict to an approval note or a fix list | `parallel` + `conditional` |
 | [`document`](./document.toml) | Classify the diff (SemVer + change buckets) → README/changelog/release-notes drafts in parallel → reconcile/validate loop | `parallel` + `loop` |
 | [`plan-and-build`](./plan-and-build.toml) | Minimal starter: draft a spec, then implement it and verify with the project's own check | sequential |
 
@@ -28,7 +28,7 @@ Build / market / write / research (driven by a single stdin goal):
 | [`launch`](./launch.toml) | Idea → market explore → honest validate behind a pre-committed kill-gate → (greenlight?) brand + pitch + ads + bootstrap, else pivots | `conditional` |
 | [`content`](./content.toml) | Brief → researched draft → audit/edit loop until it passes (`AUDIT-PASS`) → promo posts | `loop` |
 | [`research`](./research.toml) | Background + evidence + counter-views in parallel → synthesize → groundedness judge loop (claims checked vs sources) → cited report | `parallel` + `loop` |
-| [`localize`](./localize.toml) | Transcreate one input into several locales in parallel, then back-translation-QA each locale | `parallel` |
+| [`localize`](./localize.toml) | Resolve target locales from the input → transcreate each in parallel via dynamic fan-out (one branch per locale) → QA all in one pass | `parallel` (dynamic `match`) |
 | [`seo`](./seo.toml) | Audit a site/page across technical/on-page/off-page/GEO lenses, then a tiered, finding-traceable strategy brief | sequential |
 
 ## How resolution works
@@ -81,7 +81,7 @@ prompt = "Plan this: {{input}}"      # {{input}} = stdin; {{step-name}} = a prio
 
 A step is **sequential** by default. Set exactly one flag to change its kind:
 
-- `parallel = true` — run its `[[steps.run]]` sub-steps concurrently (≥2 required).
+- `parallel = true` — run its `[[steps.run]]` sub-steps concurrently (≥2 required). Fan-out controls: `count = N` on a sub-step (best-of-N, ≥2), `min_success = M` (block passes on M succeeding replicas), `max_parallel = K` (concurrency cap). Add `match = "<regex>"` for **dynamic fan-out** — one branch per regex match of the previous step's output (then exactly one sub-step, the per-item template).
 - `loop = true` — repeat `run` sub-steps until `exit_when` matches (`max_iterations`, default 10).
 - `conditional = true` — run `on_match` / `on_no_match` sub-steps based on a `condition`.
 
@@ -89,6 +89,10 @@ A step is **sequential** by default. Set exactly one flag to change its kind:
 
 - `{{input}}` — the stdin passed to the workflow.
 - `{{<step-name>}}` — the assistant output of an earlier step.
+- `{{<parallel-block>}}` — every sub-step's output joined; a `count` or `match`
+  sub-step joins its replicas/branches under `── label ──` headers.
+- In a `match` block the **block** name is the per-branch item (loop variable,
+  template-scoped); read the **sub-step** name downstream for the joined result.
 - Standard placeholders (`{{DATE}}`, `{{CWD}}`, `{{GIT_STATUS}}`, …) and
   `<context>path</context>` blocks are expanded per step, same as a chat session.
 

@@ -9,9 +9,12 @@ name        = "research"
 description = "Investigate a question from background, evidence, and counter-argument angles in parallel, synthesize one cited report, then loop a separate groundedness judge (claims checked against their sources) until GROUNDED, capped at 2 iterations."
 
 # ── 1. Parallel angle research ───────────────────────────────────────────────
+# min_success = 2: a flaky web-search branch can't sink the whole run — the
+# synthesizer proceeds on any two of the three angles.
 [[steps]]
-name     = "angles"
-parallel = true
+name        = "angles"
+parallel    = true
+min_success = 2
 
   [[steps.run]]
   name    = "background"

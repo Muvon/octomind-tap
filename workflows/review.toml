@@ -1,40 +1,98 @@
 # Title: Review — Diff to Verified Verdict
 #
-# Public workflow: review the current unstaged changes against the request in one
-# structured pass, independently verify each finding to prune false positives,
-# then branch on a deterministic verdict into an approval note or a prioritized
-# fix list. Public roles only.
+# Public workflow: review the current unstaged changes through three independent
+# lenses in parallel, independently verify and dedup the findings to prune false
+# positives, then branch on a deterministic verdict into an approval note or a
+# prioritized fix list. Public roles only.
 
 name        = "review"
-description = "Review the current unstaged changes against the request, independently verify each finding, then branch on a deterministic verdict to an approval note or a prioritized fix list."
+description = "Review the current unstaged changes through correctness, security, and maintainability lenses in parallel, independently verify and dedup the findings, then branch on a deterministic verdict to an approval note or a prioritized fix list."
 
-# ── 1. Review ────────────────────────────────────────────────────────────────
+# ── 1. Parallel review — three independent lenses ─────────────────────────────
+# Fan out the review across distinct lenses in parallel (perspective-diverse
+# voting catches what one pass misses). min_success = 2 tolerates a flaky lens;
+# the verifier reads the whole block via {{review}} and dedups across lenses.
 [[steps]]
-name    = "review"
-role    = "developer:general"
-session = "fresh"
-prompt  = """
-Review the current unstaged git changes against this request. Read beyond the
-diff — open the callers, tests, and config the changed lines touch; real bugs
-live across them, not only on the changed lines.
+name        = "review"
+parallel    = true
+min_success = 2
+
+  [[steps.run]]
+  name    = "correctness"
+  role    = "developer:general"
+  session = "fresh"
+  prompt  = """
+Review the current unstaged git changes against this request through the
+CORRECTNESS & DESIGN lens: logic bugs, broken edge cases, wrong error handling,
+race conditions, API/contract misuse. Read beyond the diff — open the callers,
+tests, and config the changed lines touch.
 
 <request>
 {{input}}
 </request>
 
-Scan in priority order: correctness/design first, then security, then tests,
-then performance, then maintainability/naming/style. Lean toward recall — surface
-every candidate; a later step prunes false positives.
+Lean toward recall — surface every candidate in your lens; a later step prunes
+false positives. Output ONLY a findings list, one block per finding:
 
-Output ONLY a findings list, one block per finding, nothing else:
-
-- DIMENSION: correctness | security | performance | maintainability | tests
+- DIMENSION: correctness
   SEVERITY: Blocking | Recommended | Nit
   ANCHOR: path/to/file.ext:line
   WHY: one concise sentence — the concrete problem
   FIX: one concrete suggested change
 
-If you find nothing, output exactly: NO FINDINGS
+If you find nothing in this lens, output exactly: NO FINDINGS
+"""
+
+  [[steps.run]]
+  name    = "security"
+  role    = "developer:general"
+  session = "fresh"
+  prompt  = """
+Review the current unstaged git changes against this request through the
+SECURITY lens: injection, auth/authz gaps, unsafe input handling, secrets in
+code, unsafe deserialization, path traversal/SSRF, dependency risk. Read beyond
+the diff — open the callers, tests, and config the changed lines touch.
+
+<request>
+{{input}}
+</request>
+
+Lean toward recall — surface every candidate in your lens; a later step prunes
+false positives. Output ONLY a findings list, one block per finding:
+
+- DIMENSION: security
+  SEVERITY: Blocking | Recommended | Nit
+  ANCHOR: path/to/file.ext:line
+  WHY: one concise sentence — the concrete problem
+  FIX: one concrete suggested change
+
+If you find nothing in this lens, output exactly: NO FINDINGS
+"""
+
+  [[steps.run]]
+  name    = "maintainability"
+  role    = "developer:general"
+  session = "fresh"
+  prompt  = """
+Review the current unstaged git changes against this request through the TESTS,
+PERFORMANCE & MAINTAINABILITY lens: missing or weak test coverage, needless
+allocation or N+1 work, dead code, unclear naming, leaky abstractions. Read
+beyond the diff — open the callers, tests, and config the changed lines touch.
+
+<request>
+{{input}}
+</request>
+
+Lean toward recall — surface every candidate in your lens; a later step prunes
+false positives. Output ONLY a findings list, one block per finding:
+
+- DIMENSION: performance | maintainability | tests
+  SEVERITY: Blocking | Recommended | Nit
+  ANCHOR: path/to/file.ext:line
+  WHY: one concise sentence — the concrete problem
+  FIX: one concrete suggested change
+
+If you find nothing in this lens, output exactly: NO FINDINGS
 """
 
 # ── 2. Verify (independent precision gate) ───────────────────────────────────
@@ -43,9 +101,11 @@ name    = "verify"
 role    = "developer:general"
 session = "fresh"
 prompt  = """
-You are an independent verifier. Re-check each finding below against the actual
-current code — do not trust the prior reasoning. Open the anchored file:line and
-confirm the problem is real before keeping it.
+You are an independent verifier. Below are findings from three independent
+reviewers (correctness, security, and maintainability lenses), joined under
+per-lens headers. Re-check each against the actual current code — do not trust
+the reviewers' reasoning. Open the anchored file:line and confirm the problem is
+real before keeping it.
 
 <request>
 {{input}}
@@ -55,10 +115,10 @@ confirm the problem is real before keeping it.
 {{review}}
 </findings>
 
-For every finding decide KEEP or DROP with a one-line justification. DROP any
-finding that is not provably anchored in the code, is a duplicate, or is pure
-speculation. Then list only the KEPT findings, each with its DIMENSION, SEVERITY,
-ANCHOR, WHY, and FIX.
+Merge duplicates that more than one lens reported. For every finding decide KEEP
+or DROP with a one-line justification. DROP any finding that is not provably
+anchored in the code, is a duplicate, or is pure speculation. Then list only the
+KEPT findings, each with its DIMENSION, SEVERITY, ANCHOR, WHY, and FIX.
 
 Compute the verdict mechanically from the kept findings: if any kept finding has
 SEVERITY Blocking, the verdict is REQUEST_CHANGES; otherwise it is APPROVED.
