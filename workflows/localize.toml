@@ -1,15 +1,15 @@
 # Title: Localize — One Text, Many Markets
 #
-# Public workflow: translate a single input into several locales in parallel, with
-# locale-aware cultural adaptation (never literal). Fork the sub-steps to change
-# the target languages. Public roles only.
+# Public workflow: transcreate a single input into several locales in parallel,
+# then back-translation-QA each locale in parallel — each QA emits a per-locale
+# adequacy verdict. Fork the sub-steps to change target languages. Public roles only.
 
 name        = "localize"
-description = "Translate one input into Spanish, French, German, and Japanese in parallel with locale-aware cultural adaptation."
+description = "Transcreate one input into Spanish, French, German, and Japanese in parallel, then back-translation-QA each locale in parallel, emitting a per-locale adequacy verdict."
 
-# ── Parallel locale translation ──────────────────────────────────────────────
+# ── 1. Parallel transcreation ────────────────────────────────────────────────
 [[steps]]
-name     = "translate"
+name     = "transcreate"
 parallel = true
 
   [[steps.run]]
@@ -17,10 +17,15 @@ parallel = true
   role    = "content:translate"
   session = "fresh"
   prompt  = """
-Translate the following into Spanish (es), sense-for-sense with locale-aware
-cultural adaptation. Preserve meaning, voice, and structure.
+Transcreate the following into Spanish (es-ES), sense-for-sense with locale-aware
+cultural adaptation — recreate the impact, never literal. Preserve meaning, voice,
+and structure; keep code, placeholders, and URLs verbatim.
 
+<source>
 {{input}}
+</source>
+
+Output only the Spanish translation.
 """
 
   [[steps.run]]
@@ -28,10 +33,15 @@ cultural adaptation. Preserve meaning, voice, and structure.
   role    = "content:translate"
   session = "fresh"
   prompt  = """
-Translate the following into French (fr), sense-for-sense with locale-aware
-cultural adaptation. Preserve meaning, voice, and structure.
+Transcreate the following into French (fr-FR), sense-for-sense with locale-aware
+cultural adaptation — recreate the impact, never literal. Preserve meaning, voice,
+and structure; keep code, placeholders, and URLs verbatim.
 
+<source>
 {{input}}
+</source>
+
+Output only the French translation.
 """
 
   [[steps.run]]
@@ -39,10 +49,15 @@ cultural adaptation. Preserve meaning, voice, and structure.
   role    = "content:translate"
   session = "fresh"
   prompt  = """
-Translate the following into German (de), sense-for-sense with locale-aware
-cultural adaptation. Preserve meaning, voice, and structure.
+Transcreate the following into German (de-DE), sense-for-sense with locale-aware
+cultural adaptation — recreate the impact, never literal. Preserve meaning, voice,
+and structure; keep code, placeholders, and URLs verbatim.
 
+<source>
 {{input}}
+</source>
+
+Output only the German translation.
 """
 
   [[steps.run]]
@@ -50,8 +65,110 @@ cultural adaptation. Preserve meaning, voice, and structure.
   role    = "content:translate"
   session = "fresh"
   prompt  = """
-Translate the following into Japanese (ja), sense-for-sense with locale-aware
-cultural adaptation. Preserve meaning, voice, and structure.
+Transcreate the following into Japanese (ja-JP), sense-for-sense with locale-aware
+cultural adaptation — recreate the impact, never literal. Preserve meaning, voice,
+and structure; keep code, placeholders, and URLs verbatim.
 
+<source>
 {{input}}
+</source>
+
+Output only the Japanese translation.
+"""
+
+# ── 2. Parallel back-translation QA ──────────────────────────────────────────
+# Each QA runs content:translate in VALIDATE mode in a fresh session — a reverse
+# pass that catches dropped meaning, mistranslation, register drift, and broken
+# placeholders. For stronger QA, set `model` on each sub-step to a different
+# provider than your transcreation default so it doesn't share the same blind spots.
+[[steps]]
+name     = "qa"
+parallel = true
+
+  [[steps.run]]
+  name    = "spanish_qa"
+  role    = "content:translate"
+  session = "fresh"
+  prompt  = """
+VALIDATE this Spanish (es-ES) transcreation against the source. Back-translate the
+critical passages and check meaning fidelity, register/tone, and cultural fit. Any
+mistranslation, dropped/added meaning, register drift, broken placeholder, or
+cultural misfire is a critical finding. List findings severity-ordered with the
+fix direction.
+
+<source>
+{{input}}
+</source>
+
+<translation>
+{{spanish}}
+</translation>
+
+End with exactly one line: QA-VERDICT: ADEQUATE or QA-VERDICT: REVISE. Nothing after it.
+"""
+
+  [[steps.run]]
+  name    = "french_qa"
+  role    = "content:translate"
+  session = "fresh"
+  prompt  = """
+VALIDATE this French (fr-FR) transcreation against the source. Back-translate the
+critical passages and check meaning fidelity, register/tone, and cultural fit. Any
+mistranslation, dropped/added meaning, register drift, broken placeholder, or
+cultural misfire is a critical finding. List findings severity-ordered with the
+fix direction.
+
+<source>
+{{input}}
+</source>
+
+<translation>
+{{french}}
+</translation>
+
+End with exactly one line: QA-VERDICT: ADEQUATE or QA-VERDICT: REVISE. Nothing after it.
+"""
+
+  [[steps.run]]
+  name    = "german_qa"
+  role    = "content:translate"
+  session = "fresh"
+  prompt  = """
+VALIDATE this German (de-DE) transcreation against the source. Back-translate the
+critical passages and check meaning fidelity, register/tone, and cultural fit. Any
+mistranslation, dropped/added meaning, register drift, broken placeholder, or
+cultural misfire is a critical finding. List findings severity-ordered with the
+fix direction.
+
+<source>
+{{input}}
+</source>
+
+<translation>
+{{german}}
+</translation>
+
+End with exactly one line: QA-VERDICT: ADEQUATE or QA-VERDICT: REVISE. Nothing after it.
+"""
+
+  [[steps.run]]
+  name    = "japanese_qa"
+  role    = "content:translate"
+  session = "fresh"
+  prompt  = """
+VALIDATE this Japanese (ja-JP) transcreation against the source. Back-translate the
+critical passages and check meaning fidelity, register/tone, and cultural fit. Any
+mistranslation, dropped/added meaning, register drift, broken placeholder, or
+cultural misfire is a critical finding. List findings severity-ordered with the
+fix direction.
+
+<source>
+{{input}}
+</source>
+
+<translation>
+{{japanese}}
+</translation>
+
+End with exactly one line: QA-VERDICT: ADEQUATE or QA-VERDICT: REVISE. Nothing after it.
 """

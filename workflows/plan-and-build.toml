@@ -1,28 +1,49 @@
-# Title: Plan and Build
+# Title: Plan and Build — Spec-then-Implement Chain
 #
-# A public, two-step workflow: turn a request into a short implementation
-# spec, then implement that spec. Both steps use public tap roles only.
+# Public workflow: turn a well-scoped request into a concise implementation
+# spec, then implement that spec and prove it with the project's own check.
+# The minimal two-step prompt chain with a deterministic gate at the end —
+# use this when the diff is roughly describable up front; reach for the
+# develop loop when conformance is uncertain. Public roles only.
 
 name        = "plan-and-build"
-description = "Draft a concise implementation spec from the request, then implement it."
+description = "Draft a concise implementation spec from the request, then implement it and verify with the project's check."
 
+# ── 1. Plan: request → implementation spec ───────────────────────────────────
 [[steps]]
-name = "plan"
-role = "developer:spec"
-prompt = """
-Produce a concise, actionable implementation spec for the following request.
-Focus on the concrete changes needed — files, functions, and edge cases.
-Do not write the implementation yet.
+name    = "plan"
+role    = "developer:spec"
+session = "fresh"
+prompt  = """
+Produce a concise, actionable implementation spec for the request below.
+This is an AUTONOMOUS, non-interactive run — no human can answer questions, so
+resolve ambiguity with documented defaults (record them in Assumptions) rather
+than asking.
 
+Focus on the concrete changes needed: the exact files and functions to touch,
+edge cases, what is explicitly out of scope, and — critically — the project's
+real verification command (tests / build / lint) that proves the change works.
+Do not write the implementation.
+
+<request>
 {{input}}
+</request>
 """
 
+# ── 2. Build: implement the spec, then gate on the project's check ────────────
 [[steps]]
-name = "build"
-role = "developer:general"
-prompt = """
-Implement the following spec end to end in the current project.
-Make the changes precisely; touch only what the spec requires.
+name    = "build"
+role    = "developer:general"
+session = "fresh"
+prompt  = """
+Implement the following spec end to end in the current project. Make the changes
+precisely — touch only what the spec requires.
 
+When the implementation is done, run the spec's verification command (tests /
+build / lint). Iterate until it passes. Then report the exact command you ran
+and its output as evidence — do not assert success without it.
+
+<spec>
 {{plan}}
+</spec>
 """

@@ -28,7 +28,7 @@ directory for this brief:
 name           = "polish"
 loop           = true
 max_iterations = 3
-exit_when      = { output = "audit", contains = "AUDIT-PASS" }
+exit_when      = { output = "audit", matches = '(?m)^AUDIT-PASS' }
 
   [[steps.run]]
   name    = "editor"
@@ -36,8 +36,8 @@ exit_when      = { output = "audit", contains = "AUDIT-PASS" }
   session = "continue"
   prompt  = """
 Improve the article in the current directory for this brief. Apply surgical fixes,
-preserve voice, and humanize any AI-sounding text. (On later rounds you will
-receive the auditor's findings — address every one.)
+preserve voice, and humanize any AI-sounding text. (On later rounds you receive
+the auditor's findings — address every one, criticals first.)
 
 <brief>
 {{input}}
@@ -49,17 +49,24 @@ receive the auditor's findings — address every one.)
   role    = "content:audit"
   session = "fresh"
   prompt  = """
-Audit the article in the current directory against this brief. Score every axis.
+Audit the article in the current directory against this brief. Score these axes,
+classifying every finding minor / major / critical:
+
+- Factual accuracy + every claim/stat carries a citation (CRITICAL axis)
+- Brief-fit: intent, primary keyword, target audience, word count
+- Expertise / authoritativeness / first-hand Experience signals (E-E-A-T)
+- Originality and humanized voice (not AI-sounding)
+- Mechanics: grammar, structure, links
+
+Any single CRITICAL finding (factual error, unsupported claim) means the piece
+does not pass — withhold the pass token and list the prioritized fixes instead.
 
 <brief>
 {{input}}
 </brief>
 
-If every axis meets the publishing bar, end your response with exactly:
-
-AUDIT-PASS
-
-Otherwise list the prioritized fixes and do NOT write that token.
+End with exactly one line: AUDIT-PASS (every axis clears the bar, no critical
+findings) or AUDIT-FAIL (anything outstanding). Nothing after it.
 """
 
 # ── 3. Promo posts ───────────────────────────────────────────────────────────

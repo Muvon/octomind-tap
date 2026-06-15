@@ -2,6 +2,10 @@
 
 Public, multi-step workflows fetched by name with `octomind workflow <name>`.
 
+Each takes a single stdin input and drives it to a **validated** result — most
+chain a gate, an evaluator-optimizer loop, or an independent verifier so the
+output is checked against a machine-readable verdict, not just generated.
+
 Each file here is one workflow: `workflows/<name>.toml`. The file stem is the
 invocable name — `plan-and-build.toml` → `octomind workflow plan-and-build`.
 
@@ -11,21 +15,21 @@ Build / repo (operate on the current directory):
 
 | Name | What it does | Showcases |
 |------|--------------|-----------|
-| [`develop`](./develop.toml) | Spec-driven feature dev: context → developer/evaluator loop (exit on `ALL GOOD`) → summary | `loop` |
-| [`debug`](./debug.toml) | Locate root cause → fix/verify loop until confirmed → summary | `loop` |
-| [`review`](./review.toml) | Review the current changes, then branch to an approval note or a fix list | `conditional` |
-| [`document`](./document.toml) | README + changelog + release-notes drafts in parallel, then a combined doc plan | `parallel` |
-| [`plan-and-build`](./plan-and-build.toml) | Minimal starter: draft a spec, then implement it | sequential |
+| [`develop`](./develop.toml) | Spec-driven feature dev: context → developer/evaluator loop with a build/test gate (exit on `VERDICT: APPROVED`) → summary | `loop` |
+| [`debug`](./debug.toml) | Reproduce + pin root cause → fix/verify loop until a test proves it fixed → summary | `loop` |
+| [`review`](./review.toml) | Review changes → independently verify each finding → branch on a deterministic verdict to an approval note or a fix list | `conditional` |
+| [`document`](./document.toml) | Classify the diff (SemVer + change buckets) → README/changelog/release-notes drafts in parallel → reconcile/validate loop | `parallel` + `loop` |
+| [`plan-and-build`](./plan-and-build.toml) | Minimal starter: draft a spec, then implement it and verify with the project's own check | sequential |
 
 Build / market / write / research (driven by a single stdin goal):
 
 | Name | What it does | Showcases |
 |------|--------------|-----------|
-| [`launch`](./launch.toml) | Idea → market explore → honest validate → (greenlight?) brand + pitch + ads + bootstrap, else pivots | `conditional` |
-| [`content`](./content.toml) | Brief → researched draft → audit/edit loop until it passes → promo posts | `loop` |
-| [`research`](./research.toml) | Investigate background + evidence + counter-views in parallel → synthesize a cited report | `parallel` |
-| [`localize`](./localize.toml) | Translate one input into several locales in parallel (locale-aware) | `parallel` |
-| [`seo`](./seo.toml) | Audit a site/page, then produce a prioritized strategy brief | sequential |
+| [`launch`](./launch.toml) | Idea → market explore → honest validate behind a pre-committed kill-gate → (greenlight?) brand + pitch + ads + bootstrap, else pivots | `conditional` |
+| [`content`](./content.toml) | Brief → researched draft → audit/edit loop until it passes (`AUDIT-PASS`) → promo posts | `loop` |
+| [`research`](./research.toml) | Background + evidence + counter-views in parallel → synthesize → groundedness judge loop (claims checked vs sources) → cited report | `parallel` + `loop` |
+| [`localize`](./localize.toml) | Transcreate one input into several locales in parallel, then back-translation-QA each locale | `parallel` |
+| [`seo`](./seo.toml) | Audit a site/page across technical/on-page/off-page/GEO lenses, then a tiered, finding-traceable strategy brief | sequential |
 
 ## How resolution works
 

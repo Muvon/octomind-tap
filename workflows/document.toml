@@ -1,12 +1,42 @@
 # Title: Document — Generate Docs From Changes
 #
-# Public workflow: draft README, changelog, and release-notes updates from the
-# current changes in parallel, then a combined doc summary. Public roles only.
+# Public workflow: classify the current changes into a SemVer bump and
+# Keep-a-Changelog buckets once, draft README/changelog/release-notes from that
+# shared contract in parallel, then a gate reconciles them until consistent.
+# Public roles only.
 
 name        = "document"
-description = "Draft README, changelog, and release-notes updates from the current changes in parallel, then combine them into one doc plan."
+description = "Classify the current changes into a SemVer bump and change buckets, draft README/changelog/release-notes in parallel from that contract, then reconcile them into one consistent doc plan via a validating gate."
 
-# ── 1. Parallel doc drafts ───────────────────────────────────────────────────
+# -- 1. Classify the diff (shared contract) ---------------------------------
+[[steps]]
+name    = "classify"
+role    = "developer:changelog"
+session = "fresh"
+prompt  = """
+Read the current unstaged git changes (the diff IS the context) plus this intent,
+and produce the single decision the doc drafts will all consume.
+
+<intent>
+{{input}}
+</intent>
+
+Output exactly two parts, nothing else:
+
+1. SemVer bump with one-line justification. MAJOR if any backward-incompatible /
+   breaking change (removed or incompatibly changed public surface), MINOR if a
+   backward-compatible feature is added, PATCH if backward-compatible fixes only.
+   SemVer tracks compatibility impact, not code size — a one-line breaking change
+   is still MAJOR.
+
+2. The diff bucketed into the six Keep-a-Changelog change types — Added, Changed,
+   Deprecated, Removed, Fixed, Security — one verified, user-facing entry per
+   logical change. Omit empty buckets. No commit-log dumps, no invented entries.
+
+Output only this classification — no preamble, no commentary.
+"""
+
+# -- 2. Parallel doc drafts (all bound to the classification) ---------------
 [[steps]]
 name     = "drafts"
 parallel = true
@@ -16,9 +46,19 @@ parallel = true
   role    = "developer:readme"
   session = "fresh"
   prompt  = """
-Update the README to reflect the current unstaged changes and this intent:
+Update the README to reflect the current unstaged changes and this intent. Edit
+IN-PLACE only the sections the changes actually invalidated (install, usage, API,
+config, examples) — touch nothing else.
 
+<intent>
 {{input}}
+</intent>
+
+<classification>
+{{classify}}
+</classification>
+
+Output only the updated README sections.
 """
 
   [[steps.run]]
@@ -26,9 +66,19 @@ Update the README to reflect the current unstaged changes and this intent:
   role    = "developer:changelog"
   session = "fresh"
   prompt  = """
-Write changelog entries for the current unstaged changes and this intent:
+Write Keep-a-Changelog entries from the classification below: use its SemVer bump
+as the version, group entries under the bucketed types, newest version first,
+ISO-8601 date, no commit dumps.
 
+<intent>
 {{input}}
+</intent>
+
+<classification>
+{{classify}}
+</classification>
+
+Output only the changelog entries.
 """
 
   [[steps.run]]
@@ -36,31 +86,88 @@ Write changelog entries for the current unstaged changes and this intent:
   role    = "developer:release-notes"
   session = "fresh"
   prompt  = """
-Draft release notes for the current unstaged changes and this intent:
+Draft release notes from the same classification, re-leveled for end users:
+outcome-framed ("why it matters"), jargon and internal names stripped. Hoist any
+breaking change to the TOP with a before/after migration path.
 
+<intent>
 {{input}}
+</intent>
+
+<classification>
+{{classify}}
+</classification>
+
+Output only the release notes.
 """
 
-# ── 2. Combined doc plan ─────────────────────────────────────────────────────
+# -- 3. Reconcile + validate (evaluator-optimizer loop) ---------------------
 [[steps]]
-name    = "summary"
-role    = "developer:doc"
-session = "fresh"
-prompt  = """
-Combine the documentation drafts below into a single coherent doc update plan.
+name           = "reconcile"
+loop           = true
+max_iterations = 2
+exit_when      = { output = "evaluator", matches = '(?m)^VERDICT: APPROVED' }
 
-README:
+  [[steps.run]]
+  name    = "doc"
+  role    = "developer:doc"
+  session = "continue"
+  prompt  = """
+Combine the three documentation drafts into one coherent doc update plan that is
+mutually consistent and faithful to the classification. Resolve any version,
+scope, or naming disagreement between the drafts in favor of the classification.
+
+<classification>
+{{classify}}
+</classification>
+
 <readme>
 {{readme}}
 </readme>
 
-Changelog:
 <changelog>
 {{changelog}}
 </changelog>
 
-Release notes:
 <release>
 {{release}}
 </release>
+
+Output only the unified doc plan — README changes, changelog, and release notes
+in one consistent set. No preamble, no commentary.
+"""
+
+  [[steps.run]]
+  name    = "evaluator"
+  role    = "developer:doc"
+  session = "fresh"
+  prompt  = """
+Evaluate this unified doc plan against the classification, using ONLY this rubric:
+
+- SEMVER CONSISTENCY: the bump matches the highest-severity change type — any
+  breaking/Removed/incompatible-Changed item leads to MAJOR; any Added feature
+  leads to at least MINOR; Fixed-only leads to PATCH. A mismatch is a hard fail.
+- KEEP-A-CHANGELOG CONFORMANCE: one entry per version, changes grouped under the
+  six canonical types, newest first, ISO-8601 date, human noteworthy-change
+  summaries (no raw commit hashes), deprecations announced before removal.
+- BREAKING-CHANGE PROMINENCE: every breaking item leads the release notes with a
+  before/after migration path — not buried in a flat list.
+- CROSS-ARTIFACT COHERENCE: README, changelog, and release notes describe the
+  SAME set of changes with no contradictions.
+- DIFF-GROUNDING: every entry traces to the classification; nothing fabricated,
+  nothing material omitted.
+
+<classification>
+{{classify}}
+</classification>
+
+<plan>
+{{doc}}
+</plan>
+
+If every rubric item passes, do not invent new criteria. If any fails, give a
+concise, specific fix list referencing the failing items — it goes straight back
+to the doc step with all original context.
+
+End with exactly one line: VERDICT: APPROVED or VERDICT: REVISE. Nothing after it.
 """

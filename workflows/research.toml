@@ -1,10 +1,12 @@
-# Title: Research — Question to Cited Report
+# Title: Research — Question to Verified Cited Report
 #
 # Public workflow: investigate a question from three independent angles in
-# parallel, then synthesize a single grounded, cited report. Public roles only.
+# parallel, synthesize one grounded report, then run a SEPARATE groundedness
+# judge that checks every claim against its cited source and gates the result —
+# the synthesizer revises once on failure. Public roles only.
 
 name        = "research"
-description = "Investigate a question from background, evidence, and counter-argument angles in parallel, then synthesize one grounded, cited report."
+description = "Investigate a question from background, evidence, and counter-argument angles in parallel, synthesize one cited report, then loop a separate groundedness judge (claims checked against their sources) until GROUNDED, capped at 2 iterations."
 
 # ── 1. Parallel angle research ───────────────────────────────────────────────
 [[steps]]
@@ -16,8 +18,12 @@ parallel = true
   role    = "assistant:researcher"
   session = "fresh"
   prompt  = """
-Research the background and current landscape of this question. Return structured,
-cited findings.
+Research the background and current landscape of this question. Search broad,
+then narrow. Prefer primary and official sources over SEO/content-farm pages.
+
+For every claim return: the claim, an exact supporting quote, the source title
+and URL, and your confidence. Output a structured evidence list — not prose.
+Do not assert anything you cannot quote from a source you actually searched.
 
 <question>
 {{input}}
@@ -30,7 +36,12 @@ cited findings.
   session = "fresh"
   prompt  = """
 Research the strongest evidence, data, and expert positions that bear on this
-question. Return structured, cited findings.
+question. Search broad, then narrow. Prefer primary/authoritative sources
+(filings, datasets, peer-reviewed work) over secondary summaries.
+
+For every claim return: the claim, an exact supporting quote, the source title
+and URL, and your confidence. Output a structured evidence list — not prose.
+Do not assert anything you cannot quote from a source you actually searched.
 
 <question>
 {{input}}
@@ -43,21 +54,47 @@ question. Return structured, cited findings.
   session = "fresh"
   prompt  = """
 Research counter-arguments, risks, caveats, and credible dissenting views on this
-question. Return structured, cited findings.
+question — actively seek disconfirming evidence, not reassurance. Prefer primary
+and authoritative sources over SEO/content-farm pages.
+
+For every claim return: the claim, an exact supporting quote, the source title
+and URL, and your confidence. Output a structured evidence list — not prose.
+Do not assert anything you cannot quote from a source you actually searched.
 
 <question>
 {{input}}
 </question>
 """
 
-# ── 2. Synthesize ────────────────────────────────────────────────────────────
+# ── 2. Synthesize + groundedness gate ────────────────────────────────────────
+# Synthesizer (researcher) and judge (ai:evals) are distinct roles so the writer
+# never grades its own work — separation of concerns is the core anti-hallucination
+# lesson. The loop caps at 2: one synthesis, at most one targeted refinement.
 [[steps]]
-name    = "report"
-role    = "assistant:general"
-session = "fresh"
-prompt  = """
-Synthesize the three research passes below into a single, balanced, well-structured
-report that answers the question. Preserve citations and flag any disagreements.
+name           = "report"
+loop           = true
+max_iterations = 2
+exit_when      = { output = "judge", matches = '(?m)^VERDICT: GROUNDED' }
+
+  [[steps.run]]
+  name    = "synthesizer"
+  role    = "assistant:researcher"
+  session = "continue"
+  prompt  = """
+Synthesize the three research passes below into one balanced, well-structured
+report that answers the question.
+
+Rules:
+- Every non-trivial claim carries an inline citation that maps to a source from
+  the evidence lists below — never introduce a claim with no backing source.
+- Surface disagreements and counter-arguments explicitly; do not average them
+  into a bland consensus.
+- Mark single-source or weak claims as tentative.
+- End with a numbered Sources list (title + URL) that the citations point to.
+
+On a later iteration you will receive the judge's per-claim feedback: fix exactly
+the flagged claims — re-ground, downgrade to tentative, or drop them. Do not force
+an unsupportable claim.
 
 <question>
 {{input}}
@@ -74,4 +111,47 @@ report that answers the question. Preserve citations and flag any disagreements.
 <counter>
 {{counter}}
 </counter>
+
+Output only the report — no preamble, no commentary.
+"""
+
+  [[steps.run]]
+  name    = "judge"
+  role    = "ai:evals"
+  session = "fresh"
+  prompt  = """
+You are a groundedness judge in a fresh session. You did not write this report.
+Check it against the gathered evidence — never from memory.
+
+<report>
+{{synthesizer}}
+</report>
+
+<background>
+{{background}}
+</background>
+
+<evidence>
+{{evidence}}
+</evidence>
+
+<counter>
+{{counter}}
+</counter>
+
+Two layers, in order:
+1. Citation resolution — every cited claim must map to a source that actually
+   appears in the evidence above, and its supporting quote must overlap that
+   source. Any fabricated, orphaned, or quote-mismatched citation is a hard fail.
+2. Per-claim groundedness — for each non-trivial claim, give one line of
+   reasoning then a binary label: Supported or Not-Supported by its cited source.
+   Also check the report covers the requested aspects including counter-arguments
+   and labels single-source claims as tentative.
+
+PASS only if there are zero unresolved/fabricated citations AND every claim is
+either Supported or explicitly downgraded to tentative/single-source. Otherwise
+list the specific failing claims with what to fix — this goes straight to the
+synthesizer.
+
+Critique first, then end with exactly one line: VERDICT: GROUNDED or VERDICT: REVISE. Nothing after it.
 """

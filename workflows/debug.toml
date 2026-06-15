@@ -1,25 +1,36 @@
 # Title: Debug — Bug Report to Verified Fix
 #
-# Public workflow: locate a bug's root cause, then iterate a fix ⇄ verify loop in
-# the current repository until it's confirmed fixed, and summarize. Operates on
-# the current directory. Public roles only.
+# Public workflow: reproduce a bug and pin its root cause, then iterate a
+# fix ⇄ verify loop in the current repository until a test proves it fixed, and
+# summarize. Operates on the current directory. Public roles only.
 
 name        = "debug"
-description = "Locate a bug's root cause in the current repo, iterate a fix/verify loop until it's confirmed fixed, then summarize the change."
+description = "Reproduce a bug and locate its root cause in the current repo, iterate a fix/verify loop until a test proves it fixed, then summarize the change."
 
-# ── 1. Locate root cause ─────────────────────────────────────────────────────
+# ── 1. Reproduce & locate root cause ─────────────────────────────────────────
 [[steps]]
-name    = "locate"
-role    = "developer:context"
+name    = "reproduce"
+role    = "developer:general"
 session = "fresh"
 retries = 1
 prompt  = """
-Locate the root cause of this bug in the current repository. Pinpoint the exact
-files and lines involved and explain the failure.
+Reproduce this bug in the current repository, then trace its single root cause.
 
 <bug>
 {{input}}
 </bug>
+
+Do exactly this, in order:
+1. Reproduce deterministically. Write a FAILING test (or capture the exact repro
+   command) that fails NOW because of this bug. State expected-vs-actual.
+2. Only if it reproduces: trace the failing path in the code to THE one root cause
+   (not a symptom) and name the exact file:line. The cause must be traceable in
+   the code you read — never guessed.
+
+If you cannot reproduce it, do NOT guess a cause: report what you tried and end
+with the BLOCKED line so no fix is attempted on an unreproduced bug.
+
+End with exactly one line: `REPRODUCE: CONFIRMED` or `REPRODUCE: BLOCKED`. Nothing after it.
 """
 
 # ── 2. Fix ⇄ verify loop ─────────────────────────────────────────────────────
@@ -27,7 +38,7 @@ files and lines involved and explain the failure.
 name           = "repair"
 loop           = true
 max_iterations = 3
-exit_when      = { output = "verify", contains = "VERIFIED-FIXED" }
+exit_when      = { output = "verify", matches = '(?m)^VERIFY: FIXED' }
 
   [[steps.run]]
   name    = "fix"
@@ -35,16 +46,21 @@ exit_when      = { output = "verify", contains = "VERIFIED-FIXED" }
   session = "continue"
   retries = 1
   prompt  = """
-Fix this bug in the current repository. Use the located root cause. (On later
-rounds you will receive the verifier's findings — address every one.)
+Use the reproduction and root cause below.
+
+<reproduce>
+{{reproduce}}
+</reproduce>
+
+If it says `REPRODUCE: BLOCKED`, do NOT change code — restate that the bug could
+not be reproduced and stop. Otherwise fix this bug in the current repository:
+make the SMALLEST change that addresses the root cause — one hypothesis, no
+unrelated edits, no symptom patches. (On later rounds you receive the verifier's
+findings as your input — address every one.)
 
 <bug>
 {{input}}
 </bug>
-
-<root-cause>
-{{locate}}
-</root-cause>
 """
 
   [[steps.run]]
@@ -52,18 +68,23 @@ rounds you will receive the verifier's findings — address every one.)
   role    = "developer:general"
   session = "fresh"
   prompt  = """
-Verify whether this bug is fully fixed in the current unstaged changes — check the
-behavior and any relevant tests.
+Verify the fix in the current unstaged changes against ground truth — run the
+failing test/repro from the reproduction step and the related test suite. Do not
+assert success: get the result from actual execution.
 
 <bug>
 {{input}}
 </bug>
 
-If it is fully and correctly fixed, respond with exactly:
+<reproduce>
+{{reproduce}}
+</reproduce>
 
-VERIFIED-FIXED
+Pass requires BOTH: (a) the previously failing test/repro now passes, and (b) the
+related suite stays green with no new failures. If either fails, list exactly
+what is still wrong — that text goes straight to the fixer as its next input.
 
-Otherwise list what is still wrong and do NOT write that token.
+End with exactly one line: `VERIFY: FIXED` or `VERIFY: REGRESSION`. Nothing after it.
 """
 
 # ── 3. Summary ───────────────────────────────────────────────────────────────

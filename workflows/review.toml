@@ -1,10 +1,12 @@
-# Title: Review — Change Review With Conditional Verdict
+# Title: Review — Diff to Verified Verdict
 #
-# Public workflow: review the current unstaged changes against the request,
-# then branch into an approval note or a prioritized fix list. Public roles only.
+# Public workflow: review the current unstaged changes against the request in one
+# structured pass, independently verify each finding to prune false positives,
+# then branch on a deterministic verdict into an approval note or a prioritized
+# fix list. Public roles only.
 
 name        = "review"
-description = "Review the current unstaged changes against the request, then branch to an approval note or a prioritized fix list."
+description = "Review the current unstaged changes against the request, independently verify each finding, then branch on a deterministic verdict to an approval note or a prioritized fix list."
 
 # ── 1. Review ────────────────────────────────────────────────────────────────
 [[steps]]
@@ -12,24 +14,64 @@ name    = "review"
 role    = "developer:general"
 session = "fresh"
 prompt  = """
-Review the current unstaged git changes against this request:
+Review the current unstaged git changes against this request. Read beyond the
+diff — open the callers, tests, and config the changed lines touch; real bugs
+live across them, not only on the changed lines.
 
 <request>
 {{input}}
 </request>
 
-Report correctness bugs and concrete cleanups. If the changes are correct and complete with no issues, respond ONLY with:
+Scan in priority order: correctness/design first, then security, then tests,
+then performance, then maintainability/naming/style. Lean toward recall — surface
+every candidate; a later step prunes false positives.
 
-ALL GOOD
+Output ONLY a findings list, one block per finding, nothing else:
 
-Otherwise, list the issues in priority order.
+- DIMENSION: correctness | security | performance | maintainability | tests
+  SEVERITY: Blocking | Recommended | Nit
+  ANCHOR: path/to/file.ext:line
+  WHY: one concise sentence — the concrete problem
+  FIX: one concrete suggested change
+
+If you find nothing, output exactly: NO FINDINGS
 """
 
-# ── 2. Conditional verdict ───────────────────────────────────────────────────
+# ── 2. Verify (independent precision gate) ───────────────────────────────────
+[[steps]]
+name    = "verify"
+role    = "developer:general"
+session = "fresh"
+prompt  = """
+You are an independent verifier. Re-check each finding below against the actual
+current code — do not trust the prior reasoning. Open the anchored file:line and
+confirm the problem is real before keeping it.
+
+<request>
+{{input}}
+</request>
+
+<findings>
+{{review}}
+</findings>
+
+For every finding decide KEEP or DROP with a one-line justification. DROP any
+finding that is not provably anchored in the code, is a duplicate, or is pure
+speculation. Then list only the KEPT findings, each with its DIMENSION, SEVERITY,
+ANCHOR, WHY, and FIX.
+
+Compute the verdict mechanically from the kept findings: if any kept finding has
+SEVERITY Blocking, the verdict is REQUEST_CHANGES; otherwise it is APPROVED.
+
+End with exactly one line: `VERDICT: APPROVED` or `VERDICT: REQUEST_CHANGES`.
+Nothing after it.
+"""
+
+# ── 3. Conditional verdict ───────────────────────────────────────────────────
 [[steps]]
 name        = "verdict"
 conditional = true
-condition   = { output = "review", contains = "ALL GOOD" }
+condition   = { output = "verify", matches = '(?m)^VERDICT: APPROVED' }
 on_match    = ["approve"]
 on_no_match = ["fixes"]
 
@@ -38,11 +80,13 @@ on_no_match = ["fixes"]
   role    = "developer:brief"
   session = "fresh"
   prompt  = """
-The review passed. Write a short approval note summarizing what the change does, based on:
+The change is approved — only non-blocking findings remain. Write a short
+approval note: summarize what the change does and list any Recommended/Nit
+findings as optional follow-ups.
 
-<review>
-{{review}}
-</review>
+<verified>
+{{verify}}
+</verified>
 """
 
   [[steps.run]]
@@ -50,9 +94,11 @@ The review passed. Write a short approval note summarizing what the change does,
   role    = "developer:general"
   session = "fresh"
   prompt  = """
-The review found issues. Turn them into a concise, prioritized fix list a developer can act on directly:
+The change needs work — at least one Blocking finding remains. Turn the verified
+findings into a concise, severity-ordered fix list a developer can act on
+directly: each item names the file:line, the problem, and the concrete fix.
 
-<review>
-{{review}}
-</review>
+<verified>
+{{verify}}
+</verified>
 """

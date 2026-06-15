@@ -1,10 +1,11 @@
 # Title: Develop — Spec-Driven Feature Loop
 #
-# Public workflow: turn a feature spec into a finished change through a
-# developer/evaluator refine loop. Uses public tap roles only.
+# Public workflow: turn a feature spec into a finished, verified change through a
+# developer/evaluator refine loop with a real build/test gate inside the loop.
+# Showcases the loop pattern. Public roles only.
 
 name        = "develop"
-description = "Spec-driven feature development: gather context, iterate a developer/evaluator refine loop until the change is complete, then summarize."
+description = "Spec-driven feature development: gather context, then iterate a developer/evaluator loop (developer runs the project check; evaluator grades the diff against the spec) until APPROVED, then summarize."
 
 # ── 1. Spec → context ────────────────────────────────────────────────────────
 [[steps]]
@@ -19,7 +20,11 @@ Take the user spec and gather the most important context to begin development.
 {{input}}
 </spec>
 
-Produce pinpoints of files and lines to look at first to gather the right info for the developer.
+Locate the exact files, functions, and line ranges to touch and the existing
+patterns to reuse. Identify the project's verification command (test / build /
+lint) so the developer can prove the change works. State what is out of scope.
+
+Output only the refined task with its <context> pinpoints — no implementation plan.
 """
 
 # ── 2. Developer/evaluator refine loop ───────────────────────────────────────
@@ -27,7 +32,7 @@ Produce pinpoints of files and lines to look at first to gather the right info f
 name           = "development"
 loop           = true
 max_iterations = 3
-exit_when      = { output = "evaluator", contains = "ALL GOOD" }
+exit_when      = { output = "evaluator", matches = '(?m)^VERDICT: APPROVED' }
 
   [[steps.run]]
   name    = "developer"
@@ -40,12 +45,16 @@ We are working on the following spec:
 {{input}}
 </spec>
 
-Take hints from the initial harness in context:
+Pinpoints and verification command from context:
 <context>
 {{context}}
 </context>
 
-Proceed with development fully autonomously.
+Implement the change fully autonomously. Then run the project's verification
+command (tests / build / lint / typecheck) and iterate until it passes.
+
+End your response with the exact command you ran and its output as evidence the
+check passes. Output only the work and that evidence — no preamble.
 """
 
   [[steps.run]]
@@ -54,16 +63,19 @@ Proceed with development fully autonomously.
   session = "fresh"
   retries = 1
   prompt  = """
-Look at the original spec and the unstaged changes to provide a brief.
+Read the original spec and the current unstaged git changes, then produce a
+brief of what the diff actually does versus what the spec asked for.
 
 <spec>
 {{input}}
 </spec>
 
-Developer response:
-<response>
+Developer evidence (verification command + output):
+<evidence>
 {{developer}}
-</response>
+</evidence>
+
+Output only the brief.
 """
 
   [[steps.run]]
@@ -71,30 +83,34 @@ Developer response:
   role    = "developer:general"
   session = "fresh"
   prompt  = """
-Evaluate this code generation run.
+You are grading a code-generation run in a fresh session. You see only the spec,
+the developer's verification evidence, and an independent brief of the diff — not
+the developer's reasoning. Judge conformance to the spec.
 
-User spec provided:
+User spec:
 <spec>
 {{input}}
 </spec>
 
-Final developer response:
-<developer>
+Developer evidence (verification command + output):
+<evidence>
 {{developer}}
-</developer>
+</evidence>
 
-Briefing:
+Independent brief of the diff:
 <brief>
 {{brief}}
 </brief>
 
-If anything is worth improving, changing, fixing, or is missing from the spec, respond with a detailed, concise list — it goes directly to the developer with all original context.
+Check each stated spec requirement: is it met by the diff, and does the
+verification command actually pass in the evidence? Flag ONLY gaps that affect
+correctness or a stated spec requirement, or a missing/failing check. Do not
+request style changes, speculative robustness, or criteria the spec never stated.
 
-If all good with no critical issues, respond ONLY with:
+If a requirement is unmet or the check did not pass, list the concrete gaps —
+this goes directly to the developer with all original context.
 
-ALL GOOD
-
-exactly as requested.
+End with exactly one line: VERDICT: APPROVED or VERDICT: REVISE. Nothing after it.
 """
 
 # ── 3. Summary ───────────────────────────────────────────────────────────────
@@ -103,10 +119,12 @@ name    = "summary"
 role    = "developer:brief"
 session = "fresh"
 prompt  = """
-Look at the user spec and our implementation in the current unstaged git changes and provide a concise briefing.
+Read the user spec and the implementation in the current unstaged git changes,
+then produce a concise briefing of spec-versus-diff for the human reviewer.
 
-User spec request:
 <spec>
 {{input}}
 </spec>
+
+Output only the briefing.
 """
