@@ -62,8 +62,10 @@ Symlinks are managed by `scripts/setup-symlinks.sh` which **always force-creates
 
 | Capability     | Providers              | What it provides                                      |
 |----------------|------------------------|-------------------------------------------------------|
-| `core`         | default                | `plan` task tracker                                   |
-| `agent`        | default                | `agent_*` delegation tools                            |
+| `core`         | default (built-in)     | `plan` task tracker — universal self-management; every agent has it |
+| `agent`        | default (built-in)     | `agent_*` — delegate to your own **configured** sub-agents (intra-domain team) |
+| `orchestration`| default (built-in)     | `tap` (discover/run registry specialists) + `schedule` (defer/recur loops) — **orchestrator-tier, deliberate grant** |
+| `runtime`      | octomind (built-in)    | `mcp` · `agent`-register · `skill` · `capability` — runtime tool-surface config (**high-trust**) |
 | `filesystem-read`  | octofs                 | `view`, `workdir` (read-only)             |
 | `filesystem-write` | octofs                 | `text_editor`, `batch_edit`, `extract_lines` |
 | `shell`            | octofs                 | `shell` (command execution)               |
@@ -81,6 +83,29 @@ Symlinks are managed by `scripts/setup-symlinks.sh` which **always force-creates
 | `svelte`              | svelte           | Svelte/SvelteKit documentation MCP server             |
 | `medical`             | medical          | medical references (PubMed, FDA, WHO, RxNorm)         |
 | `finance`             | yfinance         | financial data (Yahoo Finance)                        |
+
+---
+
+## Capability Access Tiers (least privilege)
+
+Capabilities are grouped by **who needs the tool**, not by where the code lives. The three built-in tools `plan`, `tap`, `schedule` all live on the core server, but they are exposed through **different capabilities** so an agent only gets what its role intends.
+
+| Tier | Capability | Tools | Who declares it |
+|------|-----------|-------|-----------------|
+| self-management | `core` | `plan` | **every** agent |
+| do the work | domain caps | `shell`, `filesystem-*`, `websearch`, `codesearch-*`, `legal-*`, … | per agent |
+| intra-domain team | `agent` | `agent_*` | sub-orchestrators (delegate to their *own configured* agents) |
+| **orchestration** | `orchestration` | `tap`, `schedule` | **orchestrators only** |
+| runtime config | `runtime` | `mcp`, `agent`-register, `skill`, `capability` | **high-trust only** |
+
+**The rule — orchestration is for those who intend to orchestrate.** A narrow domain specialist (`lawyer:us`, `doctor:general`, `content:editor`) declares `core` + its domain tools and **never** `orchestration` or `runtime`. It does its job with domain tools, it does not route across domains, and it does not reconfigure the tool surface. This is enforced **structurally** — the unwanted tool is physically absent from the agent's context, not merely discouraged in the prompt. `bin/load` unions `allowed_tools` across capabilities, so an orchestrator that declares `core` + `orchestration` resolves to `core:plan` + `core:tap` + `core:schedule`, while a leaf agent that declares only `core` resolves to `core:plan` alone.
+
+Only agents that genuinely orchestrate carry `orchestration`:
+- `assistant:concierge` — the global system orchestrator (routes every domain).
+- `developer:general` — a domain orchestrator (runs `developer:context` and its engineering team).
+- `octoweb:assistant` — a browser concierge that delegates expert work, then executes browser actions.
+
+> `orchestration` (and `runtime`) may still **auto-activate** on intent — e.g. a request that clearly needs cross-domain delegation or a recurring loop — via `capabilities/orchestration/config.toml` triggers. Auto-activation is request-driven and temporary; it never becomes part of a domain agent's standing grant.
 
 ---
 

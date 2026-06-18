@@ -24,7 +24,7 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CAP_ROOT="$REPO_ROOT/capabilities"
 DEPS_ROOT="$REPO_ROOT/deps"
 ERRORS=0
-BUILTIN_CAPS=("core" "agent")
+BUILTIN_CAPS=("core" "agent" "orchestration")
 
 # Collect capability dirs to lint
 if [[ $# -gt 0 ]]; then

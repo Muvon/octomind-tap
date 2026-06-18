@@ -135,8 +135,10 @@ Agents declare **capabilities** instead of hardcoding MCP servers. This decouple
 
 | Capability | What it provides | Default provider |
 |------------|-----------------|-----------------|
-| `core` | `plan` task tracker | `core/default.toml` (built-in) |
-| `agent` | `agent_*` delegation tools | `agent/default.toml` (built-in) |
+| `core` | `plan` task tracker — universal self-management (every agent) | `core/default.toml` (built-in) |
+| `agent` | `agent_*` — delegate to your configured sub-agents | `agent/default.toml` (built-in) |
+| `orchestration` | `tap` (discover/run specialists) + `schedule` (defer/recur loops) — orchestrator-tier | `orchestration/default.toml` (built-in) |
+| `runtime` | `mcp` · `agent`-register · `skill` · `capability` — runtime config (high-trust) | `runtime/default.toml` (built-in) |
 | `filesystem-read`  | `view`, `workdir` | `octofs.toml` |
 | `filesystem-write` | `text_editor`, `batch_edit`, `extract_lines` | `octofs.toml` |
 | `shell`            | `shell` (command execution) | `octofs.toml` |
@@ -146,6 +148,8 @@ Agents declare **capabilities** instead of hardcoding MCP servers. This decouple
 | `memory` | `remember`, `memorize` | `octobrain.toml` |
 | `websearch` | web search tool | `tavily.toml` |
 | `versioning` | git operations via shell | `git.toml` |
+
+> **Access tiers (least privilege).** `plan`, `tap`, and `schedule` all live on the core server but are exposed through different capabilities so an agent gets only what its role intends. A narrow domain specialist declares `core` (→ `plan`) plus its domain tools and **never** `orchestration` — so it cannot delegate across domains or schedule loops; the tools are simply absent. Only agents that intend to orchestrate (`assistant:concierge`, `developer:general`, `octoweb:assistant`) declare `orchestration` (→ `tap` + `schedule`). `runtime` is the separate high-trust tier that reconfigures the tool surface. See [ARCHITECTURE.md](ARCHITECTURE.md#capability-access-tiers-least-privilege).
 
 ### Switching providers
 

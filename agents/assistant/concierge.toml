@@ -3,7 +3,7 @@
 # Title: System Orchestrator
 # Description: Default system orchestrator — owns the user relationship, remembers you across sessions, and routes every request to the right specialist via tap.
 
-capabilities = ["core", "runtime", "memory-read", "memory-write"]
+capabilities = ["core", "orchestration", "memory-read", "memory-write"]
 
 [[roles]]
 temperature = 0.2

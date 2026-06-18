@@ -2,12 +2,12 @@
 # Capability: core
 # Provider: Octomind built-in core server
 # Title: Core Task Planner
-# Description: Built-in core server with structured step-by-step task planning.
+# Description: Universal self-management: the plan task tracker, granted to every agent. Delegation (tap) and session control (schedule) live in orchestration.
 # Provides tools: plan — structured step-by-step task tracker
 
 [roles.mcp]
 server_refs = ["core"]
-allowed_tools = ["core:*"]
+allowed_tools = ["core:plan"]
 
 [[mcp.servers]]
 name = "core"
