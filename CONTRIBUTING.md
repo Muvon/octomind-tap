@@ -68,8 +68,10 @@ You are a Blood Test Analysis Assistant...
 
 [roles.mcp]
 server_refs = ["core", "octofs", "medical"]
-allowed_tools = ["core:*", "octofs:*", "search-medical-literature"]
+allowed_tools = ["core:plan", "octofs:*", "search-medical-literature"]
 ```
+
+> **Grant `core:plan`, not `core:*`.** The core server also hosts `tap` (cross-domain delegation) and `schedule` (session loops), but those are **orchestrator-tier** — they belong to the `orchestration` capability, not to every agent. A normal domain specialist gets `core:plan` plus its domain tools and nothing else. Only declare `orchestration` if the agent genuinely routes work to *other* agents. See [ARCHITECTURE.md](ARCHITECTURE.md#capability-access-tiers-least-privilege).
 
 ### 4. Test Locally
 
@@ -114,7 +116,7 @@ model = "openrouter:anthropic/claude-sonnet-4"
 # MCP server configuration
 [roles.mcp]
 server_refs = ["core", "octofs", "octocode"]
-allowed_tools = ["core:*", "octofs:*", "semantic_search"]
+allowed_tools = ["core:plan", "octofs:*", "semantic_search"]
 
 # Additional MCP servers (beyond built-in)
 [[mcp.servers]]
@@ -311,7 +313,7 @@ Working directory: {{CWD}}
 
 [roles.mcp]
 server_refs = ["core", "octofs"]
-allowed_tools = ["core:*", "octofs:*"]
+allowed_tools = ["core:plan", "octofs:*"]
 ```
 
 ### Complex Agent with Dependencies
@@ -339,7 +341,7 @@ You are a Rust development specialist...
 
 [roles.mcp]
 server_refs = ["core", "octofs", "octocode"]
-allowed_tools = ["core:*", "octofs:*", "octocode:*"]
+allowed_tools = ["core:plan", "octofs:*", "octocode:*"]
 ```
 
 ---

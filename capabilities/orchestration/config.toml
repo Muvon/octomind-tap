@@ -1,0 +1,20 @@
+# capabilities/orchestration/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# orchestration grants cross-domain delegation (tap) and session-flow control
+# (schedule). It is a deliberate, orchestrator-tier grant — narrow domain
+# specialists never declare it — but it may still auto-activate when a request
+# clearly needs delegation across domains or scheduled / recurring work.
+
+triggers = [
+	"delegate this to a specialist agent",
+	"route this request to the right expert",
+	"discover an agent that can handle this",
+	"run a specialist agent for this task",
+	"coordinate several specialists on this",
+	"hand this work off to another domain",
+	"schedule this to run later",
+	"check back on this every few minutes",
+	"set up a recurring task that repeats",
+	"keep looping on this until it is done",
+]

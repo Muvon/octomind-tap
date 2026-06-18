@@ -1,0 +1,16 @@
+# capabilities/orchestration/default.toml
+# Capability: orchestration
+# Provider: Octomind built-in core server
+# Title: Orchestration
+# Description: Cross-domain delegation (tap) and session-flow control (schedule) for orchestrator agents. Deliberate grant — narrow domain specialists never get it.
+# Provides tools: tap — discover/run registry specialists; schedule — defer/recur session messages
+
+[roles.mcp]
+server_refs = ["core"]
+allowed_tools = ["core:tap", "core:schedule"]
+
+[[mcp.servers]]
+name = "core"
+type = "builtin"
+timeout_seconds = 30
+tools = []
