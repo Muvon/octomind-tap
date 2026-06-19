@@ -88,7 +88,7 @@ Symlinks are managed by `scripts/setup-symlinks.sh` which **always force-creates
 
 ## Capability Access Tiers (least privilege)
 
-Capabilities are grouped by **who needs the tool**, not by where the code lives. The three built-in tools `plan`, `tap`, `schedule` all live on the core server, but they are exposed through **different capabilities** so an agent only gets what its role intends.
+Capabilities are grouped by **who needs the tool**. Each tier is its own built-in server with its own code module, so capability ⟷ server ⟷ module map 1:1 — `core` (`plan`), `orchestration` (`tap`, `schedule`), `runtime` (the tool-surface controls). An agent only gets the tiers its role declares.
 
 | Tier | Capability | Tools | Who declares it |
 |------|-----------|-------|-----------------|
@@ -98,7 +98,7 @@ Capabilities are grouped by **who needs the tool**, not by where the code lives.
 | **orchestration** | `orchestration` | `tap`, `schedule` | **orchestrators only** |
 | runtime config | `runtime` | `mcp`, `agent`-register, `skill`, `capability` | **high-trust only** |
 
-**The rule — orchestration is for those who intend to orchestrate.** A narrow domain specialist (`lawyer:us`, `doctor:general`, `content:editor`) declares `core` + its domain tools and **never** `orchestration` or `runtime`. It does its job with domain tools, it does not route across domains, and it does not reconfigure the tool surface. This is enforced **structurally** — the unwanted tool is physically absent from the agent's context, not merely discouraged in the prompt. `bin/load` unions `allowed_tools` across capabilities, so an orchestrator that declares `core` + `orchestration` resolves to `core:plan` + `core:tap` + `core:schedule`, while a leaf agent that declares only `core` resolves to `core:plan` alone.
+**The rule — orchestration is for those who intend to orchestrate.** A narrow domain specialist (`lawyer:us`, `doctor:general`, `content:editor`) declares `core` + its domain tools and **never** `orchestration` or `runtime`. It does its job with domain tools, it does not route across domains, and it does not reconfigure the tool surface. This is enforced **structurally** — the unwanted tool is physically absent from the agent's context, not merely discouraged in the prompt. `tap` and `schedule` live on a separate built-in **`orchestration` server**, so an orchestrator that declares `core` + `orchestration` resolves to `core:*` (`plan`) + `orchestration:*` (`tap`, `schedule`), while a leaf agent that declares only `core` resolves to `core:*` (`plan`) alone — the orchestration server never enters its tool surface.
 
 Only agents that genuinely orchestrate carry `orchestration`:
 - `assistant:concierge` — the global system orchestrator (routes every domain).

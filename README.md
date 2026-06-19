@@ -149,7 +149,7 @@ Agents declare **capabilities** instead of hardcoding MCP servers. This decouple
 | `websearch` | web search tool | `tavily.toml` |
 | `versioning` | git operations via shell | `git.toml` |
 
-> **Access tiers (least privilege).** `plan`, `tap`, and `schedule` all live on the core server but are exposed through different capabilities so an agent gets only what its role intends. A narrow domain specialist declares `core` (→ `plan`) plus its domain tools and **never** `orchestration` — so it cannot delegate across domains or schedule loops; the tools are simply absent. Only agents that intend to orchestrate (`assistant:concierge`, `developer:general`, `octoweb:assistant`) declare `orchestration` (→ `tap` + `schedule`). `runtime` is the separate high-trust tier that reconfigures the tool surface. See [ARCHITECTURE.md](ARCHITECTURE.md#capability-access-tiers-least-privilege).
+> **Access tiers (least privilege).** Each tier is its own built-in server: `core` (`plan`), `orchestration` (`tap` + `schedule`), `runtime` (tool-surface controls). A narrow domain specialist declares `core` plus its domain tools and **never** `orchestration` — so it cannot delegate across domains or schedule loops; that server isn't in its tool set at all. Only agents that intend to orchestrate (`assistant:concierge`, `developer:general`, `octoweb:assistant`) declare `orchestration`. See [ARCHITECTURE.md](ARCHITECTURE.md#capability-access-tiers-least-privilege).
 
 ### Switching providers
 

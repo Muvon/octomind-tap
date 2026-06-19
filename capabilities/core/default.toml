@@ -7,7 +7,7 @@
 
 [roles.mcp]
 server_refs = ["core"]
-allowed_tools = ["core:plan"]
+allowed_tools = ["core:*"]
 
 [[mcp.servers]]
 name = "core"
