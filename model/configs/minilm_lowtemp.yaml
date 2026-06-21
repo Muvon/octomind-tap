@@ -1,0 +1,48 @@
+# MiniLM fine-tune with LOW MNRL temperature — last principled attempt to
+# beat untrained MiniLM. Cleaning the negatives didn't recover the margin,
+# so the collapse is contrastive SATURATION (default scale=20 drives every
+# cosine toward 1, anisotropy ↑, between-cap margin ↓). This softens it:
+#   scale=10 (half the default), 1 epoch, LR 1e-5 — a gentle nudge that
+# should lift ranking like FT did for BGE WITHOUT crushing MiniLM's native
+# spread. Trains on the clean (pos-aware) triplets.
+
+base_model: sentence-transformers/all-MiniLM-L6-v2
+output_dir: checkpoints
+run_name: embed-minilm-lowtemp
+
+train:
+  epochs: 1
+  batch_size: 256
+  mini_batch_size: 32
+  gist_batch_size: 64
+  learning_rate: 1.0e-5
+  warmup_ratio: 0.1
+  weight_decay: 0.01
+  max_seq_length: 128
+  seed: 42
+  evaluation_steps: 0
+  save_best_model: true
+  use_amp: true
+
+loss:
+  cached: true
+  gist: false
+  scale: 10.0
+  gist_guide: BAAI/bge-small-en-v1.5
+  matryoshka: true
+  matryoshka_dims: [384, 256, 192, 128, 96]
+  matryoshka_weights: [1.0, 0.6, 0.4, 0.2, 0.1]
+
+data:
+  pairs_path: data/pairs.jsonl
+  holdout_ratio: 0.2
+  oos_label: true
+  multi_turn_ratio: 0.15
+
+eval:
+  top_k: [1, 3, 5]
+  real_set_path: data/eval_real.jsonl
+  baselines_path: eval_baselines.json
+  runtime_top_k: 3
+  runtime_threshold: 0.62
+  runtime_margin: 0.03

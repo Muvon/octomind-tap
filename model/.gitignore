@@ -10,3 +10,10 @@ wandb/
 *.onnx
 .ruff_cache/
 .mypy_cache/
+
+# experiment eval/calibration dumps (regenerable)
+cmp_*.json
+calib_*.json
+gate_*.json
+soup*.json
+*.minilm.json

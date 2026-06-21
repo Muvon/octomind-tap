@@ -39,6 +39,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import random
 import warnings
 from collections import defaultdict
@@ -160,22 +161,36 @@ def build_loss(
     use_cached = bool(loss_cfg.get("cached", True))
     use_gist = bool(loss_cfg.get("gist", False))
     use_matryoshka = bool(loss_cfg.get("matryoshka", False))
+    # MNRL `scale` is the inverse temperature on the cosine logits before
+    # the in-batch softmax. The sbert default (20.0) is aggressive: it
+    # drives every anchor-positive cosine hard toward 1, which saturates
+    # the embedding space (anisotropy) and COLLAPSES the between-capability
+    # margin our runtime gate depends on. Lowering it softens the contrast
+    # so an already-well-separated base (e.g. MiniLM) can be nudged without
+    # losing its native spread. Only affects the MNRL-family losses.
+    scale = float(loss_cfg.get("scale", 20.0))
 
     if use_gist:
         guide_name = loss_cfg.get("gist_guide", "BAAI/bge-small-en-v1.5")
-        print(f"loss: GISTEmbedLoss (guide={guide_name})")
+        print(f"loss: GISTEmbedLoss (guide={guide_name}, scale={scale})")
         guide = SentenceTransformer(guide_name)
         for p in guide.parameters():
             p.requires_grad_(False)
         # GISTEmbedLoss(model, guide, ...) — positional. The kwarg used
-        # to be `guide_model` in early drafts; settled on `guide`.
-        inner = GISTEmbedLoss(model, guide)
+        # to be `guide_model` in early drafts; settled on `guide`. Only
+        # override its temperature when `scale` is explicitly set (GIST's
+        # own default 0.01 differs from MNRL's 1/20, so don't touch it
+        # implicitly).
+        if "scale" in loss_cfg:
+            inner = GISTEmbedLoss(model, guide, temperature=1.0 / scale)
+        else:
+            inner = GISTEmbedLoss(model, guide)
     elif use_cached:
-        print(f"loss: CachedMultipleNegativesRankingLoss (mini_batch_size={mini_batch_size})")
-        inner = CachedMultipleNegativesRankingLoss(model, mini_batch_size=mini_batch_size)
+        print(f"loss: CachedMultipleNegativesRankingLoss (mini_batch_size={mini_batch_size}, scale={scale})")
+        inner = CachedMultipleNegativesRankingLoss(model, mini_batch_size=mini_batch_size, scale=scale)
     else:
-        print("loss: MultipleNegativesRankingLoss (legacy in-memory variant)")
-        inner = MultipleNegativesRankingLoss(model)
+        print(f"loss: MultipleNegativesRankingLoss (legacy in-memory variant, scale={scale})")
+        inner = MultipleNegativesRankingLoss(model, scale=scale)
 
     if use_matryoshka:
         dims = list(loss_cfg.get("matryoshka_dims", [384, 256, 192, 128, 96]))
@@ -356,6 +371,24 @@ def train_modern(
     mini_batch_size = int(train_cfg.get("mini_batch_size", train_cfg["batch_size"]))
     losses = {name: build_loss(model, loss_cfg, mini_batch_size) for name in train_datasets}
 
+    # Per-device (real compute/memory) batch. These two loss paths size it
+    # differently and conflating them was silently wrong:
+    #   - Cached MNRL: GradCache chunks the `batch_size` effective batch
+    #     into `mini_batch_size` pieces internally, so per_device can be
+    #     the full `batch_size` while VRAM tracks `mini_batch_size`.
+    #   - GIST: no GradCache (guide-masking needs the whole batch in one
+    #     forward), so per_device IS both the in-batch-negatives count and
+    #     the real load. Passing `batch_size` (256) here meant a literal
+    #     256-wide forward through model + frozen guide each step — brutal
+    #     on CPU. Cap it at `gist_batch_size`.
+    use_gist = bool(loss_cfg.get("gist", False))
+    if use_gist:
+        per_device_batch = int(train_cfg.get("gist_batch_size", 64))
+    else:
+        per_device_batch = int(train_cfg["batch_size"])
+    print(f"per-device batch: {per_device_batch} "
+          f"({'GIST (no GradCache)' if use_gist else 'cached MNRL (GradCache chunks of %d)' % mini_batch_size})")
+
     evaluator = build_ir_evaluator(pairs_path, holdout_path, name="holdout-ir")
     if evaluator is None:
         print("warn: no evaluator (holdout missing) — best-checkpoint selection disabled")
@@ -367,8 +400,8 @@ def train_modern(
     targs = SentenceTransformerTrainingArguments(
         output_dir=str(out_dir),
         num_train_epochs=train_cfg["epochs"],
-        per_device_train_batch_size=train_cfg["batch_size"],
-        per_device_eval_batch_size=train_cfg["batch_size"],
+        per_device_train_batch_size=per_device_batch,
+        per_device_eval_batch_size=per_device_batch,
         learning_rate=train_cfg["learning_rate"],
         warmup_ratio=train_cfg["warmup_ratio"],
         weight_decay=train_cfg["weight_decay"],
@@ -464,6 +497,14 @@ def main() -> int:
 
     random.seed(train_cfg["seed"])
     torch.manual_seed(train_cfg["seed"])
+
+    # On a CPU box the default thread count is often half the cores
+    # (torch picks physical cores, ignores SMT). For this small encoder
+    # the forward/backward is compute-bound, so use every core. No-op
+    # benefit on GPU but harmless.
+    if not torch.cuda.is_available():
+        torch.set_num_threads(os.cpu_count() or torch.get_num_threads())
+        print(f"CPU training: torch threads = {torch.get_num_threads()}")
 
     model = SentenceTransformer(cfg["base_model"])
     model.max_seq_length = train_cfg["max_seq_length"]

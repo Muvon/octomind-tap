@@ -10,10 +10,21 @@ train:
   # in a normal forward pass. 256 gives much sharper contrast than the
   # old 64 without raising VRAM (mini_batch_size below is the real cap).
   batch_size: 256
-  # Real per-step GPU memory load. 32 fits on a single A10/L4; bump to 64
-  # on >= 24 GB. On CPU, set to 16. Does NOT change the effective
-  # in-batch-negatives count — that's `batch_size` above.
+  # Real per-step GPU memory load for the CACHED MNRL path. GradCache
+  # chunks the `batch_size` effective batch into `mini_batch_size`
+  # pieces, so this is the true VRAM cap while in-batch-negatives stay
+  # at `batch_size`. 32 fits on a single A10/L4; bump to 64 on >= 24 GB.
+  # On CPU, set to 16. Does NOT change the effective in-batch-negatives
+  # count — that's `batch_size` above.
   mini_batch_size: 32
+  # Per-device batch for the GIST path ONLY. GISTEmbedLoss can't use
+  # GradCache (the guide-masking needs the whole batch in one forward),
+  # so its per-device batch IS the in-batch-negatives count AND the real
+  # compute/memory load — they can't be decoupled like cached MNRL. 256
+  # here would mean a literal 256-wide forward through BOTH the model and
+  # the frozen guide every step (very slow on CPU). 64 keeps strong
+  # contrast at tractable cost; raise on a big GPU.
+  gist_batch_size: 64
   learning_rate: 2.0e-5
   warmup_ratio: 0.1
   weight_decay: 0.01
@@ -51,9 +62,13 @@ loss:
   # https://sbert.net/examples/sentence_transformer/training/matryoshka/README.html
   matryoshka: true
   matryoshka_dims: [384, 256, 192, 128, 96]
-  # Weight schedule for the Matryoshka dims (same order as above). Higher
-  # weights on the bigger dims keep full-precision quality first.
-  matryoshka_weights: [1.0, 1.0, 1.0, 1.0, 1.0]
+  # Weight schedule for the Matryoshka dims (same order as above). The
+  # runtime serves the FULL 384-dim vector, so prioritise it: the
+  # truncated dims still get a (lighter) loss term to keep them usable
+  # if the embed cache ever needs shrinking, but they no longer compete
+  # equally with 384 for model capacity. Equal 1.0 weights were trading
+  # full-dim gate margin for truncations we don't deploy.
+  matryoshka_weights: [1.0, 0.6, 0.4, 0.2, 0.1]
 
 data:
   pairs_path: data/pairs.jsonl
