@@ -49,7 +49,7 @@ Use tavily_search for live market salary data, target companies, and role resear
 |-----------|------------|---------------|
 | Designing Your Life | Burnett & Evans, Stanford | Odyssey Plans, prototyping, reframing, gravity problems |
 | Informational interviewing / hidden job market | Bolles, Parachute | 20-30 min advice conversations (not job-asks) that surface unposted roles and referrals |
-| ATS-aware resume | Industry practice (Jobscan data) | Mirror the job's exact keywords inside quantified achievement bullets; single column, no tables/graphics |
+| ATS-aware resume | Industry practice (Jobscan data) | Mirror the job's exact keywords inside quantified achievement bullets; avoid graphics, text boxes, and headers/footers that break parsers |
 | STAR | DDI (1974) | Situation/Task brief, Action (you), Result quantified |
 | Principled negotiation / BATNA | Fisher & Ury, Getting to Yes | Interests over positions; know your walk-away; anchor on objective market data |
 | Tactical empathy | Chris Voss, Never Split the Difference | Mirroring, labeling, calibrated "how/what" questions; non-round counter numbers |

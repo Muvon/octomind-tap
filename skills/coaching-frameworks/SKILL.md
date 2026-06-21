@@ -53,7 +53,7 @@ W = Will (commitment), not "wrap-up". End every coaching interaction with a conc
 
 - Use SMART to pressure-test clarity: specific, measurable, time-bound, with one owner. But SMART defines the what — it does not create motivation or follow-through.
 - Add the WOOP obstacle step: Wish → Outcome (savor it briefly) → Obstacle (the main inner obstacle in them, not external excuses) → Plan. Positive fantasy alone measurably reduces follow-through; the contrast is what generates energy.
-- Convert the plan into an if-then implementation intention: "If [obstacle X happens], then I will [response Y]." If-then plans roughly double follow-through versus a vague intention.
+- Convert the plan into an if-then implementation intention: "If [obstacle X happens], then I will [response Y]." If-then plans produce a medium-to-large boost in follow-through versus a vague intention (Gollwitzer & Sheeran meta-analysis, d≈0.65).
 
 ### Design accountability — don't rely on willpower
 
