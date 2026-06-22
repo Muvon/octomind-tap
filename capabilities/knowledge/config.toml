@@ -1,0 +1,26 @@
+# capabilities/knowledge/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# knowledge is the PROJECT KNOWLEDGE BASE — octobrain's box system (.box docs,
+# subscribed org boxes, indexed files), retrieved semantically and scoped to the
+# active project. Differentiated from:
+#   - `webfetch`     → fetch ONE URL/file raw (same octobrain tool, fetch framing)
+#   - `memory-read`  → recall stored MEMORIES (facts you told the assistant)
+#   - `codesearch-*` → search the CODE itself
+# Triggers emphasize "what does the project/knowledge base know" — indexed docs
+# and persistent project knowledge, NOT a single link, a memory, or source code.
+
+triggers = [
+	"search the project knowledge base",
+	"what does our documentation say about this",
+	"recall persistent project knowledge",
+	"look up something in the knowledge base",
+	"find relevant docs in the project box",
+	"what do we know about this project",
+	"search indexed project documentation",
+	"retrieve context from the knowledge base",
+	"find the section in our docs that covers this",
+	"grep the indexed knowledge for a pattern",
+	"what's documented about how this works",
+	"pull knowledge about the current project",
+]

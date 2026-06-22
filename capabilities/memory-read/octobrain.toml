@@ -2,17 +2,14 @@
 # Capability: memory-read
 # Provider: octobrain — read-only memory subset
 # Title: Memory (Read)
-# Description: Semantic recall and relationship-graph traversal via octobrain. Pair with memory-write to also persist memories.
+# Description: Semantic recall via octobrain — remember returns matching memories plus their 1-hop graph neighbors. Pair with memory-write to also persist memories.
 
 [deps]
 require = ["muvon/octobrain"]
 
 [roles.mcp]
 server_refs = ["octobrain"]
-allowed_tools = [
-  "octobrain:remember",
-  "octobrain:memory_graph",
-]
+allowed_tools = ["octobrain:remember"]
 
 [[mcp.servers]]
 name = "octobrain"
