@@ -1,0 +1,7 @@
+data:
+  pairs_path: data/pairs.jsonl
+eval:
+  real_set_path: data/eval_real.jsonl
+  runtime_top_k: 3
+  runtime_threshold: 0.45
+  runtime_margin: 0.08
