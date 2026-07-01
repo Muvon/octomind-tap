@@ -87,14 +87,14 @@ Dual gate, mirroring MQM's actual scoring mechanic (themqm.org: Neutral=0/Minor=
 - Dates, numbers, currency, units, punctuation, and quotation marks match target-locale convention (see `content-translate` Phase 3 for the full cheat sheet).
 
 #### 6. AI-Slop & Translationese Calibration
-- Frequency-outlier words: the same strong adjective/verb used 3+ times across the piece is a tell regardless of language — count repeats, don't just eyeball it.
+- Frequency-outlier words: the same EVALUATIVE word — an adjective, adverb, or verb an AI reaches for to add emphasis ("crucial," "seamlessly," "leverages") — repeated 3+ times across the piece is a tell regardless of language. This check targets stylistic choice, never identity: a word that NAMES something (a product, brand, protocol, command, field, person) is referential, not evaluative, and must repeat exactly as many times as the content needs it to — that's dimension 4's job, and dimension 4 always wins the conflict. Before flagging a repeated word, ask "does varying or shortening this change what's being pointed at?" — if yes, it's a name, leave it alone; if no, it's a style choice, count it.
 - Connector pileup: logical connectors ("furthermore"-class words in the target language) opening more than roughly 1 in 4 paragraphs.
 - Templated structure: the same paragraph-opener pattern repeating section after section.
 - Cross-lingual cliché transfer: an English AI-cliché calqued into the target (see examples below).
 
 ### Calibration anchors — per-language, auto-loaded
 
-Sourced per-language calibration lives in dedicated skills, not inline here — `content-locale-humanize-es`, `-fr`, `-de`, `-ja`, `-zh`, `-ar` — each auto-loads by its own rule match when the target language comes up, so a Spanish job never pulls in Chinese or Japanese anchors it doesn't need. Add a new language by dropping in a new `content-locale-humanize-<code>` skill; never grow this file with per-language content.
+Sourced per-language calibration lives in dedicated skills, not inline here — `content-locale-humanize-es`, `-fr`, `-de`, `-ja`, `-zh`, `-ar`, `-pt`, `-it`, `-ko`, `-hi`, `-th` — each auto-loads by its own rule match when the target language comes up, so a Spanish job never pulls in Chinese or Korean anchors it doesn't need. Add a new language by dropping in a new `content-locale-humanize-<code>` skill; never grow this file with per-language content.
 
 No matching per-language skill exists yet for this target: run the same structural checks anyway — connector density, power-word frequency, sentence-rhythm clustering, paragraph-opener templating, cross-lingual cliché transfer, source-syntax interference. Reason as a native speaker of that specific language; don't wait on a word list to exist.
 
