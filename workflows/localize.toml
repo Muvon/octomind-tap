@@ -1,11 +1,27 @@
-# Title: Localize — One Text, Many Markets
+# Title: Localize — One Text, Many Markets, Native-Sounding
 #
-# Public workflow: transcreate a single input into several locales in parallel,
-# then back-translation-QA each locale in parallel — each QA emits a per-locale
-# adequacy verdict. Fork the sub-steps to change target languages. Public roles only.
+# Public workflow: transcreate one input (one or more articles/files) into
+# several locales in parallel, then drive EACH locale through its own
+# native-fluency audit/fix loop until it reads as if a native speaker wrote it
+# from scratch — no translationese, no AI-slop — scored via the
+# `content-locale-humanize` rubric (structural-pattern based, domain-
+# calibrated, not a per-language word list). Fork the sub-steps to change
+# target languages.
+#
+# Note: LLM self-evaluation shares blind spots with same-family generator
+# models — for higher-stakes content, set `model` on the `*_audit` sub-steps
+# to a different provider than the transcreation default.
+#
+# Note: loops are capped at 2 rounds on purpose, not raised for "more polish."
+# Research on iterative LLM self-refinement (TEaR, Self-Refine) finds quality
+# peaks around the first correction pass and can decline with more rounds — the
+# scorer's judgment is the bottleneck, not iteration count. If round 2 still
+# fails, escalate to a different model or a human rather than looping further.
+#
+# Public roles only.
 
 name        = "localize"
-description = "Transcreate one input into Spanish, French, German, and Japanese in parallel, then back-translation-QA each locale in parallel, emitting a per-locale adequacy verdict."
+description = "Transcreate one input (one or more articles/files) into Spanish, French, German, and Japanese in parallel, then drive each locale through a native-fluency audit/fix loop until it reads as native-written, not translated."
 
 # ── 1. Parallel transcreation ────────────────────────────────────────────────
 [[steps]]
@@ -17,15 +33,18 @@ parallel = true
   role    = "content:translate"
   session = "fresh"
   prompt  = """
-Transcreate the following into Spanish (es-ES), sense-for-sense with locale-aware
-cultural adaptation — recreate the impact, never literal. Preserve meaning, voice,
-and structure; keep code, placeholders, and URLs verbatim.
+Transcreate the following into Spanish (es-ES) as a native Spanish speaker would
+write it from scratch, never literal. Detect the content domain (technical,
+legal, marketing, academic, casual, ...) and calibrate register and terminology
+to it. Preserve meaning, voice, and structure; keep code, placeholders, and URLs
+verbatim. If the input contains more than one article or file, translate every
+one completely and output each as its own clearly delimited block, same order.
 
 <source>
 {{input}}
 </source>
 
-Output only the Spanish translation.
+Output only the Spanish transcreation(s).
 """
 
   [[steps.run]]
@@ -33,15 +52,18 @@ Output only the Spanish translation.
   role    = "content:translate"
   session = "fresh"
   prompt  = """
-Transcreate the following into French (fr-FR), sense-for-sense with locale-aware
-cultural adaptation — recreate the impact, never literal. Preserve meaning, voice,
-and structure; keep code, placeholders, and URLs verbatim.
+Transcreate the following into French (fr-FR) as a native French speaker would
+write it from scratch, never literal. Detect the content domain (technical,
+legal, marketing, academic, casual, ...) and calibrate register and terminology
+to it. Preserve meaning, voice, and structure; keep code, placeholders, and URLs
+verbatim. If the input contains more than one article or file, translate every
+one completely and output each as its own clearly delimited block, same order.
 
 <source>
 {{input}}
 </source>
 
-Output only the French translation.
+Output only the French transcreation(s).
 """
 
   [[steps.run]]
@@ -49,15 +71,18 @@ Output only the French translation.
   role    = "content:translate"
   session = "fresh"
   prompt  = """
-Transcreate the following into German (de-DE), sense-for-sense with locale-aware
-cultural adaptation — recreate the impact, never literal. Preserve meaning, voice,
-and structure; keep code, placeholders, and URLs verbatim.
+Transcreate the following into German (de-DE) as a native German speaker would
+write it from scratch, never literal. Detect the content domain (technical,
+legal, marketing, academic, casual, ...) and calibrate register and terminology
+to it. Preserve meaning, voice, and structure; keep code, placeholders, and URLs
+verbatim. If the input contains more than one article or file, translate every
+one completely and output each as its own clearly delimited block, same order.
 
 <source>
 {{input}}
 </source>
 
-Output only the German translation.
+Output only the German transcreation(s).
 """
 
   [[steps.run]]
@@ -65,110 +90,224 @@ Output only the German translation.
   role    = "content:translate"
   session = "fresh"
   prompt  = """
-Transcreate the following into Japanese (ja-JP), sense-for-sense with locale-aware
-cultural adaptation — recreate the impact, never literal. Preserve meaning, voice,
-and structure; keep code, placeholders, and URLs verbatim.
+Transcreate the following into Japanese (ja-JP) as a native Japanese speaker
+would write it from scratch, never literal. Detect the content domain (technical,
+legal, marketing, academic, casual, ...) and calibrate register and terminology
+to it. Preserve meaning, voice, and structure; keep code, placeholders, and URLs
+verbatim. If the input contains more than one article or file, translate every
+one completely and output each as its own clearly delimited block, same order.
 
 <source>
 {{input}}
 </source>
 
-Output only the Japanese translation.
+Output only the Japanese transcreation(s).
 """
 
-# ── 2. Parallel back-translation QA ──────────────────────────────────────────
-# Each QA runs content:translate in VALIDATE mode in a fresh session — a reverse
-# pass that catches dropped meaning, mistranslation, register drift, and broken
-# placeholders. For stronger QA, set `model` on each sub-step to a different
-# provider than your transcreation default so it doesn't share the same blind spots.
+# ── 2. Spanish native-fluency loop ───────────────────────────────────────────
 [[steps]]
-name     = "qa"
-parallel = true
+name           = "spanish_native"
+loop           = true
+max_iterations = 2
+exit_when      = { output = "spanish_audit", matches = '(?m)^NATIVE-PASS' }
 
   [[steps.run]]
-  name    = "spanish_qa"
+  name    = "spanish_fix"
   role    = "content:translate"
-  session = "fresh"
+  session = "continue"
   prompt  = """
-VALIDATE this Spanish (es-ES) transcreation against the source. Back-translate the
-critical passages and check meaning fidelity, register/tone, and cultural fit. Any
-mistranslation, dropped/added meaning, register drift, broken placeholder, or
-cultural misfire is a critical finding. List findings severity-ordered with the
-fix direction.
+ADJUST this Spanish (es-ES) transcreation so it reads exactly as a native
+speaker would write it from scratch. Fix every translationese construct
+(source-syntax interference, calques), frequency-outlier words, connector
+pileups, and other AI-slop pattern per `content-locale-humanize`, calibrated to
+the content's domain. (On later rounds you also receive the native-fluency
+auditor's findings from earlier in this conversation — fix every one, criticals
+first, without reintroducing anything already resolved.)
 
 <source>
 {{input}}
 </source>
 
-<translation>
+<draft>
 {{spanish}}
-</translation>
+</draft>
 
-End with exactly one line: QA-VERDICT: ADEQUATE or QA-VERDICT: REVISE. Nothing after it.
+Output only the revised Spanish text, same shape and article/file boundaries.
 """
 
   [[steps.run]]
-  name    = "french_qa"
+  name    = "spanish_audit"
   role    = "content:translate"
   session = "fresh"
   prompt  = """
-VALIDATE this French (fr-FR) transcreation against the source. Back-translate the
-critical passages and check meaning fidelity, register/tone, and cultural fit. Any
-mistranslation, dropped/added meaning, register drift, broken placeholder, or
-cultural misfire is a critical finding. List findings severity-ordered with the
-fix direction.
+NATIVE-AUDIT this Spanish (es-ES) text against the source. Reason as a
+skeptical native Spanish-speaking editor of this content's domain — never by
+matching an English AI-word list.
 
 <source>
 {{input}}
 </source>
 
 <translation>
+{{spanish_fix}}
+</translation>
+
+End with exactly one line: NATIVE-PASS (Pass band, no Critical finding) or
+NATIVE-FAIL. Nothing after it.
+"""
+
+# ── 3. French native-fluency loop ────────────────────────────────────────────
+[[steps]]
+name           = "french_native"
+loop           = true
+max_iterations = 2
+exit_when      = { output = "french_audit", matches = '(?m)^NATIVE-PASS' }
+
+  [[steps.run]]
+  name    = "french_fix"
+  role    = "content:translate"
+  session = "continue"
+  prompt  = """
+ADJUST this French (fr-FR) transcreation so it reads exactly as a native
+speaker would write it from scratch. Fix every translationese construct
+(source-syntax interference, calques), frequency-outlier words, connector
+pileups, and other AI-slop pattern per `content-locale-humanize`, calibrated to
+the content's domain. (On later rounds you also receive the native-fluency
+auditor's findings from earlier in this conversation — fix every one, criticals
+first, without reintroducing anything already resolved.)
+
+<source>
+{{input}}
+</source>
+
+<draft>
 {{french}}
-</translation>
+</draft>
 
-End with exactly one line: QA-VERDICT: ADEQUATE or QA-VERDICT: REVISE. Nothing after it.
+Output only the revised French text, same shape and article/file boundaries.
 """
 
   [[steps.run]]
-  name    = "german_qa"
+  name    = "french_audit"
   role    = "content:translate"
   session = "fresh"
   prompt  = """
-VALIDATE this German (de-DE) transcreation against the source. Back-translate the
-critical passages and check meaning fidelity, register/tone, and cultural fit. Any
-mistranslation, dropped/added meaning, register drift, broken placeholder, or
-cultural misfire is a critical finding. List findings severity-ordered with the
-fix direction.
+NATIVE-AUDIT this French (fr-FR) text against the source. Reason as a
+skeptical native French-speaking editor of this content's domain — never by
+matching an English AI-word list.
 
 <source>
 {{input}}
 </source>
 
 <translation>
+{{french_fix}}
+</translation>
+
+End with exactly one line: NATIVE-PASS (Pass band, no Critical finding) or
+NATIVE-FAIL. Nothing after it.
+"""
+
+# ── 4. German native-fluency loop ────────────────────────────────────────────
+[[steps]]
+name           = "german_native"
+loop           = true
+max_iterations = 2
+exit_when      = { output = "german_audit", matches = '(?m)^NATIVE-PASS' }
+
+  [[steps.run]]
+  name    = "german_fix"
+  role    = "content:translate"
+  session = "continue"
+  prompt  = """
+ADJUST this German (de-DE) transcreation so it reads exactly as a native
+speaker would write it from scratch. Fix every translationese construct
+(source-syntax interference, calques), frequency-outlier words, connector
+pileups, and other AI-slop pattern per `content-locale-humanize`, calibrated to
+the content's domain. (On later rounds you also receive the native-fluency
+auditor's findings from earlier in this conversation — fix every one, criticals
+first, without reintroducing anything already resolved.)
+
+<source>
+{{input}}
+</source>
+
+<draft>
 {{german}}
-</translation>
+</draft>
 
-End with exactly one line: QA-VERDICT: ADEQUATE or QA-VERDICT: REVISE. Nothing after it.
+Output only the revised German text, same shape and article/file boundaries.
 """
 
   [[steps.run]]
-  name    = "japanese_qa"
+  name    = "german_audit"
   role    = "content:translate"
   session = "fresh"
   prompt  = """
-VALIDATE this Japanese (ja-JP) transcreation against the source. Back-translate the
-critical passages and check meaning fidelity, register/tone, and cultural fit. Any
-mistranslation, dropped/added meaning, register drift, broken placeholder, or
-cultural misfire is a critical finding. List findings severity-ordered with the
-fix direction.
+NATIVE-AUDIT this German (de-DE) text against the source. Reason as a
+skeptical native German-speaking editor of this content's domain — never by
+matching an English AI-word list.
 
 <source>
 {{input}}
 </source>
 
 <translation>
-{{japanese}}
+{{german_fix}}
 </translation>
 
-End with exactly one line: QA-VERDICT: ADEQUATE or QA-VERDICT: REVISE. Nothing after it.
+End with exactly one line: NATIVE-PASS (Pass band, no Critical finding) or
+NATIVE-FAIL. Nothing after it.
+"""
+
+# ── 5. Japanese native-fluency loop ──────────────────────────────────────────
+[[steps]]
+name           = "japanese_native"
+loop           = true
+max_iterations = 2
+exit_when      = { output = "japanese_audit", matches = '(?m)^NATIVE-PASS' }
+
+  [[steps.run]]
+  name    = "japanese_fix"
+  role    = "content:translate"
+  session = "continue"
+  prompt  = """
+ADJUST this Japanese (ja-JP) transcreation so it reads exactly as a native
+speaker would write it from scratch. Fix every translationese construct
+(source-syntax interference, calques), frequency-outlier words, connector
+pileups, and other AI-slop pattern per `content-locale-humanize`, calibrated to
+the content's domain. (On later rounds you also receive the native-fluency
+auditor's findings from earlier in this conversation — fix every one, criticals
+first, without reintroducing anything already resolved.)
+
+<source>
+{{input}}
+</source>
+
+<draft>
+{{japanese}}
+</draft>
+
+Output only the revised Japanese text, same shape and article/file boundaries.
+"""
+
+  [[steps.run]]
+  name    = "japanese_audit"
+  role    = "content:translate"
+  session = "fresh"
+  prompt  = """
+NATIVE-AUDIT this Japanese (ja-JP) text against the source. Reason as a
+skeptical native Japanese-speaking editor of this content's domain — never by
+matching an English AI-word list.
+
+<source>
+{{input}}
+</source>
+
+<translation>
+{{japanese_fix}}
+</translation>
+
+End with exactly one line: NATIVE-PASS (Pass band, no Critical finding) or
+NATIVE-FAIL. Nothing after it.
 """

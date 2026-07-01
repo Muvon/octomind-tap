@@ -28,7 +28,7 @@ Build / market / write / research (driven by a single stdin goal):
 | [`launch`](./launch.toml) | Idea → market explore → honest validate behind a pre-committed kill-gate → (greenlight?) brand + pitch + ads + bootstrap, else pivots | `conditional` |
 | [`content`](./content.toml) | Brief → researched draft → audit/edit loop until it passes (`AUDIT-PASS`) → promo posts | `loop` |
 | [`research`](./research.toml) | Background + evidence + counter-views in parallel → synthesize → groundedness judge loop (claims checked vs sources) → cited report | `parallel` + `loop` |
-| [`localize`](./localize.toml) | Transcreate one input into several locales in parallel, then back-translation-QA each locale | `parallel` |
+| [`localize`](./localize.toml) | Transcreate one input into several locales in parallel, then drive each locale through a native-fluency audit/fix loop until it reads as native-written, not translated | `parallel` + `loop` |
 | [`seo`](./seo.toml) | Audit a site/page across technical/on-page/off-page/GEO lenses, then a tiered, finding-traceable strategy brief | sequential |
 
 ## How resolution works

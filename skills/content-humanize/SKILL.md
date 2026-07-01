@@ -79,6 +79,7 @@ Also flag formal overreach: "utilize" (use), "facilitate" (help), "demonstrate" 
 - Trailing participles: sentences ending with "...highlighting", "...ensuring that", "...contributing to", "...underscoring", "...reflecting" — count each
 - "Not just X, but also Y" constructions — count
 - Semicolons connecting simple phrases — count (AI overuses these)
+- Triads: groups of three adjectives, phrases, or examples used for rhythm ("bold, innovative, and transformative") — count each; 2+ in a piece is a tell
 - Em-dash density — count em-dashes per 100 words. AI default is 3+ per paragraph; humans average <1 per 100 words. Total absence is also a tell (over-corrected humanization). One per ~100 words used naturally is the human shape
 - Perfect grammar throughout with zero breaks = AI signal
 - Score: natural grammar breaks present = high, perfect throughout = low
@@ -89,6 +90,7 @@ Also flag formal overreach: "utilize" (use), "facilitate" (help), "demonstrate" 
 - Emotional variance: enthusiasm, skepticism, frustration, curiosity, humor — any present?
 - Conversational asides: parenthetical thoughts, self-corrections, rhetorical questions?
 - Vulnerability or uncertainty: "I'm not sure about this", "The data is mixed", "We got this wrong"?
+- Hedging or false balance where a real position exists: "on one hand... on the other", "it depends", "there are pros and cons to both" — count each; genuine uncertainty is fine, avoiding a real answer is not
 - Specific references: named tools, named versions, exact settings, exact error messages, people, events, publications, dates?
 - Time-boxed case study language: "I tried this for 30 days", "We ran this for one quarter", "Here's the dashboard at week 6" — present where the content type allows?
 - "From the field" proof: screenshot callouts, captioned photo references, dashboard descriptions — present?
@@ -97,6 +99,7 @@ Also flag formal overreach: "utilize" (use), "facilitate" (help), "demonstrate" 
 #### 7. Structural Unpredictability
 - Section lengths: all roughly equal? (AI) or deliberately varied? (human)
 - Paragraph openers: all topic sentences? Or varied (question, example, continuation)?
+- Same paragraph template repeated (topic sentence → explanation → example → summary, again and again)? — flag every repetition after the first
 - Conclusion: recap of main points? (AI) Or forward-looking/question/callback? (human)
 - Opening: broad definitional? (AI) Or specific scene/claim/stat with commentary? (human)
 - Subheadings: generic labels ("Benefits", "Challenges")? Or personality ("Why This Actually Matters")?
@@ -162,6 +165,6 @@ AI writes:
 > "Digital marketing has evolved significantly over the past decade. Companies now utilize multiple channels to reach their audiences. Social media platforms offer unique opportunities for engagement. Content marketing remains a powerful strategy for building trust."
 
 Human writes:
-> "Digital marketing looks nothing like it did ten years ago. Nothing. The channels alone — social, search, email, video, podcasts, influencer partnerships — would've seemed absurd in 2014. And here's what nobody tells you: most companies are still figuring it out, throwing budget at whatever platform had a good case study last quarter."
+> "Digital marketing looks nothing like it did ten years ago. Nothing. The channels alone — social, search, email, video, podcasts, influencer partnerships — would've seemed absurd in 2014. And most companies are still figuring it out, throwing budget at whatever platform had a good case study last quarter."
 
 What changed: Specific over abstract. Fragments for punch. Contractions throughout. First-person energy. Unexpected vocabulary. Dramatic rhythm shifts. No dead words.
