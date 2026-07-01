@@ -92,21 +92,11 @@ Dual gate, mirroring MQM's actual scoring mechanic (themqm.org: Neutral=0/Minor=
 - Templated structure: the same paragraph-opener pattern repeating section after section.
 - Cross-lingual cliché transfer: an English AI-cliché calqued into the target (see examples below).
 
-### Calibration anchors (sourced, illustrative — not exhaustive, and this WILL rotate)
+### Calibration anchors — per-language, auto-loaded
 
-Spanish (solid sourcing): overused — crucial, explorar/exploraremos, desafíos, cautivar, considerar, enfrentar, adoptar. Connector pileup — además, sin embargo, por lo tanto, aunque, por otro lado. Stock openers — "Es importante tener en cuenta…", "Vale la pena señalar que…", "En conclusión…". Filler — muy, bastante, realmente, simplemente.
+Sourced per-language calibration lives in dedicated skills, not inline here — `content-locale-humanize-es`, `-fr`, `-de`, `-ja`, `-zh`, `-ar` — each auto-loads by its own rule match when the target language comes up, so a Spanish job never pulls in Chinese or Japanese anchors it doesn't need. Add a new language by dropping in a new `content-locale-humanize-<code>` skill; never grow this file with per-language content.
 
-French (solid sourcing): connector pileup — de plus, en outre, par ailleurs, donc, cependant, ainsi (nearly every paragraph). Cliché metaphors (English AI-isms calqued) — plonger dans, naviguer, s'embarquer. Power words — crucial, essentiel, vital. Stock — en constante évolution, tapisserie, nuance, en conclusion. Construction — "non seulement… mais aussi…".
-
-German (blog-convergence sourcing, weaker prior): power adjectives — nahtlos, ganzheitlich, innovativ, zunehmend, zweifellos, zweifelsohne, letztendlich, hochwertig, effizient, skalierbar, unzählig, nuanciert. Connectors — ferner, folglich, darüber hinaus, insbesondere, dennoch, daher, zudem, hingegen, infolgedessen. Opener tic — "Ein weiterer wichtiger Aspekt…" starting consecutive paragraphs. Stock closers — "Insgesamt", "Zusammenfassend ist festzuhalten". Rhythm — sentences clustering 15–25 words throughout.
-
-Japanese (anecdotal sourcing): katakana-loanword overuse where a native term exists — インサイト (insight), アウトプット (output), スケーラビリティ (scalability). Hedge endings like「〜ではないでしょうか」. Overly formal/neutral register reading emotionally flat. Same phrase repeated within one passage instead of natural rephrasing.
-
-Chinese (best quantitative sourcing of any non-English language): "不是…而是…" (calque of "not X but Y"); "首先…其次…最后" (first…second…finally — the triad-listing tell). A university news-lab corpus study measured roughly 4x higher parallel-sentence-structure rates in AI-generated text versus human-written text.
-
-Arabic (weakest sourcing — mostly translated from the English canon, not independently observed): "في الختام" ("in conclusion"), "لا شك أن" ("there's no doubt that"). Treat any Arabic finding here as a starting hypothesis, not a confirmed tell.
-
-Every other language: run the same structural checks — connector density, power-word frequency, sentence-rhythm clustering, paragraph-opener templating, cross-lingual cliché transfer, source-syntax interference. Reason as a native speaker of that specific language; don't force-fit this table.
+No matching per-language skill exists yet for this target: run the same structural checks anyway — connector density, power-word frequency, sentence-rhythm clustering, paragraph-opener templating, cross-lingual cliché transfer, source-syntax interference. Reason as a native speaker of that specific language; don't wait on a word list to exist.
 
 ### Fix-Pass Technique
 

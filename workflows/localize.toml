@@ -1,313 +1,191 @@
-# Title: Localize — One Text, Many Markets, Native-Sounding
+# Title: Localize — Any Language, Native-Sounding, Not Hardcoded
 #
-# Public workflow: transcreate one input (one or more articles/files) into
-# several locales in parallel, then drive EACH locale through its own
-# native-fluency audit/fix loop until it reads as if a native speaker wrote it
-# from scratch — no translationese, no AI-slop — scored via the
-# `content-locale-humanize` rubric (structural-pattern based, domain-
-# calibrated, not a per-language word list). Fork the sub-steps to change
-# target languages.
+# Public workflow: parse the target language(s) out of the input at runtime
+# and fan out dynamically — one branch per language, via a `match` regex on
+# `<lang>` tags — instead of a fixed, hardcoded language list. Add a language
+# by asking for it in the input; add PER-LANGUAGE calibration by dropping a new
+# `content-locale-humanize-<code>` skill (see that skill's directory) — never
+# by editing this file.
 #
-# Note: LLM self-evaluation shares blind spots with same-family generator
-# models — for higher-stakes content, set `model` on the `*_audit` sub-steps
-# to a different provider than the transcreation default.
+# Pipeline: plan (parse requested languages) -> transcreate (dynamic, one
+# branch per language, translation ONLY — kept deliberately light) -> audit
+# (dynamic, read-only NATIVE-AUDIT score per language) -> fix (dynamic, applies
+# the audit's findings per language). Each dynamic step's `match` regex
+# re-extracts the `<lang>` markers that the PREVIOUS step re-emits, per the
+# engine's own rule: a dynamic parallel step's fan-out is always keyed off the
+# immediately preceding step's output, nothing further back.
 #
-# Note: loops are capped at 2 rounds on purpose, not raised for "more polish."
-# Research on iterative LLM self-refinement (TEaR, Self-Refine) finds quality
-# peaks around the first correction pass and can decline with more rounds — the
-# scorer's judgment is the bottleneck, not iteration count. If round 2 still
-# fails, escalate to a different model or a human rather than looping further.
+# Include the source's OWN language in the requested list (e.g. source is
+# English, ask for "English, Chinese, and Russian") to also run an AI-slop
+# check-and-fix pass on the source itself via content-voice/content-humanize —
+# every branch prompt detects the same-language case and switches rubric.
+#
+# Note: this is deliberately ONE audit+fix pass, not a repeated loop. Research
+# on iterative LLM self-refinement (TEaR, Self-Refine) finds quality peaks
+# around the first correction pass and can decline with more automated rounds
+# — so audit->fix runs once, not in a loop.
+#
+# Note: the transcreate step does translation ONLY, nothing else — an earlier
+# version also asked it to self-correct against content-locale-humanize in the
+# SAME turn, which produced a much longer single completion and reliably
+# tripped an upstream gateway timeout (HTTP 524) on longer/more verbose target
+# languages (confirmed on Russian: 13+ minutes, still failing on retry). One
+# focused job per turn beats one turn doing three jobs — the dedicated audit
+# and fix stages already own native-fluency correction.
+#
+# Input shape: state the target language(s) in plain language, then the source
+# content. Example:
+#   Localize into Chinese and Russian:
+#   <article text>
+#
+# Note: `retries = 2` on every step, plus `min_success = 1` on every dynamic
+# block. Confirmed necessary the hard way: one language (Russian, in testing)
+# hit a persistent upstream HTTP 524 that survived every retry, and under the
+# engine's strict default (every branch must succeed) that alone aborted the
+# entire run — including languages that had already succeeded. `min_success = 1`
+# lets the pipeline finish with whichever languages made it through; a failed
+# branch's `<lang>` marker simply never reaches the next dynamic step's match,
+# so it's dropped cleanly rather than dangling. Still LOUD, not silent — the
+# progress output always reports "N/M succeeded".
 #
 # Public roles only.
 
 name        = "localize"
-description = "Transcreate one input (one or more articles/files) into Spanish, French, German, and Japanese in parallel, then drive each locale through a native-fluency audit/fix loop until it reads as native-written, not translated."
+description = "Parse the requested target language(s) out of the input at runtime (no hardcoded list) and fan out one branch per language: transcreate, then an independent NATIVE-AUDIT and ADJUST-fix round per language."
 
-# ── 1. Parallel transcreation ────────────────────────────────────────────────
+# ── 1. Parse requested target languages ─────────────────────────────────────
 [[steps]]
-name     = "transcreate"
-parallel = true
+name    = "plan"
+role    = "content:translate"
+session = "fresh"
+retries = 2
+prompt  = """
+Read the request below. It states one or more target languages, followed by
+the source content to localize. Identify every target language requested, with
+locale variant (es-ES not es; if only a language name is given, pick the most
+likely default locale variant, e.g. "Chinese" -> zh-CN). Do not translate or
+analyze the content yet.
 
-  [[steps.run]]
-  name    = "spanish"
-  role    = "content:translate"
-  session = "fresh"
-  prompt  = """
-Transcreate the following into Spanish (es-ES) as a native Spanish speaker would
-write it from scratch, never literal. Detect the content domain (technical,
-legal, marketing, academic, casual, ...) and calibrate register and terminology
-to it. Preserve meaning, voice, and structure; keep code, placeholders, and URLs
-verbatim. If the input contains more than one article or file, translate every
-one completely and output each as its own clearly delimited block, same order.
-
-<source>
+<request>
 {{input}}
-</source>
+</request>
 
-Output only the Spanish transcreation(s).
+Output ONLY one <lang>locale-code</lang> tag per requested target language, one
+after another, nothing else — no preamble, no article text. Example, for a
+request naming Spanish and Japanese:
+<lang>es-ES</lang><lang>ja-JP</lang>
 """
 
-  [[steps.run]]
-  name    = "french"
-  role    = "content:translate"
-  session = "fresh"
-  prompt  = """
-Transcreate the following into French (fr-FR) as a native French speaker would
-write it from scratch, never literal. Detect the content domain (technical,
-legal, marketing, academic, casual, ...) and calibrate register and terminology
-to it. Preserve meaning, voice, and structure; keep code, placeholders, and URLs
-verbatim. If the input contains more than one article or file, translate every
-one completely and output each as its own clearly delimited block, same order.
-
-<source>
-{{input}}
-</source>
-
-Output only the French transcreation(s).
-"""
-
-  [[steps.run]]
-  name    = "german"
-  role    = "content:translate"
-  session = "fresh"
-  prompt  = """
-Transcreate the following into German (de-DE) as a native German speaker would
-write it from scratch, never literal. Detect the content domain (technical,
-legal, marketing, academic, casual, ...) and calibrate register and terminology
-to it. Preserve meaning, voice, and structure; keep code, placeholders, and URLs
-verbatim. If the input contains more than one article or file, translate every
-one completely and output each as its own clearly delimited block, same order.
-
-<source>
-{{input}}
-</source>
-
-Output only the German transcreation(s).
-"""
-
-  [[steps.run]]
-  name    = "japanese"
-  role    = "content:translate"
-  session = "fresh"
-  prompt  = """
-Transcreate the following into Japanese (ja-JP) as a native Japanese speaker
-would write it from scratch, never literal. Detect the content domain (technical,
-legal, marketing, academic, casual, ...) and calibrate register and terminology
-to it. Preserve meaning, voice, and structure; keep code, placeholders, and URLs
-verbatim. If the input contains more than one article or file, translate every
-one completely and output each as its own clearly delimited block, same order.
-
-<source>
-{{input}}
-</source>
-
-Output only the Japanese transcreation(s).
-"""
-
-# ── 2. Spanish native-fluency loop ───────────────────────────────────────────
+# ── 2. Transcreate — dynamic fan-out, one branch per requested language ─────
 [[steps]]
-name           = "spanish_native"
-loop           = true
-max_iterations = 2
-exit_when      = { output = "spanish_audit", matches = '(?m)^NATIVE-PASS' }
+name         = "transcreate"
+parallel     = true
+match        = '<lang>([^<]+)</lang>'
+max_parallel = 6
+min_success  = 1
 
   [[steps.run]]
-  name    = "spanish_fix"
-  role    = "content:translate"
-  session = "continue"
-  prompt  = """
-ADJUST this Spanish (es-ES) transcreation so it reads exactly as a native
-speaker would write it from scratch. Fix every translationese construct
-(source-syntax interference, calques), frequency-outlier words, connector
-pileups, and other AI-slop pattern per `content-locale-humanize`, calibrated to
-the content's domain. (On later rounds you also receive the native-fluency
-auditor's findings from earlier in this conversation — fix every one, criticals
-first, without reintroducing anything already resolved.)
-
-<source>
-{{input}}
-</source>
-
-<draft>
-{{spanish}}
-</draft>
-
-Output only the revised Spanish text, same shape and article/file boundaries.
-"""
-
-  [[steps.run]]
-  name    = "spanish_audit"
+  name    = "draft"
   role    = "content:translate"
   session = "fresh"
+  retries = 2
   prompt  = """
-NATIVE-AUDIT this Spanish (es-ES) text against the source. Reason as a
-skeptical native Spanish-speaking editor of this content's domain — never by
-matching an English AI-word list.
+If {{transcreate}} is the SAME language the source is already written in, skip
+translation entirely: instead pass the source through with only minimal,
+obvious fixes (typos, broken syntax) — the dedicated audit/fix stages below
+handle the real AI-slop pass, don't duplicate that work here. Otherwise,
+transcreate the source below into {{transcreate}} directly and cleanly, as a
+native speaker of that locale would write it from scratch — never literal.
+Detect the content domain (technical, legal, marketing, academic, casual, ...)
+and calibrate register and terminology to it. Preserve meaning, voice, and
+structure; keep code, placeholders, and URLs verbatim. Keep this turn focused
+on translation alone — native-fluency scoring and correction are separate,
+dedicated stages later in this pipeline, don't fold them in here. If the
+source contains more than one article or file, process every one, each its
+own clearly delimited block.
+
+Ignore any language-request instruction line in the source below — it is not
+content to translate.
 
 <source>
 {{input}}
 </source>
 
-<translation>
-{{spanish_fix}}
-</translation>
-
-End with exactly one line: NATIVE-PASS (Pass band, no Critical finding) or
-NATIVE-FAIL. Nothing after it.
+Output EXACTLY this shape and nothing else: start with `<lang>{{transcreate}}</lang>`
+on its own line, then the transcreation. No meta-commentary about your own
+process, methodology, or tool use — just the marker and the text.
 """
 
-# ── 3. French native-fluency loop ────────────────────────────────────────────
+# ── 3. Native-fluency audit — dynamic fan-out, re-keyed off step 2's markers ─
 [[steps]]
-name           = "french_native"
-loop           = true
-max_iterations = 2
-exit_when      = { output = "french_audit", matches = '(?m)^NATIVE-PASS' }
+name         = "audit"
+parallel     = true
+match        = '<lang>([^<]+)</lang>'
+max_parallel = 6
+min_success  = 1
 
   [[steps.run]]
-  name    = "french_fix"
-  role    = "content:translate"
-  session = "continue"
-  prompt  = """
-ADJUST this French (fr-FR) transcreation so it reads exactly as a native
-speaker would write it from scratch. Fix every translationese construct
-(source-syntax interference, calques), frequency-outlier words, connector
-pileups, and other AI-slop pattern per `content-locale-humanize`, calibrated to
-the content's domain. (On later rounds you also receive the native-fluency
-auditor's findings from earlier in this conversation — fix every one, criticals
-first, without reintroducing anything already resolved.)
-
-<source>
-{{input}}
-</source>
-
-<draft>
-{{french}}
-</draft>
-
-Output only the revised French text, same shape and article/file boundaries.
-"""
-
-  [[steps.run]]
-  name    = "french_audit"
+  name    = "findings"
   role    = "content:translate"
   session = "fresh"
+  retries = 2
   prompt  = """
-NATIVE-AUDIT this French (fr-FR) text against the source. Reason as a
-skeptical native French-speaking editor of this content's domain — never by
-matching an English AI-word list.
+All drafts are below, each starting with its own `<lang>code</lang>` marker —
+audit ONLY the section marked `<lang>{{audit}}</lang>`. Pick EXACTLY ONE of
+these two paths — never both, never one after the other:
+(a) {{audit}} is the source's own language -> run the `content-humanize`
+    8-dimension diagnostic on it directly (a same-language AI-slop check, not
+    a translation check).
+(b) {{audit}} is a different language -> NATIVE-AUDIT mode: reason as a
+    skeptical native speaker of {{audit}} for this content's domain, via
+    `content-locale-humanize` (plus whichever per-language calibration skill
+    matches {{audit}}) — never by matching an English AI-word list.
 
 <source>
 {{input}}
 </source>
 
-<translation>
-{{french_fix}}
-</translation>
+<all_drafts>
+{{draft}}
+</all_drafts>
 
-End with exactly one line: NATIVE-PASS (Pass band, no Critical finding) or
-NATIVE-FAIL. Nothing after it.
+Output EXACTLY this shape and nothing else: the `<lang>{{audit}}</lang>` marker
+ONCE, on its own line, at the very start — then ONE diagnostic report for
+{{audit}} from whichever single path applies. Never emit the marker a second
+time, and never produce two reports. No meta-commentary about your own
+process, methodology, or tool use — just the marker and the one report.
 """
 
-# ── 4. German native-fluency loop ────────────────────────────────────────────
+# ── 4. Fix — dynamic fan-out, re-keyed off step 3's markers ─────────────────
 [[steps]]
-name           = "german_native"
-loop           = true
-max_iterations = 2
-exit_when      = { output = "german_audit", matches = '(?m)^NATIVE-PASS' }
+name         = "fix"
+parallel     = true
+match        = '<lang>([^<]+)</lang>'
+max_parallel = 6
+min_success  = 1
 
   [[steps.run]]
-  name    = "german_fix"
-  role    = "content:translate"
-  session = "continue"
-  prompt  = """
-ADJUST this German (de-DE) transcreation so it reads exactly as a native
-speaker would write it from scratch. Fix every translationese construct
-(source-syntax interference, calques), frequency-outlier words, connector
-pileups, and other AI-slop pattern per `content-locale-humanize`, calibrated to
-the content's domain. (On later rounds you also receive the native-fluency
-auditor's findings from earlier in this conversation — fix every one, criticals
-first, without reintroducing anything already resolved.)
-
-<source>
-{{input}}
-</source>
-
-<draft>
-{{german}}
-</draft>
-
-Output only the revised German text, same shape and article/file boundaries.
-"""
-
-  [[steps.run]]
-  name    = "german_audit"
+  name    = "polished"
   role    = "content:translate"
   session = "fresh"
+  retries = 2
   prompt  = """
-NATIVE-AUDIT this German (de-DE) text against the source. Reason as a
-skeptical native German-speaking editor of this content's domain — never by
-matching an English AI-word list.
+All drafts and all audit findings are below, each starting with its own
+`<lang>code</lang>` marker — use ONLY the sections marked `<lang>{{fix}}</lang>`.
+Apply every finding for {{fix}}, criticals first — via the 7-pass
+`content-humanize` rewrite if {{fix}} is the source's own language, otherwise
+via `content-locale-humanize`. If the audit found nothing for {{fix}}, output
+the draft unchanged.
 
-<source>
-{{input}}
-</source>
+<all_drafts>
+{{draft}}
+</all_drafts>
 
-<translation>
-{{german_fix}}
-</translation>
+<all_findings>
+{{findings}}
+</all_findings>
 
-End with exactly one line: NATIVE-PASS (Pass band, no Critical finding) or
-NATIVE-FAIL. Nothing after it.
-"""
-
-# ── 5. Japanese native-fluency loop ──────────────────────────────────────────
-[[steps]]
-name           = "japanese_native"
-loop           = true
-max_iterations = 2
-exit_when      = { output = "japanese_audit", matches = '(?m)^NATIVE-PASS' }
-
-  [[steps.run]]
-  name    = "japanese_fix"
-  role    = "content:translate"
-  session = "continue"
-  prompt  = """
-ADJUST this Japanese (ja-JP) transcreation so it reads exactly as a native
-speaker would write it from scratch. Fix every translationese construct
-(source-syntax interference, calques), frequency-outlier words, connector
-pileups, and other AI-slop pattern per `content-locale-humanize`, calibrated to
-the content's domain. (On later rounds you also receive the native-fluency
-auditor's findings from earlier in this conversation — fix every one, criticals
-first, without reintroducing anything already resolved.)
-
-<source>
-{{input}}
-</source>
-
-<draft>
-{{japanese}}
-</draft>
-
-Output only the revised Japanese text, same shape and article/file boundaries.
-"""
-
-  [[steps.run]]
-  name    = "japanese_audit"
-  role    = "content:translate"
-  session = "fresh"
-  prompt  = """
-NATIVE-AUDIT this Japanese (ja-JP) text against the source. Reason as a
-skeptical native Japanese-speaking editor of this content's domain — never by
-matching an English AI-word list.
-
-<source>
-{{input}}
-</source>
-
-<translation>
-{{japanese_fix}}
-</translation>
-
-End with exactly one line: NATIVE-PASS (Pass band, no Critical finding) or
-NATIVE-FAIL. Nothing after it.
+Output only the final {{fix}} text — no `<lang>` marker needed, this is the
+last step. No meta-commentary about your own process, methodology, or tool
+use — just the finished text.
 """
