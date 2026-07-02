@@ -72,10 +72,15 @@ Read the request below and produce a compact work brief containing ONLY:
    verbatim; if the content is pasted inline, reproduce it in full, unchanged.
 3. Any reference material the request points at (documentation directories,
    manuals, glossaries) — list those paths verbatim; they ground terminology
-   and facts for the later steps. Also check whether that material has
-   variants matching each target language (sibling directories or files named
-   by language or locale next to the given path) and list, per language,
-   whichever actually exist — never invent paths you didn't verify.
+   and facts for the later steps. Also check whether THAT reference material
+   has variants matching each target language (sibling directories or files
+   named by language or locale next to the reference path) and list, per
+   language, whichever actually exist — never invent paths you didn't verify.
+   This variant discovery applies ONLY to the reference material: the source
+   content file and any destination content paths (and their language
+   siblings) are NOT reference material — existing translations of the
+   content are never a baseline, a draft, or a source of truth; the pipeline
+   always produces fresh work from the source.
 4. One line naming the content domain (technical, legal, marketing, academic,
    casual, ...), judged from the source.
 
@@ -139,9 +144,13 @@ and never a report-only response: this step always outputs the edited text.
 Work ONE language at a time, and between languages take a grounding pause:
 before starting each language's edit, view the brief's source file (or the
 relevant reference material) to re-anchor terminology and meaning for that
-language — then emit that language's edited block. Never emit all languages
-as one uninterrupted generation; the per-language grounding reads come first,
-every time.
+language — then emit that language's edited block, then move to the NEXT
+language and repeat until every language is done. Never emit all languages as
+one uninterrupted generation; the per-language grounding reads come first,
+every time. Completeness contract: your final output MUST contain exactly one
+block for EVERY language in the brief — finishing after only some languages
+is a broken response; before ending, count your blocks against the brief's
+language list.
 
 THIS round (no auditor findings exist yet): diagnose and fix in one pass,
 self-directed. Run the `content-humanize` 7-pass rewrite on the source's own
@@ -226,18 +235,24 @@ before reporting it. This step is read-only — report, never edit files.
 {{fix}}
 </all_fixed_drafts>
 
-For each language: list findings (severity-ordered, with quotes and fix
-direction) if any, then close that language's section with exactly one line —
-`<code>: PASS` or `<code>: FAIL`. PASS requires the native-fluency score in
-the Pass band AND zero Critical or Moderate findings — a language with a
-Moderate finding still listed is a FAIL, because a PASS ends the loop and
-whatever you listed would never get applied. Minor polish-level findings
+FIRST, before any quality judgment, run the completeness check: every
+language listed in the brief must have its own block in the drafts above. A
+language from the brief with no block present gets an automatic
+`<code>: FAIL (missing draft)` — no quality audit can rescue an absent text.
+
+For each language present: list findings (severity-ordered, with quotes and
+fix direction) if any, then close that language's section with exactly one
+line — `<code>: PASS` or `<code>: FAIL`. PASS requires the native-fluency
+score in the Pass band AND zero Critical or Moderate findings — a language
+with a Moderate finding still listed is a FAIL, because a PASS ends the loop
+and whatever you listed would never get applied. Minor polish-level findings
 alone don't block a PASS.
 
-After every language's section, derive the final line MECHANICALLY: re-read
-the per-language verdict lines you just wrote — if and only if every single
-one says PASS, end the WHOLE response with exactly `ALL-PASS`; if any says
-FAIL, end with exactly `CONTINUE`. Nothing after that line.
+Then derive the final line MECHANICALLY against the BRIEF's language list:
+if and only if EVERY language in the brief has a verdict line saying PASS,
+end the WHOLE response with exactly `ALL-PASS`; otherwise (any FAIL, or any
+brief language without a verdict) end with exactly `CONTINUE`. Nothing after
+that line.
 """
 
 # ── 4. Deliver — write to disk if a path applies, git-aware; else inline ────
@@ -260,17 +275,24 @@ The last audit round's verdicts (per language, PASS or FAIL):
 {{audit}}
 </final_audit>
 
+You are a writer here, not an editor: the `<final>` text above is the
+complete, audited deliverable, and your job is to put it where it belongs
+verbatim. Never compare it against what's currently at a destination, never
+keep parts of the old file content, and never make editorial decisions of
+your own — the loop already made them all.
+
 For each language: if the original request below named or implied a file
 path (a source file to overwrite, or an explicit destination) for that
-language, write the final text there now — directly in-place, git-aware (git
-is the undo/diff history; check whether the path is inside a git work tree
-first). In-place means exactly that: edit the destination file itself. Do not
-create staging, temporary, backup, or suffixed copies (`.new`, `-edited`,
-`.bak`, or any other variant) unless the request explicitly asks to keep a
-separate copy — and if a temporary file was needed mid-process for any
-reason, remove it before finishing. If no path applies to a language, deliver
-that language's text inline instead — never invent a path. Preserve each
-destination file's original structure (frontmatter, code fences) exactly.
+language, write that language's final text there now — the file's new content
+IS the final block, whole, replacing whatever the file held before. Directly
+in-place, git-aware (git is the undo/diff history; check whether the path is
+inside a git work tree first). In-place means exactly that: edit the
+destination file itself. Do not create staging, temporary, backup, or
+suffixed copies (`.new`, `-edited`, `.bak`, or any other variant) unless the
+request explicitly asks to keep a separate copy — and if a temporary file was
+needed mid-process for any reason, remove it before finishing. If no path
+applies to a language, deliver that language's text inline instead — never
+invent a path.
 
 <original_request>
 {{input}}
