@@ -98,6 +98,10 @@ Sourced per-language calibration lives in dedicated skills, not inline here — 
 
 No matching per-language skill exists yet for this target: run the same structural checks anyway — connector density, power-word frequency, sentence-rhythm clustering, paragraph-opener templating, cross-lingual cliché transfer, source-syntax interference. Reason as a native speaker of that specific language; don't wait on a word list to exist.
 
+### Phrase verification — check real usage when unsure
+
+When you can't tell whether a collocation or turn of phrase sounds native, don't settle it by intuition — check real usage. Run a websearch for the exact phrase in quotes (phrase-search) in the target language: hits on genuinely native-written pages mean people actually say it, so it's safe to keep; no real hits means native speakers don't put it that way — rephrase and re-check. Reserve this for genuinely uncertain phrases, a handful per document at most; constructions you already know don't need lookups.
+
 ### Fix-Pass Technique
 
 Apply in order. Preserve every fact and instruction — rewrite the phrasing, not the content.
