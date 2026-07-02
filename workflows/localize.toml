@@ -223,9 +223,22 @@ NATIVE-AUDIT mode via `content-locale-humanize` (plus whichever per-language
 calibration skill matches that language) — never by matching an English
 AI-word list. Pick exactly one rubric per language, never both. Check locale
 punctuation conventions too (full-width in CJK, target-locale quotation
-marks). When unsure whether a flagged phrase is genuinely unnatural, verify
-via the skill's phrase-verification technique (exact quoted-phrase websearch)
-before reporting it. This step is read-only — report, never edit files.
+marks). This step is read-only — report, never edit files.
+
+PHRASE-VERIFICATION PASS (per non-source language, the core naturalness
+check): pick the handful of collocations and turns of phrase in that language
+you're least sure a native tech reader would actually use — the suspicious
+calques, unnatural verb-object pairs, nominal chains, borderline term
+renderings. For EACH, run an exact quoted-phrase websearch per
+`content-locale-humanize`'s phrase-verification technique (quotes for exact
+match; scope to a native-language platform the audience uses when you can;
+also try unscoped). Real native hits → the phrase is fine, do NOT flag it.
+Zero / no results → it's a genuine finding: report it with a natural
+replacement, and verify that replacement the same way before proposing it.
+Do not flag a phrase as unnatural on intuition alone once you have a tool to
+check — and never claim a search verdict you didn't actually run. In each
+language's section list the phrases you verified with their verdict
+(found / not found + the query), so the pass is auditable.
 
 <brief>
 {{brief}}
