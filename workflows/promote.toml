@@ -1,0 +1,297 @@
+# Title: Promote — Source to Platform-Native Social Drafts
+#
+# Public workflow: turn an existing, trusted piece of content (a file path, a
+# URL, or pasted text) into grounded, platform-native social drafts for every
+# network requested in the input — parsed at runtime, no hardcoded platform
+# list.
+#
+# Role split (a writer should receive a prepared brief, not do research):
+# - `assistant:researcher` RESOLVES the source and RESEARCHES trends — it
+#   fetches/reads the source once and captures it in the brief (so no later
+#   step re-fetches), verifies it's real, and finds what's genuinely live on
+#   each platform for the posting date. Grounded and citation-minded by
+#   identity; it won't fabricate a source it couldn't read.
+# - `content:social` WRITES the drafts from that brief, one per platform,
+#   following the platform rulebooks.
+# - `content:editor` fixes per audit findings; `content:audit` scores against
+#   the shared rubric (incl. the Phoenix-style reach verdict for X).
+# - `content:social` DELIVERS — writes files or returns inline, verbatim.
+#
+# Grounding contract: every fact, number, and claim in a draft must trace to
+# the captured source text; every trend angle must trace to something the
+# pulse step actually found. If the source can't be read, the run HALTS
+# (SOURCE-UNREACHABLE) rather than inventing grounding from the wider web.
+#
+# One turn covers ALL platforms (as N platform-tagged blocks) per step:
+# `loop` cannot fan out per item, and a convergence loop that re-checks its
+# own work matters more than parallel speed. Platform rulebooks live in the
+# `social-<platform>` skills; the audit rubric in `content-audit`.
+#
+# Note: `max_iterations = 3` is a ceiling, not a target. `retries = 4` guards
+# transient provider/network errors.
+#
+# Source paths: a file path or pasted text is the reliable source — the
+# researcher reads those directly. A URL works only when the runtime gives the
+# researcher a web-fetch tool; with search-only web access it may not resolve a
+# specific URL and the run halts SOURCE-UNREACHABLE rather than guessing. The
+# natural chain is `content` (writes the article to a file) -> `promote` (reads
+# that file), so file-path is the common, dependable input.
+#
+# Input shape: name the platforms and the source; optionally destinations,
+# posting timing, audience/brand notes. Example:
+#   Promote as an X thread and a LinkedIn post:
+#   ./blog/my-article.md
+#
+# Public roles only.
+
+name        = "promote"
+description = "Turn an existing article (file, URL, or pasted text) into grounded, platform-native social drafts for every network requested — a researcher resolves the source and live trends, a writer drafts per the platform rulebooks, a fix/audit loop polishes until every draft passes, then delivers to files or inline."
+
+# ── 1. Brief — researcher resolves the source + captures it once ────────────
+[[steps]]
+name    = "brief"
+role    = "assistant:researcher"
+session = "fresh"
+retries = 4
+prompt  = """
+Prepare a work brief for a social-post writer from the request below. You
+resolve and verify the source; the writer only writes.
+
+FIRST, get the full source text and put it IN this brief so no later step
+re-fetches it: if the request gives a URL, fetch it now; a file path, read it
+now; pasted text, use it as-is. Reproduce the complete source content verbatim
+inside a <source_text>...</source_text> block — this is the ground truth every
+later step reads.
+
+HARD STOP: if the source can't be read — fetch fails, 404, empty page,
+paywall, unreadable file — do NOT substitute web-search results, the site's
+other pages, or general knowledge. Output exactly this one line and nothing
+else: `SOURCE-UNREACHABLE: <url-or-path> — <reason>`. A promote run with no
+readable source must halt, never fabricate grounding from elsewhere.
+
+If the source read cleanly, output the brief with ONLY:
+1. Every requested platform, one XML tag per target using the platform code as
+   the tag name, empty, each on its own line — `<x-post></x-post>`,
+   `<x-thread></x-thread>`, `<linkedin></linkedin>`, `<reddit></reddit>`,
+   `<hackernews></hackernews>`, `<threads></threads>`, `<bluesky></bluesky>`,
+   `<mastodon></mastodon>`. Exactly what the request asks for, nothing assumed.
+2. `<source_text>` — the full source content, verbatim.
+3. The source's key extractable specifics — concrete numbers, named tools,
+   direct quotes, dated facts — listed so the writer reaches for them (these
+   are what make a post land; a vague post wastes a strong source).
+4. Posting timing: the date/time the request states, otherwise {{DATE}}.
+5. Audience, brand, or voice notes the request gives, verbatim.
+
+EXCLUDE any destination file paths or delivery instructions — the working
+steps must not see destinations; delivery reads the original request. No
+meta-commentary.
+
+<request>
+{{input}}
+</request>
+"""
+
+# ── 2. Pulse — researcher finds what's genuinely live per platform ──────────
+[[steps]]
+name    = "pulse"
+role    = "assistant:researcher"
+session = "fresh"
+retries = 4
+prompt  = """
+If the brief below is a single `SOURCE-UNREACHABLE:` line, output that exact
+line and nothing else — do not research, do not proceed.
+
+Otherwise, for EACH platform tagged in the brief, research what is genuinely
+current on/around that platform as of the brief's posting date: live
+discussions, recent news in the source topic's space, active angles or
+formats. Use websearch.
+
+Honesty contract: report ONLY signals you actually found, each with a source.
+If nothing relevant is genuinely trending for a platform, say so and recommend
+the evergreen angle — a real "no strong signal" beats an invented trend, which
+is a critical defect.
+
+<brief>
+{{brief}}
+</brief>
+
+Output per platform: 1–3 candidate angles connecting the source topic to what
+you verified is live (or the evergreen recommendation), each with its evidence
+in one line. No meta-commentary.
+"""
+
+# ── 3. Draft — writer produces one grounded block per platform ──────────────
+[[steps]]
+name    = "draft"
+role    = "content:social"
+session = "fresh"
+retries = 4
+prompt  = """
+If the brief below is a single `SOURCE-UNREACHABLE:` line, output that exact
+line and nothing else — write no drafts.
+
+Otherwise write one draft per platform tagged in the brief, following each
+platform's rulebook (the `social-<platform>` skills) for shape, length, hooks,
+and conventions — a post is not a thread is not a comment; match the exact
+requested format. Reach for the brief's listed specifics (real numbers, named
+tools, quotes) — a concrete post beats a generic one.
+
+Grounding: every fact, number, name, and claim comes from the brief's
+<source_text>. Pick each platform's angle from the pulse findings when a
+verified signal exists, otherwise the evergreen angle — never invent a trend,
+a stat, or a detail the source doesn't contain. Write like a person posting,
+not a brand broadcasting (the content-voice rules apply).
+
+Completeness contract: output exactly one block for EVERY platform tagged in
+the brief — before ending, count your blocks against the brief's platform
+list.
+
+This step produces conversation output only — do not write or modify any file.
+
+<brief>
+{{brief}}
+</brief>
+
+<pulse>
+{{pulse}}
+</pulse>
+
+Wrap each draft in its platform's own XML tag as the delimiter, e.g.
+`<x-post>` on its own line, the draft, then `</x-post>` on its own line. The
+blocks are the ENTIRE output — no length notes, posting tips, angle labels, or
+any other text before, between, or after them. Fit each draft to its
+platform's own length sweet spot (per the `social-<platform>` skill — e.g.
+LinkedIn's dwell-optimal band, not a thin post).
+"""
+
+# ── 4. Fix <-> audit loop — every platform together, until all pass ─────────
+[[steps]]
+name           = "polish"
+loop           = true
+max_iterations = 3
+exit_when      = { output = "audit", matches = '(?m)^ALL-PASS' }
+
+  [[steps.run]]
+  name    = "fix"
+  role    = "content:editor"
+  session = "continue"
+  retries = 4
+  prompt  = """
+If the drafts below are a single `SOURCE-UNREACHABLE:` line, output that exact
+line and nothing else.
+
+Otherwise surgically edit every platform block below per its audit findings —
+no diagnosis phase, no scope confirmation; the findings ARE the confirmed
+scope, and this step always outputs the edited drafts, never a report.
+
+THIS round (no auditor findings exist yet): diagnose and fix in one pass,
+self-directed, against each platform's rulebook (`social-<platform>` skills),
+the `content-voice` rules, and `content-humanize` patterns — hook first,
+slop-shape, dwell risk, format-fits-venue, and length within the platform's
+own sweet spot.
+
+LATER rounds: you receive the auditor's findings directly — resolve every one,
+criticals first, without reintroducing anything already fixed. A platform the
+auditor reported no findings against gets output unchanged.
+
+Grounding: never add a fact, number, or claim absent from the brief's
+<source_text>; never keep one it doesn't support. A repeated product or brand
+name stays verbatim every time — only style words get varied.
+
+Completeness contract: your final output MUST contain exactly one block for
+EVERY platform in the brief — finishing after only some is a broken response;
+count your blocks against the brief's platform list before ending.
+
+This step produces conversation output only — do not write or modify any file.
+
+<brief>
+{{brief}}
+</brief>
+
+<drafts>
+{{draft}}
+</drafts>
+
+Wrap each draft in its platform's own XML tag as the delimiter (e.g.
+`<x-post>` … `</x-post>`). No meta-commentary before, between, or after.
+"""
+
+  [[steps.run]]
+  name    = "audit"
+  role    = "content:audit"
+  session = "fresh"
+  retries = 4
+  prompt  = """
+If the drafts below are a single `SOURCE-UNREACHABLE:` line, end your whole
+response with exactly `ALL-PASS` (nothing to audit; let the run finish and
+report the unreachable source). Nothing else.
+
+Otherwise, FIRST run the completeness check: every platform tagged in the
+brief must have its own block in the drafts. A brief platform with no block
+gets an automatic `<code>: FAIL (missing draft)` — no quality audit rescues an
+absent draft.
+
+For each platform present: audit its block against the `content-audit` rubric
+with that platform's weights and rulebook (`social-<platform>` skills) —
+include the Phoenix-style verdict for X surfaces. Verify grounding against the
+brief's <source_text>: any fact, number, or claim the source doesn't support
+is a Critical finding. List findings severity-ordered with quotes and fix
+direction, then close each platform's section with exactly one line —
+`<code>: PASS` or `<code>: FAIL`. PASS requires zero Critical or Moderate
+findings — a platform with a Moderate finding still listed is a FAIL, because
+a PASS ends the loop and whatever you listed would never get applied. Minor
+polish-level findings alone don't block a PASS.
+
+Then derive the final line MECHANICALLY against the BRIEF's platform list: if
+and only if EVERY platform in the brief has a verdict line saying PASS, end
+the WHOLE response with exactly `ALL-PASS`; otherwise end with exactly
+`CONTINUE`. Nothing after that line. This step is read-only — report, never
+edit files.
+
+<brief>
+{{brief}}
+</brief>
+
+<all_drafts>
+{{fix}}
+</all_drafts>
+"""
+
+# ── 5. Deliver — files if destinations named, else inline ───────────────────
+[[steps]]
+name    = "deliver"
+role    = "content:social"
+session = "fresh"
+retries = 4
+prompt  = """
+If the final drafts below are a single `SOURCE-UNREACHABLE:` line, write
+nothing to disk — report to the user that the source could not be read (quote
+the line) and that no drafts were produced. Stop there.
+
+Otherwise you are a writer placing finished work, not an editor: the `<final>`
+drafts are the complete, audited deliverables — put each where it belongs
+verbatim, no editorial changes of your own.
+
+<final>
+{{fix}}
+</final>
+
+<final_audit>
+{{audit}}
+</final_audit>
+
+For each platform: if the original request below named a destination file for
+it, write that platform's final draft there — the file's new content IS the
+final block, whole. No staging, temporary, backup, or suffixed copies; remove
+any temp file you needed mid-process. If no destination applies, deliver that
+platform's draft inline — never invent a path, and never post to any platform
+yourself.
+
+<original_request>
+{{input}}
+</original_request>
+
+After handling every platform, give a brief per-platform summary: the angle
+used and its evidence (only claim a trend the pulse actually verified), the
+final audit verdict, and where the draft landed — file path or "inline".
+"""

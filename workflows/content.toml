@@ -1,13 +1,19 @@
 # Title: Content — Brief to Published Piece
 #
 # Public workflow: turn a brief into a researched draft, then refine it through
-# an audit ⇄ edit quality loop until it passes, and derive promo posts. Operates
-# on the current directory (roles read/write the piece on disk). Public roles only.
+# an audit ⇄ edit quality loop until it passes. Operates on the current
+# directory (roles read/write the piece on disk). Public roles only.
+#
+# Scope: long-form finalization — articles, blog posts, and long-form pieces
+# for any venue the brief names. Social promotion is a different intent
+# (adapting an existing, trusted piece per network) and lives in the
+# `promote` workflow; chain them: `content` produces the article on disk,
+# then feed it to `promote`.
 #
 # Note: chains several specialist runs — token/time-heavy by design.
 
 name        = "content"
-description = "Turn a brief into a researched, audited, publish-ready article in the current directory — refined by an edit/audit loop — then derive promo social posts."
+description = "Turn a brief into a researched, audited, publish-ready article in the current directory, refined by an edit/audit loop until it passes. For social adaptation of the finished piece, chain the promote workflow."
 
 # ── 1. Draft ─────────────────────────────────────────────────────────────────
 [[steps]]
@@ -69,15 +75,3 @@ End with exactly one line: AUDIT-PASS (every axis clears the bar, no critical
 findings) or AUDIT-FAIL (anything outstanding). Nothing after it.
 """
 
-# ── 3. Promo posts ───────────────────────────────────────────────────────────
-[[steps]]
-name    = "promote"
-role    = "content:social"
-session = "fresh"
-prompt  = """
-Write cross-platform promo posts for the finished article in the current directory.
-
-<brief>
-{{input}}
-</brief>
-"""
