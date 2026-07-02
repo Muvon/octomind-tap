@@ -102,6 +102,8 @@ No matching per-language skill exists yet for this target: run the same structur
 
 When you can't tell whether a collocation or turn of phrase sounds native, don't settle it by intuition — check real usage. Run a websearch for the exact phrase in quotes (phrase-search) in the target language: hits on genuinely native-written pages mean people actually say it, so it's safe to keep; no real hits means native speakers don't put it that way — rephrase and re-check. Reserve this for genuinely uncertain phrases, a handful per document at most; constructions you already know don't need lookups.
 
+Never claim support from documentation or usage you didn't actually check — a fabricated authority claim ("the official docs use this term" when you never opened them) is worse than admitted uncertainty, because it shuts down the review that would have caught the error.
+
 ### Fix-Pass Technique
 
 Apply in order. Preserve every fact and instruction — rewrite the phrasing, not the content.

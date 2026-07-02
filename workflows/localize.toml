@@ -72,7 +72,10 @@ Read the request below and produce a compact work brief containing ONLY:
    verbatim; if the content is pasted inline, reproduce it in full, unchanged.
 3. Any reference material the request points at (documentation directories,
    manuals, glossaries) — list those paths verbatim; they ground terminology
-   and facts for the later steps.
+   and facts for the later steps. Also check whether that material has
+   variants matching each target language (sibling directories or files named
+   by language or locale next to the given path) and list, per language,
+   whichever actually exist — never invent paths you didn't verify.
 4. One line naming the content domain (technical, legal, marketing, academic,
    casual, ...), judged from the source.
 
@@ -169,11 +172,17 @@ constructions (mode names, repeated patterns like "in X mode") the same way
 every time — one form, used consistently.
 
 Ground every terminology or factual choice in the brief's source and
-reference material (read them) — never fill a gap from imagination. And when
-you're genuinely unsure whether a phrase sounds natural in a target language,
-verify it per `content-locale-humanize`'s phrase-verification technique: an
-exact quoted-phrase websearch — real native usage found means keep it,
-nothing found means rephrase. Only for uncertain phrases, a handful at most.
+reference material (read them) — never fill a gap from imagination, and never
+justify a rendering by documentation, official usage, or search results you
+did not actually open in this session: fabricated authority is a critical
+defect, while an honest "unverified" is acceptable. For headings and
+recurring domain terms whose target rendering isn't the plainly established
+standard, verification is a duty, not a judgment call — check the brief's
+language-matching reference material if listed, otherwise run
+`content-locale-humanize`'s phrase-verification (exact quoted-phrase
+websearch: real native usage found means keep it, nothing found means
+rephrase). Feeling certain doesn't waive it. For ordinary prose, verify only
+when genuinely unsure — a handful of lookups at most.
 
 This step produces conversation output only — do not write or modify any
 file.
@@ -225,9 +234,10 @@ Moderate finding still listed is a FAIL, because a PASS ends the loop and
 whatever you listed would never get applied. Minor polish-level findings
 alone don't block a PASS.
 
-After every language's section, end the WHOLE response with exactly one final
-line: `ALL-PASS` if every language reported PASS, otherwise `CONTINUE`.
-Nothing after it.
+After every language's section, derive the final line MECHANICALLY: re-read
+the per-language verdict lines you just wrote — if and only if every single
+one says PASS, end the WHOLE response with exactly `ALL-PASS`; if any says
+FAIL, end with exactly `CONTINUE`. Nothing after that line.
 """
 
 # ── 4. Deliver — write to disk if a path applies, git-aware; else inline ────
@@ -271,4 +281,7 @@ what was fixed (criticals first, in plain terms), what was deliberately left
 unchanged, the language's final audit verdict (PASS, or FAIL with the top
 outstanding finding if the loop hit its cap), and where the final text landed
 — the file path written, or "inline" if no path applied to that language.
+In the summary, attribute a choice to reference documentation only if that
+material was actually consulted in this pipeline — never assert doc support
+that wasn't verified.
 """
