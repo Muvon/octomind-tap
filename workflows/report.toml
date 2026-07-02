@@ -1,0 +1,240 @@
+# Title: Report — Raw Data to a Human-Readable, Printable Report
+#
+# Public workflow: turn a data source (CSV, spreadsheet, SQL/database, metrics,
+# logs, or a question over that data) into a decision-ready report a human
+# actually reads — structured answer-first (Minto Pyramid), every number
+# computed from the data (never fabricated), charts chosen per question and
+# embedded as inline SVG, delivered as a self-contained HTML document that
+# opens in any browser and prints to clean PDF with no dependencies. Other
+# formats (Markdown, or a rendered PDF when a renderer is present) on request.
+#
+# Shape (evaluator-optimizer, but FILE-BASED because the artifact is large):
+# analyze (load data, compute the real numbers, extract findings) -> compose
+# (build the report and WRITE it to a file on disk) -> review loop (fix edits
+# the file in place <-> audit reads the file and recomputes the figures) ->
+# deliver+render. Only a file-path marker and findings pass between the loop
+# steps — the whole document is never regenerated through a variable, which
+# keeps every completion short and the run robust.
+#
+# Grounding contract: every statistic, chart value, and claim is computed from
+# the actual data — the audit recomputes and fails the run on any figure it
+# can't reproduce. No illustrative or invented numbers; uncertainty is flagged.
+#
+# Role: data:analyst runs every step — it has shell + python + filesystem, so
+# it genuinely loads the data, computes statistics, generates SVG charts, edits
+# the report file, and (when a renderer is available) renders it to PDF. The
+# audit step runs it in a FRESH session as an independent checker.
+#
+# Rendering: the HTML is self-contained (inline CSS + inline SVG) and prints to
+# PDF from any browser with zero tools. If a renderer is present (weasyprint,
+# wkhtmltopdf, headless chromium, pandoc), deliver also emits a PDF; otherwise
+# it hands over the HTML with Print -> Save as PDF instructions. No hard
+# dependency on any renderer, and no faked PDF.
+#
+# Note: `max_iterations = 3` ceiling; `retries = 4` for transient errors.
+#
+# Input shape: point at the data, say what the report should answer, and give
+# an output path (recommended — the report is a file). Example:
+#   Report on this data: what drove the Q2 change and where's the risk?
+#   Data: ./sales-q2.csv
+#   Output: ./q2-report.html
+#
+# Public roles only.
+
+name        = "report"
+description = "Turn a data source (CSV, spreadsheet, SQL, metrics, logs) into a decision-ready report a human reads — answer-first structure, every number computed from the data (never fabricated), inline-SVG charts, delivered as a self-contained HTML that prints to clean PDF (or Markdown/PDF on request), built on disk and refined by an accuracy+readability loop until it passes."
+
+# ── 1. Analyze — load the data, compute the real numbers, extract findings ──
+[[steps]]
+name    = "analyze"
+role    = "data:analyst"
+session = "fresh"
+retries = 4
+prompt  = """
+Load and analyze the data for the request below. Actually read it (use your
+shell/python tools — read the CSV/spreadsheet, query the database, parse the
+logs). Compute real statistics; do not estimate or eyeball.
+
+Produce an analysis brief:
+- The question(s) the report must answer, restated crisply.
+- The headline finding and 3–5 key findings, strongest first, each with the
+  exact supporting number and how it was computed (metric, filter, date range,
+  sample size).
+- For each finding, the chart that would show it best (type + the fields), per
+  `analytical-report`'s chart-selection rules.
+- Data provenance: source(s), scope/date range, row counts, any filtering,
+  and honest caveats (small samples, missing data, outliers).
+
+Every number must come from the data. If a figure can't be computed from what
+was provided, say so — never fill a gap with a plausible number.
+
+HARD STOP: if the data source can't be read — missing/unreadable file,
+unreachable database, empty/malformed data — do NOT invent findings. Output
+exactly this one line and nothing else: `DATA-UNREADABLE: <what> — <reason>`.
+
+<request>
+{{input}}
+</request>
+
+Output only the analysis brief. No report yet, no meta-commentary.
+"""
+
+# ── 2. Compose — build the report and WRITE it to a file on disk ────────────
+[[steps]]
+name    = "compose"
+role    = "data:analyst"
+session = "fresh"
+retries = 4
+prompt  = """
+If the analysis below is a single `DATA-UNREADABLE:` line, output that exact
+line and nothing else.
+
+Otherwise build the report from the analysis brief, following
+`analytical-report` verbatim: Minto Pyramid (headline finding first, then the
+3–5 key findings as an executive summary, then a supporting section per
+finding, then recommendations and a method/appendix). Every number comes from
+the brief (which computed it from the data) — add nothing the data doesn't
+support.
+
+Format: a self-contained HTML document by default — all CSS inline, all charts
+inline SVG computed from the data, web-safe/embedded fonts, and the print CSS
+(@media print / @page / page-break-inside: avoid) so it opens in a browser and
+prints to clean PDF. If the request specifies another format (Markdown, PDF),
+produce that. Make it readable: answer-first, scannable, a stat-tile row for
+headline metrics, tables with right-aligned numbers, restraint over density.
+
+WRITE the report to a file on disk (this is why later steps stay fast — they
+edit the file, not regenerate it): use the output path the request names; if
+none is given, write `./report.html` (or `.md` to match the requested format)
+in the current directory. Use your filesystem/shell tools to write it.
+
+<analysis>
+{{analyze}}
+</analysis>
+
+Output EXACTLY this and nothing else: `<report_file>the/path/you/wrote</report_file>`
+on its own line, then one sentence naming the headline finding. Do not paste
+the report body into your response — it lives in the file now.
+"""
+
+# ── 3. Review loop — fix edits the file in place <-> audit reads it ──────────
+[[steps]]
+name           = "review"
+loop           = true
+max_iterations = 3
+exit_when      = { output = "audit", matches = '(?m)^REPORT-PASS' }
+
+  [[steps.run]]
+  name    = "fix"
+  role    = "data:analyst"
+  session = "continue"
+  retries = 4
+  prompt  = """
+If the input below is a single `DATA-UNREADABLE:` line, output that exact line
+and nothing else.
+
+Otherwise the report lives in the file named by the `<report_file>` marker
+below. READ that file, then edit it IN PLACE with your text-editor tool to
+apply the audit's findings — criticals first, without reintroducing anything
+already fixed. Make targeted edits (fix the flagged figure, section, or chart);
+do not rewrite the whole document. Never resolve a finding by inventing or
+adjusting a number to fit — a figure the data doesn't support gets corrected
+or removed, not fabricated. On the first round, before any findings exist,
+read the file and self-review it against `analytical-report` (answer-first
+structure, every number grounded, right charts titled with their takeaway,
+self-contained + print-safe HTML), and edit in place what it flags.
+
+<report_ref>
+{{compose}}
+</report_ref>
+
+<findings>
+{{audit}}
+</findings>
+
+Output EXACTLY `<report_file>the/same/path</report_file>` on its own line, then
+one sentence on what you changed. Do not paste the document.
+"""
+
+  [[steps.run]]
+  name    = "audit"
+  role    = "data:analyst"
+  session = "fresh"
+  retries = 4
+  prompt  = """
+If the input below is a single `DATA-UNREADABLE:` line, end your whole response
+with exactly `REPORT-PASS` (nothing to audit; let the run finish and report the
+unreadable data). Nothing else.
+
+Otherwise the report lives in the file named by the `<report_file>` marker
+below. READ that file and audit it as an independent checker against the
+analysis brief and the underlying data, per `analytical-report`. Run the
+grounding gate FIRST: spot-check the report's key figures by recomputing them
+from the source data (use your shell/python tools on the data named in the
+request/brief). Any number you cannot reproduce from the data, or that has no
+stated basis, is a CRITICAL finding — no polish rescues a wrong or fabricated
+figure. Then check readability (answer-first pyramid, executive summary
+self-sufficient, findings lead their sections), charts (right type, directly
+labelled, titled with the takeaway, one visual system), and format
+(self-contained HTML that renders standalone with working print CSS, or the
+requested format valid).
+
+<report_ref>
+{{fix}}
+</report_ref>
+
+<request>
+{{input}}
+</request>
+
+<analysis>
+{{analyze}}
+</analysis>
+
+List findings severity-ranked (CRITICAL / MAJOR / MINOR) with the exact
+figure/section, why it matters, and the fix direction. Close with exactly one
+line — `REPORT-PASS` (every checked figure reproduces, no CRITICAL or MAJOR
+findings, readable and correctly formatted) or `REPORT-FAIL`. A single
+unreproducible figure forces REPORT-FAIL. Nothing after that line. Read-only on
+the report — recompute to verify, but do not edit the file.
+"""
+
+# ── 4. Deliver + render — the file is on disk; place it, render PDF if able ──
+[[steps]]
+name    = "deliver"
+role    = "data:analyst"
+session = "fresh"
+retries = 4
+prompt  = """
+If the input below is a single `DATA-UNREADABLE:` line, tell the user what data
+couldn't be read (quote the line) and that no report was produced. Stop there.
+
+Otherwise the finished, screened report is already on disk at the path in the
+`<report_file>` marker below (compose wrote it, the loop edited it in place).
+Your job:
+1. If the original request named a destination path that differs from where
+   the file currently is, move it there. Otherwise leave it in place. No
+   staging/backup copies.
+2. Rendering: the HTML is self-contained and prints to PDF from any browser. If
+   a PDF was explicitly requested OR the environment has a renderer (check with
+   your shell tool — weasyprint, wkhtmltopdf, a headless chromium/chrome, or
+   pandoc), render the file to PDF next to it. If no renderer is available,
+   don't fake one — deliver the HTML and note that the reader can open it and
+   Print -> Save as PDF (and that installing one of those tools would let this
+   step emit the PDF automatically).
+3. If no destination path was ever given AND the user needs the content inline
+   (not just a file), read the file and present it; otherwise just point to the
+   file.
+
+<report_ref>
+{{fix}}
+</report_ref>
+
+<original_request>
+{{input}}
+</original_request>
+
+After delivering, give a short summary: the headline finding, the file path(s)
+written, whether a PDF was rendered or the print-to-PDF instruction applies,
+and the final review verdict.
+"""
