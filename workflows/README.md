@@ -26,7 +26,8 @@ Build / market / write / research (driven by a single stdin goal):
 | Name | What it does | Showcases |
 |------|--------------|-----------|
 | [`launch`](./launch.toml) | Idea → market explore → honest validate behind a pre-committed kill-gate → (greenlight?) brand + pitch + ads + bootstrap, else pivots | `conditional` |
-| [`content`](./content.toml) | Brief → researched draft → audit/edit loop until it passes (`AUDIT-PASS`) → promo posts | `loop` |
+| [`content`](./content.toml) | Brief → researched draft → audit/edit loop until it passes (`AUDIT-PASS`) — long-form finalization; chain `promote` for social | `loop` |
+| [`promote`](./promote.toml) | Existing article (file/URL/text) → live trend-pulse per network → grounded platform-native drafts → fix/audit loop against the platform rulebooks until every draft passes (`ALL-PASS`) | `loop` |
 | [`research`](./research.toml) | Background + evidence + counter-views in parallel → synthesize → groundedness judge loop (claims checked vs sources) → cited report | `parallel` + `loop` |
 | [`localize`](./localize.toml) | Transcreate every language requested in the input (no hardcoded list), then loop fix/audit until every language passes native-fluency review (`ALL-PASS`), then deliver — writes to disk in-place if a path was given | `loop` |
 | [`seo`](./seo.toml) | Audit a site/page across technical/on-page/off-page/GEO lenses, then a tiered, finding-traceable strategy brief | sequential |
