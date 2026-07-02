@@ -6,27 +6,32 @@
 # until every language reports PASS or the iteration cap is hit. Finally,
 # deliver: write each language's result to disk if the input named or implied
 # a file path (git-aware, in-place), otherwise return it inline — plus a
-# per-language change summary so you can see what was actually fixed.
+# per-language change summary of what was fixed and each language's final
+# audit verdict.
 #
-# Why one turn covers ALL languages, not a branch per language: this engine's
-# `loop` step type cannot dynamically fan out per item (confirmed against the
-# engine source — `match` is a `parallel`-only feature, and `LoopStep` has no
-# such field). A real "loop until every language passes" therefore has to live
-# inside ONE set of `fix`/`audit` calls that each handle every requested
-# language together (content:translate already natively supports "multiple
-# target languages -> N independent blocks" in one turn). Trade-off: languages
-# no longer transcreate in true parallel — but a fixed convergence loop that
-# actually re-checks its own work is worth more than parallel speed here, and
-# it eliminates an entire class of bugs an earlier per-language dynamic-match
-# design hit (stray tag matches spawning duplicate branches, regex anchoring
-# regressions). Add a language by asking for it in the input, nothing to edit
-# here. Add per-language calibration by dropping a new
-# `content-locale-humanize-<code>` skill.
+# One turn covers ALL languages (as N `<lang>`-marked blocks), not a branch
+# per language: `loop` cannot dynamically fan out per item (`match` is a
+# `parallel`-only feature), and a convergence loop that re-checks its own work
+# is worth more than parallel speed here. Add a language by asking for it in
+# the input — nothing to edit in this file. Add per-language calibration by
+# dropping a new `content-locale-humanize-<code>` skill.
+#
+# The `brief` step strips destination paths from what the intermediate steps
+# see: transcreate/fix/audit work purely in-conversation and never learn where
+# the output will land, so nothing can write to disk early. Only `deliver`
+# reads the original request and touches files — the final text it writes is
+# always the audited one.
 #
 # Include the source's OWN language in the requested list (e.g. source is
 # English, ask for "English, Chinese, and Russian") to also run an AI-slop
 # check-and-fix pass on the source itself via content-voice/content-humanize —
 # every prompt detects the same-language case per-language and switches rubric.
+#
+# Roles: `content:editor` owns the fix step (diagnose-then-edit specialist —
+# surgical fixes per findings is exactly its identity, and the tap's own
+# content.toml uses it in the same loop position). `content:translate` owns
+# brief/transcreate (cross-language rendering), audit (NATIVE-AUDIT mode), and
+# deliver (its Delivery rule governs file-vs-inline output).
 #
 # Note: `max_iterations = 3` is a safety ceiling, not the target — research on
 # iterative LLM self-refinement (TEaR, Self-Refine) finds quality peaks early
@@ -34,15 +39,13 @@
 # `ALL-PASS` well before the cap. If it's still failing at the cap, that's a
 # signal to look at the findings, not to raise the cap.
 #
-# Note: `retries = 2` on every step. Confirmed necessary the hard way — a
-# persistent upstream HTTP 524 (gateway timeout, not a local network issue)
-# from the provider hit the same language repeatedly across multiple test
-# runs; without retries a single transient failure kills the whole run.
+# Note: `retries = 4` on every step guards against transient provider or
+# network errors — a multi-step pipeline shouldn't lose completed work to one
+# failed call.
 #
 # Input shape: state the target language(s) in plain language, then the source
 # content — a file path, multiple file paths, or pasted text, one article or
-# several. Whatever the input says, that's what happens; the deliver step
-# decides file-vs-inline per language from context, never by rigid rule.
+# several. Destinations are optional; with none, results come back inline.
 # Example:
 #   Localize into Chinese and Russian:
 #   content/english/blog/my-post/index.md
@@ -52,63 +55,101 @@
 name        = "localize"
 description = "Transcreate every requested language (parsed at runtime, no hardcoded list), then loop fix <-> audit (like develop.toml) until every language passes native-fluency review or the iteration cap is hit, then deliver — writing to disk in-place if a path was given, git-aware, with a per-language change summary."
 
-# ── 1. Transcreate every requested language in one pass ─────────────────────
+# ── 1. Brief — languages + source only; destinations stay out of the loop ───
 [[steps]]
-name    = "transcreate"
+name    = "brief"
 role    = "content:translate"
 session = "fresh"
-retries = 2
+retries = 4
 prompt  = """
-Parse every target language requested below, with locale variant (es-ES not
-es; infer the most likely variant if only a language name is given). Include
-the source's own language too if it's explicitly requested — that one gets a
-same-language AI-slop check instead of translation.
+Read the request below and produce a compact work brief containing ONLY:
 
-For EACH requested language: if it's the source's own language, pass the
-content through with only obvious mechanical fixes (typos, broken syntax) —
-the loop below owns the real AI-slop pass, don't duplicate that work here.
-Otherwise transcreate directly and cleanly into that language, as a native
-speaker would write it from scratch — never literal. Detect the content domain
-(technical, legal, marketing, academic, casual, ...) and calibrate register
-and terminology to it. Preserve meaning, voice, and structure; keep code,
-placeholders, and URLs verbatim. If the source is a file path, read it; if
-it's pasted text, use it directly; if there are multiple articles/files,
-process every one.
+1. Every requested target language, with locale variant (es-ES not es; infer
+   the most likely variant if only a language name is given), one
+   `<lang>code</lang>` marker per language. Include the source's own language
+   too if it's explicitly requested.
+2. The source: if the request references file path(s), list the path(s)
+   verbatim; if the content is pasted inline, reproduce it in full, unchanged.
+3. Any reference material the request points at (documentation directories,
+   manuals, glossaries) — list those paths verbatim; they ground terminology
+   and facts for the later steps.
+4. One line naming the content domain (technical, legal, marketing, academic,
+   casual, ...), judged from the source.
 
-Even if the request below mentions a destination file for any language, do
-NOT write to it — this is a working draft, not final. Only the pipeline's
-last step writes to disk.
+Deliberately EXCLUDE any output/destination file paths or delivery
+instructions — a later step handles delivery from the original request; the
+working steps must not see destinations. Do not translate or analyze anything
+yet. No meta-commentary.
 
 <request>
 {{input}}
 </request>
+"""
+
+# ── 2. Transcreate every requested language in one pass ─────────────────────
+[[steps]]
+name    = "transcreate"
+role    = "content:translate"
+session = "fresh"
+retries = 4
+prompt  = """
+Work from the brief below. For EACH requested language: if it's the source's
+own language, pass the content through with only obvious mechanical fixes
+(typos, broken syntax) — the loop after this step owns the real AI-slop pass,
+don't duplicate that work here. Otherwise transcreate directly and cleanly
+into that language, as a native speaker would write it from scratch — never
+literal. Calibrate register and terminology to the brief's content domain.
+If the brief lists reference material (documentation, glossaries), consult it
+for domain terminology before coining your own renderings. Preserve meaning,
+voice, and structure; keep code, placeholders, and URLs verbatim. If the
+brief lists source file path(s), read them; if it carries the content inline,
+use it directly; if there are multiple articles/files, process every one.
+
+This step produces conversation output only — do not write or modify any
+file.
+
+<brief>
+{{brief}}
+</brief>
 
 Output one block per requested language, each starting with its own
 `<lang>code</lang>` marker on its own line. No meta-commentary about your own
 process, methodology, or tool use.
 """
 
-# ── 2. Fix <-> audit loop — every language together, each round, until clean ─
+# ── 3. Fix <-> audit loop — every language together, each round, until clean ─
 [[steps]]
 name           = "polish"
 loop           = true
 max_iterations = 3
-exit_when      = { output = "audit", matches = '(?m)^ALL-PASS$' }
+exit_when      = { output = "audit", matches = '(?m)^ALL-PASS' }
 
   [[steps.run]]
   name    = "fix"
-  role    = "content:translate"
+  role    = "content:editor"
   session = "continue"
-  retries = 2
+  retries = 4
   prompt  = """
-Fix every language block below per its native-fluency findings: the
-`content-humanize` 7-pass rewrite for the source's own language, or
-`content-locale-humanize` (plus whichever per-language calibration skill
-matches) for every other language. Criticals first. (On later rounds you also
-have the previous round's audit findings earlier in this conversation —
-resolve every one without reintroducing anything already fixed.) A language
-with no findings yet, or none reported against it, gets output unchanged —
-don't rewrite what isn't broken.
+Surgically edit every language block below — no scope confirmation needed,
+and never a report-only response: this step always outputs the edited text.
+
+Work ONE language at a time, and between languages take a grounding pause:
+before starting each language's edit, view the brief's source file (or the
+relevant reference material) to re-anchor terminology and meaning for that
+language — then emit that language's edited block. Never emit all languages
+as one uninterrupted generation; the per-language grounding reads come first,
+every time.
+
+THIS round (no auditor findings exist yet): diagnose and fix in one pass,
+self-directed. Run the `content-humanize` 7-pass rewrite on the source's own
+language, and `content-locale-humanize`'s fix-passes (plus whichever
+per-language calibration skill matches) on every other language — interference
+and calques first, then frequency outliers, rhythm, register. Edit what the
+rubrics actually flag; don't rewrite what already reads native.
+
+LATER rounds: you receive the auditor's findings directly — resolve every
+one, criticals first, without reintroducing anything already fixed. A
+language the auditor reported no findings against gets output unchanged.
 
 Before shortening or varying ANY repeated word: decide whether it NAMES
 something (a product, brand, protocol, command, field, person — a referential
@@ -117,13 +158,29 @@ Only style choices get varied or cut for repetition. A name must repeat
 exactly, verbatim, as many times as the content needs it — never shortened,
 abbreviated, or swapped for a synonym, no matter how often it appears.
 
-Even if the request below mentions a destination file for any language, do
-NOT write to it — this round isn't final yet (the audit after it may find
-more). Only the pipeline's last step writes to disk.
+Preserve each language's locale punctuation conventions exactly while
+editing — full-width punctuation in CJK text stays full-width; never let an
+edit swap in ASCII punctuation where the locale uses its own.
 
-<request>
-{{input}}
-</request>
+Match the SOURCE's register: natural and human, never overshooting into
+slang or colloquialisms the source doesn't carry — a neutral technical
+sentence stays neutral in the target, just native. And render recurring
+constructions (mode names, repeated patterns like "in X mode") the same way
+every time — one form, used consistently.
+
+Ground every terminology or factual choice in the brief's source and
+reference material (read them) — never fill a gap from imagination. And when
+you're genuinely unsure whether a phrase sounds natural in a target language,
+verify it per `content-locale-humanize`'s phrase-verification technique: an
+exact quoted-phrase websearch — real native usage found means keep it,
+nothing found means rephrase. Only for uncertain phrases, a handful at most.
+
+This step produces conversation output only — do not write or modify any
+file.
+
+<brief>
+{{brief}}
+</brief>
 
 <drafts>
 {{transcreate}}
@@ -137,14 +194,24 @@ marker. No meta-commentary about your own process.
   name    = "audit"
   role    = "content:translate"
   session = "fresh"
-  retries = 2
+  retries = 4
   prompt  = """
 Audit EVERY language block below independently, each against ONLY its own
-section. For the source's own language, run the `content-humanize`
-8-dimension diagnostic. For every other language, NATIVE-AUDIT mode via
-`content-locale-humanize` (plus whichever per-language calibration skill
-matches that language) — never by matching an English AI-word list. Pick
-exactly one rubric per language, never both.
+section, using the brief's source (read the source file if the brief lists a
+path) to verify accuracy and completeness, and the brief's reference material
+to verify domain terminology. For the source's own language, run the
+`content-humanize` 8-dimension diagnostic. For every other language,
+NATIVE-AUDIT mode via `content-locale-humanize` (plus whichever per-language
+calibration skill matches that language) — never by matching an English
+AI-word list. Pick exactly one rubric per language, never both. Check locale
+punctuation conventions too (full-width in CJK, target-locale quotation
+marks). When unsure whether a flagged phrase is genuinely unnatural, verify
+via the skill's phrase-verification technique (exact quoted-phrase websearch)
+before reporting it. This step is read-only — report, never edit files.
+
+<brief>
+{{brief}}
+</brief>
 
 <all_fixed_drafts>
 {{fix}}
@@ -152,20 +219,23 @@ exactly one rubric per language, never both.
 
 For each language: list findings (severity-ordered, with quotes and fix
 direction) if any, then close that language's section with exactly one line —
-`<code>: PASS` (native-fluency score in the Pass band, no Critical finding) or
-`<code>: FAIL`.
+`<code>: PASS` or `<code>: FAIL`. PASS requires the native-fluency score in
+the Pass band AND zero Critical or Moderate findings — a language with a
+Moderate finding still listed is a FAIL, because a PASS ends the loop and
+whatever you listed would never get applied. Minor polish-level findings
+alone don't block a PASS.
 
 After every language's section, end the WHOLE response with exactly one final
 line: `ALL-PASS` if every language reported PASS, otherwise `CONTINUE`.
 Nothing after it.
 """
 
-# ── 3. Deliver — write to disk if a path applies, git-aware; else inline ────
+# ── 4. Deliver — write to disk if a path applies, git-aware; else inline ────
 [[steps]]
 name    = "deliver"
 role    = "content:translate"
 session = "fresh"
-retries = 2
+retries = 4
 prompt  = """
 This is the final, audited, fixed multi-language content, one block per
 language:
@@ -174,13 +244,23 @@ language:
 {{fix}}
 </final>
 
+The last audit round's verdicts (per language, PASS or FAIL):
+
+<final_audit>
+{{audit}}
+</final_audit>
+
 For each language: if the original request below named or implied a file
 path (a source file to overwrite, or an explicit destination) for that
-language, write the final text there now — in-place, git-aware (git is the
-undo/diff history; check whether the path is inside a git work tree first).
-If no path applies to a language, deliver that language's text inline instead
-— never invent a path. Preserve each destination file's original structure
-(frontmatter, code fences) exactly.
+language, write the final text there now — directly in-place, git-aware (git
+is the undo/diff history; check whether the path is inside a git work tree
+first). In-place means exactly that: edit the destination file itself. Do not
+create staging, temporary, backup, or suffixed copies (`.new`, `-edited`,
+`.bak`, or any other variant) unless the request explicitly asks to keep a
+separate copy — and if a temporary file was needed mid-process for any
+reason, remove it before finishing. If no path applies to a language, deliver
+that language's text inline instead — never invent a path. Preserve each
+destination file's original structure (frontmatter, code fences) exactly.
 
 <original_request>
 {{input}}
@@ -188,6 +268,7 @@ If no path applies to a language, deliver that language's text inline instead
 
 After handling every language, give a brief per-language change summary:
 what was fixed (criticals first, in plain terms), what was deliberately left
-unchanged, and where the final text landed — the file path written, or
-"inline" if no path applied to that language.
+unchanged, the language's final audit verdict (PASS, or FAIL with the top
+outstanding finding if the loop hit its cap), and where the final text landed
+— the file path written, or "inline" if no path applied to that language.
 """
