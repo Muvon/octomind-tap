@@ -100,9 +100,18 @@ No matching per-language skill exists yet for this target: run the same structur
 
 ### Phrase verification — check real usage when unsure
 
-When you can't tell whether a collocation or turn of phrase sounds native, don't settle it by intuition — check real usage. Run a websearch for the exact phrase in quotes (phrase-search) in the target language: hits on genuinely native-written pages mean people actually say it, so it's safe to keep; no real hits means native speakers don't put it that way — rephrase and re-check. Reserve this for genuinely uncertain phrases, a handful per document at most; constructions you already know don't need lookups.
+Intuition is fallible in a target language; real usage is the arbiter. When you can't tell whether a collocation or turn of phrase sounds native, run an exact quoted-phrase web search and let the result decide.
 
-Never claim support from documentation or usage you didn't actually check — a fabricated authority claim ("the official docs use this term" when you never opened them) is worse than admitted uncertainty, because it shuts down the review that would have caught the error.
+The technique:
+1. Search the phrase in double quotes (exact-phrase match), in the target language — e.g. `"чувствительные данные"`, `"权限边界"`.
+2. Scope to where native speakers of this domain actually write, when you can: add a site filter for a native-language platform the audience uses (a popular native tech blog/forum for developer content, a native news site for journalism, etc.). Also try the unscoped search.
+3. Read the verdict: real hits on genuinely native-written pages mean people say it — keep it. Zero / "no results" means they don't — rephrase, then run the SAME check on your replacement before accepting it. Don't swap one unverified phrase for another.
+
+Verify BOTH directions: a phrase already in the draft that sounds off, AND any phrase you're rewriting INTO the draft. A confident-sounding replacement that nobody actually uses is the same defect as the original.
+
+Build a running list as you go — phrases you verified as natural (safe to reuse) and phrases you verified as not-used (avoid). It saves repeat lookups and makes the report auditable.
+
+Reserve this for genuinely uncertain phrases — a handful per document; constructions you already know are native don't need lookups. And never claim support from usage or documentation you didn't actually check — a fabricated authority claim ("natives say this" / "the docs use this term" when you never searched or opened them) is worse than admitted uncertainty, because it shuts down the review that would have caught the error.
 
 ### Fix-Pass Technique
 
