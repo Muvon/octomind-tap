@@ -47,27 +47,32 @@
 name        = "promote"
 description = "Turn an existing article (file, URL, or pasted text) into grounded, platform-native social drafts for every network requested — a researcher resolves the source and live trends, a writer drafts per the platform rulebooks, a fix/audit loop polishes until every draft passes, then delivers to files or inline."
 
-# ── 1. Brief — researcher resolves the source + captures it once ────────────
+# ── 1. Brief — resolve the source (read file / use pasted text) once ────────
+# Role note: content:draft carries filesystem-read + websearch, so it reads a
+# file source directly and structures raw input into a brief — its native job.
+# It has no webfetch, so a URL source that can't be reached halts cleanly
+# (SOURCE-UNREACHABLE) rather than being guessed at; file and pasted text are
+# the dependable inputs (and the content->promote chain passes a file).
 [[steps]]
 name    = "brief"
-role    = "assistant:researcher"
+role    = "content:draft"
 session = "fresh"
 retries = 4
 prompt  = """
 Prepare a work brief for a social-post writer from the request below. You
-resolve and verify the source; the writer only writes.
+resolve the source; the writer only writes.
 
 FIRST, get the full source text and put it IN this brief so no later step
-re-fetches it: if the request gives a URL, fetch it now; a file path, read it
-now; pasted text, use it as-is. Reproduce the complete source content verbatim
-inside a <source_text>...</source_text> block — this is the ground truth every
-later step reads.
+re-reads it: if the request gives a file path, read it now; pasted text, use
+it as-is; a URL, read it if you have a fetch tool. Reproduce the complete
+source content verbatim inside a <source_text>...</source_text> block — this
+is the ground truth every later step reads.
 
-HARD STOP: if the source can't be read — fetch fails, 404, empty page,
-paywall, unreadable file — do NOT substitute web-search results, the site's
-other pages, or general knowledge. Output exactly this one line and nothing
-else: `SOURCE-UNREACHABLE: <url-or-path> — <reason>`. A promote run with no
-readable source must halt, never fabricate grounding from elsewhere.
+HARD STOP: if the source can't be read — missing/unreadable file, or a URL you
+have no tool to fetch — do NOT substitute web-search results, the site's other
+pages, or general knowledge. Output exactly this one line and nothing else:
+`SOURCE-UNREACHABLE: <url-or-path> — <reason>`. A promote run with no readable
+source must halt, never fabricate grounding from elsewhere.
 
 If the source read cleanly, output the brief with ONLY:
 1. Every requested platform, one XML tag per target using the platform code as
