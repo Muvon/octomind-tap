@@ -61,6 +61,13 @@ Dead phrases:
 - "navigating the complexities"
 - "a testament to"
 - "not just X, but also Y" — rewrite this construction every time
+- "what nobody tells you" / "what no one else is talking about" — itself a cliché now, don't open with it
+
+Second-wave vocabulary (2025–2026) — the first wave (delve, tapestry, realm) faded once everyone knew to grep for it; models moved on to these. Refresh this list as new tells emerge — vocabulary rotates, structure doesn't:
+- "quiet" / "quietly" as a faux-profound modifier — "a quiet shift", "quietly reshaping" (literal quiet — a quiet room, a quiet voice — is fine)
+- "drift" / "drifting" as an abstract metaphor — "cultural drift", "we're drifting toward X"
+- "signal" as a vague noun for "sign" or "indicator" — "a signal that things are changing" (a technical/data signal is fine)
+- "cascade" as a metaphor for chain effects — "a cascade of consequences" (a literal cascade — water, CSS — is fine)
 
 Formal overreach — default to the word you'd say out loud. If you'd hesitate to use it in conversation with a friend, swap it for the simpler one. Plain words win almost everywhere; reach for the formal version only when it carries meaning the simple word can't:
 - "utilize" → "use"
@@ -96,6 +103,12 @@ Bad rhythm (AI):
 
 Don't rotate synonyms
 If "users" is the right word, keep saying "users." Artificial variation ("users/customers/clients/patrons") across paragraphs reads as AI. Pick the right word and stay with it.
+
+Don't reach for three
+Groups of three adjectives or phrases ("bold, innovative, and transformative") are a rhythm crutch, not a real pattern of thought. One precise word beats three approximate ones. Flag any triad and cut it to the single word that's actually true.
+
+Take a position
+Hedging or both-sides framing — "on one hand... on the other", "it depends", "there are pros and cons to both" — reads as AI avoiding commitment. If a real position exists underneath the hedge, state it. Uncertainty is fine when it's genuine ("the data is mixed here"); false balance when there's actually a right answer is not.
 
 Personal stake
 Occasional first-person: "I've seen this pattern in...", "What surprised me was...". Acknowledge genuine uncertainty: "The data is mixed here." Show emotional range: enthusiasm, skepticism, curiosity. These are human signals.

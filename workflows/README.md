@@ -26,9 +26,12 @@ Build / market / write / research (driven by a single stdin goal):
 | Name | What it does | Showcases |
 |------|--------------|-----------|
 | [`launch`](./launch.toml) | Idea → market explore → honest validate behind a pre-committed kill-gate → (greenlight?) brand + pitch + ads + bootstrap, else pivots | `conditional` |
-| [`content`](./content.toml) | Brief → researched draft → audit/edit loop until it passes (`AUDIT-PASS`) → promo posts | `loop` |
+| [`content`](./content.toml) | Brief → researched draft → audit/edit loop until it passes (`AUDIT-PASS`) — long-form finalization; chain `promote` for social | `loop` |
+| [`promote`](./promote.toml) | Existing article (file/URL/text) → live trend-pulse per network → grounded platform-native drafts → fix/audit loop against the platform rulebooks until every draft passes (`ALL-PASS`) | `loop` |
 | [`research`](./research.toml) | Background + evidence + counter-views in parallel → synthesize → groundedness judge loop (claims checked vs sources) → cited report | `parallel` + `loop` |
-| [`localize`](./localize.toml) | Transcreate one input into several locales in parallel, then back-translation-QA each locale | `parallel` |
+| [`localize`](./localize.toml) | Transcreate every language requested in the input (no hardcoded list), then loop fix/audit until every language passes native-fluency review (`ALL-PASS`), then deliver — writes to disk in-place if a path was given | `loop` |
+| [`apply`](./apply.toml) | Master resume + job posting (file/URL/text) → intake → tailored, ATS-optimized, country-correct resume + cover letter + honest gap report → screen/fix loop until it passes (`SCREEN-PASS`). Grounded in real experience, never fabricates, never auto-submits | `loop` |
+| [`report`](./report.toml) | Data source (CSV/spreadsheet/SQL/metrics/logs) → analyze (real numbers, not estimates) → answer-first human report with inline-SVG charts → accuracy+readability loop (`REPORT-PASS`) → self-contained HTML that prints to clean PDF (or Markdown/PDF on request) | `loop` |
 | [`seo`](./seo.toml) | Audit a site/page across technical/on-page/off-page/GEO lenses, then a tiered, finding-traceable strategy brief | sequential |
 
 ## How resolution works

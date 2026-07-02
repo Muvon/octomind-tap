@@ -1,174 +1,322 @@
-# Title: Localize — One Text, Many Markets
+# Title: Localize — Any Language, Native-Sounding, Editor Loop Until Clean
 #
-# Public workflow: transcreate a single input into several locales in parallel,
-# then back-translation-QA each locale in parallel — each QA emits a per-locale
-# adequacy verdict. Fork the sub-steps to change target languages. Public roles only.
+# Public workflow: transcreate every requested language (parsed from the input
+# at runtime — no hardcoded language list), then run a genuine fix <-> audit
+# loop, same evaluator-optimizer shape as `develop.toml` / `content.toml`,
+# until every language reports PASS or the iteration cap is hit. Finally,
+# deliver: write each language's result to disk if the input named or implied
+# a file path (git-aware, in-place), otherwise return it inline — plus a
+# per-language change summary of what was fixed and each language's final
+# audit verdict.
+#
+# One turn covers ALL languages (as N `<lang>`-marked blocks), not a branch
+# per language: `loop` cannot dynamically fan out per item (`match` is a
+# `parallel`-only feature), and a convergence loop that re-checks its own work
+# is worth more than parallel speed here. Add a language by asking for it in
+# the input — nothing to edit in this file. Add per-language calibration by
+# dropping a new `content-locale-humanize-<code>` skill.
+#
+# The `brief` step strips destination paths from what the intermediate steps
+# see: transcreate/fix/audit work purely in-conversation and never learn where
+# the output will land, so nothing can write to disk early. Only `deliver`
+# reads the original request and touches files — the final text it writes is
+# always the audited one.
+#
+# Include the source's OWN language in the requested list (e.g. source is
+# English, ask for "English, Chinese, and Russian") to also run an AI-slop
+# check-and-fix pass on the source itself via content-voice/content-humanize —
+# every prompt detects the same-language case per-language and switches rubric.
+#
+# Roles: `content:editor` owns the fix step (diagnose-then-edit specialist —
+# surgical fixes per findings is exactly its identity, and the tap's own
+# content.toml uses it in the same loop position). `content:translate` owns
+# brief/transcreate (cross-language rendering), audit (NATIVE-AUDIT mode), and
+# deliver (its Delivery rule governs file-vs-inline output).
+#
+# Note: `max_iterations = 3` is a safety ceiling, not the target — research on
+# iterative LLM self-refinement (TEaR, Self-Refine) finds quality peaks early
+# and can decline with more automated rounds, so this should usually exit via
+# `ALL-PASS` well before the cap. If it's still failing at the cap, that's a
+# signal to look at the findings, not to raise the cap.
+#
+# Note: `retries = 4` on every step guards against transient provider or
+# network errors — a multi-step pipeline shouldn't lose completed work to one
+# failed call.
+#
+# Input shape: state the target language(s) in plain language, then the source
+# content — a file path, multiple file paths, or pasted text, one article or
+# several. Destinations are optional; with none, results come back inline.
+# Example:
+#   Localize into Chinese and Russian:
+#   content/english/blog/my-post/index.md
+#
+# Public roles only.
 
 name        = "localize"
-description = "Transcreate one input into Spanish, French, German, and Japanese in parallel, then back-translation-QA each locale in parallel, emitting a per-locale adequacy verdict."
+description = "Transcreate every requested language (parsed at runtime, no hardcoded list), then loop fix <-> audit (like develop.toml) until every language passes native-fluency review or the iteration cap is hit, then deliver — writing to disk in-place if a path was given, git-aware, with a per-language change summary."
 
-# ── 1. Parallel transcreation ────────────────────────────────────────────────
+# ── 1. Brief — languages + source only; destinations stay out of the loop ───
 [[steps]]
-name     = "transcreate"
-parallel = true
+name    = "brief"
+role    = "content:translate"
+session = "fresh"
+retries = 4
+prompt  = """
+Read the request below and produce a compact work brief containing ONLY:
 
-  [[steps.run]]
-  name    = "spanish"
-  role    = "content:translate"
-  session = "fresh"
-  prompt  = """
-Transcreate the following into Spanish (es-ES), sense-for-sense with locale-aware
-cultural adaptation — recreate the impact, never literal. Preserve meaning, voice,
-and structure; keep code, placeholders, and URLs verbatim.
+1. Every requested target language, with locale variant (es-ES not es; infer
+   the most likely variant if only a language name is given), one
+   `<lang>code</lang>` marker per language. Include the source's own language
+   too if it's explicitly requested.
+2. The source: if the request references file path(s), list the path(s)
+   verbatim; if the content is pasted inline, reproduce it in full, unchanged.
+3. Any reference material the request points at (documentation directories,
+   manuals, glossaries) — list those paths verbatim; they ground terminology
+   and facts for the later steps. Also check whether THAT reference material
+   has variants matching each target language (sibling directories or files
+   named by language or locale next to the reference path) and list, per
+   language, whichever actually exist — never invent paths you didn't verify.
+   This variant discovery applies ONLY to the reference material: the source
+   content file and any destination content paths (and their language
+   siblings) are NOT reference material — existing translations of the
+   content are never a baseline, a draft, or a source of truth; the pipeline
+   always produces fresh work from the source.
+4. One line naming the content domain (technical, legal, marketing, academic,
+   casual, ...), judged from the source.
 
-<source>
+Deliberately EXCLUDE any output/destination file paths or delivery
+instructions — a later step handles delivery from the original request; the
+working steps must not see destinations. Do not translate or analyze anything
+yet. No meta-commentary.
+
+<request>
 {{input}}
-</source>
-
-Output only the Spanish translation.
+</request>
 """
 
-  [[steps.run]]
-  name    = "french"
-  role    = "content:translate"
-  session = "fresh"
-  prompt  = """
-Transcreate the following into French (fr-FR), sense-for-sense with locale-aware
-cultural adaptation — recreate the impact, never literal. Preserve meaning, voice,
-and structure; keep code, placeholders, and URLs verbatim.
-
-<source>
-{{input}}
-</source>
-
-Output only the French translation.
-"""
-
-  [[steps.run]]
-  name    = "german"
-  role    = "content:translate"
-  session = "fresh"
-  prompt  = """
-Transcreate the following into German (de-DE), sense-for-sense with locale-aware
-cultural adaptation — recreate the impact, never literal. Preserve meaning, voice,
-and structure; keep code, placeholders, and URLs verbatim.
-
-<source>
-{{input}}
-</source>
-
-Output only the German translation.
-"""
-
-  [[steps.run]]
-  name    = "japanese"
-  role    = "content:translate"
-  session = "fresh"
-  prompt  = """
-Transcreate the following into Japanese (ja-JP), sense-for-sense with locale-aware
-cultural adaptation — recreate the impact, never literal. Preserve meaning, voice,
-and structure; keep code, placeholders, and URLs verbatim.
-
-<source>
-{{input}}
-</source>
-
-Output only the Japanese translation.
-"""
-
-# ── 2. Parallel back-translation QA ──────────────────────────────────────────
-# Each QA runs content:translate in VALIDATE mode in a fresh session — a reverse
-# pass that catches dropped meaning, mistranslation, register drift, and broken
-# placeholders. For stronger QA, set `model` on each sub-step to a different
-# provider than your transcreation default so it doesn't share the same blind spots.
+# ── 2. Transcreate every requested language in one pass ─────────────────────
 [[steps]]
-name     = "qa"
-parallel = true
+name    = "transcreate"
+role    = "content:translate"
+session = "fresh"
+retries = 4
+prompt  = """
+Work from the brief below. For EACH requested language: if it's the source's
+own language, pass the content through with only obvious mechanical fixes
+(typos, broken syntax) — the loop after this step owns the real AI-slop pass,
+don't duplicate that work here. Otherwise transcreate directly and cleanly
+into that language, as a native speaker would write it from scratch — never
+literal. Calibrate register and terminology to the brief's content domain.
+If the brief lists reference material (documentation, glossaries), consult it
+for domain terminology before coining your own renderings. Preserve meaning,
+voice, and structure; keep code, placeholders, and URLs verbatim. If the
+brief lists source file path(s), read them; if it carries the content inline,
+use it directly; if there are multiple articles/files, process every one.
+
+This step produces conversation output only — do not write or modify any
+file.
+
+<brief>
+{{brief}}
+</brief>
+
+Output one block per requested language, each starting with its own
+`<lang>code</lang>` marker on its own line. No meta-commentary about your own
+process, methodology, or tool use.
+"""
+
+# ── 3. Fix <-> audit loop — every language together, each round, until clean ─
+[[steps]]
+name           = "polish"
+loop           = true
+max_iterations = 3
+exit_when      = { output = "audit", matches = '(?m)^ALL-PASS' }
 
   [[steps.run]]
-  name    = "spanish_qa"
-  role    = "content:translate"
-  session = "fresh"
+  name    = "fix"
+  role    = "content:editor"
+  session = "continue"
+  retries = 4
   prompt  = """
-VALIDATE this Spanish (es-ES) transcreation against the source. Back-translate the
-critical passages and check meaning fidelity, register/tone, and cultural fit. Any
-mistranslation, dropped/added meaning, register drift, broken placeholder, or
-cultural misfire is a critical finding. List findings severity-ordered with the
-fix direction.
+Surgically edit every language block below — no scope confirmation needed,
+and never a report-only response: this step always outputs the edited text.
 
-<source>
-{{input}}
-</source>
+Work ONE language at a time, and between languages take a grounding pause:
+before starting each language's edit, view the brief's source file (or the
+relevant reference material) to re-anchor terminology and meaning for that
+language — then emit that language's edited block, then move to the NEXT
+language and repeat until every language is done. Never emit all languages as
+one uninterrupted generation; the per-language grounding reads come first,
+every time. Completeness contract: your final output MUST contain exactly one
+block for EVERY language in the brief — finishing after only some languages
+is a broken response; before ending, count your blocks against the brief's
+language list.
 
-<translation>
-{{spanish}}
-</translation>
+THIS round (no auditor findings exist yet): diagnose and fix in one pass,
+self-directed. Run the `content-humanize` 7-pass rewrite on the source's own
+language, and `content-locale-humanize`'s fix-passes (plus whichever
+per-language calibration skill matches) on every other language — interference
+and calques first, then frequency outliers, rhythm, register. Edit what the
+rubrics actually flag; don't rewrite what already reads native.
 
-End with exactly one line: QA-VERDICT: ADEQUATE or QA-VERDICT: REVISE. Nothing after it.
+LATER rounds: you receive the auditor's findings directly — resolve every
+one, criticals first, without reintroducing anything already fixed. A
+language the auditor reported no findings against gets output unchanged.
+
+Before shortening or varying ANY repeated word: decide whether it NAMES
+something (a product, brand, protocol, command, field, person — a referential
+word) or is a STYLE choice (an adjective/verb an AI overuses for emphasis).
+Only style choices get varied or cut for repetition. A name must repeat
+exactly, verbatim, as many times as the content needs it — never shortened,
+abbreviated, or swapped for a synonym, no matter how often it appears.
+
+Preserve each language's locale punctuation conventions exactly while
+editing — full-width punctuation in CJK text stays full-width; never let an
+edit swap in ASCII punctuation where the locale uses its own.
+
+Match the SOURCE's register: natural and human, never overshooting into
+slang or colloquialisms the source doesn't carry — a neutral technical
+sentence stays neutral in the target, just native. And render recurring
+constructions (mode names, repeated patterns like "in X mode") the same way
+every time — one form, used consistently.
+
+Ground every terminology or factual choice in the brief's source and
+reference material (read them) — never fill a gap from imagination, and never
+justify a rendering by documentation, official usage, or search results you
+did not actually open in this session: fabricated authority is a critical
+defect, while an honest "unverified" is acceptable. For headings and
+recurring domain terms whose target rendering isn't the plainly established
+standard, verification is a duty, not a judgment call — check the brief's
+language-matching reference material if listed, otherwise run
+`content-locale-humanize`'s phrase-verification (exact quoted-phrase
+websearch: real native usage found means keep it, nothing found means
+rephrase). Feeling certain doesn't waive it. For ordinary prose, verify only
+when genuinely unsure — a handful of lookups at most.
+
+This step produces conversation output only — do not write or modify any
+file.
+
+<brief>
+{{brief}}
+</brief>
+
+<drafts>
+{{transcreate}}
+</drafts>
+
+Output one block per language, each starting with its own `<lang>code</lang>`
+marker. No meta-commentary about your own process.
 """
 
   [[steps.run]]
-  name    = "french_qa"
+  name    = "audit"
   role    = "content:translate"
   session = "fresh"
+  retries = 4
   prompt  = """
-VALIDATE this French (fr-FR) transcreation against the source. Back-translate the
-critical passages and check meaning fidelity, register/tone, and cultural fit. Any
-mistranslation, dropped/added meaning, register drift, broken placeholder, or
-cultural misfire is a critical finding. List findings severity-ordered with the
-fix direction.
+Audit EVERY language block below independently, each against ONLY its own
+section, using the brief's source (read the source file if the brief lists a
+path) to verify accuracy and completeness, and the brief's reference material
+to verify domain terminology. For the source's own language, run the
+`content-humanize` 8-dimension diagnostic. For every other language,
+NATIVE-AUDIT mode via `content-locale-humanize` (plus whichever per-language
+calibration skill matches that language) — never by matching an English
+AI-word list. Pick exactly one rubric per language, never both. Check locale
+punctuation conventions too (full-width in CJK, target-locale quotation
+marks). This step is read-only — report, never edit files.
 
-<source>
-{{input}}
-</source>
+PHRASE-VERIFICATION PASS (per non-source language, the core naturalness
+check): pick the handful of collocations and turns of phrase in that language
+you're least sure a native tech reader would actually use — the suspicious
+calques, unnatural verb-object pairs, nominal chains, borderline term
+renderings. For EACH, run an exact quoted-phrase websearch per
+`content-locale-humanize`'s phrase-verification technique (quotes for exact
+match; scope to a native-language platform the audience uses when you can;
+also try unscoped). Real native hits → the phrase is fine, do NOT flag it.
+Zero / no results → it's a genuine finding: report it with a natural
+replacement, and verify that replacement the same way before proposing it.
+Do not flag a phrase as unnatural on intuition alone once you have a tool to
+check — and never claim a search verdict you didn't actually run. In each
+language's section list the phrases you verified with their verdict
+(found / not found + the query), so the pass is auditable.
 
-<translation>
-{{french}}
-</translation>
+<brief>
+{{brief}}
+</brief>
 
-End with exactly one line: QA-VERDICT: ADEQUATE or QA-VERDICT: REVISE. Nothing after it.
+<all_fixed_drafts>
+{{fix}}
+</all_fixed_drafts>
+
+FIRST, before any quality judgment, run the completeness check: every
+language listed in the brief must have its own block in the drafts above. A
+language from the brief with no block present gets an automatic
+`<code>: FAIL (missing draft)` — no quality audit can rescue an absent text.
+
+For each language present: list findings (severity-ordered, with quotes and
+fix direction) if any, then close that language's section with exactly one
+line — `<code>: PASS` or `<code>: FAIL`. PASS requires the native-fluency
+score in the Pass band AND zero Critical or Moderate findings — a language
+with a Moderate finding still listed is a FAIL, because a PASS ends the loop
+and whatever you listed would never get applied. Minor polish-level findings
+alone don't block a PASS.
+
+Then derive the final line MECHANICALLY against the BRIEF's language list:
+if and only if EVERY language in the brief has a verdict line saying PASS,
+end the WHOLE response with exactly `ALL-PASS`; otherwise (any FAIL, or any
+brief language without a verdict) end with exactly `CONTINUE`. Nothing after
+that line.
 """
 
-  [[steps.run]]
-  name    = "german_qa"
-  role    = "content:translate"
-  session = "fresh"
-  prompt  = """
-VALIDATE this German (de-DE) transcreation against the source. Back-translate the
-critical passages and check meaning fidelity, register/tone, and cultural fit. Any
-mistranslation, dropped/added meaning, register drift, broken placeholder, or
-cultural misfire is a critical finding. List findings severity-ordered with the
-fix direction.
+# ── 4. Deliver — write to disk if a path applies, git-aware; else inline ────
+[[steps]]
+name    = "deliver"
+role    = "content:translate"
+session = "fresh"
+retries = 4
+prompt  = """
+This is the final, audited, fixed multi-language content, one block per
+language:
 
-<source>
+<final>
+{{fix}}
+</final>
+
+The last audit round's verdicts (per language, PASS or FAIL):
+
+<final_audit>
+{{audit}}
+</final_audit>
+
+You are a writer here, not an editor: the `<final>` text above is the
+complete, audited deliverable, and your job is to put it where it belongs
+verbatim. Never compare it against what's currently at a destination, never
+keep parts of the old file content, and never make editorial decisions of
+your own — the loop already made them all.
+
+For each language: if the original request below named or implied a file
+path (a source file to overwrite, or an explicit destination) for that
+language, write that language's final text there now — the file's new content
+IS the final block, whole, replacing whatever the file held before. Directly
+in-place, git-aware (git is the undo/diff history; check whether the path is
+inside a git work tree first). In-place means exactly that: edit the
+destination file itself. Do not create staging, temporary, backup, or
+suffixed copies (`.new`, `-edited`, `.bak`, or any other variant) unless the
+request explicitly asks to keep a separate copy — and if a temporary file was
+needed mid-process for any reason, remove it before finishing. If no path
+applies to a language, deliver that language's text inline instead — never
+invent a path.
+
+<original_request>
 {{input}}
-</source>
+</original_request>
 
-<translation>
-{{german}}
-</translation>
-
-End with exactly one line: QA-VERDICT: ADEQUATE or QA-VERDICT: REVISE. Nothing after it.
-"""
-
-  [[steps.run]]
-  name    = "japanese_qa"
-  role    = "content:translate"
-  session = "fresh"
-  prompt  = """
-VALIDATE this Japanese (ja-JP) transcreation against the source. Back-translate the
-critical passages and check meaning fidelity, register/tone, and cultural fit. Any
-mistranslation, dropped/added meaning, register drift, broken placeholder, or
-cultural misfire is a critical finding. List findings severity-ordered with the
-fix direction.
-
-<source>
-{{input}}
-</source>
-
-<translation>
-{{japanese}}
-</translation>
-
-End with exactly one line: QA-VERDICT: ADEQUATE or QA-VERDICT: REVISE. Nothing after it.
+After handling every language, give a brief per-language change summary:
+what was fixed (criticals first, in plain terms), what was deliberately left
+unchanged, the language's final audit verdict (PASS, or FAIL with the top
+outstanding finding if the loop hit its cap), and where the final text landed
+— the file path written, or "inline" if no path applied to that language.
+In the summary, attribute a choice to reference documentation only if that
+material was actually consulted in this pipeline — never assert doc support
+that wasn't verified.
 """
