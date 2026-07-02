@@ -1,0 +1,216 @@
+# Title: Apply — Master Resume + Job Posting to a Tailored Application Package
+#
+# Public workflow: turn a master resume plus a specific job posting into a
+# ready-to-submit application PACKAGE — an ATS-optimized, country-correct
+# tailored resume, a matching cover letter, and an honest match+gap report.
+# It does NOT submit anything: the deliverable is documents for the human to
+# send. Auto-applying violates job-board terms, needs logins/captcha, and
+# mass-identical submissions hurt callbacks — so the product is the package,
+# and the human hits submit.
+#
+# Shape (same evaluator-optimizer pattern as localize / promote):
+# intake (read resume + posting, capture both, detect target market) ->
+# tailor (grounded, ATS-optimized, market-adapted resume + cover letter) ->
+# screen loop (fix <-> audit until the screener passes) -> deliver.
+#
+# Grounding contract: every keyword, metric, title, date, and skill must
+# trace to the master resume — no invented experience. Keyword coverage is
+# maximized only within what's true; genuine gaps are reported honestly, never
+# faked. The screener's truthfulness gate fails the run on any fabrication,
+# regardless of ATS match score.
+#
+# Roles: `coach:resume` reads/tailors/writes/fixes/delivers the documents;
+# `coach:screener` is the independent auditor (ATS match + truthfulness +
+# convention + letter quality). Knowledge lives in the ats-optimization,
+# resume-conventions, and cover-letter skills.
+#
+# Note: `max_iterations = 3` ceiling (quality peaks early). `retries = 4`
+# guards transient provider/network errors.
+#
+# Source paths: the master resume and job posting are file paths or pasted
+# text (reliable), or a job-posting URL (works when the runtime can fetch it;
+# otherwise intake halts rather than inventing the posting).
+#
+# Input shape: point at the resume and the posting; optionally the target
+# country, destinations, and any specifics. Example:
+#   Tailor my resume and write a cover letter for this job.
+#   Master resume: ./resume.md
+#   Job posting: https://example.com/careers/senior-engineer
+#
+# Public roles only.
+
+name        = "apply"
+description = "Turn a master resume plus a job posting (file, URL, or text) into a ready-to-submit application package — an ATS-optimized, country-correct tailored resume, a matching cover letter, and an honest match+gap report — grounded only in real experience, refined by a screen/fix loop until it passes. Produces documents, never auto-submits."
+
+# ── 1. Intake — read resume + posting, capture both, detect target market ───
+[[steps]]
+name    = "intake"
+role    = "coach:resume"
+session = "fresh"
+retries = 4
+prompt  = """
+Prepare an intake brief from the request below. Read the master resume (file
+path) and the job posting (file path, fetched URL, or pasted text). Capture
+BOTH in the brief so no later step re-reads them:
+- <master_resume> — the candidate's full resume, verbatim. This is the ONLY
+  ground truth for what's true about the candidate.
+- <job_posting> — the posting, verbatim, plus the extracted signals: exact job
+  title, 15–20 priority keywords/skills, and required-vs-preferred
+  qualifications.
+- Target market: detect it from the posting's location/company (e.g. US, UK,
+  Germany, EU) so later steps apply the right resume convention; if genuinely
+  ambiguous, note your best inference and why.
+
+HARD STOP: if the master resume or the job posting can't be read — missing or
+unreadable file, or a URL you have no tool to fetch — do NOT invent a
+candidate history or a job's requirements. Output exactly this one line and
+nothing else: `INTAKE-BLOCKED: <what> — <reason>`.
+
+Do not tailor or write anything yet. No meta-commentary.
+
+<request>
+{{input}}
+</request>
+"""
+
+# ── 2. Tailor — grounded, ATS-optimized, market-adapted draft ───────────────
+[[steps]]
+name    = "tailor"
+role    = "coach:resume"
+session = "fresh"
+retries = 4
+prompt  = """
+If the intake below is a single `INTAKE-BLOCKED:` line, output that exact line
+and nothing else.
+
+Otherwise produce, from the intake brief:
+1. A tailored resume — mirror the posting's language and priorities per
+   `ats-optimization`, but ONLY using experience, skills, titles, dates, and
+   numbers present in <master_resume>. Quantified achievement bullets, target
+   job title in the summary, skills reordered to the posting. Adapt document
+   name / length / photo / GDPR / dates to the target market per
+   `resume-conventions`.
+2. A cover letter per `cover-letter` — grounded in the tailored resume and the
+   specific company/role, human (content-voice), no template tells.
+3. A match + gap report — keyword coverage, what maps to real experience, and
+   the requirements the candidate genuinely doesn't meet (honest options, no
+   fabricated lines).
+
+Truthfulness gate: nothing on the resume or letter that <master_resume> or the
+candidate's input doesn't support. No invented experience, no keyword
+stuffing, no auto-submitting.
+
+This step produces conversation output only — do not write or modify any file.
+
+<intake>
+{{intake}}
+</intake>
+
+Output three clearly delimited blocks: `<resume>`…`</resume>`,
+`<cover_letter>`…`</cover_letter>`, `<report>`…`</report>`. No meta-commentary.
+"""
+
+# ── 3. Screen loop — fix <-> audit until the screener passes ─────────────────
+[[steps]]
+name           = "screen"
+loop           = true
+max_iterations = 3
+exit_when      = { output = "audit", matches = '(?m)^SCREEN-PASS' }
+
+  [[steps.run]]
+  name    = "fix"
+  role    = "coach:resume"
+  session = "continue"
+  retries = 4
+  prompt  = """
+If the draft below is a single `INTAKE-BLOCKED:` line, output that exact line
+and nothing else.
+
+Otherwise apply the screener's findings to the resume, cover letter, and
+report — criticals first, without reintroducing anything already fixed and
+without ever breaking the truthfulness gate (never add a keyword or claim the
+<master_resume> doesn't support to raise the match score — report it as a gap
+instead). On the first round, before any findings exist, self-review against
+`ats-optimization`, `resume-conventions`, and `cover-letter` and fix what they
+flag. This step always outputs the edited documents, never a report-only
+response, and never writes to disk.
+
+<intake>
+{{intake}}
+</intake>
+
+<draft>
+{{tailor}}
+</draft>
+
+Output the three blocks again: `<resume>`…`</resume>`,
+`<cover_letter>`…`</cover_letter>`, `<report>`…`</report>`. No meta-commentary.
+"""
+
+  [[steps.run]]
+  name    = "audit"
+  role    = "coach:screener"
+  session = "fresh"
+  retries = 4
+  prompt  = """
+If the documents below are a single `INTAKE-BLOCKED:` line, end your whole
+response with exactly `SCREEN-PASS` (nothing to audit; let the run finish and
+report the block). Nothing else.
+
+Otherwise audit the tailored resume + cover letter against the intake's
+<master_resume>, <job_posting>, and target market, per your role and the
+ats-optimization / resume-conventions / cover-letter skills. Run the
+truthfulness gate FIRST: any claim, metric, title, date, employer, degree, or
+skill not supported by <master_resume> is a CRITICAL fabrication finding.
+Then ATS match, convention correctness, and cover-letter quality.
+
+<intake>
+{{intake}}
+</intake>
+
+<documents>
+{{fix}}
+</documents>
+
+List findings severity-ranked (CRITICAL / MAJOR / MINOR) with the axis, the
+quoted line, why it matters, and the fix direction; then the coverage report.
+Close with exactly one line — `SCREEN-PASS` (ATS match in range, zero CRITICAL
+or MAJOR findings, conventions correct, no fabrication) or `SCREEN-FAIL`. A
+single fabrication finding forces SCREEN-FAIL regardless of match score.
+Nothing after that line. Read-only — never edit files.
+"""
+
+# ── 4. Deliver — write the package to files if paths given, else inline ─────
+[[steps]]
+name    = "deliver"
+role    = "coach:resume"
+session = "fresh"
+retries = 4
+prompt  = """
+If the final documents below are a single `INTAKE-BLOCKED:` line, write nothing
+to disk — tell the user what couldn't be read (quote the line) and that no
+package was produced. Stop there.
+
+Otherwise you are placing finished work, not editing it: the blocks below are
+the screened, final package. For each of the resume, cover letter, and report:
+if the original request named a destination file for it, write that content
+there verbatim, in-place (git-aware if inside a repo); otherwise deliver it
+inline. No staging/backup/suffixed copies unless asked. Never submit or post
+the application anywhere — the human submits.
+
+<final>
+{{fix}}
+</final>
+
+<final_audit>
+{{audit}}
+</final_audit>
+
+<original_request>
+{{input}}
+</original_request>
+
+After delivering, give a brief summary: the ATS match coverage, the top
+honest gaps the candidate should be aware of, the final screen verdict, and
+where each artifact landed (file path or inline).
+"""
