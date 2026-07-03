@@ -1,0 +1,263 @@
+# Title: Deep Review — Parallel Multi-Lens Code Review with Adversarial Verify
+#
+# Public workflow: review a change (a branch diff, the current changes, or a
+# path) from several independent angles AT ONCE — correctness, security,
+# concurrency/errors, performance, and design/maintainability/tests — each lens
+# blind to the others, then run an ADVERSARIAL verify that tries to refute
+# every candidate finding against the real code before trusting it, then
+# synthesize one coherent, severity-ordered review with a verdict.
+#
+# Why this over the lighter `review` workflow: `review` is one sequential pass.
+# `deep-review` fans out specialist reviewers in parallel (a security mindset
+# and a concurrency mindset catch different things on the same lines), which
+# raises recall — and then pays for that breadth with a refute-first verify
+# gate, because in multi-reviewer setups consensus is NOT correctness:
+# independent reviewers make correlated false positives (studies have had
+# dozens of agents unanimously endorse a non-existent bug). The verify step is
+# what turns a wide, noisy sweep into a precise review.
+#
+# Shape: scope (establish the target + shared context) -> sweep (parallel: one
+# reviewer per lens) -> verify (adversarial refute + dedup + verdict) ->
+# synthesize (the final report). Knowledge and the finding format live in the
+# `code-review-lenses` skill.
+#
+# Tip: for the strongest verify, set `model` on the verify step to a different
+# model than the sweep reviewers — cross-model verification catches
+# complementary blind spots and won't share the finders' mistakes.
+#
+# Note: `retries = 4` + a per-step `timeout` guard transient provider/network
+# errors. The timeout is the important half: retries only fire on a failure, and
+# a stalled stream (a silently dropped connection) never "fails" on its own — it
+# just hangs. The timeout turns that hang into a retried run instead of a lane
+# that blocks the whole review forever. It is a TOTAL wall-clock cap per attempt,
+# so it is set deliberately generous (30 min) — a safety net for a wedged stream,
+# NOT a limit on real work: a deep lane may legitimately trace for many minutes.
+# The sweep also sets `max_parallel = 3` — all five lenses still run, but at most
+# three at once. The
+# lenses stay fully independent (each a fresh, blind session); the cap only
+# staggers WHEN they run, trading a little wall-clock for lower peak load, which
+# is steadier on modest machines and constrained connections. All five lenses
+# are required to pass (no `min_success`) so no perspective is silently dropped.
+#
+# Input shape: say what to review; the scope step resolves it from git. Example:
+#   Deep-review this branch against master: the auth refactor. Focus on the
+#   token-handling changes.
+# (Run it from the target repo's directory so the reviewers can read the code.)
+#
+# Public roles only.
+
+name        = "deep-review"
+description = "Review a change (branch diff, current changes, or a path) from independent angles in parallel — correctness, security, concurrency, performance, design/tests — then adversarially verify every finding against the real code (refute-first, because consensus is not correctness), dedup, and synthesize one severity-ordered review with a verdict."
+
+# ── 1. Scope — resolve the target and build shared context ──────────────────
+[[steps]]
+name    = "scope"
+role    = "developer:general"
+session = "fresh"
+retries = 4
+timeout = 1800
+prompt  = """
+You are scoping a code review: READ-ONLY. Do not modify, create, or write any
+file, and run only read-only commands (`git show`/`git diff`/`git log`, code
+search, file views) — never edit the code under review. Report, don't touch.
+
+Establish what is being reviewed and give the lens reviewers a shared, factual
+starting point. From the request below, resolve the target with git:
+- If it names a branch/base, use that diff (e.g. `git diff <base>...HEAD`
+  or `git diff <base>...<branch>`); if it says "current changes", use the
+  unstaged/staged diff; if it names paths, scope to those.
+- List the changed files and, in a sentence each, what the change does.
+- Note the surrounding context a reviewer needs: the entry points, the callers
+  and tests the changed code touches, and any config or data involved. Use code
+  search (semantic / structural / graph) to find these edges — real defects
+  live in the interaction between the change and its surroundings.
+
+<request>
+{{input}}
+</request>
+
+Output a scope brief: the resolved diff target (the exact git range/paths), the
+changed-files summary, and the context map (callers, tests, config to check).
+Do NOT review or list findings yet. No meta-commentary.
+"""
+
+# ── 2. Sweep — one independent reviewer per lens, in parallel ────────────────
+# Each lane is blind to the others (parallel, fresh sessions). High recall: it
+# surfaces candidates; the verify step prunes. Per `code-review-lenses`.
+# `max_parallel` caps concurrent lanes (see header note) — all five still run.
+[[steps]]
+name         = "sweep"
+parallel     = true
+max_parallel = 3
+
+  [[steps.run]]
+  name    = "correctness"
+  role    = "developer:general"
+  session = "fresh"
+  retries = 4
+  timeout = 1800
+  prompt  = """
+Review ONLY through the correctness-and-edge-cases lens, per
+`code-review-lenses`: logic errors, off-by-one, null/empty/boundary inputs,
+wrong comparisons/operators, missing returns, error paths that swallow or
+mishandle failures, incorrect state assumptions. Read beyond the diff — open
+the callers and tests named in the scope; a function can be correct alone and
+wrong for how it's called.
+
+<scope>
+{{scope}}
+</scope>
+
+Output candidate findings only, each in the skill's finding format
+([SEVERITY] [correctness] title / Where / Problem / Why it matters / Fix).
+Lean to recall — surface every plausible candidate; a later step verifies. If
+none, output exactly: NO FINDINGS. No meta-commentary.
+"""
+
+  [[steps.run]]
+  name    = "security"
+  role    = "security:owasp"
+  session = "fresh"
+  retries = 4
+  timeout = 1800
+  prompt  = """
+Review ONLY through the security lens, per `code-review-lenses`: untrusted
+input reaching a sink (SQL/command/path/template injection), missing
+authn/authz, secrets in code or logs, unsafe deserialization, SSRF, weak
+crypto, TOCTOU, missing validation/sanitization. Treat every input as hostile;
+trace it from source to sink using code search.
+
+<scope>
+{{scope}}
+</scope>
+
+Output candidate findings only in the skill's finding format ([SEVERITY]
+[security] …). Recall over precision here; verification comes next. If none,
+output exactly: NO FINDINGS. No meta-commentary.
+"""
+
+  [[steps.run]]
+  name    = "concurrency"
+  role    = "developer:general"
+  session = "fresh"
+  retries = 4
+  timeout = 1800
+  prompt  = """
+Review ONLY through the concurrency, error-handling and resources lens, per
+`code-review-lenses`: race conditions, check-then-act, deadlocks and
+lock-ordering, shared mutable state across threads/async, unawaited futures,
+resource leaks (handles, connections, memory), missing cleanup on error paths,
+cancellation/timeout handling. These are the highest-cost, lowest-visibility
+bugs — trace the actual concurrent/async paths.
+
+<scope>
+{{scope}}
+</scope>
+
+Output candidate findings only in the skill's finding format ([SEVERITY]
+[concurrency] …). Recall over precision. If none, output exactly: NO FINDINGS.
+No meta-commentary.
+"""
+
+  [[steps.run]]
+  name    = "performance"
+  role    = "developer:general"
+  session = "fresh"
+  retries = 4
+  timeout = 1800
+  prompt  = """
+Review ONLY through the performance-and-efficiency lens, per
+`code-review-lenses`: algorithmic complexity on hot paths, N+1 queries,
+unbounded allocations/growth, repeated work that could be hoisted or cached,
+blocking calls in async contexts, unnecessary copies. Flag only where it
+plausibly matters, and say why.
+
+<scope>
+{{scope}}
+</scope>
+
+Output candidate findings only in the skill's finding format ([SEVERITY]
+[performance] …). If none, output exactly: NO FINDINGS. No meta-commentary.
+"""
+
+  [[steps.run]]
+  name    = "design"
+  role    = "developer:general"
+  session = "fresh"
+  retries = 4
+  timeout = 1800
+  prompt  = """
+Review ONLY through the design, maintainability and tests lens, per
+`code-review-lenses`: SOLID and coupling, leaky or missing abstractions, API
+and contract clarity, over-engineering (speculative flexibility) as well as
+under-engineering, dead code, misleading naming, and whether the change is
+actually tested — coverage of the new behavior and its edge cases, meaningful
+assertions, testability.
+
+<scope>
+{{scope}}
+</scope>
+
+Output candidate findings only in the skill's finding format ([SEVERITY]
+[design] …). If none, output exactly: NO FINDINGS. No meta-commentary.
+"""
+
+# ── 3. Verify — adversarial refute + dedup + mechanical verdict ─────────────
+[[steps]]
+name    = "verify"
+role    = "developer:general"
+session = "fresh"
+retries = 4
+timeout = 1800
+prompt  = """
+You are an independent, adversarial verifier. The candidate findings below came
+from parallel lens reviewers — treat them ALL as unproven. Per
+`code-review-lenses`, your job is to REFUTE each one, not re-confirm it:
+consensus is not correctness, and independent reviewers make correlated false
+positives.
+
+For EACH finding: open the anchored file:line, read the actual current code,
+and trace the claim through its callers, guards, and tests. KEEP it only if the
+defect is provably anchored in the code as it is now and reachable with real
+inputs. DROP it if it's speculative, already handled elsewhere, a duplicate, a
+misreading, or only true under impossible inputs — and drop when genuinely
+uncertain after tracing. Dedup findings that are the same underlying issue
+across lenses (attribute to both).
+
+<scope>
+{{scope}}
+</scope>
+
+<candidate_findings>
+{{sweep}}
+</candidate_findings>
+
+For each candidate, state KEEP or DROP with a one-line, code-anchored reason.
+Then compute the verdict mechanically from the KEPT findings: any KEPT Blocking
+means REQUEST_CHANGES; otherwise APPROVED. End with exactly one line:
+`VERDICT: APPROVED` or `VERDICT: REQUEST_CHANGES`. Nothing after it.
+"""
+
+# ── 4. Synthesize — the final, coherent review ──────────────────────────────
+[[steps]]
+name    = "synthesize"
+role    = "developer:general"
+session = "fresh"
+retries = 4
+timeout = 1800
+prompt  = """
+Turn the verified findings below into one clean review a developer acts on
+directly. Keep ONLY the KEPT findings; drop the verifier's DROP reasoning from
+the final output. Order by severity (Blocking, then Recommended, then Nit), and
+within a severity by lens. Use the `code-review-lenses` finding format for each.
+
+Open with a two-line summary: what the change does and the headline risk (or
+"no blocking issues"). Then the findings. Close with the verdict line exactly
+as the verifier computed it.
+
+<verified>
+{{verify}}
+</verified>
+
+Output only the review. No meta-commentary.
+"""

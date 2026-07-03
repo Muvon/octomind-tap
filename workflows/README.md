@@ -18,6 +18,7 @@ Build / repo (operate on the current directory):
 | [`develop`](./develop.toml) | Spec-driven feature dev: context → developer/evaluator loop with a build/test gate (exit on `VERDICT: APPROVED`) → summary | `loop` |
 | [`debug`](./debug.toml) | Reproduce + pin root cause → fix/verify loop until a test proves it fixed → summary | `loop` |
 | [`review`](./review.toml) | Review changes → independently verify each finding → branch on a deterministic verdict to an approval note or a fix list | `conditional` |
+| [`deep-review`](./deep-review.toml) | Scope a change → sweep it in parallel across 5 independent lenses (correctness/security/concurrency/performance/design) → adversarially verify every finding against the real code (refute-first) → synthesize one severity-ordered review + verdict | `parallel` |
 | [`document`](./document.toml) | Classify the diff (SemVer + change buckets) → README/changelog/release-notes drafts in parallel → reconcile/validate loop | `parallel` + `loop` |
 | [`plan-and-build`](./plan-and-build.toml) | Minimal starter: draft a spec, then implement it and verify with the project's own check | sequential |
 
