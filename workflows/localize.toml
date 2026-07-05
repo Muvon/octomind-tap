@@ -94,7 +94,46 @@ yet. No meta-commentary.
 </request>
 """
 
-# ── 2. Transcreate every requested language in one pass ─────────────────────
+# ── 2. Source fact ledger — stable preservation target for every later step ─
+[[steps]]
+name    = "facts"
+role    = "content:translate"
+session = "fresh"
+retries = 4
+prompt  = """
+Build a source fact ledger from the brief below. This is a preservation
+artifact, not an edit.
+
+If the brief lists source file path(s), read every source file now. If it
+carries pasted content inline, use that content directly. Do not use
+destination files, existing translations, web search, or general knowledge as
+source truth.
+
+Extract EVERY factual data point that must survive localization:
+- all numbers, percentages, ranges, dates, versions, counts, measurements,
+  prices, durations, limits, and identifiers
+- named studies, cited sources, benchmark names, standards, tools, product
+  names, people, organizations, URLs, and quoted/cited claims
+- multi-part facts as one exact item when the parts depend on each other
+  (for example, keep "73% to 83%" as one range, not two loose numbers)
+
+Do not judge whether a fact is "important"; if it is factual, include it.
+For each item, preserve the exact source surface form and enough nearby
+context to identify where it belongs. If the source contains no factual data
+points, output `<source_facts>NONE</source_facts>`.
+
+Output ONLY:
+<source_facts>
+- F001 | exact: "..." | type: ... | context: ...
+- F002 | exact: "..." | type: ... | context: ...
+</source_facts>
+
+<brief>
+{{brief}}
+</brief>
+"""
+
+# ── 3. Transcreate every requested language in one pass ─────────────────────
 [[steps]]
 name    = "transcreate"
 role    = "content:translate"
@@ -109,7 +148,14 @@ into that language, as a native speaker would write it from scratch — never
 literal. Calibrate register and terminology to the brief's content domain.
 If the brief lists reference material (documentation, glossaries), consult it
 for domain terminology before coining your own renderings. Preserve meaning,
-voice, and structure; keep code, placeholders, and URLs verbatim. If the
+voice, and structure; keep code, placeholders, and URLs verbatim. Carry over
+EVERY factual data point from the source — numbers, statistics, percentages,
+dates, measurements, named studies, and cited claims — verbatim into every
+language; a dropped statistic is a content loss, not a style choice. Use the
+source fact ledger below as the explicit preservation checklist: every ledger
+item must appear in each requested language with the same numeric bounds,
+dates, identifiers, names, and claim meaning. If a fact cannot be rendered
+naturally, preserve the exact source form and keep moving; never drop it. If the
 brief lists source file path(s), read them; if it carries the content inline,
 use it directly; if there are multiple articles/files, process every one.
 
@@ -120,12 +166,16 @@ file.
 {{brief}}
 </brief>
 
+<source_fact_ledger>
+{{facts}}
+</source_fact_ledger>
+
 Output one block per requested language, each starting with its own
 `<lang>code</lang>` marker on its own line. No meta-commentary about your own
 process, methodology, or tool use.
 """
 
-# ── 3. Fix <-> audit loop — every language together, each round, until clean ─
+# ── 4. Fix <-> audit loop — every language together, each round, until clean ─
 [[steps]]
 name           = "polish"
 loop           = true
@@ -174,6 +224,14 @@ Preserve each language's locale punctuation conventions exactly while
 editing — full-width punctuation in CJK text stays full-width; never let an
 edit swap in ASCII punctuation where the locale uses its own.
 
+Fact ledger lock: before editing each language and again before outputting it,
+check the source fact ledger below. Every listed item must still be present in
+that language with the same numeric bounds, dates, identifiers, names, and
+claim meaning. Humanization, repetition cleanup, concision, and rhythm edits
+are not allowed to remove or blur a ledger item. If the current draft dropped
+one, restore it in the closest source-matching location before doing any style
+polish.
+
 Match the SOURCE's register: natural and human, never overshooting into
 slang or colloquialisms the source doesn't carry — a neutral technical
 sentence stays neutral in the target, just native. And render recurring
@@ -199,6 +257,10 @@ file.
 <brief>
 {{brief}}
 </brief>
+
+<source_fact_ledger>
+{{facts}}
+</source_fact_ledger>
 
 <drafts>
 {{transcreate}}
@@ -240,9 +302,26 @@ check — and never claim a search verdict you didn't actually run. In each
 language's section list the phrases you verified with their verdict
 (found / not found + the query), so the pass is auditable.
 
+FACTUAL-COMPLETENESS PASS (every language, before fluency scoring): use the
+source fact ledger below as the canonical checklist. For each language's draft,
+verify every ledger item is present with the same numeric bounds, dates,
+identifiers, names, and claim meaning. Do not re-decide which facts matter
+during audit; the ledger already did that once from the source. A missing or
+altered item (e.g. ledger says "73% to 83%" but the draft drops one bound or
+the whole range) is a Critical finding — report it with the exact ledger value
+and the missing/changed form in the draft. This pass runs on the source's own
+language too: the humanize pass can drop data just as easily as translation
+can. A language with a missing ledger item cannot PASS, regardless of fluency
+score. If the ledger says `<source_facts>NONE</source_facts>`, say so and skip
+only this factual-completeness pass.
+
 <brief>
 {{brief}}
 </brief>
+
+<source_fact_ledger>
+{{facts}}
+</source_fact_ledger>
 
 <all_fixed_drafts>
 {{fix}}
@@ -268,7 +347,7 @@ brief language without a verdict) end with exactly `CONTINUE`. Nothing after
 that line.
 """
 
-# ── 4. Deliver — write to disk if a path applies, git-aware; else inline ────
+# ── 5. Deliver — write to disk if a path applies, git-aware; else inline ────
 [[steps]]
 name    = "deliver"
 role    = "content:translate"
