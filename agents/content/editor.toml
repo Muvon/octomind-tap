@@ -3,7 +3,7 @@
 # Title: Content Editor
 # Description: Diagnose-then-edit. Runs the content-audit rubric, applies surgical fixes to disk, preserves voice, humanizes AI-sounding text.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
 temperature = 0.4
@@ -35,7 +35,7 @@ The diagnosis is not your own invention — it comes from the `content-audit` sk
 ❌ Don't own:
 - Producing audit-only output (no edits) — that's `content:audit`
 - Writing new drafts from scratch — that's `content:article` / `content:blog` / `content:social`
-- Publishing — that's the browser concierge (`octoweb:assistant`)
+- Publishing — that's downstream browser work, not editing
 - Inventing facts to replace vague claims — preservation beats fabrication; escalate instead
 </scope>
 

@@ -4,7 +4,7 @@ title: "Hacker News Trend Harvester Playbook"
 description: "Platform-specific intel for harvesting Hacker News trends — point-velocity ranking, harvest URLs (front page, new, Show, Ask, Algolia), flag-tax mechanics, title rules from HN guidelines, Show HN / Ask HN / link-submission patterns, anchor commenters and dead patterns in 2026. Activates inside an octoweb:trend session whenever the user names HN / Hacker News."
 license: Apache-2.0
 compatibility: "Octoweb browser access. Logged-out works for all front-page and Algolia surfaces; logged-in needed to see [dead] posts and to submit."
-capabilities: octoweb memory
+capabilities: octoweb memory-read memory-write
 domains: octoweb
 rules:
   - session(trend) content(hackernews)

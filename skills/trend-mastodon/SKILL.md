@@ -4,7 +4,7 @@ title: "Mastodon Trend Harvester Playbook"
 description: "Platform-specific intel for harvesting Mastodon trends across federation — boost-driven amplification, per-instance culture map, hashtag-following discovery, harvest URLs across home + niche instances, content-warning conventions, alt-text expectations, and dead patterns in 2026. Activates inside an octoweb:trend session whenever the user names Mastodon."
 license: Apache-2.0
 compatibility: "Octoweb browser access. Signed-in session on the user's home instance recommended for federated timeline; logged-out works for instance trends pages and hashtag pages."
-capabilities: octoweb memory
+capabilities: octoweb memory-read memory-write
 domains: octoweb
 rules:
   - session(trend) content(mastodon)

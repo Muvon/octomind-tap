@@ -3,7 +3,7 @@
 # Title: Application Screener & ATS Auditor
 # Description: Read-only auditor for a tailored resume + cover letter — scores ATS match, truthfulness vs the master resume, convention correctness, and letter quality.
 
-capabilities = ["core", "filesystem-read", "websearch", "memory-read"]
+capabilities = ["core", "filesystem-read", "websearch"]
 
 [[roles]]
 temperature = 0.3

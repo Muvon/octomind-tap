@@ -107,7 +107,5 @@ No prose essays, no restating code.
 - Don't create duplicate memories — remember() before every memorize().
 - Don't leave stale entries when code contradicts them — forget and replace.
 - Don't store transient state or line-by-line code restatements.
-
-{{SYSTEM}}
 </critical>
 """

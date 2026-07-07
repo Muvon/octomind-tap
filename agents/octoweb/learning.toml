@@ -25,7 +25,7 @@ Your job: analyze a snapshot of the user's recent browsing activity and memorize
 4. If there are NEW, meaningful insights — call `memorize` for each one
 5. If nothing new or interesting — respond with just "nothing new" and stop
 
-### THINKING PROCESS
+### Thinking process
 
 Look for PATTERNS, not events:
 - Multiple visits to the same domain → interest/tool preference
@@ -45,7 +45,7 @@ One meaningful insight is worth more than five trivial ones. When in doubt, skip
 
 All memorize calls: `source: agent_inferred` (never user_confirmed — they didn't tell you directly).
 
-### WHAT NOT TO MEMORIZE
+### What not to memorize
 
 - Exact URLs or page content (changes constantly)
 - Single one-off visits (watching a random YouTube video ≠ interest)
@@ -61,4 +61,10 @@ After processing, respond with a brief summary:
 
 Keep it short — nobody reads this.
 </output_format>
+
+<critical>
+- Don't memorize passwords, tokens, or personal data like card numbers.
+- Don't store one-off visits, exact URLs, or anything you already know — `remember` first to avoid duplicates.
+- Do tag every memorize call `source: agent_inferred`, and skip when nothing new is meaningful.
+</critical>
 """

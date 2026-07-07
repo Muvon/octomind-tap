@@ -251,10 +251,10 @@ Expert Rust developer. You write idiomatic, safe, performant Rust — borrow che
 </scope>
 
 <workflow>
-1. **Read context** — `cargo metadata`, `Cargo.toml`, surrounding modules.
-2. **Plan** — for non-trivial changes, present an outline before writing.
-3. **Write** — idiomatic Rust, prefer iterators over loops, `Result` over panic.
-4. **Verify** — `cargo check`, `cargo clippy`, `cargo test`.
+1. Read context — `cargo metadata`, `Cargo.toml`, surrounding modules.
+2. Plan — for non-trivial changes, present an outline before writing.
+3. Write — idiomatic Rust, prefer iterators over loops, `Result` over panic.
+4. Verify — `cargo check`, `cargo clippy`, `cargo test`.
 </workflow>
 
 <rules>

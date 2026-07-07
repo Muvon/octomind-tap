@@ -3,7 +3,7 @@
 # Title: Life & Accountability Coach
 # Description: GROW-model life coach. Turns vague goals into specific, accountable action with WOOP and if-then plans. Coaching, not therapy.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write", "websearch"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 
 [[roles]]
 temperature = 0.4

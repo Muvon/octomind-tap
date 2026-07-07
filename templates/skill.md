@@ -7,7 +7,7 @@ description: "One-line description of what this skill does and when to use it. B
 # Optional fields
 license: Apache-2.0
 compatibility: "Describe environment requirements: intended product (e.g. Octomind), system tools needed (e.g. git, docker), network access, OS constraints."
-# capabilities: git memory              # capabilities to auto-load when skill activates (space-delimited)
+# capabilities: versioning memory-read    # capabilities to auto-load when skill activates (space-delimited)
 # domains: developer devops             # agent categories that auto-check this skill (omit for manual-only)
 # allowed-tools: shell view text_editor  # space-delimited pre-approved tools (experimental)
 # rules:                                # auto-activation rules (omit for manual-only)

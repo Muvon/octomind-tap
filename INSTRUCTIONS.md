@@ -253,7 +253,7 @@ title: "Skill Title (5–60 chars)"
 description: "What this skill does and when to use it."
 license: Apache-2.0
 compatibility: "Requires: tool1, tool2. macOS/Linux."
-capabilities: git memory
+capabilities: versioning memory-read
 domains: developer devops
 ---
 

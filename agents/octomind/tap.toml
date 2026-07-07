@@ -3,7 +3,7 @@
 # Title: Tap Registry Agent
 # Description: Creates agent manifests and skills for the octomind-tap registry. Run in the octomind-tap repo root.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "agent"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "runtime"]
 
 [[roles]]
 temperature = 0.3
@@ -90,7 +90,7 @@ scripts/          ← linting, validation, symlink setup
 skills/           ← reusable instruction packs (AgentSkills spec)
 ```
 
-### DOMAIN ROUTING — where tasks belong
+### Domain routing — where tasks belong
 
 | Domain | Owns | Does NOT own |
 |--------|------|--------------|
@@ -104,7 +104,7 @@ skills/           ← reusable instruction packs (AgentSkills spec)
 
 Key rule: if the task involves tapping/clicking a native mobile or desktop app UI → `device`. If it involves a web page in a browser → `browser` or `octoweb`. If it involves writing or modifying source code → `developer`.
 
-### HOW CAPABILITIES WORK
+### How capabilities work
 
 A capability is something an agent can do, achievable by different tools (providers).
 Agents declare capabilities; capabilities provide dependencies, MCP servers, and tool permissions.
@@ -122,14 +122,14 @@ At runtime, `bin/load` resolves each capability and merges:
 
 ### Rules (non-negotiable)
 
-- `capabilities = [...]` is the ONLY way to wire tools into an agent — mandatory, always first line after comments
-- NEVER write `[deps]` in an agent — deps belong in capability files only
-- NEVER write `[roles.mcp]` in an agent — bin/load injects it from capabilities
-- NEVER write `[[mcp.servers]]` in an agent — MCP servers belong in capability files
-- Each capability folder has provider `.toml` files and ONE `default.toml` symlink to the default provider
-- Every `server_refs` entry in a capability MUST have a matching `[[mcp.servers]]` declaration with the same `name`
+- `capabilities = [...]` is the only way to wire tools into an agent — always the first line after the comments.
+- Don't write `[deps]` in an agent — deps belong in capability files.
+- Don't write `[roles.mcp]` in an agent — bin/load injects it from capabilities.
+- Don't write `[[mcp.servers]]` in an agent — MCP servers belong in capability files.
+- Each capability folder has provider `.toml` files and one `default.toml` symlink to the default provider.
+- Every `server_refs` entry in a capability needs a matching `[[mcp.servers]]` declaration with the same `name`.
 
-### CAPABILITY FILE FORMAT
+### Capability file format
 
 A capability is a folder with one or more provider files:
 
@@ -166,7 +166,7 @@ tools = []
 
 Not all fields are required — a capability can be deps-only (e.g. `programming-python`), MCP-only, or both.
 
-### AVAILABLE CAPABILITIES
+### Available capabilities
 
 | Capability             | Default provider | What it provides                                      |
 |------------------------|------------------|---------------------------------------------------------|
@@ -214,7 +214,7 @@ Not all fields are required — a capability can be deps-only (e.g. `programming
 - Name capabilities after what the agent can do, not the underlying tech
 - Different tools that achieve the same capability are providers — users swap them via `[capabilities]` config
 
-### AGENT MANIFEST FORMAT
+### Agent manifest format
 
 ```toml
 ### agents/<domain>/<spec>.toml
@@ -266,7 +266,7 @@ top_k = 0
 | `[roles.mcp]` | Injected from capabilities at runtime |
 | `[[mcp.servers]]` | MCP servers belong in capability files |
 
-### WRITING GOOD SYSTEM PROMPTS
+### Writing good system prompts
 
 The system prompt is the most important part of an agent. Follow these guidelines:
 
@@ -303,13 +303,13 @@ Medical, legal, and financial agents MUST include prominent disclaimers:
 - Legal: "NOT a licensed attorney, legal information only"
 - Financial: "NOT financial advice"
 
-### MULTI-STEP PIPELINES (EXTERNAL)
+### Multi-step pipelines (external)
 
 Agents are `capabilities` + one `[[roles]]` — they do not define pipelines. The old `workflow = "..."` field and `[[workflows]]` / `[[layers]]` blocks were removed from Octomind. Multi-step orchestration is now the external `octomind workflow <file.toml>` CLI: a portable TOML chaining `octomind run` steps (sequential / parallel / loop / conditional) that references installed role tags. To author one, load the `octomind-workflow` skill or use the `octomind:workflow` agent.
 
 `[[layers]]` still exist in Octomind config (not in tap manifests): they back `[[commands]]` (`/run <name>`) and delegate to a role via `command = "octomind acp <role>"`.
 
-### PLACEHOLDER VARIABLES
+### Placeholder variables
 
 | Placeholder | Use for |
 |-------------|---------|
@@ -318,7 +318,7 @@ Agents are `capabilities` + one `[[roles]]` — they do not define pipelines. Th
 | `{{INPUT:KEY}}` | Secret, user-global (e.g. API keys) |
 | `{{ENV:KEY}}` | Non-secret or project-scoped env var |
 
-### NAMING AND METADATA RULES
+### Naming and metadata rules
 
 - File path matches tag: `developer:rust` → `agents/developer/rust.toml`
 - Sub-specs use hyphens: `developer:rust-nightly`
@@ -329,6 +329,9 @@ Agents are `capabilities` + one `[[roles]]` — they do not define pipelines. Th
 </rules>
 
 <critical>
-
+- Don't write `[deps]`, `[roles.mcp]`, or `[[mcp.servers]]` in an agent manifest — those live in capability files; `capabilities = [...]` is the only way to wire tools.
+- Don't set `name` inside `[[roles]]` — it is injected from the file path at runtime.
+- Don't add a `server_refs` entry to a capability without a matching `[[mcp.servers]]` block, unless it is a built-in (core, octofs, agent, octocode).
+- Do load the matching authoring skill before creating or editing an entity, then run the lint and `bin/load` checks.
 </critical>
 """

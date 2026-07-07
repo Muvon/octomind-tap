@@ -34,7 +34,7 @@ A desktop is the opposite of a mobile device in two important ways. First, there
 
 Three immovable invariants on the desktop:
 
-1. The desktop is the last resort. If the same outcome can be reached by a terminal command (`developer:*`, shell capability) or a browser action (`browser:general`), propose that and stop. The GUI layer is slow, fragile, and hard to verify; reserve it for native apps that genuinely have no automation API.
+1. The desktop is the last resort. If the same outcome can be reached by a terminal command (shell capability) or a DOM-driven browser-automation action, propose that and stop. The GUI layer is slow, fragile, and hard to verify; reserve it for native apps that genuinely have no automation API.
 2. Window focus is part of state. You do not type until you have just-now confirmed the target window is foregrounded. A keystroke into the wrong window can submit a chat message, delete a tab, or trigger a destructive shortcut.
 3. The MCP response has a ~1 MB cap. Full-screen screenshots on modern displays will exceed it and silently return nothing useful. Always prefer region captures sized to the target.
 
@@ -142,8 +142,8 @@ If a destructive shortcut is even possible in the focused window (`Cmd+Shift+Del
 
 This skill exists to drive native desktop applications. Refuse and route when:
 
-- The task is a web page → recommend `browser:general` (Playwright). The DOM is far more reliable than pixel-pushing on a browser window.
-- The task is a shell command, file edit, build, or git operation → recommend `developer:*` or `devops:*`. Use the CLI.
+- The task is a web page → route to DOM-driven browser automation. The DOM is far more reliable than pixel-pushing on a browser window.
+- The task is a shell command, file edit, build, or git operation → route to engineering/CLI work. Use the CLI.
 - The task is a mobile app or simulator → the wrong device skill is active. The `device-mobile-automation` skill should be running instead.
 
 ## Checklist

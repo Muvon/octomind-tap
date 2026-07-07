@@ -216,8 +216,8 @@ skills/
 | `name` | ✅ | Max 64 chars. Lowercase letters, numbers, hyphens. No leading/trailing hyphen. Must match directory name. |
 | `title` | ✅ | 5–60 chars. Short human-readable label for the skill. |
 | `description` | ✅ | 20–1024 chars. What the skill does and when to use it. |
-| `capabilities` | optional | Capabilities to auto-load when skill activates. Space-delimited or array: `git memory` or `["git", "memory"]`. |
-| `domains` | optional | Agent categories for auto-activation scoping. Space-delimited or array. Without this, skill is manual-only. |
+| `capabilities` | optional | Capabilities to auto-load when skill activates. Space-delimited or array: `versioning memory-read` or `["versioning", "memory-read"]`. Names must match `capabilities/<name>/` directories. |
+| `domains` | optional | Agent domains for auto-activation scoping — each value must exactly match an existing `agents/<domain>/` name (runtime compares against the role's domain prefix). Space-delimited or array. Without this, skill is manual-only. |
 | `rules` | optional | Auto-activation rules — list of expressions evaluated against the project and conversation. See [Auto-activation rules](#auto-activation-rules). |
 | `license` | optional | License name or path to bundled license file. |
 | `compatibility` | optional | Max 500 chars. Environment requirements (tools, OS, network). |
@@ -298,7 +298,7 @@ An executable file at `skills/<name>/validate`. Checks LLM output quality determ
 
 ### Capabilities auto-loading
 
-When a skill declares `capabilities: git memory`, activating the skill resolves each capability from tap files (`capabilities/<name>/<provider>.toml`) and automatically loads the backing MCP servers. This replaces the previous warning about missing tools.
+When a skill declares `capabilities: versioning memory-read`, activating the skill resolves each capability from tap files (`capabilities/<name>/<provider>.toml`) and automatically loads the backing MCP servers. This replaces the previous warning about missing tools.
 
 ### Domain scoping
 
@@ -308,7 +308,7 @@ The `domains` field limits auto-activation to relevant agent categories:
 domains: developer devops
 ```
 
-Only agents with matching role names (e.g., `developer:rust`) evaluate this skill's `rules`. Skills without `domains` are manual-only (backward compatible).
+Matching is an exact comparison against the agent's domain prefix: `developer:rust` → domain `developer`. A value that isn't an existing `agents/<domain>/` directory name silently never matches — the skill will never auto-activate. Skills without `domains` are manual-only (backward compatible).
 
 ### Validation
 

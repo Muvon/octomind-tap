@@ -3,8 +3,8 @@ name: resume-conventions
 title: "Global Resume & CV Conventions"
 description: "Country-by-country conventions for job-application documents in 2026 — resume vs CV terminology, length, whether to include a photo, GDPR/consent clauses, date and locale formatting, and personal-data norms. Adapt an application to the target market so it reads correctly and stays legally safe wherever it's sent."
 license: Apache-2.0
-compatibility: "For resume/application agents (coach:resume, coach:screener). Pairs with ats-optimization and cover-letter."
-domains: career
+compatibility: "No external tools required. Markets covered: US/CA, UK/IE, continental Europe, AU/NZ, plus photo/data norms for DE, FR, and Asia."
+domains: coach
 rules:
   - career(resume)
   - career(cv)

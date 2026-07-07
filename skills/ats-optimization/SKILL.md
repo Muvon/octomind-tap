@@ -3,8 +3,8 @@ name: ats-optimization
 title: "ATS Optimization & Per-Job Tailoring"
 description: "How modern applicant tracking systems rank resumes in 2026 and how to tailor a resume per job posting so it clears them — keyword strategy grounded in the candidate's real experience, job-title placement, coverage targets, parser-safe formatting, and the anti-stuffing rules that current ATS actively penalize. Truthful tailoring only."
 license: Apache-2.0
-compatibility: "For resume/application agents (coach:resume, coach:screener). Pairs with resume-conventions and cover-letter."
-domains: career
+compatibility: "No external tools required. Works on any resume text; parser-safe output is plain-format friendly."
+domains: coach
 rules:
   - career(ats)
   - career(resume)

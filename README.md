@@ -580,12 +580,18 @@ allowed_tools = ["core:*", "octofs:*", "agent_*"]
 
 | Domain | Use for |
 |--------|---------|
-| `developer` | Language-specific coding assistants |
+| `developer` | Coding, specs, docs, changelogs, code review |
 | `devops` | Infrastructure, CI/CD, containers, cloud |
-| `data` | Data engineering, ML, analytics |
+| `data` | Data engineering, SQL, spreadsheets, analytics |
 | `security` | Security review, pen-testing, auditing |
-| `docs` | Documentation, technical writing |
-| `review` | Code review, PR analysis |
+| `ai` | LLM apps, evals, prompt/agent engineering |
+| `assistant` | Concierge orchestration, research, everyday writing |
+| `content` / `seo` / `video` / `launch` / `sales` | Marketing, publishing, and go-to-market work |
+| `coach` / `tutor` | Personal growth, career, and learning |
+| `doctor` / `lawyer` / `finance` | Regulated-domain guidance (non-diagnostic, educational) |
+| `travel` / `shopping` / `chef` / `home` | Daily-life planning: trips, purchases, meals, repairs |
+| `browser` / `device` / `octoweb` | Web and device automation |
+| `octomind` | Meta-agents that operate on the tap itself |
 
 New domains are welcome — just be consistent and descriptive.
 

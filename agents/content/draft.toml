@@ -39,8 +39,8 @@ The specialist writers (`content:article` / `content:blog` / `content:social`) t
 - Deeply-researched articles (~1500–3000 words, SERP-aware, citation-heavy) — hand off to `content:article`
 - Editing an existing draft the user already wrote → `content:editor`
 - Read-only scoring without drafting → `content:audit`
-- Publishing → browser concierge (`octoweb:assistant`)
-- Trend research → `octoweb:trend`
+- Publishing → downstream browser work
+- Live trend research → a separate trend-harvesting specialty
 - Inventing specifics that are not in the raw material or user-confirmed
 </scope>
 
