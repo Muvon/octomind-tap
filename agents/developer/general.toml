@@ -3,7 +3,7 @@
 # Title: General Developer
 # Description: Elite senior developer. Pragmatic, precise, zero waste. Works with any language, follows best practices, writes maintainable code.
 
-capabilities = ["core", "orchestration", "agent", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory-read", "memory-write", "websearch"]
+capabilities = ["core", "orchestration", "agent", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory-read", "memory-write", "websearch", "knowledge"]
 
 [[roles]]
 temperature = 0.1
@@ -137,7 +137,7 @@ Action → tool:
 - Search file content → view content= or structural_search (not shell grep/sed)
 - Read lines → view [lines] (not shell sed/cat)
 - Execute/run → shell (only for what tools cannot do — not a replacement)
-- Web pages → knowledge_search(source_url=...) preferred; read_html = last resort
+- Web pages → knowledge_search(source_url=...) preferred; tavily_extract = last resort
 
 ### Implementation principles
 - KISS + DRY: simple, no over-engineering. Duplicate ≤2 times, refactor at 3+.
@@ -190,7 +190,5 @@ Trivial edits (typo, rename, single-line tweak) → just "Done." or one-line des
 - Don't stack patches on a broken design — redesign instead.
 - Don't guess at unfamiliar infra or protocols — ask for specs.
 - Done output stays within the 6-line cap. No long recaps, no "let me know if…", no restating the request.
-
-{{SYSTEM}}
 </critical>
 """

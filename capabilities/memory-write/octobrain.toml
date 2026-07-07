@@ -9,10 +9,7 @@ require = ["muvon/octobrain"]
 
 [roles.mcp]
 server_refs = ["octobrain"]
-allowed_tools = [
-  "octobrain:memorize",
-  "octobrain:forget",
-]
+allowed_tools = ["octobrain:memorize", "octobrain:forget"]
 
 [[mcp.servers]]
 name = "octobrain"

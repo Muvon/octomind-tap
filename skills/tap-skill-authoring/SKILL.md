@@ -35,7 +35,7 @@ title: "Skill Title (5–60 chars)"
 description: "What this skill does and when to use it."
 license: Apache-2.0
 compatibility: "Environment requirements: tools needed, OS, network access."
-capabilities: git memory
+capabilities: versioning memory-read
 domains: developer devops
 rules:
   - file(marker-file)              # OR: file exists in workdir (glob ok: *.rs)

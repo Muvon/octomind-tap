@@ -3,7 +3,7 @@ name: analytical-report
 title: "Analytical Report Craft — Data to a Human-Readable Report"
 description: "Turn raw data into a decision-ready report a human actually reads — structured by the Minto Pyramid (answer first), every number traced to the data, the right chart for each question, and delivered as a self-contained HTML document that opens in any browser and prints to clean PDF with no dependencies. Format-flexible; grounded, never fabricated."
 license: Apache-2.0
-compatibility: "For data-report agents (data:analyst and friends). Produces self-contained HTML by default; markdown or PDF when requested and a renderer is available."
+compatibility: "Produces self-contained HTML by default; markdown or PDF when requested and a renderer is available."
 domains: data
 rules:
   - data(report)

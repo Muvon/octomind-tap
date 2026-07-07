@@ -136,6 +136,9 @@ if system_content:
     date_match = re.search(r'\{\{\s*DATE\s*\}\}', no_fences)
     if date_match:
         errors.append("SYSTEM_HAS_DATE: '{{DATE}}' in system prompt — breaks prompt caching (system must be stable run-to-run). Move to `welcome` field.")
+    system_match = re.search(r'\{\{\s*SYSTEM\s*\}\}', no_fences)
+    if system_match:
+        errors.append("SYSTEM_HAS_SYSTEM: '{{SYSTEM}}' in system prompt — expands date/shell/OS/CWD, breaks prompt caching. Move to `welcome` field.")
 
     # System prompt length cap — production sweet spot 200-1000 words; >1500 risks context rot
     sys_word_count = len(system_content.split())

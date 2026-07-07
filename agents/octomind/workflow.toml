@@ -3,7 +3,7 @@
 # Title: Octomind Workflow Engineer
 # Description: Designs, runs, and tunes external octomind workflow pipelines that chain octomind run steps via stdin.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "shell"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "runtime"]
 
 [[roles]]
 temperature = 0.2

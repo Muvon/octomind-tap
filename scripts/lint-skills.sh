@@ -127,6 +127,32 @@ if "compatibility" in fields and len(fields["compatibility"]) > 500:
     print(f"COMPATIBILITY_TOO_LONG: compatibility exceeds 500 characters ({len(fields['compatibility'])} chars)", file=sys.stderr)
     sys.exit(1)
 
+# ── Optional: domains / capabilities must reference real directories ──────────
+# domains: exact-match against agents/<domain>/ (runtime compares the role's
+# domain prefix); a phantom value silently never auto-activates.
+# capabilities: resolved from capabilities/<name>/ at activation; a phantom
+# value silently fails to load its MCP servers.
+repo_root = skill_dir.parent.parent
+
+def _split_values(raw):
+    raw = raw.strip()
+    if raw.startswith("[") and raw.endswith("]"):
+        return [v.strip().strip('"').strip("'") for v in raw[1:-1].split(",") if v.strip()]
+    return raw.split()
+
+if fields.get("domains"):
+    for d in _split_values(fields["domains"]):
+        if not (repo_root / "agents" / d).is_dir():
+            print(f"DOMAIN_UNKNOWN: domains value '{d}' has no agents/{d}/ directory — it will never auto-activate", file=sys.stderr)
+            sys.exit(1)
+
+if fields.get("capabilities"):
+    for c in _split_values(fields["capabilities"]):
+        cap_name = c.split(":")[0]
+        if not (repo_root / "capabilities" / cap_name).is_dir():
+            print(f"CAPABILITY_UNKNOWN: capabilities value '{c}' has no capabilities/{cap_name}/ directory — it will silently fail to load", file=sys.stderr)
+            sys.exit(1)
+
 # ── Body must be non-empty ────────────────────────────────────────────────────
 body_start = after_open.find("\n---") + 4  # skip past closing ---
 body = after_open[body_start:].strip()

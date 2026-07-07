@@ -1,0 +1,20 @@
+# capabilities/programming-swift/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Swift-specific vocabulary: SwiftUI, UIKit, Xcode, optionals, protocols,
+# actors/async-await, Swift Package Manager, Combine, Core Data.
+
+triggers = [
+	"write idiomatic Swift code",
+	"build an iOS app screen in SwiftUI",
+	"fix a Swift compiler error or crash",
+	"work with optionals, guard let, and unwrapping",
+	"design with protocols and protocol extensions",
+	"use Swift concurrency: async await and actors",
+	"set up a Swift Package Manager project",
+	"write XCTest unit tests for Swift code",
+	"bridge UIKit and SwiftUI views",
+	"debug a memory leak with ARC and retain cycles",
+]
+
+domains = ["developer"]

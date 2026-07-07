@@ -1,0 +1,8 @@
+# capabilities/programming-swift/swift.toml
+# Capability: programming-swift
+# Provider: swift — Swift toolchain (swift, swiftc, Swift Package Manager)
+# Title: Swift
+# Description: Swift toolchain for iOS/macOS/server development — compiler, REPL, and Swift Package Manager.
+
+[deps]
+require = ["swiftlang/swift"]

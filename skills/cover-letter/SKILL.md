@@ -3,8 +3,8 @@ name: cover-letter
 title: "Cover Letter Craft"
 description: "Write a cover letter that a hiring manager actually reads — grounded in the candidate's real experience, tailored to the specific posting and company, structured for a 30-second skim, and free of the generic AI-template phrasing that gets letters discarded. Truthful, specific, and human."
 license: Apache-2.0
-compatibility: "For resume/application agents (coach:resume, coach:screener). Pairs with ats-optimization and resume-conventions; composes with content-voice for human phrasing."
-domains: career
+compatibility: "No external tools required. Works from a resume plus a job posting (file, URL text, or pasted)."
+domains: coach
 rules:
   - career(cover-letter)
   - match(\bcover letter\b)

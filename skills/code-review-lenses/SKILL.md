@@ -3,7 +3,7 @@ name: code-review-lenses
 title: "Code Review Lenses & Adversarial Verification"
 description: "The dimensions of a deep code review — correctness, security, concurrency, performance, design/maintainability, tests — what each lens hunts for, and the adversarial verification discipline that keeps a multi-reviewer pass from multiplying false positives. Consensus is not correctness; every finding must be refuted before it is trusted."
 license: Apache-2.0
-compatibility: "For code-review agents (developer:general, security:owasp). Powers multi-lens parallel review plus an adversarial verify gate."
+compatibility: "Requires read access to the code under review. Powers multi-lens parallel review plus an adversarial verify gate."
 domains: developer
 rules:
   - developer(review)

@@ -4,7 +4,7 @@ title: "Bluesky Trend Harvester Playbook"
 description: "Platform-specific intel for harvesting Bluesky trends — AT-Proto repost-driven amplification, custom-feed targeting, harvest URLs, scoring on repost-to-like ratio (no view counts), hook taxonomy tuned to Bluesky's technical / anti-marketing audience, and dead patterns in 2026. Activates inside an octoweb:trend session whenever the user names Bluesky."
 license: Apache-2.0
 compatibility: "Octoweb browser access. Signed-in Bluesky session needed for Discover and Following surfaces; logged-out works for search and tag pages."
-capabilities: octoweb memory
+capabilities: octoweb memory-read memory-write
 domains: octoweb
 rules:
   - session(trend) content(bluesky)

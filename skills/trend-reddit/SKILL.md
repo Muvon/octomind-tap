@@ -4,7 +4,7 @@ title: "Reddit Trend Harvester Playbook"
 description: "Platform-specific intel for harvesting Reddit trends across niche subreddits — upvote-velocity ranking, harvest URLs per-sub (hot/rising/top/new), mod-rules pre-flight that prevents removed posts, per-sub culture map for tech / AI / startup niches, title patterns and dead patterns in 2026. Activates inside an octoweb:trend session whenever the user names Reddit."
 license: Apache-2.0
 compatibility: "Octoweb browser access. Logged-out works for most surfaces; logged-in needed for personalized feeds."
-capabilities: octoweb memory
+capabilities: octoweb memory-read memory-write
 domains: octoweb
 rules:
   - session(trend) content(reddit)
