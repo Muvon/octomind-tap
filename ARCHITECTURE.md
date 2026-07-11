@@ -370,7 +370,10 @@ bash scripts/lint-skills.sh
 # Validate capability resolution for all agents
 bash scripts/validate-capabilities.sh
 
-# All four run in .github/workflows/lint.yml on every push/PR
+# Lint all dep scripts (headers + companion docs)
+bash scripts/lint-deps.sh
+
+# All five run in .github/workflows/lint.yml on every push/PR
 ```
 
 The lint script skips the `server_refs` cross-check for capability-driven agents (those with `capabilities =` at top level), since MCP wiring is resolved at runtime.
