@@ -73,12 +73,18 @@ case "$OS" in
       info "Swift toolchain already installed (winget)."
       exit 0
     fi
-    winget install --id Swift.Toolchain -e --source winget \
-      --accept-package-agreements --accept-source-agreements || true
-    # Re-check by list output regardless of winget's exit code. winget does a
-    # machine-level install; swift lands on the machine PATH that a fresh shell
-    # picks up, so exit 0 here rather than fall through to the same-session
-    # PATH check below.
+    # Exit code 0 means a successful fresh install. winget does a machine-level
+    # install; swift lands on the machine PATH that a fresh shell picks up, so
+    # exit 0 here rather than fall through to the same-session PATH check below.
+    # Don't re-verify via 'winget list': its installed-package correlation is
+    # heuristic and can miss a just-installed toolchain.
+    if winget install --id Swift.Toolchain -e --source winget \
+      --accept-package-agreements --accept-source-agreements; then
+      info "Swift toolchain installed via winget. Open a new shell for swift to be on PATH."
+      exit 0
+    fi
+    # Non-zero exit is unreliable (winget returns non-zero when the package is
+    # already installed and an upgrade is "available") — re-check by list output.
     if winget list --id Swift.Toolchain -e 2>/dev/null | grep -qi "Swift.Toolchain"; then
       info "Swift toolchain installed via winget. Open a new shell for swift to be on PATH."
       exit 0
