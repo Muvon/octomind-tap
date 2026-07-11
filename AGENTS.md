@@ -14,11 +14,15 @@ deps/lib/platform.sh            # Shared platform detection helpers (source in a
 skills/<name>/SKILL.md          # Reusable instruction packs (AgentSkills spec)
 skills/<name>/activate          # Optional: auto-activation script (exit 0 = activate)
 skills/<name>/validate          # Optional: validation script (exit 0 = valid, stderr = error)
+workflows/<name>.toml           # Public multi-step workflows — run via `octomind workflow <name>`
+model/                          # Embedding model fine-tune powering capability auto-activation
 bin/load                        # Python resolver: merges capabilities → final manifest (stdout)
 scripts/
   lint-manifests.sh             # Validate all agent TOML files
+  lint-capabilities.sh          # Validate all capability TOML files
   lint-skills.sh                # Validate all SKILL.md files
-  validate-capabilities.sh      # Check capability files are well-formed
+  lint-deps.sh                  # Validate dep scripts (headers + companion docs)
+  validate-capabilities.sh      # Check capability resolution for all agents
   setup-symlinks.sh             # Create/refresh default.toml symlinks for all capabilities
 templates/
   agent.toml                    # Canonical agent template (copy to start a new agent)
@@ -44,7 +48,7 @@ CONTRIBUTING.md                 # Contribution guidelines
 | Resolve a manifest (debug) | `bin/load <domain>:<spec>` — prints merged TOML to stdout |
 | Refresh capability symlinks | `scripts/setup-symlinks.sh` |
 | Platform detection in dep scripts | `deps/lib/platform.sh` — source this, never re-implement |
-| Build a multi-step pipeline | External `octomind workflow <file.toml>` — see the `octomind-workflow` skill / `octomind:workflow` agent |
+| Build a multi-step pipeline | `workflows/<name>.toml` — run via `octomind workflow <name>`; author with the `octomind-workflow` skill / `octomind:workflow` agent |
 | Meta-agents (tap/skill/instructions) | `agents/octomind/` — these operate on the tap itself |
 
 ## How Things Work
@@ -153,7 +157,7 @@ See `skills/tap-agent-authoring/SKILL.md` for the full authoring spec, rationale
 
 Agents are `capabilities` + one `[[roles]]` — they do **not** define multi-step pipelines. The old in-manifest `workflow = "..."` field and `[[workflows]]` block were removed from Octomind.
 
-Multi-step AI orchestration is now an external CLI: `octomind workflow <file.toml>` — a portable TOML that chains `octomind run` invocations (sequential / parallel / loop / conditional steps), piping output between them by name. It references installed roles and tap-agent tags; no manifest edits needed. Author one with the `octomind-workflow` skill, or use the `octomind:workflow` agent.
+Multi-step AI orchestration is now an external CLI: `octomind workflow <file.toml>` — a portable TOML that chains `octomind run` invocations (sequential / parallel / loop / conditional steps), piping output between them by name. It references installed roles and tap-agent tags; no manifest edits needed. The tap ships ready-made workflows in `workflows/<name>.toml` (see `workflows/README.md`) — run them by name: `octomind workflow <name>`. Author one with the `octomind-workflow` skill, or use the `octomind:workflow` agent.
 
 `[[layers]]` still exist in Octomind config (not in tap manifests): they back the `[[commands]]` slash-command system (`/run <name>`) and delegate to a role via `command = "octomind acp <role>"`.
 
@@ -327,6 +331,12 @@ bash scripts/lint-manifests.sh
 
 # Lint a specific agent
 bash scripts/lint-manifests.sh agents/<domain>/<spec>.toml
+
+# Lint all capability files
+bash scripts/lint-capabilities.sh
+
+# Validate capability resolution for all agents
+bash scripts/validate-capabilities.sh
 
 # Lint all skills
 bash scripts/lint-skills.sh

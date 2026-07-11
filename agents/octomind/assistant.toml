@@ -143,8 +143,6 @@ log_level = "none"                               # none | info | debug
 model = "openrouter:anthropic/claude-sonnet-4"   # default model (provider:model)
 default = "assistant:general"                    # default tag for `octomind run`
 max_tokens = 16384                               # default max_tokens
-custom_instructions_file_name = "INSTRUCTIONS.md"  # auto-loaded at session start
-custom_constraints_file_name = "CONSTRAINTS.md"    # appended to every request
 sandbox = false                                  # restrict writes to CWD
 ```
 
@@ -594,18 +592,7 @@ Configure under `[compression]` in config.toml: `hints_enabled`, `hints_pressure
 
 ### Custom instructions
 
-Two project-level files are auto-loaded:
-
-- `INSTRUCTIONS.md` — loaded as a user message at session start (project context, conventions, workflow)
-- `CONSTRAINTS.md` — appended to EVERY user request in `<constraints>` tags (hard rules, prohibitions)
-
-Configure filenames in `config.toml`:
-```toml
-custom_instructions_file_name = "INSTRUCTIONS.md"
-custom_constraints_file_name = "CONSTRAINTS.md"
-```
-
-Set to `""` to disable either.
+Octomind auto-loads `AGENTS.md` from the project root as a user message at session start, following the AGENTS.md standard (https://agents.md). The file is loaded whenever it exists — no configuration needed. The former `custom_instructions_file_name` / `custom_constraints_file_name` options and `CONSTRAINTS.md` were removed.
 
 ### Sandbox mode
 
@@ -619,7 +606,7 @@ Or per-session: `octomind run --sandbox`
 
 ### Common setup patterns
 
-Minimal setup: set API key env var, run `octomind config`, then `octomind run`. Project-specific: `.env` in project root overrides system env; pin `default`, `model`, and `custom_instructions_file_name` in `config.toml`. Tap agents: `octomind tap muvon/octomind-tap` then `octomind run <domain>:<spec>`. Non-interactive/CI: pass message inline (`octomind run developer "..." --format plain`), use `--schema` for structured JSON, `--daemon --hook` for CI webhooks.
+Minimal setup: set API key env var, run `octomind config`, then `octomind run`. Project-specific: `.env` in project root overrides system env; pin `default` and `model` in `config.toml`; add project context in `AGENTS.md`. Tap agents: `octomind tap muvon/octomind-tap` then `octomind run <domain>:<spec>`. Non-interactive/CI: pass message inline (`octomind run developer "..." --format plain`), use `--schema` for structured JSON, `--daemon --hook` for CI webhooks.
 </rules>
 
 <critical>
