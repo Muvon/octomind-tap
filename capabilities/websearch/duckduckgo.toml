@@ -1,0 +1,23 @@
+# capabilities/websearch/duckduckgo.toml
+# Capability: websearch
+# Provider: Open-WebSearch — keyless multi-engine web search, DuckDuckGo default
+# Title: Web Search (DuckDuckGo)
+# Description: Free keyless web search via DuckDuckGo with Bing/Startpage/Brave fallback (Open-WebSearch MCP).
+# Provides tools: search
+# https://github.com/Aas-ee/open-webSearch
+
+[deps]
+require = ["aas-ee/open-websearch"]
+
+[roles.mcp]
+server_refs = ["open-websearch"]
+allowed_tools = ["search"]
+
+[[mcp.servers]]
+name = "open-websearch"
+type = "stdio"
+command = "npx"
+args = ["-y", "open-websearch@latest"]
+timeout_seconds = 60
+env = { MODE = "stdio", DEFAULT_SEARCH_ENGINE = "duckduckgo", ALLOWED_SEARCH_ENGINES = "duckduckgo,bing,startpage,brave" }
+tools = []
