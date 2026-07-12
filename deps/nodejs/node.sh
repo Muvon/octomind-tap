@@ -29,12 +29,20 @@ case "$OS" in
   linux)
     case "$PKG_MANAGER" in
       apt)
-        # Ubuntu/Debian — npm is a separate package, must install both
-        sudo apt-get update -qq
-        sudo apt-get install -y nodejs npm
+        # Distro repos ship stale Node (Ubuntu 24.04 → 18.x, too old for MCP
+        # servers that need >= 20) — use the NodeSource LTS repo instead.
+        # NodeSource's nodejs bundles npm, so no separate npm package.
+        if ! pkg_check curl; then
+          sudo apt-get update -qq
+          sudo apt-get install -y curl
+        fi
+        curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+        sudo apt-get install -y nodejs
         ;;
       dnf)
-        sudo dnf install -y nodejs npm
+        # Same stale-distro-repo problem as apt — use NodeSource LTS.
+        curl -fsSL https://rpm.nodesource.com/setup_lts.x | sudo bash -
+        sudo dnf install -y nodejs
         ;;
       pacman)
         sudo pacman -S --noconfirm nodejs npm
