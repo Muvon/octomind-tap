@@ -66,26 +66,17 @@ case "$OS" in
     if ! pkg_check winget; then
       die "winget not found. Install the Swift toolchain manually: https://www.swift.org/install/windows/"
     fi
-    # Idempotent: winget's exit code is unreliable (it returns non-zero when the
-    # package is already installed and an upgrade is "available"), so match on
-    # the list output text instead of trusting the exit code.
-    if winget list --id Swift.Toolchain -e 2>/dev/null | grep -qi "Swift.Toolchain"; then
-      info "Swift toolchain already installed (winget)."
-      exit 0
-    fi
-    # Exit code 0 means a successful fresh install. winget does a machine-level
-    # install; swift lands on the machine PATH that a fresh shell picks up, so
-    # exit 0 here rather than fall through to the same-session PATH check below.
-    # Don't re-verify via 'winget list': its installed-package correlation is
-    # heuristic and can miss a just-installed toolchain.
-    if winget install --id Swift.Toolchain -e --source winget \
-      --accept-package-agreements --accept-source-agreements; then
-      info "Swift toolchain installed via winget. Open a new shell for swift to be on PATH."
-      exit 0
-    fi
-    # Non-zero exit is unreliable (winget returns non-zero when the package is
-    # already installed and an upgrade is "available") — re-check by list output.
-    if winget list --id Swift.Toolchain -e 2>/dev/null | grep -qi "Swift.Toolchain"; then
+    # 'winget list' correlation is unreliable for this package (it can miss an
+    # installed toolchain), and 'winget install' exits non-zero when the
+    # package is already installed with no upgrade available. The one
+    # dependable signal is winget install's own output: accept a clean exit or
+    # the already-installed/no-upgrade messages, die on anything else.
+    winget_rc=0
+    winget_out="$(winget install --id Swift.Toolchain -e --source winget \
+      --accept-package-agreements --accept-source-agreements 2>&1)" || winget_rc=$?
+    printf '%s\n' "$winget_out"
+    if [[ $winget_rc -eq 0 ]] ||
+      grep -qiE 'already installed|no available upgrade|no newer package' <<<"$winget_out"; then
       info "Swift toolchain installed via winget. Open a new shell for swift to be on PATH."
       exit 0
     fi
