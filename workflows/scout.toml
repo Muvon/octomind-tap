@@ -1,0 +1,273 @@
+# Title: Scout — Field to Proven Opportunities
+#
+# Public workflow: the phase BEFORE anyone has an idea. Take a field/market,
+# mine it for real evidenced pain through three blind parallel sweeps
+# (communities, incumbent reviews, demand+disconfirmation), map the pains into
+# job stories, then adversarially vet the top candidates until the evidence
+# survives a genuine kill attempt — ending in ranked opportunity briefs, or an
+# honest no-signal verdict. Chain the winner into `launch`. Public roles only.
+#
+# Note: chains several research-heavy runs — token/time-heavy by design.
+
+name        = "scout"
+description = "Mine a field for real, evidenced pain: parallel community/review/demand sweeps, a job-story pain map, then adversarial vetting — ranked opportunity briefs or an honest no-signal verdict."
+
+# ── 1. Parallel evidence sweep — three blind lenses ──────────────────────────
+[[steps]]
+name     = "sweep"
+parallel = true
+
+  [[steps.run]]
+  name    = "communities"
+  role    = "launch:explore"
+  session = "fresh"
+  retries = 1
+  prompt  = """
+Passive pain harvest in the communities of this field. NO product ideas yet —
+you are collecting raw evidence only.
+
+<field>
+{{input}}
+</field>
+
+1. Find the watering holes: 5–10 communities (subreddits, niche forums, groups,
+   Q&A sites) that are active (check member counts and recent posts) and
+   on-topic for this field.
+2. Mine COMPLAINT threads, not advice threads, with pain-phrase searches in the
+   audience's own words: "is there a tool that", "how do I", "I hate", "why is
+   it so hard to", "am I the only one who", "tired of", "workaround for", and
+   manual-hack confessions ("I built a spreadsheet to…").
+3. Log each hit: verbatim quote · source URL · date · tag (PAIN / JARGON /
+   WORLDVIEW / RECOMMENDATION). Weight the last 6–12 months; note emotional
+   relief words (easier, faster, finally).
+
+Output the raw pain log grouped by community, plus the audience-language
+glossary (their jargon, verbatim).
+"""
+
+  [[steps.run]]
+  name    = "reviews"
+  role    = "launch:explore"
+  session = "fresh"
+  retries = 1
+  prompt  = """
+Incumbent review mining for this field. NO product ideas yet — evidence only.
+
+<field>
+{{input}}
+</field>
+
+1. Identify the incumbent tools/services people in this field actually pay for
+   (and the big free defaults).
+2. Mine their reviews on G2/Capterra/Trustpilot/app stores: 3–4★ first (the
+   nuanced, actionable complaints), then 1★ (rage and edge cases). 5★ tells you
+   what already works — note it as the bar.
+3. Cluster complaints into recurring themes with counts and the share of an
+   incumbent's negative reviews each theme represents (≥15% = a real weakness).
+4. Note zombie competitors (abandoned, outdated, users begging for maintenance)
+   and pricing-model complaints.
+
+Output the theme clusters with verbatim quotes, URLs, dates, counts, and
+per-incumbent weakness percentages.
+"""
+
+  [[steps.run]]
+  name    = "demand"
+  role    = "assistant:researcher"
+  session = "fresh"
+  retries = 1
+  prompt  = """
+Demand and disconfirmation sweep for this field — cited findings only, no
+opinions, no product ideas.
+
+<field>
+{{input}}
+</field>
+
+(a) DEMAND PROXIES: community sizes and growth velocity, search-trend
+    trajectory for the field's core terms (flag one-off news spikes as noise),
+    complaint-thread frequency. Real proxies only — no fabricated TAM.
+(b) DISCONFIRMATION (the point is to find reasons this field is NOT fertile):
+    the graveyard check — startups/products that already tried here and died,
+    and why; the solved-problem check — dominant free or good-enough solutions
+    including the status quo (spreadsheets, hiring someone, doing nothing);
+    structural resistance — regulation, network effects, "big player would
+    ship it as a feature" risk.
+(c) TIMING: regulation, platform, or technology shifts creating fresh needs
+    right now.
+
+Cite every claim with its source and date.
+"""
+
+# ── 2. Pain map — job stories, triangulated, scored ──────────────────────────
+[[steps]]
+name    = "map"
+role    = "launch:explore"
+session = "fresh"
+retries = 1
+prompt  = """
+Synthesize the three independent evidence streams below into a pain map, then
+derive ranked opportunity candidates.
+
+<field>
+{{input}}
+</field>
+
+<communities>
+{{communities}}
+</communities>
+
+<reviews>
+{{reviews}}
+</reviews>
+
+<demand>
+{{demand}}
+</demand>
+
+Rules:
+- Cluster into 5–8 pain themes. Each theme carries: a job story ("When
+  [situation], I want to [motivation], so I can [outcome]"), the exact segment,
+  the current workaround, and its evidence pack (verbatim quotes with URLs,
+  mention counts, review-theme percentages).
+- Triangulation bar: keep only themes that appear unprompted in at least TWO
+  independent source types (communities / reviews / demand), recent-weighted.
+  List what you discarded and why — discards are findings too.
+- Evidence hierarchy: a workaround already built or money/time already spent >
+  repeated specific complaints > stated preferences. Tag each theme painkiller
+  or vitamin accordingly.
+- Score each surviving theme: Severity (1–5) × Frequency (1–5) × Reach (1–5),
+  plus the explicit willingness-to-pay signal, noting how strongly "do nothing"
+  currently wins.
+- Derive the TOP 3 opportunity candidates, each stated as: SEGMENT +
+  STRUGGLING MOMENT + CURRENT WORKAROUND + WHAT BETTER LOOKS LIKE, ranked with
+  scores and evidence.
+"""
+
+# ── 3. Adversarial vetting loop — evidence must survive a kill attempt ───────
+[[steps]]
+name           = "vet"
+loop           = true
+max_iterations = 3
+exit_when      = { output = "skeptic", matches = '(?m)^SCOUT: SOLID' }
+
+  [[steps.run]]
+  name    = "strengthen"
+  role    = "launch:explore"
+  session = "continue"
+  retries = 1
+  prompt  = """
+First round: finalize the top-3 candidate dossiers from the pain map — close
+the evidence gaps you can already see with targeted searches/browsing. Later
+rounds: the skeptic's audit arrives as your input — fetch the exact missing
+evidence it names, or honestly downgrade/replace the candidate. Never pad weak
+evidence with adjectives; a downgraded candidate with true evidence beats an
+inflated one.
+
+<field>
+{{input}}
+</field>
+
+<map>
+{{map}}
+</map>
+
+Output the current top-3 dossiers, each with its full evidence pack.
+"""
+
+  [[steps.run]]
+  name    = "skeptic"
+  role    = "launch:validate"
+  session = "fresh"
+  prompt  = """
+Refute-first audit. Your job is to find reasons these are NOT real
+opportunities — if you cannot kill one with evidence, it earns PROVEN.
+
+<field>
+{{input}}
+</field>
+
+<candidates>
+{{strengthen}}
+</candidates>
+
+Attack each candidate on all six:
+1. Evidence quality (Mom Test) — past behavior and money/time actually spent,
+   or hypothetical enthusiasm and compliments? Verbatim, dated, sourced?
+2. Triangulation — unprompted across ≥2 independent source types, recent? Or a
+   single viral post inflated into a trend?
+3. Solved-problem check — a free or good-enough incumbent with network effects
+   already owns this?
+4. Graveyard collision — did predecessors die here for structural reasons that
+   still hold?
+5. Do-nothing test — is the status quo winning cheaply because the pain is
+   tolerable?
+6. Painkiller reality — an acute struggling moment, or a vitamin dressed up?
+
+Verdict per candidate: PROVEN (survives all six) / WEAK (name the exact
+missing evidence) / REFUTED (name the kill reason). Base every verdict on the
+evidence in front of you, not vibes.
+
+End with exactly one line: `SCOUT: SOLID` (at least one PROVEN candidate,
+every verdict evidence-based) or `SCOUT: RETRY`. Nothing after it.
+"""
+
+# ── 4. Outcome — honest branch on the vetting verdict ────────────────────────
+[[steps]]
+name        = "outcome"
+conditional = true
+condition   = { output = "skeptic", matches = '(?m)^SCOUT: SOLID' }
+on_match    = ["briefs"]
+on_no_match = ["nosignal"]
+
+  [[steps.run]]
+  name    = "briefs"
+  role    = "launch:validate"
+  session = "fresh"
+  prompt  = """
+Write the final Opportunity Brief for every PROVEN candidate (one-line closing
+notes for WEAK/REFUTED ones). Each brief contains:
+
+- One-line job story, and the exact segment
+- The struggling moment/trigger, the current workaround, and what they already
+  spend on it (time/money)
+- Why now (the timing/demand signal)
+- Evidence pack: source count, top verbatim quotes with URLs, review-theme
+  percentages
+- Competition map including the spreadsheet, the intern, and "do nothing"
+- Painkiller/vitamin verdict, opportunity score, and rank
+- Pre-committed, falsifiable KILL CRITERIA with a deadline for the next
+  validation stage ("X buyers doing Y within 30 days, or kill — no extensions")
+
+<candidates>
+{{strengthen}}
+</candidates>
+
+<audit>
+{{skeptic}}
+</audit>
+
+Close with one line: feed the chosen brief into `octomind workflow launch` to
+take it from opportunity to go-to-market.
+"""
+
+  [[steps.run]]
+  name    = "nosignal"
+  role    = "launch:validate"
+  session = "fresh"
+  prompt  = """
+The vetting loop ended with no PROVEN opportunity — that is a finding, not a
+failure; an honest no saves months. Report: the strongest partial candidates
+with their exact evidence gaps, what was REFUTED and why (save the next person
+the trip), and precisely what evidence would change each verdict.
+
+<candidates>
+{{strengthen}}
+</candidates>
+
+<audit>
+{{skeptic}}
+</audit>
+
+Start with exactly: `NO PROVEN OPPORTUNITY — evidence below the bar.`
+"""

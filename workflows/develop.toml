@@ -50,8 +50,10 @@ Pinpoints and verification command from context:
 {{context}}
 </context>
 
-Implement the change fully autonomously. Then run the project's verification
-command (tests / build / lint / typecheck) and iterate until it passes.
+Implement the change fully autonomously. Fix causes, not symptoms — no
+workarounds, suppressed errors, or skipped tests unless the spec explicitly
+sanctions one. Then run the project's verification command (tests / build /
+lint / typecheck) and iterate until it passes.
 
 End your response with the exact command you ran and its output as evidence the
 check passes. Output only the work and that evidence — no preamble.

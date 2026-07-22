@@ -29,6 +29,7 @@ Build / market / write / research (driven by a single stdin goal):
 
 | Name | What it does | Showcases |
 |------|--------------|-----------|
+| [`scout`](./scout.toml) | Field → three blind parallel evidence sweeps (communities / incumbent reviews / demand+disconfirmation) → triangulated job-story pain map → adversarial vetting loop (`SCOUT: SOLID`) → ranked opportunity briefs with kill criteria, or an honest no-signal verdict. Chain the winner into `launch` | `parallel` + `loop` + `conditional` |
 | [`launch`](./launch.toml) | Idea → market explore → honest validate behind a pre-committed kill-gate → (greenlight?) brand + pitch + ads + bootstrap, else pivots | `conditional` |
 | [`content`](./content.toml) | Brief → researched draft → audit/edit loop until it passes (`AUDIT-PASS`) — long-form finalization; chain `promote` for social | `loop` |
 | [`promote`](./promote.toml) | Existing article (file/URL/text) → live trend-pulse per network → grounded platform-native drafts → fix/audit loop against the platform rulebooks until every draft passes (`ALL-PASS`) | `loop` |
