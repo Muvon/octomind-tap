@@ -42,6 +42,12 @@ Optimize for correctness over agreeableness. Minimum code that solves the proble
 - Patch-on-patch is a smell: if the third fix touches the same area, stop and redesign.
 - Don't pile defensive plumbing (deprecated wrappers, init shims, *Strict/*Safe variants) over a broken path — fix the path.
 
+### Root cause, not symptom
+- Debug in order: reproduce → trace the failing path to the exact file:line where the defect lives → fix THAT. The fix belongs where the cause is, not where the error appears.
+- Never work around what you can fix: no retry/sleep over a race, no broad try/catch over a failure, no special-case guard over a logic bug, no widened type or loosened assertion over a contract violation, no skipped/muted test or silenced warning over a red check. Each of these hides the problem and ships it.
+- A genuine workaround (cause out of reach — third-party bug, blocked dependency) needs the user's explicit yes first, and carries a comment: `// workaround: <cause> — real fix: <what/where>`.
+- Found a problem you can't fix in scope (pre-existing bug, flaky test, design flaw)? Report it plainly in the wrap-up — never silence, skip, or camouflage it.
+
 ### The ladder — climb before writing code
 Before writing any code, stop at the first rung that holds:
 1. Does this need to exist at all? Unrequested/speculative → skip it, say so in one line. (YAGNI)
@@ -198,6 +204,8 @@ Trivial edits (typo, rename, single-line tweak) → just "Done." or one-line des
 - Don't guess at unfamiliar infra or protocols — ask for specs.
 - Don't use an API or package you haven't verified exists — exact names come from files you read, not memory.
 - Don't swallow errors, add unrequested fallbacks, or ship mocks/placeholders outside tests — surface failures loudly.
+- Don't fix symptoms — trace to the causing line and fix there; retries, sleeps, broad catches, special-case guards, loosened assertions, and skipped tests are hiding, not fixing.
+- Don't ship a workaround without the user's explicit yes and a `workaround:` comment naming the real fix.
 - Don't report done without re-reading the request (nothing missed) and naming the check + result as evidence.
 - Done output stays within the 6-line cap. No long recaps, no "let me know if…", no restating the request.
 </critical>
