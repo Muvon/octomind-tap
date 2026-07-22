@@ -1,0 +1,119 @@
+# Title: Learn — Project Knowledge Base Bootstrap
+#
+# Public workflow: ground project memory from the codebase, promote the durable
+# facts into the .box/ knowledge base (octobrain-indexed, readable by every
+# agent), then audit ⇄ fix until every note survives verification against the
+# real repository. Operates on the current directory. Public roles only.
+
+name        = "learn"
+description = "Ground project memory from the codebase, promote durable knowledge into the .box/ knowledge base, then audit and fix the notes until every claim verifies against the repo."
+
+# ── 1. Ground — codebase → memory ────────────────────────────────────────────
+[[steps]]
+name    = "ground"
+role    = "developer:learn"
+session = "fresh"
+retries = 1
+prompt  = """
+Run your autonomous grounding pass on the current project. Focus on what the
+request asks; if it names no focus, cover the whole project: architecture and
+module boundaries, key entry points, conventions, build/test commands,
+integrations, design decisions and their rationale, known constraints.
+
+<request>
+{{input}}
+</request>
+
+Every stored fact must be verified in the repo and carry its file:line anchor.
+Report what was stored, grouped by area.
+"""
+
+# ── 2. Promote ⇄ audit loop ──────────────────────────────────────────────────
+[[steps]]
+name           = "curate"
+loop           = true
+max_iterations = 3
+exit_when      = { output = "audit", matches = '(?m)^KB-AUDIT: PASS' }
+
+  [[steps.run]]
+  name    = "promote"
+  role    = "assistant:knowledge"
+  session = "continue"
+  retries = 1
+  prompt  = """
+Build or refresh this project's knowledge base in `.box/` from the grounding
+report below plus your own memory recall and the project's existing docs.
+(On later rounds you receive the auditor's findings as input — correct or
+delete every flagged note first.)
+
+<grounding>
+{{ground}}
+</grounding>
+
+Apply your full discipline: the four-part durable test gates every note;
+dedup before write; subject-based layout; declarative H1 + meta line +
+self-contained sections; README map current. Facts that fail the durable
+test stay in memory — say which and why.
+
+End by listing every note in the box: `path — one-line claim`.
+"""
+
+  [[steps.run]]
+  name    = "audit"
+  role    = "developer:general"
+  session = "fresh"
+  prompt  = """
+Independently audit the knowledge base in `.box/` against the real repository.
+You trust nothing the curator wrote — verify.
+
+<note_list>
+{{promote}}
+</note_list>
+
+1. Read every note file in `.box/` (skip README.md).
+2. Pick the 8 most load-bearing claims plus any that look suspicious, and
+   verify each against the actual code, config, or docs it describes.
+3. Flag as findings: claims that are wrong or stale, claims with no verifiable
+   grounding in the repo, near-duplicate notes, and format violations (missing
+   or malformed `Meta:` line, non-declarative H1, sections that are not
+   self-contained).
+
+List each finding as `path — problem — evidence`. If there are none, say so.
+
+End with exactly one line: `KB-AUDIT: PASS` or `KB-AUDIT: FAIL`. Nothing after it.
+"""
+
+# ── 3. Outcome — honest branch on the loop's final verdict ───────────────────
+[[steps]]
+name        = "outcome"
+conditional = true
+condition   = { output = "audit", matches = '(?m)^KB-AUDIT: PASS' }
+on_match    = ["summary"]
+on_no_match = ["stalled"]
+
+  [[steps.run]]
+  name    = "summary"
+  role    = "assistant:knowledge"
+  session = "fresh"
+  prompt  = """
+The knowledge base passed its audit. Report the final state briefly: the box
+map (each note path with its one-line claim), what was promoted from memory
+versus newly written, and what deliberately stayed memory-only. The box is now
+searchable by every agent with the knowledge capability — say so in one line.
+"""
+
+  [[steps.run]]
+  name    = "stalled"
+  role    = "developer:brief"
+  session = "fresh"
+  prompt  = """
+The knowledge-base audit loop ended WITHOUT a pass — do not present this as
+success. Report for a human decision: what the box currently contains, and
+every unresolved finding from the last audit below.
+
+<last_audit>
+{{audit}}
+</last_audit>
+
+Start with exactly: `DID NOT CONVERGE — human review required.`
+"""
