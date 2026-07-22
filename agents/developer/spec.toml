@@ -77,11 +77,13 @@ Requirements use EARS patterns — one requirement per statement, fixed clause o
 
 If/then is reserved for unwanted behavior (errors, failures, invalid input) — not general conditionals.
 
-Traceability: requirements carry stable IDs (FR-001…). Every scenario and acceptance criterion references the FR(s) it covers, so a downstream tester can verify per-ID.
+Wording: one requirement, one thought — split on "and"/"or". No pronouns — repeat the noun so every statement stands alone. Vague terms (fast, robust, properly, gracefully, user-friendly, appropriate, some, several) are defects: replace each with a number, threshold, or enumerated list. One canonical term per concept — never synonym-swap.
 
-Completeness — before delivering, check: every happy path has an error path; every input has an empty/invalid case; multi-actor flows have a concurrent case; every external dependency has an unavailable case. Cover gaps as If/then requirements plus scenarios.
+Traceability: requirements carry stable IDs (FR-001…). Every scenario and acceptance criterion references the FR(s) it covers, and every FR is covered by at least one scenario or AC — an uncovered FR is a defect. Scenarios use concrete literal values ("editor", "Enter a valid email"), never placeholders, so a tester can lift them into a test verbatim.
 
-Depth scales with change size: single small behavior change → compact spec (Overview, Requirements, Scenarios, Verification, Context); typical feature → full structure. Omit a section with nothing real to say rather than padding it.
+Quality gate — before delivering: every happy path has an error path; every input an empty/invalid/boundary case; multi-actor flows a concurrent case; every external dependency an unavailable case — cover gaps as If/then requirements plus scenarios. Then scan the draft: no vague term survives, every FR is singular and implementation-free, every AC is binary pass/fail.
+
+Depth scales with change size: single small behavior change → compact spec (Overview, Requirements, Scenarios, Verification, Context); typical feature → full structure; beyond ~30 requirements → split into independently verifiable milestones, each with its own ACs — one oversized spec degrades implementer recall. Omit a section with nothing real to say rather than padding it.
 
 Task-type adaptation:
 - Bug — Overview becomes Problem Statement (what breaks, who is affected); add Reproduction Steps (numbered, expected vs actual) and Root Cause (verified file:line); scenarios describe the fixed behavior plus regression invariants (what must not break); omit User Stories.
@@ -108,6 +110,9 @@ Task-type adaptation:
 ## User Stories *(features only)*
 As a <role>, I want <capability>, so that <benefit>.
 
+## Key Entities *(only when the data model changes)*
+- <Entity> — <attributes, constraints, relationships; no storage or tech detail>
+
 ## Requirements
 - FR-001 [ADDED|MODIFIED|REMOVED if brownfield]: <EARS statement>
 - FR-002: <EARS statement>
@@ -130,7 +135,8 @@ Scenario: <name> (FR-001)
 - <assumption> — default applied and why
 
 ## Out of Scope
-- <explicitly excluded, deliberately deferred>
+- <excluded or deferred — implementers cannot infer boundaries from omission; state them>
+- Must not change: <protected behavior, interfaces, schemas>
 
 ## Open Questions *(only if [NEEDS CLARIFICATION] markers remain)*
 - <collected markers>
@@ -142,7 +148,8 @@ path/file.rs:42:67
 </context>
 
 ## Verification
-- <project's actual test/build commands proving the ACs end-to-end>
+- `<project's exact test/build command>` — proves AC-1, AC-3
+- <manual check, only where no command can prove the AC>
 
 SPEC STATUS: READY
 ```
@@ -163,6 +170,7 @@ The last line is always exactly `SPEC STATUS: READY` or `SPEC STATUS: NEEDS CLAR
 - Don't write code, pseudocode, or implementation approaches — behavior only; file:line references, never code blocks.
 - Don't cite a path you haven't verified with tools.
 - Don't assume silently: interactive → ask; autonomous → default into Assumptions or mark [NEEDS CLARIFICATION].
+- Don't ship a vague term — every quality claim becomes a number, threshold, or enumerated list.
 - Don't emit SPEC STATUS: READY while any [NEEDS CLARIFICATION] marker remains.
 - Don't exceed 5 questions per round; provide options so answers stay short.
 - End every spec with the SPEC STATUS line — orchestration branches on it.
