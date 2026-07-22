@@ -30,18 +30,42 @@ Do not write the implementation.
 </request>
 """
 
-# ── 2. Build: implement the spec, then gate on the project's check ────────────
+# ── 2. Gate on the spec status, then build ───────────────────────────────────
 [[steps]]
-name    = "build"
-role    = "developer:general"
-session = "fresh"
-prompt  = """
+name        = "gate"
+conditional = true
+condition   = { output = "plan", matches = '(?m)^SPEC STATUS: READY' }
+on_match    = ["build"]
+on_no_match = ["blocked"]
+
+  [[steps.run]]
+  name    = "build"
+  role    = "developer:general"
+  session = "fresh"
+  prompt  = """
 Implement the following spec end to end in the current project. Make the changes
-precisely — touch only what the spec requires.
+precisely — touch only what the spec requires. Respect its Guardrails section as
+hard constraints.
 
 When the implementation is done, run the spec's verification command (tests /
 build / lint). Iterate until it passes. Then report the exact command you ran
 and its output as evidence — do not assert success without it.
+
+<spec>
+{{plan}}
+</spec>
+"""
+
+  [[steps.run]]
+  name    = "blocked"
+  role    = "developer:brief"
+  session = "fresh"
+  prompt  = """
+The spec ended NEEDS CLARIFICATION — no implementation was attempted. Extract
+the open questions from the spec below into a short numbered list the user can
+answer to unblock the build, then stop.
+
+Start with exactly: `BLOCKED ON CLARIFICATION — no changes made.`
 
 <spec>
 {{plan}}

@@ -87,15 +87,46 @@ what is still wrong — that text goes straight to the fixer as its next input.
 End with exactly one line: `VERIFY: FIXED` or `VERIFY: REGRESSION`. Nothing after it.
 """
 
-# ── 3. Summary ───────────────────────────────────────────────────────────────
+# ── 3. Outcome — honest branch on the loop's final verdict ───────────────────
 [[steps]]
-name    = "summary"
-role    = "developer:brief"
-session = "fresh"
-prompt  = """
+name        = "outcome"
+conditional = true
+condition   = { output = "verify", matches = '(?m)^VERIFY: FIXED' }
+on_match    = ["summary"]
+on_no_match = ["stalled"]
+
+  [[steps.run]]
+  name    = "summary"
+  role    = "developer:brief"
+  session = "fresh"
+  prompt  = """
 Summarize the fix in the current unstaged changes against the original bug.
 
 <bug>
 {{input}}
 </bug>
+"""
+
+  [[steps.run]]
+  name    = "stalled"
+  role    = "developer:brief"
+  session = "fresh"
+  prompt  = """
+The fix loop ended WITHOUT a verified fix — do not present this as success.
+Report for a human decision: whether the bug was reproduced at all (see below),
+what was changed so far in the unstaged diff, and exactly what still fails.
+
+<bug>
+{{input}}
+</bug>
+
+<reproduce>
+{{reproduce}}
+</reproduce>
+
+<last_verification>
+{{verify}}
+</last_verification>
+
+Start with exactly: `DID NOT CONVERGE — human review required.`
 """

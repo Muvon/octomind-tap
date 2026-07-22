@@ -1,0 +1,136 @@
+# Title: Upgrade — Dependency Bump to Green Build
+#
+# Public workflow: plan a dependency upgrade (named packages, or safe
+# patch/minor by default), apply it and fix the breakage in a bump ⇄ verify
+# loop until the project's own checks are green, then write upgrade notes.
+# Operates on the current directory. Public roles only.
+
+name        = "upgrade"
+description = "Upgrade dependencies (named packages, or safe patch/minor by default), fix breakages in a bump/verify loop until the project's checks pass, then produce upgrade notes."
+
+# ── 1. Inventory & plan ──────────────────────────────────────────────────────
+[[steps]]
+name    = "inventory"
+role    = "developer:general"
+session = "fresh"
+retries = 1
+prompt  = """
+Plan a dependency upgrade for the current repository. Make NO changes yet.
+
+<request>
+{{input}}
+</request>
+
+Do exactly this:
+1. Detect the package manager(s) from the manifests/lockfiles on disk and the
+   project's verification command (tests / build / lint) — state both.
+2. Scope from the request: upgrade only the packages it names; if it names
+   none, default to all PATCH and MINOR updates — include MAJOR bumps only if
+   the request explicitly asks for them.
+3. List every planned bump as `package current → target`, flagging any with
+   known breaking changes (check release/migration notes via websearch for
+   majors and risky minors). Never invent a version — only versions confirmed
+   from the registry/manifest.
+
+End with the heading `UPGRADE PLAN` followed by the bump list and the
+verification command.
+"""
+
+# ── 2. Bump ⇄ verify loop ────────────────────────────────────────────────────
+[[steps]]
+name           = "bump"
+loop           = true
+max_iterations = 3
+exit_when      = { output = "verify", matches = '(?m)^VERIFY: GREEN' }
+
+  [[steps.run]]
+  name    = "apply"
+  role    = "developer:general"
+  session = "continue"
+  retries = 1
+  prompt  = """
+Execute this upgrade plan in the current repository. (On later rounds you
+receive the verifier's failures as input — address every one.)
+
+<plan>
+{{inventory}}
+</plan>
+
+Rules:
+- Apply the planned bumps and regenerate the lockfile with the package
+  manager's own commands — never hand-edit a lockfile.
+- Fix compile/test breakage caused by the upgrades with the SMALLEST change
+  that follows the dependency's own migration notes — no drive-by refactors,
+  no unrelated edits, no removing tests to make them pass.
+- A planned bump that proves incompatible → pin it back to the highest working
+  version and record why, rather than forcing the tree.
+Then run the project's verification command yourself and end with the exact
+command and its output as evidence.
+"""
+
+  [[steps.run]]
+  name    = "verify"
+  role    = "developer:general"
+  session = "fresh"
+  prompt  = """
+Independently verify the upgrade in the current working tree — trust nothing
+you didn't run yourself.
+
+<plan>
+{{inventory}}
+</plan>
+
+Check, by actual execution and file reads:
+(a) the project's verification command passes with no new failures;
+(b) manifests and lockfile are consistent (no mixed/duplicate versions, no
+    hand-edited lockfile artifacts);
+(c) every planned bump landed or carries a recorded pin-back reason.
+
+If anything fails, list exactly what — that text goes straight back to the
+upgrader as its next input.
+
+End with exactly one line: `VERIFY: GREEN` or `VERIFY: BROKEN`. Nothing after it.
+"""
+
+# ── 3. Outcome — honest branch on the loop's final verdict ───────────────────
+[[steps]]
+name        = "outcome"
+conditional = true
+condition   = { output = "verify", matches = '(?m)^VERIFY: GREEN' }
+on_match    = ["notes"]
+on_no_match = ["stalled"]
+
+  [[steps.run]]
+  name    = "notes"
+  role    = "developer:changelog"
+  session = "fresh"
+  prompt  = """
+Write concise upgrade notes from the current unstaged changes and the plan
+below: each package old → new version, any breaking changes handled and how,
+any bumps pinned back and why. Verified facts only — read the actual diff.
+
+<plan>
+{{inventory}}
+</plan>
+"""
+
+  [[steps.run]]
+  name    = "stalled"
+  role    = "developer:brief"
+  session = "fresh"
+  prompt  = """
+The upgrade loop ended WITHOUT a green verification — do not present this as
+success. Report for a human decision: which bumps landed, which broke and how
+(from the last verification below), and that the working tree holds the
+partial state for the human to keep or discard.
+
+<plan>
+{{inventory}}
+</plan>
+
+<last_verification>
+{{verify}}
+</last_verification>
+
+Start with exactly: `DID NOT CONVERGE — human review required.`
+"""

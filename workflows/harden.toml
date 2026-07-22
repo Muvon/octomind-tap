@@ -1,0 +1,134 @@
+# Title: Harden — Security Audit to Verified Fixes
+#
+# Public workflow: OWASP-lens security audit of the current repository, then a
+# fix ⇄ re-audit loop until the findings are resolved and the project's checks
+# stay green, closing on an honest verdict. Operates on the current directory.
+# Public roles only.
+
+name        = "harden"
+description = "Security-audit the current repo across OWASP lenses, then fix and independently re-audit in a loop until findings are resolved and checks stay green."
+
+# ── 1. Audit ─────────────────────────────────────────────────────────────────
+[[steps]]
+name    = "audit"
+role    = "security:owasp"
+session = "fresh"
+retries = 1
+prompt  = """
+Security-audit the current repository. Scope from the request; if it names no
+scope, audit the whole repo with priority on the OWASP Top 10 surfaces:
+injection, broken auth/access control, secrets in code, insecure deserialization,
+SSRF, misconfiguration, vulnerable dependencies.
+
+<request>
+{{input}}
+</request>
+
+Output ONLY a findings list, one block per finding:
+
+- SEVERITY: Critical | High | Medium | Low
+  ANCHOR: path/to/file.ext:line
+  WHY: the concrete vulnerability and how it is reached
+  FIX: one concrete remediation
+
+Lean toward recall — a later step verifies. Every ANCHOR must be a real
+location you read; never cite a path you didn't open.
+
+End with exactly one line: `AUDIT: CLEAN` or `AUDIT: FINDINGS`. Nothing after it.
+"""
+
+# ── 2. Fix ⇄ re-audit loop ───────────────────────────────────────────────────
+[[steps]]
+name           = "remediate"
+loop           = true
+max_iterations = 3
+exit_when      = { output = "reaudit", matches = '(?m)^HARDEN: PASS' }
+
+  [[steps.run]]
+  name    = "fix"
+  role    = "developer:general"
+  session = "continue"
+  retries = 1
+  prompt  = """
+Remediate the security findings below in the current repository. If the audit
+ends with `AUDIT: CLEAN`, change nothing and state that. (On later rounds you
+receive the re-auditor's open findings as input — address every one.)
+
+<findings>
+{{audit}}
+</findings>
+
+Rules: Critical and High first; the smallest change that closes each hole —
+no behavior changes beyond the security fix, no refactors, no removing
+functionality to dodge a finding without flagging it. Then run the project's
+verification command (tests / build / lint) and end with the exact command and
+its output as evidence nothing broke.
+"""
+
+  [[steps.run]]
+  name    = "reaudit"
+  role    = "security:owasp"
+  session = "fresh"
+  prompt  = """
+Independently re-audit the current working tree against the original findings —
+refute-first: confirm each finding is genuinely closed in the code as it now
+stands, not merely claimed fixed.
+
+<original_findings>
+{{audit}}
+</original_findings>
+
+<fixer_evidence>
+{{fix}}
+</fixer_evidence>
+
+For each original finding: FIXED (verified at the anchor), OPEN (still
+exploitable — say how), or FALSE-POSITIVE (was never real — justify). Then
+scan the fix diff itself for newly introduced issues, and confirm the fixer's
+verification evidence shows passing checks.
+
+Pass requires: no OPEN Critical/High findings, no new issues, checks green in
+evidence. If it fails, list exactly what remains — that goes straight to the
+fixer.
+
+End with exactly one line: `HARDEN: PASS` or `HARDEN: FAIL`. Nothing after it.
+"""
+
+# ── 3. Outcome — honest branch on the loop's final verdict ───────────────────
+[[steps]]
+name        = "outcome"
+conditional = true
+condition   = { output = "reaudit", matches = '(?m)^HARDEN: PASS' }
+on_match    = ["summary"]
+on_no_match = ["stalled"]
+
+  [[steps.run]]
+  name    = "summary"
+  role    = "developer:brief"
+  session = "fresh"
+  prompt  = """
+Summarize the hardening pass from the current unstaged changes and the final
+re-audit below: what was vulnerable, what changed, per-finding closure status,
+and any FALSE-POSITIVE calls worth a human glance.
+
+<final_reaudit>
+{{reaudit}}
+</final_reaudit>
+"""
+
+  [[steps.run]]
+  name    = "stalled"
+  role    = "developer:brief"
+  session = "fresh"
+  prompt  = """
+The hardening loop ended WITHOUT a pass — do not present this as success.
+Report for a human decision: what was fixed so far in the unstaged changes,
+and every finding still OPEN per the last re-audit below. Open security
+findings mean the repo should not ship until a human rules on them.
+
+<last_reaudit>
+{{reaudit}}
+</last_reaudit>
+
+Start with exactly: `DID NOT CONVERGE — human review required.`
+"""

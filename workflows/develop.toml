@@ -113,12 +113,19 @@ this goes directly to the developer with all original context.
 End with exactly one line: VERDICT: APPROVED or VERDICT: REVISE. Nothing after it.
 """
 
-# ── 3. Summary ───────────────────────────────────────────────────────────────
+# ── 3. Outcome — honest branch on the loop's final verdict ───────────────────
 [[steps]]
-name    = "summary"
-role    = "developer:brief"
-session = "fresh"
-prompt  = """
+name        = "outcome"
+conditional = true
+condition   = { output = "evaluator", matches = '(?m)^VERDICT: APPROVED' }
+on_match    = ["summary"]
+on_no_match = ["stalled"]
+
+  [[steps.run]]
+  name    = "summary"
+  role    = "developer:brief"
+  session = "fresh"
+  prompt  = """
 Read the user spec and the implementation in the current unstaged git changes,
 then produce a concise briefing of spec-versus-diff for the human reviewer.
 
@@ -127,4 +134,25 @@ then produce a concise briefing of spec-versus-diff for the human reviewer.
 </spec>
 
 Output only the briefing.
+"""
+
+  [[steps.run]]
+  name    = "stalled"
+  role    = "developer:brief"
+  session = "fresh"
+  prompt  = """
+The development loop hit its iteration cap WITHOUT evaluator approval — do not
+present this as success. Read the spec and the current unstaged changes, then
+report for a human decision: what was implemented and verified, and every gap
+the evaluator still flags.
+
+<spec>
+{{input}}
+</spec>
+
+<last_evaluation>
+{{evaluator}}
+</last_evaluation>
+
+Start with exactly: `DID NOT CONVERGE — human review required.`
 """

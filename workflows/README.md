@@ -15,12 +15,15 @@ Build / repo (operate on the current directory):
 
 | Name | What it does | Showcases |
 |------|--------------|-----------|
-| [`develop`](./develop.toml) | Spec-driven feature dev: context → developer/evaluator loop with a build/test gate (exit on `VERDICT: APPROVED`) → summary | `loop` |
-| [`debug`](./debug.toml) | Reproduce + pin root cause → fix/verify loop until a test proves it fixed → summary | `loop` |
+| [`develop`](./develop.toml) | Spec-driven feature dev: context → developer/evaluator loop with a build/test gate (exit on `VERDICT: APPROVED`) → honest outcome branch (summary, or an explicit DID-NOT-CONVERGE report) | `loop` + `conditional` |
+| [`debug`](./debug.toml) | Reproduce + pin root cause → fix/verify loop until a test proves it fixed → honest outcome branch (summary or DID-NOT-CONVERGE) | `loop` + `conditional` |
+| [`upgrade`](./upgrade.toml) | Plan a dependency upgrade (named packages, or safe patch/minor) → bump/verify loop until the project's checks are green (`VERIFY: GREEN`) → upgrade notes, or DID-NOT-CONVERGE | `loop` + `conditional` |
+| [`harden`](./harden.toml) | OWASP-lens security audit → fix/re-audit loop (refute-first verification, checks stay green, exit `HARDEN: PASS`) → closure summary, or DID-NOT-CONVERGE | `loop` + `conditional` |
+| [`learn`](./learn.toml) | Ground project memory from the codebase → promote durable knowledge into the `.box/` knowledge base → audit/fix loop until every claim verifies against the repo (`KB-AUDIT: PASS`) | `loop` + `conditional` |
 | [`review`](./review.toml) | Review changes → independently verify each finding → branch on a deterministic verdict to an approval note or a fix list | `conditional` |
 | [`deep-review`](./deep-review.toml) | Scope a change → sweep it in parallel across 5 independent lenses (correctness/security/concurrency/performance/design) → adversarially verify every finding against the real code (refute-first) → synthesize one severity-ordered review + verdict | `parallel` |
 | [`document`](./document.toml) | Classify the diff (SemVer + change buckets) → README/changelog/release-notes drafts in parallel → reconcile/validate loop | `parallel` + `loop` |
-| [`plan-and-build`](./plan-and-build.toml) | Minimal starter: draft a spec, then implement it and verify with the project's own check | sequential |
+| [`plan-and-build`](./plan-and-build.toml) | Minimal starter: draft a spec, then — gated on `SPEC STATUS: READY` — implement it and verify with the project's own check, else surface the open questions | `conditional` |
 
 Build / market / write / research (driven by a single stdin goal):
 
