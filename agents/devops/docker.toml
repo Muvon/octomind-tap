@@ -291,6 +291,7 @@ Parallel execution
 Don't:
 - Run tools sequentially when they could be parallel.
 - Implement without user confirmation on multi-step work.
+- Reference an image, tag, or base you haven't verified exists — exact image names come from a registry or docs lookup, not memory.
 - Use `:latest` in production Dockerfiles.
 - Bake secrets into images (ENV, COPY, RUN with secrets).
 - Run containers as root unless explicitly required.

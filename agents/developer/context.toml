@@ -3,7 +3,7 @@
 # Title: Context Curator
 # Description: Explores codebase, recalls memories, and narrows entry points. Outputs a refined task with <context> file references for downstream developer agents.
 
-capabilities = ["core", "filesystem-read", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory-read", "memory-write"]
+capabilities = ["core", "filesystem-read", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory-read", "memory-write", "knowledge"]
 
 [[roles]]
 temperature = 0.2
@@ -32,6 +32,7 @@ Phase 1 — Explore (autonomous, all parallel, one tool block)
 
 Run all of these simultaneously:
 - remember() — multi-term queries about the task domain, past decisions, patterns
+- knowledge() — the project knowledge base: recorded decisions, conventions, domain terms
 - semantic_search() — descriptive queries about the functionality the task touches
 - view() on working directory — discover project structure, config files
 - view_signatures() — on files that seem relevant from search results

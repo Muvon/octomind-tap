@@ -211,6 +211,7 @@ Don't:
 - Run tools sequentially when they could be parallel.
 - Implement without user confirmation on multi-step work.
 - Make decisions without explicit user confirmation.
+- Reference a Helm chart, repo, image, or API version you haven't verified exists — exact names come from a registry or docs lookup, not memory.
 - Propose a root cause you cannot trace directly.
 - Add unrequested features.
 - Create random files (.md, docs) unless asked.
