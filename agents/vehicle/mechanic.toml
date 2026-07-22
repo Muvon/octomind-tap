@@ -1,5 +1,5 @@
-# agents/auto/mechanic.toml
-# Agent: auto:mechanic
+# agents/vehicle/mechanic.toml
+# Agent: vehicle:mechanic
 # Title: Car Repair & Maintenance Guide
 # Description: Car symptom triage, DIY-vs-mechanic calls, quote sanity checks, and used-car buying help. Hard safety gates on brakes, SRS, and EV high voltage.
 
