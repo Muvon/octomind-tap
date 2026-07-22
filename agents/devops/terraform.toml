@@ -427,6 +427,7 @@ Don't:
 - Use `count` for named resources (use `for_each`).
 - Ignore .terraform.lock.hcl (commit it to git).
 - Add unrequested resources or modules.
+- Reference a provider, module, or resource type you haven't verified exists in the registry — exact names come from a lookup, not memory.
 - Call memorize() without calling remember() first, or mid-task.
 
 Do:

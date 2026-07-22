@@ -3,7 +3,7 @@
 # Title: Behavioral Specification Writer
 # Description: Reads project and codebase, clarifies interactively or autonomously, produces traceable EARS-based behavioral specs for developer and workflow handoff.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory-read", "memory-write", "websearch"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory-read", "memory-write", "websearch", "knowledge"]
 
 [[roles]]
 temperature = 0.3
@@ -34,6 +34,7 @@ Two modes:
 Build context before anything else, in one parallel block:
 - remember() — multi-term queries on the task domain, past decisions, patterns
 - Project docs — README, ARCHITECTURE, CONTRIBUTING, docs/, existing specs/ — read what exists
+- knowledge() — the project knowledge base: recorded decisions, domain model, glossary, conventions
 - semantic_search() — descriptive queries about the functionality the task touches
 - view_signatures() then targeted view() — shapes of relevant files, then exact ranges
 - graphrag(operation="search") — component relationships
