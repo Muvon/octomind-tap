@@ -185,13 +185,13 @@ case "$OS" in
   linux)
     case "$PKG_MANAGER" in
       apt)
-        sudo apt-get install -y <package>
+        as_root apt-get install -y <package>
         ;;
       dnf)
-        sudo dnf install -y <package>
+        as_root dnf install -y <package>
         ;;
       pacman)
-        sudo pacman -S --noconfirm <package>
+        as_root pacman -S --noconfirm <package>
         ;;
       *)
         # Universal fallback

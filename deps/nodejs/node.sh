@@ -33,25 +33,25 @@ case "$OS" in
         # servers that need >= 20) — use the NodeSource LTS repo instead.
         # NodeSource's nodejs bundles npm, so no separate npm package.
         if ! pkg_check curl; then
-          sudo apt-get update -qq
-          sudo apt-get install -y curl
+          as_root apt-get update -qq
+          as_root apt-get install -y curl
         fi
-        curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-        sudo apt-get install -y nodejs
+        curl -fsSL https://deb.nodesource.com/setup_lts.x | as_root bash -
+        as_root apt-get install -y nodejs
         ;;
       dnf)
         # Same stale-distro-repo problem as apt — use NodeSource LTS.
-        curl -fsSL https://rpm.nodesource.com/setup_lts.x | sudo bash -
-        sudo dnf install -y nodejs
+        curl -fsSL https://rpm.nodesource.com/setup_lts.x | as_root bash -
+        as_root dnf install -y nodejs
         ;;
       pacman)
-        sudo pacman -S --noconfirm nodejs npm
+        as_root pacman -S --noconfirm nodejs npm
         ;;
       zypper)
-        sudo zypper install -y nodejs npm
+        as_root zypper install -y nodejs npm
         ;;
       apk)
-        sudo apk add nodejs npm
+        as_root apk add nodejs npm
         ;;
       *)
         # Universal fallback via nvm

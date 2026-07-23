@@ -75,24 +75,24 @@ case "$OS" in
   linux)
     case "$PKG_MANAGER" in
       apt)
-        sudo apt-get update
-        sudo apt-get install -y "<package>"
+        as_root apt-get update
+        as_root apt-get install -y "<package>"
         ;;
 
       dnf)
-        sudo dnf install -y "<package>"
+        as_root dnf install -y "<package>"
         ;;
 
       pacman)
-        sudo pacman -S --noconfirm "<package>"
+        as_root pacman -S --noconfirm "<package>"
         ;;
 
       zypper)
-        sudo zypper install -y "<package>"
+        as_root zypper install -y "<package>"
         ;;
 
       apk)
-        sudo apk add "<package>"
+        as_root apk add "<package>"
         ;;
 
       *)
