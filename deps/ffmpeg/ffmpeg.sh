@@ -29,20 +29,20 @@ case "$OS" in
   linux)
     case "$PKG_MANAGER" in
       apt)
-        sudo apt-get update
-        sudo apt-get install -y ffmpeg
+        as_root apt-get update
+        as_root apt-get install -y ffmpeg
         ;;
       dnf)
-        sudo dnf install -y ffmpeg
+        as_root dnf install -y ffmpeg
         ;;
       pacman)
-        sudo pacman -S --noconfirm ffmpeg
+        as_root pacman -S --noconfirm ffmpeg
         ;;
       zypper)
-        sudo zypper install -y ffmpeg
+        as_root zypper install -y ffmpeg
         ;;
       apk)
-        sudo apk add ffmpeg
+        as_root apk add ffmpeg
         ;;
       *)
         die "No supported package manager. Install ffmpeg manually: https://ffmpeg.org/download.html"

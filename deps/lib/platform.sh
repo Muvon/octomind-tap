@@ -125,6 +125,18 @@ pkg_check() {
   command -v "$1" &>/dev/null
 }
 
+# as_root <cmd...> — run a command with root privileges.
+# Containers and CI often run as root with no sudo binary — run bare there.
+as_root() {
+  if [[ "$(id -u)" -eq 0 ]]; then
+    "$@"
+  elif pkg_check sudo; then
+    sudo "$@"
+  else
+    die "Need root for: $* — re-run as root or install sudo."
+  fi
+}
+
 # pkg_install <package> [<package-name-override-per-pm>...]
 #
 # Installs a package using the detected package manager.
@@ -138,11 +150,11 @@ pkg_install() {
   info "Installing $pkg via $PKG_MANAGER..."
   case "$PKG_MANAGER" in
     brew) brew install "$pkg" ;;
-    apt) sudo apt-get install -y "$pkg" ;;
-    dnf) sudo dnf install -y "$pkg" ;;
-    pacman) sudo pacman -S --noconfirm "$pkg" ;;
-    zypper) sudo zypper install -y "$pkg" ;;
-    apk) sudo apk add "$pkg" ;;
+    apt) as_root apt-get install -y "$pkg" ;;
+    dnf) as_root dnf install -y "$pkg" ;;
+    pacman) as_root pacman -S --noconfirm "$pkg" ;;
+    zypper) as_root zypper install -y "$pkg" ;;
+    apk) as_root apk add "$pkg" ;;
     unknown) die "No supported package manager found. Please install $pkg manually." ;;
   esac
 }
@@ -154,12 +166,12 @@ brew_install() {
 
 # apt_install <pkg> — Debian/Ubuntu only
 apt_install() {
-  [[ $PKG_MANAGER == "apt" ]] && sudo apt-get install -y "$1" || true
+  [[ $PKG_MANAGER == "apt" ]] && as_root apt-get install -y "$1" || true
 }
 
 # dnf_install <pkg> — Fedora/RHEL only
 dnf_install() {
-  [[ $PKG_MANAGER == "dnf" ]] && sudo dnf install -y "$1" || true
+  [[ $PKG_MANAGER == "dnf" ]] && as_root dnf install -y "$1" || true
 }
 
 # ── Dep script helper ──────────────────────────────────────────────────────────

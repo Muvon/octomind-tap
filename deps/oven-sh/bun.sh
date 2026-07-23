@@ -28,7 +28,7 @@ case "$OS" in
   linux)
     case "$PKG_MANAGER" in
       pacman)
-        sudo pacman -S --noconfirm bun || curl -fsSL https://bun.sh/install | bash
+        as_root pacman -S --noconfirm bun || curl -fsSL https://bun.sh/install | bash
         ;;
       apt | dnf | zypper | apk | *)
         # Official installer — works on all glibc-based distros (apk needs gcompat)
