@@ -93,6 +93,20 @@ A step is **sequential** by default. Set exactly one flag to change its kind:
 - `loop = true` — repeat `run` sub-steps until `exit_when` matches (`max_iterations`, default 10).
 - `conditional = true` — run `on_match` / `on_no_match` sub-steps based on a `condition`.
 
+### Graph routing
+
+Steps run top to bottom by default. For explicit control flow — conditional
+branches and bounded cycles (e.g. a review→fix loop) — declare `entry`,
+`max_transitions`, and top-level `[[edges]]`. Every step kind above becomes a
+graph node; `$end` is the reserved terminal target.
+
+- `entry` — name of the first node to run.
+- `max_transitions` — hard cap on total node executions; bounds cycles.
+- `[[edges]]` — `from`/`to` routes, tested in declaration order. Add
+  `when = { contains = "..." }` or `when = { matches = "regex" }` for a
+  conditional route; each node needs exactly one unconditional default edge,
+  declared last.
+
 ### Variable substitution
 
 - `{{input}}` — the stdin passed to the workflow.
