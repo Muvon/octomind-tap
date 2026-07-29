@@ -45,7 +45,7 @@ fi
 
 PYTHON_CAP_CHECK=$(
   cat <<'PYEOF'
-import sys, pathlib, re
+import sys, pathlib, re, shlex
 
 try:
     import tomllib
@@ -159,20 +159,21 @@ else:
 
     # Registry-launched servers must pin an exact version. Offline check
     # only — drift against the registry is scripts/mcp-versions.sh's job.
-    import shlex
-
     FLAG_WITH_VALUE = {"--with", "--from", "--python", "-p", "--package", "--node-options", "-c", "--constraints"}
 
     def first_package(tokens):
         skip = False
-        for t in tokens:
+        for i, t in enumerate(tokens):
             if skip:
                 skip = False
                 continue
+            if t in ("-p", "--package"):
+                # npx -p <pkg> <bin>: the flag value IS the package spec
+                return tokens[i + 1] if i + 1 < len(tokens) else None
             if t in FLAG_WITH_VALUE:
                 skip = True
                 continue
-            if t.startswith("-") or "{{" in t or t.startswith("$") or t == "exec":
+            if t.startswith("-") or "{{" in t or t.startswith("$"):
                 continue
             return t
         return None

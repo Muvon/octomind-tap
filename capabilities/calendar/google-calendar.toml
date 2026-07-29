@@ -1,6 +1,6 @@
 # capabilities/calendar/google-calendar.toml
 # Capability: calendar
-# Provider: Google Calendar — official MCP reference server
+# Provider: Google Calendar — community MCP server (@cocal/google-calendar-mcp)
 # Title: Google Calendar
 # Description: Manage Google Calendar events and scheduling via MCP.
 
@@ -15,7 +15,8 @@ allowed_tools = ["google-calendar:*"]
 name = "google-calendar"
 type = "stdio"
 command = "npx"
-args = ["-y", "@modelcontextprotocol/server-google-calendar"]
+args = ["-y", "@cocal/google-calendar-mcp@2.6.2"]
 timeout_seconds = 60
-env = { GOOGLE_CALENDAR_CLIENT_ID = "{{ENV:GOOGLE_CALENDAR_CLIENT_ID}}", GOOGLE_CALENDAR_CLIENT_SECRET = "{{ENV:GOOGLE_CALENDAR_CLIENT_SECRET}}", GOOGLE_CALENDAR_REFRESH_TOKEN = "{{ENV:GOOGLE_CALENDAR_REFRESH_TOKEN}}" }
+# GOOGLE_OAUTH_CREDENTIALS: path to a GCP OAuth keys JSON file (desktop app credentials).
+env = { GOOGLE_OAUTH_CREDENTIALS = "{{ENV:GOOGLE_OAUTH_CREDENTIALS}}" }
 tools = []

@@ -3,20 +3,21 @@
 # Provider: MiniMax Hailuo 02 — cheapest viable T2V/I2V for volume tests
 # Title: Video Generation
 # Description: Text-to-video and image-to-video via MiniMax Hailuo 02 (low-cost variant testing).
-# Provides tools: hailuo_text_to_video, hailuo_image_to_video, hailuo_get_task
+# Provides tools: generate_video, query_video_generation
 
 [deps]
 require = ["minimax/hailuo"]
 
 [roles.mcp]
 server_refs = ["hailuo"]
-allowed_tools = ["hailuo_*", "minimax_*"]
+allowed_tools = ["generate_video", "query_video_generation"]
 
 [[mcp.servers]]
 name = "hailuo"
 type = "stdio"
-command = "npx"
-args = ["-y", "minimax-mcp"]
+command = "uvx"
+# --with mcp<2: server uses the v1 SDK API removed in the mcp 2.x SDK.
+args = ["--with", "mcp<2", "minimax-mcp==0.0.18"]
 timeout_seconds = 120
-env = { MINIMAX_API_KEY = "{{INPUT:MINIMAX_API_KEY}}" }
+env = { MINIMAX_API_KEY = "{{INPUT:MINIMAX_API_KEY}}", MINIMAX_API_HOST = "https://api.minimax.io", MINIMAX_MCP_BASE_PATH = "{{CWD}}/video-out" }
 tools = []

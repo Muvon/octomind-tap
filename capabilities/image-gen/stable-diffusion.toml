@@ -3,20 +3,20 @@
 # Provider: Stability AI Stable Diffusion — text-to-image
 # Title: Image Generation
 # Description: Text-to-image generation via Stability AI Stable Diffusion.
-# Provides tools: stable_diffusion_*
+# Provides tools: stability-ai-generate-image, stability-ai-generate-image-sd35, stability-ai-remove-background, stability-ai-outpaint, stability-ai-search-and-replace, stability-ai-upscale-fast, stability-ai-upscale-creative, stability-ai-control-sketch, stability-ai-control-style, stability-ai-control-structure, stability-ai-search-and-recolor, stability-ai-replace-background-and-relight, stability-ai-0-list-resources
 
 [deps]
 require = ["stability-ai/stable-diffusion"]
 
 [roles.mcp]
 server_refs = ["stable-diffusion"]
-allowed_tools = ["stable_diffusion_*"]
+allowed_tools = ["stability-ai-*"]
 
 [[mcp.servers]]
 name = "stable-diffusion"
 type = "stdio"
 command = "npx"
-args = ["-y", "stable-diffusion-mcp"]
+args = ["-y", "mcp-server-stability-ai@0.2.0"]
 timeout_seconds = 120
-env = { STABILITY_API_KEY = "{{INPUT:STABILITY_API_KEY}}" }
+env = { STABILITY_AI_API_KEY = "{{INPUT:STABILITY_API_KEY}}" }
 tools = []

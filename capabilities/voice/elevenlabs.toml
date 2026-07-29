@@ -3,14 +3,14 @@
 # Provider: ElevenLabs — text-to-speech, voice cloning, voice design, soundscapes
 # Title: Voice Synthesis
 # Description: Text-to-speech, voice cloning, voice design, soundscapes via ElevenLabs.
-# Provides tools: text_to_speech, voice_clone, voice_design, audio_isolation, soundscape, transcribe_audio
+# Provides tools: text_to_speech, speech_to_text, speech_to_speech, text_to_voice, text_to_sound_effects, voice_clone, isolate_audio, search_voices, get_voice, play_audio
 
 [deps]
 require = ["elevenlabs/elevenlabs"]
 
 [roles.mcp]
 server_refs = ["elevenlabs"]
-allowed_tools = ["text_to_speech", "voice_clone", "voice_design", "audio_isolation", "soundscape", "transcribe_audio"]
+allowed_tools = ["text_to_speech", "speech_to_text", "speech_to_speech", "text_to_voice", "text_to_sound_effects", "voice_clone", "isolate_audio", "search_voices", "get_voice", "play_audio"]
 
 [[mcp.servers]]
 name = "elevenlabs"

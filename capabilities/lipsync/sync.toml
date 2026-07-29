@@ -1,22 +1,22 @@
 # capabilities/lipsync/sync.toml
 # Capability: lipsync
-# Provider: Sync.so — drop-in lipsync postprocess
+# Provider: Sync.so — official MCP server (@sync.so/mcp-server)
 # Title: Lipsync
 # Description: State-of-the-art lipsync postprocess via Sync.so (sync-1.9 / sync-2 models).
-# Provides tools: sync_lipsync, sync_translate_dub, sync_get_job
+# Provides tools: generate_create-generation, generate_get-generation, generations_*, assets_*, tts_create, voices_* (33 tools)
 
 [deps]
 require = ["sync/sync"]
 
 [roles.mcp]
 server_refs = ["sync"]
-allowed_tools = ["sync_*"]
+allowed_tools = ["sync:*"]
 
 [[mcp.servers]]
 name = "sync"
 type = "stdio"
 command = "npx"
-args = ["-y", "sync-mcp@0.1.5"]
+args = ["-y", "@sync.so/mcp-server@0.1.4"]
 timeout_seconds = 180
 env = { SYNC_API_KEY = "{{INPUT:SYNC_API_KEY}}" }
 tools = []

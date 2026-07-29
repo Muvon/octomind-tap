@@ -15,7 +15,8 @@ allowed_tools = ["cloudflare:*"]
 name = "cloudflare"
 type = "stdio"
 command = "npx"
-args = ["-y", "@cloudflare/mcp-server-cloudflare@0.2.0"]
+# The server requires the `run <account-id>` subcommand to start in stdio mode.
+args = ["-y", "@cloudflare/mcp-server-cloudflare@0.2.0", "run", "{{ENV:CLOUDFLARE_ACCOUNT_ID}}"]
 timeout_seconds = 60
 env = { CLOUDFLARE_API_TOKEN = "{{ENV:CLOUDFLARE_API_TOKEN}}" }
 tools = []

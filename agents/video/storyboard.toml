@@ -76,7 +76,7 @@ Save to `./video-out/<slug>/storyboard.md`:
 - Transition out: <hard cut | whip-pan | match-cut | dip-to-white>
 - Audio cue: <SFX, music swell, drop>
 - Reference frame: `frames/beat-01.png` (or "tbd")
-- Generation source: <stock | flux | dalle | sd | runway-from-frame | luma-i2v | veo-t2v | live-action>
+- Generation source: <stock | flux | openai-image | sd | runway-from-frame | kling-i2v | veo-t2v | live-action>
 
 ### Beat 02 — …
 
@@ -109,7 +109,7 @@ Save to `./video-out/<slug>/storyboard.md`:
 | F01 | 01 | still | flux | TODO |
 | C02 | 02 | clip | runway-i2v from F01 | TODO |
 | V01 | 01–14 | voiceover | elevenlabs | TODO |
-| M01 | full | music | mubert | TODO |
+| M01 | full | music | elevenlabs-music | TODO |
 | S01 | 01,03,18,28 | sfx | local lib / freesound | TODO |
 ```
 

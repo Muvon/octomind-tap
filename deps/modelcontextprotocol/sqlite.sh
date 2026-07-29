@@ -2,7 +2,7 @@
 # dep: modelcontextprotocol/sqlite
 # type: mcp
 # description: MCP SQLite Server — query SQLite databases
-# check: npx
+# check: uvx
 # https://github.com/modelcontextprotocol/servers/tree/main/src/sqlite
 
 set -euo pipefail
@@ -12,11 +12,11 @@ DEPS_LIB="$(cd "$(dirname "${BASH_SOURCE[0]}")/../lib" && pwd)"
 source "$DEPS_LIB/platform.sh"
 
 # Fast path — npx is available (node is installed)
-if pkg_check npx; then
+if pkg_check uvx; then
   exit 0
 fi
 
 # Ensure node is available
-install_dep nodejs/node
+install_dep astral-sh/uv
 
-info "SQLite MCP Server requires Node.js — already available via npx"
+info "SQLite MCP Server requires uv/uvx — already available"

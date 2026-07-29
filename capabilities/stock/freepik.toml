@@ -3,20 +3,20 @@
 # Provider: Freepik — AI generation + stock images, vectors, video templates
 # Title: Stock Media
 # Description: Stock and AI image / video generation via the Freepik API.
-# Provides tools: freepik_search_resources, freepik_download_resource, freepik_generate_image, freepik_generate_video, freepik_get_task
+# Provides tools: search_resources, get_resource, download_resource, generate_image, check_status
 
 [deps]
 require = ["freepik/freepik"]
 
 [roles.mcp]
 server_refs = ["freepik"]
-allowed_tools = ["freepik_*"]
+allowed_tools = ["search_resources", "get_resource", "download_resource", "generate_image", "check_status"]
 
 [[mcp.servers]]
 name = "freepik"
 type = "stdio"
 command = "npx"
-args = ["-y", "freepik-mcp"]
+args = ["-y", "@iflow-mcp/freepik-mcp@0.1.0"]
 timeout_seconds = 120
 env = { FREEPIK_API_KEY = "{{INPUT:FREEPIK_API_KEY}}" }
 tools = []

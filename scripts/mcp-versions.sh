@@ -37,8 +37,10 @@ import os
 import pathlib
 import re
 import shlex
+import signal
 import subprocess
 import sys
+import tempfile
 import threading
 import time
 import urllib.parse
@@ -62,14 +64,17 @@ FLAG_WITH_VALUE = {"--with", "--from", "--python", "-p", "--package", "--node-op
 
 def first_package(tokens):
     skip = False
-    for t in tokens:
+    for i, t in enumerate(tokens):
         if skip:
             skip = False
             continue
+        if t in ("-p", "--package"):
+            # npx -p <pkg> <bin>: the flag value IS the package spec
+            return tokens[i + 1] if i + 1 < len(tokens) else None
         if t in FLAG_WITH_VALUE:
             skip = True
             continue
-        if t.startswith("-") or "{{" in t or t.startswith("$") or t == "exec":
+        if t.startswith("-") or "{{" in t or t.startswith("$"):
             continue
         return t
     return None
@@ -154,7 +159,7 @@ def filter_paths(entries, selectors):
     out = []
     for entry in entries:
         rp = entry[0].resolve()
-        if any(str(rp).startswith(str(k) + "/") or rp == k or rp.parent == k for k in keep):
+        if any(str(rp).startswith(str(k) + "/") or rp == k for k in keep):
             out.append(entry)
     return out
 
@@ -310,20 +315,37 @@ def cmd_update(argv):
 
 # ---------------------------------------------------------------- test
 
-ENV_PLACEHOLDER = re.compile(r"\{\{ENV:([A-Za-z0-9_]+)\}\}")
+PLACEHOLDER = re.compile(r"\{\{(ENV|INPUT):([A-Za-z0-9_]+)\}\}")
+CRED_HINT = re.compile(
+    r"environment variable|api[_ -]?key|access[_ -]?token|credential|oauth"
+    r"|not configured|config file|unauthorized", re.I)
+REGISTRY_MISS = re.compile(r"npm error 404|No versions available|404 Not Found")
 
 
-def substitute_env(value):
-    return ENV_PLACEHOLDER.sub(lambda m: os.environ.get(m.group(1), ""), value)
+def substitute(value, missing, cwd):
+    """Resolve {{ENV:X}}/{{INPUT:X}} from the environment and {{CWD}} to a
+    scratch dir; unresolved names are collected so failures classify as
+    needs-credentials rather than broken."""
+    value = value.replace("{{CWD}}", cwd)
+
+    def repl(m):
+        got = os.environ.get(m.group(2))
+        if got is None:
+            missing.add(m.group(2))
+            return ""
+        return got
+
+    return PLACEHOLDER.sub(repl, value)
 
 
 def handshake(command, args, extra_env, timeout):
     env = dict(os.environ)
-    for k, v in (extra_env or {}).items():
-        env[k] = substitute_env(str(v))
+    env.update(extra_env or {})
+    # start_new_session so the whole process group can be killed — servers
+    # like whatsapp/playwright spawn browsers that outlive the direct child.
     proc = subprocess.Popen(
         [command, *args], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE, env=env, cwd=ROOT)
+        stderr=subprocess.PIPE, env=env, cwd=ROOT, start_new_session=True)
     out_lines, err_parts = [], []
     threading.Thread(target=lambda: [out_lines.append(l) for l in proc.stdout], daemon=True).start()
     threading.Thread(target=lambda: err_parts.append(proc.stderr.read()), daemon=True).start()
@@ -368,7 +390,20 @@ def handshake(command, args, extra_env, timeout):
             time.sleep(0.2)
         return "FAIL", f"timeout after {timeout}s ({'initialized, no tools/list' if initialized else 'no initialize response'}): {stderr_tail()}"
     finally:
-        proc.kill()
+        # SIGTERM first so servers can shut down children they detached into
+        # other process groups (puppeteer-launched browsers); then force-kill.
+        try:
+            os.killpg(proc.pid, signal.SIGTERM)
+        except (ProcessLookupError, PermissionError):
+            pass
+        try:
+            proc.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            pass
+        try:
+            os.killpg(proc.pid, signal.SIGKILL)
+        except (ProcessLookupError, PermissionError):
+            proc.kill()
 
 
 def cmd_test(argv):
@@ -383,11 +418,24 @@ def cmd_test(argv):
         seen.add(key)
         jobs.append(r)
 
+    smoke_cwd = tempfile.mkdtemp(prefix="mcp-smoke-")
+
     def run(r):
         srv = r["srv"]
-        args = [substitute_env(str(a)) for a in srv.get("args") or []]
+        missing = set()
+
+        def sub(v):
+            # {{CWD}} values are working directories the runtime guarantees;
+            # stand in a scratch path and create it so path checks pass.
+            resolved = substitute(str(v), missing, smoke_cwd)
+            if "{{CWD}}" in str(v):
+                pathlib.Path(resolved).mkdir(parents=True, exist_ok=True)
+            return resolved
+
+        args = [sub(a) for a in srv.get("args") or []]
+        extra = {k: sub(v) for k, v in (srv.get("env") or {}).items()}
         timeout = srv.get("timeout_seconds", 60) + 30  # headroom for cold npx/uvx download
-        status, detail = handshake(srv["command"], args, srv.get("env"), timeout)
+        status, detail = handshake(srv["command"], args, extra, timeout)
         note = ""
         if status == "OK":
             tools = detail
@@ -403,17 +451,23 @@ def cmd_test(argv):
                 note += f"; allowed_tools with no match: {', '.join(unmatched)}"
         else:
             note = detail
+            # A registry miss is always a real failure, even with unset keys.
+            if not REGISTRY_MISS.search(detail or "") and (missing or CRED_HINT.search(detail or "")):
+                status = "NEEDS-ENV"
+                if missing:
+                    note = f"unset: {', '.join(sorted(missing))} — {detail}"
         return r, status, note
 
-    counts = {"OK": 0, "WARN": 0, "FAIL": 0}
+    counts = {"OK": 0, "WARN": 0, "NEEDS-ENV": 0, "FAIL": 0}
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
         for r, status, note in pool.map(run, jobs):
             counts[status] += 1
-            mark = {"OK": "✓", "WARN": "⚠", "FAIL": "✗"}[status]
+            mark = {"OK": "✓", "WARN": "⚠", "NEEDS-ENV": "○", "FAIL": "✗"}[status]
             print(f"  {mark} {rel(r['path'])} [{r['srv'].get('name')}] {r['token']}: {status} — {note}", flush=True)
 
-    print(f"\n{counts['OK']} ok, {counts['WARN']} warnings, {counts['FAIL']} failed "
-          f"(failures may be missing credentials — check the message, not just the status)")
+    print(f"\n{counts['OK']} ok, {counts['WARN']} warnings, {counts['NEEDS-ENV']} need credentials, "
+          f"{counts['FAIL']} failed (need-credentials = server starts but demands keys/config this "
+          f"environment lacks)")
     sys.exit(1 if counts["FAIL"] else 0)
 
 

@@ -3,20 +3,20 @@
 # Provider: Meta Instagram Graph API — Reels and feed video publishing
 # Title: Instagram Publishing
 # Description: Publish Reels, feed video, Stories and carousels via the Meta Instagram Graph API.
-# Provides tools: instagram_create_reels_container, instagram_create_feed_video_container, instagram_create_carousel, instagram_publish_container, instagram_get_status
+# Provides tools: publish_media, publish_carousel, publish_reel, get_content_publishing_limit, get_media_posts, get_media_insights, validate_access_token
 
 [deps]
 require = ["meta-instagram/meta-instagram"]
 
 [roles.mcp]
 server_refs = ["instagram"]
-allowed_tools = ["instagram_*"]
+allowed_tools = ["publish_media", "publish_carousel", "publish_reel", "get_content_publishing_limit", "get_media_posts", "get_media_insights", "validate_access_token"]
 
 [[mcp.servers]]
 name = "instagram"
 type = "stdio"
 command = "npx"
-args = ["-y", "meta-instagram-mcp"]
+args = ["-y", "@mcpware/instagram-mcp@1.0.4"]
 timeout_seconds = 240
-env = { META_APP_ID = "{{INPUT:META_APP_ID}}", META_APP_SECRET = "{{INPUT:META_APP_SECRET}}", META_ACCESS_TOKEN = "{{INPUT:META_ACCESS_TOKEN}}", IG_USER_ID = "{{INPUT:IG_USER_ID}}" }
+env = { INSTAGRAM_ACCESS_TOKEN = "{{INPUT:META_ACCESS_TOKEN}}", INSTAGRAM_ACCOUNT_ID = "{{INPUT:IG_USER_ID}}" }
 tools = []
