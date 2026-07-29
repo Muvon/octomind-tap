@@ -4,9 +4,9 @@ Readwise MCP server. Access reading highlights, books, articles, and documents.
 
 ## MCP Server
 
-- **Package**: `readwise-mcp`
+- **Package**: `readwise-mcp-enhanced`
 - **Transport**: stdio
-- **Command**: `npx -y readwise-mcp`
+- **Command**: `npx -y readwise-mcp-enhanced`
 
 ## Authentication
 

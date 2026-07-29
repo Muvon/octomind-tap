@@ -4,9 +4,9 @@ Sync.so (Sync Labs) MCP server. State-of-the-art lipsync. Takes a source video +
 
 ## MCP Server
 
-- **Package**: `sync-mcp` (community)
+- **Package**: `@sync.so/mcp-server` (community)
 - **Transport**: stdio
-- **Command**: `npx -y sync-mcp`
+- **Command**: `npx -y @sync.so/mcp-server`
 
 ## Authentication
 
@@ -29,7 +29,7 @@ Sync.so (Sync Labs) MCP server. State-of-the-art lipsync. Takes a source video +
 name = "sync"
 type = "stdio"
 command = "npx"
-args = ["-y", "sync-mcp"]
+args = ["-y", "@sync.so/mcp-server"]
 timeout_seconds = 120
 env = { SYNC_API_KEY = "{{INPUT:SYNC_API_KEY}}" }
 tools = []

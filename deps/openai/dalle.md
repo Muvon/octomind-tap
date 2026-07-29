@@ -4,9 +4,9 @@ DALL-E image generation MCP server. Generate images using OpenAI's DALL-E models
 
 ## MCP Server
 
-- **Package**: `@microagents/mcp-server-dalle`
+- **Package**: `openai-image-mcp-server`
 - **Transport**: stdio
-- **Command**: `npx -y @microagents/mcp-server-dalle`
+- **Command**: `npx -y openai-image-mcp-server`
 
 ## Authentication
 
@@ -35,7 +35,7 @@ env = { OPENAI_API_KEY = "your-value" }
 tools = []
 ```
 
-**Notes:** Package may not exist on npm — verify before use. Alternatives: @gongrzhe/image-gen-mcp-server.
+**Notes:** OpenAI retired the DALL-E 2/3 API (2026-05-12); this server targets the gpt-image family.
 
 ## Links
 

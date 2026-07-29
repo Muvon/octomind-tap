@@ -4,7 +4,7 @@ Luma AI video and image generation MCP server. Text-to-video, image-to-video, up
 
 ## MCP Server
 
-- **Package**: `mcp-video-gen (GitHub only — not on npm)`
+- **Package**: `@runapi.ai/luma-mcp (GitHub only — not on npm)`
 - **Transport**: stdio
 - **Command**: `git clone + npm install + npm run build`
 
@@ -14,7 +14,7 @@ API key(s)
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `LUMAAI_API_KEY` | Yes | Luma AI API key |
+| `RUNAPI_API_KEY` | Yes | Luma AI API key |
 | `RUNWAYML_API_SECRET` | No | Runway API key (optional) |
 | `OPENROUTER_API_KEY` | No | OpenRouter API key (optional) |
 
@@ -36,9 +36,9 @@ API key(s)
 name = "luma"
 type = "stdio"
 command = "npx"
-args = ["-y", "mcp-video-gen (GitHub only — not on npm)"]
+args = ["-y", "@runapi.ai/luma-mcp (GitHub only — not on npm)"]
 timeout_seconds = 60
-env = { LUMAAI_API_KEY = "your-value", RUNWAYML_API_SECRET = "your-value", OPENROUTER_API_KEY = "your-value" }
+env = { RUNAPI_API_KEY = "your-value", RUNWAYML_API_SECRET = "your-value", OPENROUTER_API_KEY = "your-value" }
 tools = []
 ```
 
@@ -46,4 +46,4 @@ tools = []
 
 ## Links
 
-- [Homepage](https://mcpservers.org/servers/wheattoast11/mcp-video-gen)
+- [Homepage](https://mcpservers.org/servers/wheattoast11/@runapi.ai/luma-mcp)

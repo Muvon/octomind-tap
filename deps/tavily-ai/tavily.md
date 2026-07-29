@@ -4,9 +4,9 @@ Tavily AI-powered web search MCP server. Real-time search, content extraction, s
 
 ## MCP Server
 
-- **Package**: `@tavily/mcp-server`
+- **Package**: `tavily-mcp`
 - **Transport**: stdio
-- **Command**: `npx -y @tavily/mcp-server`
+- **Command**: `npx -y tavily-mcp`
 
 ## Authentication
 
@@ -32,7 +32,7 @@ API key
 name = "tavily"
 type = "stdio"
 command = "npx"
-args = ["-y", "@tavily/mcp-server"]
+args = ["-y", "tavily-mcp"]
 timeout_seconds = 60
 env = { TAVILY_API_KEY = "your-value" }
 tools = []

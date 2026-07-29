@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # dep: luma/luma
 # type: mcp
-# description: Luma AI MCP Server — video generation, Dream Machine
+# description: Luma Dream Machine via RunAPI gateway MCP server
 # check: npx
-# https://mcpservers.org/servers/wheattoast11/mcp-video-gen
+# https://www.npmjs.com/package/@runapi.ai/luma-mcp
 
 set -euo pipefail
 

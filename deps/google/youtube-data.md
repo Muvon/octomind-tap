@@ -4,9 +4,9 @@ YouTube Data API v3 MCP server. Uploads Shorts and long-form video, edits metada
 
 ## MCP Server
 
-- **Package**: `youtube-data-mcp` (community)
+- **Package**: `youtube-studio-mcp` (community)
 - **Transport**: stdio
-- **Command**: `npx -y youtube-data-mcp`
+- **Command**: `npx -y youtube-studio-mcp`
 
 ## Authentication
 
@@ -35,7 +35,7 @@ OAuth 2.0 with `youtube.upload`, `youtube.readonly`, and (optional) `yt-analytic
 name = "youtube-data"
 type = "stdio"
 command = "npx"
-args = ["-y", "youtube-data-mcp"]
+args = ["-y", "youtube-studio-mcp"]
 timeout_seconds = 600
 env = { GOOGLE_CLIENT_ID = "{{INPUT:GOOGLE_CLIENT_ID}}", GOOGLE_CLIENT_SECRET = "{{INPUT:GOOGLE_CLIENT_SECRET}}", GOOGLE_REFRESH_TOKEN = "{{INPUT:GOOGLE_REFRESH_TOKEN}}" }
 tools = []

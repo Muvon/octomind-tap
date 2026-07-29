@@ -4,9 +4,9 @@ Linear project management MCP server. Find, create, and update issues, projects,
 
 ## MCP Server
 
-- **Package**: `Remote SSE: https://mcp.linear.app/sse`
+- **Package**: `@tacticlaunch/mcp-linear`
 - **Transport**: stdio
-- **Command**: `npx -y mcp-remote https://mcp.linear.app/sse`
+- **Command**: `npx -y @tacticlaunch/mcp-linear`
 
 ## Authentication
 

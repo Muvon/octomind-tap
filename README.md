@@ -491,7 +491,7 @@ esac
 | Context7 | `@upstash/context7-mcp` | `upstash/context7` (or `nodejs/node`) |
 | Octofs | `octofs` CLI | `muvon/octofs` |
 | Postgres | `@modelcontextprotocol/server-postgres` | `nodejs/node` |
-| SQLite | `@modelcontextprotocol/server-sqlite` | `nodejs/node` |
+| SQLite | `mcp-server-sqlite` (PyPI, via uvx) | `astral-sh/uv` |
 | Memory | `@modelcontextprotocol/server-memory` | `nodejs/node` |
 | Puppeteer | `@modelcontextprotocol/server-puppeteer` | `nodejs/node` |
 | Slack | `@modelcontextprotocol/server-slack` | `nodejs/node` |

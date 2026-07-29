@@ -4,9 +4,9 @@ Meta Instagram Graph API MCP server. Publishes Reels, feed video, Stories, and c
 
 ## MCP Server
 
-- **Package**: `meta-instagram-mcp` (community)
+- **Package**: `@mcpware/instagram-mcp` (community)
 - **Transport**: stdio
-- **Command**: `npx -y meta-instagram-mcp`
+- **Command**: `npx -y @mcpware/instagram-mcp`
 
 ## Authentication
 
@@ -14,8 +14,8 @@ Requires a Meta App with Instagram Login (Business / Creator) and a long-lived a
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `META_APP_ID` | Yes | Meta app ID |
-| `META_APP_SECRET` | Yes | Meta app secret |
+| `INSTAGRAM_ACCESS_TOKEN` | Yes | Meta app ID |
+| `INSTAGRAM_ACCOUNT_ID` | Yes | Meta app secret |
 | `META_ACCESS_TOKEN` | Yes | Long-lived user access token with `instagram_basic`, `instagram_content_publish`, `pages_show_list` |
 | `IG_USER_ID` | Yes | Instagram Business / Creator account ID |
 
@@ -36,9 +36,9 @@ Requires a Meta App with Instagram Login (Business / Creator) and a long-lived a
 name = "instagram"
 type = "stdio"
 command = "npx"
-args = ["-y", "meta-instagram-mcp"]
+args = ["-y", "@mcpware/instagram-mcp"]
 timeout_seconds = 180
-env = { META_APP_ID = "{{INPUT:META_APP_ID}}", META_APP_SECRET = "{{INPUT:META_APP_SECRET}}", META_ACCESS_TOKEN = "{{INPUT:META_ACCESS_TOKEN}}", IG_USER_ID = "{{INPUT:IG_USER_ID}}" }
+env = { INSTAGRAM_ACCESS_TOKEN = "{{INPUT:INSTAGRAM_ACCESS_TOKEN}}", INSTAGRAM_ACCOUNT_ID = "{{INPUT:INSTAGRAM_ACCOUNT_ID}}", META_ACCESS_TOKEN = "{{INPUT:META_ACCESS_TOKEN}}", IG_USER_ID = "{{INPUT:IG_USER_ID}}" }
 tools = []
 ```
 

@@ -1,5 +1,7 @@
 # mubert/mubert
 
+> **Status (2026-07-29):** no npx/uvx-installable MCP server exists for Mubert — the package previously referenced here was never published. The music capability now defaults to elevenlabs-music.
+
 Mubert Render API MCP server. Generates royalty-safe music loops and ambient tracks for ad soundtracks. Cleared for commercial use, unlike Suno/Udio.
 
 ## MCP Server

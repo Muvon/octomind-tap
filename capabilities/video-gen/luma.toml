@@ -1,0 +1,24 @@
+# capabilities/video-gen/luma.toml
+# Capability: video-gen
+# Provider: Luma Dream Machine via RunAPI gateway — text/image-to-video
+# Title: Video Generation
+# Description: Text-to-video and image-to-video generation via Luma Dream Machine.
+# Provides tools: modify_video, get_task, check_pricing, login
+
+[deps]
+require = ["luma/luma"]
+
+[roles.mcp]
+server_refs = ["luma"]
+allowed_tools = ["modify_video", "get_task", "check_pricing"]
+
+[[mcp.servers]]
+name = "luma"
+type = "stdio"
+command = "npx"
+# Third-party RunAPI gateway (RUNAPI_API_KEY): no direct-API Luma MCP is
+# published to any registry; lumalabs.ai credentials do not apply here.
+args = ["-y", "@runapi.ai/luma-mcp@0.1.6"]
+timeout_seconds = 120
+env = { RUNAPI_API_KEY = "{{INPUT:RUNAPI_API_KEY}}" }
+tools = []

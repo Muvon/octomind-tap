@@ -4,9 +4,9 @@ CourtListener US court case MCP server. Search court opinions, legal research, a
 
 ## MCP Server
 
-- **Package**: `@us-legal-tools/courtlistener-sdk`
+- **Package**: `stare-mcp`
 - **Transport**: stdio
-- **Command**: `npx -y @us-legal-tools/courtlistener-sdk`
+- **Command**: `npx -y stare-mcp`
 
 ## Authentication
 
