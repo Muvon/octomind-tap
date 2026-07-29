@@ -27,6 +27,26 @@ lint) so the developer can prove the change works. State what is out of scope.
 Output only the refined task with its <context> pinpoints — no implementation plan.
 """
 
+# ── 1b. Upstream research (reported issues) ──────────────────────────────────
+[[steps]]
+name    = "upstream"
+role    = "assistant:researcher"
+session = "fresh"
+retries = 1
+prompt  = """
+The spec below may be a reported issue (bug report / feature request) against a
+project with a public home. If so, locate the upstream issue, its linked
+discussion, and any existing fix or merged change, and produce implementation
+contract notes: the chosen approach; exact API names, signatures, parameter
+names and call conventions; which layer owns the primitive; and EVERY file the
+upstream change touches. Cite what you found. If the project is private or
+nothing public exists, reply exactly: NO UPSTREAM FOUND.
+
+<spec>
+{{input}}
+</spec>
+"""
+
 # ── 2. Developer/evaluator refine loop ───────────────────────────────────────
 [[steps]]
 name           = "development"
@@ -49,6 +69,12 @@ Pinpoints and verification command from context:
 <context>
 {{context}}
 </context>
+
+Upstream contract notes — when present, mirror them exactly (names, signatures,
+call conventions, owning layer, every touched surface):
+<upstream>
+{{upstream}}
+</upstream>
 
 Implement the change fully autonomously. Fix causes, not symptoms — no
 workarounds, suppressed errors, or skipped tests unless the spec explicitly
