@@ -114,11 +114,13 @@ Agents declare capabilities; capabilities provide dependencies, MCP servers, and
 Each capability name maps to `capabilities/<name>/default.toml` (a symlink to the active provider).
 Users can override providers via `[capabilities]` in their config (e.g. `websearch = "brave"`).
 
-At runtime, `bin/load` resolves each capability and merges:
+At runtime octomind's registry resolves each capability and merges (the tap's `bin/load` mirrors the same logic for local validation):
 - `[deps] require` — union of all dep arrays
 - `[roles.mcp] server_refs` — union
 - `[roles.mcp] allowed_tools` — union
 - `[[mcp.servers]]` blocks — appended, deduplicated by name
+
+`allowed_tools` matching: `server:*` exposes all of that server's tools; `server:name` and trailing-`*` prefixes match bare tool names (no mid-string globs); a pattern without `:` applies to every server; a server none of the role's patterns match is dropped entirely.
 
 ### Rules (non-negotiable)
 
@@ -158,55 +160,94 @@ allowed_tools = ["servername:*"]
 [[mcp.servers]]
 name = "servername"
 type = "stdio"                     # "stdio", "http", or "builtin"
-command = "..."                    # for stdio
+command = "..."                    # for stdio; spawned verbatim — no shell, no expansion
 args = [...]
-timeout_seconds = 60
+timeout_seconds = 60               # per-tool-call timeout (1–3600), not a startup timeout
 tools = []
+env = { KEY = "{{ENV:KEY}}" }      # see note below
 ```
 
-Not all fields are required — a capability can be deps-only (e.g. `programming-python`), MCP-only, or both.
+Not all fields are required — a capability can be deps-only (e.g. `programming-python`), MCP-only, or both. Optional real field: `auto_bind = ["rolename"]` includes the server for those roles without a `server_ref`.
+
+Env delivery: octomind has no per-server env field — the `env` table is dropped at parse time and servers inherit octomind's environment. It still works as the carrier for `{{ENV:KEY}}` (resolution exports KEY to the process env, so the child inherits it) and as documentation, but the `{{ENV:}}` name must be the exact variable the server reads, and literal values in `env` are never delivered — export constants via a `sh -c "VAR=value exec ..."` wrapper instead. Never use `{{INPUT:}}` in `env` (it substitutes text only and the table is dropped).
 
 ### Available capabilities
 
-| Capability             | Default provider | What it provides                                      |
-|------------------------|------------------|---------------------------------------------------------|
-| `core`                 | (built-in)       | `plan` task tracker                                   |
-| `agent`                | (built-in)       | `agent_*` delegation tools                            |
-| `filesystem-read`      | octofs           | `view`, `workdir`                                     |
-| `filesystem-write`     | octofs           | `text_editor`, `batch_edit`, `extract_lines`          |
-| `shell`                | octofs           | `shell` (command execution)                           |
-| `codesearch-semantic`   | octocode         | `semantic_search`                                    |
-| `codesearch-structural` | octocode         | `structural_search`, `view_signatures`               |
-| `codesearch-graph`      | octocode         | `graphrag`                                            |
-| `memory`               | octobrain        | `remember`, `memorize`                                |
-| `websearch`            | tavily           | web search and content extraction                     |
-| `versioning`           | git              | git operations via MCP                                |
-| `programming-python`   | uv               | Python runtime (uv, uvx)                              |
-| `programming-rust`     | cargo            | Rust toolchain (cargo, rustc, clippy, rustfmt)        |
-| `programming-nodejs`   | bun              | JS/TS runtime — Bun (bun, bunx) replaces node/npm/npx |
-| `docker`               | docker           | Docker CLI (docker, docker-compose)                   |
-| `kubernetes`           | kubernetes       | Kubernetes CLI (kubectl, helm)                        |
-| `svelte`               | svelte           | Svelte/SvelteKit documentation MCP                    |
-| `medical`              | medical          | medical references (PubMed, FDA, WHO, RxNorm)         |
-| `finance`              | yfinance         | financial data (Yahoo Finance)                        |
-| `legal-au`             | ansvar           | Australian legislation MCP                            |
-| `legal-ca`             | ansvar           | Canadian legislation MCP                              |
-| `legal-de`             | german-law       | German federal statutes (gesetze-im-internet.de)      |
-| `legal-fr`             | ansvar           | French legislation MCP                                |
-| `legal-in`             | ansvar           | Indian legislation MCP                                |
-| `legal-sg`             | ansvar           | Singapore legislation MCP                             |
-| `legal-th`             | ansvar           | Thailand legislation MCP                              |
-| `legal-uk`             | legislation-gov-uk | UK legislation via legislation.gov.uk API           |
-| `legal-us`             | stare            | US case law via CourtListener (free.law)              |
-| `octoweb`              | octoweb          | browser automation via Octoweb HTTP MCP               |
-| `messaging-slack`      | slack            | Slack channels, messages, threads                     |
-| `messaging-discord`    | discord          | Discord channels, messages, moderation                |
-| `messaging-telegram`   | iflow-mcp        | Telegram bot messaging, channels, groups              |
-| `messaging-whatsapp`   | iflow-mcp        | WhatsApp Web messaging, contacts, media               |
-| `messaging-linkedin`   | pegasusheavy     | LinkedIn profile, posts, connections                  |
-| `messaging-instagram`  | mcpware          | Instagram posts, comments, DMs, stories               |
-| `messaging-email`      | codefuturist     | Email via standard SMTP/IMAP protocols                |
-| `messaging-sms`        | twilio           | SMS and voice messaging via Twilio                    |
+| Capability               | Default provider |
+|--------------------------|------------------|
+| `agent`                  | (built-in) |
+| `avatar`                 | heygen |
+| `browser`                | playwright |
+| `calendar`               | google-calendar |
+| `captions`               | assemblyai |
+| `codesearch-graph`       | octocode |
+| `codesearch-semantic`    | octocode |
+| `codesearch-structural`  | octocode |
+| `composition`            | remotion |
+| `core`                   | (built-in) |
+| `customer-management`    | hubspot |
+| `database-postgres`      | postgres |
+| `database-sqlite`        | sqlite |
+| `devdocs`                | context7 |
+| `device-computer`        | desktop-automation |
+| `device-mobile`          | mobile-mcp |
+| `docker`                 | docker |
+| `ecommerce`              | shopify |
+| `edge-hosting`           | cloudflare |
+| `error-tracking`         | sentry |
+| `filesystem-read`        | octofs |
+| `filesystem-write`       | octofs |
+| `highlights`             | readwise |
+| `image-gen`              | replicate-flux |
+| `knowledge`              | octobrain |
+| `kubernetes`             | kubernetes |
+| `legal-au`               | ansvar |
+| `legal-ca`               | ansvar |
+| `legal-de`               | german-law |
+| `legal-fr`               | ansvar |
+| `legal-in`               | ansvar |
+| `legal-sg`               | ansvar |
+| `legal-th`               | ansvar |
+| `legal-uk`               | legislation-gov-uk |
+| `legal-us`               | stare |
+| `lipsync`                | sync |
+| `maps`                   | google-maps |
+| `market-data`            | yfinance |
+| `medical-reference`      | medical |
+| `memory-read`            | octobrain |
+| `memory-write`           | octobrain |
+| `messaging-discord`      | discord |
+| `messaging-email`        | codefuturist |
+| `messaging-instagram`    | mcpware |
+| `messaging-linkedin`     | pegasusheavy |
+| `messaging-slack`        | slack |
+| `messaging-sms`          | twilio |
+| `messaging-telegram`     | iflow-mcp |
+| `messaging-whatsapp`     | iflow-mcp |
+| `music`                  | elevenlabs-music |
+| `octoweb`                | octoweb |
+| `orchestration`          | (built-in) |
+| `payments`               | stripe |
+| `programming-nodejs`     | bun |
+| `programming-python`     | uv |
+| `programming-rust`       | cargo |
+| `programming-swift`      | swift |
+| `publish-instagram`      | meta-instagram |
+| `publish-tiktok`         | tiktok-posting |
+| `publish-youtube`        | youtube-data |
+| `runtime`                | octomind |
+| `scraping`               | firecrawl |
+| `shell`                  | octofs |
+| `stock`                  | pexels |
+| `svelte`                 | svelte |
+| `task-management`        | linear |
+| `versioning`             | git |
+| `video-gen`              | runway |
+| `voice`                  | elevenlabs |
+| `webfetch`               | octobrain |
+| `websearch`              | duckduckgo |
+
+For what each capability provides, read its `# Description:` header in `capabilities/<name>/<provider>.toml`.
 
 ### Naming conventions
 
@@ -311,12 +352,14 @@ Agents are `capabilities` + one `[[roles]]` — they do not define pipelines. Th
 
 ### Placeholder variables
 
+Two separate systems. `{{INPUT:KEY}}` and `{{ENV:KEY}}` resolve at manifest load on the raw TOML text; `{{CWD}}`, `{{DATE}}` and friends resolve at prompt time in `system`/`welcome` only — they are NEVER substituted inside capability TOML values.
+
 | Placeholder | Use for |
 |-------------|---------|
-| `{{CWD}}` | Current working directory — always include in `welcome` and `system` |
-| `{{DATE}}` | Current date |
-| `{{INPUT:KEY}}` | Secret, user-global (e.g. API keys) |
-| `{{ENV:KEY}}` | Non-secret or project-scoped env var |
+| `{{CWD}}` | Current working directory — `welcome`/`system` only |
+| `{{DATE}}` | Current date — `welcome`/`system` only |
+| `{{INPUT:KEY}}` | Persistent credential store; substitutes text only (args, URLs). Does NOT reach a server's process env |
+| `{{ENV:KEY}}` | Env var: prompted if unset, saved to ./.env, exported to the octomind process (inherited by MCP servers). KEY must be the exact var name the server reads |
 
 ### Naming and metadata rules
 

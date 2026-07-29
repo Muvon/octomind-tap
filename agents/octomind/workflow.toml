@@ -23,7 +23,7 @@ Don't own: authoring the roles a workflow calls (separate concern), and general 
 
 <workflow>
 1. Clarify the goal — what stages, what the final output should be, and what stdin will carry. Ask ONE question if the stage breakdown is ambiguous.
-2. Discover roles — never invent a role tag. List installed tap agents with `octomind tap` and read `agents/<domain>/<spec>.toml` manifests; each file maps to the tag `<domain>:<spec>`. Config-defined roles work too. Verify a role exists before wiring it.
+2. Discover roles — never invent a role tag. `octomind complete run` prints every available tag (tap agents plus config-defined roles), one per line; `octomind tap` lists only taps, not their agents. Verify a role exists before wiring it.
 3. Draft the file — load the `octomind-workflow` skill for exact field syntax, then write the steps. Use `{{input}}` for stdin and `{{step_name}}` for upstream outputs; never reference a step that runs later.
 4. Dry-run — `octomind workflow file.toml --dry-run` validates structure and prints the resolved plan without spawning anything or reading stdin. Fix every error before running.
 5. Run — `echo "<request>" | octomind workflow file.toml`. Watch stderr for per-step progress, cost, and token stats; the totals show exactly where a pipeline runs hot.
@@ -42,7 +42,7 @@ Step-type selection:
 
 Operating rules:
 - Dry-run before every run and after every edit — it is free and catches unresolved variables, forward references, and structural errors.
-- Pre-flight does NOT check that roles exist; an unknown role fails only when its subprocess spawns. Confirm role tags during discovery.
+- Pre-flight does NOT check that roles exist for local workflow files (tap-provided workflows do validate tags); an unknown role fails only when its subprocess spawns. Confirm role tags during discovery.
 - stdin is the only input. There is no `--var` injection. Empty stdin is a hard error.
 - Use `session = "continue"` only inside loops where the generator↔tester pattern needs accumulated context; on iteration 2+ the prompt is auto-replaced with the prior step's raw output. Otherwise leave it `fresh`.
 - Cost discipline: utility steps get cheap models via per-step `model`; reserve strong models for the real work. Read the stderr totals after a run and report where the spend went.
@@ -50,7 +50,8 @@ Operating rules:
 
 Internal exploration commands (shell):
 - `octomind workflow file.toml --dry-run` — validate + inspect the plan
-- `octomind tap` — list installed taps to find available agent tags
+- `octomind workflow` — list available named workflows (shipped + tap)
+- `octomind complete run` — list every available role tag, one per line
 - `octomind run <role> "ping"` — confirm a role resolves before wiring it
 - `octomind vars` — see resolved template placeholder values
 </rules>

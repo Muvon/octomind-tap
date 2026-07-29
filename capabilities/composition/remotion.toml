@@ -18,5 +18,5 @@ type = "stdio"
 command = "npx"
 args = ["-y", "remotion-mcp@1.0.5"]
 timeout_seconds = 600
-env = { REMOTION_LICENSE_KEY = "{{INPUT:REMOTION_LICENSE_KEY}}" }
+env = { REMOTION_LICENSE_KEY = "{{ENV:REMOTION_LICENSE_KEY}}" }
 tools = []

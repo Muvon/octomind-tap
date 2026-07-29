@@ -15,9 +15,11 @@ allowed_tools = ["generate_video", "query_video_generation"]
 [[mcp.servers]]
 name = "hailuo"
 type = "stdio"
-command = "uvx"
+command = "sh"
 # --with mcp<2: server uses the v1 SDK API removed in the mcp 2.x SDK.
-args = ["--with", "mcp<2", "minimax-mcp==0.0.18"]
+# sh wrapper: octomind drops the env table at parse time, so constants and
+# derived paths must be exported by the launch command itself.
+args = ["-c", "mkdir -p \"$PWD/video-out\"; MINIMAX_API_HOST=https://api.minimax.io MINIMAX_MCP_BASE_PATH=\"$PWD/video-out\" exec uvx --with 'mcp<2' minimax-mcp==0.0.18"]
 timeout_seconds = 120
-env = { MINIMAX_API_KEY = "{{INPUT:MINIMAX_API_KEY}}", MINIMAX_API_HOST = "https://api.minimax.io", MINIMAX_MCP_BASE_PATH = "{{CWD}}/video-out" }
+env = { MINIMAX_API_KEY = "{{ENV:MINIMAX_API_KEY}}" }
 tools = []

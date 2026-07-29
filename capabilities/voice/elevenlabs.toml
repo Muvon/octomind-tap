@@ -18,5 +18,5 @@ type = "stdio"
 command = "uvx"
 args = ["elevenlabs-mcp==0.11.0"]
 timeout_seconds = 120
-env = { ELEVENLABS_API_KEY = "{{INPUT:ELEVENLABS_API_KEY}}" }
+env = { ELEVENLABS_API_KEY = "{{ENV:ELEVENLABS_API_KEY}}" }
 tools = []

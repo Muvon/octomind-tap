@@ -19,5 +19,5 @@ command = "npx"
 # npx -p form: the package ships two binaries; plain `npx -y` cannot pick one.
 args = ["-y", "-p", "google-veo3-1-mcp-server@1.2.0", "veo3-mcp-server"]
 timeout_seconds = 180
-env = { GOOGLE_API_KEY = "{{INPUT:GOOGLE_API_KEY}}" }
+env = { GOOGLE_API_KEY = "{{ENV:GOOGLE_API_KEY}}" }
 tools = []

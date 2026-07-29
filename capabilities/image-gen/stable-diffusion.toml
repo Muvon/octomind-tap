@@ -15,8 +15,10 @@ allowed_tools = ["stability-ai-*"]
 [[mcp.servers]]
 name = "stable-diffusion"
 type = "stdio"
-command = "npx"
-args = ["-y", "mcp-server-stability-ai@0.2.0"]
+command = "sh"
+# sh wrapper: octomind drops the env table at parse time, so constants and
+# derived paths must be exported by the launch command itself.
+args = ["-c", "mkdir -p \"$PWD/image-out\"; IMAGE_STORAGE_DIRECTORY=\"$PWD/image-out\" exec npx -y mcp-server-stability-ai@0.2.0"]
 timeout_seconds = 120
-env = { STABILITY_AI_API_KEY = "{{INPUT:STABILITY_API_KEY}}", IMAGE_STORAGE_DIRECTORY = "{{CWD}}/image-out" }
+env = { STABILITY_AI_API_KEY = "{{ENV:STABILITY_AI_API_KEY}}" }
 tools = []

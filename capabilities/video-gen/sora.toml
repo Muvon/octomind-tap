@@ -19,5 +19,5 @@ command = "npx"
 # npx -p form: the package ships two binaries; plain `npx -y` cannot pick one.
 args = ["-y", "-p", "openai-sora2-mcp-server@1.1.1", "sora2-mcp-server"]
 timeout_seconds = 240
-env = { OPENAI_API_KEY = "{{INPUT:OPENAI_API_KEY}}" }
+env = { OPENAI_API_KEY = "{{ENV:OPENAI_API_KEY}}" }
 tools = []

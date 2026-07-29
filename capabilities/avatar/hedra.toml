@@ -18,5 +18,5 @@ type = "stdio"
 command = "npx"
 args = ["-y", "mcp-server-hedra@1.0.0"]
 timeout_seconds = 180
-env = { HEDRA_API_KEY = "{{INPUT:HEDRA_API_KEY}}" }
+env = { HEDRA_API_KEY = "{{ENV:HEDRA_API_KEY}}" }
 tools = []

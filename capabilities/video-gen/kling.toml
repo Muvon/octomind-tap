@@ -18,5 +18,5 @@ type = "stdio"
 command = "npx"
 args = ["-y", "mcp-kling@5.2.0"]
 timeout_seconds = 180
-env = { KLING_ACCESS_KEY = "{{INPUT:KLING_ACCESS_KEY}}", KLING_SECRET_KEY = "{{INPUT:KLING_SECRET_KEY}}" }
+env = { KLING_ACCESS_KEY = "{{ENV:KLING_ACCESS_KEY}}", KLING_SECRET_KEY = "{{ENV:KLING_SECRET_KEY}}" }
 tools = []
