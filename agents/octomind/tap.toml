@@ -77,6 +77,7 @@ agents/
   browser/        ← web browser automation (DOM-driven, Playwright-style)
   octoweb/        ← Octopus browser concierge + web-specific specialists
   octomind/       ← octomind-specific meta-agents
+  support/        ← customer support desk & ticket triage
   <domain>/       ← new domains allowed, be descriptive
 capabilities/
   <name>/
