@@ -22,12 +22,10 @@ API key(s)
 
 | Tool | Description |
 |------|-------------|
-| `luma_generate_image` | Generate image |
-| `generate_text_to_video` | Text to video |
-| `generate_image_to_video` | Image to video |
-| `luma_upscale` | Upscale resolution |
-| `luma_add_audio` | Add audio |
-| `luma_get_camera_motions` | Camera motion options |
+| `modify_video` | Create/modify a Dream Machine video job |
+| `get_task` | Poll a job |
+| `check_pricing` | Gateway pricing info |
+| `login` | Gateway auth check |
 
 ## Configuration Example
 

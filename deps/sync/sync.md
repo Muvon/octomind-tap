@@ -18,9 +18,12 @@ Sync.so (Sync Labs) MCP server. State-of-the-art lipsync. Takes a source video +
 
 | Tool | Description |
 |------|-------------|
-| `sync_lipsync` | Lipsync a video to a target audio track (sync-1.9 / sync-2 models) |
-| `sync_translate_dub` | Lipsync + dub to a different language |
-| `sync_get_job` | Poll job status |
+| `generate_create-generation` | Create a lipsync generation |
+| `generate_get-generation / generations_get-by-id` | Poll generation status |
+| `generate_estimate-cost` | Estimate generation cost |
+| `assets_* (create, get, update, delete, create-upload-url)` | Manage media assets |
+| `batch_* / projects_*` | Batch jobs and project organization |
+| `tts_create / voices_*` | TTS and voice management |
 
 ## Configuration Example
 

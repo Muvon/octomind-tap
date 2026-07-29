@@ -1,0 +1,28 @@
+# capabilities/legal-de/german-law.toml
+# Capability: legal-de
+# Provider: german-law-mcp — German federal law live from gesetze-im-internet.de
+# Title: German Law
+# Description: German federal statutes fetched live from gesetze-im-internet.de, keyless.
+# Provides tools: download_law, get_paragraph, list_contents
+#
+# Replaces the former Ansvar provider: @ansvar/german-law-mcp is broken in every
+# published version (shebang-less bin, no bundled database) and deprecated
+# upstream. This server fetches statute XML on demand from the official
+# Bundesministerium der Justiz portal; no API key required.
+# Note: get_paragraph takes law_name (e.g. "bgb") and paragraph with the
+# "§ " prefix (e.g. "§ 823").
+
+[deps]
+require = ["german-law/german-law"]
+
+[roles.mcp]
+server_refs = ["german-law"]
+allowed_tools = ["german-law:*"]
+
+[[mcp.servers]]
+name = "german-law"
+type = "stdio"
+command = "npx"
+args = ["-y", "german-law-mcp@0.1.0"]
+timeout_seconds = 60
+tools = []

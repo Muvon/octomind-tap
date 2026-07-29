@@ -121,8 +121,8 @@ def make_spec(name, version, runner):
     return f"{name}@{version}" if runner == "npx" else f"{name}=={version}"
 
 
-def iter_servers():
-    """Yield (path, data, server, runner, token, embedded) for registry-launched stdio servers."""
+def iter_stdio_servers():
+    """Yield (path, data, server) for every stdio server declaration."""
     for path in sorted(CAP_ROOT.rglob("*.toml")):
         if path.is_symlink():
             continue
@@ -132,19 +132,31 @@ def iter_servers():
             print(f"WARN: skipping unparseable {path}: {e}", file=sys.stderr)
             continue
         for srv in (data.get("mcp") or {}).get("servers") or []:
-            if srv.get("type") != "stdio":
-                continue
-            cmd = srv.get("command", "")
-            args = srv.get("args") or []
-            if cmd in ("npx", "uvx"):
-                tok = first_package(args)
-                if tok:
-                    yield path, data, srv, cmd, tok, False
-            elif cmd in ("sh", "bash"):
-                for a in args:
-                    if isinstance(a, str):
-                        for runner, tok in embedded_launches(a):
-                            yield path, data, srv, runner, tok, True
+            if srv.get("type") == "stdio":
+                yield path, data, srv
+
+
+def server_launches(srv):
+    """Registry launches (runner, token, embedded) for a stdio server; may be empty."""
+    cmd = srv.get("command", "")
+    args = srv.get("args") or []
+    if cmd in ("npx", "uvx"):
+        tok = first_package(args)
+        return [(cmd, tok, False)] if tok else []
+    found = []
+    if cmd in ("sh", "bash"):
+        for a in args:
+            if isinstance(a, str):
+                for runner, tok in embedded_launches(a):
+                    found.append((runner, tok, True))
+    return found
+
+
+def iter_servers():
+    """Yield (path, data, server, runner, token, embedded) for registry-launched stdio servers."""
+    for path, data, srv in iter_stdio_servers():
+        for runner, tok, embedded in server_launches(srv):
+            yield path, data, srv, runner, tok, embedded
 
 
 def filter_paths(entries, selectors):
@@ -407,16 +419,20 @@ def handshake(command, args, extra_env, timeout):
 
 
 def cmd_test(argv):
-    rows = collect([a for a in argv if not a.startswith("--")])
-    # One test per unique server declaration (default.toml symlinks already skipped).
+    # Test EVERY stdio server, including custom sh wrappers with no npx/uvx
+    # launch (those are invisible to check/update but still must start).
+    selectors = [a for a in argv if not a.startswith("--")]
+    entries = filter_paths([(p, d, s) for p, d, s in iter_stdio_servers()], selectors)
     jobs = []
     seen = set()
-    for r in rows:
-        key = (r["path"], r["srv"].get("name"))
+    for path, data, srv in entries:
+        key = (path, srv.get("name"))
         if key in seen:
             continue
         seen.add(key)
-        jobs.append(r)
+        launches = server_launches(srv)
+        token = launches[0][1] if launches else f"[{srv.get('command')} wrapper]"
+        jobs.append({"path": path, "data": data, "srv": srv, "token": token})
 
     smoke_cwd = tempfile.mkdtemp(prefix="mcp-smoke-")
 

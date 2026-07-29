@@ -11,8 +11,6 @@ rules:
   - match((?i)resolve the .{0,20}issue)
 ---
 
-# Issue Diagnosis
-
 ## Overview
 
 A reported issue describes a symptom from the reporter's point of view; the merged resolution is usually broader than the report's literal words. This skill is the path from report to maintainer-grade resolution. It matters most when the issue looks trivial — one-sentence requests are where half-fixes ship.

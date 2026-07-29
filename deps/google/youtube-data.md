@@ -22,11 +22,11 @@ OAuth 2.0 with `youtube.upload`, `youtube.readonly`, and (optional) `yt-analytic
 
 | Tool | Description |
 |------|-------------|
-| `youtube_upload_video` | Upload a video file (set title, description, tags, category, privacy) |
-| `youtube_set_thumbnail` | Set custom thumbnail |
-| `youtube_update_metadata` | Edit title / description / tags after upload |
-| `youtube_list_videos` | List your channel's videos |
-| `youtube_get_analytics` | Channel analytics (paid tier only for some metrics) |
+| `get_video_details / get_all_videos / search_my_videos` | Own-channel video metadata |
+| `update_video_seo` | Update title/description/tags |
+| `get_channel_overview / get_analytics_over_time / get_top_videos_analytics` | Analytics |
+| `get_audience_demographics / get_traffic_sources` | Audience insight |
+| `analyze_and_suggest_topics` | Topic suggestions |
 
 ## Configuration Example
 

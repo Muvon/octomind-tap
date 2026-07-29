@@ -23,10 +23,10 @@ API key (Gemini Developer API) **or** Application Default Credentials (Vertex AI
 
 | Tool | Description |
 |------|-------------|
-| `veo_generate_video` | Text-to-video, native audio (8s default) |
-| `veo_image_to_video` | Animate an input image with a prompt |
-| `veo_extend_video` | Extend an existing clip by another segment |
-| `veo_get_operation` | Poll a long-running generation job |
+| `generate_video` | Text/image → video via Veo 3.1 |
+| `extend_video` | Extend an existing generation |
+| `interpolate_frames` | Frame interpolation |
+| `get_video_status` | Poll a generation job |
 
 ## Configuration Example
 

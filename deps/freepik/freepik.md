@@ -18,11 +18,10 @@ Freepik MCP server. Combines stock photos / vectors / templates with AI image an
 
 | Tool | Description |
 |------|-------------|
-| `freepik_search_resources` | Search the stock library (photos, vectors, icons, templates) |
-| `freepik_download_resource` | Get download URL for a specific resource |
-| `freepik_generate_image` | AI image generation (Mystic / Flux backends) |
-| `freepik_generate_video` | AI video generation (Kling, Pixverse, Veo backends) |
-| `freepik_get_task` | Poll generation status |
+| `search_resources` | Search stock resources |
+| `get_resource / download_resource` | Fetch a resource |
+| `generate_image` | AI image generation |
+| `check_status` | Poll generation status |
 
 ## Configuration Example
 

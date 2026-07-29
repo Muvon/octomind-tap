@@ -21,12 +21,13 @@ API key (issue + secret pair via the KlingAI Open Platform).
 
 | Tool | Description |
 |------|-------------|
-| `kling_text_to_video` | Generate clip from text prompt (5s / 10s, 720p / 1080p) |
-| `kling_image_to_video` | Animate input image with prompt + camera motion |
-| `kling_motion_brush` | Mask-driven motion control |
-| `kling_extend_video` | Extend an existing clip |
-| `kling_lipsync` | Add lipsync to a clip with text or audio |
-| `kling_get_task` | Poll generation status |
+| `generate_video` | Text → video |
+| `generate_image_to_video` | Image → video |
+| `check_video_status / list_tasks` | Track generation tasks |
+| `extend_video` | Extend an existing generation |
+| `create_lipsync` | Lipsync a generated video |
+| `apply_video_effect` | Apply effects to a video |
+| `get_account_balance / get_resource_packages` | Account status |
 
 ## Configuration Example
 

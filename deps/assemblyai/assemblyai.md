@@ -18,10 +18,10 @@ AssemblyAI MCP server. Speech-to-text with speaker diarization, auto-chapters, s
 
 | Tool | Description |
 |------|-------------|
-| `assemblyai_transcribe` | Transcribe audio/video URL → words + speakers + chapters |
-| `assemblyai_get_subtitles` | Fetch SRT/VTT for a transcript |
-| `assemblyai_summarize` | LeMUR summary of a transcript |
-| `assemblyai_get_transcript` | Poll transcription status / fetch result |
+| `transcribe_url` | Transcribe audio at a public URL |
+| `transcribe_file` | Transcribe a local audio file |
+| `submit_transcription` | Async submit, returns transcript id |
+| `get_transcript` | Fetch transcript by id |
 
 ## Configuration Example
 

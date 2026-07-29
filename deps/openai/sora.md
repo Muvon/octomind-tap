@@ -18,10 +18,10 @@ OpenAI Sora 2 video generation MCP server. Long coherent shots, brand-safe defau
 
 | Tool | Description |
 |------|-------------|
-| `sora_generate_video` | Text-to-video |
-| `sora_remix` | Remix an existing video with a new prompt |
-| `sora_image_to_video` | Animate an image |
-| `sora_get_job` | Poll job status |
+| `generate_video` | Text → video via Sora 2 |
+| `remix_video` | Remix an existing generation |
+| `get_video_status` | Poll a generation job |
+| `list_videos` | List generations |
 
 ## Configuration Example
 

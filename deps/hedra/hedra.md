@@ -18,10 +18,13 @@ Hedra Character-3 MCP server. Image + audio → expressive talking-character vid
 
 | Tool | Description |
 |------|-------------|
-| `hedra_create_character_video` | Image + audio → animated character video |
-| `hedra_text_to_character` | Image + text (auto-TTS) → character video |
-| `hedra_get_generation` | Poll job status |
-| `hedra_list_voices` | Available voices for text-to-character mode |
+| `generate_video` | Image/asset + audio → talking-character video |
+| `generate_video_with_tts` | Image + text (auto-TTS) → character video |
+| `generate_text_to_speech` | Text → speech audio asset |
+| `generate_image` | Text → image asset |
+| `create_asset / upload_asset / list_assets` | Manage input assets |
+| `list_generations / get_generation_status` | Track generation jobs |
+| `list_models / get_credits` | Models catalog and account credits |
 
 ## Configuration Example
 

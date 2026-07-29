@@ -1,0 +1,26 @@
+# capabilities/legal-uk/legislation-gov-uk.toml
+# Capability: legal-uk
+# Provider: legislation-gov-uk-mcp — UK legislation via the official legislation.gov.uk API
+# Title: UK Law
+# Description: UK legislation search, point-in-time versions, and amendment tracking via legislation.gov.uk.
+# Provides tools: leg_search, leg_search_advanced, leg_search_new, leg_get, leg_get_section, leg_get_version, leg_get_contents, leg_changes_affecting, leg_changes_by, leg_status, leg_types, leg_updates, leg_sparql
+#
+# Replaces the former Ansvar provider: @ansvar/uk-law-mcp ships no database in
+# any published version and is deprecated upstream. This server queries the
+# official legislation.gov.uk API live — keyless, rate limit 3000 req/5min/IP,
+# with point-in-time versions, amendment tracking, and a SPARQL endpoint.
+
+[deps]
+require = ["uk-legislation/uk-legislation"]
+
+[roles.mcp]
+server_refs = ["uk-law"]
+allowed_tools = ["leg_*"]
+
+[[mcp.servers]]
+name = "uk-law"
+type = "stdio"
+command = "npx"
+args = ["-y", "legislation-gov-uk-mcp@1.0.2"]
+timeout_seconds = 60
+tools = []
