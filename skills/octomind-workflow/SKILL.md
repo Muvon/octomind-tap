@@ -112,6 +112,7 @@ Voting runs the same input through diverse roles for confidence. Use an odd bran
 ```toml
 name        = "my-workflow"        # required
 description = "Optional human description"
+# max_cost  = 2.5                  # optional USD ceiling for the whole run; checked after each step
 
 [[steps]]                          # sequential (the default kind)
 name    = "outline"                # required, unique across the whole file
@@ -126,7 +127,11 @@ timeout = 0                        # seconds; 0 = no timeout (default)
 retries = 0                        # extra attempts on failure (default 0)
 # model = "<provider>:<model>"     # optional per-step model override
 # workdir = "path/to/dir"          # optional working directory; default = orchestrator cwd
+# skills = ["skill-name"]          # optional skills injected into the step's session
+# capabilities = ["websearch"]     # optional extra capabilities for the step's role
 ```
+
+Unknown TOML keys are silently ignored (no strict field checking) — a misspelled field name will not error, so double-check spelling against this reference.
 
 Role tags in this skill are placeholders — substitute roles actually installed in your setup.
 
@@ -137,11 +142,17 @@ A `[[steps]]` table is sequential unless it sets exactly one of `parallel`, `loo
 | Kind | Flag | Required fields | Behaviour |
 |------|------|-----------------|-----------|
 | Sequential | (none) | `name`, `role`, `prompt` | Runs `octomind run` once with the resolved prompt. |
-| Parallel | `parallel = true` | `name`, ≥2 `[[steps.run]]` | Sub-steps run concurrently; next top-level step waits for all. |
-| Loop | `loop = true` | `name`, ≥1 `[[steps.run]]`, `exit_when` | Sub-steps run sequentially each iteration until `exit_when` matches or `max_iterations` hit. |
+| Parallel | `parallel = true` | `name`, ≥2 `[[steps.run]]` (or 1 template + `source`) | Sub-steps run concurrently; next top-level step waits for all. |
+| Loop | `loop = true` | `name`, ≥1 `[[steps.run]]`, `exit_when` | Sub-steps run sequentially each iteration until `exit_when` matches or `max_iterations` hit (default 10). |
 | Conditional | `conditional = true` | `name`, `condition`, ≥1 `[[steps.run]]`, `on_match`/`on_no_match` | Branch: run the sub-step names listed by the matching branch. |
 
 Sub-steps inside `[[steps.run]]` are sequential steps and accept the same optional fields (`session`, `timeout`, `retries`, `model`, `workdir`). Parallel sub-steps cannot reference each other — only outer scope. Conditional `on_match` / `on_no_match` list sub-step names to run; skipped sub-steps resolve to empty strings in later substitutions. A loop that reaches `max_iterations` without matching exits with the last iteration's outputs and a stderr warning — the workflow does not fail.
+
+Parallel extras: `count = N` on a sub-step replicates it N times (N ≥ 2); `max_parallel` caps concurrency; `min_success` (1..=total replicas) sets how many branches must succeed for the block to pass. Dynamic fan-out: give the block exactly one template sub-step plus `source = "<step>"` and `match = "<regex>"` — each regex match in the source step's output spawns one instance with the match text bound in.
+
+### Graph mode
+
+Setting top-level `entry = "<step>"` or any `[[edges]]` switches from top-to-bottom order to an explicit graph: `[[edges]]` entries have `from`, `to`, and optional `when` (same condition table shape); `max_transitions` (required in graph mode) bounds total hops; routing ends at the reserved node `$end`. Every node needs exactly one unconditional edge, declared after its conditional ones, and every node must be reachable with a route to `$end` — pre-flight enforces all of this. In graph mode a loop's or conditional's own name stays referenceable per normal rules; prefer ordered mode unless you genuinely need cycles or multi-way routing.
 
 ## Condition shape
 
@@ -169,7 +180,7 @@ Variable names match `[A-Za-z_][A-Za-z0-9_-]*`. A `{{var}}` referencing a step t
 | Mode | Behaviour |
 |------|-----------|
 | `fresh` (default) | Brand-new session every invocation; no state persists. |
-| `continue` | First run sends the templated prompt and remembers the session ID. Subsequent runs (loop iter 2+, or a retry) resume that session — `/done` compresses prior context first, and the templated prompt is replaced with the most recent prior step's raw output. |
+| `continue` | First run sends the templated prompt and remembers the session ID. After a successful run, later invocations (loop iter 2+) resume that session — `/done` compresses prior context first, and the templated prompt is replaced with the most recent prior step's raw output. A retry after a failed attempt still sends the full templated prompt. |
 
 The continue-session prompt-replacement rule is what makes the generator↔critic loop work without re-feeding instructions each iteration. Each step owns its own session ID; in a loop, sub-steps accumulate independent histories. The session is ephemeral to a single `octomind workflow` invocation.
 
@@ -187,23 +198,27 @@ All checked before any step runs (hard-fail):
 - Parallel: ≥2 sub-steps. Loop: ≥1 sub-step and an `exit_when` with `contains` or `matches`. Conditional: a `condition` with `contains` or `matches`, plus `on_match` and/or `on_no_match` whose names all exist among the block's sub-steps.
 - `matches` regexes compile; `exit_when.output` / `condition.output` reference known steps.
 - `model` and `workdir`, when set on any step, are non-empty. Workdir existence is checked at execution time, not pre-flight.
+- `max_cost`, when set, is positive and finite. Graph mode: `entry` exists, `max_transitions` ≥ 1, every node has exactly one unconditional edge (declared after its conditional ones), no unreachable nodes, and a route to `$end` exists.
 
 Role existence is not checked at pre-flight — an unknown role fails when its subprocess spawns. Verify roles exist, and test each step's prompt standalone via `octomind run`, before composing.
 
 ## CLI
 
 ```bash
-echo "quarterly sales summary from the attached notes" | octomind workflow myflow.toml   # run
+echo "quarterly sales summary from the attached notes" | octomind workflow myflow.toml   # run a file
 octomind workflow myflow.toml --dry-run                # validate + print plan, no spawn, no stdin
+octomind workflow                                      # list available named workflows
+echo "..." | octomind workflow <name>                  # run a named workflow (shipped or tap-provided)
+echo "..." | octomind workflow myflow.toml --format jsonl   # stream step events as JSONL
 ```
 
-stdin is required unless `--dry-run`; empty stdin is a hard error. stderr carries each step's assistant message, progress lines, per-step cost/token stats, and the final total. `--dry-run` validates the file, resolves the execution graph, and prints the plan without spawning subprocesses or reading stdin.
+The positional accepts either a file path or a bare workflow name (shipped templates and tap-provided workflows); `octomind workflow` with no argument lists the available names. stdin is required unless `--dry-run`; empty stdin is a hard error. stderr carries each step's assistant message, progress lines, per-step cost/token stats, and the final total. `--dry-run` validates the file, resolves the execution graph, and prints the plan without spawning subprocesses or reading stdin. Note: workflows loaded from a tap additionally validate role tags at pre-flight; local files do not.
 
 Retries rerun the same step. Pure text-in/text-out steps are naturally safe to retry; steps whose role touches the outside world (writes files, calls APIs) are not — keep `retries = 0` there or make the role idempotent.
 
 ## Out of scope
 
-Not supported — use shell composition or call `octomind run` directly: `--var key=value` injection (stdin is the only input), workflow definitions inside `default.toml`, named-workflow lookup (explicit path only), cross-invocation `continue`-session persistence, step artifacts on disk, structured JSON output from the workflow command, dynamic fan-out (orchestrator-workers).
+Not supported — use shell composition or call `octomind run` directly: `--var key=value` injection (stdin is the only input), workflow definitions inside `default.toml`, cross-invocation `continue`-session persistence, and step artifacts on disk.
 
 ## Examples
 

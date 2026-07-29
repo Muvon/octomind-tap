@@ -15,9 +15,11 @@ allowed_tools = ["transcribe_audio", "list_audio_files", "convert_audio", "compr
 [[mcp.servers]]
 name = "whisper"
 type = "stdio"
-command = "uvx"
+command = "sh"
 # --with mcp<2: server imports mcp.server.fastmcp, removed in the mcp 2.x SDK.
-args = ["--with", "mcp<2", "mcp-server-whisper==1.1.0"]
+# sh wrapper: octomind drops the env table at parse time, so constants and
+# derived paths must be exported by the launch command itself.
+args = ["-c", "mkdir -p \"$PWD/video-out\"; AUDIO_FILES_PATH=\"$PWD/video-out\" exec uvx --with 'mcp<2' mcp-server-whisper==1.1.0"]
 timeout_seconds = 120
-env = { OPENAI_API_KEY = "{{INPUT:OPENAI_API_KEY}}", AUDIO_FILES_PATH = "{{CWD}}/video-out" }
+env = { OPENAI_API_KEY = "{{ENV:OPENAI_API_KEY}}" }
 tools = []

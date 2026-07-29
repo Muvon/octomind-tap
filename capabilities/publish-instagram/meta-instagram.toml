@@ -18,5 +18,5 @@ type = "stdio"
 command = "npx"
 args = ["-y", "@mcpware/instagram-mcp@1.0.4"]
 timeout_seconds = 240
-env = { INSTAGRAM_ACCESS_TOKEN = "{{INPUT:META_ACCESS_TOKEN}}", INSTAGRAM_ACCOUNT_ID = "{{INPUT:IG_USER_ID}}" }
+env = { INSTAGRAM_ACCESS_TOKEN = "{{ENV:INSTAGRAM_ACCESS_TOKEN}}", INSTAGRAM_ACCOUNT_ID = "{{ENV:INSTAGRAM_ACCOUNT_ID}}" }
 tools = []

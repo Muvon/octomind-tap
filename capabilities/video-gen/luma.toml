@@ -20,5 +20,5 @@ command = "npx"
 # published to any registry; lumalabs.ai credentials do not apply here.
 args = ["-y", "@runapi.ai/luma-mcp@0.1.6"]
 timeout_seconds = 120
-env = { RUNAPI_API_KEY = "{{INPUT:RUNAPI_API_KEY}}" }
+env = { RUNAPI_API_KEY = "{{ENV:RUNAPI_API_KEY}}" }
 tools = []

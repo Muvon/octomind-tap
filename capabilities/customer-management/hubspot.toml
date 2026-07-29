@@ -17,5 +17,5 @@ type = "stdio"
 command = "npx"
 args = ["-y", "@hubspot/mcp-server@0.4.0"]
 timeout_seconds = 60
-env = { PRIVATE_APP_ACCESS_TOKEN = "{{ENV:HUBSPOT_PRIVATE_APP_TOKEN}}" }
+env = { PRIVATE_APP_ACCESS_TOKEN = "{{ENV:PRIVATE_APP_ACCESS_TOKEN}}" }
 tools = []

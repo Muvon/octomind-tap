@@ -19,5 +19,5 @@ command = "uvx"
 # --with mcp<2: server uses the v1 SDK API removed in the mcp 2.x SDK.
 args = ["--with", "mcp<2", "heygen-mcp==0.0.3"]
 timeout_seconds = 180
-env = { HEYGEN_API_KEY = "{{INPUT:HEYGEN_API_KEY}}" }
+env = { HEYGEN_API_KEY = "{{ENV:HEYGEN_API_KEY}}" }
 tools = []

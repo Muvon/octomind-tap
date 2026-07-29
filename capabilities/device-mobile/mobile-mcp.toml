@@ -15,8 +15,9 @@ allowed_tools = ["mobile-mcp:*"]
 [[mcp.servers]]
 name = "mobile-mcp"
 type = "stdio"
-command = "npx"
-args = ["-y", "@mobilenext/mobile-mcp@0.0.62"]
+command = "sh"
+# sh wrapper: octomind drops the env table at parse time, so constants and
+# derived paths must be exported by the launch command itself.
+args = ["-c", "MOBILEMCP_DISABLE_TELEMETRY=1 exec npx -y @mobilenext/mobile-mcp@0.0.62"]
 timeout_seconds = 120
-env = { MOBILEMCP_DISABLE_TELEMETRY = "1" }
 tools = []

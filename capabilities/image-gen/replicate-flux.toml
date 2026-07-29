@@ -18,5 +18,5 @@ type = "stdio"
 command = "npx"
 args = ["-y", "replicate-flux-mcp@0.4.0"]
 timeout_seconds = 120
-env = { REPLICATE_API_TOKEN = "{{INPUT:REPLICATE_API_TOKEN}}" }
+env = { REPLICATE_API_TOKEN = "{{ENV:REPLICATE_API_TOKEN}}" }
 tools = []

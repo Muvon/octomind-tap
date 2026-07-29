@@ -21,5 +21,5 @@ type = "stdio"
 command = "npx"
 args = ["-y", "openai-image-mcp-server@2.0.0"]
 timeout_seconds = 120
-env = { OPENAI_API_KEY = "{{INPUT:OPENAI_API_KEY}}" }
+env = { OPENAI_API_KEY = "{{ENV:OPENAI_API_KEY}}" }
 tools = []
