@@ -1,0 +1,25 @@
+# capabilities/image-gen/openai-image.toml
+# Capability: image-gen
+# Provider: OpenAI gpt-image — text-to-image and image editing
+# Title: Image Generation
+# Description: Text-to-image generation and editing via the OpenAI gpt-image API.
+# Provides tools: gpt_image_generate, gpt_image_edit, gpt_image_create_variation, gpt_image_create_character_reference, gpt_image_generate_pose, gpt_image_generate_sprite_sheet
+#
+# Replaces the former DALL-E provider: OpenAI retired the DALL-E 2/3 API
+# (2026-05-12); the gpt-image family is its successor.
+
+[deps]
+require = ["openai/dalle"]
+
+[roles.mcp]
+server_refs = ["openai-image"]
+allowed_tools = ["gpt_image_generate", "gpt_image_edit", "gpt_image_create_variation", "gpt_image_create_character_reference", "gpt_image_generate_pose", "gpt_image_generate_sprite_sheet"]
+
+[[mcp.servers]]
+name = "openai-image"
+type = "stdio"
+command = "npx"
+args = ["-y", "openai-image-mcp-server@2.0.0"]
+timeout_seconds = 120
+env = { OPENAI_API_KEY = "{{INPUT:OPENAI_API_KEY}}" }
+tools = []

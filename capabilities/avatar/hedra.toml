@@ -3,20 +3,20 @@
 # Provider: Hedra Character-3 — image-to-talking-character video
 # Title: AI Avatar
 # Description: Image-to-talking-character video via Hedra Character-3 (stylized / illustrated avatars).
-# Provides tools: hedra_create_character_video, hedra_text_to_character, hedra_get_generation, hedra_list_voices
+# Provides tools: generate_video, generate_video_with_tts, generate_text_to_speech, generate_image, list_assets, create_asset, upload_asset, list_generations, get_generation_status, list_models, get_credits
 
 [deps]
 require = ["hedra/hedra"]
 
 [roles.mcp]
 server_refs = ["hedra"]
-allowed_tools = ["hedra_*"]
+allowed_tools = ["hedra:*"]
 
 [[mcp.servers]]
 name = "hedra"
 type = "stdio"
 command = "npx"
-args = ["-y", "hedra-mcp"]
+args = ["-y", "mcp-server-hedra@1.0.0"]
 timeout_seconds = 180
 env = { HEDRA_API_KEY = "{{INPUT:HEDRA_API_KEY}}" }
 tools = []

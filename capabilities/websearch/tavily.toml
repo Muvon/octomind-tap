@@ -3,20 +3,20 @@
 # Provider: Tavily — web search and content extraction
 # Title: Web Search
 # Description: Web search and content extraction via Tavily API.
-# Provides tools: tavily_search, tavily_extract, tavily_map
+# Provides tools: tavily_search, tavily_extract, tavily_crawl, tavily_map, tavily_research
 
 [deps]
 require = ["tavily-ai/tavily"]
 
 [roles.mcp]
 server_refs = ["tavily"]
-allowed_tools = ["tavily_search", "tavily_extract", "tavily_map"]
+allowed_tools = ["tavily_search", "tavily_extract", "tavily_crawl", "tavily_map", "tavily_research"]
 
 [[mcp.servers]]
 name = "tavily"
 type = "stdio"
 command = "npx"
-args = ["-y", "@tavily/mcp-server"]
+args = ["-y", "tavily-mcp@0.2.21"]
 timeout_seconds = 60
 env = { TAVILY_API_KEY = "{{ENV:TAVILY_API_KEY}}" }
 tools = []

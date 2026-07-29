@@ -14,7 +14,8 @@ allowed_tools = ["sqlite:*"]
 [[mcp.servers]]
 name = "sqlite"
 type = "stdio"
-command = "npx"
-args = ["-y", "@modelcontextprotocol/server-sqlite", "--db-path", "{{ENV:SQLITE_DB_PATH}}"]
+command = "uvx"
+# --with mcp<2: server uses the v1 SDK API removed in the mcp 2.x SDK.
+args = ["--with", "mcp<2", "mcp-server-sqlite==2025.4.25", "--db-path", "{{ENV:SQLITE_DB_PATH}}"]
 timeout_seconds = 60
 tools = []

@@ -17,5 +17,5 @@ type = "stdio"
 command = "npx"
 args = ["-y", "@pegasusheavy/linkedin-mcp@1.4.0"]
 timeout_seconds = 60
-env = { LINKEDIN_EMAIL = "{{ENV:LINKEDIN_EMAIL}}", LINKEDIN_PASSWORD = "{{ENV:LINKEDIN_PASSWORD}}" }
+env = { LINKEDIN_ACCESS_TOKEN = "{{ENV:LINKEDIN_ACCESS_TOKEN}}" }
 tools = []

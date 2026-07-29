@@ -1,0 +1,26 @@
+# capabilities/legal-us/stare.toml
+# Capability: legal-us
+# Provider: stare-mcp — US case law via the CourtListener API (free.law)
+# Title: US Law
+# Description: US case law search and opinions via CourtListener (free.law) API.
+# Provides tools: search_cases, verify_citations, how_cited, list_courts, fetch_passages
+#
+# Replaces the former Ansvar provider: the @ansvar/*-law-mcp npm packages are
+# deprecated upstream (distribution moved to source-only) and the US package
+# is broken in every published version.
+
+[deps]
+require = ["us-legal-tools/courtlistener"]
+
+[roles.mcp]
+server_refs = ["courtlistener"]
+allowed_tools = ["courtlistener:*"]
+
+[[mcp.servers]]
+name = "courtlistener"
+type = "stdio"
+command = "npx"
+args = ["-y", "stare-mcp@0.4.0"]
+timeout_seconds = 60
+env = { COURTLISTENER_API_KEY = "{{ENV:COURTLISTENER_API_KEY}}" }
+tools = []

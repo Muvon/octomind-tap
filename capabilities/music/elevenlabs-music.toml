@@ -3,14 +3,14 @@
 # Provider: ElevenLabs Music — same SDK as elevenlabs voice, music endpoints
 # Title: Music Generation
 # Description: ElevenLabs Music for higher-fidelity bespoke ad tracks via the elevenlabs MCP.
-# Provides tools: text_to_speech, soundscape (also includes Music endpoints when MCP exposes them)
+# Provides tools: compose_music, create_composition_plan, video_to_music, upload_music_for_inpainting, text_to_sound_effects, play_audio
 
 [deps]
 require = ["elevenlabs/elevenlabs"]
 
 [roles.mcp]
 server_refs = ["elevenlabs"]
-allowed_tools = ["soundscape", "text_to_speech"]
+allowed_tools = ["compose_music", "create_composition_plan", "video_to_music", "upload_music_for_inpainting", "text_to_sound_effects", "play_audio"]
 
 [[mcp.servers]]
 name = "elevenlabs"

@@ -3,20 +3,21 @@
 # Provider: HeyGen — AI avatar UGC video generation
 # Title: AI Avatar
 # Description: Talking-head AI avatar videos for ads, UGC and translation via HeyGen.
-# Provides tools: heygen_create_video, heygen_list_avatars, heygen_list_voices, heygen_translate_video, heygen_get_video_status, heygen_create_avatar_iv
+# Provides tools: generate_avatar_video, get_avatar_video_status, get_avatar_groups, get_avatars_in_avatar_group, get_voices, get_remaining_credits
 
 [deps]
 require = ["heygen/heygen"]
 
 [roles.mcp]
 server_refs = ["heygen"]
-allowed_tools = ["heygen_*"]
+allowed_tools = ["generate_avatar_video", "get_avatar_video_status", "get_avatar_groups", "get_avatars_in_avatar_group", "get_voices", "get_remaining_credits"]
 
 [[mcp.servers]]
 name = "heygen"
 type = "stdio"
-command = "npx"
-args = ["-y", "@heygen/mcp-server"]
+command = "uvx"
+# --with mcp<2: server uses the v1 SDK API removed in the mcp 2.x SDK.
+args = ["--with", "mcp<2", "heygen-mcp==0.0.3"]
 timeout_seconds = 180
 env = { HEYGEN_API_KEY = "{{INPUT:HEYGEN_API_KEY}}" }
 tools = []

@@ -15,7 +15,7 @@ allowed_tools = []
 name = "twilio"
 type = "stdio"
 command = "npx"
-args = ["-y", "@twilio-alpha/mcp@0.7.0"]
+# Credentials are positional (SID/KEY:SECRET) — the server ignores env vars.
+args = ["-y", "@twilio-alpha/mcp@0.7.0", "{{ENV:TWILIO_ACCOUNT_SID}}/{{ENV:TWILIO_API_KEY}}:{{ENV:TWILIO_API_SECRET}}", "--services", "twilio_api_v2010"]
 timeout_seconds = 60
-env = { TWILIO_ACCOUNT_SID = "{{ENV:TWILIO_ACCOUNT_SID}}", TWILIO_AUTH_TOKEN = "{{ENV:TWILIO_AUTH_TOKEN}}", TWILIO_FROM_NUMBER = "{{ENV:TWILIO_FROM_NUMBER}}" }
 tools = []

@@ -197,7 +197,7 @@ Not all fields are required — a capability can be deps-only (e.g. `programming
 | `legal-sg`             | ansvar           | Singapore legislation MCP                             |
 | `legal-th`             | ansvar           | Thailand legislation MCP                              |
 | `legal-uk`             | ansvar           | UK legislation MCP                                    |
-| `legal-us`             | ansvar           | US legislation + CourtListener case law               |
+| `legal-us`             | stare            | US case law via CourtListener (free.law)              |
 | `octoweb`              | octoweb          | browser automation via Octoweb HTTP MCP               |
 | `messaging-slack`      | slack            | Slack channels, messages, threads                     |
 | `messaging-discord`    | discord          | Discord channels, messages, moderation                |

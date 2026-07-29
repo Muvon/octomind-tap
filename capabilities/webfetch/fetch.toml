@@ -15,6 +15,7 @@ allowed_tools = ["fetch:*"]
 name = "fetch"
 type = "stdio"
 command = "uvx"
-args = ["mcp-server-fetch==2026.7.10"]
+# --with mcp<2: server imports v1 SDK symbols removed in the mcp 2.x SDK.
+args = ["--with", "mcp<2", "mcp-server-fetch==2026.7.10"]
 timeout_seconds = 60
 tools = []

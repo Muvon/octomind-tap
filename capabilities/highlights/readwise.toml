@@ -9,13 +9,13 @@ require = ["readwise/readwise"]
 
 [roles.mcp]
 server_refs = ["readwise"]
-allowed_tools = ["readwise:*"]
+allowed_tools = ["readwise_*"]
 
 [[mcp.servers]]
 name = "readwise"
 type = "stdio"
 command = "npx"
-args = ["-y", "readwise-mcp@1.0.1"]
+args = ["-y", "readwise-mcp-enhanced@1.0.1"]
 timeout_seconds = 60
-env = { READWISE_API_KEY = "{{ENV:READWISE_API_KEY}}" }
+env = { READWISE_TOKEN = "{{ENV:READWISE_API_KEY}}" }
 tools = []

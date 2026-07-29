@@ -1,22 +1,27 @@
 # capabilities/publish-youtube/youtube-data.toml
 # Capability: publish-youtube
-# Provider: YouTube Data API v3 — Shorts and long-form upload
+# Provider: YouTube Studio — channel management via YouTube Data + Analytics API
 # Title: YouTube Publishing
-# Description: Upload Shorts and long-form video, set thumbnail, edit metadata via the YouTube Data API.
-# Provides tools: youtube_upload_video, youtube_set_thumbnail, youtube_update_metadata, youtube_list_videos, youtube_get_analytics
+# Description: Manage published YouTube videos — metadata and SEO updates, channel analytics — via OAuth2.
+# Provides tools: get_video_details, search_my_videos, update_video_seo, get_channel_overview, get_all_videos, get_analytics_over_time, get_top_videos_analytics, get_audience_demographics, get_traffic_sources, analyze_and_suggest_topics
+#
+# No MCP server currently exposes raw video upload (resumable-upload flow);
+# this provider covers the post-upload publishing surface: metadata, SEO,
+# thumbnails via Studio, and performance analytics.
+# OAuth2 setup: place credentials.json and tokens.json (generated with the
+# package's `node auth.js`) in the project working directory.
 
 [deps]
 require = ["google/youtube-data"]
 
 [roles.mcp]
 server_refs = ["youtube-data"]
-allowed_tools = ["youtube_*"]
+allowed_tools = ["get_video_details", "search_my_videos", "update_video_seo", "get_channel_overview", "get_all_videos", "get_analytics_over_time", "get_top_videos_analytics", "get_audience_demographics", "get_traffic_sources", "analyze_and_suggest_topics"]
 
 [[mcp.servers]]
 name = "youtube-data"
 type = "stdio"
 command = "npx"
-args = ["-y", "youtube-data-mcp@2.0.0"]
+args = ["-y", "youtube-studio-mcp@2.1.0"]
 timeout_seconds = 600
-env = { GOOGLE_CLIENT_ID = "{{INPUT:GOOGLE_CLIENT_ID}}", GOOGLE_CLIENT_SECRET = "{{INPUT:GOOGLE_CLIENT_SECRET}}", GOOGLE_REFRESH_TOKEN = "{{INPUT:GOOGLE_REFRESH_TOKEN}}" }
 tools = []

@@ -3,14 +3,14 @@
 # Provider: Pexels — free b-roll video and photos
 # Title: Stock Media
 # Description: Free b-roll videos and photos via the Pexels API.
-# Provides tools: pexels_search_videos, pexels_search_photos, pexels_get_video, pexels_curated_photos, pexels_popular_videos
+# Provides tools: searchPhotos, searchVideos, getPhoto, getVideo, downloadPhoto, downloadVideo, getCuratedPhotos, getPopularVideos, getFeaturedCollections, getCollectionMedia
 
 [deps]
 require = ["pexels/pexels"]
 
 [roles.mcp]
 server_refs = ["pexels"]
-allowed_tools = ["pexels_*"]
+allowed_tools = ["searchPhotos", "searchVideos", "getPhoto", "getVideo", "downloadPhoto", "downloadVideo", "getCuratedPhotos", "getPopularVideos", "getFeaturedCollections", "getCollectionMedia"]
 
 [[mcp.servers]]
 name = "pexels"

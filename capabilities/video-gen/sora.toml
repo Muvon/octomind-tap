@@ -3,20 +3,21 @@
 # Provider: OpenAI Sora 2 — long coherent shots, brand-safe
 # Title: Video Generation
 # Description: Long coherent text-to-video, remix and image-to-video via OpenAI Sora 2.
-# Provides tools: sora_generate_video, sora_remix, sora_image_to_video, sora_get_job
+# Provides tools: generate_video, remix_video, get_video_status, list_videos
 
 [deps]
 require = ["openai/sora"]
 
 [roles.mcp]
 server_refs = ["sora"]
-allowed_tools = ["sora_*"]
+allowed_tools = ["generate_video", "remix_video", "get_video_status", "list_videos"]
 
 [[mcp.servers]]
 name = "sora"
 type = "stdio"
 command = "npx"
-args = ["-y", "openai-sora-mcp"]
+# npx -p form: the package ships two binaries; plain `npx -y` cannot pick one.
+args = ["-y", "-p", "openai-sora2-mcp-server@1.1.1", "sora2-mcp-server"]
 timeout_seconds = 240
 env = { OPENAI_API_KEY = "{{INPUT:OPENAI_API_KEY}}" }
 tools = []

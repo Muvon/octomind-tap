@@ -3,14 +3,14 @@
 # Provider: Remotion — code-driven (React) video composition + Lambda render
 # Title: Video Composition
 # Description: Programmatic React-based video composition for templated ad variants and explainer videos.
-# Provides tools: remotion_render_local, remotion_render_lambda, remotion_get_compositions, remotion_install_template
+# Provides tools: init_remotion_project, create_composition_scaffold, add_component, update_composition, get_composition_code, list_compositions, list_project_files, render_video, render_still, render_gif, get_render_status, query_remotion_docs
 
 [deps]
 require = ["remotion/remotion", "ffmpeg/ffmpeg"]
 
 [roles.mcp]
 server_refs = ["remotion"]
-allowed_tools = ["remotion_*"]
+allowed_tools = ["init_remotion_project", "create_composition_scaffold", "add_component", "update_composition", "get_composition_code", "list_compositions", "list_project_files", "render_video", "render_still", "render_gif", "get_render_status", "query_remotion_docs"]
 
 [[mcp.servers]]
 name = "remotion"
