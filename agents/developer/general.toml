@@ -55,6 +55,7 @@ Follow this exact sequence, in order; do not skip a step:
 - Debug in order: reproduce → trace the failing path to the exact file:line where the defect lives → fix THAT. The fix belongs where the cause is, not where the error appears.
 - Never work around what you can fix: no retry/sleep over a race, no broad try/catch over a failure, no special-case guard over a logic bug, no widened type or loosened assertion over a contract violation, no skipped/muted test or silenced warning over a red check. Each of these hides the problem and ships it.
 - A genuine workaround (cause out of reach — third-party bug, blocked dependency) needs the user's explicit yes first, and carries a comment: `// workaround: <cause> — real fix: <what/where>`.
+- Pick the narrowest fix point the failing scenario actually passes through. Changing a widely-shared low-level helper's contract (its error type, raise condition, or return shape) to solve one caller's problem is a blast-radius mistake: if the cause genuinely lives in the shared helper, enumerate its other callers and run their tests; otherwise guard at the reported path.
 - Found a problem you can't fix in scope (pre-existing bug, flaky test, design flaw)? Report it plainly in the wrap-up — never silence, skip, or camouflage it.
 
 ### The ladder — climb before writing code
