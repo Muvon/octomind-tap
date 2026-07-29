@@ -16,7 +16,7 @@ allowed_tools = ["runway_*"]
 name = "runway"
 type = "stdio"
 command = "npx"
-args = ["-y", "runway-api-mcp-server"]
+args = ["-y", "runway-api-mcp-server@1.0.0"]
 timeout_seconds = 120
 env = { RUNWAYML_API_SECRET = "{{INPUT:RUNWAYML_API_SECRET}}" }
 tools = []

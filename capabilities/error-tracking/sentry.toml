@@ -15,7 +15,7 @@ allowed_tools = ["sentry:*"]
 name = "sentry"
 type = "stdio"
 command = "npx"
-args = ["-y", "@sentry/mcp-server"]
+args = ["-y", "@sentry/mcp-server@0.37.0"]
 timeout_seconds = 60
 env = { SENTRY_ACCESS_TOKEN = "{{ENV:SENTRY_ACCESS_TOKEN}}" }
 tools = []

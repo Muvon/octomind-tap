@@ -17,7 +17,7 @@ allowed_tools = ["search"]
 name = "open-websearch"
 type = "stdio"
 command = "npx"
-args = ["-y", "open-websearch@latest"]
+args = ["-y", "open-websearch@2.1.11"]
 timeout_seconds = 60
 env = { MODE = "stdio", DEFAULT_SEARCH_ENGINE = "duckduckgo", ALLOWED_SEARCH_ENGINES = "duckduckgo,bing,startpage,brave" }
 tools = []

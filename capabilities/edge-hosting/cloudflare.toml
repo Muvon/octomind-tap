@@ -15,7 +15,7 @@ allowed_tools = ["cloudflare:*"]
 name = "cloudflare"
 type = "stdio"
 command = "npx"
-args = ["-y", "@cloudflare/mcp-server-cloudflare"]
+args = ["-y", "@cloudflare/mcp-server-cloudflare@0.2.0"]
 timeout_seconds = 60
 env = { CLOUDFLARE_API_TOKEN = "{{ENV:CLOUDFLARE_API_TOKEN}}" }
 tools = []

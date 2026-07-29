@@ -15,7 +15,7 @@ allowed_tools = ["us-law:*", "courtlistener:*"]
 name = "us-law"
 type = "stdio"
 command = "npx"
-args = ["-y", "@ansvar/us-law-mcp"]
+args = ["-y", "@ansvar/us-law-mcp@0.1.1"]
 timeout_seconds = 60
 tools = []
 
@@ -23,6 +23,6 @@ tools = []
 name = "courtlistener"
 type = "stdio"
 command = "npx"
-args = ["-y", "@us-legal-tools/courtlistener-sdk"]
+args = ["-y", "@us-legal-tools/courtlistener-sdk@1.5.2"]
 timeout_seconds = 60
 tools = []

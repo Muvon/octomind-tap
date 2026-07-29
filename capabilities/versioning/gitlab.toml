@@ -15,7 +15,7 @@ allowed_tools = ["gitlab:*"]
 name = "gitlab"
 type = "stdio"
 command = "npx"
-args = ["-y", "@modelcontextprotocol/server-gitlab"]
+args = ["-y", "@modelcontextprotocol/server-gitlab@2025.4.25"]
 timeout_seconds = 60
 env = { GITLAB_PERSONAL_ACCESS_TOKEN = "{{ENV:GITLAB_PERSONAL_ACCESS_TOKEN}}", GITLAB_API_URL = "{{ENV:GITLAB_API_URL}}" }
 tools = []

@@ -16,7 +16,7 @@ allowed_tools = ["pexels_*"]
 name = "pexels"
 type = "stdio"
 command = "npx"
-args = ["-y", "pexels-mcp-server"]
+args = ["-y", "pexels-mcp-server@1.0.0"]
 timeout_seconds = 60
 env = { PEXELS_API_KEY = "{{INPUT:PEXELS_API_KEY}}" }
 tools = []

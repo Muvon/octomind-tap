@@ -15,6 +15,6 @@ allowed_tools = ["yfinance:*"]
 name = "yfinance"
 type = "stdio"
 command = "npx"
-args = ["-y", "@szemeng76/yfinance-mcp-server"]
+args = ["-y", "@szemeng76/yfinance-mcp-server@0.1.0"]
 timeout_seconds = 60
 tools = []

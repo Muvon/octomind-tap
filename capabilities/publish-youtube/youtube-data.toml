@@ -16,7 +16,7 @@ allowed_tools = ["youtube_*"]
 name = "youtube-data"
 type = "stdio"
 command = "npx"
-args = ["-y", "youtube-data-mcp"]
+args = ["-y", "youtube-data-mcp@2.0.0"]
 timeout_seconds = 600
 env = { GOOGLE_CLIENT_ID = "{{INPUT:GOOGLE_CLIENT_ID}}", GOOGLE_CLIENT_SECRET = "{{INPUT:GOOGLE_CLIENT_SECRET}}", GOOGLE_REFRESH_TOKEN = "{{INPUT:GOOGLE_REFRESH_TOKEN}}" }
 tools = []

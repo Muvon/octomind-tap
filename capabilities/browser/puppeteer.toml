@@ -16,6 +16,6 @@ allowed_tools = ["puppeteer:*"]
 name = "puppeteer"
 type = "stdio"
 command = "npx"
-args = ["-y", "@modelcontextprotocol/server-puppeteer"]
+args = ["-y", "@modelcontextprotocol/server-puppeteer@2025.5.12"]
 timeout_seconds = 120
 tools = []

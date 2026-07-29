@@ -16,7 +16,7 @@ allowed_tools = ["text_to_speech", "voice_clone", "voice_design", "audio_isolati
 name = "elevenlabs"
 type = "stdio"
 command = "uvx"
-args = ["elevenlabs-mcp"]
+args = ["elevenlabs-mcp==0.11.0"]
 timeout_seconds = 120
 env = { ELEVENLABS_API_KEY = "{{INPUT:ELEVENLABS_API_KEY}}" }
 tools = []

@@ -16,7 +16,7 @@ allowed_tools = ["web_search_exa"]
 name = "exa"
 type = "stdio"
 command = "npx"
-args = ["-y", "exa-mcp-server"]
+args = ["-y", "exa-mcp-server@3.2.1"]
 timeout_seconds = 60
 env = { EXA_API_KEY = "{{ENV:EXA_API_KEY}}" }
 tools = []

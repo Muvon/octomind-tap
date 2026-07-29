@@ -15,6 +15,6 @@ allowed_tools = ["german-law:*"]
 name = "german-law"
 type = "stdio"
 command = "npx"
-args = ["-y", "@ansvar/german-law-mcp"]
+args = ["-y", "@ansvar/german-law-mcp@0.4.0"]
 timeout_seconds = 60
 tools = []

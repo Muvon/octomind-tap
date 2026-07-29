@@ -15,7 +15,7 @@ allowed_tools = ["readwise:*"]
 name = "readwise"
 type = "stdio"
 command = "npx"
-args = ["-y", "readwise-mcp"]
+args = ["-y", "readwise-mcp@1.0.1"]
 timeout_seconds = 60
 env = { READWISE_API_KEY = "{{ENV:READWISE_API_KEY}}" }
 tools = []

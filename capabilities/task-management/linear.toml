@@ -15,7 +15,7 @@ allowed_tools = ["linear:*"]
 name = "linear"
 type = "stdio"
 command = "npx"
-args = ["-y", "linear-mcp"]
+args = ["-y", "linear-mcp@1.2.0"]
 timeout_seconds = 60
 env = { LINEAR_API_KEY = "{{ENV:LINEAR_API_KEY}}" }
 tools = []

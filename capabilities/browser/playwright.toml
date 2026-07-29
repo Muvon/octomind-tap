@@ -16,6 +16,6 @@ allowed_tools = ["playwright:*"]
 name = "playwright"
 type = "stdio"
 command = "npx"
-args = ["@playwright/mcp@latest", "--headless"]
+args = ["@playwright/mcp@0.0.78", "--headless"]
 timeout_seconds = 120
 tools = []

@@ -15,7 +15,7 @@ allowed_tools = ["github:*"]
 name = "github"
 type = "stdio"
 command = "npx"
-args = ["-y", "@modelcontextprotocol/server-github"]
+args = ["-y", "@modelcontextprotocol/server-github@2025.4.8"]
 timeout_seconds = 60
 env = { GITHUB_PERSONAL_ACCESS_TOKEN = "{{ENV:GITHUB_PERSONAL_ACCESS_TOKEN}}" }
 tools = []

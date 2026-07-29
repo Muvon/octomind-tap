@@ -16,7 +16,7 @@ allowed_tools = ["generate_image", "generate_multiple_images", "generate_image_v
 name = "replicate"
 type = "stdio"
 command = "npx"
-args = ["-y", "replicate-flux-mcp"]
+args = ["-y", "replicate-flux-mcp@0.4.0"]
 timeout_seconds = 120
 env = { REPLICATE_API_TOKEN = "{{INPUT:REPLICATE_API_TOKEN}}" }
 tools = []

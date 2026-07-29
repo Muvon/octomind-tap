@@ -16,6 +16,6 @@ allowed_tools = ["desktop-automation:*"]
 name = "desktop-automation"
 type = "stdio"
 command = "npx"
-args = ["-y", "mcp-desktop-automation"]
+args = ["-y", "mcp-desktop-automation@0.1.6"]
 timeout_seconds = 60
 tools = []

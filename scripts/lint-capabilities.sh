@@ -10,6 +10,11 @@
 #   capabilities/<cap>/<provider>.toml    — provider-specific MCP wiring.
 #     Required: # Title and # Description comment headers, valid mcp wiring,
 #     server_refs ↔ [[mcp.servers]] consistency, dep scripts present.
+#     Registry-launched servers (npx/uvx, incl. inside sh -c) must pin an
+#     exact package version (pkg@X.Y.Z / pkg==X.Y.Z) so a registry publish
+#     can never change what users run. Pins are managed by
+#     scripts/mcp-versions.sh (check drift / update / smoke-test); this
+#     lint stays offline and only enforces that a pin is present.
 #
 # Plus structural rules: default.toml must exist and be a symlink (except
 # for built-in caps: core, agent), and the symlink target must exist.
@@ -151,6 +156,68 @@ else:
             errors.append(f"MCP_NO_COMMAND: [[mcp.servers]] name='{name}' type='stdio' missing 'command' field")
         if stype == "http" and "url" not in server:
             errors.append(f"MCP_NO_URL: [[mcp.servers]] name='{name}' type='http' missing 'url' field")
+
+    # Registry-launched servers must pin an exact version. Offline check
+    # only — drift against the registry is scripts/mcp-versions.sh's job.
+    import shlex
+
+    FLAG_WITH_VALUE = {"--with", "--from", "--python", "-p", "--package", "--node-options", "-c", "--constraints"}
+
+    def first_package(tokens):
+        skip = False
+        for t in tokens:
+            if skip:
+                skip = False
+                continue
+            if t in FLAG_WITH_VALUE:
+                skip = True
+                continue
+            if t.startswith("-") or "{{" in t or t.startswith("$") or t == "exec":
+                continue
+            return t
+        return None
+
+    def package_launches(server):
+        cmd = server.get("command", "")
+        args = server.get("args") or []
+        if cmd in ("npx", "uvx"):
+            tok = first_package(args)
+            return [(cmd, tok)] if tok else []
+        found = []
+        if cmd in ("sh", "bash"):
+            for a in args:
+                if not isinstance(a, str):
+                    continue
+                try:
+                    toks = shlex.split(a)
+                except ValueError:
+                    toks = a.split()
+                for i, t in enumerate(toks):
+                    if t in ("npx", "uvx"):
+                        tok = first_package(toks[i + 1:])
+                        if tok:
+                            found.append((t, tok))
+        return found
+
+    def is_exact_pin(runner, token):
+        if runner == "npx":
+            m = re.match(r"^(@[^/]+/[^@]+?|[^@]+?)@(.+)$", token)
+            return bool(m and re.fullmatch(r"\d+\.\d+\.\d+([-+][0-9A-Za-z.-]+)?", m.group(2)))
+        if "==" not in token:
+            return False
+        ver = token.split("==", 1)[1]
+        return bool(ver) and ver[0].isdigit() and not any(c in ver for c in "*<>=!,")
+
+    for server in mcp_section.get("servers", []):
+        if server.get("type") != "stdio":
+            continue
+        sname = server.get("name", "<unnamed>")
+        for runner, token in package_launches(server):
+            if not is_exact_pin(runner, token):
+                want = "pkg@X.Y.Z" if runner == "npx" else "pkg==X.Y.Z"
+                errors.append(
+                    f"MCP_UNPINNED: server '{sname}' launches '{token}' via {runner} without an exact "
+                    f"version pin ({want}); run scripts/mcp-versions.sh update")
 
 if errors:
     print("\n".join(errors), file=sys.stderr)

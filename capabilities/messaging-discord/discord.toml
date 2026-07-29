@@ -15,7 +15,7 @@ allowed_tools = []
 name = "discord"
 type = "stdio"
 command = "npx"
-args = ["-y", "mcp-discord"]
+args = ["-y", "mcp-discord@1.3.4"]
 timeout_seconds = 60
 env = { DISCORD_TOKEN = "{{ENV:DISCORD_TOKEN}}" }
 tools = []

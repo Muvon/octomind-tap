@@ -15,6 +15,6 @@ allowed_tools = ["india-law:*"]
 name = "india-law"
 type = "stdio"
 command = "npx"
-args = ["-y", "@ansvar/india-law-mcp"]
+args = ["-y", "@ansvar/india-law-mcp@2.0.0"]
 timeout_seconds = 60
 tools = []

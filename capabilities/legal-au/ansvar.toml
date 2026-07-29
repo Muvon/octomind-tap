@@ -15,6 +15,6 @@ allowed_tools = ["australia-law:*"]
 name = "australia-law"
 type = "stdio"
 command = "npx"
-args = ["-y", "@ansvar/australian-law-mcp"]
+args = ["-y", "@ansvar/australian-law-mcp@2.0.0"]
 timeout_seconds = 60
 tools = []
