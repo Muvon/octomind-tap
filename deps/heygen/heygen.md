@@ -4,9 +4,9 @@ HeyGen MCP server. Generate AI-avatar talking-head videos for ads, UGC, and tran
 
 ## MCP Server
 
-- **Package**: `@heygen/mcp-server`
+- **Package**: `heygen-mcp (PyPI)`
 - **Transport**: stdio
-- **Command**: `npx -y @heygen/mcp-server`
+- **Command**: `uvx --with 'mcp<2' heygen-mcp`
 
 ## Authentication
 
@@ -34,7 +34,7 @@ API key
 name = "heygen"
 type = "stdio"
 command = "npx"
-args = ["-y", "@heygen/mcp-server"]
+args = ["-y", "heygen-mcp (PyPI)"]
 timeout_seconds = 120
 env = { HEYGEN_API_KEY = "{{INPUT:HEYGEN_API_KEY}}" }
 tools = []

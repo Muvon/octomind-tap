@@ -4,9 +4,9 @@ TikTok Content Posting API MCP server. Direct Post and Photo Post for finished v
 
 ## MCP Server
 
-- **Package**: `tiktok-posting-mcp` (community)
+- **Package**: `@upload-post/mcp` (community)
 - **Transport**: stdio
-- **Command**: `npx -y tiktok-posting-mcp`
+- **Command**: `npx -y @upload-post/mcp`
 
 ## Authentication
 
@@ -14,7 +14,7 @@ OAuth 2.0. Requires a TikTok for Developers app with the `video.publish` scope a
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `TIKTOK_CLIENT_KEY` | Yes | Client key from developers.tiktok.com |
+| `UPLOAD_POST_API_KEY` | Yes | Client key from developers.tiktok.com |
 | `TIKTOK_CLIENT_SECRET` | Yes | Client secret |
 | `TIKTOK_ACCESS_TOKEN` | Yes | User access token (OAuth) |
 | `TIKTOK_OPEN_ID` | No | Cached open_id for the authorized user |
@@ -36,9 +36,9 @@ OAuth 2.0. Requires a TikTok for Developers app with the `video.publish` scope a
 name = "tiktok-posting"
 type = "stdio"
 command = "npx"
-args = ["-y", "tiktok-posting-mcp"]
+args = ["-y", "@upload-post/mcp"]
 timeout_seconds = 180
-env = { TIKTOK_CLIENT_KEY = "{{INPUT:TIKTOK_CLIENT_KEY}}", TIKTOK_CLIENT_SECRET = "{{INPUT:TIKTOK_CLIENT_SECRET}}", TIKTOK_ACCESS_TOKEN = "{{INPUT:TIKTOK_ACCESS_TOKEN}}" }
+env = { UPLOAD_POST_API_KEY = "{{INPUT:UPLOAD_POST_API_KEY}}", TIKTOK_CLIENT_SECRET = "{{INPUT:TIKTOK_CLIENT_SECRET}}", TIKTOK_ACCESS_TOKEN = "{{INPUT:TIKTOK_ACCESS_TOKEN}}" }
 tools = []
 ```
 

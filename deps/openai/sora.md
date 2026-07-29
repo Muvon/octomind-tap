@@ -4,9 +4,9 @@ OpenAI Sora 2 video generation MCP server. Long coherent shots, brand-safe defau
 
 ## MCP Server
 
-- **Package**: `openai-sora-mcp` (community wrapper around the OpenAI Video API)
+- **Package**: `openai-sora2-mcp-server` (community wrapper around the OpenAI Video API)
 - **Transport**: stdio
-- **Command**: `npx -y openai-sora-mcp`
+- **Command**: `npx -y -p openai-sora2-mcp-server sora2-mcp-server`
 
 ## Authentication
 
@@ -30,7 +30,7 @@ OpenAI Sora 2 video generation MCP server. Long coherent shots, brand-safe defau
 name = "sora"
 type = "stdio"
 command = "npx"
-args = ["-y", "openai-sora-mcp"]
+args = ["-y", "openai-sora2-mcp-server"]
 timeout_seconds = 180
 env = { OPENAI_API_KEY = "{{INPUT:OPENAI_API_KEY}}" }
 tools = []

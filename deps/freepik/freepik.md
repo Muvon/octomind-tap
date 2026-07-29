@@ -4,9 +4,9 @@ Freepik MCP server. Combines stock photos / vectors / templates with AI image an
 
 ## MCP Server
 
-- **Package**: `freepik-mcp` (community)
+- **Package**: `@iflow-mcp/freepik-mcp` (community)
 - **Transport**: stdio
-- **Command**: `npx -y freepik-mcp`
+- **Command**: `npx -y @iflow-mcp/freepik-mcp`
 
 ## Authentication
 
@@ -31,7 +31,7 @@ Freepik MCP server. Combines stock photos / vectors / templates with AI image an
 name = "freepik"
 type = "stdio"
 command = "npx"
-args = ["-y", "freepik-mcp"]
+args = ["-y", "@iflow-mcp/freepik-mcp"]
 timeout_seconds = 120
 env = { FREEPIK_API_KEY = "{{INPUT:FREEPIK_API_KEY}}" }
 tools = []

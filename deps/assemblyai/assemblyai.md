@@ -4,9 +4,9 @@ AssemblyAI MCP server. Speech-to-text with speaker diarization, auto-chapters, s
 
 ## MCP Server
 
-- **Package**: `@assemblyai/mcp-server` (official)
+- **Package**: `assembly-ai-mcp` (official)
 - **Transport**: stdio
-- **Command**: `npx -y @assemblyai/mcp-server`
+- **Command**: `npx -y assembly-ai-mcp`
 
 ## Authentication
 
@@ -30,7 +30,7 @@ AssemblyAI MCP server. Speech-to-text with speaker diarization, auto-chapters, s
 name = "assemblyai"
 type = "stdio"
 command = "npx"
-args = ["-y", "@assemblyai/mcp-server"]
+args = ["-y", "assembly-ai-mcp"]
 timeout_seconds = 120
 env = { ASSEMBLYAI_API_KEY = "{{INPUT:ASSEMBLYAI_API_KEY}}" }
 tools = []

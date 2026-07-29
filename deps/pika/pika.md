@@ -1,5 +1,7 @@
 # pika/pika
 
+> **Status (2026-07-29):** no npx/uvx-installable MCP server exists for Pika — the package previously referenced here was never published. Pika's official MCP is remote-HTTP with browser OAuth only (https://mcp.pika.me), incompatible with stdio.
+
 Pika 2.x video generation MCP server. Fast iteration with stylized presets and Pikaffects (object-level transformations). Strong for stylized social ads.
 
 ## MCP Server

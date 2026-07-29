@@ -4,9 +4,9 @@ Official MCP SQLite server. Query and manage SQLite databases.
 
 ## MCP Server
 
-- **Package**: `@modelcontextprotocol/server-sqlite`
+- **Package**: `mcp-server-sqlite (PyPI)`
 - **Transport**: stdio
-- **Command**: `npx @modelcontextprotocol/server-sqlite /path/to/db.sqlite`
+- **Command**: `npx mcp-server-sqlite (PyPI) /path/to/db.sqlite`
 
 ## Authentication
 
@@ -33,7 +33,7 @@ None (database path via arg)
 name = "sqlite"
 type = "stdio"
 command = "npx"
-args = ["-y", "@modelcontextprotocol/server-sqlite"]
+args = ["-y", "mcp-server-sqlite (PyPI)"]
 timeout_seconds = 60
 tools = []
 ```

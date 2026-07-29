@@ -18,5 +18,5 @@ type = "stdio"
 command = "npx"
 args = ["-y", "mcp-server-stability-ai@0.2.0"]
 timeout_seconds = 120
-env = { STABILITY_AI_API_KEY = "{{INPUT:STABILITY_API_KEY}}" }
+env = { STABILITY_AI_API_KEY = "{{INPUT:STABILITY_API_KEY}}", IMAGE_STORAGE_DIRECTORY = "{{CWD}}/image-out" }
 tools = []

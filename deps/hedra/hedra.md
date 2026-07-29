@@ -4,9 +4,9 @@ Hedra Character-3 MCP server. Image + audio → expressive talking-character vid
 
 ## MCP Server
 
-- **Package**: `hedra-mcp` (community)
+- **Package**: `mcp-server-hedra` (community)
 - **Transport**: stdio
-- **Command**: `npx -y hedra-mcp`
+- **Command**: `npx -y mcp-server-hedra`
 
 ## Authentication
 
@@ -30,7 +30,7 @@ Hedra Character-3 MCP server. Image + audio → expressive talking-character vid
 name = "hedra"
 type = "stdio"
 command = "npx"
-args = ["-y", "hedra-mcp"]
+args = ["-y", "mcp-server-hedra"]
 timeout_seconds = 120
 env = { HEDRA_API_KEY = "{{INPUT:HEDRA_API_KEY}}" }
 tools = []

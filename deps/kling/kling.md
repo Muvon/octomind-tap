@@ -4,9 +4,9 @@ Kling AI 2.x video generation MCP server. Strong motion physics, cheap 1080p/10s
 
 ## MCP Server
 
-- **Package**: `kling-mcp-server` (community)
+- **Package**: `mcp-kling` (community)
 - **Transport**: stdio
-- **Command**: `npx -y kling-mcp-server`
+- **Command**: `npx -y mcp-kling`
 
 ## Authentication
 
@@ -35,7 +35,7 @@ API key (issue + secret pair via the KlingAI Open Platform).
 name = "kling"
 type = "stdio"
 command = "npx"
-args = ["-y", "kling-mcp-server"]
+args = ["-y", "mcp-kling"]
 timeout_seconds = 120
 env = { KLING_ACCESS_KEY = "{{INPUT:KLING_ACCESS_KEY}}", KLING_SECRET_KEY = "{{INPUT:KLING_SECRET_KEY}}" }
 tools = []

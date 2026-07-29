@@ -15,7 +15,7 @@ allowed_tools = ["firecrawl:*"]
 name = "firecrawl"
 type = "stdio"
 command = "npx"
-args = ["-y", "firecrawl-mcp@3.22.4"]
+args = ["-y", "firecrawl-mcp@3.23.0"]
 timeout_seconds = 120
 env = { FIRECRAWL_API_KEY = "{{ENV:FIRECRAWL_API_KEY}}" }
 tools = []

@@ -4,9 +4,9 @@ Stable Diffusion local image generation MCP server. Generate and upscale images 
 
 ## MCP Server
 
-- **Package**: `image-gen-mcp (GitHub — build locally)`
+- **Package**: `mcp-server-stability-ai`
 - **Transport**: stdio
-- **Command**: `node /path/to/image-gen-mcp/build/index.js`
+- **Command**: `npx -y mcp-server-stability-ai`
 
 ## Authentication
 

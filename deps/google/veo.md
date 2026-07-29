@@ -4,9 +4,9 @@ Google Veo 3 video generation MCP server. Text-to-video and image-to-video with 
 
 ## MCP Server
 
-- **Package**: `mcp-google-veo` (community wrapper around the Gemini Video API)
+- **Package**: `google-veo3-1-mcp-server` (community wrapper around the Gemini Video API)
 - **Transport**: stdio
-- **Command**: `npx -y mcp-google-veo`
+- **Command**: `npx -y -p google-veo3-1-mcp-server veo3-mcp-server`
 
 ## Authentication
 
@@ -35,7 +35,7 @@ API key (Gemini Developer API) **or** Application Default Credentials (Vertex AI
 name = "veo"
 type = "stdio"
 command = "npx"
-args = ["-y", "mcp-google-veo"]
+args = ["-y", "google-veo3-1-mcp-server"]
 timeout_seconds = 120
 env = { GOOGLE_API_KEY = "{{INPUT:GOOGLE_API_KEY}}" }
 tools = []
