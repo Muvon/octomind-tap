@@ -1,8 +1,18 @@
 # capabilities/legal-au/ansvar.toml
 # Capability: legal-au
-# Provider: @ansvar/australian-law-mcp — Australian legislation and case law
+# Provider: @ansvar/australian-law-mcp — Australian federal legislation (pinned 1.1.0)
 # Title: Australian Law
-# Description: Australian federal legislation and case law via Ansvar MCP.
+# Description: Australian federal legislation with full-text search via the Ansvar law MCP.
+# Provides tools: search_legislation, get_provision, validate_citation, build_legal_stance, format_citation, check_currency, get_eu_basis, get_australian_implementations, search_eu_implementations, get_provision_eu_basis, validate_eu_compliance, list_sources, about
+#
+# Launch wrapper: every published version ships a broken bin entry (compiled
+# output moved to dist/src/ without updating bin), and the SQLite path resolves
+# relative to the entry file. The wrapper installs the pinned package into a
+# dedicated cache dir (idempotent — install runs only on first spawn), execs the
+# real entry point, and points the server at its bundled database through the
+# package's AUSTRALIAN_LAW_DB_PATH override.
+# Pinned to 1.1.0: 2.0.0 ships a 134-byte stub where 1.1.0 has a real 7.5MB DB.
+# Upstream is deprecated on npm (source-only distribution) — treat as frozen.
 
 [deps]
 require = ["ansvar/australian-law-mcp"]
@@ -14,7 +24,7 @@ allowed_tools = ["australia-law:*"]
 [[mcp.servers]]
 name = "australia-law"
 type = "stdio"
-command = "npx"
-args = ["-y", "@ansvar/australian-law-mcp@2.0.0"]
-timeout_seconds = 60
+command = "sh"
+args = ["-c", "d=\"$HOME/.cache/ansvar-au-law\"; p=\"$d/node_modules/@ansvar/australian-law-mcp\"; [ -f \"$p/dist/src/index.js\" ] || npm i --prefix \"$d\" --no-audit --no-fund --silent @ansvar/australian-law-mcp@1.1.0 >/dev/null 2>&1; AUSTRALIAN_LAW_DB_PATH=\"$p/data/database.db\" exec node \"$p/dist/src/index.js\""]
+timeout_seconds = 120
 tools = []

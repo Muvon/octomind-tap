@@ -23,11 +23,10 @@ Requires a Meta App with Instagram Login (Business / Creator) and a long-lived a
 
 | Tool | Description |
 |------|-------------|
-| `instagram_create_reels_container` | Create a Reels media container (video URL upload) |
-| `instagram_create_feed_video_container` | Create a feed video container |
-| `instagram_create_carousel` | Create a carousel container |
-| `instagram_publish_container` | Publish a finished container |
-| `instagram_get_status` | Poll container processing status |
+| `publish_media / publish_carousel / publish_reel` | Publish via the Graph API |
+| `get_content_publishing_limit` | Remaining publish quota |
+| `get_media_posts / get_media_insights` | Published media and insights |
+| `validate_access_token` | Token health check |
 
 ## Configuration Example
 

@@ -23,11 +23,11 @@ OAuth 2.0. Requires a TikTok for Developers app with the `video.publish` scope a
 
 | Tool | Description |
 |------|-------------|
-| `tiktok_publish_video` | Direct Post (FILE_UPLOAD or PULL_FROM_URL) |
-| `tiktok_inbox_video` | Inbox upload (user finishes posting in-app) |
-| `tiktok_publish_photo` | Carousel / photo post |
-| `tiktok_query_creator_info` | Fetch creator caps (max duration, watermarked, etc.) |
-| `tiktok_get_publish_status` | Poll publish status |
+| `upload_video` | Post video; TikTok via platforms:["tiktok"] |
+| `upload_photos` | Post photo sets |
+| `get_status / get_job_status` | Track upload jobs |
+| `list_scheduled / edit_scheduled / cancel_scheduled` | Scheduled posts |
+| `retry_post / unpublish_post` | Post lifecycle |
 
 ## Configuration Example
 

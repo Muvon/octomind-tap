@@ -1,8 +1,19 @@
 # capabilities/legal-sg/ansvar.toml
 # Capability: legal-sg
-# Provider: @ansvar/singapore-law-mcp — Singapore legislation from SSO
+# Provider: @ansvar/singapore-law-mcp — Singapore legislation from SSO (pinned 2.0.0)
 # Title: Singapore Law
-# Description: Singapore legislation from Statutes Online via Ansvar MCP.
+# Description: Singapore legislation from Statutes Online with full-text search via Ansvar MCP.
+# Provides tools: search_legislation, get_provision, validate_citation, build_legal_stance, format_citation, check_currency, get_eu_basis, get_singapore_implementations, search_eu_implementations, get_provision_eu_basis, validate_eu_compliance, list_sources, about
+#
+# Launch wrapper: every published version ships a broken bin entry (compiled
+# output moved to dist/src/ without updating bin), and the SQLite path resolves
+# relative to the entry file. The wrapper installs the pinned package into a
+# dedicated cache dir (idempotent — install runs only on first spawn), execs the
+# real entry point, and points the server at its bundled database through the
+# package's SG_LAW_DB_PATH override.
+# The tarball is 78MB unpacked (523 documents / 28k provisions) — the first
+# spawn pays the install cost, hence the generous timeout.
+# Upstream is deprecated on npm (source-only distribution) — treat as frozen.
 
 [deps]
 require = ["ansvar/singapore-law-mcp"]
@@ -14,7 +25,7 @@ allowed_tools = ["singapore-law:*"]
 [[mcp.servers]]
 name = "singapore-law"
 type = "stdio"
-command = "npx"
-args = ["-y", "@ansvar/singapore-law-mcp@2.0.0"]
-timeout_seconds = 60
+command = "sh"
+args = ["-c", "d=\"$HOME/.cache/ansvar-sg-law\"; p=\"$d/node_modules/@ansvar/singapore-law-mcp\"; [ -f \"$p/dist/src/index.js\" ] || npm i --prefix \"$d\" --no-audit --no-fund --silent @ansvar/singapore-law-mcp@2.0.0 >/dev/null 2>&1; SG_LAW_DB_PATH=\"$p/data/database.db\" exec node \"$p/dist/src/index.js\""]
+timeout_seconds = 300
 tools = []

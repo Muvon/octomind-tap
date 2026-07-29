@@ -191,12 +191,12 @@ Not all fields are required — a capability can be deps-only (e.g. `programming
 | `finance`              | yfinance         | financial data (Yahoo Finance)                        |
 | `legal-au`             | ansvar           | Australian legislation MCP                            |
 | `legal-ca`             | ansvar           | Canadian legislation MCP                              |
-| `legal-de`             | ansvar           | German legislation MCP                                |
+| `legal-de`             | german-law       | German federal statutes (gesetze-im-internet.de)      |
 | `legal-fr`             | ansvar           | French legislation MCP                                |
 | `legal-in`             | ansvar           | Indian legislation MCP                                |
 | `legal-sg`             | ansvar           | Singapore legislation MCP                             |
 | `legal-th`             | ansvar           | Thailand legislation MCP                              |
-| `legal-uk`             | ansvar           | UK legislation MCP                                    |
+| `legal-uk`             | legislation-gov-uk | UK legislation via legislation.gov.uk API           |
 | `legal-us`             | stare            | US case law via CourtListener (free.law)              |
 | `octoweb`              | octoweb          | browser automation via Octoweb HTTP MCP               |
 | `messaging-slack`      | slack            | Slack channels, messages, threads                     |
