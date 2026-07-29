@@ -15,7 +15,7 @@ allowed_tools = []
 name = "telegram"
 type = "stdio"
 command = "npx"
-args = ["-y", "@iflow-mcp/telegram-mcp-server"]
+args = ["-y", "@iflow-mcp/telegram-mcp-server@0.3.0"]
 timeout_seconds = 60
 env = { TELEGRAM_BOT_TOKEN = "{{ENV:TELEGRAM_BOT_TOKEN}}" }
 tools = []

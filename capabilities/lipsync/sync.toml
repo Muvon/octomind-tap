@@ -16,7 +16,7 @@ allowed_tools = ["sync_*"]
 name = "sync"
 type = "stdio"
 command = "npx"
-args = ["-y", "sync-mcp"]
+args = ["-y", "sync-mcp@0.1.5"]
 timeout_seconds = 180
 env = { SYNC_API_KEY = "{{INPUT:SYNC_API_KEY}}" }
 tools = []

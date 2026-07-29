@@ -15,6 +15,6 @@ allowed_tools = ["french-law:*"]
 name = "french-law"
 type = "stdio"
 command = "npx"
-args = ["-y", "@ansvar/french-law-mcp"]
+args = ["-y", "@ansvar/french-law-mcp@2.0.0"]
 timeout_seconds = 60
 tools = []

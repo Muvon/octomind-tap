@@ -15,7 +15,7 @@ allowed_tools = ["hubspot:*"]
 name = "hubspot"
 type = "stdio"
 command = "npx"
-args = ["-y", "@hubspot/mcp-server"]
+args = ["-y", "@hubspot/mcp-server@0.4.0"]
 timeout_seconds = 60
 env = { HUBSPOT_PRIVATE_APP_TOKEN = "{{ENV:HUBSPOT_PRIVATE_APP_TOKEN}}" }
 tools = []

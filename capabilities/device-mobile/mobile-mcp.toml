@@ -16,7 +16,7 @@ allowed_tools = ["mobile-mcp:*"]
 name = "mobile-mcp"
 type = "stdio"
 command = "npx"
-args = ["-y", "@mobilenext/mobile-mcp@latest"]
+args = ["-y", "@mobilenext/mobile-mcp@0.0.62"]
 timeout_seconds = 120
 env = { MOBILEMCP_DISABLE_TELEMETRY = "1" }
 tools = []

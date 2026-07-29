@@ -16,6 +16,6 @@ allowed_tools = []
 name = "whatsapp"
 type = "stdio"
 command = "npx"
-args = ["-y", "@iflow-mcp/mcp-whatsapp-web"]
+args = ["-y", "@iflow-mcp/mcp-whatsapp-web@1.0.1"]
 timeout_seconds = 60
 tools = []

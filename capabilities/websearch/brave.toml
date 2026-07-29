@@ -16,7 +16,7 @@ allowed_tools = ["brave-search:brave_web_search"]
 name = "brave-search"
 type = "stdio"
 command = "npx"
-args = ["-y", "@modelcontextprotocol/server-brave-search"]
+args = ["-y", "@modelcontextprotocol/server-brave-search@0.6.2"]
 timeout_seconds = 60
 env = { BRAVE_API_KEY = "{{ENV:BRAVE_API_KEY}}" }
 tools = []

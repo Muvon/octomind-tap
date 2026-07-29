@@ -15,6 +15,6 @@ allowed_tools = ["canada-law:*"]
 name = "canada-law"
 type = "stdio"
 command = "npx"
-args = ["-y", "@ansvar/canadian-law-mcp"]
+args = ["-y", "@ansvar/canadian-law-mcp@1.1.2"]
 timeout_seconds = 60
 tools = []

@@ -25,6 +25,6 @@ allowed_tools = ["git_*"]
 name = "git"
 type = "stdio"
 command = "sh"
-args = ["-c", "GIT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null); if [ -z \"$GIT_ROOT\" ]; then echo 'git MCP skipped: not inside a git repository' >&2; exit 0; fi; exec uvx --with 'mcp<2' mcp-server-git --repository \"$GIT_ROOT\""]
+args = ["-c", "GIT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null); if [ -z \"$GIT_ROOT\" ]; then echo 'git MCP skipped: not inside a git repository' >&2; exit 0; fi; exec uvx --with 'mcp<2' mcp-server-git==2026.7.10 --repository \"$GIT_ROOT\""]
 timeout_seconds = 60
 tools = []

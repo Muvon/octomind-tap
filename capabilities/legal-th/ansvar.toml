@@ -15,6 +15,6 @@ allowed_tools = ["thailand-law:*"]
 name = "thailand-law"
 type = "stdio"
 command = "npx"
-args = ["-y", "@ansvar/thailand-law-mcp"]
+args = ["-y", "@ansvar/thailand-law-mcp@1.2.0"]
 timeout_seconds = 60
 tools = []

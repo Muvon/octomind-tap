@@ -15,6 +15,6 @@ allowed_tools = ["singapore-law:*"]
 name = "singapore-law"
 type = "stdio"
 command = "npx"
-args = ["-y", "@ansvar/singapore-law-mcp"]
+args = ["-y", "@ansvar/singapore-law-mcp@2.0.0"]
 timeout_seconds = 60
 tools = []

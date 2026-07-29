@@ -15,6 +15,6 @@ allowed_tools = ["postgres:*"]
 name = "postgres"
 type = "stdio"
 command = "npx"
-args = ["-y", "@modelcontextprotocol/server-postgres", "{{ENV:POSTGRES_CONNECTION_STRING}}"]
+args = ["-y", "@modelcontextprotocol/server-postgres@0.6.2", "{{ENV:POSTGRES_CONNECTION_STRING}}"]
 timeout_seconds = 60
 tools = []

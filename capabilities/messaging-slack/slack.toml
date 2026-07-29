@@ -15,7 +15,7 @@ allowed_tools = []
 name = "slack"
 type = "stdio"
 command = "npx"
-args = ["-y", "@modelcontextprotocol/server-slack"]
+args = ["-y", "@modelcontextprotocol/server-slack@2025.4.25"]
 timeout_seconds = 60
 env = { SLACK_BOT_TOKEN = "{{ENV:SLACK_BOT_TOKEN}}", SLACK_TEAM_ID = "{{ENV:SLACK_TEAM_ID}}" }
 tools = []
