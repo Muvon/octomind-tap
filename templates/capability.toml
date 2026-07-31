@@ -47,3 +47,11 @@ command = "<command>"
 args = ["<args>"]
 timeout_seconds = 60
 tools = []
+
+# Environment variables to pass to the child process.
+# Values may use {{ENV:KEY}} placeholders — resolved at spawn time from the
+# parent environment. A capability only activates when ALL referenced env
+# vars are set and non-empty. If no env keys are required, the capability
+# activates unconditionally. This prevents activating servers that would
+# fail at first use because their API key is missing.
+# env = { API_KEY = "{{ENV:API_KEY}}" }
