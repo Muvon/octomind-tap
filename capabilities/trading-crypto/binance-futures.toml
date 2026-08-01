@@ -1,0 +1,23 @@
+# capabilities/trading-crypto/binance-futures.toml
+# Capability: trading-crypto
+# Provider: binance-futures — Muvon Binance USDT-M Futures MCP
+# Title: Crypto Futures Trading
+# Description: Binance USDT-M futures — candles, order book, funding, positions, orders, leverage, margin.
+# Requires env: BINANCE_API_KEY, BINANCE_API_SECRET (signed tools only; market data is public).
+# https://github.com/muvon/mcp-binance-futures
+
+[deps]
+require = ["muvon/mcp-binance-futures"]
+
+[roles.mcp]
+server_refs = ["binance-futures"]
+allowed_tools = ["binance-futures:*"]
+
+[[mcp.servers]]
+name = "binance-futures"
+type = "stdio"
+command = "uvx"
+args = ["mcp-binance-futures==0.1.0"]
+timeout_seconds = 60
+tools = []
+env = { BINANCE_API_KEY = "{{ENV:BINANCE_API_KEY}}", BINANCE_API_SECRET = "{{ENV:BINANCE_API_SECRET}}" }
