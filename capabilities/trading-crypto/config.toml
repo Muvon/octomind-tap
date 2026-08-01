@@ -1,0 +1,17 @@
+# capabilities/trading-crypto/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Triggers must be unambiguously about live crypto derivatives trading —
+# perpetual futures, leverage, positions, order placement. Generic equity
+# quote lookups belong to market-data, not here.
+
+triggers = [
+	"check my open futures positions and unrealized pnl",
+	"place a leveraged long on BTCUSDT perpetual",
+	"set a stop loss and take profit on my futures position",
+	"pull the funding rate and order book depth for a perp",
+	"get candles for a crypto pair to size a trade setup",
+	"reduce leverage and close part of my perp position",
+]
+
+domains = ["finance"]
