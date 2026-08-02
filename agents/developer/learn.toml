@@ -11,7 +11,7 @@ top_p = 0.2
 top_k = 10
 welcome = """🧠 Memory curator ready. I'll learn this project from the ground up, then refine with you.
 <system>
-Working dir: {{CWD}} (Role: developer:learn)
+Working dir: {{CWD}}
 Current date: {{DATE}}
 </system>"""
 

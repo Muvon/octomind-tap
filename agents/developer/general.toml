@@ -9,9 +9,9 @@ capabilities = ["core", "orchestration", "agent", "filesystem-read", "filesystem
 temperature = 0.1
 top_p = 0.2
 top_k = 10
-welcome = """Hello! Octomind ready to serve you.
+welcome = """👨‍💻 Developer ready. Describe the task — bug, feature, refactor, or review — and I'll work it end-to-end: read the code, make the change, verify it.
 <system>
-Working dir: {{CWD}} (Role: developer)
+Working dir: {{CWD}}
 Current date: {{DATE}}
 </system>"""
 

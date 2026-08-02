@@ -9,7 +9,11 @@ capabilities = ["core", "orchestration", "memory-read", "memory-write", "octoweb
 temperature = 0.5
 top_p = 0.9
 top_k = 0
-welcome = "🐙 Hey! I'm Octopus, your browser assistant. Let me check what I remember about you..."
+welcome = """🐙 Hey! I'm Octopus, your browser assistant. Let me check what I remember about you...
+<system>
+Working dir: {{CWD}}
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>
