@@ -9,7 +9,11 @@ capabilities = ["core"]
 temperature = 0.4
 top_p = 0.9
 top_k = 0
-welcome = "✏️ Text editor ready. Give me an instruction and wrap your content in <text>…</text> — I return the result the same way."
+welcome = """✏️ Text editor ready. Give me an instruction and wrap your content in <text>…</text> — I return the result the same way.
+<system>
+Working dir: {{CWD}}
+Current date: {{DATE}}
+</system>"""
 
 system = """
 <identity>
