@@ -29,10 +29,11 @@ Threads' For You feed aggressively surfaces posts from accounts you don't follow
 
 - Follower count matters less. A 100-follower account can reach millions on a single post. The ceiling is genuinely open.
 - The For You feed is the main feed for most users — the Following feed is opt-in and under-used.
-- Early engagement decides distribution. First 30–60 minutes of reply/like velocity determines whether Threads widens the circle.
+- Early engagement decides distribution — and speed beats volume. 15 replies in 30 minutes trigger wider distribution; the same 15 spread over an afternoon don't. Measured guides put the cutoff around 30+ reactions in the first hour before reach gets capped.
 - Recency is heavily weighted. Posts older than a day rarely get amplified, even high-performing ones. There's no "evergreen" on Threads.
 - Keyword search works in 2026 (didn't in 2023–2024) — people now find posts by topic. You can be searched into, not just followed.
-- No hashtag ranking. You can tag one topic, but it doesn't boost. Don't stack hashtags.
+- One topic tag per post aids search discovery — Meta's own data shows tagged posts get more views. Pick the most specific tag that names your niche, not the broadest. It is NOT a distribution multiplier: never stack tags, and classic hashtags do nothing.
+- Media lifts initial distribution. 2026 measurements: median engagement ~5.5% for native video, ~4.6% image, ~2.8% text-only, ~2.3% link posts (algorithmically the weakest type). Attach a screenshot or image when it adds information — decorative graphics underperform clean text. If the link isn't the point of the post, move it to a reply.
 - Reply chains are native culture. Long reply threads stay in the feed; the algorithm rewards conversations that keep going.
 - Cross-posting from Instagram gets a small boost but looks lazy and often flops on tone.
 - Fediverse federation is live as of 2026 — your posts can be seen on Mastodon. It's rarely a distribution driver but removes your account from platform lock-in.
@@ -48,6 +49,11 @@ Threads' For You feed aggressively surfaces posts from accounts you don't follow
 | Like | 1× (baseline) |
 | Follow after read | strong positive |
 | External link click | modest; Threads is less link-hostile than X but still prefers on-platform |
+
+Three measured refinements (2026):
+- Reply weight is length-sensitive — a one-word "same" counts far less than an 8+ word reply. Write posts that provoke sentences, not emoji.
+- Reshares from accounts with more reach than yours count more than raw reshare volume — one reshare by a big account beats fifty from tiny ones.
+- Rule of thumb: a post with 200 replies and 80 likes travels further than one with 600 likes and 12 replies. Optimize for conversation, not applause.
 
 ### The Tone Split — Threads vs X
 
@@ -77,6 +83,8 @@ Threads posts are short (500-char limit) and the front of the feed favors:
 [OPTIONAL SOFT CTA / QUESTION] ← invites reply; not required
 ```
 
+The first sentence must stop the scroll on its own — readers decide in ~8–10 words. Openers from measured high performers: "We got 4,000 new followers in 48 hours. This is the one thing we changed." / "The thing nobody tells you about going viral is that the post you spent an hour writing usually doesn't." A stacked-lines format (each short line building on the previous, rhythm over full sentences) is a native Threads pattern for takes with a punchline.
+
 Key differences from X:
 
 - Questions actually work. On X, "What do you think?" reads as engagement bait. On Threads, a genuine question often outperforms a statement because the platform rewards replies.
@@ -96,6 +104,8 @@ Key differences from X:
 | Soft hot take | Opinion without the edge; "I think X" works here |
 | Scene-based story (2–3 lines) | More room for vibes than X's punch-line style |
 | Reply chain starter | Post designed to spin into a conversation, not to close one |
+| Counter-intuitive specific | Violates a reader assumption, then grounds it in one concrete detail — top reshare driver in 2026 measurements |
+| Data point + sharp take | A number readers didn't know plus a one-line interpretation; reshared as "did you know" |
 
 What flops on Threads:
 - Aggressive contrarian posts that would win on X
@@ -110,6 +120,9 @@ What flops on Threads:
 Threads is built around reply chains in a way X isn't. People actually read 20-reply conversations between strangers.
 
 - Reply to strangers. It's normal and expected. Not the growth-hack it is on X — just culture.
+- The fastest discovery path in 2026: an early, substantive reply on a high-reach account in your niche. It stays near the top of their thread for hours, and their audience is pre-filtered to your topic.
+- Publish-to-reply ratio: reply to ~3 other posts for every post you publish. This mirrors how the platform actually converses and builds recognition before you need it.
+- On your own posts: answer every reply within the first 30 minutes and ask follow-up questions — comment depth is a ranking factor, and the author-loop compounds.
 - Reply length is flexible. 1-line quips work; 3-line substantive replies also work.
 - Reply chains can go 50+ deep and still stay in people's feeds.
 - Quote posts are rarer and often read as slightly aggressive — use sparingly.
@@ -135,6 +148,7 @@ Threads is built around reply chains in a way X isn't. People actually read 20-r
 - Best windows: weekday evenings 7–10 PM local, and weekend mornings 9 AM–12 PM local.
 - Threads skews younger and more international than X; peak activity is not the 9–5 business window.
 - Post daily for growth. Threads rewards consistency more than volume; 1 post a day beats 5 posts once a week.
+- 2026 measured guidance ranges from 3–7 posts/week (brands) up to a few per day (established accounts); new accounts benefit from higher frequency while the algorithm learns what the account is about. Consistency builds algorithmic confidence in your categorization.
 - Don't burst-post — multiple posts within 30 minutes fragments engagement.
 
 ### Cross-Platform Strategy
@@ -211,9 +225,11 @@ Calibration check before posting:
 - [ ] If there's a question, it's a real one
 - [ ] No aggressive contrarian energy; disagreement is softened
 - [ ] No emoji bullets; tone-emoji at most
+- [ ] One specific topic tag set (niche over broad; never stacked)
+- [ ] Image/screenshot attached only if it adds information; link moved to a reply if it's not the point
 - [ ] No political content I don't want throttled
 - [ ] Posted in evening / weekend-morning window for my audience
-- [ ] Ready to reply to first 3 replies within 15 minutes
+- [ ] Ready to answer every reply within the first 30 minutes
 - [ ] Not a literal cross-post from X
 - [ ] Reply only: scanned chain for capitalization/tone/emoji pattern before writing
 - [ ] Reply only: 0–2 natural imperfections calibrated to chain vibe (medium for casual, low for personal/vulnerable)
@@ -316,5 +332,6 @@ What works: lowercase throughout (matches chain), missing apostrophe in `its` (o
 
 - AgentSkills spec: https://agentskills.io/specification
 - Threads help center: https://help.instagram.com/threads
+- "Measured" figures in this skill (engagement rates by format, velocity thresholds, signal refinements) are consolidated from 2026 third-party platform studies — Threads has no public ranking source, so treat them as directional, not exact. Re-validate periodically.
 - Companion skill: `content-voice` — voice rules still apply
 - Companion skill: `social-x` — different platform; don't confuse Threads (Meta) with threads-on-X

@@ -161,6 +161,14 @@ What doesn't work:
 - AI-generated prose without a CW. Will get instance-labeled and defederated in repeat cases.
 - Aggressive politics without local context. Instances have varying politics; the same post reads differently on different instances.
 
+Measured from mastodon.social trending statuses (~40 posts, Aug 2026):
+
+- Trending posts carry 0–3 tags, many zero. Tags drive followability (small accounts get found through them); boosts drive trending. Both matter, at different account sizes.
+- Not one trending post used a CW. CWs are courtesy, not a reach lever — apply them for the content, never for growth.
+- Favourites commonly exceed boosts on the same post. Favs don't travel; write the thing someone wants to put in front of THEIR followers.
+- What actually trends: wry self-aware one-liners ("being good at computer does not make you smart at not-computer"), tech nostalgia, relatable domestic humor, earnest newcomer questions (a "no clue who to follow, I am new here" post drew ~100 replies and ~270 boosts), and sourced news.
+- The anti-AI sentiment is real and visible: a trending post flatly dismisses AI-written vulnerability reports as evidence the author doesn't understand the issue. Unmarked AI prose isn't just against etiquette here — it's actively resented content.
+
 ## Post Shapes That Land
 
 ### 1. The Tagged Substantive Observation
@@ -439,3 +447,4 @@ What works: no imperfections here because the thread is warm but careful (Mastod
 - Mastodon user docs: https://docs.joinmastodon.org/user/
 - Fedi.Tips (unofficial, excellent etiquette guide): https://fedi.tips
 - ActivityPub spec: https://www.w3.org/TR/activitypub/
+- Measured patterns: derived from the mastodon.social public trends API (/api/v1/trends/statuses), Aug 2026. Instance-specific — re-derive for other instances and periodically.

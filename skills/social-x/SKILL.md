@@ -82,16 +82,27 @@ Your account's embedding is sticky. Phoenix identifies you via hashed slots whos
 - AVOID: erratic niche switches, "experimenting" with unrelated content in your main account. If you need to pivot hard, expect a multi-month re-embedding period. New niches → new accounts.
 
 Freshness is a cutoff, not a continuous decay. No "halves every 6 hours" — there's an age filter that removes posts past a threshold from the candidate pool. Inside the window you compete on score; outside, you're gone.
-- DO: front-load engagement so the post is alive (high score) when peak feed-renders happen — early reply rate matters because it shapes Phoenix's predictions, not because it beats a decay curve.
-- AVOID: scheduling a post and disappearing. You don't need to babysit for 24h — just make sure the post is sharp in its first few hours, which is when it has to win the embedding contest.
+- DO: front-load engagement — early replies matter because they shape Phoenix's predictions, not because they beat a decay curve.
+- AVOID: scheduling a post and disappearing. The first few hours are when it wins or loses; no need to babysit for 24.
 
-Each viewer sees you at most once. Bloom-filtered "previously seen" means once a viewer was served your post, they're filtered out of future renders.
-- DO: write each post for first-impression reach. Repost a strong piece sparingly — it'll mostly only reach new viewers.
-- AVOID: "give it another shot" reposts to the same audience. They're filtered out.
+Each viewer sees you at most once. Bloom-filtered "previously seen" removes served posts from future renders.
+- DO: write for first-impression reach; reposts mostly reach only new viewers.
+- AVOID: "give it another shot" reposts to the same audience — they're filtered out.
 
-The "new user OON boost" belongs to the viewer, not the author. Viewers with young accounts see more out-of-network content. There is no follower-count-based boost to small authors.
-- DO: target audiences likely to include new X users (broad topics, accessible language, low-jargon explainers).
-- AVOID: assuming sub-10k accounts get magic reach. They don't. Phoenix is account-agnostic except via your sticky embedding.
+The "new user OON boost" belongs to the viewer, not the author. Viewers with young accounts see more out-of-network content; there is no small-author boost.
+- DO: target audiences with many new X users (broad topics, low-jargon explainers).
+- AVOID: assuming sub-10k accounts get magic reach. Phoenix is account-agnostic except via your sticky embedding.
+
+### Measured 2026 Benchmarks (third-party, directional)
+
+Outside-in 2026 measurements, consistent with the ranker's depth-actions ≫ likes structure:
+
+- Replies weigh ~15–27× a like across studies; profile clicks ~12×. Write for the action that costs the viewer something.
+- Native video measures 40–60% above text; threads of 5–9 posts ~3× a single post — when every post re-hooks.
+- Velocity gate: ~10+ engagements in the first 15–30 minutes correlates with out-of-network amplification. Be present at publish.
+- Premium accounts measure a ~10–25% reply-visibility lift. Real but small; substance decides.
+
+Where these conflict with the levers above, trust the code.
 
 ### Dead-shape shortlist (format-level patterns to never produce)
 
@@ -182,7 +193,7 @@ Rules:
 
 For accounts under ~10k followers, 20 thoughtful replies > 1 original post. Profile visits from a viral reply convert better than from a viral root post because the reader has already seen the substance.
 
-Pick 5–10 anchor accounts in your exact niche — sweet spot is usually 20k–200k followers. Smaller accounts have no traffic; bigger ones bury you under hundreds of replies. Get there within 15 minutes; late replies are invisible. Be the first or second substantive reply.
+Pick 5–10 anchor accounts in your exact niche — sweet spot 20k–200k followers (smaller have no traffic; bigger bury you under hundreds of replies). Be there within 15 minutes as the first or second substantive reply; late replies are invisible.
 
 Reply craft — each reply is a post in miniature, with less patience:
 
@@ -198,9 +209,9 @@ Reply shape that works (not a script): one line reacting to their specific claim
 
 ### Trend Research — What's Going on in a Field
 
-10-minute research pass before writing on any topic. Separates "post that fits the moment" from "post that feels six months late."
+10-minute research pass before writing on any topic — the difference between fitting the moment and feeling six months late.
 
-- Anchor accounts — pull last 7 days from 5–10 accounts that define the niche. Note which broke and which flopped; pattern-match.
+- Anchor accounts — pull last 7 days from 5–10 niche-defining accounts; note what broke and what flopped.
 - Emerging vocabulary — new terms or product names appearing in multiple accounts same week. Use early.
 - Contested claims — two camps publicly disagreeing. Reply territory + strong-single-post territory.
 - Under-covered angles — high volume of posts, mostly low quality. Gap for a specific, well-argued post.
@@ -211,11 +222,11 @@ Before writing, capture: niche / saturated takes / contested claims / gap angle 
 
 ### Timing & Frequency
 
-- Cadence over volume. Phoenix's embedding of you sharpens with consistent daily activity. 1–2 posts every day beats 5 posts on Tuesday and nothing else. Skipping days softens your embedding.
+- Cadence over volume. Phoenix's embedding sharpens with consistent daily activity: 1–2 posts every day beats 5 on Tuesday and nothing else. Skipping days softens your embedding.
 - Spread, don't burst. Author diversity decays your second post in the same feed render. Two posts a few minutes apart cannibalise each other. Leave hours between posts.
 - No hard daily cap exists in the code. Posting 3 times a day is fine if they're spaced. The cap people quote ("2/day") is folklore.
-- Best windows — Tue–Thu mornings and evenings local time are still strong, but the algorithm's recency window is what matters: post when your target audience will load their feed within the next few hours.
-- Reply to your own post early. Your replies become first-class candidates for the same conversation surface, and replies from connected accounts cascade your post into their followers' feeds. Stay present for the first hour after publishing.
+- Best windows — Tue–Thu mornings and evenings local, but what matters is the recency window: post when your audience will load their feed within a few hours.
+- Reply to your own post early — your replies become first-class candidates on the conversation surface, and connected-account replies cascade into their followers' feeds. Stay present for the first hour.
 - One thread OR one long-form per day. Threads compete for the same author-diversity slot multiple times.
 
 ### Tone of Voice That Wins
@@ -237,7 +248,7 @@ The slop classifier flags abstract/motivational/aggregator content. Calibrate:
 3. Stay present for the first hour. Reply to substantive comments. Your replies become candidates in those repliers' followers' feeds.
 4. One bold opinion per post, written in your voice. Slop classifier flags templated content. First-person specific kills templates.
 5. Stay inside your niche embedding. Don't whiplash topics. If you must pivot, expect the embedding to drag.
-6. Reply daily to 5–15 high-overlap accounts in your niche. This is the dominant growth mechanic for sub-50k accounts. Their reply boosts you into their followers' feeds; your reply on their posts puts you in front of their audience.
+6. Reply daily to 5–15 high-overlap niche accounts — the dominant growth mechanic for sub-50k accounts. Their replies cascade you into their followers' feeds; yours put you in front of their audience.
 
 ### Bios, Pinned Posts, Profile
 
@@ -388,11 +399,10 @@ Gap angle: Nobody's writing about eval harnesses for agent output quality — hi
 Event to attach to: Anthropic released a new tool-use API yesterday
 Working hook: "Agents are shipping code faster than teams can review it. Nobody's built the review layer yet."
 
-This research step is the difference between posts that land and posts that feel stale on arrival.
-
 ## References
 
 - AgentSkills spec: https://agentskills.io/specification
 - Companion skill: `content-voice` (human voice rules — always co-activate)
 - Companion skill: `content-humanize` (AI-detection diagnostic if rewriting AI-generated drafts)
 - X For You feed algorithm (Phoenix retrieval, Grox classifier, media hydrators, Author Diversity Scorer): https://github.com/xai-org/x-algorithm
+- Measured 2026 benchmarks: consolidated from third-party engagement studies; directional only — the algorithm repo is the authority, re-validate benchmarks periodically.

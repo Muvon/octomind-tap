@@ -1,7 +1,7 @@
 ---
 name: social-linkedin
 title: "LinkedIn Publishing Playbook"
-description: "Ground-truth 2026 playbook for writing posts, comments, and articles on LinkedIn. Covers the 2026 algorithm (dwell time as top signal, comments weighted 15× likes, golden hour, 63% impression drop, 60% off-platform link penalty), the 210-character 'see more' fold, format craft for the 1300–2000 char sweet spot, post types, and what gets suppressed as motivational slop. Activate whenever drafting anything destined for LinkedIn."
+description: "Ground-truth 2026 playbook for writing posts, comments, and articles on LinkedIn. Covers the 2026 algorithm (dwell time as top signal, comments weighted 15× likes, golden hour, platform-wide reach decline, the measured −18.8% link penalty), the 210-character 'see more' fold, format craft for the 1300–2000 char sweet spot, post types, and what gets suppressed as motivational slop. Activate whenever drafting anything destined for LinkedIn."
 license: Apache-2.0
 compatibility: "Octomind content agents. Platform-specific to LinkedIn."
 domains: content
@@ -33,14 +33,15 @@ LinkedIn's LLM-powered ranking tracks two signals the rest of social media under
 | Share with text (repost with commentary) | Very high weight; pure reshare is worth less |
 | Like / reaction | Low weight; mostly just a reach-base floor |
 | Click "see more" to expand post | Dwell + intent signal |
-| External link in root post | ~60% distribution penalty. LinkedIn wants users on-platform |
+| External link in root post | Measured on 1.3M posts (Algorithm Insights 2026): one link in body = −18.8% median reach. Real but smaller than the folklore "60%"; first-comment links still safer |
 | Video (native, vertical, short) | Boosted; outperforms text of same quality |
-| Document carousel (PDF upload) | Still boosted as of 2026 but declining |
-| Polls | Mostly gamed-out by 2026, moderate boost only |
+| Document carousel (PDF upload) | Highest measured format in 2026: ~6.6% engagement rate vs <2% for text posts |
+| Polls | Dead — ~0.07% engagement rate after the March 2026 Authenticity Update killed engagement bait and pods |
 
 Critical structural facts:
-- Golden hour: first 60–90 minutes after publish decide if the post is amplified. Low engagement in this window caps the ceiling.
-- Impressions dropped 63% platform-wide since 2024. What counted as a flop two years ago is now a good post.
+- Golden hour: reach is mostly determined within the first 90 minutes. Measured: replying to comments within the first 30 minutes earns 64% more total comments and 2.3× more views.
+- Dwell pays disproportionately: posts holding 61+ seconds of reader attention measure ~15.6% engagement rate.
+- The decline continues: the latest Algorithm Insights editions measure views −50%, engagement −25%, follower growth −59% year over year (on top of the 63% impression drop since 2024). What counted as a flop two years ago is now a good post.
 - The 210-character fold: only the first ~210 chars show before "…see more" on mobile. If the user doesn't click "see more," you get close to zero dwell time. The hook must earn the expand click.
 
 ### What LinkedIn Kills in 2026 (dead patterns)
@@ -139,7 +140,7 @@ On others' posts (the actual growth play):
 
 ### Documents (PDF Carousels)
 
-Still a boosted format as of 2026 but declining — use selectively.
+The top-measured format of 2026 (~6.6% engagement rate) — but only when the content earns the swipe.
 
 - 6–10 slides max. Longer fatigues the swipe.
 - Slide 1 = hook slide. Same rule as a post first line.
@@ -369,3 +370,4 @@ What works: one missing article (`[the] exact same thing` → `the exact same th
 - AgentSkills spec: https://agentskills.io/specification
 - Companion skill: `content-voice` — essential for stripping LinkedIn-dialect cliché
 - Companion skill: `content-humanize` — use when rewriting AI-generated LinkedIn drafts
+- Measured figures: Richard van der Blom's Algorithm Insights Report 2026 (1.3M-post dataset) and corroborating 2026 studies. LinkedIn publishes no ranking source — treat numbers as directional and re-validate annually.

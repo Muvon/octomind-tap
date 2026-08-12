@@ -70,6 +70,14 @@ Bluesky's 2024–2025 migration was driven by people leaving X, not joining a ne
 
 Rule of thumb: if the post would work on Hacker News, it'll work on Bluesky. If it would work on 2023-era X, it probably won't.
 
+Measured from the live hot surface (public AppView API, ~50 top posts, Aug 2026):
+
+- Zero hype language anywhere in the top posts. The tone section above is not aspiration — it's what actually ranks.
+- Among posts above 1,000 likes, the best repost-to-like ratio (~0.4) went to a stacked-facts post: four short declarative lines of concrete data, no connective tissue, one dry closer ("Nothing to see here folks."). Dry factual stacking is the most reshared shape.
+- The biggest reply harvests went to shared-memory questions ("Who remembers…?" — ~800 replies) — asking the audience to contribute their own version is the strongest conversation starter.
+- Likes outnumber replies roughly 20–50:1 on most top posts. Bluesky is a quieter culture than X: a good post gets liked, not argued with. If you want replies, ask.
+- Concrete news with named specifics (who, what number, what source) dominates over commentary about news.
+
 ## Post Shapes That Land
 
 ### 1. The Specific Observation
@@ -398,3 +406,4 @@ Use with:
 - AT Protocol spec: https://atproto.com
 - Bluesky API docs: https://docs.bsky.app
 - Fedi.Tips Bluesky guide: https://fedi.tips/bluesky/
+- Measured patterns: derived from the public AppView hot feed (public.api.bsky.app, app.bsky.feed.getFeed on the whats-hot generator), Aug 2026. Re-derive periodically; the surface drifts.

@@ -32,14 +32,19 @@ Reddit ranks posts and comments with different math. Both penalize corporate beh
 
 Post ranking (Hot sort — the default feed)
 
-Score is roughly: `log(upvotes - downvotes) × time_decay_factor`. The log function means the first 10 upvotes matter far more than going from 90 to 100. Time decay halves visibility every few hours.
+Score is roughly: `log(upvotes - downvotes) × time_decay_factor`. The log means the first 10 upvotes matter far more than going from 90 to 100. Decay halves visibility every few hours.
 
 Inputs that actually move ranking:
-- Vote velocity in the first 1–2 hours. A post with 50 upvotes in the first hour outranks one with 200 upvotes spread over 6 hours. The golden window is shorter than most platforms.
+- Vote velocity in the first 1–2 hours. 50 upvotes in the first hour outranks 200 spread over 6 hours. The golden window is shorter than most platforms.
 - Upvote ratio. If the ratio drops below ~70%, the post is effectively buried. Downvotes hurt far more than upvotes help once you're above a threshold.
 - Comment count and depth. Posts with ongoing discussion stay in Hot longer. 1 comment with 5 replies beats 5 one-line comments.
 - Account trust score. New accounts (< 30 days, low karma) are throttled invisibly. Their posts often land in a "new-queue jail" that mods have to manually approve.
 - Subreddit activity baseline. A post needs more velocity in r/programming (huge) than in r/rust (niche) to trend.
+
+Validated 2026 refinements (multiple independent studies agree):
+- Peak visibility lands 4–8 hours after posting; a 12-hour-old post needs roughly 10× the upvotes of a 1-hour-old one.
+- Discussion outranks applause: 50 comments of back-and-forth beat 200 upvotes and silence. Give people something to argue with or add to.
+- New-account filters and karma-farm filtering tighten every quarter. The direction is consistent: real expertise, real stories, real engagement.
 
 Comment ranking (Best sort — the default)
 
@@ -51,13 +56,13 @@ Implication: early comments compound. First 3 substantive comments on a post cap
 
 At least 90% of activity must be non-promotional. The other 10% can be yours. Break this and posts get shadow-removed, the site-wide spam filter kicks in, or the account gets suspended.
 
-Non-promotional in practice: answering questions in your field without self-linking, commenting on others' posts, sharing articles/tools from other people, posting unrelated discussion starters. Burner and bought-karma accounts get detected — the only path is genuine membership in the communities you want to post in.
+Non-promotional in practice: answering questions without self-linking, commenting on others' posts, sharing other people's articles/tools, posting unrelated discussion starters. Burner and bought-karma accounts get detected — the only path is genuine membership in the communities you post in.
 
 ### Subreddit-First Research (always before posting)
 
 Every subreddit has its own culture — same post lands wildly different in r/programming vs r/SideProject. Minimum 10 minutes per target sub:
 
-1. Read the sidebar and rules. Every subreddit has its own rules pinned. Many ban self-promotion outright, require flair, require minimum account age, or have specific formatting. Violating any of these = auto-removal, often with a ban.
+1. Read the sidebar and rules. Many subs ban self-promotion outright, require flair or minimum account age, or mandate formatting. Violating any = auto-removal, often with a ban.
 2. Check the last 20 posts. What titles are getting upvotes? What's the vibe — technical, casual, sarcastic, earnest? Match the register.
 3. Check the pinned posts and weekly threads. Many subs have a "Self-Promotion Saturday" or "Showcase Sunday" thread. Your post belongs there, not as a standalone submission.
 4. Scan the top comments on similar posts. What do they push back on? Pre-empt it in your post.
@@ -180,7 +185,7 @@ Rhythm and structure:
 
 ### Comment Strategy
 
-Comments are where most Reddit karma actually comes from, and where mods form their read on whether your account is a real member or a promo bot.
+Comments are where most karma comes from, and where mods decide whether your account is a real member or a promo bot.
 
 - Answer the question asked. Don't steer the conversation to your topic.
 - Top-comment early or don't bother. After the first 3 substantive comments, you're buried unless your comment is exceptional.
@@ -232,7 +237,7 @@ Tactics that pass detectors:
 8. Write the comment, then delete the first sentence. AI-trained openers ("Great question!", "This is an interesting point", "I think there are a few things to consider") almost always live in sentence #1.
 9. Disagree with part of what you're replying to. Pure agreement reads sycophantic and AI-shaped. A small, specific pushback ("agree on most of this but the part about X is overstated because…") reads as a thinking human.
 10. Run the draft through a 'would I actually type this on my phone at 11pm' filter. If no, cut it down.
-11. Pre-empt the sub's known controversy directly. If the topic, tool, or stance you're writing about is divisive in this community — and you can usually tell from a 5-minute scroll of recent threads — name that disagreement up front instead of pretending consensus. "I know [X] gets mixed reviews here, here's my honest read after [specific time/context]" reads like a member of the community talking to other members. Bots paper over disagreement; humans acknowledge it. Bonus effect: it pre-empts downvote brigading from the camp that disagrees, because they recognise you've already heard their argument.
+11. Pre-empt the sub's known controversy directly. If your topic or stance is divisive in this community (obvious from a 5-minute scroll of recent threads), name the disagreement up front: "I know [X] gets mixed reviews here, here's my honest read after [specific time/context]." Bots paper over disagreement; humans acknowledge it — and the camp that disagrees stops downvote-brigading once they see you've already heard their argument.
 
 Per-sub calibration: the level of AI suspicion varies. r/SaaS, r/startups, r/Entrepreneur, r/MachineLearning, r/programming, r/cscareerquestions are high-suspicion. r/SideProject, r/IndieHackers, niche hobby subs are mid. Default to high-suspicion behaviour everywhere; relax only after you've read recent successful posts.
 
@@ -378,3 +383,4 @@ For more examples (self-promotion, ask posts, automod removals, thread-vibe matc
 - AgentSkills spec: https://agentskills.io/specification
 - Reddit content policy: https://www.redditinc.com/policies/content-policy
 - Companion skill: `content-voice` — especially critical for Reddit, which detects corporate tone instantly
+- Validated figures: consolidated from independent 2026 Reddit-algorithm studies; Reddit publishes no ranking source — treat as directional and re-validate. The donk8r example above is a real surviving comment from an actual r/SaaS thread.

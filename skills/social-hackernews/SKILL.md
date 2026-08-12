@@ -79,6 +79,18 @@ HN titles do 80% of the work. Rules, in priority order:
 10. Specificity wins. Numbers, versions, exact tech, timeframes are all positive signals to HN readers.
 11. Under ~80 characters. HN truncates beyond that.
 
+Measured from 100 posts >300 points (Aug 2026): median winning title is 44 chars / 7 words (p75 = 68) — treat 80 as the cap, ~45 as the target. Sentence case outnumbers Title Case 3:1. Only 4% are questions. Aphorism titles ("Compression is prediction") work when the article delivers on them.
+
+### Show HN Title Patterns That Win (measured from 60 posts >200 points, mid-2026)
+
+Three patterns dominate, in order of frequency:
+
+1. Name – plain capability: `Kage – Shadow any website to a single binary for offline viewing`. State what it does, not its category — "marketing platform" loses to the actual capability.
+2. First-person origin story with concrete stakes: `I replaced a $120k bowling center system with $1,600 in ESP32s` (2,935 points). The number contrast IS the hook; time invested (`I spent 2 years designing a mechanical Magic Keyboard`) works the same way.
+3. Bare intrigue — one/two words, only when the link explains itself in one second: `Show HN: Elevators` (1,679). Playful or visual projects only; a SaaS tool titled this way just looks broken.
+
+Recurring credibility signals in winners: hardware constraints (`in 2 GB RAM on any M-series Mac`), efficiency numbers (`98% fewer tokens than grep`), `open-source alternative to [known tool]`. Full annotated winner list: `reference/examples.md`.
+
 ### URL submission and duplicates
 
 Quick rules: canonical URLs only (strip UTM/ref/AMP/Medium-sk tracking), no link shorteners, no redirect chains, no paywalled URLs (use archive.today instead and mention in first comment), GitHub repo root not a file path, YouTube only if explained in first comment. Same URL within ~6 months = duplicate, redirects to old thread. Cross-posting acceptable but rewrite titles per platform; never copy-paste first comments.
@@ -118,7 +130,9 @@ Title: `Show HN: [what it is]`
 - Yes: `Show HN: A static site generator written in OCaml`
 - Yes: `Show HN: I built a CLI to search AWS resources by tag`
 
-The first comment (posted by you, within ~1 minute of submission) is mandatory for Show HN. It's not optional — the community expects it and you will get roasted if you don't. It should include:
+Show HN accepts URL + text together, and winners use it: 6 of the top 10 Show HNs of mid-2026 carried the pitch in the submission text field, not a comment. Put the story there — personal context in 1–2 sentences, what it is, one concrete implementation detail, what's not done yet — and use your first comment for deeper technical detail or a direct question to early users ("Two questions: 1. … 2. …" — replies feed ranking). Real specimens: `reference/examples.md`.
+
+If you leave the text field empty, the first comment (posted within ~1 minute of submission) is mandatory and carries the pitch — the community expects it and you will get roasted if you don't. It should include:
 
 1. What it is — 1–2 sentences, plain English
 2. Why you built it — the itch, the missing tool, the problem
@@ -150,6 +164,8 @@ Ask HN is for genuine questions, no link in the URL field. It's a self-post.
 - Title IS the question. Not "Ask HN: I have a question about X" — just ask it. "Ask HN: How do you structure config files in a polyglot monorepo?"
 - Body is context. What you've tried, what you've ruled out, what specifically you want help with.
 - Don't use Ask HN as disguised promotion — "Ask HN: How can we improve [MyProduct]?" gets flagged instantly.
+
+Measured pattern (Ask HN >150 points, mid-2026): winners harvest experiences, not advice. `Has anyone replaced Claude/GPT with a local model for daily coding?` (1,318 points), `What was your "oh shit" moment with GenAI?` (739 points, 1,124 comments). A question every practitioner can answer from their own life beats a question only experts can answer. Community introspection (`Why is the HN crowd so anti-AI?`) also reaches the front page but expect heat in the thread.
 
 ### Moderation You Need to Know
 
@@ -261,7 +277,7 @@ HN's culture is direct, technical, and allergic to defensiveness. Negative comme
 - [ ] If linking an article: using the original title, site name stripped
 - [ ] Posted the URL not the AMP/tracking version
 - [ ] No "please upvote" anywhere, including other channels
-- [ ] For Show HN: first comment drafted and ready to post within 1 minute of submission
+- [ ] For Show HN: pitch drafted in the submission text field (preferred) or first comment ready within 1 minute of submission
 - [ ] For Ask HN: real question in the title, real context in the body
 - [ ] Timing: weekday 8–11 AM ET or best-available slot
 - [ ] Account is established (30+ days, non-zero karma) — new accounts get throttled
@@ -296,6 +312,8 @@ Vibe calibration by thread type:
 HN is the most formal platform in this set. Comments are essentially mini-essays — readers are engineers, researchers, and founders who notice both AI-polished prose and careless typos. The goal is structural informality, not visible sloppiness.
 
 Key HN nuance: typos read as careless, not human. On HN, a typo in a technical term signals you don't know the domain. Imperfections should be structural — informal phrasing, a sentence fragment, a casual aside in parentheses — not spelling errors.
+
+Ground truth from real winners (mid-2026): the quarter's top Show HN author writes "Kiosk-ize bowling alleys, yknow? I'm pumped." — enthusiasm anchored in specifics reads human; polished-neutral reads corporate. A stray typo in a plain word ("plian download") shipped in the author comment of a 1,000-point Show HN with zero damage; the fatal typos are in technical terms and proper nouns only. Don't inject typos deliberately, and don't sand away genuine enthusiasm.
 
 Imperfection level by content type:
 
@@ -385,5 +403,6 @@ For more examples (Show HN title patterns, linked-article titles, thread-vibe ma
 - HN guidelines: https://news.ycombinator.com/newsguidelines.html
 - HN FAQ: https://news.ycombinator.com/newsfaq.html
 - Ranking source (Arc): https://github.com/wting/hackernews/blob/master/news.arc
+- Measured stats in this skill: derived from the HN Algolia API (https://hn.algolia.com/api) — front page, Show HN >200 points, Ask HN >150 points, Aug 2026 window. Re-derive periodically; patterns drift.
 - Contact mods: hn@ycombinator.com
 - Companion skill: `content-voice` — HN is the hardest platform for sounding human; voice rules are essential

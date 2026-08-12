@@ -2,6 +2,29 @@
 
 Additional examples beyond the 3 in `SKILL.md`. Load this file when a more specific pattern is needed.
 
+## Real winners, mid-2026 (measured, not invented)
+
+Show HN titles that broke 900 points in one quarter, annotated by pattern:
+
+| Points | Title | Pattern |
+|---|---|---|
+| 2,935 | I replaced a $120k bowling center system with $1,600 in ESP32s | Origin story + cost contrast |
+| 1,679 | Elevators | Bare intrigue (self-evident link) |
+| 1,481 | Homebrew 6.0.0 | Known name + version, nothing else |
+| 1,181 | Performative-UI – A react component library of design tropes | Name – capability, with a wink |
+| 1,033 | Bento - An entire PowerPoint in one HTML file (edit+view+data+collab) | Name – impossible-sounding capability |
+| 919 | Open-source engine running Gemma 4 26B in 2 GB RAM on any M-series Mac | Constraint numbers as hook |
+
+## Real Show HN submission text (the winning shape)
+
+The 2,935-point bowling post opens its submission text field like this (abridged):
+
+> I might be the only SRE on Earth with his own bowling center. It's a more in-depth gig than you'd think. My family and I bought an abandoned 8-lane bowling center in the rural mid-west. [...] The system that keeps your score is particularly interesting to me. [...] Turns out these things are really cool, but absurdly expensive. Ours was installed in 2008 and cost six figures.
+
+Why it works: one improbable-but-true sentence up front, personal stakes, zero product language, and every claim concrete (8 lanes, 2008, six figures). The 1,033-point Bento post uses the same shape for a dev tool: real workflow pain ("to make even small edits we need to edit the code"), what it is ("a single HTML file with everything you need in a slide tool"), then verifiable specifics ("the default deck is around 560 KB", "no cloud login, everything works offline").
+
+The author's first comment then goes one level deeper technically (Bento: how the base64 blob decompresses via DecompressionStream, File System Access API writeback) or asks voters a direct question (18 Words: "Two questions: 1. … 2. …"). Depth in the comment, story in the text field.
+
 ## Show HN title
 
 Bad (marketing, adjectives, exclamation):
