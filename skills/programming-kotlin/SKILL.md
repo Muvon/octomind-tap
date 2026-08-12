@@ -3,7 +3,7 @@ name: programming-kotlin
 title: "Kotlin Development"
 description: "Idiomatic Kotlin — null-safety discipline, coroutines and Flow, expression-oriented style, and Android/Compose conventions. Auto-activates in Kotlin projects."
 license: Apache-2.0
-compatibility: "Requires JDK + Gradle with Kotlin 2.x (K2 compiler); Android SDK for Android targets."
+compatibility: "Requires JDK + Gradle with Kotlin 2.x; Android SDK for Android targets."
 domains: developer
 rules:
   - file(build.gradle.kts)
@@ -36,7 +36,7 @@ Kotlin is pragmatic conciseness with compiler-enforced null-safety. Idiomatic Ko
 
 ## Android specifics (when the target is Android)
 
-- Jetpack Compose is the default UI for new work: state hoisting (stateless composables take value + lambda), `remember`/`rememberSaveable` deliberately, ViewModel exposes `StateFlow<UiState>` collected via `collectAsStateWithLifecycle`
+- Jetpack Compose is the UI toolkit, officially: the Views toolkit entered maintenance mode in 2026 and 68% of the top-1,000 Play Store apps ship Compose — XML views are legacy-maintenance only. State hoisting (stateless composables take value + lambda), `remember`/`rememberSaveable` deliberately, ViewModel exposes `StateFlow<UiState>` collected via `collectAsStateWithLifecycle`
 - Unidirectional data flow: UI sends events up, state flows down — no business logic in composables
 - One immutable `UiState` data class per screen beats a dozen loose observable fields
 - Repository layer owns data source choice; ViewModels never touch Android framework types the emulator can't fake (keeps them JVM-testable)
@@ -48,7 +48,7 @@ Kotlin is pragmatic conciseness with compiler-enforced null-safety. Idiomatic Ko
 
 ## Ecosystem defaults
 
-- Gradle with Kotlin DSL and version catalogs (`libs.versions.toml`); K2 compiler is the current baseline
+- Gradle with Kotlin DSL and version catalogs (`libs.versions.toml`) — the standard for both server and Android; context parameters are stable since 2.4 for the DI-adjacent cases that used to force receiver gymnastics
 - Serialization: `kotlinx.serialization` (`@Serializable`) for Kotlin-first codebases
 - Lint discipline: ktlint or detekt wired into CI, not into arguments
 

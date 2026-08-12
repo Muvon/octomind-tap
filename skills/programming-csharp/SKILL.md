@@ -3,7 +3,7 @@ name: programming-csharp
 title: "C# / .NET Development"
 description: "Modern idiomatic C# — nullable reference types, records, async discipline, minimal APIs, and EF Core patterns. Auto-activates in .NET projects."
 license: Apache-2.0
-compatibility: "Requires .NET SDK 8+ (LTS) — modern cross-platform .NET, not .NET Framework."
+compatibility: "Requires modern cross-platform .NET (10 LTS current; 8/9 reach EOL Nov 2026) — not .NET Framework."
 domains: developer
 rules:
   - file(global.json)
@@ -22,6 +22,7 @@ Modern .NET is cross-platform, fast, and batteries-included — the framework al
 - Records for immutable data (`record Order(string Id, decimal Total)`); `with` expressions for updates; classes for identity + behavior
 - Pattern matching over type-checks: switch expressions, property patterns (`order is { Total: > 100, Status: OrderStatus.Paid }`), list patterns where they clarify
 - Primary constructors and collection expressions (`[1, 2, ..rest]`) in new code; file-scoped namespaces always
+- C# 14 additions worth using: extension members (properties/static, not just methods), the `field` keyword in accessors, null-conditional assignment (`obj?.Prop = value`)
 - LINQ for querying and transformation; a `foreach` when it's clearer or hot-path (LINQ allocates) — measure before optimizing either way
 - `Span<T>`/`Memory<T>` only where profiling justifies it — correctness first, then allocations
 

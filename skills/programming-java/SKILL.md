@@ -3,7 +3,7 @@ name: programming-java
 title: "Java Development"
 description: "Modern idiomatic Java — records, sealed types, pattern matching, virtual threads, and Effective-Java discipline. Auto-activates in Java projects."
 license: Apache-2.0
-compatibility: "Requires JDK 17+ (21+ preferred) with Maven or Gradle."
+compatibility: "Requires JDK 17+ (21 or 25 LTS preferred) with Maven or Gradle."
 domains: developer
 rules:
   - file(pom.xml)
@@ -23,7 +23,7 @@ Java optimizes for large teams maintaining large systems for a long time. The la
 - `Optional` as a return type only — never a field, parameter, or collection element; never `Optional.get()` without a presence check
 - `var` for locals when the right side makes the type obvious; spelled-out types at API boundaries
 - Text blocks for SQL/JSON/HTML literals; `String.formatted` over concatenation chains
-- Streams for transformation pipelines; a plain loop when it's clearer or has side effects — stream gymnastics that need comments should be loops
+- Streams for transformation pipelines (gatherers cover the custom-intermediate-op cases since 24); a plain loop when it's clearer or has side effects — stream gymnastics that need comments should be loops
 
 ## Immutability and API design
 
@@ -37,6 +37,7 @@ Java optimizes for large teams maintaining large systems for a long time. The la
 - I/O-bound work: virtual threads (`Executors.newVirtualThreadPerTaskExecutor()`) — thread-per-request is idiomatic again; do NOT pool virtual threads, they're cheap by design
 - Never `synchronized` around blocking I/O on hot virtual-thread paths in pre-24 JDKs (carrier pinning) — use `ReentrantLock` there; JDK 24+ removed most pinning
 - CPU-bound work still gets a sized platform-thread pool
+- Scoped values (final in 25) replace ThreadLocal for request context on virtual threads; structured concurrency is still preview — don't build on it in production code
 - Shared state: prefer immutable snapshots and `ConcurrentHashMap` over manual locking; `volatile` is for flags, not compound state
 - `CompletableFuture` chains are legacy glue — with virtual threads, straight-line blocking code is both simpler and correct
 
@@ -49,7 +50,7 @@ Java optimizes for large teams maintaining large systems for a long time. The la
 ## Ecosystem defaults
 
 - Build: Maven for boring-and-standard, Gradle (Kotlin DSL) where builds are complex — match the repo, never mix
-- Spring Boot is the mainstream frame: constructor injection, `@ConfigurationProperties` records over `@Value` scatter, profiles for environment split
+- Spring Boot is the mainstream frame (Boot 4 / Framework 7 line since Nov 2025 — Jakarta EE 11, JSpecify null-annotations): constructor injection, `@ConfigurationProperties` records over `@Value` scatter, profiles for environment split
 - Persistence: prefer JDBC/JdbcTemplate or jOOQ for SQL-shaped problems; JPA/Hibernate only with somebody owning its complexity (N+1, lazy sessions, dirty checking)
 - `java.time` exclusively — `Instant` for machine time, `LocalDate`/`ZonedDateTime` for human time; `Date`/`Calendar` are forbidden in new code
 
