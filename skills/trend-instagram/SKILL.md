@@ -41,7 +41,7 @@ Every Instagram surface runs its own ranker (official: Instagram Ranking Explain
 | Hashtag page | `https://www.instagram.com/explore/tags/<tag>/` | Topic sample — top vs recent tabs show peak vs current state |
 | Anchor account Reels | `https://www.instagram.com/<handle>/reels/` | Last-weeks output of each niche anchor; view counts visible on grid |
 
-Open 4–8 in one parallel block of `browser_navigate` calls; snapshot, scrape, close. The in-app trending-audio leaderboard (music icon → Trending, top ~50, refreshed every few days) and Professional Dashboard "Trending audio" panel are app-only — when the user can check them, have them feed you the shortlist, then harvest each sound's audio page in the browser.
+Open 4–8 in one parallel block of `browser_navigate` calls; snapshot, scrape, close. The in-app trending-audio leaderboard (music icon → Trending, top ~50, refreshed every few days) and Professional Dashboard "Trending audio" panel are app-only and regionally limited — when the user can check them, have them feed you the shortlist, then harvest each sound's audio page in the browser.
 
 ### Audio-trend discovery and timing
 

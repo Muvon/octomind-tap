@@ -10,7 +10,7 @@ rules:
   - session(trend) content(youtube)
   - match(\byoutube\s+(trend|trends|trending|harvest|brief)\b)
   - match(\b(harvest|scan|analyze)\s+youtube\b)
-  - match(\boutlier\s+(video|videos|hunting)\b)
+  - session(trend) match(\boutlier\s+(video|videos|hunting)\b)
 ---
 
 ## Overview
@@ -33,7 +33,7 @@ This skill carries the YouTube-specific mechanics the `octoweb:trend` agent need
 | Surface | URL / access | Yields |
 |---|---|---|
 | YouTube Charts | `https://charts.youtube.com` | Official category trends (music, podcasts, trailers) — the Trending page's replacement |
-| Niche search, filtered | `https://www.youtube.com/results?search_query=<topic>&sp=CAISBAgCEAE%253D` (sort: view count, this week) | Current high-performers per topic; adjust filter tokens via the Filters UI |
+| Niche search, filtered | `https://www.youtube.com/results?search_query=<topic>` → apply Filters UI: upload date = this week, sort = view count | Current high-performers per topic (the `sp=` filter token in the resulting URL is reusable for repeat harvests) |
 | Anchor channels | `https://www.youtube.com/@<handle>/videos` | Grid shows views + age → channel baseline and outliers by eye |
 | Shorts Trends page | Shorts feed → pause → Trends tab (app/web, signed-in) | Trending audio + formats for the Shorts lane |
 | Google Trends, YouTube dataset | `https://trends.google.com/trends/explore?gprop=youtube&q=<term>` | Search demand INSIDE YouTube — a different dataset than web search; sort related queries by Rising |

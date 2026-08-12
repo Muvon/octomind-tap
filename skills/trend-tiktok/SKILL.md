@@ -10,7 +10,7 @@ rules:
   - session(trend) content(tiktok)
   - match(\btiktok\s+(trend|trends|harvest|brief)\b)
   - match(\b(harvest|scan|analyze)\s+tiktok\b)
-  - match(\bcreative\s+center\b)
+  - session(trend) match(\bcreative\s+center\b)
 ---
 
 ## Overview

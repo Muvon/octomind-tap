@@ -6,10 +6,8 @@ license: Apache-2.0
 compatibility: "Octomind content agents. Platform-specific to YouTube (long-form, Shorts, titles, thumbnails, descriptions)."
 domains: content
 rules:
-  - match(\byoutube\b)
+  - content(youtube)
   - match(\byt\s+(video|short|shorts|title|thumbnail|channel)\b)
-  - match(\bpost\s+(on|to|for)\s+youtube\b)
-  - match(\bthumbnail\b)
 ---
 
 ## Overview
@@ -18,7 +16,7 @@ YouTube's own Creator Liaison stated the whole strategy in one line: "The algori
 
 The measured reality most creators never see: average retention across 10,000+ videos is 23.7%, over 55% of viewers leave within the first minute, and only 16% reach the final ten seconds (Retention Rabbit 2025). Meanwhile the economics are lopsided — long-form median RPM ~$2.50 vs Shorts ~$0.05 (AIR, n=274 channels), a 20–30x per-view gap. This pack exists because packaging (idea, title, thumbnail) decides most of the outcome before a second is filmed: top creators spend ~30% of their time on ideation and packaging; small creators spend ~5% (Paddy Galloway).
 
-Pair with `content-voice` for scripts, and `video-*` skills for production. This pack owns the packaging and structure layer.
+Pair with `content-voice` for scripts. This pack owns the packaging and structure layer; production itself is a downstream concern owned by another domain.
 
 ## Instructions
 
@@ -105,7 +103,7 @@ Official: upload frequency is NOT a ranking factor, no penalty, no magic cadence
 
 ### Example 1: Packaging-first applied
 
-Idea as filmed-first: "My review of the new Claude coding features" → generic, packaging ceiling low. Packaging-first pass: thumbnail = split screen, red "$4,100" over one half, "“$12”" over the other; title = "I ran the same startup on Claude and on interns for a month". Same underlying content, but now there's a claim to deliver, stakes in the thumbnail, a comparison structure — and the script gets written to pay off that exact promise.
+Idea as filmed-first: "My review of the new Claude coding features" → generic, packaging ceiling low. Packaging-first pass: thumbnail = split screen, red "$4,100" over one half, "$12" over the other; title = "I ran the same startup on Claude and on interns for a month". Same underlying content, but now there's a claim to deliver, stakes in the thumbnail, a comparison structure — and the script gets written to pay off that exact promise.
 
 ### Example 2: Retention surgery on a real curve
 
@@ -118,4 +116,4 @@ Analytics show 62% at 0:30 (fine), cliff to 31% by 1:10. Diagnosis: the hook pro
 - Measured: Retention Rabbit 2025 (n=10K+ videos — retention curve figures), vidIQ frequency study 2026 (n=10.2M channels, correlational), Metricool YouTube 2026 (n=800K videos), AIR Media-Tech RPM data (n=274 channels), Nate Black Shorts analysis (35B views), Inflow (n=5,400 Shorts). Thumbnail percentages circulating online are largely unsourced — treated here as heuristics only.
 - Practitioner: Paddy Galloway (Colin & Samir interview) — time-allocation split, packaging quotes.
 - Re-validate periodically: Test & Compare's winning metric, 3-minute Shorts distribution, clickbait enforcement scope, Shorts RPM by region.
-- Companion skills: `content-voice` (scripts that don't sound generated), `video-hooks` + `video-*` (production), `trend-youtube` (octoweb domain) for harvesting what's working now.
+- Companion skills: `content-voice` (scripts that don't sound generated), `trend-youtube` (octoweb domain) for harvesting what's working now.

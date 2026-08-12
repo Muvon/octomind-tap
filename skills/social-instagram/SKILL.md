@@ -6,10 +6,9 @@ license: Apache-2.0
 compatibility: "Octomind content agents. Platform-specific to Instagram (Reels, carousels, Stories, captions)."
 domains: content
 rules:
-  - match(\binstagram\b)
+  - content(instagram)
   - match(\binsta\s+(post|reel|reels|caption|story|carousel)\b)
   - match(\big\s+(post|reel|reels|caption|story|carousel)\b)
-  - match(\bpost\s+(on|to|for)\s+instagram\b)
 ---
 
 ## Overview
@@ -74,7 +73,7 @@ Collab posts with up to 5 co-authors measured at 4.78x impressions and 4.39x int
 
 ### Stories — the relationship surface
 
-Stories rank on closeness (interaction history, likely friends-and-family connection) — they deepen existing followers and are not a discovery tool. The measured shape: ~24% of viewers exit on frame 1, strong Stories keep 60–80% to the last frame. Craft: front-load the point on frame 1, use interactive stickers (polls/questions/sliders engage ~12–18% of viewers and replies grew +88% YoY), keep sequences short. Link stickers convert at 1–5% typically.
+Stories rank on closeness (interaction history, likely friends-and-family connection) — they deepen existing followers and are not a discovery tool. The measured shape (vendor-published data, softer sourcing than the format studies — trust the shape, not the decimals): ~24% of viewers exit on frame 1, strong Stories keep 60–80% to the last frame. Craft: front-load the point on frame 1, use interactive stickers (polls/questions/sliders engage ~12–18% of viewers and replies grew +88% YoY), keep sequences short. Link stickers convert at 1–5% typically.
 
 ### Comments — genuine questions, not bait
 

@@ -6,8 +6,11 @@ license: Apache-2.0
 compatibility: "Requires modern cross-platform .NET (10 LTS current; 8/9 reach EOL Nov 2026) — not .NET Framework."
 domains: developer
 rules:
+  - file(*.sln)
+  - file(*.csproj)
   - file(global.json)
   - file(Directory.Build.props)
+  - content(c#)
   - content(csharp)
   - content(dotnet)
 ---

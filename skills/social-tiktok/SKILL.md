@@ -6,10 +6,9 @@ license: Apache-2.0
 compatibility: "Octomind content agents. Platform-specific to TikTok (videos, carousels, captions, sounds)."
 domains: content
 rules:
-  - match(\btiktok\b)
-  - match(\btik\s?tok\b)
-  - match(\bpost\s+(on|to|for)\s+tiktok\b)
-  - match(\bfor\s+you\s+(page|feed)\b)
+  - content(tiktok)
+  - match(\btik\s+tok\b)
+  - content(fyp)
 ---
 
 ## Overview
