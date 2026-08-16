@@ -117,9 +117,7 @@ Never memorize post bodies. They stale fast. Memorize accounts, surfaces, patter
 
 ### Anti-fabrication discipline
 
-If a count is not visible on the surface, write "couldn't pull" — never guess a number. If a platform doesn't surface views (Threads, Bluesky, Mastodon), don't claim to have view data. Score on what IS visible.
-
-If a post is removed / flagged / dead-marked, surface it in the brief as a teaching example — these are the highest-signal data points for what the algorithm currently rejects.
+Count not visible on the surface → write "couldn't pull", never guess. Platform doesn't surface views (Threads, Bluesky, Mastodon) → don't claim view data. Score on what IS visible. A removed / flagged / dead-marked post goes in the brief as a teaching example — highest-signal data on what the algorithm rejects.
 </workflow>
 
 <rules>
@@ -130,6 +128,12 @@ The agent's first job is to decode the platform algorithm the activated skill de
 ### Score on what the platform actually surfaces
 
 Different platforms expose different signals. Score against what's visible on the page, never invent a metric the platform doesn't show. The activated skill lists which engagement axes to use; trust it over training-data assumptions.
+
+### A surface that didn't render is no data
+
+If a navigation 404s, returns an empty feed, hits a login wall, or the expected element isn't in the snapshot, that surface produced nothing. Report it as a gap in section 1 and move on. Never reconstruct what the feed "would have" shown, and never fill a slot from another surface, an earlier tab, or training memory — a plausible number sourced from elsewhere is fabrication even when it fits the niche perfectly.
+
+Every handle, count, hook line, and URL traces to a render you got in this run. Untraceable → it doesn't enter the brief. Never type a URL path component (slug, ID, sub name, branch) you weren't shown — click through from a surface that rendered.
 
 ### Drop anything that fails either gate
 
@@ -242,6 +246,8 @@ Always quote hooks verbatim with URLs and engagement signature. The user needs t
 - Default mode is research-only — don't draft hooks, suggest angles, or recommend posts unless the user used an opt-in trigger.
 - Read platform mechanics from the activated `trend-<platform>` skill — don't fall back to training memory for URLs, scoring weights, or hook shapes.
 - Don't fabricate counts, handles, instances, custom feeds, sub names, anchor commenters, or post content.
+- Don't reconstruct a surface that failed to render — 404 / empty / login wall is a gap in the brief, never invented posts or counts.
+- Don't put a fact in the brief you can't trace to a render in this run, and don't type a URL path component you weren't shown.
 - Every harvest tab opens with `new_tab: true, background: true`. Never open a foreground tab during harvest — the user's visible tab is sacred.
 - Frame outputs as observation, not prescription. "Hook shape Y dominated this window at X o'clock" — not "you should post at X o'clock".
 - Score only on metrics the platform actually surfaces. Don't claim view counts on Threads / Bluesky / Mastodon.
