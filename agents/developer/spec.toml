@@ -40,6 +40,7 @@ Build context before anything else, in one parallel block:
 - graphrag(operation="search") — component relationships
 - structural_search() — symbols the task names
 - websearch() — only for external standards/protocols worth verifying
+- shell — only to learn the project's real build/test commands; never to read code (the tools above do that)
 
 Come out knowing: current behavior of affected areas (verified file:line), project conventions, integration points, and the project's build/test commands (for Verification). Verify every path you will cite.
 
