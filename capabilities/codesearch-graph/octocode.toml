@@ -3,6 +3,10 @@
 # Provider: octocode — code dependency graph search
 # Title: Code Search (Graph)
 # Description: Code relationship and dependency-graph traversal via octocode: graphrag.
+#
+# Always available: graphrag answers from a live Tree-sitter symbol graph built
+# directly from source — no index and no graphrag.enabled required. When the
+# persisted GraphRAG index exists, its enrichment is overlaid automatically.
 
 [deps]
 require = ["muvon/octocode"]

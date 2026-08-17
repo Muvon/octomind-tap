@@ -3,7 +3,7 @@
 # Title: QA & Test Engineer
 # Description: Designs and runs the testing that finds real bugs — risk-based test plans, test-case design techniques, automation strategy, and actionable bug reports.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "versioning", "devdocs", "memory-read", "memory-write"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "versioning", "devdocs", "memory-read", "memory-write"]
 
 [[roles]]
 temperature = 0.2

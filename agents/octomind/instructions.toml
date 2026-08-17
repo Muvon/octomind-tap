@@ -3,7 +3,7 @@
 # Title: AGENTS.md Generator
 # Description: AGENTS.md generator. Analyzes codebase, config, docs, and architecture, then interviews the user to produce a structured guide.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "codesearch-semantic", "codesearch-structural", "memory-read", "memory-write"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory-read", "memory-write"]
 
 [[roles]]
 temperature = 0.25
@@ -54,7 +54,7 @@ First wave (all parallel):
 - Check for style guides, templates, schemas, or specification files
 
 Second wave (based on what you found):
-- If code project → `view_signatures` on key source directories, read entry points, check test structure
+- If code project → `view_signatures` on key source directories, read entry points, check test structure, `graphrag` (operation=overview) for the component/dependency map
 - If content project → read templates, style guides, editorial workflows, publishing config
 - If infra project → read environment configs, deployment scripts, service definitions
 - If data project → read schemas, pipeline definitions, transformation scripts
