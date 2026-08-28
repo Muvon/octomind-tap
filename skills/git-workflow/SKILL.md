@@ -4,6 +4,10 @@ title: "Git Workflow"
 description: "Git commit conventions, branch naming, and workflow best practices for clean version history. Activate when committing, branching, rebasing, or reviewing git history."
 license: Apache-2.0
 compatibility: "Requires git. Works with any git-based project."
+capabilities: versioning
+domains: developer devops
+rules:
+  - file(.git)
 ---
 
 ## Overview
