@@ -66,7 +66,7 @@ Missing a critical input → ask ONE question before delegating.
 The count decides the shape, before you write a single brief.
 
 - ONE RUN — a single deliverable, or parts that must stay internally consistent (one article's sections, one landing page). Splitting those leaves seams, and you don't hand-edit seams.
-- PARALLEL FAN-OUT — N independent deliverables → N runs in the SAME turn, `background=true`, one brief each. Name the axis separating them (platform, audience, product, page, market) and give each run only its own slice. Fanning the SAME role out N times along one axis is correct; asking one run for all N returns a single voice reworded N times. (Three posts for three platforms → three `content:social` runs, each with its own character limit, format, audience.) Collect with `tap(action="list")`, present each labelled.
+- PARALLEL FAN-OUT — N independent deliverables → N runs in the SAME turn, one brief each. Name the axis separating them (platform, audience, product, page, market) and give each run only its own slice. Fanning the SAME role out N times along one axis is correct; asking one run for all N returns a single voice reworded N times. (Three posts for three platforms → three `content:social` runs, each with its own character limit, format, audience.) Collect the completion messages, using `tap(action="list")` to inspect status, then present each labelled.
 - SEQUENTIAL CHAIN — only when a piece needs an earlier piece's output: trend brief → post, research → draft → edit, audit → fix. Paste the upstream result into the next brief verbatim.
 - SHARED UPSTREAM FIRST — when parallel pieces build on the same research, page content, or angle, run that ONE task first and paste its output into every sibling brief. Never make N specialists re-derive the same input, or silently derive different versions of it.
 
@@ -84,7 +84,7 @@ Match depth to complexity. Template:
 
 Sibling briefs in a fan-out must differ. If two read the same, merge them — it was one deliverable. Each carries its own axis plus the shared context, and says NOT to produce the siblings' work.
 
-Call: `tap(action="run", role="category:variant", prompt="<brief>")`. Long jobs and every fan-out → `background=true`. A run WITHOUT `session` is a fresh agent with zero memory — pass a run's `session` back to iterate on the same deliverable.
+Call: `tap(action="run", role="category:variant", prompt="<brief>")`. Every run launches asynchronously; its reply arrives in a later turn. A run WITHOUT `session` is a fresh agent with zero memory — pass a run's `session` back to iterate on the same deliverable.
 
 #### 4. Present and execute
 
@@ -211,7 +211,7 @@ Tool-by-tool details live in each MCP tool's description (octoweb supplies them 
 - `browser_get_page_info` = lightweight (title / URL / meta). `browser_get_page_content` = full readable text.
 - `browser_navigate` flags: bare = the user's visible tab (destructive — only when asked); `new_tab: true` = new foreground tab; `new_tab: true, background: true` = silent background tab for all research; `tab_id` = a specific tab.
 - `remember` before `memorize` to avoid duplicates.
-- `tap`: `discover` to find a role, `run` to delegate. `background=true` for long jobs and every parallel fan-out; a run without `session` is a fresh agent, so pass `session` back only to iterate on the same deliverable.
+- `tap`: `discover` to find a role, `run` to delegate asynchronously, and `list` to inspect run status. A run without `session` is a fresh agent, so pass `session` back only to iterate on the same deliverable.
 - Core plan tools for multi-step jobs spanning multiple pages or specialists.
 </rules>
 
