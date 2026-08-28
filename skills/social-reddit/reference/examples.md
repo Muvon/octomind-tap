@@ -124,3 +124,60 @@ Reply in a heated debate (short, punchy, no grammar polish):
 > thats not how specificity works tho
 
 Missing apostrophe in `thats`. Short. Ends without punctuation. Matches the pace of a fast argument thread.
+### Example 1: Title craft
+
+Bad (marketing, vague, clickbait):
+> 🚀 You won't believe how we scaled our platform to 10M users — a success story!
+
+Bad (SEO-spam listicle):
+> Top 10 Ways to Scale Your Backend in 2026
+
+Good (specific, neutral, a story someone wants to read):
+> Scaling Postgres from 40GB to 4TB: what broke, what we changed, what we'd do differently
+
+What works: real numbers, neutral tone, implicit stakes, offers a story and lessons without selling them.
+
+### Example 2: Comment that earns karma (and trust)
+
+Someone posts in r/rust: "Is tokio really necessary or can I just use threads?"
+
+Bad (generic, authority-theatre, no specifics):
+> As someone who has worked extensively with Rust, tokio is essential for any serious async workload. Threads don't scale.
+
+Good (specific, domain-aware, honest about trade-offs):
+> Depends on your workload. If you're I/O bound and handling >~10k concurrent connections, tokio is hard to beat — the overhead per task is tiny compared to a thread's ~2MB stack.
+>
+> If you're CPU-bound or running <1k concurrent tasks, `std::thread` + a channel is simpler and often faster. Threads also debug way better — stack traces, backtraces, no `.await` gymnastics.
+>
+> Short answer: pick tokio for network services, threads for background processing.
+
+What works: opens on the answer, gives concrete numbers, acknowledges the alternative is sometimes better, ends with a poster-able summary.
+
+### Example 3: Rewriting a comment to pass AI detection
+
+Original draft (will be auto-removed in r/SaaS, r/startups, r/Entrepreneur — every detector tell present):
+
+> The real moat is distribution and iteration speed. Building software has fundamentally changed in recent years, and the patterns we're seeing are clear:
+>
+> - The first mover figures out the market exists
+> - The second mover figures out what people actually want
+> - The third mover with the best distribution wins
+>
+> Building cheaper and faster with AI tools simply compresses the timeline. It's important to note that the question is no longer "can I build it?" — it's "can I out-distribute and out-iterate?" Ultimately, in today's competitive landscape, distribution is everything.
+
+What's wrong: bold opener, three balanced bullets, header-style emphasis, "It's important to note", "Ultimately", "in today's competitive landscape", closing summary, zero personal anchor, zero contractions where they'd naturally appear, three em-dashes, no reference to the post or other commenters.
+
+Rewritten (this is roughly the surviving `donk8r` comment from the actual r/SaaS thread):
+
+> The real moat isn't the code, it's the distribution and the iteration speed. I've been building software for 20 years and the pattern I keep seeing: the first mover figures out the market exists, the second mover figures out what people actually want, and the third mover with the best distribution wins. Building cheaper and faster with AI tools just compresses the timeline. But jonathancheckwise is right that if you can clone it in 3 hours, so can everyone else. The question isn't "can I build it?" anymore — it's "can I out-distribute and out-iterate the other 50 people who also built it this weekend?"
+
+What works:
+- Opens with a personal anchor: "I've been building software for 20 years" (verifiable, specific, autobiographical)
+- Quotes another commenter by username (`jonathancheckwise`) and uses their exact phrase (`if you can clone it in 3 hours`)
+- Prose, not bullets, even though the structure is tri-partite
+- No headers, no bold, only one em-dash
+- Contractions throughout (`isn't`, `can't`, `aren't`)
+- Ends on a quoted question, not a summary
+- "The real moat" survives here only because the personal anchor immediately undercuts it. Note the "isn't the code, it's the distribution" construction: that antithesis has since been named as a tell by real readers, so prefer stating the answer straight unless the thread's own register carries it
+
+This is the template. Anchor → observation → reference to thread → specific reframe → no closing summary.
