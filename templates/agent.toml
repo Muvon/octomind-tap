@@ -8,10 +8,9 @@
 # Quick start:
 #   1. Set domain and spec in the filename and header comment
 #   2. Write a one-line description
-#   3. Set temperature, top_p, top_k for your domain
-#   4. Write your system prompt
-#   5. Configure MCP servers and tools
-#   6. Add dependencies if needed
+#   3. Declare capabilities (see capabilities/ for what's available)
+#   4. Set temperature, top_p, top_k for your domain
+#   5. Write your system prompt
 #
 # Run: octomind run <domain>:<spec>
 # ─────────────────────────────────────────────────────────────────────────────
@@ -21,14 +20,20 @@
 # Description: <One-line description of what this agent does (20–160 chars)>
 
 # ─────────────────────────────────────────────────────────────────────────────
-# DEPENDENCIES (Optional)
+# CAPABILITIES (required — the only way to declare tools and deps)
 # ─────────────────────────────────────────────────────────────────────────────
-# Tools that auto-install before the session starts.
-# Uncomment and customize as needed.
+# Agents declare what they NEED; bin/load resolves each capability to
+# capabilities/<name>/default.toml and merges [deps], [roles.mcp], and
+# [[mcp.servers]] into the final manifest at runtime.
+#
+# NEVER write [deps], [roles.mcp], or [[mcp.servers]] in this file.
+# See ARCHITECTURE.md for the full capability table.
 
-# [deps]
-# require = ["nodejs/node", "astral-sh/uv", "rust/cargo"]
-
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell"]
+# Common additions:
+#   "codesearch-semantic", "codesearch-structural", "codesearch-graph"
+#   "memory-read", "memory-write", "websearch", "versioning"
+#   "orchestration" (only for agents that delegate/schedule)
 # ─────────────────────────────────────────────────────────────────────────────
 # ROLE CONFIGURATION
 # ─────────────────────────────────────────────────────────────────────────────
@@ -122,45 +127,16 @@ Tables and code fences stay. `bold` on bullet leads goes — em-dash already sep
 """
 
 # ─────────────────────────────────────────────────────────────────────────────
-# MCP SERVERS
+# TOOLS & MCP SERVERS
 # ─────────────────────────────────────────────────────────────────────────────
-# Built-in servers: core, octofs, octocode, octobrain, agent, tavily
-
-[roles.mcp]
-# Server references (built-in servers to enable)
-server_refs = ["core", "octofs"]
-
-# Tool allow-list (use wildcards for full access)
-# Examples:
-#   ["core:*", "octofs:*"]           — Full access to core and octofs
-#   ["view", "shell"]                — Restricted to specific tools
-#   ["core:*", "semantic_search"]    — Core + specific octocode tool
-allowed_tools = ["core:*", "octofs:*"]
-
-# ─────────────────────────────────────────────────────────────────────────────
-# CUSTOM MCP SERVERS (Optional)
-# ─────────────────────────────────────────────────────────────────────────────
-# Add MCP servers beyond the built-in ones.
-# Uncomment and customize as needed.
-
-# [[mcp.servers]]
-# name = "my-mcp-server"
-# type = "stdio"
-# command = "npx"
-# args = ["-y", "@scope/my-mcp-server"]
-# timeout_seconds = 60
-# tools = []  # Empty = all tools exposed
-
-# With secrets:
-# [[mcp.servers]]
-# name = "github"
-# type = "stdio"
-# command = "npx"
-# args = ["-y", "@github/mcp-server"]
-# env = { GITHUB_TOKEN = "{{INPUT:GITHUB_TOKEN}}" }
-# timeout_seconds = 60
-# tools = []
-
+# Everything tool-related lives in capability files, not here.
+# Need a tool no capability covers? Add a new capability:
+#   1. Create capabilities/<name>/<provider>.toml with [deps], [roles.mcp],
+#      and a [[mcp.servers]] block (required unless the server is built-in:
+#      core, octofs, agent, octocode)
+#   2. Register it in scripts/setup-symlinks.sh (link + DECLARED)
+#   3. Run bash scripts/setup-symlinks.sh
+#   4. Reference "<name>" in the capabilities list above
 # ─────────────────────────────────────────────────────────────────────────────
 # MODEL OVERRIDE (Optional)
 # ─────────────────────────────────────────────────────────────────────────────

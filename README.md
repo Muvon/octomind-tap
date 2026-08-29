@@ -1,23 +1,74 @@
-# Octomind Agents Registry
+# Octomind Tap
 
-Community-maintained collection of agent manifests for [Octomind](https://github.com/muvon/octomind) — a session-based AI development assistant.
+> Run a fully-configured AI specialist with one command — no setup, no config files, no API plumbing.
 
-Each manifest is a single TOML file that defines a role (system prompt, model, tools) and optional MCP servers. Octomind fetches and merges it into your config at runtime — no installation, no global state.
+The community registry for [Octomind](https://github.com/muvon/octomind), the CLI-first AI agent runtime. **140+ agents across 35 domains**, 100+ skill packs, 19 ready-made workflows, 120+ dependency scripts — each one a single TOML file that Octomind resolves and merges into your session at runtime.
+
+```bash
+octomind run doctor:blood        # interpret blood test results
+octomind run developer:general   # senior full-stack developer
+octomind run devops:kubernetes   # Kubernetes expert
+```
+
+Browse the catalog: [octomind.run/tap](https://octomind.run/tap/)
+
+---
+
+## Table of Contents
+
+- [Quick Start](#quick-start)
+- [What's in the Registry](#whats-in-the-registry)
+- [Tag Format](#tag-format)
+- [Capability System](#capability-system)
+- [Workflows](#workflows)
+- [Skills](#skills)
+- [Dependency Scripts](#dependency-scripts)
+- [Repository Layout](#repository-layout)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
 ## Quick Start
 
+You need the `octomind` binary first — the tap ships with it as the default registry, so no tap registration is required.
+
 ```bash
-# Run a registry agent directly
-octomind run developer:rust
+# 1. Install Octomind (macOS & Linux) — single Rust binary, no runtime dependencies
+curl -fsSL https://raw.githubusercontent.com/muvon/octomind/master/install.sh | bash
 
-# Pin to a specific version
-octomind run developer:rust@1.0
+# 2. Sign in — models included, no API keys to manage
+octomind login
 
-# With a sub-variant
-octomind run developer:rust-nightly
+# 3. Run a specialist
+octomind run doctor:blood
 ```
+
+The default tap is cloned automatically on first use and updated on every run.
+
+```bash
+# Pin to a specific version
+octomind run developer:general@1.0
+
+# Run a ready-made multi-step pipeline
+octomind workflow develop
+```
+
+---
+
+## What's in the Registry
+
+| Directory | What it holds | Count |
+|-----------|---------------|-------|
+| `agents/<domain>/<spec>.toml` | Agent manifests — a system prompt, sampling params, and capability declarations | 140+ across 35 domains |
+| `capabilities/<name>/` | Capability definitions — the tools an agent needs, decoupled from how they're provided | 60+ |
+| `skills/<name>/SKILL.md` | Reusable instruction packs (AgentSkills spec) that auto-activate by context | 100+ |
+| `workflows/<name>.toml` | Multi-step pipelines chaining agent runs (sequential / parallel / loop / conditional) | 19 |
+| `deps/<org>/<tool>.sh` | Dependency install scripts — auto-run before sessions, macOS + Linux | 120+ |
+| `model/` | Embedding model fine-tune powering capability auto-activation | — |
+| `bin/load` | The resolver: merges capabilities into the final manifest (stdout) | — |
+
+Agents span domains like `developer`, `doctor`, `lawyer`, `finance`, `security`, `devops`, `data`, `marketing`, `writer`, `research`, and more.
 
 ---
 
@@ -29,668 +80,236 @@ domain:spec[-sub-spec][@version]
 
 | Part | Required | Description |
 |------|----------|-------------|
-| `domain` | ✅ | Top-level category (e.g. `developer`, `devops`, `data`) |
-| `spec` | ✅ | Primary specialisation (e.g. `rust`, `python`, `k8s`) |
+| `domain` | ✅ | Top-level category (e.g. `developer`, `doctor`, `devops`) |
+| `spec` | ✅ | Primary specialisation (e.g. `general`, `blood`, `kubernetes`) |
 | `-sub-spec` | optional | Variant of the spec (e.g. `rust-nightly`, `python-ml`) |
-| `@version` | optional | Pinned version tag (e.g. `@1.0`, `@2025-06`). Omit for latest. |
+| `@version` | optional | Pinned version tag (e.g. `@1.0`). Omit for latest. |
 
 **Examples:**
 
 ```
-developer:rust                 → agents/developer/rust.toml
-developer:rust-nightly         → agents/developer/rust-nightly.toml
-developer:rust@1.0             → agents/developer/rust.toml  (version hint, future use)
-devops:k8s-helm                → agents/devops/k8s-helm.toml
-data:python-ml                 → agents/data/python-ml.toml
+developer:general                → agents/developer/general.toml
+devops:kubernetes                → agents/devops/kubernetes.toml
+data:sql                         → agents/data/sql.toml
+developer:general@1.0            → agents/developer/general.toml  (version hint, future use)
 ```
 
-> **Note on versioning:** Version (`@x.y`) is parsed and passed through but the registry currently resolves to the same file path. Versioned paths (e.g. `agents/developer/rust@1.0.toml`) are reserved for future use. For now, use the unversioned tag and rely on the 24-hour cache TTL.
+> **Note on versioning:** `@x.y` is parsed and passed through, but the registry currently resolves to the same file path. Versioned paths are reserved for future use — for now, omit the version and rely on the 24-hour cache TTL.
+
+---
+
+## Capability System
+
+Agents declare **what they need**, not how to get it. This is the only supported way — manifests never contain `[deps]`, `[roles.mcp]`, or `[[mcp.servers]]` blocks.
+
+```toml
+# agents/developer/general.toml
+
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell",
+                "codesearch-semantic", "codesearch-structural", "versioning"]
+
+[[roles]]
+system = "..."
+welcome = "..."
+temperature = 0.3
+top_p = 0.9
+top_k = 0
+```
+
+### How resolution works
+
+1. `bin/load <domain>:<spec>` reads each capability → `capabilities/<name>/default.toml`.
+2. `default.toml` is a symlink to the active provider (e.g. `octofs.toml`, `duckduckgo.toml`).
+3. The resolver merges every provider's `[deps]`, `[roles.mcp]`, and `[[mcp.servers]]` into the final manifest on stdout.
+
+### Capability highlights
+
+| Capability | What it provides | Default provider |
+|------------|-----------------|-----------------|
+| `core` | `plan` task tracker — universal self-management (every agent) | built-in |
+| `agent` | `agent_*` — delegate to your configured sub-agents | built-in |
+| `orchestration` | `tap` (discover/run specialists) + `schedule` (defer/recur loops) — orchestrator-tier | built-in |
+| `runtime` | `mcp` · `agent`-register · `skill` · `capability` — runtime config (high-trust) | built-in |
+| `filesystem-read` / `filesystem-write` | `view`, `workdir` / `text_editor`, `batch_edit`, `extract_lines` | `octofs.toml` |
+| `shell` | `shell` (command execution) | `octofs.toml` |
+| `codesearch-semantic` / `-structural` / `-graph` | `semantic_search` / `structural_search`, `view_signatures` / `graphrag` | `octocode.toml` |
+| `memory-read` / `memory-write` | persistent memory tools | `octobrain.toml` |
+| `websearch` | web search | `duckduckgo.toml` |
+| `versioning` | git operations via shell | `git.toml` |
+
+Beyond these, the registry ships 50+ domain capabilities — `legal-*`, `video-gen`, `image-gen`, `messaging-*`, `trading-crypto`, and more. See [ARCHITECTURE.md](ARCHITECTURE.md) for the full table.
+
+> **Access tiers (least privilege).** A narrow domain specialist declares `core` plus its domain tools and never `orchestration` — so it can't delegate across domains or schedule loops; that server isn't in its tool set at all. Only agents that intend to orchestrate declare `orchestration`. See [ARCHITECTURE.md](ARCHITECTURE.md#capability-access-tiers-least-privilege).
+
+### Switching providers
+
+```bash
+# Switch websearch from DuckDuckGo to Brave
+ln -sf brave.toml capabilities/websearch/default.toml
+
+# Or reset all defaults
+bash scripts/setup-symlinks.sh
+```
+
+### Debugging resolution
+
+```bash
+# Inspect the fully merged manifest for an agent
+bin/load developer:general
+
+# Validate capability resolution for every agent in the registry
+bash scripts/validate-capabilities.sh
+```
+
+---
+
+## Workflows
+
+Multi-step pipelines live outside agent manifests: portable TOML files that chain `octomind run` invocations — sequential, parallel, looping, or conditional — piping output between steps by name.
+
+```bash
+octomind workflow develop       # plan → implement → review pipeline
+octomind workflow deep-review   # multi-lens code review
+octomind workflow launch        # release preparation pipeline
+```
+
+19 ready-made workflows ship in `workflows/` — see [workflows/README.md](workflows/README.md) for the full list. Author your own with the `octomind-workflow` skill or the `octomind:workflow` agent.
+
+---
+
+## Skills
+
+Skills are reusable instruction packs ([AgentSkills](https://agentskills.io) spec) that inject domain knowledge into a session — and activate themselves when the context matches.
+
+```markdown
+---
+name: git-workflow
+title: "Git Workflow"
+description: "Git commit conventions, branch naming, and workflow best practices..."
+license: Apache-2.0
+compatibility: "Requires git. Works with any git-based project."
+capabilities: versioning
+domains: developer devops
+rules:
+  - file(.git)
+---
+```
+
+- `rules:` predicates (`file()`, `match()`, `semantic()`, `grep()`, `env()`, …) drive auto-activation. Skills without `rules:` are manual-only.
+- `capabilities:` auto-loads capabilities when the skill activates.
+- `domains:` scopes auto-activation to agent categories.
+- Optional `activate` and `validate` scripts alongside `SKILL.md` add event-driven activation and output validation.
+
+Preload skills without activate scripts:
+
+```bash
+OCTOMIND_SKILLS=programming-rust,git-workflow octomind run developer:general
+```
+
+Skill auto-activation is powered by the embedding fine-tune in `model/` — see [model/README.md](model/README.md) for the training pipeline.
+
+---
+
+## Dependency Scripts
+
+Capabilities can require external tools. Octomind runs the matching `deps/<org>/<tool>.sh` automatically before the session starts — exit non-zero aborts the session with a clear error.
+
+```toml
+# inside a capability file
+[deps]
+require = ["astral-sh/uv", "nodejs/node"]
+```
+
+Every dep script must:
+
+1. **Source `deps/lib/platform.sh`** — all platform helpers come from there, never re-implemented
+2. **Be idempotent** — exit 0 immediately if the tool is already installed
+3. **Cover macOS + Linux** — brew on macOS; apt/dnf/pacman/zypper/apk + universal fallback on Linux
+4. **Carry the required header** (parsed by tooling) and a companion `.md` doc:
+
+```bash
+# dep: astral-sh/uv
+# type: dep
+# description: Fast Python package installer and resolver
+# check: uv
+# https://docs.astral.sh/uv/
+```
+
+`type: mcp` marks scripts that exist to make an MCP server runnable; `type: dep` marks standalone CLI tools. The registry ships 120+ scripts — run `bash scripts/lint-deps.sh` to validate them.
 
 ---
 
 ## Repository Layout
 
 ```
-agents/
-  developer/
-    rust.toml
-    typescript.toml
-    general.toml
-  devops/
-    kubernetes.toml
-  octomind/
-    tap.toml          ← octomind:tap  — tap management agent
-    skill.toml        ← octomind:skill — skill development agent
-  security/
-    owasp.toml
-  ...
-skills/
-  git-workflow/
-    SKILL.md          ← git commit conventions and workflow best practices
-  code-review/
-    SKILL.md          ← code review checklist and guidelines
-  ...                 ← community skills (one directory per skill)
-capabilities/
-  core/
-    default.toml      ← plan tool (built-in, no symlink needed)
-  agent/
-    default.toml      ← agent delegation (built-in, no symlink needed)
-  filesystem/
-    octofs.toml       ← provider: octofs MCP
-    default.toml      → octofs.toml  (symlink, set by setup-symlinks.sh)
-  codesearch/
-    octocode.toml     ← provider: octocode MCP
-    default.toml      → octocode.toml
-  memory/
-    octobrain.toml    ← provider: octobrain MCP
-    default.toml      → octobrain.toml
-  websearch/
-    tavily.toml       ← provider: Tavily search MCP
-    brave.toml        ← provider: Brave search MCP  (alternative)
-    default.toml      → tavily.toml  (switch with: ln -sf brave.toml ...)
-  versioning/
-    git.toml          ← provider: git via shell
-    default.toml      → git.toml
-deps/
-  lib/
-    platform.sh       ← shared OS/arch/pkg-manager detection (sourced by all dep scripts)
-  muvon/
-    octocode.sh
-  astral-sh/
-    uv.sh
-  nodejs/
-    node.sh
-  ...
-templates/
-  agent.toml          ← canonical agent manifest template
-  skill.md            ← canonical SKILL.md template
-bin/
-  load              ← resolves capabilities and outputs a merged manifest to stdout
-scripts/
-  setup-symlinks.sh ← creates/forces default.toml symlinks; warns on missing providers
-  lint-manifests.sh ← validates all agent TOML files
-  lint-skills.sh    ← validates all skills/*/SKILL.md files per AgentSkills spec
-  validate-capabilities.sh ← runs bin/load on every agent to catch resolution errors
+agents/<domain>/<spec>.toml     # Agent manifests — the primary contribution type
+capabilities/<name>/            # Capability definitions
+  default.toml                  # Symlink → active provider (e.g. octofs.toml)
+  <provider>.toml               # [deps], [roles.mcp], [[mcp.servers]]
+deps/<org>/<tool>.sh            # Dependency install scripts (+ companion .md)
+deps/lib/platform.sh            # Shared platform detection helpers
+skills/<name>/SKILL.md          # Reusable instruction packs (AgentSkills spec)
+workflows/<name>.toml           # Multi-step pipelines — octomind workflow <name>
+model/                          # Embedding fine-tune powering capability auto-activation
+bin/load                        # Resolver: merges capabilities → final manifest (stdout)
+scripts/                        # Lint + validation tooling
+templates/                      # Canonical templates for agents, skills, deps, capabilities
+ARCHITECTURE.md                 # Design doc — read before making changes
+CONTRIBUTING.md                 # Contribution guidelines
 ```
 
-Each agent file lives at `agents/<domain>/<spec>.toml` and is fetched via:
+### Taps
+
+This repo is the **default tap** — always active, cloned to `~/.local/share/octomind/taps/`, auto-updated via `git pull` on every run. You can layer your own:
+
+```bash
+octomind tap myorg/agents                  # add a GitHub tap (checked before the default)
+octomind tap myorg/agents /path/to/repo    # add a local tap (no clone)
+octomind tap                               # list active taps
+octomind untap myorg/agents                # remove a tap
 ```
-https://raw.githubusercontent.com/muvon/octomind-agents/main/agents/<domain>/<spec>.toml
-```
+
+### Placeholder variables
+
+Manifests support placeholders expanded at runtime — run `octomind vars` to see them all:
+
+| Placeholder | Behaviour |
+|-------------|-----------|
+| `{{INPUT:KEY}}` | Prompts once, stores in `~/.local/share/octomind/inputs.toml` — for global secrets (API tokens) |
+| `{{ENV:KEY}}` | Reads the environment; if unset, prompts and saves to `./.env` — for project-scoped values |
+| `{{CWD}}`, `{{DATE}}`, … | Runtime context — use in `welcome` only, never in `system` (breaks prompt caching) |
 
 ---
-
-## Capability System
-
-Agents declare **capabilities** instead of hardcoding MCP servers. This decouples what an agent *needs* from *how* it is provided.
-
-### How it works
-
-1. An agent declares `capabilities = ["filesystem-read", "filesystem-write", "codesearch-semantic", "codesearch-structural", "websearch"]` at the top of its manifest.
-2. At runtime, `bin/load <domain>:<spec>` resolves each capability to `capabilities/<name>/default.toml`.
-3. `default.toml` is a symlink pointing to the active provider (e.g. `octofs.toml`, `tavily.toml`).
-4. `bin/load` merges all `[deps]`, `server_refs`, `allowed_tools`, and `[[mcp.servers]]` blocks into the final manifest output.
-
-### Available capabilities
-
-| Capability | What it provides | Default provider |
-|------------|-----------------|-----------------|
-| `core` | `plan` task tracker — universal self-management (every agent) | `core/default.toml` (built-in) |
-| `agent` | `agent_*` — delegate to your configured sub-agents | `agent/default.toml` (built-in) |
-| `orchestration` | `tap` (discover/run specialists) + `schedule` (defer/recur loops) — orchestrator-tier | `orchestration/default.toml` (built-in) |
-| `runtime` | `mcp` · `agent`-register · `skill` · `capability` — runtime config (high-trust) | `runtime/default.toml` (built-in) |
-| `filesystem-read`  | `view`, `workdir` | `octofs.toml` |
-| `filesystem-write` | `text_editor`, `batch_edit`, `extract_lines` | `octofs.toml` |
-| `shell`            | `shell` (command execution) | `octofs.toml` |
-| `codesearch-semantic` | `semantic_search` | `octocode.toml` |
-| `codesearch-structural` | `structural_search`, `view_signatures` | `octocode.toml` |
-| `codesearch-graph` | `graphrag` | `octocode.toml` |
-| `memory` | `remember`, `memorize` | `octobrain.toml` |
-| `websearch` | web search tool | `tavily.toml` |
-| `versioning` | git operations via shell | `git.toml` |
-
-> **Access tiers (least privilege).** Each tier is its own built-in server: `core` (`plan`), `orchestration` (`tap` + `schedule`), `runtime` (tool-surface controls). A narrow domain specialist declares `core` plus its domain tools and **never** `orchestration` — so it cannot delegate across domains or schedule loops; that server isn't in its tool set at all. Only agents that intend to orchestrate (`assistant:concierge`, `developer:general`, `octoweb:assistant`) declare `orchestration`. See [ARCHITECTURE.md](ARCHITECTURE.md#capability-access-tiers-least-privilege).
-
-### Switching providers
-
-```bash
-# Switch websearch from Tavily to Brave
-ln -sf brave.toml capabilities/websearch/default.toml
-
-# Or run the setup script to reset all defaults
-bash scripts/setup-symlinks.sh
-```
-
-### Setup after cloning
-
-```bash
-bash scripts/setup-symlinks.sh   # create/force all default.toml symlinks
-chmod +x bin/load
-
-# Validate all agents resolve correctly
-bash scripts/validate-capabilities.sh
-```
-
-### Writing a capability-driven agent
-
-```toml
-# agents/developer/rust.toml
-
-capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "versioning"]
-
-[[roles]]
-system = "..."
-welcome = "🦀 Rust agent ready."
-temperature = 0.2
-top_p = 0.9
-top_k = 0
-
-# No [roles.mcp] needed — bin/load injects it from capabilities
-# Add custom MCP servers here only for things NOT covered by capabilities:
-# [[mcp.servers]]
-# name = "my-special-server"
-# ...
-```
-
-`bin/load` merges everything and outputs a complete, ready-to-use manifest to stdout.
-
----
-
-## Manifest Format
-
-A manifest is a TOML file with one required `[[roles]]` entry. Agents use either `capabilities = [...]` (preferred) or explicit `[roles.mcp]` + `[[mcp.servers]]` blocks.
-
-```toml
-# agents/developer/rust.toml
-
-[[roles]]
-# name is injected automatically from the tag — do not set it
-system = """
-You are an expert Rust developer assistant.
-Working directory: {{CWD}}
-
-You write idiomatic, safe, performant Rust...
-"""
-welcome = "🦀 Rust developer agent ready. Working in {{CWD}}"
-temperature = 0.2
-top_p = 0.9
-top_k = 0
-
-# Optional: override the global model for this role
-# model = "anthropic/claude-sonnet-4-5"
-
-[roles.mcp]
-server_refs = ["core", "octofs", "agent"]
-allowed_tools = ["core:*", "octofs:*", "agent_*"]
-
-# Optional: add extra MCP servers (e.g. language-specific tooling via Docker)
-# [[mcp.servers]]
-# name = "rust-analyzer-mcp"
-# type = "stdio"
-# command = "docker"
-# args = ["run", "--rm", "-i", "--volume", "{{CWD}}:/workspace", "ghcr.io/muvon/rust-analyzer-mcp:latest"]
-# timeout_seconds = 60
-# tools = []
-```
-
-### MCP Server Configuration
-
-**Important:** `server_refs` and `[[mcp.servers]]` serve different purposes:
-
-| Field | Purpose |
-|-------|---------|
-| `server_refs` | References servers that are **already defined** in the user's config (built-in: `core`, `octofs`, `agent`, `octocode`) or defined in this manifest's `[[mcp.servers]]` |
-| `[[mcp.servers]]` | **Defines new MCP servers** that will be started when this agent runs |
-
-**To use a custom MCP server:**
-
-1. Define it in `[[mcp.servers]]` with name, type, command, args
-2. Reference it in `server_refs` to make it available to the agent
-3. (Optional) Restrict tools in `allowed_tools`
-
-```toml
-# Example: Adding a custom MCP server
-
-[roles.mcp]
-server_refs = ["core", "agent", "my-custom-server"]
-allowed_tools = ["core:*", "agent:*", "my-custom-server:my_custom-tool"]
-
-[[mcp.servers]]
-name = "my-custom-server"
-type = "stdio"
-command = "npx"
-args = ["-y", "my-mcp-server"]
-timeout_seconds = 60
-tools = []
-```
-
-**Built-in servers** (always available, no `[[mcp.servers]]` needed):
-- `core` — `plan`, `mcp`, `agent` tools
-- `agent` — `agent_*` tools for delegating to layers
-
-### Placeholder Variables
-
-Run `octomind vars` to see all available placeholders:
-
-```bash
-octomind vars              # List all placeholders
-octomind vars --preview    # Show preview values
-octomind vars --expand     # Show full values
-```
-
-**Special placeholders:**
-
-| Placeholder | Description |
-|-------------|-------------|
-| `{{INPUT:KEY}}` | Prompts user once, stored in `~/.local/share/octomind/inputs.toml` |
-| `{{ENV:KEY}}` | Reads from environment; if unset, prompts and saves to `./.env` |
-
-#### `{{INPUT:KEY}}` — persistent credential store
-
-Use for **secrets that belong to the user globally** — API tokens, personal access tokens, license keys. The user is prompted once on first use; the value is saved to `~/.local/share/octomind/inputs.toml` and reused on every subsequent run across all projects.
-
-```toml
-system = """
-GitHub token: {{INPUT:GITHUB_TOKEN}}
-"""
-```
-
-#### `{{ENV:KEY}}` — environment variable with `.env` fallback
-
-Use for **project-scoped or deployment-specific values** — base URLs, feature flags, environment names, project IDs. The resolution order is:
-
-1. If `KEY` is already set in the environment (and non-empty) → use it directly, no prompt.
-2. If not set → prompt the user, then append `KEY=VALUE` to `./.env` in the current working directory.
-
-On the next run Octomind loads `.env` automatically, so the user is never prompted again for that project. The value also becomes available to MCP tools and shell commands in the session immediately.
-
-```toml
-system = """
-API base URL: {{ENV:API_BASE_URL}}
-Environment: {{ENV:DEPLOY_ENV}}
-"""
-```
-
-**When to use which:**
-
-| Situation | Use |
-|-----------|-----|
-| API token / secret key (global, user-owned) | `{{INPUT:KEY}}` |
-| Project base URL / environment name / feature flag | `{{ENV:KEY}}` |
-| Value already set in CI/CD environment | `{{ENV:KEY}}` |
-| Value that should never touch the filesystem | `{{INPUT:KEY}}` |
-
-### Role Fields
-
-| Field | Required | Description |
-|-------|----------|-------------|
-| `name` | ❌ omit | Injected automatically from the tag at runtime |
-| `system` | ✅ | System prompt for the AI |
-| `welcome` | ✅ | Message shown when the session starts |
-| `temperature` | ✅ | Sampling temperature (0.0–1.0) |
-| `top_p` | ✅ | Nucleus sampling (0.0–1.0) |
-| `top_k` | ✅ | Top-k sampling (0 = disabled) |
-| `model` | optional | Override the global model (e.g. `anthropic/claude-opus-4-5`) |
-| `mcp` | optional | MCP server refs and tool allow-list |
-| `deps` | optional | List of dep scripts to run before the session starts |
-
-### Merge Semantics
-
-When Octomind loads a manifest it **additively merges** it into the user's base config:
-
-- `[[roles]]` — appended; duplicates (by `name`) are skipped
-- `[[mcp.servers]]` — appended; duplicates (by `name`) are skipped
-- Everything else — override semantics (manifest wins)
-
-This means your personal config is never destructively modified.
-
----
-
-## How Taps Work
-
-Taps are Git repositories containing agent manifests. Octomind uses a Homebrew-style tap system:
-
-- **Default tap** (`muvon/tap`) is always active — cloned automatically on first use and updated on every `octomind run`.
-- **User taps** are checked before the default tap (first match wins).
-
-### Managing Taps
-
-```bash
-# Add a GitHub tap (clones https://github.com/myorg/octomind-agents)
-octomind tap myorg/agents
-
-# Add a local tap (no clone — uses directory directly)
-octomind tap myorg/agents /path/to/local/repo
-
-# List all active taps
-octomind tap
-
-# Remove a tap
-octomind untap myorg/agents
-```
-
-Tap repos are cloned to `~/.local/share/octomind/taps/<user>/octomind-<repo>/` and auto-updated via `git pull` on every run.
-
----
-
-## Dependency Scripts
-
-Manifests can declare external tools that must be present before the session starts. Octomind runs the corresponding scripts automatically on first use.
-
-### Declaring deps in a manifest
-
-```toml
-[deps]
-require = ["astral-sh/uv", "nodejs/node"]
-```
-
-Each entry maps to `deps/<org>/<tool>.sh` inside the tap. Scripts run before MCP servers are initialised. If any script exits non-zero the session is aborted with a clear error.
-
-Each script is **self-sufficient** — if it needs another tool (e.g. `cargo`), it invokes that dep script directly. No ordering required in the manifest.
-
-### Script contract
-
-Every dep script **must** follow two rules:
-
-1. **Self-sufficient** — if it needs another tool to run (e.g. `cargo`), it `source`s that dep script itself. The caller never needs to set anything up beforehand.
-2. **Idempotent** — exits `0` immediately if the tool is already installed. Safe to run twice, ten times, on every session start.
-
-| Rule | Detail |
-|------|--------|
-| **Self-sufficient** | `source` prerequisite dep scripts directly — do not assume the caller did it |
-| **Idempotent** | Fast-path `exit 0` if already installed — no side effects on repeat runs |
-| **Exit codes** | `0` = ready to use, non-zero = failed |
-| **Output** | Stderr only — stdout is reserved for Octomind |
-| **No profile changes** | Do not modify `.bashrc`, `.zshrc`, or any shell profile |
-
-### Using the platform library
-
-All dep scripts should source `deps/lib/platform.sh` for portable OS/arch/package-manager detection:
-
-```bash
-#!/usr/bin/env bash
-source "$(dirname "${BASH_SOURCE[0]}")/../lib/platform.sh"
-# (adjust relative path depth to match your location under deps/)
-```
-
-After sourcing, these are available:
-
-| Variable | Values |
-|----------|--------|
-| `$OS` | `macos` \| `linux` |
-| `$ARCH` | `x86_64` \| `arm64` |
-| `$PKG_MANAGER` | `brew` \| `apt` \| `dnf` \| `pacman` \| `zypper` \| `apk` \| `unknown` |
-| `$IS_MACOS` / `$IS_LINUX` | `1` or `0` |
-| `$IS_X86_64` / `$IS_ARM64` | `1` or `0` |
-
-Helper functions: `pkg_install <pkg>`, `pkg_check <cmd>`, `info <msg>`, `die <msg>`.
-
-### Minimal dep script template
-
-```bash
-#!/usr/bin/env bash
-# dep: <org>/<tool>
-# description: One-line description
-# check: <command-to-verify-install>
-
-set -euo pipefail
-
-# Resolve deps/lib/ relative to this script's location
-DEPS_LIB="$(cd "$(dirname "${BASH_SOURCE[0]}")/../lib" && pwd)"
-source "$DEPS_LIB/platform.sh"
-
-# Fast path — already installed
-if pkg_check <tool>; then
-	exit 0
-fi
-
-# If this script depends on another dep, use install_dep:
-# install_dep rust/cargo
-# This runs the dep script and sources common env files (~/.cargo/env, ~/.local/bin).
-
-info "<tool> not found — installing..."
-
-case "$OS" in
-	macos) brew_install <formula> ;;
-	linux) pkg_install <package>  ;;
-esac
-```
-
-### Available Dep Scripts
-
-| Script | Provides | Used For |
-|--------|----------|----------|
-| `rust/cargo` | Rust toolchain (cargo, rustc) | Building Rust binaries, installing crates |
-| `astral-sh/uv` | uv package manager | Running Python MCP servers via `uvx` |
-| `nodejs/node` | Node.js LTS (node, npm, npx) | Running Node.js MCP servers via `npx` |
-| `docker/docker` | Docker CLI + daemon | Running containerized MCP servers |
-| `github/github-mcp` | GitHub MCP Server | Full GitHub API operations (repos, issues, PRs) |
-| `microsoft/playwright` | Playwright MCP Server | Browser automation, screenshots, web scraping |
-| `brave/brave-search` | Brave Search MCP Server | Web search via Brave Search API |
-| `upstash/context7` | Context7 MCP Server | Up-to-date library documentation |
-| `muvon/octocode` | octocode CLI | Octomind's semantic code search |
-| `muvon/octobrain` | octobrain CLI | Octomind's code indexing |
-| `muvon/octofs` | octofs CLI | Octomind's file editing and viewing tool |
-
-### MCP Server Runtime Requirements
-
-| Runtime | MCP Servers (examples) | Dep Required |
-|---------|------------------------|--------------|
-| **Node.js (npx)** | github, postgres, sqlite, brave-search, puppeteer, slack, memory, context7 | `nodejs/node` |
-| **Python (uvx)** | Many Python-based servers | `astral-sh/uv` |
-| **Rust (cargo)** | octocode, octobrain, octofs, other compiled binaries | `rust/cargo` |
-| **Docker** | Containerized MCP servers | `docker/docker` |
-
-### Popular MCP Servers and Their Deps
-
-| MCP Server | Package | Dep Required |
-|-----------|---------|--------------|
-| GitHub | `@github/mcp-server` | `github/github-mcp` (or `nodejs/node`) |
-| Playwright | `@playwright/mcp` | `microsoft/playwright` (or `nodejs/node`) |
-| Brave Search | `@brave/brave-search-mcp-server` | `brave/brave-search` (or `nodejs/node`) |
-| Context7 | `@upstash/context7-mcp` | `upstash/context7` (or `nodejs/node`) |
-| Octofs | `octofs` CLI | `muvon/octofs` |
-| Postgres | `@modelcontextprotocol/server-postgres` | `nodejs/node` |
-| SQLite | `mcp-server-sqlite` (PyPI, via uvx) | `astral-sh/uv` |
-| Memory | `@modelcontextprotocol/server-memory` | `nodejs/node` |
-| Puppeteer | `@modelcontextprotocol/server-puppeteer` | `nodejs/node` |
-| Slack | `@modelcontextprotocol/server-slack` | `nodejs/node` |
-
-**Note:** `@modelcontextprotocol/*` is the npm namespace for MCP reference implementations, not an org. For generic Node.js MCP servers, just use `nodejs/node` dep.
-
-### Adding a dep script
-
-1. Create `deps/<org>/<tool>.sh` — use the template above.
-2. `chmod +x deps/<org>/<tool>.sh`
-3. Reference it in your manifest: `[deps] require = ["<org>/<tool>"]`
-4. Test it on a clean machine (or a Docker container) before opening a PR.
 
 ## Contributing
 
-### Adding a New Agent
-
-1. **Pick a tag** following the naming convention: `domain:spec` or `domain:spec-sub-spec`.
-2. **Create the file** at `agents/<domain>/<spec>.toml` (or `agents/<domain>/<spec>-<sub>.toml`).
-3. **Use the template** below as a starting point.
-4. **Test locally** before opening a PR:
+**The most valuable contribution is expertise, not code.** If you have domain knowledge — medicine, law, finance, security, DevOps — you can ship a specialist that thousands of people run with one command.
 
 ```bash
-# Add this repo as a local tap (one-time setup)
-octomind tap muvon/tap /path/to/octomind-tap
+# 1. Start from the canonical template
+cp templates/agent.toml agents/<domain>/<spec>.toml
 
-# Run your agent
-octomind run developer:your-new-agent
+# 2. Edit: capabilities, system prompt (XML-tagged blocks), sampling params
 
-# Remove the local override when done
-octomind untap muvon/tap
+# 3. Validate
+bash scripts/lint-manifests.sh agents/<domain>/<spec>.toml
+bash scripts/validate-capabilities.sh
+bin/load <domain>:<spec>
 ```
 
-5. **Open a PR** with a short description of what the agent does and which tools/models it targets.
+Key rules:
 
-### Manifest Template
+- Agents declare `capabilities = [...]` only — never `[deps]`, `[roles.mcp]`, or `[[mcp.servers]]` in a manifest
+- System prompts use XML-tagged blocks in canonical order (`<identity>` → … → `<critical>`), 200–1000 words
+- Exactly one `[[roles]]` entry; never set `name` (injected at runtime from the tag)
+- New capabilities need a provider file, a `setup-symlinks.sh` entry, and a `DECLARED` registration
 
-```toml
-# agents/<domain>/<spec>.toml
-# Agent: <domain>:<spec>
-# Description: One-line description of what this agent does.
-
-[[roles]]
-# name is NOT set here — Octomind injects it automatically from the tag at runtime.
-system = """
-<Your system prompt here.>
-
-Working directory: {{CWD}}
-
-# Use {{INPUT:KEY}} for user-global secrets (API tokens, credentials).
-# Prompted once, stored in ~/.local/share/octomind/inputs.toml.
-# Example: GitHub token: {{INPUT:GITHUB_TOKEN}}
-
-# Use {{ENV:KEY}} for project-scoped values (base URLs, env names, flags).
-# Reads from environment if set; otherwise prompts and saves to ./.env.
-# Example: API base: {{ENV:API_BASE_URL}}
-"""
-welcome = "<Emoji> <Short greeting>. Working in {{CWD}}"
-temperature = 0.3
-top_p = 0.9
-top_k = 0
-
-[roles.mcp]
-server_refs = ["core", "octofs", "agent"]
-allowed_tools = ["core:*", "octofs:*", "agent_*"]
-
-# Optional: declare tools that must be installed before the session starts.
-# Octomind runs deps/<org>/<tool>.sh from the tap automatically.
-# [deps]
-# require = ["astral-sh/uv", "nodejs/node"]
-```
-
-### Guidelines
-
-- **Never set `name`** — it is injected from the tag at runtime. Do not include it in the manifest.
-- **Keep system prompts focused** — describe the persona, constraints, and preferred patterns. Avoid walls of text.
-- **Prefer `{{CWD}}` over hardcoded paths** — manifests are used across machines.
-- **Use `{{INPUT:KEY}}` for user-global secrets** — API tokens, credentials. Prompted once, stored in `~/.local/share/octomind/inputs.toml`, reused across all projects.
-- **Use `{{ENV:KEY}}` for project-scoped values** — base URLs, environment names, feature flags. Reads from the environment if set; otherwise prompts and saves to `./.env` in the working directory. Never use `{{ENV:KEY}}` for secrets — the value lands in a plain-text file.
-- **Declare deps for non-Docker tooling** — if your agent needs a CLI tool that isn't wrapped in Docker, add a dep script and reference it via `[deps] require = [...]`. See [Dependency Scripts](#dependency-scripts).
-- **Docker for zero-install tooling** — if your agent needs a language server or CLI tool, wrap it in a Docker MCP server so users don't need to install anything.
-- **One role per file** — a manifest should define exactly one `[[roles]]` entry (the primary agent role). Additional helper roles are discouraged.
-- **Test with `file://` source** before submitting — see the local testing instructions above.
-
-### Naming Conventions
-
-| Domain | Use for |
-|--------|---------|
-| `developer` | Coding, specs, docs, changelogs, code review |
-| `devops` | Infrastructure, CI/CD, containers, cloud |
-| `data` | Data engineering, SQL, spreadsheets, analytics |
-| `security` | Security review, pen-testing, auditing |
-| `ai` | LLM apps, evals, prompt/agent engineering |
-| `assistant` | Concierge orchestration, research, everyday writing |
-| `content` / `seo` / `video` / `launch` / `sales` | Marketing, publishing, and go-to-market work |
-| `coach` / `tutor` | Personal growth, career, and learning |
-| `doctor` / `lawyer` / `finance` | Regulated-domain guidance (non-diagnostic, educational) |
-| `travel` / `shopping` / `chef` / `home` | Daily-life planning: trips, purchases, meals, repairs |
-| `browser` / `device` / `octoweb` | Web and device automation |
-| `octomind` | Meta-agents that operate on the tap itself |
-
-New domains are welcome — just be consistent and descriptive.
-
----
-
-## Skills
-
-Skills are reusable instruction packs that inject domain knowledge into any Octomind session on demand. Unlike agents (which define a full role), skills are **context injections** — focused, composable knowledge that any agent can activate.
-
-Skills live in `skills/<name>/SKILL.md` and follow the [AgentSkills specification](https://agentskills.io/specification).
-
-### Using skills in a session
-
-```
-skill(action="list")                          # discover available skills
-skill(action="list", pattern="git")           # filter by name or description
-skill(action="use", name="git-workflow")      # inject skill into context
-skill(action="forget", name="git-workflow")   # remove skill from context
-```
-
-### Skill format
-
-```markdown
----
-name: skill-name
-description: "What this skill does and when to use it."
-license: Apache-2.0
-compatibility: "Requires git. Works with any git-based project."
----
-
-# Skill Title
-
-## Overview
-...
-
-## Instructions
-...
-
-## Examples
-...
-```
-
-### Auto-activation rules
-
-Skills can declare `rules:` in their frontmatter to auto-activate when conditions are met. Rules are evaluated against the project and conversation — no user action needed.
-
-**Logic: OR between items, AND within a single item.**
-
-```yaml
-rules:
-  - file(Cargo.toml)              # activates if Cargo.toml exists in workdir
-  - content(rust)                 # activates if user message contains "rust"
-  - file(Cargo.toml) content(async)  # activates if BOTH are true (AND)
-  - semantic(rewrite this in rust)   # activates when the user's intent is semantically close to the phrase
-```
-
-#### Rule expressions
-
-| Expression | Matches when |
-|------------|-------------|
-| `file(<glob>)` | File matching glob exists in working directory. Supports `*` and `**`. |
-| `content(<word>)` | User message contains the word (whole-word, case-insensitive). |
-| `match(<pattern>)` | User message matches the regular expression. |
-| `semantic(<phrase>)` | User message is semantically close to the phrase — intent-based, paraphrase-tolerant. Use for triggers that natural language can express many ways (e.g. `semantic(how do I land guest posts)` covers "pitch articles", "write for other blogs", "get accepted as a contributor"). |
-| `grep(<pattern>, <glob>)` | A file matching the glob contains a line matching the pattern. |
-| `env(<VAR>)` | Environment variable `VAR` is set (non-empty). |
-| `env(<VAR>=<value>)` | Environment variable `VAR` equals `value`. |
-| `bin(<command>)` | Command is available in `$PATH` (detects installed runtimes/tools). |
-| `workdir(<pattern>)` | Current working directory path contains the pattern (substring). |
-| `session(<word>)` | Current session name contains the word (e.g. `session(rust)` matches `developer:rust`). |
-
-Skills without `rules:` are manual-only — they never auto-activate. Add `domains:` to scope auto-activation to specific agent categories (e.g. `domains: developer devops`).
-
-### Creating a skill
-
-```bash
-# Copy the template
-cp templates/skill.md skills/<name>/SKILL.md
-
-# Edit and fill in frontmatter + body
-# Then validate:
-bash scripts/lint-skills.sh skills/<name>
-
-# Or use the skill development agent:
-octomind run octomind:skill
-```
-
-### Skill vs Agent
-
-| | Skill | Agent |
-|---|---|---|
-| **What it is** | Instruction pack injected into context | Full role with model, tools, system prompt |
-| **Activation** | `skill(action="use", name="...")` | `octomind run domain:spec` |
-| **Scope** | Single domain concern | Complete task persona |
-| **Composable** | Yes — activate multiple skills | No — one role per session |
-| **File format** | `SKILL.md` (Markdown + YAML frontmatter) | `.toml` (TOML manifest) |
+Full guidelines: [CONTRIBUTING.md](CONTRIBUTING.md) · Design doc: [ARCHITECTURE.md](ARCHITECTURE.md) · Agent conventions: [AGENTS.md](AGENTS.md)
 
 ---
 
 ## License
 
 Apache 2.0 — see [LICENSE](LICENSE).
+
+**Octomind** by [Muvon](https://muvon.io) | [Website](https://octomind.run) | [Documentation](https://octomind.run/docs/)
