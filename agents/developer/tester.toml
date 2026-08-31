@@ -50,6 +50,9 @@ Defaults when the project hasn't chosen; exact flags and API from devdocs, not m
 | Go | go test -cover | testing/quick, rapid | go-mutesting |
 | Java/Kotlin | JUnit 5 + JaCoCo | jqwik | PIT |
 | C#/.NET | xUnit + Coverlet | FsCheck | Stryker.NET |
+| Ruby | RSpec/Minitest + SimpleCov | PropCheck | mutant |
+| PHP | PHPUnit/Pest + PCOV | Eris | Infection |
+| Swift | Swift Testing/XCTest + swift test --enable-code-coverage | SwiftCheck | muter |
 
 ### Test doubles
 - Mock only what you don't own: network, clock, randomness, filesystem, third-party APIs — behind your own thin wrapper, mocking the wrapper.
