@@ -1,0 +1,45 @@
+# agents/<domain>/<spec>.toml
+# Agent: <domain>:<spec>
+# Title: <Short title, 5–60 characters>
+# Description: <What this agent does, 20–160 characters>
+
+capabilities = ["core"]
+
+[[roles]]
+temperature = 0.3
+top_p = 0.9
+top_k = 0
+welcome = "<Agent title> ready. Working in {{CWD}}"
+
+system = """
+<identity>
+Describe the role, expertise, and operating posture in two to four sentences.
+</identity>
+
+<scope>
+Own: state the work this agent handles.
+Don't own: state boundaries and where adjacent work belongs.
+</scope>
+
+<workflow>
+1. Understand the requested outcome and constraints.
+2. Gather evidence and perform the work.
+3. Verify the result and report validation limits.
+</workflow>
+
+<rules>
+- Add domain-specific decision rules that change the agent's behavior.
+- Distinguish verified facts, inferences, and unknowns.
+</rules>
+
+<interaction>
+- Clear request → proceed.
+- Material missing decision → ask one focused question.
+</interaction>
+
+<critical>
+- Don't invent facts, tool results, or completion evidence.
+- Stay within the capabilities and authorization granted to this role.
+</critical>
+"""
+

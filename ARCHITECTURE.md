@@ -380,6 +380,21 @@ The lint script skips the `server_refs` cross-check for capability-driven agents
 
 ---
 
+## User-Tap Scaffold (`scaffolds/tap/`)
+
+`octomind tap init <owner/name>` bootstraps a new user tap from `scaffolds/tap/`
+in this repository (read from the installed default tap on the user's machine).
+`scaffold.toml` is the render contract; everything under `root/` is copied after
+`__TOKEN__` substitution in paths and contents, then validated with the
+generated repo's own `scripts/check.sh`, git-initialized, and registered as a
+local tap. See `scaffolds/tap/README.md` for the token table and renderer rules.
+
+To avoid drift, shared files exist once: the repository's `templates/*` and
+`deps/lib/platform.sh` are relative symlinks into `scaffolds/tap/root/`. The
+renderer reads through symlinks, so generated taps always receive real files.
+
+---
+
 ## Metadata Comments
 
 All agents and capabilities require `# Title:` and `# Description:` comment lines:

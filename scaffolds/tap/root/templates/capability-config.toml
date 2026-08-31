@@ -1,0 +1,14 @@
+# capabilities/<name>/config.toml
+# Capability: <name>
+# Title: <Short title, 5–60 characters>
+# Description: <What this capability enables, 20–160 characters>
+
+triggers = [
+  "a concrete user request that needs this capability",
+  "a distinct paraphrase of the same underlying need",
+  "another realistic request phrasing",
+]
+
+# Optional hard domain gate. Omit to make the capability available everywhere.
+# domains = ["developer"]
+

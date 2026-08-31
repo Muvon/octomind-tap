@@ -1,0 +1,25 @@
+# capabilities/<name>/<provider>.toml
+# Capability: <name>
+# Provider: <provider>
+# Title: <Short title, 5–60 characters>
+# Description: <What this provider supplies, 20–160 characters>
+
+# Optional dependency installers. Each entry requires deps/<org>/<tool>.sh and .md.
+# [deps]
+# require = ["org/tool"]
+
+[roles.mcp]
+server_refs = ["<server-name>"]
+allowed_tools = ["<server-name>:*"]
+
+[[mcp.servers]]
+name = "<server-name>"
+type = "stdio"
+command = "<command>"
+args = ["<arg>"]
+timeout_seconds = 60
+tools = []
+
+# Use exact environment variable names read by the child process.
+# env = { API_KEY = "{{ENV:API_KEY}}" }
+

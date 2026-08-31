@@ -28,6 +28,8 @@ templates/
   agent.toml                    # Canonical agent template (copy to start a new agent)
   skill.md                      # Canonical skill template (copy to start a new skill)
   dep.sh                        # Canonical dep script template (copy to start a new dep)
+scaffolds/tap/                  # `octomind tap init` source: scaffold.toml contract + root/ tree
+                                # (templates/ and deps/lib/platform.sh are symlinks into it)
 ARCHITECTURE.md                 # Canonical design doc — read before making any changes
 CONTRIBUTING.md                 # Contribution guidelines
 ```
@@ -50,6 +52,7 @@ CONTRIBUTING.md                 # Contribution guidelines
 | Platform detection in dep scripts | `deps/lib/platform.sh` — source this, never re-implement |
 | Build a multi-step pipeline | `workflows/<name>.toml` — run via `octomind workflow <name>`; author with the `octomind-workflow` skill / `octomind:workflow` agent |
 | Meta-agents (tap/skill/instructions) | `agents/octomind/` — these operate on the tap itself |
+| Change what `octomind tap init` generates | `scaffolds/tap/` — edit `root/`, keep `scaffold.toml` in sync |
 
 ## How Things Work
 

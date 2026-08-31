@@ -1,0 +1,10 @@
+# Capability: core
+# Title: Core Task Planner
+# Description: Universal self-management through Octomind's built-in core server.
+
+triggers = [
+  "create or update a structured task plan",
+  "track progress across several steps of work",
+  "show the current task plan and completion state",
+]
+

@@ -1,0 +1,18 @@
+# workflows/<name>.toml
+# Title: <Human-readable workflow title>
+
+name = "<name>"
+description = "<What the workflow accomplishes and how its steps cooperate.>"
+
+[[steps]]
+name = "work"
+role = "<domain>:<spec>"
+session = "fresh"
+prompt = """
+Complete the following request and return only the requested deliverable.
+
+<request>
+{{input}}
+</request>
+"""
+

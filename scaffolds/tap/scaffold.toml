@@ -1,0 +1,28 @@
+# Octomind user-tap scaffold contract.
+# This file is consumed by `octomind tap init`; it is not copied into the
+# generated tap. Everything below `root/` is copied after token rendering.
+
+schema = 1
+root = "root"
+
+required_tokens = [
+  "__TAP_ID__",
+  "__TAP_OWNER__",
+  "__TAP_NAME__",
+  "__TAP_REPOSITORY__",
+  "__AGENT_DOMAIN__",
+  "__AGENT_SPEC__",
+  "__YEAR__",
+]
+
+[defaults]
+agent_spec = "assistant"
+
+[post_create]
+executable = [
+  "deps/lib/platform.sh",
+  "scripts/check.sh",
+  "templates/dep.sh",
+]
+validate = "bash scripts/check.sh"
+

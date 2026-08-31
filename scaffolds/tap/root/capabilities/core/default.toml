@@ -1,0 +1,16 @@
+# capabilities/core/default.toml
+# Capability: core
+# Provider: Octomind built-in core server
+# Title: Core Task Planner
+# Description: Universal self-management through Octomind's built-in core server.
+
+[roles.mcp]
+server_refs = ["core"]
+allowed_tools = ["core:*"]
+
+[[mcp.servers]]
+name = "core"
+type = "builtin"
+timeout_seconds = 30
+tools = []
+

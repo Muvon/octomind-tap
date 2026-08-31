@@ -4,6 +4,8 @@
 
 If you have domain knowledge — medicine, law, finance, security, DevOps, or any other field — you can create an agent that thousands of people can run with a single command.
 
+> Building a **private or team tap** instead of contributing here? Bootstrap one with `octomind tap init yourorg/yourtap` — see [`scaffolds/tap/`](scaffolds/tap/).
+
 ---
 
 ## What is a Tap Agent?

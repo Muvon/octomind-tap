@@ -254,6 +254,7 @@ model/                          # Embedding fine-tune powering capability auto-a
 bin/load                        # Resolver: merges capabilities → final manifest (stdout)
 scripts/                        # Lint + validation tooling
 templates/                      # Canonical templates for agents, skills, deps, capabilities
+scaffolds/tap/                  # Source of truth for `octomind tap init` (new user taps)
 ARCHITECTURE.md                 # Design doc — read before making changes
 CONTRIBUTING.md                 # Contribution guidelines
 ```
@@ -268,6 +269,25 @@ octomind tap myorg/agents /path/to/repo    # add a local tap (no clone)
 octomind tap                               # list active taps
 octomind untap myorg/agents                # remove a tap
 ```
+
+### Create your own tap
+
+One command bootstraps a private or public tap from the scaffold in
+[`scaffolds/tap/`](scaffolds/tap/):
+
+```bash
+octomind tap init acme/team
+```
+
+This renders the scaffold into `./octomind-team/`, validates it, initializes
+Git, and registers it as a local tap — the starter agent runs immediately:
+
+```bash
+octomind run team:assistant
+```
+
+`scaffolds/tap/` in this repository is the single source of truth for the
+generated layout; any GitHub template repository is only a synchronized mirror.
 
 ### Placeholder variables
 
