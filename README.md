@@ -52,6 +52,9 @@ octomind run developer:general@1.0
 
 # Run a ready-made multi-step pipeline
 octomind workflow develop
+
+# Bootstrap your own tap (private or team) — rendered, validated, ready to run
+octomind tap init acme/team && octomind run team:assistant
 ```
 
 ---
