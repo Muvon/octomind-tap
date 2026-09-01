@@ -7,7 +7,7 @@
 # Note: chains several specialist runs — token/time-heavy by design.
 
 name        = "launch"
-description = "Take a product idea from market exploration to an honest go/no-go, then — only if viable — produce brand, pitch, ads, and a zero-budget launch plan."
+description = "Take a product idea from market exploration to an honest go/no-go, then — only if viable — produce a GTM strategy, brand, pitch, ads, and a zero-budget launch plan."
 
 # ── 1. Explore the market ────────────────────────────────────────────────────
 [[steps]]
@@ -59,16 +59,16 @@ DECISION-KILL
 name        = "gate"
 conditional = true
 condition   = { output = "validate", matches = '(?m)^DECISION-GREENLIGHT' }
-on_match    = ["brand", "pitch", "ads", "bootstrap"]
+on_match    = ["gtm", "brand", "pitch", "ads", "bootstrap"]
 on_no_match = ["pivot"]
 
   [[steps.run]]
-  name    = "brand"
-  role    = "launch:brand"
+  name    = "gtm"
+  role    = "launch:gtm"
   session = "fresh"
   prompt  = """
-Create the brand identity for this validated idea: name options, positioning,
-messaging, voice/tone, tagline, and landing-page copy.
+Build the go-to-market strategy for this validated idea: beachhead ICP, sales
+motion, channel mix, launch sequencing, and metric stack.
 
 <idea>
 {{input}}
@@ -80,16 +80,39 @@ messaging, voice/tone, tagline, and landing-page copy.
 """
 
   [[steps.run]]
+  name    = "brand"
+  role    = "launch:brand"
+  session = "fresh"
+  prompt  = """
+Create the brand identity for this validated idea: name options, positioning,
+messaging, voice/tone, tagline, and landing-page copy. Position for the
+beachhead ICP in the GTM plan.
+
+<idea>
+{{input}}
+</idea>
+
+<gtm>
+{{gtm}}
+</gtm>
+"""
+
+  [[steps.run]]
   name    = "pitch"
   role    = "launch:pitch"
   session = "fresh"
   prompt  = """
 Write the pitch and pricing: elevator pitch, pitch-deck outline, pricing model,
-and sales-page copy. Stay consistent with the brand.
+and sales-page copy. Stay consistent with the brand and price to the sales
+motion in the GTM plan.
 
 <idea>
 {{input}}
 </idea>
+
+<gtm>
+{{gtm}}
+</gtm>
 
 <brand>
 {{brand}}
@@ -102,11 +125,15 @@ and sales-page copy. Stay consistent with the brand.
   session = "fresh"
   prompt  = """
 Produce launch ad creative: platform-specific copy and creative briefs for the
-channels that best fit this product. Stay on-brand.
+paid channels prioritized in the GTM plan. Stay on-brand.
 
 <idea>
 {{input}}
 </idea>
+
+<gtm>
+{{gtm}}
+</gtm>
 
 <brand>
 {{brand}}
@@ -119,11 +146,16 @@ channels that best fit this product. Stay on-brand.
   session = "fresh"
   prompt  = """
 Write a zero-budget launch plan: Product Hunt playbook, community building,
-organic growth, cold outreach, and social proof tactics.
+organic growth, cold outreach, and social proof tactics. Follow the channel
+priorities and launch sequence in the GTM plan.
 
 <idea>
 {{input}}
 </idea>
+
+<gtm>
+{{gtm}}
+</gtm>
 
 <brand>
 {{brand}}
