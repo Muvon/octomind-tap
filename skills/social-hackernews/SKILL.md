@@ -1,7 +1,7 @@
 ---
 name: social-hackernews
 title: "Hacker News Publishing Playbook"
-description: "Ground-truth 2026 playbook for submitting and commenting on Hacker News. Covers the reverse-engineered ranking formula, the five post types (Show HN, Ask HN, Launch HN, Tell HN, regular submission) with their exact title conventions, the mandatory first-comment pattern for Show HN, moderation (flags, vouches, mailing the mods), voting-ring detection, and how to write titles that don't read as marketing. Activate when drafting anything for Hacker News."
+description: "Ground-truth 2026 playbook for submitting and commenting on Hacker News. Covers the reverse-engineered ranking formula, the five post types (Show HN, Ask HN, Launch HN, Tell HN, regular submission) with their exact title conventions, the derive-don't-write title algorithm for link submissions (original title with only guideline-sanctioned transformations), the mandatory first-comment pattern for Show HN, the guideline ban on posting generated text, moderation (flags, vouches, delete-and-repost, mailing the mods), and voting-ring detection. Activate when drafting anything for Hacker News."
 license: Apache-2.0
 compatibility: "Octomind content agents. Platform-specific to Hacker News (news.ycombinator.com)."
 domains: content
@@ -65,19 +65,31 @@ Both have specific rules — see `reference/post-types.md` for full detail. Quic
 
 ### Title Craft (the most important part)
 
-HN titles do 80% of the work. Rules, in priority order:
+HN titles do 80% of the work — and composing a title is the single most common way a drafted submission gets flagged. The guidelines are explicit: "please use the original title, unless it is misleading or linkbait; don't editorialize." Users diff your title against the linked page's headline; any unexplained difference reads as editorializing.
 
-1. If linking to an article, use the article's original title. Paraphrasing or editorializing gets flagged by users and re-titled by mods.
-2. Drop the site name. `"My post title - Dan's Blog"` → `"My post title"`. Always.
-3. No clickbait phrasing. No "You won't believe," no "This one trick," no "10 things every engineer should know."
-4. No marketing adjectives. Kill: revolutionary, game-changing, powerful, advanced, amazing, groundbreaking, cutting-edge, ultimate, best-in-class.
-5. No question marks unless it's an Ask HN or the article literally asks a question.
-6. No exclamation marks. Ever.
-7. No emoji. Not even for icons.
-8. No ALL CAPS words except proper acronyms (API, LLM, GPU).
-9. Neutral, factual, curious-hacker tone. "How we cut our AWS bill 73% in one weekend" beats "We saved $$$: the secret to cloud cost optimization."
-10. Specificity wins. Numbers, versions, exact tech, timeframes are all positive signals to HN readers.
-11. Under ~80 characters. HN truncates beyond that.
+For link submissions, derive the title — never write one. Start from the page's own headline (the h1 / `<title>` minus the site suffix) and apply only these transformations:
+
+1. Strip the site or product name — the domain is displayed after the link, so it's redundant. This includes a leading product name in your own headline: `ProductName agents get voice` next to `productname.com` reads as an ad. Product names belong only in the Show HN `Name – capability` pattern.
+2. Crop gratuitous numbers and number+adjective combos (guideline verbatim): `10 Ways To Do X` → `How To Do X`; `14 Amazing Ys` → `Ys`. Keep the number only when it's meaningful (`Migrating 4M rows with zero downtime`).
+3. Append `[video]` or `[pdf]` when linking to those formats — the guidelines ask for the warning.
+4. Add the type prefix (`Show HN:` etc.) when applicable.
+5. Over ~80 characters (HN truncates): trim words from the original, don't compose a new sentence.
+
+Rewriting is allowed only when the original headline is genuinely misleading or linkbait — even then, prefer a phrase lifted from the article body over your own summary. A neutral, well-formed rewrite is still editorializing: the test is "matches the source", not "sounds fine".
+
+Submitting your own site? Fix the title at the source: make the post's headline HN-compliant before submitting, so the original title needs no changes and can never be called editorialized.
+
+Style rules — for titles you legitimately author (Show HN, Ask HN, Tell HN, self-posts, and permitted rewrites):
+
+1. No clickbait phrasing. No "You won't believe," no "This one trick," no "10 things every engineer should know."
+2. No marketing adjectives. Kill: revolutionary, game-changing, powerful, advanced, amazing, groundbreaking, cutting-edge, ultimate, best-in-class.
+3. No question marks unless it's an Ask HN or the article literally asks a question.
+4. No exclamation marks. Ever.
+5. No emoji. Not even for icons.
+6. No ALL CAPS words except proper acronyms (API, LLM, GPU).
+7. Neutral, factual, curious-hacker tone. "How we cut our AWS bill 73% in one weekend" beats "We saved $$$: the secret to cloud cost optimization."
+8. Specificity wins. Numbers, versions, exact tech, timeframes are all positive signals to HN readers.
+9. Under ~80 characters. HN truncates beyond that.
 
 Measured from 100 posts >300 points (Aug 2026): median winning title is 44 chars / 7 words (p75 = 68) — treat 80 as the cap, ~45 as the target. Sentence case outnumbers Title Case 3:1. Only 4% are questions. Aphorism titles ("Compression is prediction") work when the article delivers on them.
 
@@ -174,6 +186,7 @@ Measured pattern (Ask HN >150 points, mid-2026): winners harvest experiences, no
 - Hellban / shadowban — your account posts but no one sees them. Usually triggered by voting-ring behavior or repeated rule violations. Hard to recover from.
 - Vouches — users with enough karma can vouch for a flagged/dead post to revive it. You can't vouch for your own posts.
 - Emailing mods — `hn@ycombinator.com`, polite, short, with the post URL. Works more often than you'd think if the post was clean and got caught by a heuristic. Do NOT email for "boost my post."
+- Don't delete and repost — the guidelines ban it ("Deletion is for things that shouldn't have been submitted in the first place"). Flagged? Fix the trigger, wait (a day minimum; 3+ months for a flop), resubmit — or email the mods if the flag was wrong. Delete-then-repost within hours is itself a flag trigger.
 
 ### Voting Rings and Account Trust
 
@@ -220,7 +233,7 @@ Heavy algorithmic penalty (score halved or worse; usually dies on `/newest`):
 - Clickbait or editorialized title (paraphrasing instead of original)
 - Newsletter signup wall or hard paywall as the linked URL
 - Landing page with only a product pitch and no technical substance
-- Low-quality AI-generated content — HN readers detect this within lines
+- Generated or AI-edited text in comments — explicitly banned by the guidelines ("HN is for conversation between humans"); readers detect it within lines and flag
 
 Community flagging (users hit "flag," post drops from front page):
 - Self-promotion without substance (5 blog posts in 2 weeks all linking your product)
@@ -274,7 +287,9 @@ HN's culture is direct, technical, and allergic to defensiveness. Negative comme
 
 - [ ] Title follows the type convention (Show HN / Ask HN / plain / Tell HN / Launch HN)
 - [ ] Title is neutral, specific, no marketing adjectives, no exclamation marks, no emoji
-- [ ] If linking an article: using the original title, site name stripped
+- [ ] If linking: title matches the page headline except allowed transformations (name stripped, number cropped, [video]/[pdf], prefix, length trim)
+- [ ] Body/comment text rewritten by the human author — no agent prose posted verbatim
+- [ ] Not a delete-and-repost of a recent submission
 - [ ] Posted the URL not the AMP/tracking version
 - [ ] No "please upvote" anywhere, including other channels
 - [ ] For Show HN: pitch drafted in the submission text field (preferred) or first comment ready within 1 minute of submission
@@ -308,6 +323,8 @@ Vibe calibration by thread type:
 | News / announcement | Factual extension or question; no hype either direction |
 
 ### Human Imperfection Protocol
+
+Hard rule first: the guidelines say "Don't post generated text or AI-edited text. HN is for conversation between humans." Every draft this skill produces — first comments, Ask HN bodies, replies — is a skeleton for the human author to rewrite in their own words, never text to post verbatim. Deliver comment drafts as bullet beats, not polished prose: polished prose gets pasted, and pasted prose gets flagged. Derived link titles are exempt by construction — they contain no generated text.
 
 HN is the most formal platform in this set. Comments are essentially mini-essays — readers are engineers, researchers, and founders who notice both AI-polished prose and careless typos. The goal is structural informality, not visible sloppiness.
 
@@ -349,53 +366,7 @@ Calibration check before posting:
 
 ## Examples
 
-### Example 1: Show HN first comment
-
-Bad (marketing, asks for upvotes, no substance):
-> Hey HN! 🎉 Super excited to share TurboForms! We've been working SO hard on this. Would love your support and upvotes!! Check it out at turboforms.io — it's a game-changer for form building!
-
-Good (substantive, technical, asks for real feedback):
-> Hey HN — built this because every form builder I tried (Typeform, Tally, custom in-app ones) either forced a JS runtime on my users' sites or had vendor lock-in I couldn't stomach.
->
-> It outputs raw HTML + a tiny amount of progressive-enhancement JS (optional, adds inline validation). Server-side it's Elixir + a SQLite-per-tenant architecture — happy to talk about why I went with that over Postgres, it was a real trade-off.
->
-> Currently handles single-step forms well. Multi-step and conditional logic are half-done and I'd love feedback on whether the DSL I'm prototyping (shown on the /experimental page) is reasonable or cursed.
->
-> Demo: https://example.com
-> Repo: https://github.com/me/project
-
-What works: personal itch, technical specifics HN cares about (SQLite-per-tenant is interesting), honest about what's not done, asks for specific feedback, no marketing language, no upvote ask.
-
-### Example 2: Ask HN
-
-Bad (vague, unanswerable):
-> Ask HN: Any advice for a startup founder?
-
-Bad (disguised promotion):
-> Ask HN: What would you want in a CRM built for freelancers? (I'm building one)
-
-Good (specific, shows effort, has context):
-> Ask HN: How do you evaluate long-context LLMs for retrieval tasks?
->
-> Context: we have ~5M support tickets in Postgres, and I've been testing Claude 3.7 (200k), GPT-4.1 (128k), and Gemini 2.0 (1M) for "find similar tickets" workflows.
->
-> Benchmarks I've tried: needle-in-haystack (shows little about real retrieval), RAG-bench (synthetic), LongBench (helpful but old). What I'm struggling with: building an eval that reflects our actual query distribution without hand-labeling thousands of ticket pairs.
->
-> Has anyone built domain-specific LC-LLM evals they can talk about? Especially interested in how you decided when the eval was "good enough" to trust.
-
-What works: real question, specific setup, shows prior work, asks something experts can actually answer from their own experience. Will attract the right kind of comment thread.
-
-### Example 3: Post that flops and why
-
-Submission:
-> Show HN: Revolutionary AI-Powered SaaS Analytics Platform That Will Transform Your Business 🚀🔥
-
-First comment:
-> Hi everyone! We built this to help businesses leverage AI! Please check out our landing page and let us know what you think! Upvotes appreciated 🙏
-
-Why this dies in under 10 minutes: title has `Revolutionary`, `AI-Powered`, `Transform Your Business`, two emoji, no specifics. First comment asks for upvotes, has no substance, no tech stack, no real problem description. Flagged within the first 5 users; hellban risk for "Upvotes appreciated." Mods remove, account reputation damaged.
-
-For more examples (Show HN title patterns, linked-article titles, thread-vibe matching, calibrated imperfection in Ask HN), see `reference/examples.md`.
+All worked examples live in `reference/examples.md`: Show HN first comments (good vs. flagged), Ask HN bodies, a full post-that-flops autopsy, Show HN title patterns, linked-article title derivation, thread-vibe matching, and calibrated imperfection. Load it whenever drafting actual HN content.
 
 ## References
 

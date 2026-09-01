@@ -1,6 +1,6 @@
 # HN — extended examples
 
-Additional examples beyond the 3 in `SKILL.md`. Load this file when a more specific pattern is needed.
+All worked examples for the `social-hackernews` skill. Load this file whenever drafting actual HN content.
 
 ## Real winners, mid-2026 (measured, not invented)
 
@@ -45,10 +45,13 @@ You're submitting: `"Why we moved from Kubernetes to Nomad: a 12-month retrospec
 Bad (kept site name, re-phrased):
 > Why our team left Kubernetes for Nomad (awesome retrospective!)
 
+Bad (neutral, well-formed — still editorializing, because it's a composed summary, not the original):
+> Kubernetes to Nomad: lessons from a 12-month migration
+
 Good (article's original title, site stripped, no editorializing):
 > Why we moved from Kubernetes to Nomad: a 12-month retrospective
 
-HN rule: use the original title unless misleading or clickbait. Strip site name. No commentary.
+HN rule: use the original title unless misleading or clickbait. Strip site name. No commentary. The test is not "does it sound neutral" — it's "does it match the source." Readers diff titles against the page headline and flag composed ones.
 
 ## Thread-vibe matching (technical deep-dive thread)
 
@@ -79,3 +82,49 @@ Good comment (very low imperfection, matches practitioner register):
 > What worked for us — take 200 real queries with known-good answers from your existing system, run them through the new model, and score with a cheap LLM judge. Imperfect but correlates with user satisfaction better than any benchmark we tried.
 
 What works: `Built a` opener (dropped subject — structural imperfection), specific number (200 queries), honest about limitations ("Imperfect but"), adds a concrete method, no typos, no casual slang.
+
+## Show HN first comment (good vs. flagged)
+
+Bad (marketing, asks for upvotes, no substance):
+> Hey HN! 🎉 Super excited to share TurboForms! We've been working SO hard on this. Would love your support and upvotes!! Check it out at turboforms.io — it's a game-changer for form building!
+
+Good (substantive, technical, asks for real feedback):
+> Hey HN — built this because every form builder I tried (Typeform, Tally, custom in-app ones) either forced a JS runtime on my users' sites or had vendor lock-in I couldn't stomach.
+>
+> It outputs raw HTML + a tiny amount of progressive-enhancement JS (optional, adds inline validation). Server-side it's Elixir + a SQLite-per-tenant architecture — happy to talk about why I went with that over Postgres, it was a real trade-off.
+>
+> Currently handles single-step forms well. Multi-step and conditional logic are half-done and I'd love feedback on whether the DSL I'm prototyping (shown on the /experimental page) is reasonable or cursed.
+>
+> Demo: https://example.com
+> Repo: https://github.com/me/project
+
+What works: personal itch, technical specifics HN cares about (SQLite-per-tenant is interesting), honest about what's not done, asks for specific feedback, no marketing language, no upvote ask.
+
+## Ask HN body
+
+Bad (vague, unanswerable):
+> Ask HN: Any advice for a startup founder?
+
+Bad (disguised promotion):
+> Ask HN: What would you want in a CRM built for freelancers? (I'm building one)
+
+Good (specific, shows effort, has context):
+> Ask HN: How do you evaluate long-context LLMs for retrieval tasks?
+>
+> Context: we have ~5M support tickets in Postgres, and I've been testing Claude 3.7 (200k), GPT-4.1 (128k), and Gemini 2.0 (1M) for "find similar tickets" workflows.
+>
+> Benchmarks I've tried: needle-in-haystack (shows little about real retrieval), RAG-bench (synthetic), LongBench (helpful but old). What I'm struggling with: building an eval that reflects our actual query distribution without hand-labeling thousands of ticket pairs.
+>
+> Has anyone built domain-specific LC-LLM evals they can talk about? Especially interested in how you decided when the eval was "good enough" to trust.
+
+What works: real question, specific setup, shows prior work, asks something experts can actually answer from their own experience. Will attract the right kind of comment thread.
+
+## Post that flops and why
+
+Submission:
+> Show HN: Revolutionary AI-Powered SaaS Analytics Platform That Will Transform Your Business 🚀🔥
+
+First comment:
+> Hi everyone! We built this to help businesses leverage AI! Please check out our landing page and let us know what you think! Upvotes appreciated 🙏
+
+Why this dies in under 10 minutes: title has `Revolutionary`, `AI-Powered`, `Transform Your Business`, two emoji, no specifics. First comment asks for upvotes, has no substance, no tech stack, no real problem description. Flagged within the first 5 users; hellban risk for "Upvotes appreciated." Mods remove, account reputation damaged.
