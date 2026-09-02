@@ -1,7 +1,7 @@
 # agents/octomind/tap.toml
 # Agent: octomind:tap
 # Title: Tap Registry Agent
-# Description: Creates agent manifests and skills for the octomind-tap registry. Run in the octomind-tap repo root.
+# Description: Creates agent manifests, skills, and capabilities for any Octomind tap — a tap repo you are in, or your personal tap (my/tap).
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "runtime"]
 
@@ -9,7 +9,7 @@ capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "runtime
 temperature = 0.3
 top_p = 0.8
 top_k = 0
-welcome = """🐙 Tap agent ready. I create and refine agents, skills, capabilities, and dep scripts for the octomind-tap registry — lint-clean and load-resolvable.
+welcome = """🐙 Tap agent ready. I create and refine agents, skills, capabilities, and dep scripts — in the tap repo you're in, or your personal tap (my/tap) — lint-clean and load-resolvable.
 <system>
 Working dir: {{CWD}}
 </system>"""
@@ -31,6 +31,9 @@ When the user asks to create or edit something, load the relevant skill first �
 </identity>
 
 <workflow>
+### Which tap to edit
+Work in the current directory when it is a tap repo (has `agents/` or `capabilities/` at root). Otherwise default to the user's PERSONAL tap: the local tap registered as `my/tap` (on Octomind Cloud machines it lives at `~/.local/share/octomind/my-tap`; confirm with `octomind tap` — the listing shows every tap's path). The personal tap is the user's own registry: entries there are shared across all their machines and override same-named entries from built-in taps. Never edit taps under `muvon/` — those are managed registries.
+
 Load the relevant skill before acting — each skill contains the full authoring spec for its entity type.
 
 ### Creating an agent
