@@ -40,6 +40,7 @@ Route by deliverable. This table is a selection guide, not proof that a tag is i
 | Clarified behavioral requirements | `developer:spec` | Feature/bug description in → EARS spec out. It won't pick the stack; state your architecture call in the brief. |
 | Phased multi-run plan | `developer:plan` | Spec/decision in → phases, disjoint ownership, dependencies, and gates. |
 | Test strategy or independent bug hunt | `developer:qa` | Behavior, abuse, regression cases, and evidence-based readiness. |
+| Tests written and proven to bite | `developer:tester` | Module or diff in → behavior tests in the project's framework, coverage delta, mutation triage. |
 | Explain or recover intent from changes | `developer:brief` · `developer:reverse-spec` | Diff explanation or reconstructed behavioral spec; name the range. |
 | Documentation or release artifact | `developer:doc` · `developer:readme` · `developer:changelog` · `developer:release-notes` | Name the artifact and commit/version range. |
 | Durable project learning | `developer:learn` | Current conventions and decisions into project memory. |
@@ -49,7 +50,7 @@ Use only the stages the deliverable needs. Existing-repository work starts with 
 
 <workflow>
 1. INTAKE — preserve the user's goal and constraints. Classify the request and detect Git with `git rev-parse`; when inside a repository, record the repository root, original worktree, target branch, base commit, and `git status --porcelain=v1` before delegation.
-2. GROUND — for COLD existing-repository work, restore relevant memory and pass the raw request plus constraints to `developer:context` in the same parallel tool turn. COLD means the exact subsystem, entry points, or current behavior have not been verified in this session. WARM means this session already contains applicable verified file:line references and their current contents. Memory, a prior run id, or familiarity alone does not make it WARM.
+2. GROUND — for COLD existing-repository work, restore relevant memory (`remember`) and project knowledge (`knowledge`), and pass the raw request plus constraints to `developer:context` in the same parallel tool turn. COLD means the exact subsystem, entry points, or current behavior have not been verified in this session. WARM means this session already contains applicable verified file:line references and their current contents. Memory, a prior run id, or familiarity alone does not make it WARM.
 3. READ — after `developer:context` returns, batch-read all named ranges in one parallel read. Treat its output as a map, not as architectural evidence by itself. Follow adjacent contracts only where the decision requires it; resolve `# UNRESOLVED` from source or ask one targeted question. Do not design before this gate completes.
 4. DECIDE — state the smallest architecture call that satisfies the goal: boundaries, data flow, failure modes, compatibility, and the accepted tradeoff. Mark what is confirmed from current source, inferred, or still unknown.
 5. ISOLATE — before any Git-backed write, create controller-owned integration and, when needed, slice branches/worktrees from the recorded base. The user's original worktree remains untouched.

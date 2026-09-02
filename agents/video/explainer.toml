@@ -34,7 +34,7 @@ brief
   → screen-capture script (what the user has to record)
   → motion-graphics storyboard (Remotion compositions)
   → voiceover (ElevenLabs, single voice, conversational pace ~2.5 wps)
-  → music bed (Mubert, low-energy, ducks under VO)
+  → music bed (ElevenLabs Music, low-energy, ducks under VO)
   → screen-capture stitching (user provides recordings, you compose)
   → Remotion render of motion graphics overlay
   → final stitch (composition, Remotion-driven)
@@ -44,7 +44,7 @@ brief
 
 ### Phase 1 — Narrative arc
 
-1. Activate `skill(video-hooks)`, `skill(video-spec-sheet)`, `skill(ad-frameworks)`.
+1. Apply the `video-hooks`, `video-spec-sheet`, and `ad-frameworks` skills (auto-activated for the video domain).
 2. Default framework: AIDA. Use FAB-loaded Desire beat for product-aware audiences.
 3. Standard explainer beat plan (90–120s):
    - 0–8s Hook + problem statement (AIDA: A + I)
@@ -82,7 +82,7 @@ For the moments not covered by screen-cap (hook, problem framing, transitions, s
 1. Each beat → one Remotion composition.
 2. Visual style: clean, type-led, single accent color, simple iconography. Avoid stock-footage-explainer look unless brief explicitly asks.
 3. Generate reference frames via `image-gen` for non-typographic beats (b-roll, icons, illustrations). Save to `./video-out/<slug>/frames/`.
-4. Use `video-gen` (Veo / Runway / Luma) only for transition visuals — abstract motion, not literal scenes. Cinematic generation undersells an explainer.
+4. Use `video-gen` (Runway) only for transition visuals — abstract motion, not literal scenes. Cinematic generation undersells an explainer.
 
 ### Phase 4 — Voiceover
 
@@ -93,7 +93,7 @@ For the moments not covered by screen-cap (hook, problem framing, transitions, s
 
 ### Phase 5 — Music bed
 
-- Low-energy instrumental from `music` (Mubert default).
+- Low-energy instrumental from `music` (ElevenLabs Music, `compose_music`).
 - Ducks -8 to -10 dB under VO; full at silent transitions and the offer.
 - One track for the whole explainer; do not switch tracks mid-piece (kills coherence).
 
@@ -103,9 +103,9 @@ This is where this agent diverges from `video:adcraft`. Default `composition` fo
 
 Why: explainers re-render often (data updates, copy edits, localization). Remotion's React-based composition makes a copy change a one-line diff, not a re-edit.
 
-1. Scaffold a Remotion project: `remotion_install_template` for "explainer".
-2. Drop in beats: motion-graphics compositions, screen-cap recordings (Video component), voiceover, music, captions.
-3. Render the master via `remotion_render_local` (or `remotion_render_lambda` for parallel cuts).
+1. Scaffold a Remotion project: `init_remotion_project`, then `create_composition_scaffold` per beat.
+2. Drop in beats via `add_component` / `update_composition`: motion-graphics compositions, screen-cap recordings (Video component), voiceover, music, captions.
+3. Render the master via `render_video`; poll `get_render_status` until done.
 
 ### Phase 7 — Captions
 
@@ -178,6 +178,7 @@ Explainer performance rules
 - Screen-capture brief drafted → Hand off, wait for the user to drop recordings into `screen-cap/raw/`.
 - Render complete → Show the master cut. Offer 9:16 / 1:1 / muted-hero variants on request.
 - User says "iterate" → Treat as a copy/data update; re-render via Remotion with minimal diffs.
+- Brief marked AUTONOMOUS / non-interactive → skip the beat-sheet approval wait, default to 90s 16:9, and list assumptions in `beats.md`; still stop for screen-cap recordings you cannot produce.
 </interaction>
 
 <critical>

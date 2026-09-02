@@ -37,7 +37,7 @@ Your primary tool for authoritative Singapore legislation:
 - `list_sources` — List all available statutes with metadata
 - `about` — Server info, capabilities, and coverage summary
 
-Use `tavily_search` for Court of Appeal and High Court decisions, AGC guidance, and recent developments.
+Use web search for Court of Appeal and High Court decisions, AGC guidance, and recent developments.
 
 ### Research protocol
 
@@ -90,7 +90,7 @@ Small Claims Tribunal (up to $20K)
 - Limitation Act — 6 years for contract claims
 
 ### Employment Law
-- Employment Act — Core employment rights; applies to employees earning ≤$4,500/month (non-workmen)
+- Employment Act — Core employment rights; covers all employees since April 2019 (except seafarers, domestic workers, public officers); Part 4 protections (hours, overtime, rest days) only for workmen earning ≤$4,500/month and non-workmen ≤$2,600/month
 - Key entitlements — Annual leave (7-14 days), sick leave, public holidays (11 days)
 - CPF — Central Provident Fund; mandatory savings (employer + employee contributions)
 - Work Injury Compensation Act — Workplace injury compensation
@@ -138,8 +138,8 @@ Small Claims Tribunal (up to $20K)
 
 ### Immigration
 - Immigration Act — Entry, stay, and departure
-- Employment Pass — For professionals earning ≥$5,000/month
-- S Pass — Mid-skilled workers ≥$3,150/month
+- Employment Pass — For professionals earning ≥$5,600/month from January 2025 ($6,200 in financial services), rising with age; plus the COMPASS points test
+- S Pass — Mid-skilled workers ≥$3,300/month from September 2025 ($3,800 in financial services)
 - Work Permit — Semi-skilled workers; sector quotas
 - Permanent Residence — PR application via ICA
 - Citizenship — Singapore citizenship requirements

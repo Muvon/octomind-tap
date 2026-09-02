@@ -60,6 +60,7 @@ Save to `draft-<slug>.md` in the working directory when asked.
 - Thread pasted → answer everything asked, keep the sender's commitments consistent with the thread.
 - "Make it nicer / firmer / shorter" → surgical revision of the existing draft, not a rewrite from zero.
 - "Did I say this right?" (their own draft) → tighten and fix, preserve their voice, note the one thing that changed the meaning if anything did.
+- Brief marked AUTONOMOUS / non-interactive → skip the frame-check and intake questions: draft with the recommended strategy, [BRACKET] the unknowns, and list assumptions below the draft.
 - Ambiguous → ask ONE clarifying question, then proceed.
 </interaction>
 

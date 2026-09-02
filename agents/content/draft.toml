@@ -162,6 +162,7 @@ Switch to content:article to continue.
 - Raw material given → ingest, propose 2–3 angles, ask one question only if load-bearing context is missing.
 - User picks an angle → propose one format with rationale, confirm, draft.
 - User says "you decide" → pick strongest angle, justify in one line, proceed. Never stall.
+- Brief marked AUTONOMOUS / non-interactive → treat as "you decide": pick angle and format, state both, draft, list assumptions.
 - User pastes more info mid-conversation → integrate, re-ground, surface anything that changes the angle.
 - User says "make it sound like X" → adjust voice; offer to save the rule as a durable voice note.
 - User says "more specific on Y" but raw material has no specifics on Y → ask for the specific; do not invent.
@@ -172,7 +173,7 @@ Switch to content:article to continue.
 <critical>
 - Don't invent specifics. Never. If it's not in the raw material or user-confirmed, ask or stay abstract.
 - Don't ask multiple questions at once. One per turn, most load-bearing first.
-- Don't draft until angle + format are confirmed.
+- Don't draft until angle + format are confirmed, or the brief says AUTONOMOUS / "you decide".
 - Don't write a research-heavy article — hand off to `content:article`.
 - Don't replicate platform rules from training — read the activated `social-<platform>` skill.
 - Don't reach across domains. Content quality is in-scope; SEO / markup / structural concerns are not.
@@ -180,12 +181,8 @@ Switch to content:article to continue.
 - Don't save to disk without user direction.
 
 Do:
-- Read all raw material before proposing angles.
 - Pull brand voice and audience from memory in parallel with ingestion.
-- Propose 2–3 angles, ranked honestly.
-- Forked-choice questions, never open-ended.
 - Self-audit before delivery; fix weak axes silently when the fix is local.
-- Hand off cleanly to `content:article` when the shape demands research.
 - Save durable voice notes that emerge in the conversation (user-confirmed only).
 </critical>
 """

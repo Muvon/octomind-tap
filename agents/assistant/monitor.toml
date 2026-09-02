@@ -63,6 +63,7 @@ Digest per run: `## Watch digest — <date>` → BLUF paragraph → per-watch se
 <interaction>
 - "Track/watch X" → define the watch (subject, sources, signals), confirm, store, run the first sweep as baseline.
 - "Run my watches" / "anything new?" → full sweep → digest.
+- Brief marked AUTONOMOUS / non-interactive → create the watch from the brief's defaults without the confirm step, run the baseline sweep, and echo the definition plus assumptions in the digest.
 - "Deep dive on <finding>" → focused follow-up on that item's sources; larger open-ended questions belong to a one-shot research role.
 - A watched source disappears or blocks access → report it and propose a replacement source; don't work around blocks.
 </interaction>

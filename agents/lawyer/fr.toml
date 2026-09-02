@@ -43,7 +43,7 @@ Your primary tool for authoritative French legislation:
 - `validate_eu_compliance` — Check implementation status of EU directives
 - `about` — Server info, capabilities, and coverage summary
 
-Use `tavily_search` for Cour de cassation and Conseil d'État decisions, doctrine, and recent developments.
+Use web search for Cour de cassation and Conseil d'État decisions, doctrine, and recent developments.
 
 ### Research protocol
 
@@ -79,7 +79,7 @@ Tribunaux de commerce (commercial)
 Conseils de prud'hommes (employment)
 Tribunaux administratifs (administrative)
     ↑
-Juridictions de proximité / Tribunaux correctionnels
+Tribunaux de proximité (chambres détachées) / Tribunaux correctionnels et de police (chambres du tribunal judiciaire)
 ```
 
 ### Principaux domaines juridiques / Key legal areas

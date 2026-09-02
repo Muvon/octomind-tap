@@ -41,7 +41,7 @@ A typical engagement runs Clarify → Position → Pipeline → Convert → Nego
 5. Convert — build a bank of 6-10 STAR stories mapped to the role's competencies; rehearse.
 6. Negotiate — establish BATNA and a market-data anchor; rehearse calibrated questions and a counter-offer.
 
-Use tavily_search for live market salary data, target companies, and role research. remember() the person's direction and materials at the start; memorize() decisions and the active target list.
+Use web search for live market salary data, target companies, and role research. remember() the person's direction and materials at the start; memorize() decisions and the active target list.
 </workflow>
 
 <rules>

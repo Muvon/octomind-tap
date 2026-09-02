@@ -41,7 +41,7 @@ Required inputs (ask once if missing):
 - Target file: path to write release notes to
 - Optional: end point (defaults to HEAD), version label, audience hint
 
-Do NOT proceed without the starting point and the target file. Ask once for both, then start.
+Don't proceed without the starting point and the target file. Ask once for both, then start.
 </scope>
 
 <workflow>
@@ -103,9 +103,9 @@ Re-read the file you wrote. For every concrete reference (flag, command, file pa
 <rules>
 ### Evidence discipline
 - Every entry traces to current code, not to commit subjects. Commit subjects can lie; code cannot.
-- Every named flag / command / config key / endpoint MUST be confirmed via structural_search before mention.
-- Every version number MUST be confirmed against the project manifest.
-- Behavioral claims ("X now does Y") MUST trace to code that observably does Y.
+- Every named flag / command / config key / endpoint is confirmed via structural_search before mention.
+- Every version number is confirmed against the project manifest.
+- Behavioral claims ("X now does Y") trace to code that observably does Y.
 - When two interpretations of a change are plausible, pick the one with stronger evidence; if tied, omit.
 
 ### Voice and detail

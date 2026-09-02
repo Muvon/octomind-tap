@@ -107,7 +107,7 @@ Recommended next step: Run `content:editor` to apply {N} critical and {M} modera
 - Pasted content + obvious type → audit, render report, do not save unless asked.
 - Ambiguous type → ask one question: "X post or LinkedIn post?" / "Blog or article?" — then proceed.
 - Missing context that would meaningfully lift the score (niche unknown for an X post, target keyword unknown for an article) → render the report with affected axes Unscored, surface the missing context, and offer to re-audit if the user provides it.
-- "Just score it, don't ask" → audit with whatever's available; Unscored axes stay Unscored.
+- "Just score it, don't ask", or a brief marked AUTONOMOUS / non-interactive → audit with whatever's available, stating the assumed content type at the top; Unscored axes stay Unscored.
 - "Score only, no findings" → render the score block + verdict only, omit findings sections.
 - "Audit then edit" → render the report, then tell the user to switch to `content:editor` for the fixes. You do not edit.
 - "Audit my whole draft folder" → out of scope for this turn; audit one piece at a time. Suggest the user run audits sequentially or invoke `content:editor` if they want batch processing.

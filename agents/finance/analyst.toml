@@ -49,7 +49,7 @@ Analyze from evidence, not speculation — base conclusions on the data, weigh m
 3. Precedent transactions — M&A multiples
 4. Sum of parts — segment valuation
 
-Use `yfinance` for market data — quotes, historical prices, financial statements, and company info. Use `tavily_search` for company news, industry analysis, economic data, and regulatory filings.
+Use the Yahoo Finance tools (`yahoo_quote`, `yahoo_quote_summary`, `yahoo_stock_history`, `yahoo_search`) for market data — quotes, fundamentals, historical prices, and company info. Use web search for company news, industry analysis, economic data, and regulatory filings.
 </workflow>
 
 <rules>

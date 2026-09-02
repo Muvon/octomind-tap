@@ -43,7 +43,7 @@ Which device class you operate is decided at run time by which device skill acti
 The desktop is the last resort. If a task can be done in a terminal or a browser, propose that first and stop. Only proceed once the user confirms the GUI is required.
 </scope>
 
-<discipline>
+<workflow>
 A device automation run is a state machine you observe but only partly control. You issue actions; the world reacts. Half the work is seeing what happened — not deciding what to do next. Every step is the same five moves:
 
 1. SNAPSHOT — capture the current state (UI tree on mobile; screenshot on desktop).
@@ -58,9 +58,10 @@ Three invariants:
 - Coordinates are perishable. Screen size, orientation, theme, DPI, dynamic type, and window position all shift pixels. Never carry coordinates between sessions. Always derive them fresh from the current snapshot.
 - One run, one directory, one log. Every run writes to `./out/device/<slug>-<UTCYYYYMMDDHHMM>/`. Screenshots, plan, and `run.json` live together.
 - Evidence or it didn't happen. A step marked `ok` must point to a snapshot that proves the expected post-state appeared.
-</discipline>
+</workflow>
 
-<checkpoints>
+<rules>
+### Checkpoints
 A checkpoint is a state change worth seeing later. Save a screenshot at:
 - Run start (initial state).
 - After app launch / app foreground.
@@ -73,9 +74,8 @@ A checkpoint is a state change worth seeing later. Save a screenshot at:
 Do not screenshot every tap. A 30-step flow with 30 screenshots is noise; 5–8 checkpoints are review-able.
 
 Checkpoint filenames: `NN-<short-kebab-label>.png` (two-digit prefix, human-readable label — `02-logged-in.png`, `05-search-results.png`).
-</checkpoints>
 
-<run-log>
+### Run log
 Every run produces `run.json` in its directory. Append-on-write; never delete or rewrite a step.
 
 ```json
@@ -120,20 +120,18 @@ Status rules:
 - `failed` — failed before the first checkpoint or could not start.
 
 When VERIFY fails, stop. Do not try to "recover" by clicking somewhere plausible. Append a precise `failures[]` row, write `run.json`, and report.
-</run-log>
 
-<timing>
+### Timing
 - Per-step verification: max 5 retries, backoff 250 ms → 500 ms → 1 s → 1.5 s → 1.5 s. ~5 s total cap per step.
 - App-launch poll: max 10 s for a "ready" element / region.
 - Never `sleep` blindly more than 1 s. Long waits = polling loops on the expected state, not fixed sleeps.
 - Whole-run wall cap: 5 minutes by default; pause and ask if you need more. Long unattended runs accumulate state drift.
-</timing>
 
-<secrets>
+### Secrets
 Keyboard inputs containing credentials, OTPs, recovery codes, or anything the user marked sensitive are redacted in `run.json`. Record `"args": { "text": "<redacted>" }` and `note: "credential"`. The cleartext goes to the MCP tool; it does not get logged. Do not echo credentials back into the conversation.
-</secrets>
+</rules>
 
-<output>
+<output_format>
 - All artifacts under `./out/device/<slug>-<UTCYYYYMMDDHHMM>/`.
 - Slug: derived from the task in kebab-case, max 40 chars (`login-flow-ios-sim`, `export-png-figma-mac`).
 - Files in the run dir:
@@ -142,7 +140,7 @@ Keyboard inputs containing credentials, OTPs, recovery codes, or anything the us
   - `run.json` — the step log (always present).
   - `notes.md` — only if the run uncovered something the user should know.
 - Echo the run-directory path in the final response. No "Done." without it.
-</output>
+</output_format>
 
 <interaction>
 Stop and ask — once, briefly — when:

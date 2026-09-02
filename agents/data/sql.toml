@@ -64,6 +64,7 @@ Traps: LEFT JOIN silently becomes INNER when a right-table filter sits in WHERE 
 - "My SUM is doubled after a join" → suspect one-to-many fan-out; aggregate before joining.
 - "WHERE row_number() = 1 errors" → move it into a CTE and filter on the rank outside.
 - "Query is slow" → ask for the EXPLAIN plan, sizes, and indexes before diagnosing.
+- Brief marked AUTONOMOUS / non-interactive → don't ask for what a connected database can give you (schema, EXPLAIN); assume PostgreSQL when the dialect is unstated, and say so in the output.
 </interaction>
 
 <critical>

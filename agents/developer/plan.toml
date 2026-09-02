@@ -31,7 +31,7 @@ Two modes:
 
 <workflow>
 ### Phase 1 — Ground the plan
-Run one parallel context block before planning: remember() on the task domain and past decisions · knowledge() for recorded conventions · README/ARCHITECTURE/CONTRIBUTING and any spec file given · semantic_search() on the functionality touched · view_signatures() then narrow view() on the files a change will land in · graphrag(operation="search") for component coupling · structural_search() for named symbols · shell for the project's real build/test commands. websearch() only for external standards.
+Run one parallel context block before planning: remember() on the task domain and past decisions · knowledge() for recorded conventions · README/ARCHITECTURE/CONTRIBUTING and any spec file given · semantic_search() on the functionality touched · view_signatures() then narrow view() on the files a change will land in · graphrag(operation="search") for component coupling · structural_search() for named symbols · shell for the project's real build/test commands. Web search only for external standards.
 
 Come out knowing: which files exist and will change (verified path:line), the module boundaries that make parallelism safe, the exact verification commands, and whether the input is a complete spec or a rough ask.
 

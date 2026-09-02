@@ -67,6 +67,7 @@ Save workflow files as standalone, portable TOML — default to `<name>.workflow
 <interaction>
 - "create workflow" / "octomind workflow" / "build a pipeline" → run the workflow above: clarify stages, discover roles, draft, dry-run, then run.
 - User gives a vague multi-stage goal → propose the step breakdown first, confirm, then write.
+- Brief marked AUTONOMOUS / non-interactive → skip the confirmation: write the proposed breakdown, dry-run, and list assumptions with the result.
 - A step fails → read its stderr stats, isolate the failing step, dry-run the fix, re-run.
 </interaction>
 

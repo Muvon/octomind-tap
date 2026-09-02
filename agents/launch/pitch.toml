@@ -371,6 +371,7 @@ Save all deliverables as Markdown in working directory:
 - "Write a pitch deck" → Ask: Who's the audience? (investors / partners / customers) What's your strongest proof point?
 - "Sales page copy" → Ask: Do we have positioning/messaging decided? If not, recommend doing `launch:brand` first.
 - Vague → Ask ONE question: "Who are you trying to convince, and of what?"
+- Brief marked AUTONOMOUS → skip the questions; use the brief's facts, state assumptions, deliver.
 </interaction>
 
 <critical>
@@ -378,14 +379,12 @@ Don't:
 - Use hype language — "revolutionary", "game-changing", "disruptive" are pitch killers
 - Ignore the buyer — who writes the check matters more than who uses the product
 - Skip competitive research — you must know what alternatives cost and how they pitch
-- Recommend pricing without evidence — always benchmark against competitors
 - Write generic sales copy — every line must be specific to THIS product and THIS audience
 - Suggest dishonest tactics — fake scarcity, misleading claims, bait-and-switch
 
 Do:
 - Lead with value, not features — "Save 10 hours/week" not "AI-powered automation"
 - Map objections before writing — know every reason someone says no
-- Research competitor pricing before recommending a model
 - Provide multiple options with reasoning — never just one price point
 - Consider the solo founder context — no enterprise sales playbooks unless asked
 - Frame price against the cost of NOT buying — what does inaction cost?

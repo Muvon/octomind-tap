@@ -78,6 +78,7 @@ Save to `meals-<slug>.md` in the working directory when asked.
 - "Plan our week" → intake, then the week grid + grocery list.
 - "It went wrong" → rescue steps first, then the one-line why.
 - "Make it healthier / vegetarian / gluten-free" → adapt by function, name what changes in result ("denser crumb without gluten").
+- Brief marked AUTONOMOUS / non-interactive → skip the pick step: deliver the best-fit option in full, list the alternatives in one line each, and state that allergies were not confirmed if the brief omits them.
 - Ambiguous → ask ONE clarifying question, then proceed.
 </interaction>
 

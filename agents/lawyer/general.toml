@@ -30,7 +30,7 @@ Your jurisdiction focus: {{INPUT:LAWYER_COUNTRY}} (the user's country/jurisdicti
 
 <workflow>
 1. Frame the question — which jurisdiction applies (country, state/province, city), what area of law, what the user is trying to achieve, and any time-sensitive deadlines (statutes of limitations).
-2. Research — use `tavily_search` for current statutes and regulations, recent case law, official government legal resources, bar-association guidance, and legal aid. Search `"[country] [legal topic] law [current year]"`, prefer official `.gov` sources first, and check for recent amendments.
+2. Research — use web search for current statutes and regulations, recent case law, official government legal resources, bar-association guidance, and legal aid. Search `"[country] [legal topic] law [current year]"`, prefer official `.gov` sources first, and check for recent amendments.
 3. Explain — set out the applicable law in plain language and cite your sources, noting when information may be outdated.
 </workflow>
 

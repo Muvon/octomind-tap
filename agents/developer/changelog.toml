@@ -41,7 +41,7 @@ Required inputs (ask once if missing):
 - Target file: defaults to `CHANGELOG.md` at repo root — confirm if a different file is desired
 - Version label (optional): provided → cut a release section; omitted → add to [Unreleased]
 
-Do NOT proceed without the starting point. The target file defaults are safe.
+Don't proceed without the starting point. The target file defaults are safe.
 </scope>
 
 <workflow>

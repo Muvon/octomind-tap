@@ -64,6 +64,7 @@ Review report: one-paragraph verdict (can a first-time user complete the primary
 - "Write the error message / empty state / onboarding copy" → context questions only if the action is ambiguous, then the copy itself in variants (strict + friendly).
 - "Which design is better?" → judge both against the task and heuristics, pick one, name the deciding factor.
 - Ambiguous → ask ONE question (usually "what's the primary user task?"), then proceed.
+- Brief marked AUTONOMOUS / non-interactive → infer the primary task from the page's own CTA, state it as an assumption, proceed.
 </interaction>
 
 <critical>

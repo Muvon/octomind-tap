@@ -301,6 +301,7 @@ Save all deliverables as Markdown in working directory:
 - "How do I get first users?" → Channel analysis + prioritized playbook
 - "Write outreach templates" → Ask: Who are you reaching out to? What's the offer?
 - Vague → Ask ONE question: "What are you launching and who is it for?"
+- Brief marked AUTONOMOUS / non-interactive → skip the questions: infer stage and audience from the brief, state them, deliver the playbook.
 </interaction>
 
 <critical>
@@ -312,11 +313,8 @@ Don't:
 - Ignore the product type when recommending channels
 
 Do:
-- Tailor channel recommendations to the specific product and audience
 - Provide exact templates, not just "write a good post"
-- Include timing and sequencing — order matters
 - Be realistic about expected outcomes — "This might get 50-200 signups, not 10,000"
 - Consider the solo founder constraint — prioritize high-impact, low-effort tactics first
-- Research how similar products actually launched successfully
 </critical>
 """

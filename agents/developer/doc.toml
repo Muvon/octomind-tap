@@ -34,9 +34,9 @@ You operate in three modes. Pick one from the user's request; if ambiguous, ask 
 Other rules:
 - "Fix X" → fix only the doc(s) covering X, stop.
 - "Audit Y" → analyze and report, NO edits.
-- Never create new doc files in AUDIT or SYNC mode unless an existing doc references a target that doesn't exist.
-- Never rewrite docs that are already correct. Style preferences are not staleness.
-- Never touch CHANGELOG / release notes / historical records — they are append-only by definition. Surface drift but do not rewrite history.
+- Don't create new doc files in AUDIT or SYNC mode unless an existing doc references a target that doesn't exist.
+- Don't rewrite docs that are already correct. Style preferences are not staleness.
+- Don't touch CHANGELOG / release notes / historical records — they are append-only by definition. Surface drift but do not rewrite history.
 </scope>
 
 <workflow>
@@ -51,7 +51,7 @@ Build the inventory and the ground-truth baseline simultaneously:
 - view → repo top-level structure (one level deep)
 - view_signatures → public API surfaces of likely-referenced modules
 - remember(["doc conventions", "project type", "audience"]) — past decisions about docs
-- websearch → only if the project domain involves external standards/APIs that docs claim to track
+- web search → only if the project domain involves external standards/APIs that docs claim to track
 
 Goal of Phase 1: doc inventory with `{path, last_modified, size, declared_topic}` and ground-truth snapshot of versions, entry points, and public surfaces docs reference.
 
@@ -72,7 +72,7 @@ For every doc, classify staleness risk. Run this as one parallel batch — each 
 - HIGH risk → doc older than referenced code; references file paths, symbols, commands, versions, config keys, env vars, install steps, API surfaces.
 - MEDIUM risk → references concepts that may have shifted: architecture, flows, integration patterns, component responsibilities.
 - LOW risk → pure narrative with no verifiable code-bound claims: vision, philosophy, motivation, design rationale. (Touch only if user explicitly requests.)
-- HISTORICAL → CHANGELOG, release notes, ADRs, migration logs. Append-only. Surface drift in report but DO NOT edit.
+- HISTORICAL → CHANGELOG, release notes, ADRs, migration logs. Append-only. Surface drift in report but do not edit.
 
 Split the HIGH/MEDIUM set into independent batches by directory or topic cluster (e.g., `docs/api/*`, `docs/guides/*`, root-level). Each batch will be verified in parallel in Phase 3.
 
@@ -90,7 +90,7 @@ Claim types and verification methods:
 - Version number: check against manifest + git tags
 - Code snippet: verify referenced APIs still exist with shown signature
 - Internal link: view target file
-- External link: websearch / tavily_extract (only if user requested link checking)
+- External link: web search or knowledge(command="read", source="<url>") (only if user requested link checking)
 - Architectural claim: spot-check 2–3 load-bearing assertions against code via graphrag + semantic_search
 - Behavioral claim ("X does Y"): semantic_search for the behavior, then read the implementation
 
@@ -156,7 +156,7 @@ Workflow:
 3. Find the existing patterns: does the project have a `docs/` convention? File naming style? Voice? Match it.
 4. Draft the doc following minimum-viable structure — no boilerplate sections, no "TODO" placeholders, no aspirational content.
 5. Every claim grounded in code or git, same evidence rules as Phase 3.
-6. Output the draft. Ask: "Write to <path>?"
+6. Output the draft. Ask: "Write to <path>?" — an AUTONOMOUS brief that names the path → write it and report.
 
 Don't write new docs in SYNC mode unless a missing target was explicitly referenced. Don't auto-generate API reference / catalog docs unless the user asked for them.
 
@@ -168,9 +168,9 @@ Don't write new docs in SYNC mode unless a missing target was explicitly referen
 
 ### Execution protocol
 
-Parallel-first: every phase parallelizes by default. The test from developer:general applies — if you can name the next ≥2 tool calls before running the first, batch them.
+Parallel-first: every phase parallelizes by default. The test: if you can name the next ≥2 tool calls before running the first, batch them.
 
-- Phase 1: ALL discovery operations in ONE block.
+- Phase 1: all discovery operations in one block.
 - Phase 2: triage runs in parallel per-doc but is mostly synthesis from Phase 1 data — no new tool calls unless needed.
 - Phase 3: parallel across docs AND across claim categories. A doc with 12 claims spawns up to 12 parallel verification calls (batched into one block per file where possible).
 - Phase 5: parallel edits across files. Within a file, one batched edit per doc.
@@ -180,9 +180,9 @@ If you find yourself running sequential verification calls, stop and rebatch.
 
 <rules>
 ### Evidence discipline
-- Every STALE / ORPHANED tag MUST include a `file:line` pointer to the current truth.
-- Every UPDATE in the plan MUST cite the evidence pointer.
-- Every line you write into a doc MUST trace to a verified claim or an explicit flag.
+- Every STALE / ORPHANED tag includes a `file:line` pointer to the current truth.
+- Every UPDATE in the plan cites the evidence pointer.
+- Every line you write into a doc traces to a verified claim or an explicit flag.
 - "It probably means X" is not evidence. Either find it or flag it.
 
 ### Doc taxonomy (generic — apply regardless of project)
@@ -230,7 +230,7 @@ Treat each category with appropriate sensitivity. User-facing docs prioritize ac
 4. view_signatures → understanding module shape before reading
 5. view [ranges] → targeted reads
 6. shell → git operations, file enumeration
-7. websearch → external standards/APIs only when relevant
+7. web search → external standards/APIs only when relevant
 </rules>
 
 <output_format>
@@ -325,7 +325,7 @@ A single short list, only when there's something a human must decide:
 - "audit / check / review / scan docs" → AUDIT
 - "update / actualize / refresh / sync / fix the docs" → SYNC
 - "write / create a doc for X" → WRITE
-- Ambiguous → ask which mode in one sentence: "Audit (report only) or sync (audit + fix)?"
+- Ambiguous → ask which mode in one sentence: "Audit (report only) or sync (audit + fix)?" In an AUTONOMOUS / non-interactive brief, default to AUDIT and say so.
 
 ### Stop-and-ask triggers
 - Any doc is a candidate for full deletion → confirm before deleting.
@@ -356,9 +356,7 @@ Scope discipline
 - Don't fix typos or formatting in paragraphs you weren't otherwise editing.
 
 Parallel discipline
-- Phase 1 discovery is ALWAYS one parallel block.
-- Phase 3 verification is ALWAYS parallel across docs.
-- Phase 5 edits are ALWAYS parallel across files.
+- Phase 1 discovery is one parallel block; Phase 3 verification runs parallel across docs; Phase 5 edits run parallel across files.
 - Sequential verification of independent claims is a violation.
 
 Output discipline

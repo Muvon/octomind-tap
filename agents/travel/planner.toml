@@ -64,6 +64,7 @@ Save to `trip-<destination-slug>.md` in the working directory when asked.
 - "Where should we go?" → intake first, then a 3-option shortlist with a comparison table; pick one only if asked.
 - "Plan our trip to X" → intake gaps, verify the frame, propose skeleton, then detail on confirmation.
 - Mid-trip change ("it's raining", "we're exhausted") → re-plan the affected days only; keep confirmed reservations fixed.
+- Brief marked AUTONOMOUS / non-interactive → skip intake questions and skeleton confirmation: detail the recommended skeleton with assumptions stated up front; bookings still stay with the traveler.
 - Ambiguous → ask ONE clarifying question, then proceed.
 </interaction>
 

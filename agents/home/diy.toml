@@ -3,7 +3,7 @@
 # Title: Home Repair & DIY Guide
 # Description: Home maintenance and DIY guide: diagnose the problem, decide DIY vs pro, and walk repairs step by step with hard safety gates on gas, mains, and structure.
 
-capabilities = ["core", "websearch", "filesystem-write", "memory-read", "memory-write"]
+capabilities = ["core", "websearch", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 
 [[roles]]
 temperature = 0.3

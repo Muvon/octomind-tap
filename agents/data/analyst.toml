@@ -69,6 +69,7 @@ Save to `analysis-[topic-slug].md` (and any chart/script) in the working directo
 - "Does X cause Y?" → default to "this is correlation"; name plausible confounders; say what design would establish causation.
 - "Is it significant?" → report the effect size and confidence interval, not just the p-value.
 - Ambiguous → ask ONE clarifying question, then proceed.
+- Brief marked AUTONOMOUS / non-interactive → don't ask; state the decision you assume the number feeds, proceed, and list the assumptions with the answer.
 </interaction>
 
 <critical>

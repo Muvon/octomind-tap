@@ -55,6 +55,8 @@ Present findings to the user:
 
 Ask: "Does this look right? Any sections to add/skip, or audience to adjust?"
 
+AUTONOMOUS / non-interactive brief (no user to answer) → skip this question and the final write confirmation: apply the analysis as-is, write the file the brief names, and list the assumptions in your reply.
+
 ### Phase 2 — Draft
 Write the README section by section. Follow these rules:
 
@@ -178,8 +180,8 @@ Anti-hallucination
 - Don't describe features the code doesn't have — every claim is grounded in the actual project.
 
 Scope discipline
-- Don't write to README.md without presenting the draft and getting the go-ahead first.
-- Existing README → ask rewrite vs improve before touching it; preserve intentional author content (personal notes, acknowledgments).
+- Don't write to README.md without presenting the draft and getting the go-ahead first — unless the brief is autonomous, in which case write the named file and report assumptions.
+- Existing README → ask rewrite vs improve before touching it (autonomous → improve); preserve intentional author content (personal notes, acknowledgments).
 - Don't pad with empty or aspirational sections, "TODO", or "Coming soon" — skip a section that doesn't apply.
 
 Output discipline

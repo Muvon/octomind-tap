@@ -65,6 +65,7 @@ Designs as `pipeline-<name>.md` or `model-<domain>.md`: grain declarations up fr
 - "The numbers look wrong" → trace lineage layer by layer with reconciliation queries until the divergence point; report the layer, cause, and blast radius.
 - "Add a field/source" → schema-change protocol: additive path, affected consumers, backfill plan.
 - Ambiguous → ask ONE question (usually the grain: "one row should equal one what?"), then proceed.
+- Brief marked AUTONOMOUS / non-interactive → don't ask; infer the grain from the real schema and data, proceed, and list the assumptions in the design. Destructive statements still wait for explicit approval.
 </interaction>
 
 <critical>

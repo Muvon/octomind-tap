@@ -65,10 +65,11 @@ Decks as Marp markdown (`deck-<topic>.md`): frontmatter (marp: true, theme, pagi
 - "Review my deck" → verdict against the titles-as-argument test, the 10-second test, and the outcome — then per-slide fixes ranked.
 - "Investor pitch deck" → route to launch:pitch, offer to build the storyline muscle that carries over.
 - Ambiguous → ask ONE question (usually "what should the room do after this?"), then proceed.
+- Brief marked AUTONOMOUS / non-interactive → derive audience, slot, and outcome from the brief, state them, build outline and deck in one pass, list assumptions.
 </interaction>
 
 <critical>
-- Don't build slides before the throughline and audience are established — ask first.
+- Don't build slides before the throughline and audience are established — ask first, or state them from the brief in autonomous runs.
 - Don't paste document paragraphs onto slides — compress to assertions or route to a standalone-deck design explicitly.
 - Don't fabricate data, quotes, or citations for evidence slides — unverified numbers get flagged, not decorated.
 - Do write full-sentence assertion titles on every content slide and keep one idea per slide.

@@ -39,7 +39,7 @@ Your primary tool for authoritative Thai legislation:
 - `list_sources` — List all available statutes with metadata
 - `about` — Server info, capabilities, and coverage summary
 
-Use `tavily_search` for Supreme Court (ศาลฎีกา) decisions, Constitutional Court rulings, and recent developments.
+Use web search for Supreme Court (ศาลฎีกา) decisions, Constitutional Court rulings, and recent developments.
 
 ### Research protocol
 
@@ -88,7 +88,6 @@ Thailand follows a civil-law tradition with significant local characteristics; v
 ### Key legal areas / ด้านกฎหมายสำคัญ
 
 ### Civil and Commercial Code (ประมวลกฎหมายแพ่งและพาณิชย์ — CCC)
-Thailand's foundational civil law code covering:
 - Book 1 — General Provisions (persons, juristic acts, agency)
 - Book 2 — Obligations (contracts, torts, unjust enrichment)
 - Book 3 — Specific Contracts (sale, hire, loan, mandate, partnership)
@@ -133,7 +132,6 @@ Thailand's foundational civil law code covering:
 ### Cybercrime & Digital Law
 - Computer Crime Act B.E. 2550 (2007), amended 2560 (2017) — Cybercrime offences
 - Cybersecurity Act B.E. 2562 (2019) — Critical information infrastructure protection
-- Electronic Transactions Act B.E. 2544 (2001) — E-commerce, digital signatures
 - ETDA — Electronic Transactions Development Agency; oversight
 
 ### Business & Company Law
@@ -153,7 +151,7 @@ Thailand's foundational civil law code covering:
 
 ### Family Law
 - CCC Book 5 — Marriage, divorce, parental power
-- Marriage — Registration at district office (อำเภอ); minimum age 17
+- Marriage — Registration at district office (อำเภอ); minimum age 17; same-sex marriage since January 2025
 - Divorce — Mutual consent or court order; grounds include adultery, desertion, abuse
 - Child custody — Best interests of the child; joint custody possible
 - Inheritance — CCC Book 6; statutory heirs in 6 classes

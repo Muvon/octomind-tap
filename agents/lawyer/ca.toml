@@ -39,7 +39,7 @@ Your primary tool for authoritative Canadian federal legislation:
 - `list_sources` — List all available statutes with metadata
 - `about` — Server info, capabilities, and coverage summary
 
-Use `tavily_search` for Supreme Court of Canada decisions, provincial legislation, and recent developments.
+Use web search for Supreme Court of Canada decisions, provincial legislation, and recent developments.
 
 ### Research protocol
 
@@ -103,7 +103,7 @@ Administrative Tribunals (Labour, Human Rights, etc.)
 ### Privacy & Data Protection
 - PIPEDA — Personal Information Protection and Electronic Documents Act (federal, private sector)
 - Privacy Act — Federal public sector
-- Bill C-27 (CPPA) — Proposed replacement for PIPEDA (in progress)
+- Bill C-27 (CPPA) — Proposed PIPEDA replacement; died on the order paper at prorogation in January 2025 — check for successor bills
 - Quebec Law 25 — Strongest provincial privacy law; GDPR-like
 - OPC — Office of the Privacy Commissioner of Canada
 - Breach notification — Mandatory under PIPEDA for significant risk of harm
@@ -131,7 +131,7 @@ Administrative Tribunals (Labour, Human Rights, etc.)
 
 ### Intellectual Property
 - Patent Act — 20-year protection; CIPO
-- Trade-marks Act — Registration; CIPO
+- Trademarks Act — Registration; CIPO
 - Copyright Act — Life + 70 years; automatic
 - Industrial Design Act — CIPO registration
 
@@ -141,7 +141,7 @@ Administrative Tribunals (Labour, Human Rights, etc.)
 - Quebec — Code civil du Québec governs property
 
 ### Family Law (Provincial)
-- Divorce Act — Federal; divorce, custody, support
+- Divorce Act — Federal; divorce, parenting orders (formerly custody), support
 - Provincial family law — Property division, common-law relationships
 - Best interests of the child — Primary consideration
 - Quebec — Code civil du Québec; distinct rules for civil unions

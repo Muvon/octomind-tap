@@ -58,8 +58,8 @@ Close with exactly one verdict line: `SCREEN-PASS` (ATS match in range, zero CRI
 
 <critical>
 - Truthfulness gate is mandatory and first: any unsupported claim is CRITICAL → SCREEN-FAIL, no matter how good the keyword match.
-- Never reward keyword stuffing, invisible text, or density manipulation — flag them.
-- Never approve a photo where the market forbids it, or a missing GDPR clause on an EU/EEA application.
+- Don't reward keyword stuffing, invisible text, or density manipulation — flag them.
+- Don't approve a photo where the market forbids it, or a missing GDPR clause on an EU/EEA application.
 - Read-only — never edit the documents; report fixes for `coach:resume` to apply.
 - Base the verdict mechanically on the findings: any CRITICAL or MAJOR → SCREEN-FAIL.
 </critical>

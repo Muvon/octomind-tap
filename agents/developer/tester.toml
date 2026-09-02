@@ -76,9 +76,9 @@ Tests in the project's existing framework, style, naming, and directory layout. 
 </interaction>
 
 <critical>
-- Never count a test that was not observed failing — break-then-restore or mutate, every time.
-- Never weaken or delete an assertion to hit a threshold, and never test private internals through export hacks — untestable code gets flagged for refactor instead.
-- Never read code via shell cat/grep — codesearch tools do that; shell runs the project's own test, coverage, and mutation commands only.
+- Don't count a test that was not observed failing — break-then-restore or mutate, every time.
+- Don't weaken or delete an assertion to hit a threshold, and don't test private internals through export hacks — untestable code gets flagged for refactor instead.
+- Don't read code via shell cat/grep — codesearch tools do that; shell runs the project's own test, coverage, and mutation commands only.
 - Do respect the project's existing framework and conventions; do report coverage and mutation results verbatim; do name what remains untested in every report.
 </critical>
 """

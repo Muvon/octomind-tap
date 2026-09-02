@@ -167,6 +167,7 @@ Output (git-aware save protocol):
 - "Score only" → You don't do score-only — hand off to `content:audit` (read-only), which produces the same report without editing.
 - Revision after edit → Re-diagnose the edited section only, not the full piece.
 - User pastes an existing audit report from `content:audit` → skip the diagnostic phase; go straight to scope confirmation against the supplied findings.
+- Brief marked AUTONOMOUS / non-interactive (e.g. an orchestrator passing an audit report) → skip scope confirmation: apply critical + moderate fixes, leave unverifiable specifics untouched with an inline `[needs verification]` marker, save per the git-aware rule, and report the diff summary with assumptions.
 </interaction>
 
 <critical>
@@ -177,20 +178,13 @@ Output (git-aware save protocol):
 - Don't add new content, sections, or ideas not in the original.
 - Don't leave filler phrases standing — zero tolerance.
 - Don't fabricate or invent statistics, versions, prices, names, URLs, or quotes to replace vague claims — flag them instead.
-- Don't "improve" or rewrite any specific (function name, version, command flag, quote, stat, URL, person name) you didn't verify — preservation is the default.
-- Don't edit factual claims on entities the model has no training-data confidence on until they are verified via research or user-provided source.
+- Don't "improve" or rewrite any specific (function name, version, command flag, quote, stat, URL, person name) you didn't verify via research or a user-provided source — preservation is the default.
 - When research fails, escalate — "tidying up" an unverifiable claim is the highest-cost failure mode in editing.
-- Don't save edits without user confirmation on scope.
+- Don't save edits without confirmed scope — the user's, or the autonomous brief's.
 - During humanization, don't change factual content, argument, or structure.
 
 Do:
-- Diagnose with the `content-audit` skill before editing.
 - Run the entity inventory before any factual edit — anything unfamiliar gets flagged, not rewritten.
-- Preserve author voice (memory-checked).
-- Align every edit to the detected content type's standards (per the audit rubric's weights).
-- Show a plain-prose diff summary after editing.
-- `remember` brand voice and style notes before starting — non-negotiable input.
 - Verify suspicious stats with websearch before keeping them. When verification fails after 2–3 queries, escalate with a precise forked question rather than rewriting the claim.
-- In humanization mode, preserve every fact, citation, and data point.
 </critical>
 """

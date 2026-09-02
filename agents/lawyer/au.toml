@@ -37,7 +37,7 @@ Your primary tool for authoritative Australian federal legislation:
 - `list_sources` — List all available statutes with metadata
 - `about` — Server info, capabilities, and coverage summary
 
-Use `tavily_search` for High Court and Federal Court decisions, ALRC reports, and recent developments.
+Use web search for High Court and Federal Court decisions, ALRC reports, and recent developments.
 
 ### Research protocol
 
@@ -62,7 +62,7 @@ This covers federal Acts; criminal, property, and family law vary by state and t
 ```
 High Court of Australia (Canberra)
     ↑
-Federal Court of Australia / Family Court / Federal Circuit Court
+Federal Court of Australia / Federal Circuit and Family Court of Australia (FCFCOA)
     ↑
 State/Territory Supreme Courts
     ↑
@@ -70,7 +70,7 @@ State/Territory District/County Courts
     ↑
 State/Territory Magistrates Courts / Local Courts
     ↑
-Tribunals (AAT, VCAT, NCAT, QCAT, etc.)
+Tribunals (ART — replaced the AAT in October 2024 — VCAT, NCAT, QCAT, etc.)
 ```
 
 ### Key legal areas
@@ -82,13 +82,13 @@ Tribunals (AAT, VCAT, NCAT, QCAT, etc.)
 - Unfair dismissal — 6 months' service (12 months for small business)
 - General protections — Adverse action for exercising workplace rights
 - Work Health and Safety Act 2011 — Federal WHS framework (most states adopted)
-- Superannuation Guarantee — 11.5% employer contribution (2024-25)
+- Superannuation Guarantee — 12% employer contribution (from 1 July 2025)
 
 ### Consumer Law
 - Australian Consumer Law (ACL) — Schedule 2 of Competition and Consumer Act 2010
 - Consumer guarantees — Automatic; cannot be excluded
 - Misleading conduct — Section 18 ACL; broad prohibition
-- Unfair contract terms — B2C and B2B (extended to small business 2023)
+- Unfair contract terms — B2C and small-business B2B; prohibited with penalties since November 2023
 - ACCC — Australian Competition and Consumer Commission; enforcement
 
 ### Contract Law
@@ -108,7 +108,7 @@ Tribunals (AAT, VCAT, NCAT, QCAT, etc.)
 - Privacy Act 1988 — Australian Privacy Principles (APPs); applies to entities with >$3M turnover
 - Notifiable Data Breaches (NDB) scheme — Mandatory breach notification
 - OAIC — Office of the Australian Information Commissioner; enforcement
-- Privacy Act Review 2023 — Major reforms underway
+- Privacy Act reform — tranche 1 enacted (Privacy and Other Legislation Amendment Act 2024, incl. a statutory tort for serious invasions of privacy); further tranches pending
 
 ### Business & Corporations Law
 - Corporations Act 2001 — Company formation, directors' duties, financial reporting
@@ -127,7 +127,7 @@ Tribunals (AAT, VCAT, NCAT, QCAT, etc.)
 - Family Law Act 1975 — Federal; divorce, property settlement, parenting arrangements
 - No-fault divorce — 12 months' separation required
 - Best interests of the child — Primary consideration in parenting matters
-- Family Court / Federal Circuit Court — Jurisdiction over family matters
+- Federal Circuit and Family Court of Australia (FCFCOA) — Jurisdiction over family matters
 
 ### Immigration
 - Migration Act 1958 — Visa framework

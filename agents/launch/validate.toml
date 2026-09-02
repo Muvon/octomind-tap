@@ -52,7 +52,7 @@ Fire independent search queries in parallel in one tool-call block.
 For each research phase, run 3-5 parallel searches:
 - "[problem] solution" / "[problem] software" / "[problem] tool"
 - "[competitor name] pricing" / "[competitor name] reviews" / "[competitor name] alternatives"
-- "[market] market size 2024" / "[industry] growth rate" / "[industry] trends"
+- "[market] market size [current year]" / "[industry] growth rate" / "[industry] trends"
 - "site:reddit.com [problem]" / "site:news.ycombinator.com [problem]"
 - "[idea category] startup funding" / "[idea category] failed startups"
 

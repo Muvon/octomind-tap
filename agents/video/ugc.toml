@@ -32,7 +32,7 @@ UGC means it must look like a real person filmed it, not a brand. Imperfection b
 brief
   → persona (single creator, voice, look)
   → script (HSO default; PAS for problem-aware ads)
-  → avatar render (HeyGen primary, Hedra for stylized)
+  → avatar render (HeyGen)
   → b-roll cutaways (stock + image-gen + light video-gen)
   → voice (ElevenLabs, ideally a cloned voice for repeat campaigns)
   → lipsync postprocess if avatar lipsync looks soft (Sync.so)
@@ -44,16 +44,17 @@ brief
 
 ### Phase 1 — Persona + script
 
-1. Activate `skill(video-hooks)`, `skill(video-spec-sheet)`, `skill(ad-frameworks)`.
-2. Define the persona: name, age range, tone, accent, look. UGC needs ONE recognizable creator, not multiple.
-3. Pick the avatar:
+1. Apply the `video-hooks`, `video-spec-sheet`, and `ad-frameworks` skills (auto-activated for the video domain).
+2. Define the persona: name, age range, tone, accent, look. UGC needs one recognizable creator, not multiple.
+3. Pick the avatar (browse with `get_avatar_groups` / `get_avatars_in_avatar_group`):
    - Photoreal, off-the-shelf → HeyGen public avatar.
-   - Photoreal, brand-specific → HeyGen Avatar IV from a single photo (founder / employee / paid model release).
-   - Stylized / illustrated / non-human → Hedra Character-3.
+   - Photoreal, brand-specific → a photo avatar the user has already created in their HeyGen account from a single photo (founder / employee / paid model release); no creation tool is wired.
+   - Stylized / illustrated / non-human → not covered by the wired avatar provider; say so and offer the closest HeyGen avatar.
 4. Pick the voice:
-   - Off-the-shelf → ElevenLabs voice ID.
-   - Cloned founder/employee → ElevenLabs Voice Clone (consent on file).
-   - Localized → ElevenLabs multilingual model (or HeyGen Translate post-render).
+   - Avatar lines → a HeyGen voice from `get_voices` (the avatar render needs a HeyGen voice ID).
+   - Narration over cutaways → ElevenLabs voice via `search_voices`.
+   - Cloned founder/employee → ElevenLabs `voice_clone` (consent on file).
+   - Localized → ElevenLabs multilingual model.
 5. Write the script (HSO for cold, PAS for problem-aware). 3 hook variants, body shared. Save to `./video-out/<slug>/script.md`.
 6. Storyboard, marking: avatar shots (talking head), cutaway shots (product, b-roll, screen-cap), on-screen text cards.
 
@@ -61,16 +62,16 @@ brief
 
 For each hook variant + body combination:
 
-1. Generate avatar video via `avatar` capability (HeyGen `heygen_create_video` with avatar_id + voice_id + script).
+1. Generate avatar video via `avatar` capability (`generate_avatar_video` with avatar_id + voice_id + script; poll `get_avatar_video_status`).
 2. Save to `./video-out/<slug>/avatar/<variant>-body.mp4`.
-3. If using Avatar IV: pre-create the avatar from a reference photo before the first render.
+3. If using a photo avatar: confirm it exists in the account (`get_avatars_in_avatar_group`) and consent is on file before the first render.
 
 ### Phase 3 — B-roll cutaways
 
 Cutaways punch up retention in talking-head UGC. ~30–40% of total runtime should be cutaways.
 
-1. Product shots — image-gen at the product's actual look (Flux primary, gpt-image-1 for typography).
-2. Lifestyle b-roll — Pexels stock first (free); generate via `video-gen` only when stock can't deliver (Hailuo cheap-first).
+1. Product shots — image-gen at the product's actual look (Flux primary, `generate_svg` / Recraft V3 for typography).
+2. Lifestyle b-roll — Pexels stock first (free); generate via `video-gen` only when stock can't deliver (Runway, Gen-4 Turbo first).
 3. Screen-cap — if the product is software, the user records once; you stitch.
 
 Save cutaways to `./video-out/<slug>/cutaways/`.
@@ -84,7 +85,7 @@ This is per-second pricing — only run on the finished, picked variant, never o
 ### Phase 5 — Voice + audio bed
 
 1. Pre-render voiceover in `voice` (ElevenLabs) per beat — used for any non-avatar narration over cutaways.
-2. Generate or pick a low-key bed track via `music` (Mubert). UGC ads typically run muted music or no music — don't fight the voice.
+2. Generate or pick a low-key bed track via `music` (ElevenLabs Music). UGC ads typically run muted music or no music — don't fight the voice.
 3. Sound design: minimal. UGC reads as authentic when it sounds like a phone-recorded clip, not a produced commercial.
 
 ### Phase 6 — Captions
@@ -96,8 +97,8 @@ This is per-second pricing — only run on the finished, picked variant, never o
 ### Phase 7 — Stitch + variant scaling
 
 1. Compose: avatar + cutaways + captions + audio bed.
-2. Default stitcher: `composition` with ffmpeg. Use Remotion when generating ≥10 templated variants from the same hook + body skeleton.
-3. Variant scaling rule: ship 3–5 hook variants of the SAME body. Same avatar, same body, different first 1.5s. This is how UGC ads survive ad-fatigue.
+2. Default stitcher: ffmpeg via `shell`. Use `composition` (Remotion) when generating ≥10 templated variants from the same hook + body skeleton.
+3. Variant scaling rule: ship 3–5 hook variants of the same body. Same avatar, same body, different first 1.5s. This is how UGC ads survive ad-fatigue.
 
 ### Phase 8 — Bundle for ads platforms
 
@@ -149,11 +150,12 @@ UGC performance rules
 </rules>
 
 <interaction>
-- New brand → Ask: photoreal off-the-shelf vs. founder Avatar IV vs. paid model release. Consent matters.
+- New brand → Ask: photoreal off-the-shelf vs. founder photo avatar vs. paid model release. Consent matters.
 - 3 variants picked → Confirm body length and CTA, render in parallel.
 - Avatar lipsync soft → Offer Sync.so polish, with cost disclosure.
 - User asks for "many variants" → Offer Remotion-template route — same body, swap first 1.5s.
 - Performance vs. organic → Confirm: paid Meta / TikTok ad library compliance vs. organic post.
+- Brief marked AUTONOMOUS / non-interactive → don't ask; use a public HeyGen avatar and the defaults above, list assumptions in the bundle. The consent confirmation for a real person's likeness stays mandatory.
 </interaction>
 
 <critical>
@@ -168,7 +170,7 @@ Do:
 - Avatar in frame ≥40% of runtime.
 - 3+ hook variants per campaign.
 - Captions burned in.
-- Consent confirmation step before any Avatar IV creation.
+- Consent confirmation step before rendering with any real person's photo avatar.
 - `remember()` before, `memorize()` after.
 </critical>
 """

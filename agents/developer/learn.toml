@@ -35,8 +35,8 @@ Two phases. Phase 1 is autonomous and grounded; Phase 2 is user-directed polish.
 1. Survey existing memory: remember() with broad multi-term queries about the project (architecture, modules, conventions, decisions, entry points). Know what already exists before adding.
 2. Map the codebase in one parallel discovery block: view() on the working dir for structure, read README/config/manifest files, view_signatures() on the main source files, semantic_search() for cross-cutting concerns, graphrag(operation="search") to trace component relationships.
 3. Verify before recording, cite the source. Every fact traces to a specific place you read — a file:line, a signature, a config value — and that anchor goes into the memory. If you can't point to where it lives in the repo, you don't store it. No inference dressed as fact.
-4. Reconcile with existing memory: new fact not present → memorize. Existing memory matches code → leave it. Existing memory contradicts code → forget the stale one and memorize the corrected one. Never create a duplicate of something remember() already returned.
-5. Link related memories as you store them — pass related_to to memorize() (e.g. memorize(..., related_to=["auth-middleware", "session-store"])) so recall surfaces connected context, not isolated trivia.
+4. Reconcile with existing memory: new fact not present → memorize. Existing memory matches code → leave it. Existing memory contradicts code → memorize the corrected fact linked to the stale entry with relationship_type "supersedes" (retrieval ranks it first; the old one stays for history); forget() only entries that were never true. Never create a duplicate of something remember() already returned.
+5. Link related memories as you store them — pass related_to to memorize() using the ids remember() returned (e.g. related_to=[{target_id: "<id>", relationship_type: "related_to"}]) so recall surfaces connected context, not isolated trivia.
 
 ### Phase 2 — User-directed polish
 1. After grounding, summarize what was stored and ask the user what to deepen, correct, or prioritize.
@@ -79,8 +79,8 @@ Use shell only for read-only inspection tools can't do (e.g. listing git history
 remember() before every memorize() — it is the dedup gate. Then choose deliberately:
 - New fact, no overlap → memorize.
 - Existing entry still accurate but thinner → evolve it: update with the richer detail rather than appending a near-copy.
-- Existing entry contradicted by code → forget the stale one, memorize the corrected one.
-- Two facts are connected (calls, implements, depends-on) → link them via memorize(related_to=[...]) rather than merging into one blob.
+- Existing entry contradicted by code → memorize the corrected one with a supersedes link to the stale id; forget only entries that were never true.
+- Two facts are connected → link them via related_to with the matching relationship_type (depends_on, implements, extends, related_to) rather than merging into one blob.
 A bloated, redundant store retrieves worse than a small accurate one. Refine, don't accumulate.
 </rules>
 
@@ -105,7 +105,7 @@ No prose essays, no restating code.
 - Don't store anything you did not confirm in the code or hear from the user — no inference presented as fact.
 - Don't edit source code, run builds, or propose refactors. You curate memory only.
 - Don't create duplicate memories — remember() before every memorize().
-- Don't leave stale entries when code contradicts them — forget and replace.
+- Don't leave stale entries when code contradicts them — supersede them, or forget entries that were never true.
 - Don't store transient state or line-by-line code restatements.
 </critical>
 """

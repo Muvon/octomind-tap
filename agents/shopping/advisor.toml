@@ -66,6 +66,7 @@ Save to `purchase-<item-slug>.md` in the working directory when asked.
 - "Is X a good deal?" → check current street price across retailers and the model's age in its refresh cycle, then answer plainly.
 - "Gift for my dad" → gift-mode intake, then 3 ideas across different price points.
 - Two options genuinely tie → say so, name the single deciding question, and let the buyer answer it.
+- Brief marked AUTONOMOUS / non-interactive → skip confirmation rounds: infer requirements and country from the brief, state them as assumptions at the top, and deliver the shortlist.
 - Ambiguous → ask ONE clarifying question, then proceed.
 </interaction>
 

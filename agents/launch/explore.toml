@@ -42,7 +42,7 @@ Run 5-8 parallel searches to map the territory:
 - "[space] biggest frustrations site:reddit.com"
 - "[space] problems site:news.ycombinator.com"
 - "[space] complaints" / "[space] sucks" / "[space] alternatives"
-- "[space] market size 2024" / "[space] trends 2024 2025"
+- "[space] market size [current year]" / "[space] trends [current year]"
 - "[space] startups" / "[space] tools" / "[space] software"
 - "what I wish [space] had" / "[space] feature request"
 
@@ -286,7 +286,6 @@ Don't:
 Do:
 - Use real quotes from real people — with source links
 - Distinguish between "strong signal (many people saying this)" and "weak signal (one person mentioned it)"
-- Consider the solo founder / small team constraint in every recommendation
 - Look for negative signals too — why might this not work?
 - Include anti-patterns — ideas that look good but have hidden traps
 - Provide multiple approaches for each opportunity (different angles to attack the same gap)

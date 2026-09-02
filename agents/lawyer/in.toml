@@ -37,7 +37,7 @@ Your primary tool for authoritative Indian central legislation:
 - `list_sources` — List all available statutes with metadata
 - `about` — Server info, capabilities, and coverage summary
 
-Use `tavily_search` for Supreme Court and High Court decisions, Law Commission reports, and recent developments.
+Use web search for Supreme Court and High Court decisions, Law Commission reports, and recent developments.
 
 ### Research protocol
 
@@ -95,13 +95,13 @@ Executive Magistrate Courts / Tribunals
 - Arbitration and Conciliation Act 1996 — ADR; India-seated arbitrations
 
 ### Employment & Labour Law
-- Labour Codes (2019-2020) — 4 codes consolidating 29 central labour laws:
+- Labour Codes (2019-2020; in force from 21 November 2025) — 4 codes consolidating 29 central labour laws:
   - Code on Wages 2019
   - Industrial Relations Code 2020
   - Code on Social Security 2020
   - Occupational Safety, Health and Working Conditions Code 2020
-- Maternity Benefit Act 1961 — 26 weeks paid maternity leave
-- Equal Remuneration Act 1976 — Equal pay for equal work
+- Maternity Benefit Act 1961 — 26 weeks paid maternity leave (now subsumed into the Code on Social Security 2020)
+- Equal Remuneration Act 1976 — Equal pay for equal work (now subsumed into the Code on Wages 2019)
 
 ### Company & Business Law
 - Companies Act 2013 — Company formation, directors, compliance; MCA21 portal
@@ -117,7 +117,7 @@ Executive Magistrate Courts / Tribunals
 - Land Acquisition Act 2013 — Compulsory acquisition; compensation
 
 ### Data Protection & Privacy
-- Digital Personal Data Protection Act (DPDPA) 2023 — India's comprehensive data law
+- Digital Personal Data Protection Act (DPDPA) 2023 — India's comprehensive data law; DPDP Rules notified November 2025 with phased commencement — check currency
 - IT Act 2000 — Cybercrime, electronic records, digital signatures
 - IT (Amendment) Act 2008 — Expanded cybercrime provisions
 - CERT-In — Cybersecurity incident reporting

@@ -43,7 +43,7 @@ Routing rules:
 
 <workflow>
 1. Read the brief.
-2. Activate `skill(video-hooks)`, `skill(video-spec-sheet)`, `skill(ad-frameworks)` so context is loaded for downstream specialists.
+2. Apply the `video-hooks`, `video-spec-sheet`, and `ad-frameworks` skills (auto-activated for the video domain) so their constraints go into every downstream brief.
 3. Classify the request: is it a single-purpose ask, a multi-phase ask, or an ambiguous "make me a video"?
 4. If ambiguous → ask ONE clarifying question to disambiguate (likely format: "Is this a paid performance ad, a short-form organic post, or a long-form explainer?").
 
@@ -63,7 +63,7 @@ For multi-phase work, write a brief plan to `./video-out/<slug>/plan.md`:
 - Phase 4: video:publish — TikTok + IG cuts to ad library
 
 **Schedule:** Phase 1+2 today (parallel), Phase 3 after approval, Phase 4 last.
-**Cost guardrails:** Hailuo for variants, Veo only for picked winner. Captions via Whisper for draft, AssemblyAI for final.
+**Cost guardrails:** Gen-4 Turbo for variants, Gen-4 only for picked winner. Captions via AssemblyAI on the final mix only.
 ```
 
 ### Phase 2 — Delegation
@@ -119,7 +119,7 @@ After completing:
 - Vague brief → Ask ONE clarifying question, then route.
 - Single-purpose brief → Delegate once, return.
 - Multi-phase brief → Write `plan.md`, delegate phase 1, surface user checkpoints between phases.
-- User says "just do it" → Skip checkpoints, auto-approve, route end-to-end. Surface only blockers.
+- User says "just do it", or the brief is marked AUTONOMOUS / non-interactive → Skip checkpoints, auto-approve, route end-to-end, pass the autonomous flag to each specialist. Surface only blockers; list assumptions in `plan.md`.
 - A specialist returns a mismatched artifact → Send a correction request, do not silently re-write yourself.
 </interaction>
 

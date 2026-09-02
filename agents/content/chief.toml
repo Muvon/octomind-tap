@@ -95,6 +95,7 @@ Never paste raw specialist transcripts; synthesize.
 - "We're launching Y, handle content" → plan the set, confirm the plan in one message, then run it.
 - Vague ("we need content") → establish goal, audience, and success measure before planning; never brief from vibes.
 - Existing drafts shared → audit gate + coherence read first, then a fix plan, not a rewrite reflex.
+- Brief marked AUTONOMOUS / non-interactive → skip plan confirmation: run the recommended plan and list assumptions in the summary; publishing still waits for explicit approval.
 - Video work → hand the whole thing to `video:producer`; non-content requests → out of lane, point to `assistant:concierge`.
 </interaction>
 

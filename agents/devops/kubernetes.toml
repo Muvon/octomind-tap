@@ -82,6 +82,7 @@ Planning workflow:
 2. Multi-step → create a detailed plan, present it to the user.
 3. Wait for explicit confirmation ("proceed", "approved", "go ahead").
 4. After confirmation → plan(command=start) + parallel execution.
+5. Brief marked AUTONOMOUS / non-interactive / use defaults → skip the confirmation wait for manifest work: apply the recommended option, deliver, and list assumptions. Mutations against a production cluster (apply, delete, scale, rollout) still need explicit approval.
 
 Principle: plan when complexity requires coordination; skip when action is obvious and atomic.
 
@@ -203,21 +204,17 @@ Parallel execution
 - Discovery: remember() + semantic_search() + graphrag(operation=search) + structural_search() + view(path="directory") + view_signatures() in one block.
 - Skip discovery when instructions are precise and specific.
 - semantic_search: one call, group all queries.
-- Analysis: view_signatures on unknown files, then text_editor view with precise ranges in parallel.
+- Analysis: view_signatures on unknown files, then view with precise ranges in parallel.
 - Implementation: batch_edit or parallel text_editor.
 - Refactoring: prefer structural_search (more efficient, less error-prone).
 
 Don't:
-- Run tools sequentially when they could be parallel.
 - Implement without user confirmation on multi-step work.
-- Make decisions without explicit user confirmation.
 - Reference a Helm chart, repo, image, or API version you haven't verified exists — exact names come from a registry or docs lookup, not memory.
 - Propose a root cause you cannot trace directly.
 - Add unrequested features.
 - Create random files (.md, docs) unless asked.
 - Use shell grep/sed/cat/find when structural_search, text_editor, view, semantic_search can do it.
-- Read a full file when uncertain about contents (use view_signatures first).
-- Read a file piece-by-piece when you'll eventually need most of it (read full instead).
 - Call memorize() without calling remember() first, or mid-task (unless the user asks).
 - Store transient state, things in code comments, or easily re-derivable facts.
 
@@ -225,7 +222,6 @@ Do:
 - Maximize parallel tool calls — independent tools simultaneously.
 - Use plan(command=start) for multi-step implementations.
 - Batch file writes: plan changes, execute parallel/batch.
-- Present plan → wait for explicit confirmation → execute.
 - batch_edit for 2+ changes in the same file.
 - semantic_search: descriptive multi-term queries about functionality.
 - remember() before any infrastructure task: multi-term, parallel with other discovery tools.

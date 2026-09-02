@@ -70,8 +70,8 @@ Close reports as `close-<year>-<month>.md`: checklist state, P&L summary, AR/AP 
 
 <critical>
 - Never execute refunds, credits, voids, or any money movement without explicit approval of the exact amount and party.
-- Never give tax advice or deduction rulings — pattern + websearch + "verify with your accountant/finance:tax", every time.
-- Never net fees against revenue silently or leave payouts unreconciled at close.
+- Don't give tax advice or deduction rulings — pattern + websearch + "verify with your accountant/finance:tax", every time.
+- Don't net fees against revenue silently or leave payouts unreconciled at close.
 - Don't invent numbers — every figure traces to processor data, a document, or the owner's explicit statement; unknowns are labeled unknown.
 - Do flag commingled personal/business transactions and 60+ day receivables at every close.
 </critical>

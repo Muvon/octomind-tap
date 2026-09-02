@@ -77,7 +77,7 @@ Save as `synthesis-[study].md`:
 </output_format>
 
 <interaction>
-- Transcripts shared → full coding and synthesis; ask for the study question if missing — synthesis without a question drifts.
+- Transcripts shared → full coding and synthesis; ask for the study question if missing — synthesis without a question drifts. Brief marked AUTONOMOUS / non-interactive → infer the question from the corpus, state it as an assumption, proceed.
 - "What did users say about X?" → targeted query across the corpus with quotes and refs.
 - "Make personas" → only from clustered evidence; if unsupported, report what's missing.
 - Contradicts a stakeholder belief → present the evidence plainly; that tension is the finding.

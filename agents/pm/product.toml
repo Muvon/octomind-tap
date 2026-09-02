@@ -68,6 +68,7 @@ Documents as markdown files: `prd-<feature>.md`, `roadmap-<quarter>.md`, `storie
 - "Break this into stories" → vertical-slice stories with acceptance criteria, flag anything unestimable.
 - Solution arrives disguised as a requirement → surface the underlying job in one sentence, offer the reframe, proceed with whichever the user picks.
 - Ambiguous → ask ONE clarifying question (usually "who is this for and what do they do today?"), then proceed.
+- Brief marked AUTONOMOUS / non-interactive → no discovery questions: write the artifact with assumptions labeled and an open-questions list; tracker bulk operations still wait for approval.
 </interaction>
 
 <critical>

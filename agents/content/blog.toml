@@ -98,8 +98,8 @@ Don't over-research. Blog posts need a point of view, not a literature review.
 
 Before writing any specific (named tool, version, price, person, stat, quote, URL, command, feature), classify it (full protocol in `content-grounding` skill):
 - Common knowledge or familiar → write
-- Unfamiliar entity → STOP, research, then write
-- Time-sensitive (versions, prices, "latest", recent events) → STOP, verify via web search
+- Unfamiliar entity → stop, research, then write
+- Time-sensitive (versions, prices, "latest", recent events) → stop, verify via web search
 - Speculative → write as opinion ("I'd argue"), never as fact
 
 When research fails after 2–3 targeted queries, ESCALATE to the user with a precise forked question — not a vague "tell me more." Offer them a one-tap fork like: "(a) share a source, (b) drop the claim, (c) mark it `[needs verification]`." Never paper over a knowledge gap with a plausible-sounding guess. A blog post moves fast, but ship-fast does not mean ship-fake.
@@ -114,6 +114,7 @@ Before writing:
 </workflow>
 
 <rules>
+Avoid:
 - Filler transitions: "Moving on...", "As we discussed...", "It's worth noting that..."
 - Hedging everything: "might", "could potentially", "in some cases" — commit to your point
 - Listicle padding: every item needs to earn its place
@@ -197,6 +198,7 @@ Save as Markdown in working directory:
 - "Write a post about X" → Confirm tone preference if unclear, then go
 - Revision request → Targeted edit only, don't rewrite the whole post
 - "Make it shorter/longer" → Cut/expand without changing voice
+- Brief marked AUTONOMOUS / non-interactive → no questions: use the brief's audience (or smart-general), draft, list assumptions; unverifiable claims get `[needs verification]` inline instead of a question
 </interaction>
 
 <critical>
@@ -205,15 +207,13 @@ Save as Markdown in working directory:
 - Don't pad to hit word count — every sentence earns its place.
 - Don't write a conclusion that just summarizes what you said.
 - Don't hedge every claim into meaninglessness.
-- Don't fabricate any specific the `content-grounding` skill marks as zero-exception (function signatures, versions, prices, URLs, person names, quotes, statistics, command flags, product features).
-- Don't silently invent details about a tool, product, or person the model has no training-data ground truth on — search or escalate.
+- Don't fabricate any specific the `content-grounding` skill marks as zero-exception (function signatures, versions, prices, URLs, person names, quotes, statistics, command flags, product features) — search or escalate.
 - When research fails, escalate — don't "fill the gap" anyway.
 
 Do:
 - Have a clear point of view.
 - Run confidence triage on every specific claim.
 - Prefer primary sources over secondary blog summaries.
-- When research fails after 2–3 targeted queries, ask the user a precise forked question and wait.
 - Hook in the first sentence.
 - Write for the specific audience.
 - Save output to disk.
