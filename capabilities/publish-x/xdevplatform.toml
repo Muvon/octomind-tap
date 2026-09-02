@@ -1,0 +1,28 @@
+# capabilities/publish-x/xdevplatform.toml
+# Capability: publish-x
+# Provider: xurl bridge — official X MCP (api.x.com/mcp) via @xdevplatform/xurl
+# Title: X Publishing
+# Description: Post, delete, and analyze posts on X through the official hosted X MCP, with media upload and recent search.
+# Provides tools: createPosts, deletePosts, getPostsById, getUsersPosts, getUsersMentions, searchPostsRecent, getPostsAnalytics, getMediaAnalytics, initializeMediaUpload, appendMediaUpload, finalizeMediaUpload, getMediaUploadStatus, createMediaMetadata, getUsersMe
+#
+# Launch wrapper: xurl reads generic env names (CLIENT_ID, CLIENT_SECRET) that
+# would collide in the shared session env, so the wrapper remaps X_-prefixed
+# vars to the names the bridge reads. First run with no cached token opens a
+# browser for the one-time OAuth login (headless: `xurl auth oauth2 --headless`
+# beforehand); tokens cache in ~/.xurl and auto-refresh.
+
+[deps]
+require = ["xdevplatform/xurl"]
+
+[roles.mcp]
+server_refs = ["x"]
+allowed_tools = ["createPosts", "deletePosts", "getPostsById", "getUsersPosts", "getUsersMentions", "searchPostsRecent", "getPostsAnalytics", "getMediaAnalytics", "initializeMediaUpload", "appendMediaUpload", "finalizeMediaUpload", "getMediaUploadStatus", "createMediaMetadata", "getUsersMe"]
+
+[[mcp.servers]]
+name = "x"
+type = "stdio"
+command = "sh"
+args = ["-c", "CLIENT_ID=\"$X_CLIENT_ID\" CLIENT_SECRET=\"$X_CLIENT_SECRET\" exec npx -y @xdevplatform/xurl@1.3.1 mcp https://api.x.com/mcp"]
+timeout_seconds = 300
+env = { X_CLIENT_ID = "{{ENV:X_CLIENT_ID}}", X_CLIENT_SECRET = "{{ENV:X_CLIENT_SECRET}}" }
+tools = []

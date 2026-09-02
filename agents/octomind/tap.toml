@@ -238,6 +238,7 @@ Env delivery: octomind has no per-server env field — the `env` table is droppe
 | `programming-swift`      | swift |
 | `publish-instagram`      | meta-instagram |
 | `publish-tiktok`         | tiktok-posting |
+| `publish-x`              | xdevplatform |
 | `publish-youtube`        | youtube-data |
 | `runtime`                | octomind |
 | `scraping`               | firecrawl |
