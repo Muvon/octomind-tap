@@ -1,10 +1,11 @@
 ---
 name: trend-threads
 title: "Threads Trend Harvester Playbook"
-description: "Platform-specific intel for harvesting Threads trends — current conversation-weighted ranking signals, harvest URLs, scoring rubric using reply-to-like ratio and author-reply density (views aren't surfaced), hook taxonomy that's currently winning, and dead patterns in 2026. Activates whenever the user names Threads."
+description: "Platform-specific intel for harvesting Threads trends — current conversation-weighted ranking signals, harvest URLs, scoring rubric using reply-to-like ratio and author-reply density (views aren't surfaced), hook taxonomy that's currently winning, and dead patterns in 2026. Activates in browser sessions whenever the user names Threads."
 license: Apache-2.0
 compatibility: "Octoweb browser access. Signed-in Threads session recommended for For You / Following surfaces; logged-out works for search and tag pages."
 capabilities: octoweb memory-read memory-write
+domains: browser
 rules:
   - session(trend) content(threads)
   - match(\bthreads\s+(trend|trends|harvest|brief|post)\b)

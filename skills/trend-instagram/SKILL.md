@@ -1,10 +1,11 @@
 ---
 name: trend-instagram
 title: "Instagram Trend Harvester Playbook"
-description: "Platform-specific intel for harvesting Instagram trends — per-surface ranking reality (Explore weights engagement velocity; the audio page visit is itself a ranked action), trending-audio discovery via the arrow icon / audio-page use counts / trending leaderboard, the TikTok 3–7-day arbitrage window, harvest surface URLs, a scoring rubric built on views/sends-era metrics, lifecycle heuristics (48-hour buy zone, 1–3 week lifespan), and the April 2026 originality rule that makes take-free trend-riding recommendation-ineligible. Activates whenever the user names Instagram."
+description: "Platform-specific intel for harvesting Instagram trends — per-surface ranking reality (Explore weights engagement velocity; the audio page visit is itself a ranked action), trending-audio discovery via the arrow icon / audio-page use counts / trending leaderboard, the TikTok 3–7-day arbitrage window, harvest surface URLs, a scoring rubric built on views/sends-era metrics, lifecycle heuristics (48-hour buy zone, 1–3 week lifespan), and the April 2026 originality rule that makes take-free trend-riding recommendation-ineligible. Activates in browser sessions whenever the user names Instagram."
 license: Apache-2.0
 compatibility: "Octoweb browser access. Requires signed-in Instagram session in the user's browser for Explore/Reels feeds and audio pages; trending-audio leaderboard and Professional Dashboard are app-only surfaces — harvest their output via audio pages."
 capabilities: octoweb memory-read memory-write
+domains: browser
 rules:
   - session(trend) content(instagram)
   - session(trend) content(reels)

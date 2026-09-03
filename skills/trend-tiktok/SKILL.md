@@ -1,10 +1,11 @@
 ---
 name: trend-tiktok
 title: "TikTok Trend Harvester Playbook"
-description: "Platform-specific intel for harvesting TikTok trends — Creative Center as the primary instrument (Trends tabs for hashtags/songs/creators/videos with country+industry filters, Keyword Insights, Symphony Assistant), the measured 10-day content lifespan (96% of reach) as the urgency anchor, sound-vs-format lifecycle asymmetry, scoring built on views-to-follower ratios (follower count is officially not a ranking factor), the fabricated-stat blacklist, and dead patterns from the For You eligibility standards. Activates whenever the user names TikTok."
+description: "Platform-specific intel for harvesting TikTok trends — Creative Center as the primary instrument (Trends tabs for hashtags/songs/creators/videos with country+industry filters, Keyword Insights, Symphony Assistant), the measured 10-day content lifespan (96% of reach) as the urgency anchor, sound-vs-format lifecycle asymmetry, scoring built on views-to-follower ratios (follower count is officially not a ranking factor), the fabricated-stat blacklist, and dead patterns from the For You eligibility standards. Activates in browser sessions whenever the user names TikTok."
 license: Apache-2.0
 compatibility: "Octoweb browser access. Creative Center (creativecenter.tiktok.com) is public and free but heavily JS-rendered — needs a live browser session, not fetch; TikTok web works logged-out for search/tags/sounds."
 capabilities: octoweb memory-read memory-write
+domains: browser
 rules:
   - session(trend) content(tiktok)
   - match(\btiktok\s+(trend|trends|harvest|brief)\b)

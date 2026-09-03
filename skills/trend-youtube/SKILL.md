@@ -1,10 +1,11 @@
 ---
 name: trend-youtube
 title: "YouTube Trend Harvester Playbook"
-description: "Platform-specific intel for harvesting YouTube trends after the July 2025 Trending-page removal — the replacement stack (category Charts, Studio Inspiration tab with content gaps, Hype, the experimental Research tab with outlier multipliers), outlier-hunting methodology (channel-relative multiples, never absolute views; format outliers over timing outliers; one is luck, three is a strategy), Google Trends' separate YouTube Search dataset, Shorts trend surfaces, and a scoring rubric built on views-vs-channel-baseline. Activates whenever the user names YouTube."
+description: "Platform-specific intel for harvesting YouTube trends after the July 2025 Trending-page removal — the replacement stack (category Charts, Studio Inspiration tab with content gaps, Hype, the experimental Research tab with outlier multipliers), outlier-hunting methodology (channel-relative multiples, never absolute views; format outliers over timing outliers; one is luck, three is a strategy), Google Trends' separate YouTube Search dataset, Shorts trend surfaces, and a scoring rubric built on views-vs-channel-baseline. Activates in browser sessions whenever the user names YouTube."
 license: Apache-2.0
 compatibility: "Octoweb browser access. Charts and Google Trends work logged-out; Studio Inspiration tab and Hype data require the user's signed-in session; outlier tools (1of10, ViewStats, vidIQ) are third-party freemium."
 capabilities: octoweb memory-read memory-write
+domains: browser
 rules:
   - session(trend) content(youtube)
   - match(\byoutube\s+(trend|trends|trending|harvest|brief)\b)
