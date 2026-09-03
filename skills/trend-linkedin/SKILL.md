@@ -1,11 +1,10 @@
 ---
 name: trend-linkedin
 title: "LinkedIn Trend Harvester Playbook"
-description: "Platform-specific intel for harvesting LinkedIn trends — dwell-and-comment ranking signals, harvest URLs, scoring on comment-to-reaction ratio and reshare-with-commentary, hook taxonomy that earns the 210-char expand-click in 2026, format-mix shifts (carousel rising / video / text), and dead patterns. Activates inside an octoweb:trend session whenever the user names LinkedIn."
+description: "Platform-specific intel for harvesting LinkedIn trends — dwell-and-comment ranking signals, harvest URLs, scoring on comment-to-reaction ratio and reshare-with-commentary, hook taxonomy that earns the 210-char expand-click in 2026, format-mix shifts (carousel rising / video / text), and dead patterns. Activates whenever the user names LinkedIn."
 license: Apache-2.0
 compatibility: "Octoweb browser access. Signed-in LinkedIn session required for feed and content-search surfaces."
 capabilities: octoweb memory-read memory-write
-domains: octoweb
 rules:
   - session(trend) content(linkedin)
   - match(\blinkedin\s+(trend|trends|harvest|brief|post)\b)
@@ -14,7 +13,7 @@ rules:
 
 ## Overview
 
-This skill carries the platform-specific mechanics the `octoweb:trend` agent needs to harvest LinkedIn — current algorithm signals, harvest URLs, scoring on dwell-and-comment economics, hook taxonomy engineered for the 210-char fold, dead patterns, timing. The agent owns the shared DNA loop; this skill plugs the LinkedIn parameters into it.
+This skill carries the platform-specific mechanics the trend-harvesting agent needs to harvest LinkedIn — current algorithm signals, harvest URLs, scoring on dwell-and-comment economics, hook taxonomy engineered for the 210-char fold, dead patterns, timing. The agent owns the shared DNA loop; this skill plugs the LinkedIn parameters into it.
 
 ## Mental model
 

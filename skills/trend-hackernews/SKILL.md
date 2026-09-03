@@ -1,11 +1,10 @@
 ---
 name: trend-hackernews
 title: "Hacker News Trend Harvester Playbook"
-description: "Platform-specific intel for harvesting Hacker News trends — point-velocity ranking, harvest URLs (front page, new, Show, Ask, Algolia), flag-tax mechanics, title rules from HN guidelines, Show HN / Ask HN / link-submission patterns, anchor commenters and dead patterns in 2026. Activates inside an octoweb:trend session whenever the user names HN / Hacker News."
+description: "Platform-specific intel for harvesting Hacker News trends — point-velocity ranking, harvest URLs (front page, new, Show, Ask, Algolia), flag-tax mechanics, title rules from HN guidelines, Show HN / Ask HN / link-submission patterns, anchor commenters and dead patterns in 2026. Activates whenever the user names HN / Hacker News."
 license: Apache-2.0
 compatibility: "Octoweb browser access. Logged-out works for all front-page and Algolia surfaces; logged-in needed to see [dead] posts and to submit."
 capabilities: octoweb memory-read memory-write
-domains: octoweb
 rules:
   - session(trend) content(hackernews)
   - session(trend) content(hn)
@@ -17,7 +16,7 @@ rules:
 
 ## Overview
 
-This skill carries the platform-specific mechanics the `octoweb:trend` agent needs to harvest Hacker News — current ranking signals (point velocity × comment depth × flag-tax × age-decay), harvest URLs, title rules from HN guidelines, Show HN / Ask HN / link-submission patterns, anchor commenters, dead patterns. The agent owns the shared DNA loop; this skill plugs the HN parameters in.
+This skill carries the platform-specific mechanics the trend-harvesting agent needs to harvest Hacker News — current ranking signals (point velocity × comment depth × flag-tax × age-decay), harvest URLs, title rules from HN guidelines, Show HN / Ask HN / link-submission patterns, anchor commenters, dead patterns. The agent owns the shared DNA loop; this skill plugs the HN parameters in.
 
 ## Mental model
 

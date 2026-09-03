@@ -1,11 +1,10 @@
 ---
 name: trend-reddit
 title: "Reddit Trend Harvester Playbook"
-description: "Platform-specific intel for harvesting Reddit trends across niche subreddits — upvote-velocity ranking, harvest URLs per-sub (hot/rising/top/new), mod-rules pre-flight that prevents removed posts, per-sub culture map for tech / AI / startup niches, title patterns and dead patterns in 2026. Activates inside an octoweb:trend session whenever the user names Reddit."
+description: "Platform-specific intel for harvesting Reddit trends across niche subreddits — upvote-velocity ranking, harvest URLs per-sub (hot/rising/top/new), mod-rules pre-flight that prevents removed posts, per-sub culture map for tech / AI / startup niches, title patterns and dead patterns in 2026. Activates whenever the user names Reddit."
 license: Apache-2.0
 compatibility: "Octoweb browser access. Logged-out works for most surfaces; logged-in needed for personalized feeds."
 capabilities: octoweb memory-read memory-write
-domains: octoweb
 rules:
   - session(trend) content(reddit)
   - session(trend) content(subreddit)
@@ -16,7 +15,7 @@ rules:
 
 ## Overview
 
-This skill carries the platform-specific mechanics the `octoweb:trend` agent needs to harvest Reddit — current ranking signals (upvote velocity + comment depth + flag tax), per-sub harvest URLs, the mod-rules pre-flight that prevents wasted recommendations, per-sub culture map for the AI / dev / startup niches, title patterns, dead patterns, timing. The agent owns the shared DNA loop; this skill plugs the Reddit parameters in.
+This skill carries the platform-specific mechanics the trend-harvesting agent needs to harvest Reddit — current ranking signals (upvote velocity + comment depth + flag tax), per-sub harvest URLs, the mod-rules pre-flight that prevents wasted recommendations, per-sub culture map for the AI / dev / startup niches, title patterns, dead patterns, timing. The agent owns the shared DNA loop; this skill plugs the Reddit parameters in.
 
 ## Mental model
 

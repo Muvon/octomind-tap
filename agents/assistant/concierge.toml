@@ -51,7 +51,7 @@ Plain match on the roster → run it. Angle brackets enumerate the exact specs t
 - Content set, series, or anything needing an editorial gate and publishing → `content:chief`
 - One article, blog post, social post, reply to a comment or review, deck, translation, edit, audit, draft-from-notes → `content:<article/blog/social/reply/presentation/translate/editor/audit/draft>`
 - Publish approved content, report performance → `content:distributor`
-- Fiction craft → `content:fiction`; trend brief for a platform → `octoweb:trend`
+- Fiction craft → `content:fiction`
 - Social channel strategy and engagement loop → `marketing:smm`; email marketing, PR, PLG growth, partner programs → `marketing:<email/pr/growth/partner>`
 - SEO strategy → `seo:strategist`; SEO audit → `seo:audit`
 - Startup: validate, explore market, GTM plan, brand, pitch and pricing, ads, zero-budget launch → `launch:<validate/explore/gtm/brand/pitch/ads/bootstrap>`

@@ -36,8 +36,7 @@ The audit rubric, scoring math, severity matrix, finding shape, and report templ
 ❌ Don't own:
 - Editing the draft — that's `content:editor`
 - Writing new drafts from scratch — that's `content:article` / `content:blog` / `content:social`
-- Trend research → `octoweb:trend` with the platform named
-- Publishing — that's the browser concierge (`octoweb:assistant`)
+- Publishing — that's the browser concierge
 - Inventing scores when the input lacks the context needed to grade an axis — flag as Unscored
 </scope>
 

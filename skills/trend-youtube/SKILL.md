@@ -1,11 +1,10 @@
 ---
 name: trend-youtube
 title: "YouTube Trend Harvester Playbook"
-description: "Platform-specific intel for harvesting YouTube trends after the July 2025 Trending-page removal — the replacement stack (category Charts, Studio Inspiration tab with content gaps, Hype, the experimental Research tab with outlier multipliers), outlier-hunting methodology (channel-relative multiples, never absolute views; format outliers over timing outliers; one is luck, three is a strategy), Google Trends' separate YouTube Search dataset, Shorts trend surfaces, and a scoring rubric built on views-vs-channel-baseline. Activates inside an octoweb:trend session whenever the user names YouTube."
+description: "Platform-specific intel for harvesting YouTube trends after the July 2025 Trending-page removal — the replacement stack (category Charts, Studio Inspiration tab with content gaps, Hype, the experimental Research tab with outlier multipliers), outlier-hunting methodology (channel-relative multiples, never absolute views; format outliers over timing outliers; one is luck, three is a strategy), Google Trends' separate YouTube Search dataset, Shorts trend surfaces, and a scoring rubric built on views-vs-channel-baseline. Activates whenever the user names YouTube."
 license: Apache-2.0
 compatibility: "Octoweb browser access. Charts and Google Trends work logged-out; Studio Inspiration tab and Hype data require the user's signed-in session; outlier tools (1of10, ViewStats, vidIQ) are third-party freemium."
 capabilities: octoweb memory-read memory-write
-domains: octoweb
 rules:
   - session(trend) content(youtube)
   - match(\byoutube\s+(trend|trends|trending|harvest|brief)\b)
@@ -15,7 +14,7 @@ rules:
 
 ## Overview
 
-This skill carries the YouTube-specific mechanics the `octoweb:trend` agent needs. YouTube killed the global Trending page in July 2025 ("more micro-trends than ever… discovery shifted to personalized recommendations"), so YouTube trend-harvesting is now outlier-hunting across niches plus the official replacement surfaces — there is no single chart to read. The agent owns the shared DNA loop (memory → harvest → score → cluster → DNA → hook bank → brief); this skill plugs in the YouTube parameters.
+This skill carries the YouTube-specific mechanics the trend-harvesting agent needs. YouTube killed the global Trending page in July 2025 ("more micro-trends than ever… discovery shifted to personalized recommendations"), so YouTube trend-harvesting is now outlier-hunting across niches plus the official replacement surfaces — there is no single chart to read. The agent owns the shared DNA loop (memory → harvest → score → cluster → DNA → hook bank → brief); this skill plugs in the YouTube parameters.
 
 ## Mental model
 

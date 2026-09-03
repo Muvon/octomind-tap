@@ -103,7 +103,6 @@ Capabilities are grouped by **who needs the tool**. Each tier is its own built-i
 Only agents that genuinely orchestrate carry `orchestration`:
 - `assistant:concierge` — the global system orchestrator (routes every domain).
 - `developer:general` — a domain orchestrator (runs `developer:context` and its engineering team).
-- `octoweb:assistant` — a browser concierge that delegates expert work, then executes browser actions.
 
 > `orchestration` (and `runtime`) may still **auto-activate** on intent — e.g. a request that clearly needs cross-domain delegation or a recurring loop — via `capabilities/orchestration/config.toml` triggers. Auto-activation is request-driven and temporary; it never becomes part of a domain agent's standing grant.
 

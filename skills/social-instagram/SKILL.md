@@ -139,4 +139,4 @@ A trending audio is peaking in your niche. Lazy version: lip-sync the meme forma
 - Meta AI-labeling policy: https://about.fb.com/news/2024/04/metas-approach-to-labeling-ai-generated-content-and-manipulated-media/
 - Measured figures: Socialinsider 2026 (n=35M posts), Metricool 2026 (n=24.4M posts / 375K accounts), Rival IQ 2026 benchmark, Buffer format/timing studies (n=4M posts), Emplifi collab study (2024). ER figures are per-follower unless stated; reach figures are view-based — the denominators differ by study and that difference drives the format guidance above.
 - Numbers dated 2025–2026; platform policy shifts fast — re-validate the originality-policy scope, Trial Reels eligibility, and caption-links rollout (Meta Verified test, March 2026) before advising on them as current.
-- Companion skills: `content-voice` (kill the AI markers), `trend-instagram` (octoweb domain) for harvesting what's currently working.
+- Companion skills: `content-voice` (kill the AI markers), `trend-instagram` for harvesting what's currently working.

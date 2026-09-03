@@ -68,7 +68,6 @@ agents/
   launch/         ← startup, marketing, growth
   device/         ← device & desktop UI automation (mobile, simulator, host OS GUI)
   browser/        ← web browser automation (DOM-driven, Playwright-style)
-  octoweb/        ← Octopus browser concierge + web-specific specialists
   octomind/       ← octomind-specific meta-agents
   support/        ← customer support desk & ticket triage
   <domain>/       ← new domains allowed, be descriptive
@@ -92,11 +91,10 @@ skills/           ← reusable instruction packs (AgentSkills spec)
 | `devops` | Infrastructure, CI/CD, containers, cloud, IaC | App code, UI, browser |
 | `device` | Mobile app UI (iOS/Android real + simulator), host OS GUI (macOS/Linux/Windows desktop), coordinate-based automation | Web browser DOM (→ `browser`), source code (→ `developer`), shell/builds (→ `devops`) |
 | `browser` | Web browser automation via DOM/Playwright (click, fill, scrape, screenshot web pages) | Native OS GUI (→ `device`), source code (→ `developer`) |
-| `octoweb` | Octopus browser concierge, web-specific specialists (trend, editor) | Native device UI (→ `device`), source code (→ `developer`) |
 | `security` | Security review, pen-testing, auditing | App code authoring (→ `developer`) |
-| `content` | Writing, editing, SEO | Browser actions (→ `browser`/`octoweb`), code (→ `developer`) |
+| `content` | Writing, editing, SEO | Browser actions (→ `browser`), code (→ `developer`) |
 
-Key rule: if the task involves tapping/clicking a native mobile or desktop app UI → `device`. If it involves a web page in a browser → `browser` or `octoweb`. If it involves writing or modifying source code → `developer`.
+Key rule: if the task involves tapping/clicking a native mobile or desktop app UI → `device`. If it involves a web page in a browser → `browser`. If it involves writing or modifying source code → `developer`.
 
 ### How capabilities work
 

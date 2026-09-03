@@ -122,4 +122,4 @@ Wrong: download the Reel (watermark burned in), upload to TikTok — excluded fr
 - TikTok Global SMB Creative Playbook (hook window, lo-fi studies, production specs): https://ads.tiktok.com/business/library/Global_SMB_Creative_Playbook.pdf
 - Measured figures: Metricool 2026 (n=2.31M posts/92K accounts), Socialinsider 2026 (n=2M videos), Buffer 2026 (n=52M posts), Rival IQ/Quid 2026 benchmark, Adobe 2025 search survey. Engagement-rate claims differ by denominator (per-follower vs per-view vs per-post) — attribute the study when citing one.
 - Source hygiene: 2026 "TikTok statistics" content is heavily polluted by AI stat farms inventing figures with fake attributions to real firms. Verify anything new against the primaries above before adding it here; re-validate policy items (AIGC controls, originality enforcement) periodically.
-- Companion skills: `content-voice` (kill the AI markers), `trend-tiktok` (octoweb domain) for harvesting what's currently rising.
+- Companion skills: `content-voice` (kill the AI markers), `trend-tiktok` for harvesting what's currently rising.

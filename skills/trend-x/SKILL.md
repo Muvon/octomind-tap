@@ -1,11 +1,10 @@
 ---
 name: trend-x
 title: "X (Twitter) Trend Harvester Playbook"
-description: "Platform-specific intel for harvesting X (Twitter) trends — current ranking mechanisms verified against the open-sourced Phoenix For You algorithm (Banger Initial Screen / slop classifier, predicted-action scoring incl. negative-weighted scroll-past, per-feed author diversity decay, mutual-follow Jaccard as ranking input, 7 PTOS kill-switches, sticky hash embeddings, video duration floor), harvest URLs with min_faves/min_retweets filters, scoring rubric on view ratios, hook taxonomy that's currently winning, and dead patterns the algorithm suppresses. Activates inside an octoweb:trend session whenever the user names X / Twitter."
+description: "Platform-specific intel for harvesting X (Twitter) trends — current ranking mechanisms verified against the open-sourced Phoenix For You algorithm (Banger Initial Screen / slop classifier, predicted-action scoring incl. negative-weighted scroll-past, per-feed author diversity decay, mutual-follow Jaccard as ranking input, 7 PTOS kill-switches, sticky hash embeddings, video duration floor), harvest URLs with min_faves/min_retweets filters, scoring rubric on view ratios, hook taxonomy that's currently winning, and dead patterns the algorithm suppresses. Activates whenever the user names X / Twitter."
 license: Apache-2.0
 compatibility: "Octoweb browser access. Requires signed-in X session in the user's browser for For You / Explore surfaces; logged-out works for search."
 capabilities: octoweb memory-read memory-write
-domains: octoweb
 rules:
   - session(trend) content(x)
   - session(trend) content(twitter)
@@ -16,7 +15,7 @@ rules:
 
 ## Overview
 
-This skill carries the platform-specific mechanics the `octoweb:trend` agent needs to harvest X (Twitter) — current algorithm weights, harvest surface URLs, scoring signals, hook taxonomy, dead patterns, timing. The agent owns the shared DNA loop (memory → harvest → score → cluster → DNA → hook bank → brief). This skill plugs the X-specific parameters into that loop.
+This skill carries the platform-specific mechanics the trend-harvesting agent needs to harvest X (Twitter) — current algorithm weights, harvest surface URLs, scoring signals, hook taxonomy, dead patterns, timing. The agent owns the shared DNA loop (memory → harvest → score → cluster → DNA → hook bank → brief). This skill plugs the X-specific parameters into that loop.
 
 ## Mental model
 

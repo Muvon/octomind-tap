@@ -1,11 +1,10 @@
 ---
 name: trend-threads
 title: "Threads Trend Harvester Playbook"
-description: "Platform-specific intel for harvesting Threads trends — current conversation-weighted ranking signals, harvest URLs, scoring rubric using reply-to-like ratio and author-reply density (views aren't surfaced), hook taxonomy that's currently winning, and dead patterns in 2026. Activates inside an octoweb:trend session whenever the user names Threads."
+description: "Platform-specific intel for harvesting Threads trends — current conversation-weighted ranking signals, harvest URLs, scoring rubric using reply-to-like ratio and author-reply density (views aren't surfaced), hook taxonomy that's currently winning, and dead patterns in 2026. Activates whenever the user names Threads."
 license: Apache-2.0
 compatibility: "Octoweb browser access. Signed-in Threads session recommended for For You / Following surfaces; logged-out works for search and tag pages."
 capabilities: octoweb memory-read memory-write
-domains: octoweb
 rules:
   - session(trend) content(threads)
   - match(\bthreads\s+(trend|trends|harvest|brief|post)\b)
@@ -14,7 +13,7 @@ rules:
 
 ## Overview
 
-This skill carries the platform-specific mechanics the `octoweb:trend` agent needs to harvest Threads — current algorithm signals, harvest surface URLs, scoring on conversation depth (not views), hook taxonomy, dead patterns, timing. The agent owns the shared DNA loop; this skill supplies the Threads parameters that plug into it.
+This skill carries the platform-specific mechanics the trend-harvesting agent needs to harvest Threads — current algorithm signals, harvest surface URLs, scoring on conversation depth (not views), hook taxonomy, dead patterns, timing. The agent owns the shared DNA loop; this skill supplies the Threads parameters that plug into it.
 
 ## Mental model
 

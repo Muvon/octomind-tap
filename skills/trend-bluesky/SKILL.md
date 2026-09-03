@@ -1,11 +1,10 @@
 ---
 name: trend-bluesky
 title: "Bluesky Trend Harvester Playbook"
-description: "Platform-specific intel for harvesting Bluesky trends — AT-Proto repost-driven amplification, custom-feed targeting, harvest URLs, scoring on repost-to-like ratio (no view counts), hook taxonomy tuned to Bluesky's technical / anti-marketing audience, and dead patterns in 2026. Activates inside an octoweb:trend session whenever the user names Bluesky."
+description: "Platform-specific intel for harvesting Bluesky trends — AT-Proto repost-driven amplification, custom-feed targeting, harvest URLs, scoring on repost-to-like ratio (no view counts), hook taxonomy tuned to Bluesky's technical / anti-marketing audience, and dead patterns in 2026. Activates whenever the user names Bluesky."
 license: Apache-2.0
 compatibility: "Octoweb browser access. Signed-in Bluesky session needed for Discover and Following surfaces; logged-out works for search and tag pages."
 capabilities: octoweb memory-read memory-write
-domains: octoweb
 rules:
   - session(trend) content(bluesky)
   - match(\bbluesky\s+(trend|trends|harvest|brief|post)\b)
@@ -15,7 +14,7 @@ rules:
 
 ## Overview
 
-This skill carries the platform-specific mechanics the `octoweb:trend` agent needs to harvest Bluesky — current AT-Proto ranking signals, harvest URLs including custom feeds, scoring on repost paths (no view counts), hook taxonomy for Bluesky's technical / anti-marketing audience, dead patterns, timing. The agent owns the shared DNA loop; this skill plugs the Bluesky parameters in.
+This skill carries the platform-specific mechanics the trend-harvesting agent needs to harvest Bluesky — current AT-Proto ranking signals, harvest URLs including custom feeds, scoring on repost paths (no view counts), hook taxonomy for Bluesky's technical / anti-marketing audience, dead patterns, timing. The agent owns the shared DNA loop; this skill plugs the Bluesky parameters in.
 
 ## Mental model
 

@@ -116,4 +116,4 @@ Analytics show 62% at 0:30 (fine), cliff to 31% by 1:10. Diagnosis: the hook pro
 - Measured: Retention Rabbit 2025 (n=10K+ videos — retention curve figures), vidIQ frequency study 2026 (n=10.2M channels, correlational), Metricool YouTube 2026 (n=800K videos), AIR Media-Tech RPM data (n=274 channels), Nate Black Shorts analysis (35B views), Inflow (n=5,400 Shorts). Thumbnail percentages circulating online are largely unsourced — treated here as heuristics only.
 - Practitioner: Paddy Galloway (Colin & Samir interview) — time-allocation split, packaging quotes.
 - Re-validate periodically: Test & Compare's winning metric, 3-minute Shorts distribution, clickbait enforcement scope, Shorts RPM by region.
-- Companion skills: `content-voice` (scripts that don't sound generated), `trend-youtube` (octoweb domain) for harvesting what's working now.
+- Companion skills: `content-voice` (scripts that don't sound generated), `trend-youtube` for harvesting what's working now.
