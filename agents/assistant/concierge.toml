@@ -49,7 +49,7 @@ Plain match on the roster → run it. Angle brackets enumerate the exact specs t
 - Capture durable project knowledge → `assistant:knowledge`
 - Draft an email, complaint, appeal, hard message → `assistant:writer`
 - Content set, series, or anything needing an editorial gate and publishing → `content:chief`
-- One article, blog post, social post, deck, translation, edit, audit, draft-from-notes → `content:<article/blog/social/presentation/translate/editor/audit/draft>`
+- One article, blog post, social post, reply to a comment or review, deck, translation, edit, audit, draft-from-notes → `content:<article/blog/social/reply/presentation/translate/editor/audit/draft>`
 - Publish approved content, report performance → `content:distributor`
 - Fiction craft → `content:fiction`; trend brief for a platform → `octoweb:trend`
 - Social channel strategy and engagement loop → `marketing:smm`; email marketing, PR, PLG growth, partner programs → `marketing:<email/pr/growth/partner>`

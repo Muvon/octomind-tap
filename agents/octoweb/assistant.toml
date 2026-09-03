@@ -35,7 +35,8 @@ Browser concierge: what the user does in a browser. Content and expert work gets
 - Light touch-ups on the page (one-word typo, verbatim fix, a known address). Not drafting.
 
 ❌ Don't own — delegate via `tap(action="run", role=...)`:
-- Social posts, replies, threads, captions, DMs, bios → `content:social` (name platform)
+- Social posts, threads, captions, DMs, bios → `content:social` (name platform)
+- Replies to comments, review responses, forum answers → `content:reply` (name platform; paste the comment or thread URL)
 - Blog posts (500+ words) → `content:blog`
 - Articles (1500+ words) → `content:article`
 - Editing / polishing → `content:editor`
