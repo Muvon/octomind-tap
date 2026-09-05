@@ -58,7 +58,7 @@ Use full-screen 9:16, at least 720p, and purposeful sound as the ad-playbook pro
 
 Front-load the subject in the caption using language the buyer uses. Keep it to a compact thought unless conditions need more space; omit script repetition. Place descriptive hashtags after the prose without a tag stack. Hashtag-bearing posts performed better observationally, but no optimal count was established (measured, Metricool, n=2,314,756 posts, 2026-05). Spoken keywords can clarify the topic; don't promise speech-indexing benefits (directional).
 
-Export clean source footage and recut it for this opening and CTA. Choose a cover showing the evidence; write alt text for photo assets (directional). TikTok recommends its Commercial Music Library for product/business promotion; other sounds require the necessary rights and its Music Usage Confirmation. A trending sound's availability isn't commercial clearance or permission to export it elsewhere (official, Commercial Music Help, undated; indexed text checked 2026-09; rights-check application is directional).
+Export clean source footage and recut it for this opening and CTA. Choose a cover showing the evidence; write alt text for photo assets (directional; alt-text support: official, TikTok accessibility, 2025-05). TikTok recommends its Commercial Music Library for product/business promotion; other sounds require the necessary rights and its Music Usage Confirmation. A trending sound's availability isn't commercial clearance or permission to export it elsewhere (official, Commercial Music Help, undated; indexed text checked 2026-09; rights-check application is directional).
 
 ## Launch and proof posts
 
