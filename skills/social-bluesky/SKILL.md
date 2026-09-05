@@ -137,7 +137,7 @@ The limitation bounds the claim; the screenshot must come from the supplied buil
 
 Illustrative brief: a customer approved a timed export comparison; manual review continued.
 
-> With [customer]'s permission: their export took [before] before [change] and [after] afterward, on the same [dataset]. They still review exceptions by hand. The comparison and its limits: [link]
+> With [customer]'s permission: their export took [before] before [change] and [after] afterward, on the same [dataset], measured over [measurement window]. They still review exceptions by hand. The comparison and its limits: [link]
 
 Why it works: the proof rule keeps comparison conditions beside the outcome.
 Every measurement needs a source; the unresolved manual step prevents a miracle-fix story.

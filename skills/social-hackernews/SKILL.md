@@ -87,7 +87,7 @@ Read the actual thread before preparing a reply brief. Note the technical depth,
 
 Use an affiliation opener when relevant and skip generic flattery (directional). Answer the substantive claim without addressing the commenter by username or cross-examining them (official, Launch HN Instructions and HN Guidelines, 2026-09). Keep real uncertainty and explain the scope of disagreement.
 
-In editorial feedback, point to the actual problem: an unsupported contrast, redundant emphasis, ambiguous claim, or ending that repeats the answer. Don't prescribe sentence-length variation, remove every dash or three-item list, or treat polish as evidence of machine authorship. A real question can belong in a comment when it seeks missing information; avoid questions used to cross-examine or manufacture engagement (directional; HN Guidelines).
+In editorial feedback, point to the actual problem: an unsupported contrast, redundant emphasis, ambiguous claim, or ending that repeats the answer (directional, Gichigi, 2026-02). Don't prescribe sentence-length variation, remove every dash or three-item list, or treat polish as evidence of machine authorship (directional, Aborn, 2026-07; Cox, 2026-06). A real question can belong in a comment when it seeks missing information; avoid questions used to cross-examine or manufacture engagement (directional; HN Guidelines).
 
 When preparing a disagreement brief, identify the strongest plausible reading of the other person's claim, then the evidence or condition that changes the conclusion. Don't speculate about the commenter's motives or whether they read the source. Distinguish a defect report from a personal preference and make the technical consequence clear (official, HN Guidelines, 2026-09; briefing method: directional).
 

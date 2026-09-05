@@ -50,7 +50,6 @@ Separate announced future requirements from current eligibility. Beginning Febru
 - [YouTube Data API revisions](https://developers.google.com/youtube/v3/revision_history), brand linking 2026-07-07.
 - [Shorts classification](https://support.google.com/youtube/answer/15424877?hl=en), [Captions Help](https://support.google.com/youtube/answer/2734796?hl=en), [Paid Promotion Help](https://support.google.com/youtube/answer/154235?hl=en), and [AI disclosure Help](https://support.google.com/youtube/answer/14328491?hl=en), checked 2026-09.
 - [AI label update](https://blog.youtube/news-and-events/improving-ai-labels-viewers-creators/), 2026-05-27.
-- [AI-label correction thread](https://support.google.com/youtube/thread/424874071?hl=en), update 2026-08-03.
 - [Advertiser guidance](https://support.google.com/youtube/answer/9725604?hl=en), 2026-09.
 - [Performance FAQ](https://support.google.com/youtube/answer/12220281?co=GENIE.Platform%3DDesktop&hl=en), undated; checked 2026-09.
 - [Qualified metrics](https://blog.youtube/news-and-events/youtube-monetization-qualified-watch-hours-shorts-views/), 2026-08-12.

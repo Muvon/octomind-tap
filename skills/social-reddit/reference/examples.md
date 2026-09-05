@@ -77,7 +77,9 @@ Weak draft, illustrative:
 
 Revised draft, illustrative and incomplete:
 
-> We changed [onboarding step] after [documented customer problem]. Using [metric definition] in [unit], [observed count] of [eligible count] in [defined cohort] showed [observed result] during [measurement window] (measured, [source], n=[actual sample/cohort size], [date]). Compare with [comparable baseline if claiming improvement]. [Other concurrent change] also happened, so we can't isolate the onboarding effect. The part I can share is [permissioned artifact].
+> We changed [onboarding step] after [documented customer problem]. Using [metric definition] in [unit], [observed count] of [eligible count] in [defined cohort] showed [observed result] during [measurement window]. [Other concurrent change] also happened, so we can't isolate the onboarding effect. The part I can share is [permissioned artifact].
+
+Package note: (measured, [source], n=[actual sample/cohort size], [date]). Compare with [comparable baseline if claiming improvement].
 
 Why it works: the proof-post rule separates observation from causation.
 The artifact remains useful without a miracle-fix claim or fabricated customer numbers.
