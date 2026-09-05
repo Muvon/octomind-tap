@@ -1,104 +1,71 @@
-# HN — extended post-type rules
+## Overview
 
-Detail beyond the 5-post-types table in `SKILL.md`. Load this file when planning a Tell HN, Launch HN, or working through URL submission / duplicate edge cases.
+Open this reference for Launch HN logistics, expectation setting, or an uncertain moderation outcome. Use SKILL.md for format selection, source-title handling, repost decisions, and the publication checklist; those rules aren't repeated here.
 
-## Tell HN — expanded rules
+## Launch HN logistics
 
-Tell HN is the most misused prefix. Short, factual announcements only — not mini blog posts, not product pitches, not opinion pieces.
+Apply through the form linked from the official instructions. The program is curated and offers a YC startup a one-time opportunity. The stated response within two weeks applies only if the decision is yes; it isn't a promised decision deadline for every applicant (official, Launch HN Instructions, 2026-09).
 
-What Tell HN IS for:
-- Service outages affecting HN or major tech infrastructure
-- Security vulnerabilities with public disclosure
-- Changes to HN itself (new features, policy updates)
-- Short factual observations about the tech industry
-- Corrections to previously submitted stories
+After approval, agree on a day and submit from the YC founder account. Put the approved blurb in the text field and use a neutral company/batch/tagline title within 80 characters. Software places the agreed submission on the front page after a few minutes (official, Launch HN Instructions, 2026-09). Copy the company's actual batch designation from its approved materials; don't infer it from example letters or the calendar year. Don't promise a weekday slot.
 
-What Tell HN is NOT for:
-- "Tell HN: I built a thing" → that's Show HN
-- "Tell HN: My thoughts on AI" → that's a blog post, submit the link
-- "Tell HN: We're hiring" → use the monthly "Who is hiring?" thread
-- "Tell HN: Please support our Kickstarter" → instant flag
+Have the human author explain the company clearly, then develop the problem and real backstory. Include enough technical detail to explain the difference, how the company makes money, and how readers can evaluate it. The official template is optional; don't turn it into a compulsory section count (official, Launch HN Instructions, 2026-09).
 
-Title rules:
-- Lead with the fact, not the source. "Tell HN: GitHub Actions is down in us-east-1" not "Tell HN: GitHub says Actions is down"
-- No editorializing. "Tell HN: AWS us-east-1 is down again" → "again" is editorializing.
-- Include timeframe if known. "Tell HN: Cloudflare 522 errors since 14:00 UTC"
+Resolve signup barriers and transparent pricing before submitting. If onboarding requires a call, say so before readers start. Ask the HN team about product-specific exceptions. Reserve the day for discussion and keep press coordination separate (official, Launch HN Instructions, 2026-09).
 
-Body rules:
-- Under 300 words. If it needs more, write an article and submit the link.
-- Evidence first. Screenshots, status page links, specific error codes.
-- No call to action.
-- Update the body (not a new comment) as the situation evolves.
+## Evidence for success expectations
 
-## Launch HN — expanded rules (YC companies only)
+Use a distribution rather than selected winning titles. The following observations come from the same study; don't mix its full corpus with its discussion subset.
 
-Launch HN is a coordinated YC program. You cannot self-declare a Launch HN.
+| Observation | Decision and limitation |
+|---|---|
+| Median 2 points and 0 comments; 61.7% had no comments, 78.9% had at most one (measured, Jonno, n=41,301 Show HNs, 2026-07) | Allow a quiet outcome in the plan. It doesn't establish whether the intended buyers tried the product. |
+| The 90th percentile was 8 points; fewer than 2% cleared 100 points (measured, Jonno, n=41,301 Show HNs, 2026-07) | Use these only as corpus-relative context, not a ranking gate or universal success definition. |
+| The median cumulative comment curve reached 50% at 7.2 hours and 90% at 26 hours (measured, Jonno, n=2,066 Show HNs with at least 10 comments, 2026-07) | Staff the first workday and maintain lighter follow-up afterward (directional). This subset excludes quiet threads. |
+| A median 4.2% of comments arrived after 48 hours; 71% of launches were over 90% finished then (measured, Jonno, n=2,066 discussion-bearing Show HNs, 2026-07) | Reduce monitoring when actual activity falls; don't abandon unanswered questions at a timer (directional). |
 
-How it works:
-- YC schedules your launch with the HN mods. You don't pick the date.
-- Title format is strict: `Launch HN: CompanyName (YC W25) – one-line description`
-- Batch code (W25, S24, etc.) is required. Mods add it if you forget.
-- Launch HN posts get a special tag and often appear in the "Launches" section.
+The corpus covers 2025-06-18 through 2026-06-18 (measured, Jonno, n=41,301 Show HNs, 2026-07). Treat comment timing as observed discussion, not a measurement of votes, traffic, conversion, or the live ranking algorithm. Don't import the article's historical ranking constants.
 
-Launch HN first comment (different from Show HN — 6 sections):
-1. What the company does — 1 sentence, plain English
-2. The problem you're solving — not "the market is huge" but "engineers waste 3 hours a week on X"
-3. How it works — technical specifics, architecture, interesting implementation
-4. Traction so far — users, revenue, growth rate. HN respects numbers.
-5. What you need help with — hiring, beta testers, specific technical feedback
-6. How to try it — demo link, signup, open-source repo
+### Qualified interest and conversion
 
-Timing: usually Tuesday/Wednesday mornings ET, scheduled by YC.
+DDL to Data reported about 1,000 visitors, 425 demo starts, 382 completions, 3 signups, and 0 purchases in 24 hours after reaching rank 8 (measured, DDL to Data, n=single founder launch report, 2026-01). Instrument the path after evaluation and inspect where the intended action fails. A working demo and attention don't establish willingness to pay (directional).
 
-Pitfalls:
-- Don't use Launch HN if you're not YC-backed — mods retitle or kill.
-- Don't post a Launch HN without YC scheduling — won't get special treatment, may be flagged.
-- Don't treat it as a press release — HN readers want technical depth.
+A separate founder account describes broad channel activity without paid adoption (measured, DooCloud, n=single founder report spanning multiple channels, 2026-05). Don't assign that outcome to HN or assume more posting repairs trust or audience fit. Review the objections and activation evidence before increasing volume (directional).
 
-## URL submission rules
+Before launching, exercise the destination from an anonymous browser, on mobile, and in the available themes. Check that the first useful action works and that failed attempts remain visible to the team. Keep a person able to repair the evaluation path available (directional).
 
-- Submit the canonical URL. No `?utm_source=`, no `ref=`, no tracking parameters.
-- No AMP links. Submit the publisher's original URL, not Google AMP cache.
-- No Medium / Substack tracking suffixes (`?sk=abc123`).
-- No paywalled URL as the primary link. Submit the unpaywalled version (archive.today, Ghostreader, author's mirror) and mention paywall in the first comment.
-- No link shorteners (`bit.ly`, `t.co`) — auto-flagged.
-- No redirect chains — submit the final destination.
-- GitHub: submit the repo root, not a specific file path, unless the file IS the story.
-- YouTube: only if video is the primary content; explain why in the first comment.
+## Moderation and account controls
 
-## Duplicate detection and cross-posting etiquette
+Record the visible state of an item before interpreting it. The FAQ distinguishes user-flagged content, content killed by software or moderators, and author-deleted content. Enable showdead in the profile when examining removed items; login alone doesn't establish that view (official, HN FAQ, 2026-09).
 
-- Same URL = duplicate. Submitted in last ~6 months → redirects to old thread.
-- Slightly different URLs (www., http vs https, trailing slash) bypass detection — mods later merge. Don't game; users flag.
-- Cross-posting from Reddit / X / your blog: acceptable, but space by 48+ hours and rewrite the title for HN's audience. Never copy-paste the same first comment across platforms.
-- If your post flopped: wait 3+ months before resubmitting, only if significantly improved.
-- "Previously" etiquette: disclose if you posted it before — "I posted this last month; the update is X."
+HN exposes flag and vouch controls after karma thresholds, and eligible comment downvotes after another threshold. Stories have no downvote control and direct replies can't be downvoted (official, HN FAQ, 2026-09). Don't publish exact unlock numbers from inconclusively verified discussions or treat karma as a launch-readiness target.
 
-## Account warmup and karma
+Use visible edit/delete controls without promising a duration or availability after replies. The FAQ recognizes author deletion and moderator handling of privacy requests (official, HN FAQ, 2026-09). Correct substantive mistakes openly; don't remove and recreate content to seek distribution (directional).
 
-New accounts are heavily throttled. Brand-new account submitting its own project = voting-ring red flag.
+If a clean submission appears wrongly removed, provide the item URL and a factual concern to hn@ycombinator.com. Keep correspondence brief and don't repeatedly request attention for a quiet launch (directional). Show HN tips no longer offer a routine email response service; don't make that a launch dependency (official, Show HN Tips, 2026-09).
 
-First 30 days:
-- Don't submit your own content. Comment substantively on others' posts for 2–3 weeks.
-- Target 50+ karma before first self-promotion (informal threshold).
-- Comment on posts in your domain — "We hit this exact issue at scale; the fix was X" builds recognition.
-- Avoid early downvotes — they put the account in a low-trust bucket.
+Treat the second-chance pool and repost invitations as moderator decisions. Follow an actual invitation; don't recruit vouches, promise restoration, or infer an invitation from a later rank change (directional). Use the main skill's repost table for an ordinary retry.
 
-Karma mechanics:
-- Karma = comment + post upvotes minus downvotes.
-- Comment karma matters more than post karma for account trust.
-- Downvotes on comments cost karma; downvotes on posts don't (but the post dies).
-- No public leaderboard — karma is purely for trust and feature unlocks.
+## Checklist
 
-Karma unlocks:
-- ~10: downvote comments
-- ~30: flag posts
-- ~500: vouch for dead posts
-- Higher karma = more weight in voting (trust-weighted internally)
+- [ ] Launch HN approval, founder account, and agreed submission materials are available.
+- [ ] Actual YC batch designation is copied from authoritative company materials.
+- [ ] Outcome comparisons identify the corpus and distinguish the discussion subset.
+- [ ] Site measurements distinguish HN referrals from other traffic and outcomes from attention.
+- [ ] Moderation interpretation records visible evidence and leaves the cause unknown when unsupported.
+- [ ] No numeric account warmup, edit window, recovery deadline, or ranking formula has been inferred.
 
-Red flags for new accounts:
-- First action is a self-submission
-- First comment on your own post
-- Rapid-fire commenting (bot-like)
-- All comments on posts you submitted
-- Account created the same day as a Show HN
+## References
+
+- [Launch HN Instructions](https://news.ycombinator.com/yli.html): undated, checked 2026-09.
+- [Show HN Tips](https://news.ycombinator.com/item?id=22336638): updated 2026-03, checked 2026-09.
+- [HN FAQ](https://news.ycombinator.com/newsfaq.html): undated, checked 2026-09.
+- [Show HN outcome and timing study](https://jonno.nz/posts/your-show-hn-dies-in-7-hours/): 2026-07.
+- [DDL to Data launch report](https://ddltodata.com/blog/hacker-news-launch-lessons): 2026-01.
+- [DooCloud founder report](https://www.indiehackers.com/post/277-cold-emails-reddit-posts-x-threads-5-signups-0-paid-users-this-is-what-month-one-actually-looked-like-7397288132): 2026-05; self-report, no HN-only attribution.
+
+Re-validate when:
+- Launch HN application, title, or scheduling instructions change.
+- Moderation controls or the FAQ change.
+- New reproducible outcome research becomes available.
+
+Validated: 2026-09

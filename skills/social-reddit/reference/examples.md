@@ -1,183 +1,135 @@
-# Reddit — extended examples
+## Overview
 
-Additional examples beyond the 3 in `SKILL.md`. Load this file when a more specific pattern is needed.
+Open this reference for a launch measurement package, commerce or paid follow-through, or additional proof formats. The main skill contains worked drafts across different niches; this file supplies conditional execution details and edit examples. All sample copy below is illustrative. Replace bracketed details with supplied evidence before publication and include the disclosure required by the actual production process.
 
-## Self-promotion that doesn't get removed
+## Discovery and community clearance
 
-Bad (pure promo — gets filtered):
-> Hey r/webdev! I just launched [MyApp], the best CRM for freelancers. Check it out! 🎉
+Use buyer-language keywords to find communities and objections before selecting a launch venue. Reddit Pro Trends shows conversations, communities, and theme summaries; its coverage is public SFW English content and excludes private, banned, quarantined, NSFW, deleted, and messaging content (official, Reddit Pro Trends, 2026-05). Read original conversations before treating a summary as evidence (directional).
 
-Good (post-mortem with the product as part of the story):
-> 6 months building a CRM for freelancers — MRR, tech stack, the two features I wish I'd cut
+For each candidate, record a rule URL and check date alongside the actual proposed angle. These examples demonstrate scope, not permanent clearance:
+
+| Candidate | Verified rule scope | Drafting consequence |
+|---|---|---|
+| r/mcp | Disclosed self-promotion is allowed with the Showcase tag for your work; fake unaffiliated promotion and AI-generated promotional slop can result in bans (official, r/mcp Rules, checked 2026-09) | Disclose ownership and verify that the planned content itself is permitted; a flair cannot cure prohibited material |
+| r/rust | Rules prohibit slop regardless of origin and allow discretionary removal of apparently AI-generated submissions (official, r/rust Rules, checked 2026-09) | Re-read the current wording before recommending a submission; don't paraphrase it as a sitewide ban |
+
+Don't infer permission for r/SideProject, r/SaaS, or any other community from its name or earlier success stories. Build its row from the current rules and the current designated threads. If proposing an AMA, include moderator agreement and proof requirements in that row (directional).
+
+## Measurement package
+
+Record the contribution URL, subreddit, date/time with timezone, angle, format, disclosure, destination, and definition of the desired action. Preserve the observed values and collection time; missing data stays unknown (directional).
+
+| Evidence | What it can tell you | Limit |
+|---|---|---|
+| Organic post views, upvote ratio, comments, shares | Exposure and visible response | Doesn't identify qualified buyers by itself |
+| Comment views and replies | Whether an answer reached readers and led to discussion | Read replies to classify their intent |
+| Account reach/followers | Broader account activity | Don't attribute all change to the launch |
+| Comment countries and awards where shown | Context for interpretation | Don't assume these fields are downloadable |
+
+The available metrics above come from Reddit Pro Performance (official, Reddit Pro Performance, 2026-04). Export supported CSV fields and preserve other needed observations separately. Review the view curve while it is available under the retention window in the main skill.
+
+Annotate replies as evaluation questions, objections, requests for access, actual use reports, or unrelated attention. Compare posts only within a relevant community and observed period; label this classification as analyst judgment. Inspect fit and activation before increasing volume (directional).
+
+Where the community permits tagged links, use consistent `utm_source`, `utm_medium`, and `utm_campaign`; `utm_content` distinguishes placements or creative variants (official, Google Analytics URL Builder, checked 2026-09). Don't treat tracking parameters as a universal Reddit penalty. If tags aren't permitted, use a compliant direct destination and record attribution loss (directional).
+
+Retain raw self-reported discovery answers separately from normalized channel attribution. HockeyStack documents this mapping for LinkedIn; applying the same recordkeeping pattern to Reddit is an adaptation, not validated Reddit attribution accuracy (official, HockeyStack Self-Reported Source, checked 2026-09; Reddit adaptation: directional). Allow unknown and mixed-source outcomes. A Reddit click, a signup, an activated account, and a paying customer are different observations (directional).
+
+## Launch evidence and its limits
+
+A practitioner collection links different launch angles for the same products and reports markedly different responses (measured, Launch Collection, n=76 startups with 253 Reddit posts and 33 Show HN posts, 2026-07). Use it to generate hypotheses about problem-led or outcome-led hooks. It doesn't establish a causal advantage or an optimal posting sequence (directional).
+
+The supplied founder reports support cautious operating lessons, not Reddit benchmarks:
+
+| Source | Bounded evidence | Application (directional) |
+|---|---|---|
+| SaaS Retrospective, 2026-08 | A self-reported launch describes attention followed by weak return usage | Separate signups from activation and retention; don't infer Reddit follow-up effects |
+| SideProject Retrospective, 2026-07 | A founder describes dividing technical and product/support replies | Assign answer owners by expertise when reply demand warrants it |
+| SaaS Launch Review, 2026-05 | A founder frames launch as a positioning and activation test | Check that the promise is understandable before writing announcement copy |
+| OIO Founder Report, 2026-09 | A founder attributes a paying customer to an existing community rather than the launch directory | Track source-specific outcomes; don't rank channels from an anecdote |
+| DooCloud Founder Report, 2026-05 | A founder reports weak paid conversion despite activity across many channels | Investigate buyer fit and trust before adding post volume |
+
+All reports in this table are unaudited self-reports (directional). Don't reproduce their results as the author's story or use them as guaranteed conversion targets.
+
+## Commerce and paid follow-through
+
+In Reddit's limited US shopping experiment, highlighted product names can lead to product summaries and source discussions; pricing and buy links depend on a catalog supplied by a participating business (official, Reddit Shopping, 2026-02; expansion checked 2026-09). Keep product references accurate and make evidence understandable on its own. Don't promise inclusion in shopping results or an AI-search ranking advantage (directional).
+
+When preparing assets for a separate paid campaign, group proof by product or use case. Reddit Max is available to advertisers with asset groups, Advertising API support, and Smartly integration (official, Reddit Max, 2026-09). Label the package as paid creative; don't import its historical advertising test results into organic Reddit expectations. Ad setup and spending are downstream decisions.
+
+For an owned community, Reddit recommends early moderator-supplied content and an expected ongoing cadence, mixing original posts with reposts (official, Reddit Community Seeding, 2026-05). Write useful support and discussion posts that members can answer without buying. Don't fill a new subreddit with simulated customer conversations (directional).
+
+## Worked edits
+
+### Unsupported SaaS success claim
+
+Weak draft, illustrative:
+
+> Our onboarding update fixed churn. Everyone should copy it.
+
+Revised draft, illustrative and incomplete:
+
+> We changed [onboarding step] after [documented customer problem]. In [measurement window], [defined cohort] showed [observed result]. [Other concurrent change] also happened, so we can't isolate the onboarding effect. The part I can share is [permissioned artifact].
+
+Why it works: the proof-post rule separates observation from causation.
+The artifact remains useful without a miracle-fix claim or fabricated customer numbers.
+
+### Local service title
+
+Weak title, illustrative:
+
+> The best repair service in town
+
+Revised title and opening, illustrative and incomplete:
+
+> Title: Keeping [component] after [inspection finding]
 >
-> Built this after freelancing for 3 years and hating every existing CRM. Some numbers, lessons, and honest mistakes below.
->
-> Stack: Next.js 15, Postgres, Redis, Stripe, Resend
-> MRR after 6 months: $1,840
-> Feature I built and regret: AI-generated invoices…
->
-> (link to site at the bottom, no UTM)
+> I run [repair business]. The attached inspection note explains why we kept this component. [Remaining fault] needs a separate repair, and the quote excludes it.
 
-What works: post is about the journey, not the pitch. Product URL appears once. Specific numbers. Honest failure disclosure. The 10% rule is satisfied because this reads as a contribution, not a conversion funnel.
+Why it works: the title identifies an inspectable decision instead of an unsupported superlative.
+The scope disclosure prevents the reader from mistaking partial work for a complete fix.
 
-## Ask-question post
+### Consumer product comparison reply
 
-Bad (vague, no context, unanswerable):
-> Help with Postgres?
+Illustrative context: someone asks for a product that meets a specific maintenance constraint.
 
-Good (specific, shows effort, asks a real question):
-> Postgres 16 — can `VACUUM FULL` be safely run on a 400GB table with replication lag concerns?
->
-> Setup: primary + 2 async replicas, ~30MB/s write throughput, nightly 4-hour maintenance window. Table is bloated (~40% dead tuples), `pg_repack` keeps OOM-ing.
->
-> What I've tried: `pg_repack` with `-T 900` (still OOM after ~2h), `VACUUM (PARALLEL 4)` (runs but doesn't reclaim space). Considering `VACUUM FULL` but worried about the exclusive lock + replication catchup time.
->
-> Has anyone run `VACUUM FULL` on a similar-size table in production? What was the replica catchup pattern?
+> I make [product], and it needs [documented maintenance]. That conflicts with your requirement for [constraint]. [Alternative approach] may suit you if [supported condition]; the source is [link].
 
-What works: title is the real question. Body shows effort (three things already tried). Ends with a specific question someone can answer from experience.
+Why it works: the response applies the reader's constraints before recommending a purchase.
+Affiliation and the unsuitable case are explicit; no fake customer identity is needed.
 
-## What gets removed by automod
+### Developer artifact caption
 
-> Hey everyone! Excited to share that I've just launched my brand new SaaS, TurboForms 🚀 — the ultimate form builder for startups! Would love your feedback! [link with UTM]
+Illustrative asset brief: show the actual failing input and output with private identifiers redacted. Include the environment details necessary to interpret the result. Don't insert a dashboard solely to signal credibility.
 
-Triggers: exclamation marks, "just launched," emoji, UTM tracking, "would love your feedback," generic SaaS positioning. Removed by automod in most subs within seconds. Reads as advertising from the first word.
+> This capture shows [observed failure] on [documented environment]. [Tool] reports [bounded result] for this input. We haven't checked [unexamined case]. The reproducer is at [permitted source link]; I maintain the tool.
 
-## Removed by AI-content automod (real r/SaaS case)
+Why it works: readers can inspect the claim without accepting a personal authority claim.
+The evidence limitation is attached to the result it qualifies.
 
-A reply in r/SaaS like this:
+## Checklist
 
-> Excellent point! AI is fundamentally reshaping the SaaS landscape in profound ways. Here are three key considerations:
->
-> 1. Distribution matters more than ever — with reduced build costs, the bottleneck shifts to customer acquisition.
-> 2. Iteration speed is paramount — teams that ship faster can navigate complex market dynamics more effectively.
-> 3. Real wedges trump features — having a genuine, defensible advantage is crucial in today's competitive environment.
->
-> Ultimately, success in this space requires a holistic approach combining technical excellence with strategic distribution.
+- [ ] Community clearance cites the actual rule and planned angle, not a culture stereotype.
+- [ ] Measurement separates observed Reddit behavior from destination outcomes and attribution assumptions.
+- [ ] Examples remain illustrative until evidence placeholders are filled and checked.
+- [ ] Commerce experiments, paid features, and self-reported cases retain their scopes.
 
-Removed by AutoModerator within seconds. Any one of these is sufficient — this comment hits all of them:
-- "Excellent point!" sycophantic opener
-- "fundamentally", "profound", "paramount", "holistic", "crucial" (dead vocabulary)
-- Numbered list with parallel bold leads
-- Em-dash on every list item
-- "navigate complex market dynamics", "in today's competitive environment" (dead phrases)
-- "Ultimately, ..." closing summary
-- Zero contractions in 80+ words
-- Zero personal anchor, zero reference to the OP or thread
-- Three balanced bullets (tri-colon structure)
+## References
 
-Same idea, automod-survivable rewrite:
+- [Reddit Pro Trends](https://support.reddithelp.com/hc/en-us/articles/47619216411284-Reddit-Pro-Feature-Trends), 2026-05-28.
+- [r/mcp Rules](https://www.reddit.com/r/mcp/about/rules.json) and [r/rust Rules](https://www.reddit.com/r/rust/about/rules.json), undated, checked 2026-09.
+- [Reddit Pro Performance](https://support.reddithelp.com/hc/en-us/articles/47618462633364-Reddit-Pro-Feature-Performance), 2026-04-02.
+- [Google Analytics URL Builder](https://support.google.com/analytics/answer/10917952?hl=en), undated, checked 2026-09.
+- [HockeyStack Self-Reported Source](https://docs.hockeystack.com/guides/report-examples-and-insights/adding-a-self-reported-source-to-your-unified-channel-defined-property), undated, checked 2026-09.
+- [Launch Collection](https://www.reddit.com/r/buildinpublic/comments/1uvg1xl/i_collected_286_real_launch_posts_from_76_startups/), 2026-07-13, practitioner collection.
+- [SaaS Retrospective](https://www.reddit.com/r/SaaS/comments/1v9pxm8/six_months_after_my_first_product_hunt_launch_im/), 2026-08, commenter self-report.
+- [SideProject Retrospective](https://www.reddit.com/r/SideProject/comments/1v0r5vb/was_1_on_product_hunt_for_18_hours_lost_it_in_the/), 2026-07-19, founder self-report.
+- [SaaS Launch Review](https://www.reddit.com/r/SaaS/comments/1tjznvx/we_launched_on_product_hunt_and_ended_48_heres/), 2026-05, founder self-report.
+- [OIO Founder Report](https://www.reddit.com/r/SaaS/comments/1w6enyp/launched_my_freelance_business_saas_on_product/), 2026-09-03, founder self-report.
+- [DooCloud Founder Report](https://www.indiehackers.com/post/277-cold-emails-reddit-posts-x-threads-5-signups-0-paid-users-this-is-what-month-one-actually-looked-like-7397288132), 2026-05-27, founder self-report.
+- [Reddit Shopping](https://redditinc.com/news/in-case-you-saw-it-we-are-testing-a-new-shopping-product-experience-in-search), 2026-02-19; page includes a later test expansion, checked 2026-09.
+- [Reddit Max](https://redditinc.com/news/performance-unlocked-reddit-max-campaigns-are-now-available-to-all-advertisers), 2026-09-03.
+- [Reddit Community Seeding](https://support.reddithelp.com/hc/en-us/articles/15484360497812-Planting-seeds-aka-encouraging-and-maintaining-an-active-community), 2026-05-28.
 
-> agree on the wedge thing but i think you're underselling distribution. shipped 4 saas products since 2019, the two that survived weren't the technically best ones, they were the ones where i'd already built an audience in the niche before launch. the failed ones i tried to launch cold and even with a better product they died within 6 months. ai didn't change that math, it just made the technically-best part cheaper to get to.
+Re-validate when subreddit rules, analytics exports, attribution tools, shopping eligibility, or paid-product features change; replace anecdotal launch expectations when inspectable studies become available.
 
-What changed: lowercase opener, real disagreement, specific number (4 products, 2019), specific failure outcome (died within 6 months), one sentence fragment, zero markdown, zero dead vocabulary, no closing summary.
-
-## Thread-vibe matching in action
-
-The thread (r/cscareerquestions, fast-moving, casual):
-> OP: "is it worth learning rust in 2026 or just stick with go"
-> Reply 1: "go tbh, rust is overkill for most jobs"
-> Reply 2: "depends what you want to do"
-> Reply 3: "rust if you want systems, go if you want a job"
-
-Every reply is 1 line. No punctuation at the end. Lowercase. No markdown.
-
-Bad reply (ignores thread vibe — will read as AI or try-hard):
-> This is a great question! In my experience, the choice between Rust and Go depends heavily on your career goals:
->
-> - Rust is ideal for systems programming, embedded, and performance-critical applications
-> - Go is better suited for backend services, cloud infrastructure, and general web development
->
-> Ultimately, Go will get you hired faster, but Rust is worth learning if you're passionate about systems.
-
-Good reply (matches thread vibe):
-> rust if you care about the craft, go if you want to get hired in 6 months
-
-One line. No caps. No punctuation. Matches the thread exactly.
-
-## Realistic imperfections in a reply
-
-Context: r/SaaS, someone asks "how do you handle churn in the early days?"
-
-Too perfect (reads AI):
-> In the early days, churn is almost always a signal problem, not a product problem. The customers who churn fastest are usually the ones who had the wrong expectations going in. I'd focus on tightening the onboarding conversation — specifically the questions you ask before someone signs up — rather than adding features to retain people who were never a good fit.
-
-With realistic imperfections (reads human):
-> in the early days churn is almost always a signal problem, not a product problem. the customers who churn fastest are usually the ones who had the wrong expectations going in. i'd focus on tightening the onboarding conversation — specificaly the questions you ask before someone signs up — rather than adding features to retain people who were never a good fit.
-
-What changed: lowercase opener, lowercase `i`, one realistic typo (`specificaly`), no closing summary. Same idea, reads like someone typed it on their phone.
-
-## Calibrating imperfection level by reply type
-
-Scenario: r/webdev, a long technical thread about CSS container queries. Thread has a mix of short and medium replies, mostly lowercase, some punctuation.
-
-Top-level comment (low imperfection — more considered):
-> container queries are genuinely useful but the mental model shift is harder than people admit. you're not asking "how wide is the viewport" anymore, you're asking "how wide is this specific box" — and that changes how you think about component design from the ground up. took me a few projects to stop reaching for media queries out of habit.
-
-One minor imperfection: no period at the end (matches thread style). Otherwise clean.
-
-Reply to a comment that said "just use media queries lol" (high casualness — match the energy):
-> lol yeah until you try to reuse a component in a sidebar and a main column and suddenly your media queries are lying to you
-
-No punctuation. Lowercase. Matches the dismissive-but-friendly tone of what it's replying to. No imperfection needed — the casualness is the imperfection.
-
-Reply in a heated debate (short, punchy, no grammar polish):
-> thats not how specificity works tho
-
-Missing apostrophe in `thats`. Short. Ends without punctuation. Matches the pace of a fast argument thread.
-### Example 1: Title craft
-
-Bad (marketing, vague, clickbait):
-> 🚀 You won't believe how we scaled our platform to 10M users — a success story!
-
-Bad (SEO-spam listicle):
-> Top 10 Ways to Scale Your Backend in 2026
-
-Good (specific, neutral, a story someone wants to read):
-> Scaling Postgres from 40GB to 4TB: what broke, what we changed, what we'd do differently
-
-What works: real numbers, neutral tone, implicit stakes, offers a story and lessons without selling them.
-
-### Example 2: Comment that earns karma (and trust)
-
-Someone posts in r/rust: "Is tokio really necessary or can I just use threads?"
-
-Bad (generic, authority-theatre, no specifics):
-> As someone who has worked extensively with Rust, tokio is essential for any serious async workload. Threads don't scale.
-
-Good (specific, domain-aware, honest about trade-offs):
-> Depends on your workload. If you're I/O bound and handling >~10k concurrent connections, tokio is hard to beat — the overhead per task is tiny compared to a thread's ~2MB stack.
->
-> If you're CPU-bound or running <1k concurrent tasks, `std::thread` + a channel is simpler and often faster. Threads also debug way better — stack traces, backtraces, no `.await` gymnastics.
->
-> Short answer: pick tokio for network services, threads for background processing.
-
-What works: opens on the answer, gives concrete numbers, acknowledges the alternative is sometimes better, ends with a poster-able summary.
-
-### Example 3: Rewriting a comment to pass AI detection
-
-Original draft (will be auto-removed in r/SaaS, r/startups, r/Entrepreneur — every detector tell present):
-
-> The real moat is distribution and iteration speed. Building software has fundamentally changed in recent years, and the patterns we're seeing are clear:
->
-> - The first mover figures out the market exists
-> - The second mover figures out what people actually want
-> - The third mover with the best distribution wins
->
-> Building cheaper and faster with AI tools simply compresses the timeline. It's important to note that the question is no longer "can I build it?" — it's "can I out-distribute and out-iterate?" Ultimately, in today's competitive landscape, distribution is everything.
-
-What's wrong: bold opener, three balanced bullets, header-style emphasis, "It's important to note", "Ultimately", "in today's competitive landscape", closing summary, zero personal anchor, zero contractions where they'd naturally appear, three em-dashes, no reference to the post or other commenters.
-
-Rewritten (this is roughly the surviving `donk8r` comment from the actual r/SaaS thread):
-
-> The real moat isn't the code, it's the distribution and the iteration speed. I've been building software for 20 years and the pattern I keep seeing: the first mover figures out the market exists, the second mover figures out what people actually want, and the third mover with the best distribution wins. Building cheaper and faster with AI tools just compresses the timeline. But jonathancheckwise is right that if you can clone it in 3 hours, so can everyone else. The question isn't "can I build it?" anymore — it's "can I out-distribute and out-iterate the other 50 people who also built it this weekend?"
-
-What works:
-- Opens with a personal anchor: "I've been building software for 20 years" (verifiable, specific, autobiographical)
-- Quotes another commenter by username (`jonathancheckwise`) and uses their exact phrase (`if you can clone it in 3 hours`)
-- Prose, not bullets, even though the structure is tri-partite
-- No headers, no bold, only one em-dash
-- Contractions throughout (`isn't`, `can't`, `aren't`)
-- Ends on a quoted question, not a summary
-- "The real moat" survives here only because the personal anchor immediately undercuts it. Note the "isn't the code, it's the distribution" construction: that antithesis has since been named as a tell by real readers, so prefer stating the answer straight unless the thread's own register carries it
-
-This is the template. Anchor → observation → reference to thread → specific reframe → no closing summary.
+Validated: 2026-09

@@ -1,337 +1,207 @@
 ---
 name: social-threads
 title: "Threads (Meta) Publishing Playbook"
-description: "Ground-truth 2026 playbook for writing posts and replies on Meta Threads. Covers the 2026 algorithm (For You feed surfaces accounts you don't follow, early engagement critical, keyword search works, no hashtag ranking), the tone split from X (conversational, lighter, less contrarian, relatable), the 500-character limit, reply-chain culture, and how to avoid X-ported posts that flop. Activate when drafting for Meta Threads specifically — not for X/Twitter threads."
+description: "Write and revise Meta Threads posts, replies, and launch copy in the author's documented voice. Use for posting on Threads, a Threads campaign, or a threads.com brief; covers format choice, honest proof, conversation, and conversion paths. Excludes multi-post threads on other platforms."
 license: Apache-2.0
-compatibility: "Octomind content agents. Platform-specific to Meta Threads (threads.net)."
+compatibility: "Network access for source checks; a Threads account for composer and publishing checks."
 domains: content
 rules:
   - match(\bmeta\s+threads\b)
-  - match(\bthreads\s+(app|post|meta)\b)
-  - match(\bpost\s+(on|to|for)\s+threads\b)
-  - match(\bthreads\.net\b)
+  - match(\bthreads\s+(app|post|meta|campaign)\b)
+  - match(\b(posts?|posting|publish|reply)\s+(on|to|for)\s+threads\b)
+  - match(\bthreads\.(com|net)\b)
   - match(@threads\b)
 ---
 
 ## Overview
 
-Threads is Meta's text-first social app — launched July 2023, reached 400M MAU by 2026, and by now a distinct platform with its own tone, algorithm, and culture. It looks like Twitter but does not behave like Twitter. Posts that crush on X often flop on Threads, and vice versa.
+Write for Meta Threads when the brief names the app or says “post on Threads.” Interpret “write a thread” using the named destination; don't default ambiguous requests to another platform.
 
-This skill is not about X/Twitter threads (multi-post chains on X) — that's `social-x`. This is about the Meta Threads app specifically. If ambiguous, assume the user means X threads unless they explicitly say "Threads app," "Meta Threads," "threads.net," or reference the platform mechanics.
+Use supplied facts and proof first, the author's documented voice next, and platform register as fallback. Apply content-voice without copying its generic rules into the draft. Open [reference/platform-and-evidence.md](reference/platform-and-evidence.md) when planning regional timing, using newer surfaces, checking disclosure scope, or interpreting research.
 
-Pair with `content-voice` for human voice.
+## Mental model and mechanics
 
-## Instructions
+Use [threads.com](https://www.threads.com/) as the web entry point; Meta migrated the domain (official, Meta Web, 2025-04). Write for the relevant community rather than treating platform membership as a reachable prospect list (directional).
 
-### The 2026 Algorithm — What's Different From X
-
-Threads' For You feed aggressively surfaces posts from accounts you don't follow. This is the single most important difference from X:
-
-- Follower count matters less. A 100-follower account can reach millions on a single post. The ceiling is genuinely open.
-- The For You feed is the main feed for most users — the Following feed is opt-in and under-used.
-- Early engagement decides distribution — and speed beats volume. 15 replies in 30 minutes trigger wider distribution; the same 15 spread over an afternoon don't. Measured guides put the cutoff around 30+ reactions in the first hour before reach gets capped.
-- Recency is heavily weighted. Posts older than a day rarely get amplified, even high-performing ones. There's no "evergreen" on Threads.
-- Keyword search works in 2026 (didn't in 2023–2024) — people now find posts by topic. You can be searched into, not just followed.
-- One topic tag per post aids search discovery — Meta's own data shows tagged posts get more views. Pick the most specific tag that names your niche, not the broadest. It is NOT a distribution multiplier: never stack tags, and classic hashtags do nothing.
-- Media lifts initial distribution. 2026 measurements: median engagement ~5.5% for native video, ~4.6% image, ~2.8% text-only, ~2.3% link posts (algorithmically the weakest type). Attach a screenshot or image when it adds information — decorative graphics underperform clean text. If the link isn't the point of the post, move it to a reply.
-- Reply chains are native culture. Long reply threads stay in the feed; the algorithm rewards conversations that keep going.
-- Cross-posting from Instagram gets a small boost but looks lazy and often flops on tone.
-- Fediverse federation is live as of 2026 — your posts can be seen on Mastodon. It's rarely a distribution driver but removes your account from platform lock-in.
-
-### Signal weights (approximate, 2026)
-
-| Signal | Weight vs. a like |
+| Constraint or surface | Writing decision |
 |---|---|
-| Reply | ~12–15× |
-| Reply-to-your-reply (author loop) | very high; compounds |
-| Repost (Threads' retweet) | ~8–10× |
-| Quote post | ~10× |
-| Like | 1× (baseline) |
-| Follow after read | strong positive |
-| External link click | modest; Threads is less link-hostile than X but still prefers on-platform |
+| Standard post: up to 500 characters; text attachment: up to 10,000 characters (official, Meta Text, 2025-09) | Count the finished root including its link. Keep the core point in the root; use an attachment for necessary depth. |
+| Keyword search began rolling out in September 2023 (official, Meta Introduction, 2023-09) | Name the actual subject in readable language; avoid keyword stuffing (directional). |
+| Tagged-topic posts generally receive more views (official, Meta Personalization, 2025-07) | Choose a relevant topic when it fits; this is an editorial choice, not a verified maximum-tag rule (directional). |
+| Communities Hub, Community Progress, expanded Champion recognition, and Local Communities exist (official, Meta Communities, 2026-06) | Read the community before drafting. Recognition doesn't establish endorsement or buying intent (directional). |
+| Your Algo introduced private topic preferences with an initial market-limited rollout (official, Meta Communities, 2026-06) | Keep topic relevance clear; don't promise fixed engagement weights or universal distribution (directional). |
+| Insights includes views, interactions, follower detail, discovery sources, and trends (official, Meta Personalization, 2025-07) | Use available owner metrics; don't assume competitors expose the same data (directional). |
 
-Three measured refinements (2026):
-- Reply weight is length-sensitive — a one-word "same" counts far less than an 8+ word reply. Write posts that provoke sentences, not emoji.
-- Reshares from accounts with more reach than yours count more than raw reshare volume — one reshare by a big account beats fifty from tiny ones.
-- Rule of thumb: a post with 200 replies and 80 likes travels further than one with 600 likes and 12 replies. Optimize for conversation, not applause.
+Treat engagement benchmarks as observations. Video and images led Buffer's Threads format medians, but results overlapped substantially (measured, Buffer Engagement, n=2025 Threads subset of Buffer-published posts, 2026-03). Choose media for the information it carries.
 
-### The Tone Split — Threads vs X
+## Rules and format decisions
 
-This is the single biggest mistake cross-posters make. Do not port X posts verbatim.
+Keep a source note for each factual claim and permission for customer material. Obtain missing proof before drafting factual copy; unresolved example placeholders make a draft unpublishable. Never invent experience to supply personality.
 
-| Dimension | X (Twitter) | Threads |
+Lead with the observation, decision, or visible result. Develop the central idea in connected prose, then stop or give the desired action. A question belongs after useful context and must invite an answer you need (directional).
+
+Length bands below are qualitative drafting choices, not performance optima (directional). “Brief” means the observation plus necessary context; “developed” adds evidence and its limitation within the standard-post cap; “extended” needs an attachment or independently useful follow-up.
+
+| Goal | Choose | Anatomy and length band |
 |---|---|---|
-| Register | Sharp, opinionated, contentious | Casual, conversational, relatable |
-| Humor | Dry, sarcastic, often mean | Warm, silly, observational |
-| Hot takes | Central currency | Polarizing takes underperform |
-| Debate | Expected, rewarded | Tolerated, not sought |
-| Personal stories | Welcome but compete with tech/news/politics | Welcome and often dominate |
-| Self-promotion | Tolerated if earned | Disliked more than on X — softer sell required |
-| Length | 71–100 chars or 240–259 chars | Natural conversation-length, often 80–250 chars |
-| Emoji | Dead as formatting; OK as tone | More alive; emoji as tone-punctuation works |
-| Political content | Central to the feed | Meta down-ranks; topic-based reach is real |
+| Contribute to an existing discussion | Reply | Answer the actual point, then add relevant experience or a correction; brief prose. Read the parent and surrounding replies first (directional). |
+| Introduce a useful idea or announcement | Root post | Concrete first line, context, optional action; brief or developed (directional). |
+| Discuss someone else's artifact | Quote post | Credit the source and supply your own interpretation; brief. Don't use quotation as a pretext to target the author (directional). |
+| Show an interface, object, or result | Image or image sequence | Brief or developed caption explaining what to inspect. Crop for legibility, redact private data, and give each image a purpose (directional). |
+| Show a task changing on screen | Native video | Brief caption plus demonstration. Open on the relevant action; show input, observable output, and any consequential limitation. Caption speech and explain results without relying on audio (directional). |
+| Share an observation or scene | Text | Brief if the detail stands alone; developed if the scene needs context. Technical subjects are welcome when the intended reader can follow them (directional). |
+| Explain something requiring depth | Text attachment | Developed root summarizing the claim and why to open it; extended supporting text (directional). |
+| Add a distinct update or answer a recurring question | Self-reply | Make each addition useful independently; don't split sentences merely to manufacture a chain. Add it when the information is ready, without a timer or promised resurfacing (directional). |
 
-Threads' vibe in 2026 is often described as "early Twitter but friendlier" — less drama, more actual conversation, more willingness to reply to strangers.
+For polls, GIFs, spoilers, ephemeral posts, and messaging, open the reference's availability table before committing the publishing package. These aren't verified universal features in this evidence set.
 
-### The Post Anatomy
+## Launch and proof posts
 
-Threads posts are short (500-char limit) and the front of the feed favors:
+Collect the audience and buying situation, promise, available proof with sources, desired action, destination link, campaign stage, and disclosure obligations. Record the response owner and approval boundaries. “No CTA” is a valid choice.
 
-```
-[HOOK / OBSERVATION]          ← 1–2 lines, often an observation or small take
-[OPTIONAL CONTEXT OR TWIST]   ← 1–2 lines
-[OPTIONAL SOFT CTA / QUESTION] ← invites reply; not required
-```
+Use the format bands above for these post shapes (directional):
 
-The first sentence must stop the scroll on its own — readers decide in ~8–10 words. Openers from measured high performers: "We got 4,000 new followers in 48 hours. This is the one thing we changed." / "The thing nobody tells you about going viral is that the post you spent an hour writing usually doesn't." A stacked-lines format (each short line building on the previous, rhythm over full sentences) is a native Threads pattern for takes with a punchline.
-
-Key differences from X:
-
-- Questions actually work. On X, "What do you think?" reads as engagement bait. On Threads, a genuine question often outperforms a statement because the platform rewards replies.
-- "Hot take:" prefix is mostly fine on Threads — the platform is less saturated with it. Not dead the way "unpopular opinion:" is dead on X.
-- Emoji as tone-punctuation is alive — not emoji bullets, but a single emoji at the end of a line for tone reads normal. Don't overdo it.
-- Shorter posts often win. A 80–150 char observation beats a 450 char argument more often than on X.
-- No thread markers needed for reply chains — users naturally scroll replies.
-
-### Post Types That Work on Threads
-
-| Type | Why it works on Threads specifically |
-|---|---|
-| Observational micro-take | Matches the casual register; low-stakes agreement |
-| Honest question | Platform rewards replies; earnest questions get answered |
-| Relatable moment | Shared experience content performs above X baseline |
-| "Small brain" confession | Self-deprecation lands better than on X |
-| Soft hot take | Opinion without the edge; "I think X" works here |
-| Scene-based story (2–3 lines) | More room for vibes than X's punch-line style |
-| Reply chain starter | Post designed to spin into a conversation, not to close one |
-| Counter-intuitive specific | Violates a reader assumption, then grounds it in one concrete detail — top reshare driver in 2026 measurements |
-| Data point + sharp take | A number readers didn't know plus a one-line interpretation; reshared as "did you know" |
-
-What flops on Threads:
-- Aggressive contrarian posts that would win on X
-- Tech-twitter style one-liners — too terse for Threads register
-- "Build in public" revenue screenshots — occasionally land but often feel out of place
-- Political dunks — Meta actively throttles
-- Pure news commentary — Threads is not where news breaks or gets analyzed
-- Cross-posted X threads with thread markers ("1/5", "🧵") — obvious and ignored
-
-### Reply Culture (the core of the platform)
-
-Threads is built around reply chains in a way X isn't. People actually read 20-reply conversations between strangers.
-
-- Reply to strangers. It's normal and expected. Not the growth-hack it is on X — just culture.
-- The fastest discovery path in 2026: an early, substantive reply on a high-reach account in your niche. It stays near the top of their thread for hours, and their audience is pre-filtered to your topic.
-- Publish-to-reply ratio: reply to ~3 other posts for every post you publish. This mirrors how the platform actually converses and builds recognition before you need it.
-- On your own posts: answer every reply within the first 30 minutes and ask follow-up questions — comment depth is a ranking factor, and the author-loop compounds.
-- Reply length is flexible. 1-line quips work; 3-line substantive replies also work.
-- Reply chains can go 50+ deep and still stay in people's feeds.
-- Quote posts are rarer and often read as slightly aggressive — use sparingly.
-- Author reply to your own post as a follow-up is welcome — treat it like thinking out loud, not thread continuation.
-- Don't @-tag the OP in your reply — already threaded.
-- Disagreement is fine but stays softer than X. "I see it differently because…" beats "That's wrong."
-
-### What Kills Posts on Threads
-
-- Cross-posted X posts with X-specific references ("the algo," "based on replies to my pinned")
-- "Follow for more" CTAs — read as desperate on Threads
-- Bookmark bait — "Save this thread" feels off-register
-- Engagement bait — "Retweet this if you agree" translated to Threads = "Repost this if…" → dead
-- Explicit political takes — throttled by Meta
-- Rage-bait / karma-farming — suppressed faster than on X
-- Long threads of 8+ posts — people scroll off; Threads is not built for that
-- Heavy technical content — often better on X; on Threads it looks like you're posting to the wrong app
-- Emoji bullets (💡✨🚀 as list markers)
-- AI vocabulary (same list as `content-voice`)
-
-### Timing
-
-- Best windows: weekday evenings 7–10 PM local, and weekend mornings 9 AM–12 PM local.
-- Threads skews younger and more international than X; peak activity is not the 9–5 business window.
-- Post daily for growth. Threads rewards consistency more than volume; 1 post a day beats 5 posts once a week.
-- 2026 measured guidance ranges from 3–7 posts/week (brands) up to a few per day (established accounts); new accounts benefit from higher frequency while the algorithm learns what the account is about. Consistency builds algorithmic confidence in your categorization.
-- Don't burst-post — multiple posts within 30 minutes fragments engagement.
-
-### Cross-Platform Strategy
-
-If you're posting on both X and Threads:
-- Rewrite, don't re-post. Same idea, different register.
-- X first if the take is sharp/contrarian/technical, then soften for Threads.
-- Threads first if the content is a question/relatable observation, then tighten for X.
-- Don't cross-post threads/chains at all — they almost always flop on the receiving platform.
-- Instagram → Threads cross-post is fine for photo/memory content; for text content rewrite.
-
-### Thread-Vibe Matching
-
-Threads is built around reply chains — people read 20+ reply conversations between strangers. Before replying, read the existing chain. The vibe is set fast and deviating from it reads as tone-deaf.
-
-What to scan:
-- Capitalization — is the chain all lowercase? Match it. A properly capitalized reply in an all-lowercase chain reads robotic.
-- Length — 1-line quips or 2–3 line thoughts? Match the median.
-- Warmth level — warm/silly/supportive vs. more analytical? Threads skews warm by default.
-- Emoji usage — is the chain using tone-emoji? Match the density (0–1 per reply is normal; 3+ is too much).
-- Humor register — is there a running joke or absurdist thread? You can lean into it or stay neutral; don't fight it.
-
-Vibe calibration by post type:
-
-| Post type | Reply vibe |
-|---|---|
-| Observational micro-take | Match the casual register; 1–2 lines, lowercase fine |
-| Honest question | Earnest, direct answer or "same here" + your version |
-| Relatable moment | Warm, personal, first-person |
-| Soft hot take | Agree/extend or gentle pushback; no aggression |
-| Silly/absurdist post | Match the absurdity or don't reply — forced serious replies kill the vibe |
-
-### Human Imperfection Protocol
-
-Threads is the most casual platform in this set. Imperfections aren't just anti-detection — they're part of fitting the register. The platform already rewards casual; imperfections are about matching the vibe, not just surviving AI detection.
-
-Imperfection level by content type:
-
-| Content type | Level | What that means |
+| Stage or shape | Native anatomy | Band and proof requirement |
 |---|---|---|
-| Original post | Low | 0–1 imperfection; posts are still considered, just casual |
-| Reply in a casual/warm chain | Medium | 1–2 imperfections natural; lowercase, no punctuation fine |
-| Reply in a silly/absurdist chain | Medium-high | Match the chaos; lowercase, run-ons, emoji mid-sentence all fine |
-| Reply to a personal/vulnerable post | Low | Warmer and more careful; imperfections feel careless here |
+| Launch day | Buyer problem, newly available capability, concrete example, availability boundary, action | Developed; link to the actual offer. Remove the product name temporarily: the post should still show or teach something. |
+| Demo or artifact | Task, inspectable output, constraint, optional trial path | Brief caption with media; use the real product and identify staged input. |
+| Customer outcome | Before and after, conditions, source, unresolved limitation | Developed; give the measurement window and denominator for any rate. Obtain quote and asset permission. |
+| Founder decision | Decision, reason, cost or tradeoff, present status | Developed; first-person only for the author's own documented experience. |
+| Objection answer | Actual buyer concern, direct answer, evidence, fit boundary | Brief or developed; offer a relevant next step without pressuring a public commenter. |
+| Recap or lessons | What happened, what remains uncertain, next useful artifact | Developed or extended; distinguish interest from adoption and attributed sales. |
 
-Imperfection menu for Threads (pick 1–2 per reply, calibrate to chain):
+Put a link in the root when visiting is the intended action. Use a follow-up reply for supporting material when that keeps the root readable; publish that reply with the root when the CTA depends on it. Use a profile destination only after checking that the named link is present. Don't move links merely to satisfy an assumed suppression rule (directional).
 
-- All lowercase — the most common Threads pattern; entire reply in lowercase reads native
-- No closing punctuation — end without a period; extremely common on Threads
-- Comma splice — `i tried this, it didn't work` — casual and natural
-- Run-on with "and" — `i saw the same thing and honestly it surprised me`
-- Casual contractions — `gonna`, `kinda`, `tbh`, `ngl`, `idk` — Threads register supports these
-- Dropped word — one small omission that reads like fast typing
-- Emoji mid-sentence — `i tried it 😭 and it actually worked` — Threads-native tone marker
-- "lol" / "lmao" — acceptable in casual/silly chains; not in earnest/personal ones
+Keep source, medium, and campaign parameters consistent; use utm_content to distinguish post or placement (official, Google URL Builder, 2026-09; undated guidance). Preserve campaign attribution downstream. Supplement tagged visits with optional self-reported discovery, retain raw answers, and allow unknown attribution (directional).
 
-Never do:
-- Misspell a proper noun or technical term — reads as ignorant, not casual
-- Use heavy imperfections in a reply to a personal/vulnerable post — reads as not caring
-- Stack 3+ imperfections in one reply — becomes noise even on Threads
-- Use `lol`/`lmao` in a serious or earnest thread — tone mismatch
+State founder, employee, affiliate, or sponsor relationships plainly. Put paid relationships where the reader will see them and check applicable disclosure requirements; the verified material doesn't establish a universal Threads sponsorship-tool rule (directional). Use required AI disclosure as specified below.
 
-Calibration check before posting:
-1. Read the last 3–5 replies in the chain — what's the capitalization and punctuation pattern?
-2. Is this a warm/personal thread or a casual/silly one? Adjust imperfection type accordingly.
-3. Does your reply have 0–2 natural imperfections that fit the chain's register?
-4. Would someone typing this on their phone in 20 seconds plausibly have written exactly this?
+Contribute useful answers in relevant communities before asking for attention. Read custom feeds if available; don't treat them as guaranteed promotional inventory. Evaluate Champions by their actual contributions. Employee participation should be voluntary, individually written, and openly affiliated. Exclude engagement rings, bought reactions, copied praise, and mass tagging from the plan; don't portray these exclusions as measured enforcement thresholds (directional).
 
-### Pre-Publish Checklist
+Use this illustrative launch rhythm; T is launch day and the offsets are planning choices, not ranking windows (directional):
 
-- [ ] Register matches Threads (conversational, not X-sharp)
-- [ ] Under 500 characters; most of my best posts are under 250
-- [ ] No X-specific references ("the algo," "pinned," "replies")
-- [ ] If there's a question, it's a real one
-- [ ] No aggressive contrarian energy; disagreement is softened
-- [ ] No emoji bullets; tone-emoji at most
-- [ ] One specific topic tag set (niche over broad; never stacked)
-- [ ] Image/screenshot attached only if it adds information; link moved to a reply if it's not the point
-- [ ] No political content I don't want throttled
-- [ ] Posted in evening / weekend-morning window for my audience
-- [ ] Ready to answer every reply within the first 30 minutes
-- [ ] Not a literal cross-post from X
-- [ ] Reply only: scanned chain for capitalization/tone/emoji pattern before writing
-- [ ] Reply only: 0–2 natural imperfections calibrated to chain vibe (medium for casual, low for personal/vulnerable)
+| Day | Shape | Reply plan and measurement |
+|---|---|---|
+| T-7 through T-4 (directional) | Problem observation and useful community participation | Collect buyer language; distinguish substantive questions from general agreement. |
+| T-3 through T-1 (directional) | Teaser with an inspectable artifact | Answer availability questions; verify the destination and prepare response ownership. |
+| T+0 (directional) | Launch announcement and demo | Staff the first hours while discussion is active; track qualified replies, available Insights, and tagged visits. |
+| T+1 through T+3 (directional) | Objection answer or bounded proof | Address recurring questions; record trial or service-fit interest and downstream activation. |
+| T+4 through T+7 (directional) | Recap or new customer application | Return to unresolved conversations; report source-attributed outcomes with their observation window. |
+
+Publish founder decisions from the founder's experience; let a brand handle speak through an accountable operator without pretending to be a customer. No founder-versus-brand reach advantage is established here (directional).
+
+## Voice on this platform
+
+Read the author's posts and the target conversation for sentence shape, warmth, and humor. Preserve natural contractions and fragments; use conventional punctuation unless the author already writes otherwise. Match the degree of informality without inserting typos, false edits, forced lowercase, or missing words (directional; Aborn).
+
+| Context | Register decision |
+|---|---|
+| Warm or silly exchange | Extend the observed joke without attaching a sales pitch; retain the author's actual humor (directional). |
+| Earnest or vulnerable exchange | Answer gently and directly. Don't introduce slang or comic exaggeration that trivializes it (directional). |
+| Technical disagreement | State the claim and its conditions. Challenge the decision rather than assigning motives or insulting a group (directional). |
+| Product announcement | Use the operator's normal vocabulary; replace corporate ceremony with an observable use case (directional). |
+
+A defensible counter-intuitive claim includes evidence and scope. Polarization built from contempt or unsupported generalization doesn't improve that claim. Omit canned “Hot take:” prefixes; don't call them algorithmically penalized (directional).
+
+Apply the AI-tell pass to short posts as well as replies: cut empty contrasts, padded triads, repeated staccato lines, dramatic pivots, emphasis filler, and tidy moral endings (directional; Aborn, Cox, Gichigi). Remove rhetorical-question openers, miracle-fix parables, “nobody talks about” framing, engagement-bait closers, hashtag stacks, and emoji bullets (directional). Keep useful em-dashes sparingly where the documented voice supports them; impose no punctuation quota. Use ordinary prose without thread counters. “Replies” is valid Threads vocabulary.
+
+Use supplied decisions and their costs for specificity (directional; Lees). Have a fluent editor review local idiom in context; this is an application of language research, not a measured Threads uplift (directional; MIDI). Neither these heuristics nor detector scores establish authorship; manuscript detector findings don't validate short-post detection (directional; Detector Study).
+
+## Cadence and engagement
+
+Buffer associated creator replies with about 42% higher engagement, with positive effects for roughly two-thirds of profiles; this was observational, not causal (measured, Buffer Replies, n=128,000-plus Threads posts, 2026-02). Assign sustainable reply coverage. Answer substantive questions in sentences without a word minimum, and don't force follow-up questions into finished exchanges (directional).
+
+Start timing experiments on weekday mornings at 6–11 a.m. local; Thursday at 9 a.m. was the strongest slot in this sample (measured, Buffer Timing, n=2.5 million posts, 2026-02). Replace this starting point with account evidence. Open the reference for regional results; don't impose a worldwide evening or weekend rule.
+
+Top Threads performers posted more often, but the report establishes no universal optimum and warns that higher frequency can reduce reach per post (measured, Buffer Engagement, n=Buffer-published social posts, 2026-03). Schedule evergreen material only when the publishing tool supports it, leaving live time for replies. Pre-approve themes and escalation boundaries (directional; Sendible).
+
+Review posts at comparable ages and keep listening while useful replies arrive; don't invent an expiry cutoff. Provide off-hours triage for active launches and escalate fraud links or abuse through available controls (directional; Respondology). Separate native engagement from qualified interest and downstream conversion; compare metrics within Threads, with consistent definitions (measured, Buffer Engagement, n=Buffer-published social posts, 2026-03).
+
+## What gets suppressed
+
+Don't assert fixed penalties for root links, Instagram cross-posting, technical content, or self-reply timing. The verified evidence doesn't support those rules. Sendible's weaker linked and polished-image posts describe its own account experiment, not a platform enforcement mechanism (directional; Sendible).
+
+Meta announced a phase-in of personalized political recommendations; the announcement doesn't establish completed rollout or blanket throttling (official, Meta Civic, 2025-01). Choose political topics according to the brief and actual audience.
+
+Meta requires its disclosure tool for organic digitally created or altered photorealistic video and realistic-sounding audio, and describes AI info labels (official, Meta AI Info, 2026-02, updated 2026-06). Preserve provenance metadata and check the finished media. That source doesn't establish a blanket AI-text label or caption reach penalty. Don't omit disclosure to pursue engagement.
 
 ## Examples
 
-### Example 1: Same idea, rewritten for each platform
+All briefs below are illustrative, not reports of actual businesses or outcomes. Treat their facts as supplied solely for the exercise. Bracketed fields require source-backed replacement before publication.
 
-Source idea: you spent $50 in LLM tokens to solve a $5 problem because you told the agent to "be helpful."
+### Developer tool: demo
 
-X version (sharp, contrarian, technical):
-> My agent spent $50 in tokens to solve a $5 problem.
->
-> Not because it's dumb. Because I told it to be "helpful."
->
-> Changed one line in the system prompt:
-> "Do not be helpful. Be correct."
->
-> Problem gone.
+Illustrative brief: a runnable demo includes a dry-run preview from a demo database showing an index removal. Dependencies remain a manual check. The founder writes plainly.
 
-Threads version (conversational, observational, reply-inviting):
-> watched my AI agent burn $50 in tokens to do a $5 task because i told it to "be helpful" in the system prompt
->
-> changed it to "be correct" and the whole thing calmed down
->
-> anyone else find helpfulness is the thing breaking your agents?
+> The dry run shows an index being removed before the migration runs. I've attached the preview from our demo database. You still need to check what depends on that index. The runnable example is here: [demo link]
 
-What changed: lowercase casual, "watched my" is softer than "My agent spent," the takeaway becomes a question instead of a closed statement, no colon-styled callout. Same idea, native to Threads.
+Why it works: The demo rule ties the caption to visible proof.
+The manual dependency check bounds the promise.
 
-### Example 2: Pure Threads post (doesn't need to exist on X)
+### Business software: customer proof
 
-> small observation from 6 months of using cursor daily:
->
-> the faster the model, the worse my code gets. not because the code is worse — because i stop reading it.
->
-> i think there's a real speed ceiling past which humans just rubber-stamp. somewhere around 200 tokens/sec for me.
+Illustrative brief: a customer approved reporting shorter invoice-preparation time and sharing workflow notes. The pilot covered domestic invoices only; exact measurements are still missing.
 
-What works: lowercase conversational register, a real observation not a hot take, ends on a specific number that invites replies (other people will share their own ceiling), no CTA needed.
+> [Customer] recorded invoice preparation falling from [before] to [after] during [window] with our billing tool. The pilot covered domestic invoices only. Their approved workflow notes are here: [source link]
 
-### Example 3: Observational micro-take
+Why it works: The proof rule requires conditions and source provenance.
+The unresolved fields keep this draft unpublishable.
 
-> there's a specific flavor of "i asked chatgpt" posts where you can tell the person never actually used the answer. they just wanted the vibes
+### Pottery creator: warm observation
 
-What works: 130 characters, one observation, mild callout without being mean. High likelihood of replies and reposts because readers recognize the pattern. No question, no CTA — the pattern recognition itself drives engagement.
+Illustrative brief: a potter supplied a photograph of a bowl that wobbles when empty and stays steady holding garlic. It isn't for sale; their voice is dry and affectionate.
 
-### Example 4: Question post that generates a reply chain
+> My wobbly bowl has been promoted to garlic storage. It stays put with a bulb in it, which is more than I could say when it was empty. This one is staying in my kitchen.
 
-> honest question for anyone building with LLMs:
->
-> how do you decide when a bug is "the model is wrong" vs "your prompt is wrong"?
->
-> i've been burning hours on the wrong side of that line
+Why it works: Register matching preserves the potter's supplied joke.
+The consumer example uses an honest limitation and deliberately has no CTA.
 
-What works: earnest tone, names a specific common pain, admits own weakness ("burning hours"), ends with no canned CTA. This type of post routinely generates 30+ replies on Threads — the platform's native conversation mode.
+### Local bicycle service: announcement
 
-### Example 5: What NOT to post on Threads
+Illustrative brief: a repair shop offers advance photo assessment for commuting bikes. Concealed damage needs an in-person inspection; the supplied booking page explains which photos to send.
 
-Ported from X (fails on Threads):
-> 1/ Thread on why most AI agents fail 🧵
->
-> After building 40+ agents in production I've noticed 5 failure modes nobody talks about:
->
-> (continues with 5 numbered posts)
+Weak draft:
+> We're pleased to announce our new photo assessment service.
 
-Why it fails on Threads: thread markers ("1/"), the 🧵 emoji, "40+ agents" credential flex, "nobody talks about" hot-take framing, the 5-numbered-points structure. All of this reads as X culture. On Threads the same idea would be one soft-take post inviting replies, not a broadcasted thread.
+Revised:
+> You can send us photos of your commuter bike before booking a repair. We'll say what we can assess from the pictures and what needs a closer look in the shop. The booking page explains which photos to send: [booking link]
 
-### Example 6: Thread-vibe matching (casual chain)
+Why it works: The launch rule makes the first line useful to a buyer.
+The inspection boundary prevents a remote-diagnosis promise.
 
-Post: "there's a specific flavor of 'i asked chatgpt' posts where you can tell the person never actually used the answer. they just wanted the vibes"
+## Checklist
 
-Reply chain vibe: all lowercase, no punctuation, 1–2 lines, slightly absurdist.
-
-Bad reply (ignores vibe — reads robotic):
-> This is an astute observation. Many users engage with AI outputs as a form of social signaling rather than as a practical tool, which creates a disconnect between stated and actual utility.
-
-Good reply (matches chain vibe, medium imperfection):
-> the vibes are the product at this point
->
-> nobody's reading the output they're just screenshotting the prompt
-
-What works: all lowercase, no periods, matches the 2-line casual pattern, extends the observation with a specific behavior (screenshotting the prompt) that readers will recognize.
-
-### Example 7: Reply with calibrated imperfection (personal/vulnerable thread)
-
-Post: "honest question for anyone building with LLMs: how do you decide when a bug is 'the model is wrong' vs 'your prompt is wrong'? i've been burning hours on the wrong side of that line"
-
-Reply chain vibe: earnest, personal, lowercase but thoughtful, 2–3 lines.
-
-Bad reply (over-imperfected for a personal/earnest thread):
-> omg same lmao i literally have no idea half the time tbh its just vibes at this point lol
-
-Good reply (low imperfection, matches earnest register):
-> i usually blame the prompt first because its cheaper to fix
->
-> but if i've rewritten it 3 times and it's still wrong, that's usually the model
-
-What works: lowercase throughout (matches chain), missing apostrophe in `its` (one natural imperfection), earnest and specific answer, no over-casual slang that would feel dismissive of the person's real frustration.
+- [ ] First line carries the point; the post develops a central idea in the author's voice.
+- [ ] Format and finished character count fit the verified constraints, including the actual URL.
+- [ ] Every specific has provenance; customer permissions are recorded; no example placeholders remain.
+- [ ] AI-tell pass completed; no manufactured errors; useful punctuation and natural register retained.
+- [ ] Reply reads as prose, answers its parent, and matches the conversation's emotional register.
+- [ ] CTA or deliberate no-CTA choice matches the goal; destination works; any required link reply is included in the publishing package.
+- [ ] Topic choice fits; any newer feature was checked in the target account.
+- [ ] Affiliation, sponsorship, and applicable AI disclosure checked; media provenance preserved.
+- [ ] Asset brief, caption, image alt text, and video accessibility supplied where relevant.
+- [ ] Reply owner and follow-up plan supplied; self-replies add information without artificial delay.
+- [ ] Publishing is a downstream step; after authorized publication, verify assets, disclosure, and any promised reply link.
+- [ ] Measurement distinguishes views and conversation from qualified interest and attributed outcomes.
 
 ## References
 
-- AgentSkills spec: https://agentskills.io/specification
-- Threads help center: https://help.instagram.com/threads
-- "Measured" figures in this skill (engagement rates by format, velocity thresholds, signal refinements) are consolidated from 2026 third-party platform studies — Threads has no public ranking source, so treat them as directional, not exact. Re-validate periodically.
-- Companion skill: `content-voice` — voice rules still apply
-- Companion skill: `social-x` — different platform; don't confuse Threads (Meta) with threads-on-X
+- [Meta Web](https://about.fb.com/news/2025/04/new-features-threads-web-experience/), 2025-04-24.
+- [Meta Introduction](https://about.fb.com/news/2023/07/introducing-threads-new-app-text-sharing/), keyword-search update 2023-09-07.
+- [Meta Text](https://about.fb.com/news/2025/09/attach-text-threads-posts-share-longer-perspectives/), 2025-09-04.
+- [Meta Personalization](https://about.fb.com/news/2025/03/new-threads-features-more-personalized-experience-you-control/), updated 2025-07-22.
+- [Meta Communities](https://about.fb.com/news/2026/06/meta-launching-new-features-500-million-monthly-threads-users/), 2026-06-16.
+- [Meta Civic](https://about.fb.com/news/2025/01/meta-more-speech-fewer-mistakes/), 2025-01-07.
+- [Meta AI Info](https://about.fb.com/news/2026/02/meta-prepares-for-2026-us-midterms/), 2026-02-19; updated 2026-06-01.
+- [Buffer Engagement](https://buffer.com/resources/state-of-social-media-engagement-2026/), 2026-03-05.
+- [Buffer Replies](https://buffer.com/resources/threads-comments-engagement/), 2026-02-24.
+- [Buffer Timing](https://buffer.com/resources/the-best-time-to-post-on-threads/), 2026-02-04.
+- [Sendible](https://www.sendible.com/insights/how-to-grow-on-threads-and-build-a-human-brand-presence?hs_amp=true), 2026-05-19.
+- [Google URL Builder](https://support.google.com/analytics/answer/10917952?hl=en), undated; validation 2026-09.
+- [Aborn](https://emilyaborn.com/ai-writing-tells-what-they-cost-you/), 2026-07-10; [Cox](https://huntingthemuse.net/library/how-to-tell-if-writing-is-ai), 2026-06; [Gichigi](https://tahigichigi.substack.com/p/12-red-flags-of-ai-writing-and-how), 2026-02-18.
+- [Lees](https://www.housingwire.com/articles/taste-guts-receipts-ai-writing/), 2026-08-07; [MIDI](https://arxiv.org/abs/2606.02147), 2026-06-01; [Detector Study](https://arxiv.org/abs/2608.26710), 2026-08-27.
+- [Respondology](https://www.prnewswire.com/news-releases/47-of-consumers-hold-brands-responsible-for-toxic-and-spammy-comments-respondology-report-finds-302736755.html), 2026-04-09.
+- [Detailed mechanics and evidence](reference/platform-and-evidence.md), validation 2026-09.
+
+Re-validate when: feature names or routes change; limits or policies update; Meta publishes ranking details; vendors release new methods or reports.
+Validated: 2026-09

@@ -1,149 +1,242 @@
 ---
 name: social-medium
 title: "Medium Publishing Playbook"
-description: "Ground-truth 2026 playbook for publishing stories on Medium. Covers the Boost curation system (human editors route most distribution, ~50% via publication nominations), member-reading-time economics (completion ratio beats views), the four-legs story structure from real publication-editor data, the 7–10% CTR title target, the 3-specific-tags rule, publications vs solo publishing, and Medium's hard ban on AI-generated content in the Partner Program. Activate when drafting anything destined for Medium."
+description: "Draft and revise Medium stories in the author's documented voice, with sourced proof and a deliberate business purpose. Covers publication submissions, native launches, canonical syndication, disclosure, reader access, and measurement. Activate for writing for Medium, publishing on Medium, a Medium draft or piece, or revising a Medium publishing plan."
 license: Apache-2.0
-compatibility: "Octomind content agents. Platform-specific to Medium (medium.com and Medium publications)."
+compatibility: "Requires a text editor; network access and a Medium account for publishing and story statistics."
 domains: content
 rules:
   - match(\bmedium\.com\b)
-  - match(\bmedium\s+(article|post|story|publication)\b)
-  - match(\bpost\s+(on|to|for)\s+medium\b)
+  - match(\bmedium\s+(article|post|story|publication|draft|piece|newsletter)\b)
+  - match(\b(post|write|writing|publish|publishing|draft)\s+(on|to|for)\s+medium\b)
   - match(\bmedium\s+partner\s+program\b)
   - match(\bboost\s+nomination\b)
 ---
 
 ## Overview
 
-Medium in 2026 is a human-curated platform wearing an open-platform costume. Anyone can publish, but distribution is routed by a small group of editors and Medium's curation team through Boost — and roughly half of Boosted stories arrive via publication-editor nominations. The platform pays for the attention of paying members, measured in reading time, not views.
+Write a useful story whose judgments belong to the named author. Start with supplied facts and proof, then the author's documented voice; use Medium register as the fallback. Apply `content-voice` for general editing, with the platform decisions below.
 
-Two consequences shape everything: publications are the distribution lever (a solo profile under ~5,000 followers has minimal reach), and AI-generated content is a policy violation, not just a style problem — undisclosed AI writing gets stories removed from the Partner Program, and a single flagged piece damages the entire publication's Boost standing.
+## Mechanics and mental model
 
-Pair with `content-voice`. On most platforms AI-shaped prose costs reach; on Medium it costs the account.
+| Distribution | Meaning |
+|---|---|
+| Network | Reaches followers of the writer or publication. (official, Distribution Guidelines, 2026-06) |
+| General | Matches reader interests and related follows, including beyond the author's followers. (official, Distribution Guidelines, 2026-06) |
+| Boost | Human curators select stories for higher-priority distribution; no structural checklist guarantees selection. (official, Distribution Guidelines, 2026-06) |
 
-## Instructions
+Publication-editor Boost nominations closed on May 31, 2026; internal review continues and publications remain a discovery source. Don't pitch nomination access. (official, Nomination update, 2026-05)
 
-### Distribution Mechanics 2026
+Publication acceptance and authentic recommendations matter: Medium attributes most average-feed stories to human actions. (official, Curation era, 2026-07) Publication stories receive more presentations, views and reads in Medium's aggregate data, especially for smaller followings; this isn't an individual guarantee. (measured, Reader tips, n=Medium platform data with sample undisclosed, 2026-03)
 
-Three tiers, in descending reach:
+Open [reference/mechanics.md](reference/mechanics.md) when advising on earnings, interpreting performance evidence, preparing newsletter or technical assets, or checking a publication's submission controls.
 
-| Tier | Who decides | What it takes |
+## Rules and format decisions
+
+Record the author's actual position and supporting source for each factual assertion before drafting. Don't invent experience, quotations, dates, or outcomes. Mark missing specifics with bracketed placeholders in example drafts; a draft with unresolved placeholders isn't publishable. Prefer omitting an unsupported claim when it adds nothing.
+
+### Destination and access
+
+| Situation | Choose |
+|---|---|
+| Small following; relevant publication accepts submissions | Submit a tailored draft; use audience fit and editorial quality. No follower threshold applies. (official, Worth it, 2026-02) |
+| Established relevant following; no editorial dependency | Consider solo publication for control; compare your own outcomes. (directional) |
+| No publication access, poor topic fit, or incompatible deadline | Publish a complete solo story and build a proof portfolio; pursue editorial relationships separately. (directional) |
+| Existing article on an owned domain | Use Import for syndication. It backdates publication and sets the original URL as canonical; inspect both before publishing. (official, Import, 2026-09) |
+| New argument or materially different reader problem | Write a native story; cite earlier work where relevant and avoid duplicate Medium versions. (directional) |
+| Discovery or buyer evaluation is the goal | Prefer free access; keep the article useful without visiting the destination. (directional) |
+| Eligible original work; member earnings are the goal | Consider a paywall; don't imply it creates a superior audience. Open the earnings reference first. (directional) |
+| Paywalled story needs unrestricted sharing | Use an author/editor Friend Link. Member reads can still earn; nonmember reads through that link don't. (official, Friend Links, 2026-09) |
+
+### AI disclosure and authorship
+
+| Actual contribution | Action |
+|---|---|
+| Human-authored material | Preserve its evidence and voice; don't add fictional disclosure or experience. |
+| AI-generated text, including incorporated assistance | Describe the actual assistance clearly near the opening. For generated text, place disclosure within the first two paragraphs. (official, AI policy, 2026-09) |
+| AI-generated writing, even disclosed | Keep it off the paywall. It cannot receive General or Boost distribution. (official, AI policy, 2026-09; official, Distribution Guidelines, 2026-06) |
+| Undisclosed generated or assisted text | Resolve disclosure before publication; undisclosed text is restricted to Network. Paywall violations can remove paywall access or revoke enrollment. (official, AI policy, 2026-09) |
+| Author wants an original essay instead | Have the author develop the argument from their records and write it; reassess the finished contribution honestly. Surface rewording doesn't establish human authorship. (directional) |
+| Synthetic illustration or narration proposed | Document its origin; caption synthetic assets plainly and check current applicable controls before publishing. Don't invent a disclosure toggle or treat media as evidence of an event. (directional) |
+
+### Story anatomy and assets
+
+Write a title that names the subject and earned claim. Let the subtitle add scope or a limitation. Open on a documented event, a concrete finding, or the reader's actual problem. Build sections around evidence and decisions; end when the reader has the promised answer. (directional)
+
+Choose length by purpose: Medium accepts well-crafted short and long stories. Recent evidence is useful for timely analysis, but no universal recency window or argumentative headline is required. (official, Distribution Guidelines, 2026-06)
+
+Use descriptive headings in long guides. Structured stories receive an automatic web table of contents without a writer toggle; don't promise retroactive coverage. (official, Long reads, 2026-07)
+
+Prepare readable code blocks for short excerpts and a linked gist or repository for full examples; preview any embed and provide a text fallback. Give prerequisites and expected output from supplied evidence. Don't claim code was run unless a record proves it. These are packaging choices, not guarantees of editor support. (directional)
+
+Choose a cover that explains the subject. Supply an asset brief stating the image's purpose and source, with crop guidance. Write a factual caption, attribution, and useful alt text; verify rights and mobile readability. Don't manufacture screenshots or customer scenes. (directional)
+
+Use all five topic slots when accurate fits exist; relevance beats broad popularity. Topic pills now appear at the story's top. (official, Reader tips, 2026-03; official, Writer newsletter, 2026-08)
+
+### Publication submission and recovery
+
+Read the live guide for accepted subjects, draft status, rights, AI rules, and submission method. Check length and formatting instructions. Publication controls can require a subtitle, preview image, shared topic, paywall status, or minimum reading time. (official, Submission controls, 2026-07)
+
+Match a relevant story topic to the publication's About-page topics. Topicless or unmatched drafts can receive an off-topic badge; the badge doesn't automatically reject them. (official, Off-topic badge, 2026-06)
+
+Editors may include an optional rejection reason in the status email. (official, Writer newsletter, 2026-08) Use these editorial decisions, not assumed platform reason codes:
+
+| Feedback | Next step |
+|---|---|
+| Subject or audience mismatch | Find a better-fit publication or publish solo. (directional) |
+| Named evidence or craft problem | Fix it; resubmit only under the publication's rules. (directional) |
+| Submission requirement missed | Correct the requirement without distorting the story. (directional) |
+| No explanation | Recheck the guide; move on without repeated editor mentions or duplicate submissions. (directional) |
+
+## Launch and proof posts
+
+Take a campaign brief before drafting: audience and buying situation; promise; available proof with sources; desired action and destination; campaign stage (teaser / launch day / proof / objection / recap); disclosure obligations. Accept a deliberate no-CTA choice. If proof is missing, draft an explanation or proposal without presenting it as a result.
+
+Use these qualitative length bands as craft guidance; they aren't word-count benchmarks. (directional)
+
+| Shape | Anatomy | Length band |
 |---|---|---|
-| Boost | Human curators + publication editor nominations (~50% of Boosts) | Original insight, lived experience, clean craft; strong editors hit ~87% nomination acceptance by knowing the bar |
-| General Distribution | Algorithmic — topic pages, followed tags, follower feeds | Baseline for compliant human-written stories |
-| Network only | Nobody | Disclosed-AI stories cap here; undisclosed AI risks removal |
+| Launch day | Reader problem → demonstrated change → availability and exclusions → optional next step. Remove the product name: the explanation should still teach something. | Compact to medium essay. (directional) |
+| Demo or artifact | Task → prerequisites → reproducible walkthrough → observed output → failure boundary and artifact link. | Medium to long guide. (directional) |
+| Customer proof | Baseline → intervention → sourced outcome with denominator and observation window → confounders and permission → evaluation path. | Medium to long case study. (directional) |
+| Founder decision / build in public | Decision → evidence considered → cost or unresolved tradeoff → next observation. Link installments as a developing record. | Compact to medium essay. (directional) |
+| Objection answer | State the buyer's objection accurately → test or explanation → conditions where it remains valid → optional evaluation link. | Compact to medium explanation. (directional) |
+| Recap | Compare intended outcome with observed result → limits of attribution → next decision. | Medium retrospective. (directional) |
 
-- Member reading time is the currency. A story with 2,000 views at 85% completion outearns one with 5,000 views at 40%. Write to be finished, not clicked.
-- Partner Program pays from member reading time, claps, highlights, and responses. Top niche writers earn $1K–$10K+ monthly; the median is near zero — treat Medium as top-of-funnel to your newsletter/consulting (the CEO says this himself), not as the income.
-- Paywall math: about two-thirds of Medium stories aren't paywalled. Paywalling enters you into a smaller, higher-quality pool read by paying professionals. Paywall your strongest work, keep discovery pieces free.
-- External SEO is real: Medium domains rank well; evergreen how-tos earn search traffic for years regardless of Boost.
+Put a relevant first-party link beside the artifact or at the earned ending; keep a profile link as a secondary path. State founder, employee, or commercial affiliation where it affects trust. First-party business and mailing-list links are allowed; traffic-first spam and third-party advertising or sponsorships are prohibited. Disclosure doesn't authorize a prohibited sponsored placement. (official, Medium Rules, 2026-09)
 
-### The AI Content Policy (hard constraint)
+Use consistent `utm_source`, `utm_medium`, and `utm_campaign`; distinguish links with `utm_content`. (official, Google URL builder, 2026-09) Measure destination actions separately from Medium engagement; attributed visits don't prove sales causation. (directional)
 
-- Undisclosed AI-generated writing violates Partner Program terms. Enforcement tightened through 2026: AI filler is demoted or removed, and human curation is explicitly Medium's strategic defense against it.
-- Disclosed AI writing may exist but is ineligible for Boost and cannot be paywalled.
-- Detection looks for the familiar markers: "delve", "unlock", parallel tricolons, template-like headers, uniform paragraph rhythm. See `content-voice` for the full kill-list.
-- Publication-level blast radius: one AI-flagged story damages the whole publication's Boost status. Editors reject anything that smells like AI to protect their pipeline — the bar you must clear is the editor's paranoia, not just the classifier.
+Seed through relevant editorial relationships and willing readers who can recommend the work in their own words. Repost notes allow up to 280 characters and appear in followers' For You feeds. (official, Repost notes, 2026-07) Give context about the audience and useful passage. Don't script employee praise or trade claps. (directional)
 
-### Title Craft — the CTR Loop
+Illustrative launch-week offsets below are a planning example, not measured timing advice. Shift them to editorial availability and actual proof; a row can be preparation rather than another published story. (directional)
 
-Real numbers from a major publication editor: click-through under 2–3% means the title is unclear — rewrite it; 7–10% is the sweet spot. Titles are editable after publishing — rewrite underperformers within 48 hours instead of abandoning the piece.
+| Offset (illustrative) | Medium work | Reply commitment and measurement |
+|---|---|---|
+| T−7 | Prepare problem essay and publication pitch; choose solo fallback. | Owner reviews substantive responses; record recurring buyer problems. |
+| T−3 | Finish demo and access checks; coordinate newsletter inclusion if available. | Reserve opening-hours coverage; record baseline audience totals. |
+| T0 | Publish the launch explanation and artifact. | Author answers evidence questions during the first hours; record views/reads actually exposed. |
+| T+1 to T+3 | Correct errors; answer a substantive objection if evidence warrants it. | Return at the promised check-in; log qualified questions and reported trial attempts. |
+| T+7 | Publish a bounded recap if there is enough evidence; update the portfolio. | Review read ratio and audience change alongside attributed destination actions. |
 
-- Clear, arguable positions beat curiosity gaps. `7 Python Libraries That Replaced All My AI Engineering Boilerplate` and `NVIDIA Just Dropped the Most Efficient Reasoning Model of 2026` are real high-performers — both state exactly what the piece claims.
-- Numbers, named tools, and recency markers pull professionals; vague intrigue ("This Changed How I Think About Code") pulls nobody who finishes.
-- Subtitle (the kicker) is part of the click decision — use it to state the payoff, not to repeat the title.
+Prefer the accountable founder or practitioner byline for personal decisions; use a company publication for a maintained collection. This is a voice and ownership choice, with no verified founder-versus-brand reach multiplier here. (directional)
 
-### Story Structure — the Four Legs (from measured publication data)
+## Voice on this platform
 
-Every high-performing piece contains all four; pieces missing any leg underperform regardless of writing quality:
+Use connected essay prose with informative subheads. Keep technical register precise; let personal essays retain the author's natural contractions or fragments. Don't import a feed-thread rhythm of isolated dramatic lines. Start inside the subject instead of announcing what the article will cover. (directional)
 
-1. A debatable claim in the headline — something a reader could disagree with.
-2. Recent proof — news, release, or data from roughly the last 30 days that makes it timely.
-3. Named specifics — tools, people, version numbers, dates. Generic ≈ unfinished.
-4. An actionable takeaway — a checklist, framework, or Monday-morning task the reader leaves with.
+Apply the general AI-tell pass from `content-voice`: remove padded contrast frames and decorative triads; inspect uniform short paragraphs, suspense pivots, and repetitive emphasis. Cut obligatory moral endings. These are practitioner editing heuristics, not authorship tests. (directional) Sources: Aborn, 2026-07; Cox, 2026-06; Gichigi, 2026-02.
 
-Craft rules:
+For Medium, replace generic section labels with the actual decision; avoid a Key Takeaways box that repeats the ending. Remove rhetorical-question openings, miracle-fix narratives, and claims that nobody discusses the subject. Drop engagement-bait closers and hashtag stacks. Use useful punctuation sparingly; don't add typo quotas, fake edits, or lowercase camouflage. Match the author without introducing errors. (directional)
 
-- 1,500–2,500 words is the measured band. Long enough to earn reading time, short enough to be finished.
-- The read-ratio test: every section must survive "would a reader stop here?" Cut the section that answers a question nobody asked.
-- Formatting: meaningful subheads, short paragraphs, one idea each; images and diagrams where they carry information. Medium's editor rewards clean typographic flow — no markdown-header spam.
-- Personal experience is structural, not decorative: what you ran, what broke, what you measured. This is also the anti-AI signal editors look for.
+Medium describes AI detection as unreliable and rejects phrase or punctuation tells as durable evidence. Treat provenance and disclosure as separate checks from prose quality. (official, Write for humans, 2026-08)
 
-### Tags and Profile
+## Cadence and engagement
 
-- Three specific tags beat five broad ones (Medium allows five; the measured advice is three that name the niche). `LangGraph` competes with hundreds; `AI` competes with millions.
-- Profile completeness measurably affects follow-through: specific focus areas in the bio, external links, same headshot as your other platforms.
+Choose a sustainable cadence and declare a response owner with an actual availability window before publishing. Write concise responses that address the passage and add relevant evidence; don't promise distribution or earnings from comments. (directional)
 
-### Publications — the Actual Lever
+Build toward a continuing editorial relationship if you have access. Without access, develop a solo series and improve the portfolio from real reader questions. Group related expertise stories in a List and link it from About; Medium documents Lists as browsable portfolios. (official, Self-promotion guide, 2025-11)
 
-- Getting into a Boost-enabled niche publication dramatically outperforms self-publishing: their followers + editor nominations + algorithmic amplification.
-- Pitch process: read the publication's submission guide, submit 1–2 strong drafts, follow their formatting rules exactly. Editors reject on craft violations before content.
-- The 90-day shape that works: publish 3–5 stories in a Boost-enabled publication tied to current developments, aggressively test titles → track CTR, read ratio, and reading time, double down on what works → pitch a recurring column or apply for Boost nomination access.
-- Being a good citizen counts: thoughtful responses on top writers' stories in your niche put your name in front of the editors who nominate.
+Use the 160-character bio for your subject and relevant credentials; add a clear photo and expand About with context and links. (official, Reader tips, 2026-03) Medium reports more followers for completed bios without measuring each profile element separately. (measured, Reader tips, n=Medium platform data with sample undisclosed, 2026-03)
 
-### What Dies on Medium
+For writer newsletters, prepare an accurate subscription promise. For publication newsletters, pitch the story's relevance to the editor; verify the available sending controls and access path. Don't promise automatic sends or infer per-story subscriber attribution from account totals. (directional)
 
-- AI-shaped prose — policy violation, not just a reach penalty (see above).
-- Curiosity-gap clickbait ("You Won't Believe…", "The One Thing…") — high CTR, terrible completion; the reading-time economics punish it automatically.
-- Recycled listicles with no lived detail — the 400th "10 Habits of Great Developers" earns neither Boost nor search.
-- Hustle-culture and generic motivation — the paying-member audience is working professionals; they pay to skip that.
-- Engagement-bait endings ("Clap if you agree! Follow for more!") — claps bought this way don't move reading time, and curators read endings.
+Open the story Stats view or request its screenshot/export. Record the fields actually shown and their date range. Separate feed presentations from all-source views; calculate feed CTR only from corresponding feed views and presentations. Never divide total views by feed presentations. (directional) Treat read ratio as distinct from completion: a qualifying read requires at least 30 seconds. (official, Earnings, 2026-09)
 
-### Responses (Comments)
+Compare similar stories using sufficient observations; change a weak title or preview deliberately and log the change. If feed data is unavailable, use views, reads and qualitative responses without inventing CTR. No fixed rewrite deadline or threshold is required. (directional)
 
-- Responses are mini-stories — they have their own URL and can be distributed. 2–5 substantive sentences with a specific experience is the register.
-- Respond to responses on your own stories; highlights + response threads feed the engagement metrics that pay you.
-- Thoughtful responses on big stories in your niche are a legitimate discovery channel (profile clicks from readers and — more valuable — editors).
+## What gets suppressed
 
-### Timing and Cadence
-
-- Timing matters less than on velocity platforms: Boost and search are not clock-driven. Weekday US mornings help the first-day follower bump, nothing more.
-- Cadence: 1–2 well-made stories a week beats daily output — every piece below your bar dilutes the profile editors evaluate you by.
-
-### Pre-Publish Checklist
-
-- [ ] Headline states a debatable claim; CTR plan: check at 48h, rewrite if under ~3%
-- [ ] All four legs present: claim / recent proof / named specifics / actionable takeaway
-- [ ] 1,500–2,500 words; every section survives the "would they stop here?" test
-- [ ] Written from lived experience — zero AI-detection markers (run `content-voice` kill-list)
-- [ ] Three specific tags naming the niche, not the category
-- [ ] Submitted to a Boost-enabled publication if you have access; formatted to their guide
-- [ ] Paywall decision deliberate: strongest work paywalled, discovery pieces free
-- [ ] Subtitle states the payoff; cover image set
-- [ ] Ready to respond to responses in the first days
-- [ ] The piece would survive a human editor asking "what here could only this author have written?"
+Medium prohibits repetitive promotional interactions, engagement brigades, bought or automated engagement, duplicate stories, and lightly modified templates; spam can be removed. (official, Medium Rules, 2026-09) Keep launch value in the story and apply the disclosure table before submission. Don't describe awkward prose as an account penalty or promise a formula for Boost.
 
 ## Examples
 
-### Example 1: Four-legs check applied
+All scenarios below are illustrative, including their supplied facts. They are not actual customer evidence. Replace bracketed fields from records before publication; don't transfer these experiences to an author.
 
-Draft headline: `Thoughts on AI Coding Assistants`
+Disclosure example, only if true: “An AI writing tool helped draft the explanation. I checked it against the attached records.” Describe the actual contribution; this wording cannot make generated writing paywall-eligible.
 
-Fails leg 1 (no claim), leg 2 (no recency), leg 3 (nothing named), leg 4 (no takeaway). Rewrite:
+### Developer tool: opening and demo
 
-> Headline: Claude Code Wrote 80% of Our Sprint. Here's the Review Process That Made It Safe
-> Kicker: A working checklist after six weeks and one production incident
+Illustrative brief: maintainer, reproducible parser failure, workaround still required.
 
-Claim (it can be safe), recency (six weeks, current tool), specifics (named tool, a percentage, an incident), takeaway (the checklist). Same knowledge, publishable shape.
+Bad opening: “It's not about parsing. It's about trust. Here's the thing.”
 
-### Example 2: Completion-ratio thinking
+Better title: “Where our parser loses quoted commas”
 
-A 4,000-word "everything about vector databases" draft has a 40%-completion destiny — readers get their answer in section two and leave. Split it: one 1,800-word story per real question ("Why your RAG recall drops at 100k documents", "pgvector vs a dedicated store: the numbers that matter under 1M rows"). Each gets finished; finished is what pays.
+> The attached fixture puts a comma inside a quoted field. Our parser splits it anyway. I maintain the parser; this walkthrough follows that failure into the tokenizer and shows the workaround we can support today. Multiline fields remain outside this test.
 
-### Example 3: Response that earns a profile visit
+Package: readable fixture and output; link the reproduction beside the explanation.
 
-On a story about prompt engineering costs:
+Why it works: the opening earns its claim through the artifact rule.
+Why it works: the limitation prevents a miracle-fix story.
 
-> We measured this across a 40-person team last quarter — the surprise wasn't token cost, it was review time. Engineers spent 3× longer reviewing AI code they didn't write than code they did. The "cheap" generation was the expensive part.
->
-> Curious whether you saw review time move too, or just tokens.
+### B2B SaaS: bounded customer proof
 
-Specific numbers, extends the author's point with a new angle, ends with a real question. This is the shape editors and authors click through on.
+Bad: “Our approval tool transformed the customer's entire operation.”
+
+Better title: “The approval queue after the routing change”
+
+> At [customer], median approval time moved from [before] to [after] during [window], across [denominator] requests. The team also changed staffing. I work for [vendor], and the attached case notes can't isolate the software's contribution.
+
+Package: permission and measurement method; end with a relevant evaluation link, not a purchase demand.
+
+Why it works: the proof shape preserves the denominator and attribution limit.
+Why it works: placeholders enforce provenance; this draft isn't publishable yet.
+
+### Consumer creator: objection and artifact
+
+Illustrative brief: sewing-pattern designer; prototype permits a seated reach test; durability untested.
+
+Bad: “The perfect pocket for every commuter.”
+
+Better opening:
+
+> I moved the pocket opening toward the side seam so I could reach it while seated. The prototype photo shows the resulting fold. I sell the pattern; this version still needs wear testing before I recommend it for heavy fabric.
+
+Package: credited prototype photo with alt text; offer the pattern's measurement sheet after explaining the test.
+
+Why it works: the objection answer shows the artifact before the CTA.
+Why it works: the author owns the commercial relationship and remaining uncertainty.
+
+### Local service: decision and follow-up
+
+Illustrative brief: repair shop owner; intake photos support estimates; hidden damage remains unknown.
+
+Bad: “A simple change fixed our quoting problem forever.”
+
+Better title: “Why we ask for a hinge photo before quoting a repair”
+
+> A close photo lets me see whether the hinge plate has pulled away from the frame. I can then explain the likely repair before the visit. I still can't see concealed rot, so the estimate stays provisional until we inspect the door.
+
+Package: permission-cleared example photo and caption; link booking after the limits. Follow up with actual inspection findings when available.
+
+Why it works: the founder decision explains a buyer-facing constraint.
+Why it works: the service claim stays bounded instead of inventing a success statistic.
+
+## Checklist
+
+- [ ] Title and first line deliver a clear subject; subtitle adds scope.
+- [ ] Central idea holds; chosen length serves the evidence.
+- [ ] Every specific comes from supplied proof; no unresolved example placeholders.
+- [ ] Author voice matches; AI-tell pass checks structure and ending without manufactured mistakes.
+- [ ] AI contribution reviewed; required disclosure placed; paywall choice complies.
+- [ ] Publication guide and live controls checked; rejection/solo path ready.
+- [ ] Accurate topics selected within the documented limit.
+- [ ] Import date and canonical verified when syndicated; Friend Link tested when used.
+- [ ] Affiliation clear; first-party CTA and destination work; promotion stays subordinate.
+- [ ] Asset brief, credits, caption and alt text supplied; code and embeds previewed with fallbacks.
+- [ ] Newsletter or List package included when relevant; no assumed send automation.
+- [ ] Response owner and commitment window recorded; follow-up reply plan ready.
+- [ ] Stats source and comparison window specified; no invented CTR or completion claim.
 
 ## References
 
-- AgentSkills spec: https://agentskills.io/specification
-- Medium Partner Program terms + AI policy: https://help.medium.com/hc/en-us (policy hardened 2024→2026; verify current text before advising on paywall/AI questions)
-- Boost program: https://blog.medium.com/boosting-the-boost-d983f0552ab9
-- Measured figures (CTR bands, four legs, reading-time economics, nomination rates): from a 2026 practitioner report by the editor of Medium's largest AI/ML publication, corroborated by 2026 platform studies. Directional — re-validate periodically.
-- Companion skill: `content-voice` — on Medium, AI-shaped prose is a policy violation, not just a style problem
+Dates identify source publication/update months; undated help pages use the validation month. Detailed sources and evidence limits: [mechanics reference](reference/mechanics.md#references).
+
+- [Distribution Guidelines](https://help.medium.com/hc/en-us/articles/360006362473-Medium-s-Distribution-Guidelines-How-curators-review-stories-for-Boost-General-and-Network-Distribution), 2026-06-29.
+- [AI policy](https://help.medium.com/hc/en-us/articles/22576852947223-Artificial-Intelligence-AI-content-policy), undated, checked 2026-09.
+- [Medium Rules](https://help.medium.com/hc/en-us/articles/213477928-Medium-Rules), undated, checked 2026-09.
+- [Reader tips](https://medium.com/medium-handbook/four-basic-tips-to-reach-readers-on-medium-3544b5397ff3), 2026-03-04.
+
+Re-validate when: distribution names or submission controls change; AI/paywall policy updates; stats or newsletter interfaces change; new format or performance reports appear.
+Validated: 2026-09

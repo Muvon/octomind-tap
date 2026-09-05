@@ -1,9 +1,9 @@
 ---
 name: trend-x
 title: "X (Twitter) Trend Harvester Playbook"
-description: "Platform-specific intel for harvesting X (Twitter) trends — current ranking mechanisms verified against the open-sourced Phoenix For You algorithm (Banger Initial Screen / slop classifier, predicted-action scoring incl. negative-weighted scroll-past, per-feed author diversity decay, mutual-follow Jaccard as ranking input, 7 PTOS kill-switches, sticky hash embeddings, video duration floor), harvest URLs with min_faves/min_retweets filters, scoring rubric on view ratios, hook taxonomy that's currently winning, and dead patterns the algorithm suppresses. Activates in browser sessions whenever the user names X / Twitter."
+description: "Harvest X conversations into a sourced topic brief. Activate when asked to scan Twitter or X trends, buyer pains, launch reactions, or post formats. Validate live surfaces, compare relevant accounts with explicit metric limits, and distinguish observed patterns from ranking hypotheses."
 license: Apache-2.0
-compatibility: "Octoweb browser access. Requires signed-in X session in the user's browser for For You / Explore surfaces; logged-out works for search."
+compatibility: "Browser and network access. Use an authorized signed-in X session where required; search availability must be checked in the current session."
 capabilities: octoweb memory-read memory-write
 domains: browser
 rules:
@@ -16,185 +16,174 @@ rules:
 
 ## Overview
 
-This skill carries the platform-specific mechanics the trend-harvesting agent needs to harvest X (Twitter) — current algorithm weights, harvest surface URLs, scoring signals, hook taxonomy, dead patterns, timing. The agent owns the shared DNA loop (memory → harvest → score → cluster → DNA → hook bank → brief). This skill plugs the X-specific parameters into that loop.
+Harvest source posts and conversations into a brief that supports a writing or go-to-market decision. Capture the topic, audience, observation window, and buying situation before browsing. Return source evidence and uncertainty; publishing and copywriting are downstream work.
 
-## Mental model
+## Mechanics and mental model
 
-For You has two candidate pools: in-network (Thunder, posts from followed accounts) and out-of-network (Phoenix two-tower retrieval over a global corpus, similarity-matched to the viewer's last ~127 engagement actions). Both feed into one transformer ranker that predicts per-action probabilities per viewer × post pair. Score = Σ(weight × P(action)), attenuated by per-feed author diversity decay, multiplied by OON penalty if out-of-network, and gated by safety classifiers.
+For You combines followed-account candidates from Thunder with Phoenix retrieval and SimClusters for out-of-network discovery. Ranking orders candidates; visibility filtering separately returns allow, interstitial, or drop. The documented candidate path filters out-of-network replies and reposts and posts older than 48 hours (official, X algorithm README, 2026-08). Don't extend this cutoff to every X surface.
 
-What this means for harvesting (the parts that matter, not the parts you read in blog posts):
+Treat For You as a personalized sample. Record the session context and compare it with topic searches and relevant account histories (directional). Replies can expose buyer language in a conversation; don't describe them as a guaranteed For You discovery mechanism.
 
-- Engagement is predicted, not observed. Phoenix scores a post based on what each specific viewer's embedding suggests they'll do. So virality = "post embedding matches lots of viewers' embedding clusters," not "post got lots of likes." Account-tier × engagement ratios still tell the story, but adjust your interpretation accordingly.
-- Scroll-past is a negative signal. Posts that fail to earn dwell are actively penalised, not neutral. A post with 100k views and a 0.5% engagement ratio is worse-than-average; the viewers it reached mostly scrolled past it, dragging the author's predicted-engagement profile down.
-- Author diversity is per-feed-render, not per-day. Accounts that burst-post (multiple in minutes) cannibalise their own slots in any given feed render; daily volume is fine. Don't discount accounts on daily volume alone — look at gap-between-posts.
-- Mutual-follow Jaccard and "following-replied-users" are direct ranking inputs. A reply from a high-graph-overlap account cascades the post into more feeds. Big breakouts often correlate with a high-overlap account quoting/replying within the first hour.
-- Banger Initial Screen + slop_score decide which posts get extra boosted candidate pools. AI-templated or recycled-shape posts get demoted regardless of raw engagement. When you cluster harvested posts, flag the ones that look like templates — they're operating below their apparent reach.
-- Freshness is a hard age cutoff, not a continuous decay. Inside the freshness window, posts compete freely on embedding match; outside, they're filtered out. "Time-decayed score" is the wrong mental model.
-- Video has a binary duration floor. Sub-threshold clips score zero on the video axis. Cluster video posts by duration when harvesting.
-- 7 PTOS kill-switches (ViolentMedia, AdultContent, Spam, Illegal&Regulated, HateOrAbuse, ViolentSpeech, SuicideOrSelfHarm) drop posts entirely. `MediumRisk` brand-safety verdict quietly excludes posts from ad-eligible feed surfaces.
+A conditional new-author lift exists for originals; it excludes replies and reposts (official, X cold-start, 2026-08). Eligibility includes at most 1,000 followers and fewer than 1,000 impressions alongside further checks (official, X cold-start, 2026-08). Don't attach a universal boost multiplier to small accounts.
 
-## Rules
+Published weights multiply predicted actions, not observed engagement counts. Repeated-author scoring operates within a feed request; it supplies no daily posting quota (official, X parameters, 2026-08). Public engagement ratios don't reveal predicted non-dwell, private shares, or a post's score. Bookmarks can indicate reader utility when available, but this evidence establishes no current bookmark weight. Don't describe them as either a proven boost or a proven non-signal.
 
-### What the ranker actually scores (harvest interpretation guide)
+## Harvest procedure and surface decisions
 
-The ranker sums positive-weighted predicted actions and subtracts negative-weighted ones. Exact weights are runtime params — these are the structural facts, not invented multipliers.
+### Establish access and scope
 
-Positive-weighted (in the scorer's canonical order — higher up = lower marginal value):
-- `favorite` (like) → cheap, easy to predict, lowest signal per unit. Discount raw likes when assessing breakouts.
-- `reply`, `retweet`, `quote`, `quoted_click` → distribution-intent actions. Posts heavy on these are doing the real work.
-- `share`, `share_via_dm`, `share_via_copy_link` → rare and high-signal. DM/copy-link shares are nearly invisible in public metrics but matter to the ranker.
-- `click`, `profile_click`, `photo_expand` → depth signals. Profile clicks are the highest-intent of the three.
-- `vqv` / `quoted_vqv` (video quality view) → only counts if video > duration floor. Discount short clips.
-- `dwell` (binary), `dwell_time`, `click_dwell_time` → attention scored both as a flag and continuously.
-- `follow_author` → highest-intent action; the actual growth lever.
+Use the campaign's topic vocabulary and buying problem. Include exact problem phrases alongside product and competitor names. Preserve the audience's language without assuming every complaint signals purchase intent (directional).
 
-Negative-weighted (these subtract):
-- `not_interested`, `block_author`, `mute_author`, `report` → hostile actions.
-- `not_dwelled` → scroll-past is a negative score, not neutral. A high-view, low-engagement-ratio post is in the red, not in the gray.
+The supplied verified evidence doesn't certify search operators, deep-link tab URLs, logged-out search access, or Explore labels. Treat the following as navigation procedures, not confirmed endpoint contracts. Start from `https://x.com` and inspect the live UI; don't fabricate a working URL or bypass an access gate.
 
-Bookmarks are not in the scored set in the open code. Treat bookmark counts as a soft proxy for "save-worthy" content but don't weight them as a ranking signal.
-
-### Harvest implications
-
-- Read engagement-to-view ratio as a "post survived `not_dwelled`" check. Anything under ~2% on a high-view post implies most viewers scrolled past — algorithmically a negative outcome regardless of absolute view count.
-- Weight reply/quote/share counts above likes by an order of magnitude when ranking what to study. Like-heavy posts with low reply-and-share are often Phoenix mis-fires, not signal.
-- Flag posts with high follow-conversion (followers gained per impression, when visible) — this is the action Phoenix weights highest in the positive direction.
-- Author diversity is per-feed-render. Don't discount accounts on daily count alone; discount accounts on burst pattern (multiple posts within minutes).
-- Banger / slop classifiers: when you cluster posts and find shapes that look templated — same skeleton, parallel bullets, AI-cliché phrasing — flag them as below-ceiling content. They under-perform even when raw numbers look fine.
-- Mutual-follow Jaccard cascade: when a post breaks out, check which connected accounts replied or quoted in the first hour. That's the cascade mechanism, not raw reply count.
-- Premium / TweepCred / 2× reach for blue-checks / "engagement pods don't work": none of these are in the open code as stated by public X advice. Don't propagate them as facts.
-
-### Harvest surfaces (run in parallel)
-
-| Surface | URL | Yields |
+| Needed evidence | Navigation procedure | Validation before use |
 |---|---|---|
-| Topic search, high-engagement | `https://x.com/search?q=<topic>%20min_faves%3A500&f=live` | Last-day niche posts with ≥500 likes |
-| Topic search, breakouts | `https://x.com/search?q=<topic>%20min_faves%3A5000&f=live` | Outliers — what actually broke out |
-| Topic search, top tab | `https://x.com/search?q=<topic>&f=top` | Algorithm-picked best performers |
-| Explore (signed-in) | `https://x.com/explore/tabs/trending` | What X is amplifying globally right now |
-| Anchor account | `https://x.com/<handle>` | Last 7 days for each anchor |
-| Niche list timeline | `https://x.com/i/lists/<id>` | Curated niche timeline if user has one |
-| Event hashtag (when relevant) | `https://x.com/hashtag/<tag>?src=hashtag_click&f=live` | Live event coverage |
+| Current topic discussion | Open Search through the visible interface; enter the topic; select the newest-results tab if offered | Record the actual URL and visible tab label; inspect timestamps |
+| Ranked topic sample | Select the available ranked-results tab | Record that ranking can bias the sample; don't call it the full population |
+| Explore or trending topics | Open Explore from navigation, then the visible trends surface | Record locale and personalization settings when visible; don't call it global |
+| Account comparison | Open a relevant author's profile from a source post or supplied link | Confirm the account and inspect posts within the chosen window |
+| Curated niche listening | Open an authorized List through the visible Lists interface or a supplied link | Record list selection and membership bias |
+| Event discussion | Search the event name and inspect a relevant hashtag if present | Check event dates and relevance; a tag alone doesn't prove participation |
+| Buyer pain and objections | Search exact problem language; inspect roots and full reply chains | Distinguish firsthand reports, product pitches, and copied claims |
+| Format-specific material | Use available media filters and inspect the source posts | Record actual format, account access, and truncation |
+| Reach diagnosis | Try `https://x.com/i/under_the_hood` in the authorized account | This aggregate-label tool is a pilot, not guaranteed access (official, X README, 2026-08) |
 
-Open 4–8 in a single parallel block of `browser_navigate` calls. Use `min_faves` and `min_retweets` operators aggressively — the unfiltered firehose wastes context. Snapshot, scrape, close.
+Copy URLs produced by working navigation into the brief. Don't hard-code the old Explore trending path, `f=top`, or `f=live` as verified contracts. If experimenting with `min_faves`, `min_retweets`, `min_replies`, `since`, `until`, `lang`, or `filter` operators, mark them unverified until visible results demonstrate the intended behavior. An engagement filter doesn't create a date boundary. Don't claim a last-day sample without checking timestamps.
 
-### Scoring rubric (X-specific signals)
+Record login walls, unavailable filters, and empty results distinctly. When search is unavailable, use accessible supplied post links and account pages and declare the reduced coverage. Don't report a blocked search as absence of discussion. If an AI-generated summary appears, use it only as a lead and inspect the underlying posts.
 
-Virality axis 0–5:
-- Engagement-to-view ratio = (replies + reposts + bookmarks) / views. >3% strong, >5% breakout.
-- Reply count vs follower count — replies/followers >0.5% means the post escaped the author's bubble.
-- First-2h velocity vs total — front-loaded engagement = algorithm picked it up.
-- Author tier — a <10k account hitting 100k views is a stronger structural signal than a 1M account doing 100k. Weight micro breakouts higher.
+Use independent tabs for independent reads only when the browser supports them. Keep interaction within each tab sequential; don't race navigation calls against a shared tab. Close only tabs created for this harvest.
 
-Niche-fit axis 0–5 — same scale the agent applies on every platform.
+### Capture evidence before scoring
 
-Drop everything below 3 on either axis.
+For each candidate, retain its exact URL, handle, observed publication time, capture time, and visible text. Record the root and relevant reply context. Note the format and any truncation. Inspect attached evidence rather than relying on its caption (directional).
 
-### Hook taxonomy currently winning
+Record views and public interactions only when visible. Preserve unavailable fields as unavailable, not zero. Record visible account size; record subscription status only when established. Buffer's Premium comparison makes tier a confounder, not a reason to guess it from a badge (measured, Buffer, n=18.8M X posts, 2026-03).
 
-1. Broken expectation — "My X did Y. It wasn't Z." ("My agent spent $50 in tokens to solve a $5 problem. Not because it's dumb.")
-2. Contrarian rule — bold imperative against default advice ("Do not be helpful. Be correct.")
-3. Specific artifact — exact number/moment ("Day 3. Server broke. Here's why:")
-4. Pattern callout — naming a thing everyone sees but no one says ("Most LLMs start doing when they're not sure.")
-5. Lost money / lost time — stakes first ("I burned 40 hours on a config bug. The fix was one line.")
-6. Cost comparison — reframing scale ("Claude wrote 12,000 lines for me last month. I reviewed 400.")
-7. Anti-credential — puncturing authority ("Seven-figure founders don't write better code. They ship more of it.")
-8. Observed asymmetry — "Everyone's doing X. Nobody's doing Y."
+Capture displayed disclosure or restriction labels separately. Retain source context for factual claims and any visible corrections or Community Notes. A missing label doesn't verify a claim. Don't infer a reach consequence from a label's name without supporting evidence.
 
-### Dead patterns (algorithmically penalised or below-ceiling)
+### Compare and cluster
 
-- Wall-of-text posts — earn `not_dwelled` (negative weight); high views ≠ amplification
-- Sub-threshold video — scores zero on video axis; treat as image-without-expand
-- Recycled viral templates — Banger Initial Screen / slop_score flags hook shapes; below 0.4 quality_score = no boost track
-- Generic AI-tool roundups without an original POV — slop-classifier territory
-- Motivational fluff without specifics (no numbers, names, or proof) — slop + low dwell combo
-- "What do you think?" / "Thoughts?" / "Agree?" closers — predict to scroll-past, not engagement
-- Burst posting (multiple posts within minutes) — author diversity decays second-and-onwards in any feed render. Daily volume is fine; clustering is not.
-- Posts in the 7 PTOS categories — full removal from feeds (not soft suppression)
-- `MediumRisk` brand-safety verdict — quiet exclusion from ad-eligible feed surfaces
-- "This 👇" / "Read this 🧵" / "Thread 👇" lead-ins
-- Numbered thread markers ("1/12", "2/12")
-- "Unpopular opinion:" prefix — just state the opinion
-- Emoji bullets (🚀 🔥 ⚡ as line starters)
-- Hashtag stacks (2+ hashtags) — read as low-quality by the LLM spam screen
-- AI vocabulary in hook: delve, leverage, unlock, harness, unveil, seamless, cutting-edge — direct slop_score triggers
-- "Here's a thread on..." intros
-- Engagement bait ("RT if you agree", "Like if you relate")
-- Off-niche posts — Phoenix's hash-based embedding for an account is sticky; off-niche posts hit the wrong embedding neighborhood and underperform structurally
+Use matched observation windows and comparable account histories. Include ordinary posts as well as apparent breakouts so the sample doesn't consist only of winners (directional).
 
-### Format prescriptions
-
-| Goal | Format | Length / spec |
+| Question | Evidence to collect | Limit |
 |---|---|---|
-| State a take, get replies | Single post + media | 71–100 chars (17% higher engagement) OR 240–259 chars (max likes). Media required for full weight |
-| Deep breakdown of a trending topic | Long-form post (Premium, up to 4000 chars) | Heavier signal weight than threads for evergreen explainers |
-| Teach / narrate / list | Thread with narrative arc | 4–8 posts; Phoenix reads full thread context now, so setup → friction → resolution wins over disconnected hits |
-| Tactical playbook | Hook + 5–8 numbered steps + closer | Currently outperforming generic threads; pair with media |
-| Personal proof | "$X → $Y in Z weeks" + breakdown + screenshot | Highest-converting format for follower growth |
-| Visual story | Image carousel | 3–7 slides, one bold claim per slide |
-| Show real work | Short video (<90s) | Media weight + dwell time |
-| Grow from zero | Reply under 20k–200k anchor accounts in niche | 1 post, high specificity. Out-of-network discovery 3× boost amplifies strong replies |
-| Link to external content | Root post hook + media (no link) + reply with link | Standard |
-| Signal boost | Quote post with commentary | Commentary must add, not echo |
+| Is this relevant to the buyer? | Specific problem, role, use case, or evaluation question | Likes alone don't establish qualified interest |
+| Is it unusual for this author? | Comparable recent posts at similar ages and formats | Follower count isn't an exposure denominator |
+| Is it repeated independently? | Distinct authors expressing the same problem with source URLs | Reposts, copied text, and coordinated promotion aren't independent reports |
+| Is the angle saturated? | Repeated claims across the actual sampled window | Say “common in this sample”; don't claim platform-wide exhaustion |
+| Does the artifact add proof? | Inspectable screenshot, demonstration, source data, or method | Caption claims aren't validation |
+| Is there momentum? | Repeated captures with timestamps and visible count changes | A single final count cannot reveal early velocity |
 
-For users <10k followers, weight reply-under-anchor plays equally with original posts that pass the Banger Initial Screen. The "small-account OON boost" people quote is folklore — the new-user OON multiplier in the code belongs to the viewer's account age, not the author's. Small accounts grow through embedding fit and connected-account cascades, not a follower-count multiplier.
+If reporting a public interaction-to-view ratio, name its numerator and denominator and use only visible fields. Don't call it a platform engagement rate or assign a universal breakout threshold. Never infer that low engagement proves scroll-past penalties. Use available own-account analytics to assess profile activity or qualified inquiries; don't estimate competitors' private conversions (directional).
 
-### Timing (for inferring posting cadence from harvested accounts)
+Rank recommendations by relevance and evidence quality, then describe observed attention. Keep private shares and saves separate from public interaction comparisons. Avoid synthetic ranking-weight formulas and action-value hierarchies.
 
-- Best windows: Tue–Thu mornings and evenings local are still strong, but the algorithm's freshness window is what actually matters — posts succeed when target audiences load feeds in the few hours after publication.
-- Daily cadence beats bursts. Phoenix's embedding sharpens with consistent activity. 1–2 posts every day beats 5 posts on Tuesday + nothing else.
-- No daily-count cap in code. Discount accounts on burst pattern, not volume.
-- Never burst — two posts within minutes cannibalise each other inside any single feed render (author diversity decay).
-- Reply presence in the first hour matters. Connected replies cascade the post into more feeds. When you cluster breakouts, check whether the author was replying in the first hour vs. absent.
-- One thread OR one long-form per day — both compete for the same author-diversity slot.
+Extract a post's underlying move in plain language: a demonstrated task, a bounded outcome, a specific objection answered, or a decision with a cost. Preserve short source excerpts only where necessary and attribute them. Don't reproduce a viral hook bank or a copied dead-pattern list. The writing brief should describe what the next post can contribute, not supply a persona to imitate (directional).
 
-### Saturated-take detection
+## Launch and proof posts
 
-When you cluster posts and find 5+ near-identical takes in the same window, mark it saturated. Common 2026 saturated takes in the agents / LLM / startup niches: "AGI is closer than you think," "Prompt engineering is dead," "Just use Claude / Cursor / Codex," "Vibe coding is the future," generic "AI will replace junior devs" hot takes. Verify saturation live before flagging.
+For a launch harvest, obtain audience and buying situation, promise, proof source, intended action, destination, campaign stage, and disclosure obligations. No CTA can be deliberate. Don't fill absent campaign facts with imagined customer outcomes.
+
+Search for the exact problem language and inspect what prospective users ask before recommending an announcement angle. The MailTest founder's reported change toward problem searches is anecdotal guidance, not a tested B2B conversion method (directional), citing MailTest founder account, 2026-04.
+
+Return a source-backed candidate for each useful launch shape: announcement, demo, customer outcome, founder decision, objection answer, or recap. Name the available artifact, missing proof, and fit limitation. Don't force a candidate where the harvest contains no evidence. Community and creator seeding recommendations must concern relevant, distinct participation. X prohibits bulk unsolicited promotion, repeated link drops, and coordinated metric inflation (official, X Authenticity, 2025-04).
+
+Keep founder, brand, and creator observations separate. Agency case reports are possible approaches to test, not conversion forecasts (directional), citing Clickstrike, undated. If a harvested post is compensated, gifted, affiliate, or ambassador promotion, the Paid Partnership requirement applies (official, X Paid Partnerships, 2026-09). Don't infer independent customer enthusiasm from disclosed paid endorsements.
+
+## Voice observations on this platform
+
+Describe register without judging human authorship. Record whether the source is formal, conversational, technical, or playful; note reply length and how the author handles uncertainty. Preserve examples of actual word choice with attribution. Don't recommend typo injection or copy an account's distinctive identity (directional).
+
+Keep observed style separate from performance claims. A repeated hook may be common in the sample without being an algorithmic trigger. Leave generic AI-tell editing to downstream writing; harvesting establishes provenance and context.
+
+## Cadence and engagement interpretation
+
+Test weekday mid-mornings, then use account evidence and event timing. Buffer's baseline is 9–11 a.m., with Tuesday and Wednesday leading slots (measured, Buffer timing, n=8.7M X posts, 2026-03). Record the audience timezone; don't impose an evening window or infer a best time from a single successful post.
+
+Buffer associates frequency with growth, with reduced per-post reach at higher frequency; these observations don't establish an X daily quota (measured, Buffer, n=4.8M channel-weeks; separate 15.7M-post reach analysis, 2026-03). Record cadence rather than penalizing accounts for posting bursts by assumption.
+
+Text narrowly led images in Buffer's X format sample; video wasn't the engagement leader (measured, Buffer, n=X subset of 52M+ cross-platform posts, 2026-03). GIFs led raw interactions in Emplifi's different sample (measured, Emplifi, n=16,879 X profiles, reviewed 2026-09). Keep these metrics separate; recommend format tests instead of declaring mandatory media.
+
+Code format observations conservatively: ordinary text is capped at 280 characters, Premium longer posts at 25,000, and the verified attachment plan is up to 4 photos, a GIF, or a video (official, X posting help and Premium, 2026-09). Don't call a multi-image post a swipe carousel. Article access, video tier caps, and other optional-surface details remain unverified until checked in the account. Log them as observed formats without inventing entitlements.
+
+Link-post visibility was lower in political-discussion datasets (measured, NDSS, n=over 40M posts, 2026-02). Record root, reply, and profile link placement as separate observations. The evidence doesn't prove that moving a link to a reply fixes reach. A recommendation must retain the intended conversion path.
+
+## What gets suppressed: diagnostic limits
+
+X prohibits deceptive manipulated media and spam and can restrict reach for violations (official, X Authenticity, 2025-04). EU “Made with AI” indicators and restricted-reach labels are separate (official, X Media Literacy, 2026-07). Don't call an AI label a universal penalty or describe `MediumRisk` as proven organic reach loss.
+
+Don't assign suppression to a `slop_score`, punctuation pattern, topic pivot, or small follower count. Public counters don't expose internal classifier results. Distinguish observed notices from hypotheses, and report inaccessible Under the Hood information as unavailable.
 
 ## Examples
 
-### Example 1: Hook taxonomy labeling
+### Evidence-qualified format observation
 
-Bad — generic, no taxonomy label, no DNA signal:
+Fictional teaching record; all quantities are illustrative placeholders.
+
+```text
+Source: [post URL], [handle]
+Published: [observed timestamp]; captured: [timestamp]
+Format: ordinary text with a product screenshot
+Views: [visible count]; replies: [visible count]; reposts: unavailable
+Subscription: unknown
+Observation: replies ask whether the export preserves field names.
+Artifact: screenshot shows the export dialog; downloaded output wasn't inspected.
+Recommended angle: show an actual export and its known limits.
+Confidence: buyer-language evidence; no demonstrated conversion result.
 ```
-This post got 2M views. It's about AI agents.
+
+Why it works: the capture procedure distinguishes visible evidence from an untested product claim.
+The recommendation requests a useful artifact without inventing a growth mechanism.
+
+### Saturation without a false threshold
+
+Fictional teaching record.
+
+```text
+Claim cluster: automatic invoice approval
+Evidence: [source URLs] from independent authors in [observed window]
+Repeated claim: manual review can be eliminated
+Counter-evidence: [source URL] describes disputed invoices needing review
+Coverage limit: signed-in topic search; private discussions weren't available
+Recommendation: explain the boundary for disputed invoices using supplied proof
 ```
 
-Good — labeled, DNA called out:
-```
-@handle (12k followers) — 2.1M views, 8,400 replies, 1,900 quote posts
-> Most agent frameworks start retrying when they shouldn't. They keep silent when they should ask.
-Hook type: pattern callout (everyone sees but no one says).
-Length: 92 chars (single-post sweet spot).
-DNA: contrarian observation + specific subject + zero preamble.
-Posted 10:14 AM ET Tue — peak window.
-```
-
-### Example 2: Saturated-take detection
-
-You harvest 50 posts on "RAG is dead" in the last 72h. Of those, 31 use the same hook shape (declarative rejection + cherry-picked benchmark). All recent ones underperform — average engagement-to-view ratio is 0.4%, down from 4% for the earliest 5 posts in the cluster.
-
-Flag: `Saturated take — "RAG is dead" hook is in late-stage saturation, engagement ratio decayed 10×. Avoid this angle unless paired with a hard-contrarian re-rebuttal or a much narrower technical lens.`
+Why it works: the cluster rule requires independent source evidence and explicit coverage.
+The brief identifies a defensible contribution instead of declaring an entire topic dead.
 
 ## Checklist
 
-Before returning the X section of the brief:
-- [ ] Every cited post has handle, view count, reply count, repost count, quote count, URL, and posted-time visible
-- [ ] Engagement-to-view ratios computed and used as the primary virality signal — not raw likes
-- [ ] Account-size band tagged on every cited post (micro / mid / mega)
-- [ ] First 30-min velocity considered for any top cluster
-- [ ] At least one cluster has 3+ independent posts before being named a trend
-- [ ] Saturated-take list surfaced — at least one per recommended angle
-- [ ] Dead-pattern list applied — no recommended hook uses thread markers, "This 👇", hashtag stacks, or AI vocabulary
-- [ ] (Opt-in mode only) Hook bank entries each tagged to a hook taxonomy type from this skill
-- [ ] (Opt-in mode only) Format prescription per recommended angle uses the table here (length band + single/thread/quote/reply)
-- [ ] (Opt-in mode only) Timing recommendation falls inside Tue–Thu 8–10 AM or 5–6 PM local unless event-attached
-- [ ] All background harvest tabs closed before returning the brief
+- [ ] The audience, topic, and observation window are explicit.
+- [ ] Each cited post has its exact URL and observed timestamps.
+- [ ] Surface URLs and visible tab labels were captured from working navigation.
+- [ ] Access failures and personalization limits are stated.
+- [ ] Every quoted claim was checked in its original context.
+- [ ] Missing metrics remain unavailable rather than zero.
+- [ ] Any ratio names its visible numerator and denominator.
+- [ ] Tier and account-history differences remain visible in comparisons.
+- [ ] Momentum claims have repeated observations.
+- [ ] Trend claims cite independent posts.
+- [ ] Saturation claims are bounded to the sample.
+- [ ] Recommended launch angles identify their proof and fit limitations.
+- [ ] Style observations don't assert authorship or classifier results.
+- [ ] Labels, policy actions, and ranking hypotheses remain distinct.
+- [ ] Format and timing advice uses dated evidence or is marked directional.
+- [ ] The brief contains no invented metrics or customer stories.
+- [ ] Only harvest-created tabs are closed.
 
-## Composition / References
+## References
 
-- Pairs with `social-x` (content domain) for the actual post writing once the brief is in hand — same algorithm knowledge, applied to drafting instead of harvesting.
-- X Search operators reference: `min_faves`, `min_retweets`, `min_replies`, `lang:en`, `since:`, `until:`, `filter:replies`, `-filter:replies`, `filter:media`, `filter:images`, `filter:videos` (use the media filters to harvest the current winning formats).
-- X For You feed algorithm (Phoenix retrieval, Grox classifier, media hydrators, Author Diversity Scorer): https://github.com/xai-org/x-algorithm
-- Use the agent's universal output schema; this skill only supplies the parameters that go into it.
+- [X algorithm README](https://github.com/xai-org/x-algorithm/blob/main/README.md), [cold-start](https://github.com/xai-org/x-algorithm/blob/main/home-mixer/scorers/author_cold_start.rs), August 13, 2026; [parameters](https://github.com/xai-org/x-algorithm/blob/main/home-mixer/params/param.rs), August 12, 2026. Dated evidence snapshot with September corrections; mutable source URLs don't pin live deployment.
+- [X posting help](https://help.x.com/en/using-x/how-to-post), [Premium](https://help.x.com/en/using-x/x-premium), [Paid Partnerships](https://help.x.com/en/rules-and-policies/paid-partnerships-policy), undated, reviewed September 2026.
+- [Authenticity](https://help.x.com/en/rules-and-policies/authenticity), April 2025; [Media Literacy](https://help.x.com/en/rules-and-policies/media-literacy-plan), July 2026.
+- [Buffer engagement](https://buffer.com/resources/state-of-social-media-engagement-2026/), March 5, 2026; [Buffer timing](https://buffer.com/resources/best-time-to-post-on-twitter-x/), March 13, 2026.
+- [Emplifi benchmark PDF](https://go.emplifi.io/rs/284-ENW-442/images/Emplifi-Social-Media-Benchmarks-Report.pdf), undated, reviewed September 2026; [NDSS link study](https://www.ndss-symposium.org/wp-content/uploads/2026-s718-paper.pdf), February 2026.
+- [MailTest founder account](https://www.indiehackers.com/post/i-launched-on-product-hunt-today-with-0-followers-0-network-and-0-users-heres-what-i-learned-in-12-hours-1c89889702?commentId=-Oql0RP2NQlQXltRvwH7), April 20, 2026; [Clickstrike cases](https://clickstrike.com/launch-playbook/), undated agency self-reports.
+
+Re-validate when:
+- Search operators, feed names, access gates, or format controls change.
+- Policy updates, algorithm commits, or runtime defaults change.
+- New vendor reports replace the benchmark samples.
+
+Validated: 2026-09

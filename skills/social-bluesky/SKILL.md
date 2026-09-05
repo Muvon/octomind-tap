@@ -1,9 +1,9 @@
 ---
 name: social-bluesky
 title: "Bluesky Publishing Playbook"
-description: "Ground-truth 2026 playbook for writing posts, replies, and threads on Bluesky. Covers the three feeds (Discover, Following, Custom), why custom feeds and starter packs are the dominant 2026 growth levers, the 300-grapheme limit, quote-post culture, self-reply threads, labelers and stackable moderation, and why X-ported posts flop. Activate when drafting for Bluesky — not for X/Twitter threads."
+description: "Write and revise Bluesky posts, replies, threads, launches, and proof posts in the author's own voice. Activate for Bluesky drafting, format selection, community participation, or a publishing package with sourced claims and an explicit next step."
 license: Apache-2.0
-compatibility: "Octomind content agents. Platform-specific to Bluesky (bsky.app / AT Protocol)."
+compatibility: "Bluesky app or browser access for composer checks; network access for source and destination verification."
 domains: content
 rules:
   - content(bluesky)
@@ -16,394 +16,197 @@ rules:
 
 ## Overview
 
-Bluesky in 2026 is not late-era Twitter with a blue logo. It's a federated AT Protocol network where the user — not the platform — picks the algorithm. Discovery happens through custom feeds and starter packs, not a single opaque For You feed. The culture skews more technical, more skeptical of hype, and more willing to punish AI-slop and engagement-bait than X.
+Write something the intended reader can use, in language the actual author would choose. Apply this precedence: supplied facts and proof, then documented author voice, then platform constraints. Use platform register only as a fallback; publication is a downstream step.
 
-Port a post verbatim from X and it usually lands dead. The ranking surface, the humor, and the trust signals are different. This skill adapts tone and structure to how Bluesky actually distributes content.
+## Mechanics and mental model
 
-## Platform Mechanics 2026
-
-### The Three Feeds
-
-| Feed | How it ranks | What that means for you |
+| Surface | Supported behavior | Writing decision |
 |---|---|---|
-| Following | Strictly chronological, only accounts you follow | Timing matters less than on X; a great post from 6 hours ago still shows |
-| Discover | Algorithmic, Bluesky-run, based on engagement + graph proximity | The closest thing to an FYP, but it's one of many feeds, not THE feed |
-| Custom feeds | User-created, curated by hashtag, keyword, account list, or custom logic | The real growth lever — getting onto a popular niche feed beats going "viral" on Discover |
+| Following | Reverse chronological (measured, Buffer timing, n=over three million posts, 2026-08) | Test when your audience is online; chronology doesn't make timing irrelevant. |
+| Discover | Default algorithmic feed with broad reach; strangers' Discover respects the recommendation opt-out (official, Visibility declaration, 2026-09) | Check the account's intended visibility; don't invent ranking weights. |
+| Custom feeds | Topic- and list-based feeds needn't honor that opt-out (official, Visibility declaration, 2026-09) | Inspect the specific feed's description and returned posts before claiming fit. |
 
-Users pick which feeds appear in their app. Popular niche feeds (e.g. "Science," "Dev," "Art," "Bookstodon-on-Bluesky") have thousands of subscribers and curators who add accounts they like. Optimize to be picked up by curators, not to trick an algorithm.
+Keep post text within 300 grapheme clusters (official, Post lexicon, 2026-09). Validate the final composer text after inserting mention handles, links, and emoji; don't estimate a URL discount or count bytes.
 
-### Starter Packs (the #1 discovery mechanism in 2026)
+Attach up to 10 photos; the carousel appears from 5 photos (official, Photos release, 2026-06). Video allows up to 10 minutes and 300 MB (official, Video release, 2026-08). These are ceilings, not targets. Check the actual combination of quote, image, GIF, video, and link preview in the composer; the supplied evidence doesn't establish a universal embed-exclusivity rule.
 
-Starter packs are shareable lists of 7–150 accounts. They're how new users fill their Following feed on day one. Getting onto a well-shared starter pack in your niche is worth more than a week of viral posts.
+Automatic thread numbering was introduced as a beta option; its feature gate was subsequently removed (official, Thread numbering, 2026-08; App releases, 2026-09). Inspect the thread composer and preview; don't assume numbering is enabled or type duplicate markers. Make every installment understandable alone (directional).
 
-- Be findable. A clear bio + consistent topic = curator adds you.
-- Create your own pack for your niche. Gives back to the community and brands you as a curator.
-- Appearing on packs multiplies: every pack you're on that someone new joins → follows → Following feed.
+Open reference/platform-mechanics.md when preparing media, a thread, community seeding, account controls, or a launch involving chats. It separates verified features from controls requiring a current UI check.
 
-### Hard Limits
+## Format and anatomy rules
 
-- 300 graphemes per post (not bytes, not codepoints — a single emoji or CJK character is one). URLs count as the characters they display, not the target.
-- 4 images per post (or 1 video, 1 GIF, 1 link card).
-- Alt text up to 2000 characters per image. Use it — accessibility is a cultural norm here, not a nicety.
-- Threads = self-replies. There is no native "thread" object; you chain by replying to your own post.
-- Quote posts exist and are the preferred amplification move — see below.
+Start on the useful detail. Keep a single idea per post, provide enough context to understand it, and stop when it is complete (directional).
 
-### Labelers and Moderation
-
-Moderation is stackable. Users subscribe to community-run labelers that tag content (NSFW, spoilers, AI-generated, specific topics). This means:
-- AI-generated images without a self-label may get community-labeled and hidden.
-- Spoilers without CW-style framing get flagged by book/TV labelers and collapsed.
-- Bluesky itself filters much less than X; user-side labeling does the work.
-
-Implication: self-label anything a labeler would catch. Add "AI image," "book 3 spoiler," "US politics" in-line or at the top of the post. Pre-empting a label keeps the post fully visible.
-
-## Tone: What Bluesky Actually Rewards
-
-Bluesky's 2024–2025 migration was driven by people leaving X, not joining a new X. The resulting culture punishes moves that work on X:
-
-- Hype and absolutes flop. "This is insane." "Everything changed today." Gets ignored or mocked.
-- Self-promo without substance is visible. The platform is small enough that the same "grow your audience" bro posts get screenshot-dunked.
-- Reply-guy engagement farming is obvious. 1-line "100%" replies under big accounts die. Substance or silence.
-- Politeness is the default. Sharp disagreement is fine; contempt reads as imported X behavior.
-- AI slop gets labeled and hidden. Anything that reads as ChatGPT-default prose (em-dashes everywhere, "delve," "multifaceted," "landscape") gets caught.
-- Specific > clever. A concrete observation beats a witty one-liner. The audience is more "technical conference" than "comedy club."
-
-Rule of thumb: if the post would work on Hacker News, it'll work on Bluesky. If it would work on 2023-era X, it probably won't.
-
-Measured from the live hot surface (public AppView API, ~50 top posts, Aug 2026):
-
-- Zero hype language anywhere in the top posts. The tone section above is not aspiration — it's what actually ranks.
-- Among posts above 1,000 likes, the best repost-to-like ratio (~0.4) went to a stacked-facts post: four short declarative lines of concrete data, no connective tissue, one dry closer ("Nothing to see here folks."). Dry factual stacking is the most reshared shape.
-- The biggest reply harvests went to shared-memory questions ("Who remembers…?" — ~800 replies) — asking the audience to contribute their own version is the strongest conversation starter.
-- Likes outnumber replies roughly 20–50:1 on most top posts. Bluesky is a quieter culture than X: a good post gets liked, not argued with. If you want replies, ask.
-- Concrete news with named specifics (who, what number, what source) dominates over commentary about news.
-
-## Post Shapes That Land
-
-### 1. The Specific Observation
-
-A single noticed detail, written plainly. No thread, no hook.
-
-```
-The new Bluesky firehose changed its JSON envelope yesterday
-and three of my feed generators silently stopped emitting.
-Quiet break — no deprecation notice, no changelog entry.
-Worth checking if yours went dark.
-```
-
-Why it works: specific, useful, signals technical attention, invites replies from people who also noticed.
-
-### 2. The Link + Why It Matters
-
-Link previews render well on Bluesky and there's no documented suppression. But the link alone is noise — say why it's worth the click.
-
-```
-New paper on ActivityPub bridge latency under federation pressure.
-Headline: median round-trip tripled past 100k active users per instance.
-Methodology section is the interesting part — they measure
-from the recipient's inbox, not the sender's outbox.
-
-[link card]
-```
-
-### 3. The Self-Reply Thread
-
-Threading on Bluesky is a chain of self-replies. Each post must stand alone (they often get surfaced individually by custom feeds).
-
-```
-1/ Re-reading the AT Protocol spec and something clicked
-about why it scales differently than ActivityPub.
-
-2/ ActivityPub is push-based: your server pushes each post
-to every follower's server. Federation cost grows with followers.
-
-3/ AT Protocol is pull-based: followers read your repo.
-Your cost is constant; aggregation cost scales with reach.
-
-4/ The implication: a Bluesky "mega account" costs the platform
-roughly what a small one does. Different ceiling.
-```
-
-No hook post, no "🧵👇," no "a thread:". The chain speaks for itself.
-
-### 4. The Question to the Feed
-
-The Discover feed rewards replies. A sharp, specific question draws them.
-
-```
-For people who've run feed generators:
-what's your actual p99 for posts-to-inclusion?
-Mine hovers around 4 minutes and I can't tell
-if that's slow or normal.
-```
-
-## Replies
-
-Reply culture is calmer than X. You don't need to ship a dunk in the first 15 minutes to be seen; the Following feed is chronological, so your reply shows for your followers regardless of timing. Specific & substantive still wins.
-
-- Open on content, no courtesy preamble.
-- 2–4 sentences is the right range.
-- Quote posts > replies for amplification — see below.
-- Don't @-mention the author in a direct reply (it's already threaded).
-- If you disagree, say what specifically. Contempt doesn't transfer well.
-
-## Quote Posts (the preferred amplification move)
-
-On Bluesky, quote posts are the main way ideas spread. Plain reposts exist but carry less signal — a quote post says "I had something to add." Curators watch quote posts to find new voices.
-
-Good quote post:
-- Adds one specific thing — a counter-example, an extension, a number, a historical parallel.
-- Stands alone for someone who can't see the quoted post yet.
-- Doesn't say "this" or "exactly this." That's a plain repost; do that instead.
-
-```
-[Quoting: "New AT Protocol version drops the proxy header and
-breaks all third-party feed generators that relied on it."]
-
-Small but important: this also breaks the CORS shim that most
-web-based feed editors used. If your editor stops loading this
-week, that's why. Fix is to move proxy validation server-side.
-```
-
-## Custom Feed Strategy
-
-Want to be discovered? Work backwards from feeds.
-
-1. Find the 3–5 custom feeds that cover your niche. Search in-app for your topic; look at which feeds appear.
-2. Read each feed's "about" text. Most feeds publish their criteria: specific hashtags, keywords, or account lists.
-3. Match the criteria naturally. If the "Dev" feed keys on `#dev` or `#programming`, use them when relevant. Don't stuff.
-4. Talk to curators. Curators of human-curated feeds accept suggestions. A polite "I think my posts on X fit your feed — worth a look?" works far better than on X.
-5. Run your own feed. The best accounts in a niche often curate a feed for it. It's free distribution and credential.
-
-## Hashtag Use
-
-Bluesky has hashtags but they matter less than on Mastodon. They're useful for:
-- Being picked up by hashtag-based custom feeds.
-- Marking a post as on-topic for a known event or campaign.
-
-Rules:
-- 1–2 tags max, placed naturally or at the end.
-- Lowercase is the convention (`#dev`, not `#Dev`).
-- Don't tag every word. Multi-tag posts read as X-imported.
-
-## Cross-Posting from X
-
-Most cross-posts fail because:
-- Hooks that work on X ("This one trick," "Read till the end") read as spam on Bluesky.
-- The 280→300 char difference doesn't save a post that was built for a different audience.
-- Quote-tweet energy doesn't map to quote-post energy.
-
-If you must cross-post, rewrite these:
-- Strip "🧵" / "a thread:" / "thread below" framing.
-- Cut emoji count in half.
-- Remove "🚀 🔥 💯" hype emoji entirely.
-- Rewrite hook posts as standalone posts or delete them.
-- Convert CTAs ("RT if you agree") to questions.
-
-Better rule: post to Bluesky first for at least a week. Get a feel for what lands. Then cross-post the rare post that works on both.
-
-## Profile & Bio
-
-Bluesky profiles are search-indexed and curators read them.
-
-- Handle matches purpose. A `@yourname.bsky.social` is fine; a custom domain (`yourname.com`) is a mild trust signal.
-- Bio says what you post about, not who you are. "I write about Rust async internals and distributed systems" beats "Engineer. Coffee. Dad." Curators match bios to feeds.
-- Pinned post = your best recent work. Starter-pack inclusions increase when the pinned post is strong.
-
-## Anti-Patterns (will hurt reach)
-
-- "Follow for more" / "Like and repost" — Bluesky users find this especially grating.
-- Posting the same thread daily. Low signal; curators drop you.
-- Ratio-bait politics without local context. The platform's political center is not X's; takes calibrated to X get ignored, not dunked on.
-- Unmarked AI content. Even when not flagged, it tanks trust. Always self-label.
-- Huge link-card posts with no text. Looks like a feed bot. Add one sentence of framing.
-- Reply-guy behavior on mega accounts. The platform is small enough that regulars recognize it.
-
-## Thread-Vibe Matching
-
-Before replying, read the existing reply chain. Bluesky reply chains are calmer than X — the Following feed is chronological, so there's no rush — but the tone is set quickly and deviating reads as out-of-place.
-
-What to scan:
-- Technical depth — is the chain swapping implementation details, or is it more conceptual? Match the depth.
-- Length — 1–2 sentences or 3–4? Match the median.
-- Formality — Bluesky skews more measured than X; full sentences and proper punctuation are common.
-- Humor register — dry/wry is the Bluesky default; sarcasm is fine, contempt is not.
-- Emoji density — Bluesky uses fewer emoji than Threads or X; 0–1 per post is the norm.
-
-Vibe calibration by post type:
-
-| Post type | Reply vibe |
-|---|---|
-| Specific technical observation | Match the technical depth; add a data point or counter-case |
-| Link + why it matters | Extend with a specific detail they didn't mention |
-| Question to the feed | Answer directly and specifically; no hedging |
-| Personal/project post | Warmer, shorter, first-person |
-| Quote post | Add one specific thing; don't echo |
-
-## Human Imperfection Protocol
-
-Bluesky's audience is technical and skeptical — they notice both AI-polished prose and careless typos. The goal is subtle informality, not visible sloppiness. Imperfections should feel like a thoughtful person typing at normal speed, not a bot or a careless one.
-
-Imperfection level by content type:
-
-| Content type | Level | What that means |
+| Reader's need | Choose | Execution (directional) |
 |---|---|---|
-| Original post | Very low | 0–1 subtle imperfection; posts are considered, not dashed off |
-| Self-reply thread | Very low | Same as original post — each post is a standalone artifact |
-| Reply in a technical thread | Low | 1 subtle imperfection max; precision still matters |
-| Reply in a casual/conversational thread | Low-medium | 1–2 imperfections; lowercase opener or missing period fine |
-| Quote post | Very low | Quote posts are amplification artifacts — keep them clean |
+| Understand a complete observation | Plain text | State the observation and its consequence without a suspense opener. |
+| Inspect a source or try something | Link card | Explain what the destination contains. Preview its title and image; check destination and OG metadata. |
+| See evidence or a physical detail | Image or photo sequence | Attach the crop that proves the claim; use further frames only for necessary context. |
+| See motion or a workflow | Native video; GIF if a silent loop suffices | Show the relevant action promptly. Preserve conditions and visible limitations. |
+| Follow a connected explanation | Thread | Give the root useful substance; make follow-ups self-contained. Put extensive documentation at a linked destination. |
+| Resolve the original author's point | Reply | Read the chain; answer the actual question without restating the post. |
+| Add context for your own readers | Quote post | Add a specific contribution that stands alone. Use a plain repost when you have nothing to add. |
 
-Imperfection menu for Bluesky (pick 0–1 per reply, calibrate carefully):
+Write concise alt descriptions for visual meaning; prepare captions for speech and an asset brief identifying the source, crop, and intended evidence (directional). Check available accessibility fields and preview captions; don't assert an unsupported alt-text cap.
 
-- Missing period at end — the most natural and least visible imperfection; common in casual replies
-- Lowercase opener — only if the thread is already casual/lowercase; rare on Bluesky
-- Comma splice — `I tried this, it didn't work` — reads as fast typing, not careless
-- Dropped article — `[The] methodology section is the interesting part` — one small omission
-- Casual aside in parens — `(worth checking if yours went dark)` — Bluesky-native informal move
-- "though" / "tbh" / "honestly" — casual qualifiers that read as human hedging, not AI hedging
+Use only relevant hashtags supported by the topic or a verified feed criterion. Preserve readable capitalization; don't impose lowercase or a numeric tag quota (directional).
 
-Never do on Bluesky:
-- Visible typos in technical terms, proper nouns, or code — the audience notices and it tanks credibility
-- `lol`, `lmao`, `ngl` — too casual for the Bluesky register in most threads
-- Stack 2+ imperfections in one post — reads as low-effort to a technical audience
-- Imperfections in a quote post — these are amplification artifacts, keep them clean
-- Imperfections when citing data, specs, or making a technical claim
+## Launch and proof posts
 
-Calibration check before posting:
-1. Is this a post/quote-post or a reply? Posts and quote posts = very low (0–1 max).
-2. Read the thread — is it technical/formal or casual/conversational?
-3. Does your reply have 0–1 subtle imperfections that fit the register?
-4. Would a thoughtful engineer typing this at normal speed plausibly have written exactly this?
+Collect the audience and buying situation, promise, source-backed proof, desired action, destination, campaign stage, and disclosure obligations. Stages include teaser, launch day, proof, objection, and recap. Record the author's role and actual experience. Choose no CTA deliberately when the post's job is explanation (directional).
+
+Don't invent personal history, customer quotes, measurements, timelines, or shipped results. Obtain missing evidence before treating a draft as publishable; omit a claim if the author can't substantiate it.
+
+Length bands below describe editorial density, not performance optima. Every installment remains within the text ceiling above.
+
+| Shape | Anatomy (directional) | Length band (directional) |
+|---|---|---|
+| Launch day | Name the released thing and who can use it; show a concrete function, limitation, and next step. Remove the product name as a strip-test: the remaining detail should still teach or show something. | Compact standalone announcement; link for detail |
+| Demo or artifact | State the task; attach the real output or recording and its operating conditions. | Short framing beside media |
+| Customer outcome | Give the before and after with source, permission, measurement window, and what remained unresolved. | Near-budget proof post; contextual follow-up if needed |
+| Founder decision | State the choice, evidence behind it, and cost or unfinished work. | Standalone observation |
+| Objection answer | Name the specific concern; show the supported answer and applicability boundary. | Direct reply or standalone explanation |
+| Recap or lessons | Report what changed after feedback and what still needs work; link the usable artifact. | Short connected thread if the evidence needs it |
+
+Bluesky says it doesn't punish links and encourages off-platform clicks (official, Bluesky outlook, 2026-01). Put the destination in the root when it serves the reader; use a reply for supplementary detail and a profile link as a stable fallback (directional). Don't hide every launch link in replies to evade an invented penalty. Community-built Offprint, Leaflet, and pckt.blog are long-form options supported by Bluesky's publishing partnership (official, Summer of Standard.site, 2026-06).
+
+Keep consistent `utm_source`, `utm_medium`, and `utm_campaign`; use `utm_content` to distinguish placements (official, Google URL builder, 2026-09). Verify that the destination matches the promise. Separate attributed visits and activation from public interactions (directional).
+
+Disclose affiliation and sponsorship plainly: undisclosed commercial content, disruptive repetition, and artificial social-signal manipulation are prohibited (official, Community Guidelines, 2025-09). Don't organize engagement pods or scripted employee replies. For voluntary employee shares, use the person's real involvement and disclose the relationship (directional).
+
+For community seeding, inspect relevant feeds and starter packs, respect their inclusion choices, and answer existing needs. Pack reference-list opt-out UI exists (official, App releases, 2026-09). Don't promise placement, demand reposts, or bypass an opt-out. Use chats only for invited follow-through (directional).
+
+Illustrative launch calendar: offsets are planning examples, not measured best intervals. Skip a slot without new evidence; arrange reply coverage during the first hours after each post (directional).
+
+| Offset (illustrative) | Post or preparation | Reply plan and measurement (directional) |
+|---|---|---|
+| T−7 | Gather relevant questions; prepare a useful artifact or teaser | Record vocabulary and actual evaluation needs. |
+| T−3 | Show a demo or founder decision | Answer feasibility questions; log requested use cases. |
+| T0 | Publish the announcement and working destination | Staff replies; record qualified questions, substantive quotes, and destination actions separately. |
+| T+1 | Answer the most consequential objection | Follow up in its original context; note whether the concern was resolved. |
+| T+3 | Publish permissioned proof if available | Clarify conditions; record relevant trial or support conversations. |
+| T+7 | Share a bounded recap | Report outcomes and unresolved issues; compare posts at similar ages. |
+
+Choose a founder handle for lived decisions and a brand handle for product availability or support, according to the real speaker; no verified Bluesky founder-versus-brand uplift is supplied (directional). Brands needn't imitate an engineer or adopt forced banter.
+
+## Voice on this platform
+
+Keep content-voice as the generic baseline. For Bluesky, read the surrounding conversation for subject depth, formality, and humor before replying. Match its context without impersonating participants. Art commentary may be playful; a service update should be practical; technical claims need precision. Don't impose a platform-wide political identity or engineering register (directional).
+
+Preserve the author's contractions, fragments, and punctuation. Introduce no typos, fake edits, dropped articles, or lowercase camouflage. Retain an effective em dash, but revise repeated dash pivots or dash-heavy short posts; don't impose a quota or remove useful punctuation merely to look human (directional, Aborn and Cox).
+
+Apply the verified practitioner heuristics as an editing pass, never an authorship detector: remove padded triads, repeated contrast frames, dramatic empty pivots, staccato stacks, and tidy restatement endings. Audit repetitive emphasis words in context (directional, Aborn, Cox, Gichigi). Also remove rhetorical-question openers, miracle-fix stories that erase tradeoffs, "nobody talks about" framing, engagement-bait closers, and decorative hashtag or emoji stacks (directional).
+
+Carry supplied facts into cross-posts, then rebuild the Bluesky framing and CTA for the actual reader. Don't anchor adaptation on another network's character limit (directional).
+
+## Cadence and engagement
+
+### Measured signals
+
+Video had median 5 interactions, images 4, and links and text 3 each (measured, Buffer engagement, n=Buffer-published Bluesky subset, 2026-03). Sprout found 45% of surveyed Bluesky users most likely to engage with text-based brand posts (measured, Sprout platform survey, n=Bluesky survey subset, 2026-03). These measure different populations and outcomes; test relevant media without replacing useful text with decorative assets (directional).
+
+Author replies correlated with 5% higher Bluesky engagement in a within-account comparison; causality wasn't established (measured, Buffer engagement, n=nearly two million cross-platform posts, 2026-03). Reserve time to answer meaningful replies. Ask questions only when the answers will be useful (directional).
+
+Test audience-local Saturday 5 p.m., Saturday 6 p.m., or Sunday 9 a.m.; weekday evenings around 6–9 p.m. were stronger than late mornings in the study (measured, Buffer timing, n=over three million posts, 2026-08). Follow your audience's baseline and availability, without a universal daily cap or expiry window (directional).
+
+Open reference/measured-signals.md when selecting formats, comparing results, or planning timing. It contains sample limits, survey findings, and starter-pack/custom-feed evidence. Re-measure against dated post samples instead of reviving universal repost ratios.
+
+## What gets suppressed
+
+Bluesky reports detecting and downranking toxic or spammy posts (official, Bluesky outlook, 2026-01). Use a fresh, useful follow-up instead of repeating the announcement. Don't interpret weak engagement as proof of bots or punishment (directional).
+
+Automated media labels and hide/warn/show controls are documented for sensitive content (official, Transparency report, 2026-01). Inspect the current post self-label picker for an applicable content warning. Writing "AI image" is a plain disclosure; don't present it as a picker selection or promise it prevents labeling. Disclose synthetic media when relevant to understanding its provenance (directional). The verified evidence establishes neither a universal AI self-label nor punctuation-based hiding.
+
+Before launch, decide the intended reply audience and quote participation. Inspect current threadgate, hide-reply, quote-disable, and quote-detach controls where available; verify scope rather than assuming these settings make a post private. Keep an accessible support route if participation is restricted (directional).
 
 ## Examples
 
-### Example 1 — Launching a side project
+These are illustrative briefs and drafts, not reports of real releases. Product behavior is stipulated only for teaching. Replace bracketed fields with supplied evidence before publishing; unfilled examples aren't publishable.
 
-❌ X-imported:
-```
-🚀 Just launched Feedly-Killer! 🔥
-The fastest feed reader for Bluesky.
-Check it out 👇
-[link]
-RT if you're tired of slow feeds!
-```
+### Developer tool: artifact launch
 
-✅ Bluesky-native:
-```
-Shipped Feedly-Killer, a keyboard-first feed reader for Bluesky.
-Scratches an itch I had: jumping between 14 custom feeds
-without losing my place.
+Illustrative brief: the author built a config comparison tool; it doesn't inspect environment variables. Avoid the unsupported rewrite "The fastest config debugger."
 
-Still rough around profile viewing. Feedback on that part especially welcome.
+> I built [tool] to show which config value wins when files overlap. The screenshot traces [setting] back to its source. Environment variables aren't covered yet. Try it on a sample config: [link]
 
-[link card]
-```
+Why it works: the launch rule puts a demonstrable function ahead of the pitch.
+The limitation bounds the claim; the screenshot must come from the supplied build.
 
-### Example 2 — Reacting to platform news
+### B2B SaaS: customer proof
 
-❌ Hyped:
-```
-THIS CHANGES EVERYTHING. Bluesky just announced video!!
-The Twitter killer is officially here. 🎬🚀
-```
+Illustrative brief: a customer approved a timed export comparison; manual review continued.
 
-✅ Grounded:
-```
-Video in the Bluesky announcement is interesting
-because it lands on the AT Protocol, not a separate silo.
-Which means third-party clients get it too from day one.
-That's a different story than "video on X" ever was.
-```
+> With [customer]'s permission: their export took [before] before [change] and [after] afterward, on the same [dataset]. They still review exceptions by hand. The comparison and its limits: [link]
 
-### Example 3 — Quote post adding a specific detail
+Why it works: the proof rule keeps comparison conditions beside the outcome.
+Every measurement needs a source; the unresolved manual step prevents a miracle-fix story.
 
-```
-[Quoting: "Custom feed generators just got a 10x cost reduction
-in the new SDK."]
+### Creator: print announcement
 
-The 10x is real but worth reading the release notes carefully:
-it's on indexing, not serving. If your feed is serve-heavy
-(lots of subscribers, few posts) the numbers you'll see
-are more like 1.5–2x. Still welcome, just not 10x for everyone.
-```
+Illustrative brief: a printmaker photographed a finished print; no digital edition exists.
 
-### Example 4 — A thread done right
+> The print of [title] is ready. I've included a close-up of the paper because the texture disappears in the flat scan. This is a physical print; there's no download edition. Sizes and shipping details: [link]
 
-```
-1/ Ran the AT Protocol firehose through a week of our traffic.
-Three things surprised me, posting in case they save someone time.
+Why it works: the image rule gives the photograph a specific job.
+The creator's practical register and format limitation serve an actual purchase decision.
 
-2/ The `commit` records carry a lot more metadata in 2026 than
-the 2024 docs suggest. Budget 2x the bandwidth you'd estimate
-from the tutorial.
+### Local service: answer an expressed need
 
-3/ Backfill is expensive. Starting from genesis costs ~6 hours
-of CPU on a mid-sized box. Most apps don't need it; start
-from "now" and add history selectively.
+Illustrative brief: someone asked whether a repair shop accepts walk-ins; the shop requires bookings.
 
-4/ Labelers fire on both new posts and edits. If your pipeline
-dedups on post ID, you'll miss labels added after the fact.
-Dedup on (post ID, rev) instead.
-```
+> I run [shop]. We can assess that seam, but please book before bringing the jacket in. A photo of the lining will help us check whether we can reach the damage. Booking details: [link]
 
-### Example 5 — Thread-vibe matching (technical thread)
+Why it works: the reply rule answers the existing question and makes affiliation clear.
+The shop offers an assessment without promising a repair outcome.
 
-Post: "Ran the AT Protocol firehose through a week of our traffic. Three things surprised me."
+### Quote: add a useful boundary
 
-Reply chain vibe: technical, measured, 2–4 sentences, proper punctuation, specific data points.
+Illustrative brief: a museum posts its collection online; the supplied rights page limits commercial use. Quote the announcement with this added context:
 
-Bad reply (ignores vibe — too casual for a technical thread):
-> omg same lol the firehose is wild, we had so many issues with it tbh
+> The [museum] collection is useful for studying [subject]. Check the rights notice on the individual image before putting it on merchandise; the collection's online availability doesn't establish permission for that use. Rights page: [link]
 
-Good reply (matches technical register, very low imperfection):
-> The backfill cost surprised us too — we estimated 2 hours and it ran 7.
->
-> Turned out we were starting from genesis when we only needed the last 30 days. Worth adding a `since` param early.
+Why it works: the quote rule adds a concrete distinction for the author's readers.
+The rights claim needs the supplied policy; don't generalize it to other collections.
 
-What works: matches the technical depth and measured tone of the chain, adds a specific counter-data point (7 hours vs 2), offers a concrete fix, one missing period at end of first line is the only imperfection.
+### Thread: preserve context in each installment
 
-### Example 6 — Reply with calibrated imperfection (casual thread)
+Illustrative brief: a potter documented a glaze comparison and has no food-safety result. Publish the following as connected posts, previewing any automatic numbering.
 
-Post: "For people who've run feed generators: what's your actual p99 for posts-to-inclusion? Mine hovers around 4 minutes and I can't tell if that's slow or normal."
+> I kept [glaze] for the outside of [piece]. The photo shows how it pooled around the handle in [firing conditions]. I haven't established whether this glaze is suitable for food contact.
 
-Reply chain vibe: casual, conversational, lowercase openers, 1–3 lines.
+> For anyone comparing [glaze] with their own samples: this test used [clay body] and [firing conditions]. The darker patch is beside the handle. The flat test tile didn't show that pooling.
 
-Bad reply (over-imperfected for Bluesky):
-> lol yeah ours is like 6 mins sometimes, idk its just kinda slow i guess, ngl the whole thing is a mess tbh
+Why it works: the thread rule gives each installment its own subject and conditions.
+The limited test supports an observation about appearance, with no safety promise.
 
-Good reply (low imperfection, matches casual-but-technical register):
-> ours runs 3–5 minutes on average, spikes to 12 during high-volume events
->
-> 4 minutes sounds normal to me — the indexer batches in 60s windows so you're always at least a minute behind
+## Checklist
 
-What works: lowercase opener matches the chain, no closing period on line 1 (one natural imperfection), specific numbers, explains the mechanism (60s batching), reads like a practitioner typing between tasks.
-
-## Pre-Publish Checklist
-
-- [ ] Under 300 graphemes (count emoji and CJK as 1 each)
-- [ ] No hype language ("this changes everything," "insane," "🚀🔥")
-- [ ] No X-imported framing ("🧵👇," "a thread:", "RT if you agree")
-- [ ] Specific over clever — concrete observation beats witty one-liner
-- [ ] Alt text on every image (accessibility is a cultural norm here)
-- [ ] Self-labeled if AI-generated image or sensitive topic
-- [ ] Hashtags: 0–2, lowercase, placed naturally
-- [ ] No "follow for more" / "like and repost" CTAs
-- [ ] Unmarked AI prose removed (em-dashes, "delve," hedge stacks)
-- [ ] For quote posts: adds one specific thing, stands alone
-- [ ] Reply only: scanned chain for technical depth and tone before writing
-- [ ] Reply only: 0–1 subtle imperfection calibrated to register (very low for technical, low-medium for casual)
-
-## Composition
-
-Use with:
-- content-voice — carry your brand voice across a longer run.
-- content-humanize — strip AI tells (em-dashes, "delve," hedge stacks). Bluesky catches these faster than X.
-- social-x — if cross-posting, run both skills and let the differences drive the rewrite.
+- [ ] First line carries useful substance; the post has a single idea and matches the author's documented voice.
+- [ ] Every specific has supplied provenance; no unfilled example fields or invented experience remain.
+- [ ] Final composer text meets the grapheme limit above, including inserted handles and links; every thread post stands alone and numbering isn't duplicated.
+- [ ] Photo count and video limits above pass; embed combinations and the rendered link card are checked.
+- [ ] CTA or deliberate no-CTA is clear; destination works and attribution parameters are consistent.
+- [ ] Alt text, captions, asset brief, and follow-up reply plan accompany relevant formats.
+- [ ] AI-tell pass covers structure and excessive punctuation without manufacturing errors.
+- [ ] Affiliation, sponsorship, media disclosure, and applicable picker warnings are checked.
+- [ ] Launch stage and proof match; reply/quote controls and recommendation visibility reflect the account owner's intent.
 
 ## References
 
-- AT Protocol spec: https://atproto.com
-- Bluesky API docs: https://docs.bsky.app
-- Fedi.Tips Bluesky guide: https://fedi.tips/bluesky/
-- Measured patterns: derived from the public AppView hot feed (public.api.bsky.app, app.bsky.feed.getFeed on the whats-hot generator), Aug 2026. Re-derive periodically; the surface drifts.
+- [Post lexicon](https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/post.json), undated; reviewed 2026-09.
+- [Visibility declaration](https://bsky.network/blog/content-visibility-declaration/), 2026-09-01.
+- [Photos release](https://bsky.app/profile/bsky.app/post/3mnslrkd6ok2g), 2026-06-08; [Video release](https://bsky.app/profile/bsky.app/post/3mtwf7gxkwc2r), 2026-08-25.
+- [Thread numbering](https://bsky.app/profile/bsky.app/post/3msqpusnigc2t), 2026-08-10; [App releases](https://github.com/bluesky-social/social-app/releases), 2026-09-03.
+- [Bluesky outlook](https://bsky.social/about/blog/01-28-2026-bluesky-2026-predictions), 2026-01-28; [Community Guidelines](https://bsky.social/about/support/community-guidelines), 2025-09-19.
+- [Transparency report](https://bsky.social/about/blog/01-29-2026-transparency-report-2025), 2026-01-29.
+- [Summer of Standard.site](https://bsky.social/about/blog/06-22-2026-summer-of-standard-site), 2026-06-22.
+- [Google URL builder](https://support.google.com/analytics/answer/10917952?hl=en), undated; reviewed 2026-09.
+- [Buffer engagement](https://buffer.com/resources/state-of-social-media-engagement-2026/), 2026-03-05; [Buffer timing](https://buffer.com/resources/best-time-to-post-on-bluesky/), 2026-08-05.
+- [Sprout platform survey](https://sproutsocial.com/insights/?p=193529), 2026-03-16.
+- [Aborn](https://emilyaborn.com/ai-writing-tells-what-they-cost-you/), 2026-07-10; [Cox](https://huntingthemuse.net/library/how-to-tell-if-writing-is-ai), 2026-06; [Gichigi](https://tahigichigi.substack.com/p/12-red-flags-of-ai-writing-and-how), 2026-02-18. Editing heuristics (directional).
+- Deep source notes: [platform mechanics](reference/platform-mechanics.md), [measured signals](reference/measured-signals.md), reviewed 2026-09.
+
+Re-validate when: composer limits or controls change; feed names or ranking code change; labeling policies change; new vendor reports appear.
+
+Validated: 2026-09

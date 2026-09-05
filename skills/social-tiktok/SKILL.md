@@ -1,9 +1,9 @@
 ---
 name: social-tiktok
 title: "TikTok Publishing Playbook"
-description: "Ground-truth 2026 playbook for organic TikTok. Covers the official ranking reality (follower count is not a direct factor — verbatim; completion of longer videos = strong indicator; For You drives 72.7% of views), the saturation math (volume +72%, views −31% YoY), the official 3–6 second hook window, lo-fi beating polished (+33% consideration, TikTok/Lumen), the measured comment asymmetry (questions +26%, asking for likes −60%), video-over-carousel evidence, TikTok SEO and the search-value RPM factor, the September 2025 unoriginality enforcement, Creator Rewards floors, and the honest AI-content picture (labeled, not throttled). Activate when drafting anything destined for TikTok."
+description: "Draft and revise TikTok scripts, captions, and publishing packages in an identifiable author's voice. Activate for TikTok posts, product demos, launches, customer proof, and creator collaborations; choose formats by audience intent and separate verified platform guidance from editorial judgment."
 license: Apache-2.0
-compatibility: "Octomind content agents. Platform-specific to TikTok (videos, carousels, captions, sounds)."
+compatibility: "Requires source assets and author samples; browser and TikTok account access for current publishing controls."
 domains: content
 rules:
   - content(tiktok)
@@ -13,113 +13,187 @@ rules:
 
 ## Overview
 
-TikTok distribution is interest-matching, not audience-owning: the For You feed drives 72.7% of video views (Metricool 2026, n=2.31M posts) and TikTok states verbatim that "neither follower count nor whether the account has had previous high-performing videos are direct factors in the recommendation system." Every video re-earns its reach from zero against the viewer's interest clusters.
+Write a post a particular person could stand behind, with a useful result for the intended viewer. Apply supplied facts and proof first, the author's documented voice next, then platform guidance. Use `content-voice` for generic editing; the rules here govern spoken delivery and TikTok packaging.
 
-The 2026 market context is saturation, and it's measured: published video volume grew 72% year over year while views fell 31% and reach fell 29% (Metricool). Follower growth rates dropped by a third across all tiers (Socialinsider, n=2M videos). "Post more" is not supported by current data — post better-matched, better-hooked content is. And speed matters structurally: 96% of a post's total reach and ~98% of its interactions arrive within the first 10 days (Metricool).
+Treat editorial prescriptions marked (directional) as craft choices. Evidence dates identify publication or, for undated documents, verification month. Open reference/evidence.md when citing benchmarks, explaining distribution or AI policy, or advising a monetizing creator.
 
-Pair with `content-voice`. Low-effort output dies here on quality grounds — the For You eligibility rules catch it regardless of who or what made it.
+## Mental model
 
-## Instructions
+Make the post understandable without prior familiarity with the account. For You supplied 72.7% of video views in the sampled population; that does not mean every upload starts from zero (measured, Metricool, n=2,314,756 posts, 2026-05).
 
-### How ranking actually works (official, not folklore)
+TikTok's historical explainer describes interactions, video information including captions/sounds/hashtags, and account settings; it uses completion of a longer video as a strong-signal example. It says follower count and prior hits are not direct factors (official, TikTok recommendation explainer, 2020-06). Don't turn that old description into current weights, a guaranteed initial audience, or a fixed distribution test.
 
-- Three official signal categories: user interactions (likes, shares, comments, watch behavior), video information (captions, sounds, hashtags), device/account settings (weakest tier).
-- The only official weighting statement is qualitative: a strong indicator like "whether a user finishes watching a longer video from beginning to end" outweighs weak indicators like shared geography. Every numeric weight table circulating online is practitioner guesswork — completion and watch-through are the strongest bets, per TikTok's own example.
-- A qualified view = a unique For You view of at least 5 seconds (Creator Academy). Repeat views don't count toward it.
-- New uploads are tested on a small pool and expand with performance (directional but consistent); the "tested on your followers first" claim contradicts the official follower-count statement — treat it as false. The numeric "200-view jail" thresholds are creator shorthand, not policy.
-- The feed deliberately diversifies: it "generally won't show two videos in a row made with the same sound or by the same creator" — you compete against your own recent posts less than folklore claims, and trends rotate by design.
+## Format and anatomy
 
-### The Hook — 3 to 6 seconds, officially
+### Choose the viewer's job
 
-TikTok's own creative guidance (Creative Playbook, Marketing Science studies): "the first 3–6 seconds are critical" and "regardless of format, the first six seconds are vital for impact." The endorsed structure is Hook → Unique Selling Points → Call-to-action (template timing: hook 1–4s, USPs ~20s, CTA 1–4s). From ads data, labeled as such: 63% of the highest click-through videos hook within the first three seconds.
+Default to video when motion carries the demonstration. Video led photos/carousels in the cited comparison; this is a baseline, not a universal winner (measured, Buffer Formats, n=45M+ cross-platform posts, 2026-03).
 
-- Open on the payoff, the conflict, or the claim — never on a logo, an intro, or "hey guys."
-- The circulating retention statistics ("60% past 3s = 4x reach" etc.) are fabricated stat-farm content with no methodology. Design for the official 3–6s window and measure your own retention curve.
+| Situation | Format and length choice |
+|---|---|
+| Brand awareness or a compact demonstration | Test the short band: 15–30 seconds led engagement in the brand sample (measured, Socialinsider, n=6M brand videos, 2026-07). |
+| Search-intent explanation or a substantial story | Test the extended band: 120–180 seconds led median views in that sample, not necessarily search conversions (measured, Socialinsider, n=6M brand videos, 2026-07). |
+| Reference material the viewer needs to inspect | Consider Photo Mode/carousel; make each frame readable and the sequence useful (directional). |
+| A written observation without useful footage | Consider a text post if the account offers it; preserve the author's wording and avoid pretending motion adds proof (directional). |
+| Product inspection and live questions | Consider LIVE with Shop only after checking account eligibility and purchase controls. The UK Lux Laces case used launch LIVE (measured, TikTok case report, n=Lux Laces campaign, 2026-08). |
+| A response to an existing post or comment | Consider reply-video, Duet or Stitch if available and permitted; contribute a demonstration or substantive response (directional). |
+| A timely follow-up | Consider Stories if available; put durable proof in a standalone post too (directional). |
+| Related explanations or paid depth | Check Playlists or Series availability and terms before planning grouping or paid access; these are different publishing decisions (directional). |
+| Material exceeding the extended band | Check the actual upload limit before scripting long-form. Keep only depth the viewer needs (directional). |
+| Creator seeking program earnings | Verify current regional Creator Rewards terms before choosing duration; this evidence set does not verify current thresholds. Brand GTM work follows the buyer's job, not an assumed rewards floor. |
 
-### Lo-fi beats polished — TikTok measured it
+Don't assert unverified upload limits, caption caps, or universal feature access. Confirm these in the publishing account, including market and account type.
 
-TikTok Marketing Science (Lumen study): lo-fi creative sees 33% stronger consideration than polished ads. Supporting official studies: 75% of users respond positively to TikTok-first creative (Ipsos 2022); ads featuring creators drove +24% brand favorability (Hotspex 2021); 43% of heavy users say good TikTok advertising blends in with content. These studies date 2020–2023 but remain TikTok's current public creative position.
+### Build the opening and script
 
-- Native, handheld, person-on-camera beats studio polish. Feature real people — creators, employees, customers.
-- Talking-head with on-screen text is the workhorse format; the creator-favorability data is the evidence for faces over faceless.
-- Production floor, not ceiling (official specs): 9:16 vertical, minimum 720p, sound always on — but ~30% watch muted (Creator Academy via Hootsuite), so burned-in captions and text overlay carry the message regardless.
+TikTok's ad playbook emphasizes the opening 3–6 seconds and a hook → selling points → CTA structure; this is advertising guidance, not an organic retention cutoff (official, SMB Playbook, undated; verified 2026-09).
 
-### Comments — the measured asymmetry
+Use the first frame to show the object of the claim. Skip greetings and logo cards in the opening. Put a readable topic label beside it. Continue with the action that demonstrates the claim, explain its boundary, then give a useful next step or stop. Read the script aloud while watching the asset; cut sentences that merely narrate visible movement (directional).
 
-The single most actionable measured finding (Metricool 2026): a question in the post earns +26% comments and asking for comments +14% engagement — while asking for likes cuts interactions by 60%. Buffer's 52M-post study adds that replying to comments was "the strongest signal in the entire dataset."
+Use the example hooks as a bank of archetypes: visible fault, operational boundary, physical inspection, and service diagnosis. Substitute source-backed specifics; don't copy their fictional experiences.
 
-- End with a genuine question the niche wants to argue about.
-- Never ask for likes/follows — measured self-harm and engagement-bait policy territory ("artificially increase engagement" = For You ineligibility).
-- Reply to early comments personally; reply-videos (answering a comment with a new video) are a sound mechanic for series content — no reliable uplift percentage exists, so treat them as a content source, not a multiplier.
+### Package the post
 
-### Format and length
+Use full-screen 9:16, at least 720p, and purposeful sound as the ad-playbook production baseline, not an organic upload requirement (official, SMB Playbook, undated; verified 2026-09). Preview on a phone with the posting UI visible; keep proof and text clear of controls and caption overlays. Correct subtitles and describe visual-only evidence in speech or text (directional).
 
-- Video beats carousels, measured twice: median ER 3.39% vs 1.92% (Buffer, n=45M posts), 5x views and 6x interactions (Metricool). TikTok's own 2024 claim that photo posts out-engage video is outdated marketing. Carousels remain a niche play for reference/save content, not reach.
-- Length: officially "video lengths from 15 sec to 3 min — any length within this range can find success," with the first 6 seconds vital. TikTok has been distributing longer (1–3 min+) content more where completion holds (directional); 60% of users interact most with sub-60s video (Sprout 2026). Rule: as long as the content stays dense, as short as it can be — completion of what you publish is the strong indicator.
-- Sounds: use the Commercial Music Library for business-cleared tracks. The 0%-volume trending-sound trick fails — audio analysis reads the actual sound.
+Front-load the subject in the caption using language the buyer uses. Keep it to a compact thought unless conditions need more space; omit script repetition. Place descriptive hashtags after the prose without a tag stack. Hashtag-bearing posts performed better observationally, but no optimal count was established (measured, Metricool, n=2,314,756 posts, 2026-05). Spoken keywords can clarify the topic; don't promise speech-indexing benefits (directional).
 
-### TikTok SEO — search is an earnings factor
+Export clean source footage and recut imported assets for this opening and CTA. Choose a cover showing the evidence with a legible topic label; write alt text for photo assets where supported (directional). The Commercial Music Library supplies tracks cleared for paid ads; inspect the selected track's current use permissions before commercial publication (official, SMB Playbook, undated; verified 2026-09).
 
-Captions, sounds, and hashtags are official ranking inputs; "search value" is one of TikTok's four official RPM factors (with originality, play duration, engagement) — TikTok literally pays more for searchable content. 49% of US consumers have used TikTok as a search engine (Adobe 2025), though Gen-Z preference for it over Google is small and falling (8%→4%, 2024→2026) — optimize for discovery, don't bet the strategy on search alone.
+## Launch and proof posts
 
-- Say the keywords out loud in the video (spoken audio is indexed — directional but consistent), put the primary keyword at the front of the caption, keep auto-captions on.
-- Hashtags are back, measured: posts with ≥1 hashtag get ~5% more views and >9% more interactions; hashtag-driven traffic +114% YoY (Metricool). Use 1–5 specific, descriptive ones — not 30, not zero.
+Before drafting, obtain audience and buying situation, promise, available proof with its source, desired action, destination, campaign stage, and disclosure obligations. Include author samples, account market/type, and whether this is owned, sponsored, affiliate, or paid-amplified content. “No CTA” is a valid choice. If proof is absent, draft a demonstration brief rather than a customer success claim.
 
-### Monetization floors (know them before advising creators)
+Use the short or extended bands above as testing options, never compulsory duration (directional):
 
-Creator Rewards requires: 10,000+ authentic followers, 100,000+ authentic views in 30 days, videos at least 1 minute long, original content with 1,000+ For You views — duets, stitches, photo posts, and sponsored content are ineligible. RPM = originality × play duration × engagement × search value. This is why serious creators structure ideas as 1-minute+ originals.
+| Post shape | Anatomy | Length choice |
+|---|---|---|
+| Launch day | Show the task/result; identify the released product and availability; demonstrate; give the verified access path. | Short |
+| Demo or artifact | Show input, perform the relevant operation, inspect output, explain the failure boundary. | Short for a single operation; extended for a walkthrough |
+| Customer proof | Establish before/after conditions, show the authorized record, state outcome and remaining limitation. | Short if proof fits; extended for context |
+| Founder decision/build update | Name the decision, show its artifact, explain the cost and unresolved tradeoff. | Short |
+| Objection answer | Quote a real objection with permission or paraphrase it; test it visibly; state who the result applies to. | Short; extended when the test needs it |
+| Recap/lessons | Revisit the promise using observed evidence; name what remains unresolved and the next action. | Extended only when earned |
 
-### What Dies on TikTok
+Apply the strip-test: with the product name removed, the post should still show or teach something useful (directional).
 
-- Watermarked re-uploads — the For You eligibility standards exclude "content with someone else's visible watermark or superimposed logo," including other editing apps' logos. Cross-posting Reels with the watermark kills distribution.
-- Unoriginal content generally — enforcement escalated 15 September 2025: repeated imports/copies without "new, creative edits" now affect both earnings and visibility.
-- Delete-and-repost of a flopped video — duplicate detection can flag the re-upload as unoriginal, making it For-You-ineligible; worse than the original stall.
-- Extremely short clips, GIF-only videos, QR codes — named in the eligibility standards.
-- Engagement bait — policy ineligibility, and the measured −60% for like-begging.
-- Polished ad-feel content — not penalized, just outcompeted (the lo-fi +33% is the inverse framing).
-- "Shadowban" is not the mechanism — TikTok's term is "ineligible for the For You feed"; diagnose against the eligibility standards, not superstition.
+Confirm the destination in the account before writing the CTA. Prefer an available profile/bio link for a site visit, or verified Shop product controls for an in-app purchase. Don't promise that a URL in a caption, reply, description, or sticker is clickable. Test the complete path, including destination wording; request a DM only when that workflow is available and staffed. State affiliation in the post and select the applicable commercial-content/paid-partnership disclosure control after checking current regional requirements. These are publishing checks, not claims of universal interface access (directional).
 
-### AI content — labeled, not throttled
+Seed through relevant creator collaborations and useful participation in existing conversations. Give employees distinct observations and disclose their relationship; agree compensation for additional creator work. Don't script fake customer reactions or coordinate engagement trades. TikTok's rules restrict spam, fake engagement and deceptive incentives (official, Integrity and Authenticity, 2025-08).
 
-- TikTok requires labeling of realistic AI content, auto-labels via C2PA Content Credentials, and added an invisible watermark (March 2026) that survives re-uploads. Over 1.3 billion videos labeled to date.
-- No measured AI reach penalty exists — every circulating figure claiming one is fabricated. Credible evidence points the other way: AI content achieves enormous reach (a single AI history-POV video hit 4.4M likes, arXiv 2026).
-- The real risks: (a) users can dial down AI content via the Manage Topics control (rolling out since Nov 2025) — audience-side opt-out; (b) low-effort AI output gets caught by the unoriginal/low-quality rules on quality grounds; (c) Creator Rewards' originality requirement hits RPM. Disclose realistic AI, make it original, and it competes normally.
+Prefer founders for decisions they personally made and brand handles for repeatable product explanations; no verified matched TikTok study establishes a universal founder advantage (directional). Give collaborating creators proof and boundaries while preserving their voice; audience/brand tension was reported in creator research (measured, CreatorIQ, n=5,095 creators, 2026-08).
 
-### Timing and cadence
+Illustrative launch-week schedule, not a platform timing prescription; offsets are planning examples:
 
-- Measured strongest window: 6–9pm audience-local, peak 8pm (Metricool, n=2.31M). Timing tunes the margin; completion decides the outcome.
-- Cadence honestly: brand accounts average 2 videos/week (Rival IQ/Quid 2026); growth-tier creator accounts run 8–23 posts/month by size (Socialinsider) — different populations, both measured. Whatever the cadence, the 10-day lifespan means a steady drumbeat beats bursts.
+| Offset | Post and reply plan | Qualified-interest check |
+|---|---|---|
+| T−7 | Teaser showing the unresolved task; collect real objections. | Comments naming the buying situation |
+| T−3 | Founder decision or preview; answer scope questions. | Relevant profile visits and access questions where observable |
+| T0 | Launch demo; assign a reply owner for the first hours. | Destination actions; substantive product questions |
+| T+1 | Objection-answer or comment response; acknowledge limits. | Follow-up questions showing evaluation |
+| T+3 | Authorized proof or deeper demo; consider a staffed LIVE. | Saves, relevant shares, product clicks where available |
+| T+7 | Recap with actual evidence; answer remaining blockers. | Qualified inquiries and attributable downstream outcomes |
 
-## Pre-publish Checklist
+Skip slots without new evidence; don't manufacture a daily quota (directional). Open reference/launch-detail.md when preparing creator briefs, Shop/LIVE, Spark Ads, paid amplification, or launch measurement. It contains scoped case evidence and current business-product options.
 
-- [ ] Hook lands inside the official 3–6s window; no intro, no logo card
-- [ ] Structure: Hook → value/USPs → CTA; dense the whole way (completion is the strong indicator)
-- [ ] 9:16, ≥720p, sound on, burned-in captions (30% watch muted)
-- [ ] Lo-fi/native register — would this pass as a person's video, not an ad?
-- [ ] Keywords spoken aloud + front-loaded in caption; 1–5 specific hashtags
-- [ ] Ends with a genuine question; zero like-begging
-- [ ] Original: no third-party watermarks, no re-uploads, material edits on any borrowed format
-- [ ] 1 minute+ if monetization matters (Creator Rewards floor)
-- [ ] Realistic AI content labeled; originality carries it regardless
-- [ ] Scheduled toward 6–9pm audience-local when convenient — never at the cost of the idea
-- [ ] Plan to reply to early comments; reply-video candidates noted
+## Voice on this platform
+
+Write spoken clauses the author can say comfortably. Preserve their contractions, local idiom and natural fragments; captions may be lowercase only when the author writes that way. Have a fluent local editor review idiom in spoken context (directional; inference from MIDI, 2026-06).
+
+Match subtitle punctuation to speech and use overlay text for orientation. Don't manufacture hesitations, typos, fake corrections, or choppy jump-cut speech. Lo-fi means a workable production choice, not simulated carelessness (directional).
+
+Apply the `content-voice` pass to script, overlays, caption and replies. Strip gratuitous contrast frames, padded triads, staccato line stacks, empty suspense phrases, tidy moral endings, rhetorical-question openings, miracle-fix narratives and “nobody talks about” hooks. Remove engagement-bait closers, hashtag stacks and decorative emoji bullets. Inspect repeated emphasis words and dense em-dashes; keep punctuation only when it serves the author's phrasing. These are editing heuristics, not authorship detection or ranking rules (directional; Aborn, Cox and Gichigi).
+
+Don't pair generic synthetic narration with unrelated stock footage as a substitute for the author's evidence. Use a trend's phrasing only when it fits the actual situation; captions and replies should sound like the same person speaking to that viewer (directional).
+
+Bad: “This changed everything.” Better: “The seam still catches when I pull it sideways.” Use the latter only when the footage supports it (directional).
+
+## Cadence and engagement
+
+Choose a cadence the author can sustain with fresh evidence and reply coverage. A brand should budget demonstrations and customer permissions; a creator should budget original episodes and, if relevant, verified program requirements. Increase output only while typical-post quality and qualified response remain useful (directional). Benchmark within TikTok using consistent metric definitions (measured, Buffer Engagement, n=52M+ cross-platform posts, 2026-03).
+
+Use audience analytics first. Buffer found evenings from 6–11 p.m. generally strongest, Saturday strongest overall, and Sunday at 9 a.m. the strongest individual slot; test these rather than asserting a universal best time (measured, Buffer Timing, n=7.1M posts, 2026-07).
+
+Assign early and out-of-hours reply coverage when needed; remove fraud/spam and distinguish criticism from abuse. Reply personally to substantive comments; a question is optional, never an obligatory closer (directional). Question posts correlated with more comments, while requests for likes correlated with fewer interactions; this does not establish a follow-request penalty (measured, Metricool, n=2,314,756 posts, 2026-05).
+
+Review at day 10: the study observed 96% of reach and nearly 98% of interactions within that window, not a hard expiry (measured, Metricool, n=2,314,756 posts, 2026-05). Compare available retention and traffic-source data with qualified comments, profile/product actions and downstream outcomes. Keep organic and paid results separate (directional).
+
+## What gets suppressed
+
+Reused material without creative edits, including another person's watermark/logo, and low-quality or minimally edited GIF-only clips can be For You-ineligible under guidelines effective September 13, 2025 (official, Integrity and Authenticity, 2025-08). Re-verify the regional policy before citing it. Don't invent universal QR-code, short-clip, or delete/repost penalties.
+
+Keep AI disclosure and media provenance intact. US TikTok Shop requires disclosure for fully generated or significantly AI-edited content, prohibits fabricated AI product effects, and says the label alone does not demote compliant content (official, US Shop AIGC Rules, 2026-07). Verify current regional rules before publishing; don't generalize this Shop-specific assurance into neutral reach across TikTok.
+
+TikTok reports layered AI labeling and AI-spam detection testing in sensitive topics (official, TikTok AI Update, 2026-07). Treat those as scoped announcements, not proof of a universal AI penalty or immunity. Open reference/evidence.md when an AI-assisted asset needs policy review.
 
 ## Examples
 
-### Example 1: The asymmetry applied
+These are fictional drafting scenarios (directional), not customer claims. Verify every depicted action before use. Bracketed values require supplied evidence; any unfilled example is not publishable.
 
-Weak closer: "Like and follow for more AI tips!" — measured −60% interactions territory plus bait policy risk. Strong closer: "That's how we cut our token bill 70%. What's the dumbest thing your agent has done with your money?" — genuine question (+26% comments measured), niche-specific, and the replies seed the next reply-video.
+### Developer tool: visible fault
 
-### Example 2: Cross-post done right
+Hook/script: “The retry duplicated this job. Watch the job ID when I replay the request. With deduplication enabled, the second request returns the existing job. This recording covers a replay after completion; a simultaneous retry still needs its own test.”
 
-Wrong: download the Reel (watermark burned in), upload to TikTok — excluded from For You by the eligibility standards verbatim. Right: export clean from the editor, re-cut the hook for a 3–6s open, swap in a TikTok-native sound from the Commercial Music Library, front-load the spoken keyword, re-caption. Same asset, platform-original execution — eligible and competitive.
+First-frame/overlay: show the duplicate rows; “Job retry demo.” Caption: “Job deduplication on a completed request. Concurrent retries aren't covered here. #BackendDevelopment”
+
+Sound: recorded explanation, no music. Closer: “The runnable example is linked in the profile.” Use only after verifying that path. Cover: the duplicate rows with private data masked. Follow-up: answer concurrency questions without claiming an unrun test passed.
+
+Why it works: The visible-fault hook names what the recording proves.
+The limitation follows the provenance rule and bounds the access CTA.
+
+### B2B SaaS: operational boundary
+
+Hook/script: “This approval is waiting on a missing owner. I assign the owner here, then the request appears in their queue. The routing works in this sandbox; nobody has measured response time from this demo.”
+
+First-frame/overlay: show the unassigned request; “Approval routing demo.” Caption: “Approval routing with an assigned owner. Sandbox data; this doesn't establish faster decisions. #Procurement”
+
+Sound: own narration. Closer: “The setup guide is linked in our profile.” Verify that path before use. Cover: the owner field. Follow-up: explain permissions and distinguish routing from adoption.
+
+Why it works: The operational-boundary hook makes a buyer's task visible.
+The caption prevents a product action becoming an invented business outcome.
+
+### Consumer product: physical inspection
+
+Hook/script: “The mug fits, but the lid rubs the zip. I'll close the bag with it upright so you can see the pressure here. This is the fit on this mug; the size guide has the internal dimensions.”
+
+First-frame/overlay: show contact at the zip; “Mug fit check.” Caption: “Mug fit in the side pocket. Check your mug against the internal dimensions. #BagDetails”
+
+Sound: own speech with the zip audible. Closer: “Check the size guide before ordering.” Point to the verified product destination. Cover: contact point. Follow-up: answer sizing questions using supplied dimensions. Disclose the seller relationship.
+
+Why it works: The physical-inspection hook lets the viewer evaluate fit.
+The honest limitation avoids the miracle-fix pattern and supports a buying decision.
+
+### Local service: diagnosis and proof
+
+Hook/script: “The chair rocks at this joint. Here's the movement before repair and the same check afterward. The repair was [documented repair]; this is [inspection date], so it doesn't establish long-term durability.”
+
+First-frame/overlay: show the loose joint; “Chair joint repair.” Caption: “Chair joint repair in [service area]. Result shown at inspection; other joints weren't part of this job. #FurnitureRepair”
+
+Sound: workshop recording and explanation. Closer: “Use the booking link in the profile for an assessment.” Cover: the joint, with customer permission. Follow-up: request consent before moving identifiable job details into a private inquiry.
+
+Why it works: The diagnosis hook anchors before/after footage to the same check.
+The placeholders enforce provenance; the bounded result avoids a durability promise.
+
+## Checklist
+
+- [ ] Hook and first frame show the same idea; length and format fit the viewer's job.
+- [ ] Every specific is supplied or marked inside a nonpublishable example; no invented experience or results.
+- [ ] Author-voice match and AI-tell pass cover speech, overlays, caption and replies.
+- [ ] Asset brief, cover, corrected subtitles, photo alt text where supported, and UI safe-zone preview are ready.
+- [ ] Sound permissions, customer permissions, commercial disclosures and applicable AI labels are checked for this market.
+- [ ] Caption and descriptive hashtags are ready; CTA destination is verified or no CTA is deliberate.
+- [ ] Playlist/Series assignment is considered only if supported; pin a useful clarification comment only if that control exists, otherwise answer normally.
+- [ ] Reply owner, follow-up candidates, moderation coverage and the study-based review window above are assigned.
 
 ## References
 
-- How TikTok recommends videos (official): https://newsroom.tiktok.com/en-us/how-tiktok-recommends-videos-for-you
-- For You feed eligibility standards + integrity policies: https://www.tiktok.com/community-guidelines/en/fyf-standards
-- Creator Rewards terms: https://www.tiktok.com/legal/page/global/creator-rewards-program-us/en
-- TikTok Global SMB Creative Playbook (hook window, lo-fi studies, production specs): https://ads.tiktok.com/business/library/Global_SMB_Creative_Playbook.pdf
-- Measured figures: Metricool 2026 (n=2.31M posts/92K accounts), Socialinsider 2026 (n=2M videos), Buffer 2026 (n=52M posts), Rival IQ/Quid 2026 benchmark, Adobe 2025 search survey. Engagement-rate claims differ by denominator (per-follower vs per-view vs per-post) — attribute the study when citing one.
-- Source hygiene: 2026 "TikTok statistics" content is heavily polluted by AI stat farms inventing figures with fake attributions to real firms. Verify anything new against the primaries above before adding it here; re-validate policy items (AIGC controls, originality enforcement) periodically.
-- Companion skills: `content-voice` (kill the AI markers), `trend-tiktok` for harvesting what's currently rising.
+- [Metricool study](https://metricool.com/press-release-tiktok-study-2026/), 2026-05-12; [CTA analysis](https://metricool.com/tiktok-trends/), 2026-05-13.
+- [Buffer Formats](https://buffer.com/resources/data-best-content-format-social-media/), 2026-03-19; [Engagement](https://buffer.com/resources/state-of-social-media-engagement-2026/), 2026-03-05; [Timing](https://buffer.com/resources/best-time-to-post-on-tiktok/), 2026-07-20.
+- [Socialinsider lengths](https://www.socialinsider.io/blog/how-long-are-tiktok-videos/), 2026-07-10.
+- [TikTok recommendation explainer](https://newsroom.tiktok.com/how-tiktok-recommends-videos-for-you?lang=en), 2020-06-18; [SMB Playbook](https://ads.tiktok.com/business/library/Global_SMB_Creative_Playbook.pdf), undated, verified 2026-09.
+- [Integrity and Authenticity](https://www.tiktok.com/community-guidelines/en/integrity-authenticity), 2025-08-14; [US Shop AIGC Rules](https://seller-us.tiktok.com/university/essay?knowledge_id=491489038501663&lang=en), 2026-07-31; [TikTok AI Update](https://newsroom.tiktok.com/helping-people-spot-and-understand-ai-generated-content-on-tiktok-nz?lang=en-NZ), 2026-07-10.
+- [Lux Laces](https://newsroom.tiktok.com/tiktokshoplivefashionandcollectables?lang=en-GB), 2026-08-04; [CreatorIQ](https://www.creatoriq.com/press/releases/creatoriq-state-of-creators-report-2026?hs_amp=true), 2026-08-11.
+- [Aborn](https://emilyaborn.com/ai-writing-tells-what-they-cost-you/), 2026-07-10; [Cox](https://huntingthemuse.net/library/how-to-tell-if-writing-is-ai), 2026-06; [Gichigi](https://tahigichigi.substack.com/p/12-red-flags-of-ai-writing-and-how), 2026-02-18; [MIDI](https://arxiv.org/abs/2606.02147), 2026-06-01.
+
+Re-validate when: regional policies or program terms change; publishing controls are renamed; new benchmark reports appear; recommendation documentation changes.
+Validated: 2026-09

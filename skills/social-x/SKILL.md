@@ -1,9 +1,9 @@
 ---
 name: social-x
 title: "X (Twitter) Publishing Playbook"
-description: "Ground-truth playbook for writing posts, threads, and replies on X. Encodes the actual mechanisms from the open-sourced Phoenix-based For You algorithm: predicted-action scoring, the Banger Initial Screen, video-quality-view duration threshold, per-feed author diversity decay, OON penalty, mutual-follow Jaccard ranking input, the 7 PTOS safety classifiers, brand-safety verdicts, and sticky hash-based embeddings. Plus hook formulas, single-post anatomy, thread structure, reply-first growth, trend research, and a pre-publish checklist. Activate whenever drafting anything destined for X."
+description: "Write and revise X posts, replies, threads, profiles, and launch proof in the author's documented voice. Activate for X or Twitter publishing copy, product announcements, demos, customer outcomes, and post-publication reply plans. Choose formats and conversion paths using dated evidence without inventing experience or promising reach."
 license: Apache-2.0
-compatibility: "Octomind content agents. Platform-specific to X/Twitter."
+compatibility: "Text editing; network access for source checks and a signed-in X session for account-specific format validation."
 domains: content
 rules:
   - content(tweet)
@@ -12,397 +12,203 @@ rules:
   - match(\b(twitter|x)\s+thread\b)
   - match(\btweetstorm\b)
   - match(\bpost\s+(on|to|for)\s+(x|twitter))
-  - match(\b(x|twitter)\s+post\b)
+  - match(\b(x|twitter)\s+(post|reply|bio|launch|article|space)\b)
   - match(\bviral\s+(tweet|thread|post)\b)
   - match(\bwrite.{0,40}for\s+(x|twitter)\b)
 ---
 
 ## Overview
 
-This skill is the ground-truth recipe for writing anything that ships to X. It encodes what the 2026 algorithm rewards, what it suppresses, and the post-level craft that makes a piece actually get read — single posts, threads, replies, and bios.
+Write X copy that a particular person can stand behind and a relevant reader can use. Apply supplied facts and proof first, the author's documented voice next, and platform structure afterward. Use `content-voice` for generic editing; this skill supplies X decisions. Publishing is a downstream step.
 
-Pair this with `content-voice` for human voice rules. This skill handles what wins on X; `content-voice` handles how you sound. If both are active, follow voice rules, then apply the X-specific structure below.
+Open `reference/mechanics.md` when checking ranking, labels, subscription claims, format availability, or a suspected penalty. Open `reference/launch.md` when planning launch execution, choosing benchmark tests, or reporting outcomes. Open `reference/examples.md` when drafting a thread, long post, bio, or casual-chain reply.
 
-## Instructions
+## Mechanics and mental model
 
-### The Algorithm — What Actually Matters for Writing
+For You combines followed-account candidates from Thunder with Phoenix retrieval and SimClusters for out-of-network discovery. Ranking orders candidates; visibility filtering separately returns allow, interstitial, or drop. The documented candidate path filters out-of-network replies and reposts and posts older than 48 hours (official, X algorithm README, 2026-08). Don't extend this cutoff to every X surface.
 
-For You has two pools: posts from people the viewer follows (Thunder) and out-of-network posts retrieved by Phoenix — a transformer that embeds the viewer's last ~127 engagement actions and pulls the global posts whose embeddings are closest. Both pools merge into one ranker that predicts, per viewer × post pair, how likely each engagement action is. Sum × weights = score. Diversity and OON penalty multiply it. Safety classifiers can zero it.
+Use originals for a discovery attempt and replies to address an existing conversation (directional). A conditional new-author lift exists for originals; it excludes replies and reposts (official, X cold-start, 2026-08). It promises neither impressions nor customers.
 
-Three things this means for how you write — the rest is implementation detail:
+Published weights multiply predicted actions, not observed engagement counts. Repeated-author scoring operates within a feed request; it supplies no daily posting quota (official, X parameters, 2026-08). Bookmarks can indicate reader utility when available, but this evidence establishes no current bookmark weight. Don't solicit saves or describe them as either a proven boost or a proven non-signal.
 
-1. Phoenix predicts before engagement exists. It scores you on what this specific viewer probably does, given their history. So what wins is not "content that triggers engagement" — it's content that looks embedding-similar to what that audience already engages with. Write inside a recognisable niche, with recognisable artifacts, in your own voice. Generic content has no embedding neighborhood.
+## Format and anatomy decisions
 
-2. The valuable actions are depth + distribution, not taps. Replies, reposts, quotes, shares, follows, and dwell-time drive the score; likes are the cheapest, easiest-to-predict action and contribute the least per unit. Optimise for "what makes someone stop, send this to a friend, or go check who wrote it" — not for likes.
+Choose the shortest form that preserves the claim and its conditions (directional). Start with the useful observation or visible result. Keep the post about a single idea; add enough context to interpret it. End when the information ends, or state the chosen action. A twist and a quotable moral aren't required.
 
-3. Scroll-past is a negative signal, not neutral. The ranker penalises predicted scroll-past explicitly. Posts that don't earn at least a second of dwell don't just fail to score — they actively cost score for everyone in your audience cluster. Visual density (line breaks, a sharp first line, an image worth looking at) is the cheapest dwell insurance.
-
-### High-Leverage Levers Most People Don't Know
-
-These mechanisms live in the code and are nearly invisible in public X advice. Each one changes a writing or posting decision. Treat as the actual rulebook.
-
-Pass the Banger Initial Screen (or lose the boost track). Every post is scored 0–1 by a vision-language model on quality, and separately on a `slop_score`. Posts ≥ 0.4 get into extra boosted candidate pools on top of normal retrieval; slop-flagged posts are penalised even if engagement looks fine.
-- DO: write something visibly specific — a real artifact, a named thing, a number, a moment. Make the image worth opening.
-- AVOID: anything that looks templated — listicles with parallel bullet structure, generic motivational frames, AI-cliché phrasing, the same hook shape you used last week. The model is reading for slop, not just for "is this spam."
-
-Scroll-past is a negative score, not zero. The ranker explicitly penalises predicted non-dwell. A post that fails to slow people down doesn't just earn nothing — it actively costs you score across the audience cluster.
-- DO: lead with one short, sharp line. Use line breaks every 1–2 sentences. Attach a visual worth lingering on. Make the first half-second pay off.
-- AVOID: walls of text, throat-clearing intros, unbroken paragraphs, "Today I want to talk about…" openers.
-
-Video has a binary duration floor. Sub-threshold clips score zero on the video axis — they don't count as video at all. Same for video inside quote posts.
-- DO: clear the floor (a few seconds minimum) or use an image instead.
-- AVOID: 2-second meme clips when you wanted "video boost." You got "image with no expand signal," which is worse.
-
-Author diversity is per-feed-render, not per-day. Your first post in a viewer's feed render scores full; the next one is decayed; subsequent ones decay further toward a floor. There is no daily cap. The cost is in clustering, not in count.
-- DO: post 1–3× a day, spaced. If you have two posts to ship, leave a real gap between them so they hit different feed renders.
-- AVOID: two posts within a few minutes; you're cannibalising your own slot in every render that catches both.
-
-Low-follower accounts get a dedicated extra spam classifier. Posts from small accounts go through `SpamEapiLowFollowerClassifier` (a VLM) that bigger accounts skip. The early-growth phase is also the period of maximum scrutiny.
-- DO: write tightly. Personal, specific, defensible content reads as not-spam.
-- AVOID: link-stuffed posts, reply-bait copy, repeated phrasing across consecutive posts, anything that pattern-matches mass-produced templates. Reset your account's spam embedding with a stretch of obviously-human writing if you feel reach has dropped.
-
-`MediumRisk` brand-safety verdict = quiet reach loss. The ads system refuses to place ads next to your post, which shrinks the feed surfaces you appear on. You won't see a notification — reach just sags.
-- DO: edgy is fine. Specific is fine. Defensible is fine.
-- AVOID: crude language, gore-adjacent imagery, profanity-heavy hooks, anything an ad-buyer wouldn't want their logo beside. Edgy + monetisation-safe is the sweet spot.
-
-Seven kill-switch safety classifiers run per post. Each runs its own policy-prompted LLM: ViolentMedia, AdultContent, Spam, IllegalAndRegulatedBehaviors, HateOrAbuse, ViolentSpeech, SuicideOrSelfHarm. A hit drops you completely — not soft suppression, total removal from feeds.
-- DO: write so a careful LLM read against each policy comes back clean. Make context (sarcasm, criticism, reportage) unambiguous.
-- AVOID: dehumanising language, calls to harm even when "obviously joking," explicit sexual content, dosage/method specifics for self-harm topics, instructions for regulated activities. The classifier doesn't have a sense of humor.
-
-Topic specificity = inclusion in more topic feeds. Posts are classified into specific topic IDs that expand UP to supertopics. Specific posts ride into both narrow topic feeds and the broad ones. Vague posts only land in saturated supertopics.
-- DO: name the specific thing — "NBA," "NFL," "Premier League," "AI," "Crypto," "Formula 1." Not "sports," "tech," "finance."
-- AVOID: hedged generality like "thoughts on the industry" or "the future of work."
-
-Who replies and quotes you is a direct ranking input. Your post enters more viewers' feeds when accounts those viewers follow reply to it (and when mutual-follow overlap is high). One reply from a graph-relevant account does more than 100 from disconnected ones.
-- DO: cultivate 5–15 high-overlap accounts in your exact niche. Make replying-to-you valuable to them — ask interesting questions in DMs, send them work they'd want to engage with publicly, build the relationship before you need it.
-- AVOID: reply pods of random accounts. They don't share an embedding neighborhood with your target audience, so their replies don't cascade.
-
-Your account's embedding is sticky. Phoenix identifies you via hashed slots whose vector is shaped by your engagement history. Your first few hundred posts permanently anchor where you live in embedding space.
-- DO: pick your niche before you grow. Post consistently in it. Engage publicly with the accounts you want to be embedded near.
-- AVOID: erratic niche switches, "experimenting" with unrelated content in your main account. If you need to pivot hard, expect a multi-month re-embedding period. New niches → new accounts.
-
-Freshness is a cutoff, not a continuous decay. No "halves every 6 hours" — there's an age filter that removes posts past a threshold from the candidate pool. Inside the window you compete on score; outside, you're gone.
-- DO: front-load engagement — early replies matter because they shape Phoenix's predictions, not because they beat a decay curve.
-- AVOID: scheduling a post and disappearing. The first few hours are when it wins or loses; no need to babysit for 24.
-
-Each viewer sees you at most once. Bloom-filtered "previously seen" removes served posts from future renders.
-- DO: write for first-impression reach; reposts mostly reach only new viewers.
-- AVOID: "give it another shot" reposts to the same audience — they're filtered out.
-
-The "new user OON boost" belongs to the viewer, not the author. Viewers with young accounts see more out-of-network content; there is no small-author boost.
-- DO: target audiences with many new X users (broad topics, low-jargon explainers).
-- AVOID: assuming sub-10k accounts get magic reach. Phoenix is account-agnostic except via your sticky embedding.
-
-### Measured 2026 Benchmarks (third-party, directional)
-
-Outside-in 2026 measurements, consistent with the ranker's depth-actions ≫ likes structure:
-
-- Replies weigh ~15–27× a like across studies; profile clicks ~12×. Write for the action that costs the viewer something.
-- Native video measures 40–60% above text; threads of 5–9 posts ~3× a single post — when every post re-hooks.
-- Velocity gate: ~10+ engagements in the first 15–30 minutes correlates with out-of-network amplification. Be present at publish.
-- Premium accounts measure a ~10–25% reply-visibility lift. Real but small; substance decides.
-
-Where these conflict with the levers above, trust the code.
-
-### Dead-shape shortlist (format-level patterns to never produce)
-
-Algorithmic reasons covered in the levers above. These are the visible patterns that signal "this post is one of those":
-
-- Thread markers — "1/12", "🧵", "Thread 👇", "This 👇"
-- Engagement-bait closers — "Thoughts?", "Agree?", "RT if you agree", "Like if you relate"
-- Hashtag stacks (#ai #tech #startup) — one community tag max
-- Emoji bullets as line starters — 🚀 ⚡ 💎
-- "Unpopular opinion:", "Hot take:", "I think…", "In my opinion…", "Here's a thread on…" preambles
-- AI vocabulary in hooks — delve, leverage, unlock, harness, unveil, seamless, cutting-edge (full list in `content-voice`)
-- Uniform long paragraphs without line breaks
-
-### Post Types — Pick the Right One
-
-| Goal | Format | Length / spec |
+| Situation | Choose | Boundary or decision |
 |---|---|---|
-| State a take, get replies | Single post + media | 71–100 chars (17% higher engagement) or 240–259 chars (max likes). Attach an image |
-| Deep breakdown of a trending topic | Long-form post (Premium) | Up to 4000 chars; heavier weight than threads for evergreen explainers |
-| Teach / narrate / list | Thread with narrative arc | 4–8 posts; Phoenix reads full thread context — setup → friction → resolution beats disconnected bangers |
-| Tactical playbook | Hook + 5–8 numbered steps + closer | One post or thread; numbered steps are winning right now |
-| Personal proof | "$X → $Y in Z weeks" + breakdown + screenshot | Highest-converting format for follower growth |
-| Visual story | Image carousel | 3–7 slides, one bold claim per slide; gets out-of-network amplification |
-| Show real work | Short video (<90s) | Real work, not promo. Media weight + dwell time |
-| Grow from zero | Reply under 20k–200k anchor accounts | 1 post, high specificity. Out-of-network 3× boost amplifies strong replies |
-| Link to external content | Root hook + media + no link + reply with link | Standard |
-| Pure signal boost | Quote post with commentary | Commentary must add, not echo |
+| Compact observation | Short single | Stop when complete; no engagement sweet spot is established |
+| Claim needs a qualification | Fuller single | Ordinary composer limit: 280 characters (official, X posting help, 2026-09); check the composer with the final URL |
+| Explanation must be read continuously | Longer post | Up to 25,000 characters for Premium subscribers (official, X Premium, 2026-09); use only the space needed |
+| Distinct steps each have useful evidence | Thread | Break at a change of claim or artifact; each entry must make sense on its own; apply the selected composer's limit to each entry |
+| Another post supplies necessary context | Reply | Address its actual claim; read the chain before drafting |
+| Your audience needs the context too | Quote | Add analysis or a substantiated counter-case; represent the original fairly |
+| Reusable formatted explanation | Article candidate | Check account access and formatting in the live editor before assigning it; this evidence doesn't establish its tier or cap |
 
-### Single Post — The Anatomy
+Craft decisions in this table are directional; the labeled limits are platform constraints. Don't split a complete thought merely to make a thread. Don't promise a thread or long-post ranking multiplier.
 
-Every single post has 4 parts. Drop any part and the post dies.
+| Evidence to show | Media choice (directional) |
+|---|---|
+| Language carries the whole point | Text alone |
+| A visible state or comparison matters | Legible screenshot or image; include source context and alt text |
+| Sequence or interaction matters | Native demo video; caption speech and show the relevant action early |
+| A reaction fits the author's established register | Context-appropriate GIF; avoid using it to answer a serious objection |
+| Sustained explanation needs motion | Longer video; verify upload support before preparing the asset |
 
-```
-[HOOK]            ← first line, creates a gap the reader must close
-[PROBLEM/SETUP]   ← 1–2 lines, raw, specific, stakes visible
-[TWIST/REVEAL]    ← the counter-intuitive thing; the payoff
-[TAKEAWAY]        ← one line the reader can quote, bookmark, or steal
-```
+Plan up to 4 photos, a GIF, or a video under the verified posting guidance (official, X posting help, 2026-09). Preview a multi-image layout; don't brief it as a swipe carousel. Mixed-media combinations and video duration/file-size caps by tier are not established in this evidence. Verify them in the publishing account before delivery. A vertical cut is a presentation choice, not a promised video-tab boost (directional).
 
-Rules per part:
+Text narrowly led images in Buffer's X format sample; video wasn't the engagement leader (measured, Buffer, n=X subset of 52M+ cross-platform posts, 2026-03). Media must earn its place.
 
-- Hook — first line is the whole game. Specific number, named thing, unexpected claim, or broken expectation. No preamble. No "I'd like to share…". If line 1 doesn't make the reader need line 2, throw it out.
-- Problem/Setup — active voice, present tense. One idea. Stakes must be clear: what was lost, gained, or nearly lost.
-- Twist — the thing everyone else isn't saying. Contrarian, counter-intuitive, or a number that breaks a common assumption. This is what gets bookmarked and quoted.
-- Takeaway — short. Poster-able. Something the reader wants to keep. Not a moral, not a summary — a distilled rule.
+For optional surfaces, use these as conditional assignments, not availability promises (directional): an Article for a formatted evaluation guide; Spaces for a live discussion with an available host; a poll for an answer that will change a decision; Communities for participation that fits the visible rules; Lists for listening; DMs for relevant follow-up with permission. Check access and current controls first. A poll response isn't representative customer research.
 
-White space is structural. One sentence per paragraph is fine and often correct. Mobile reads in short chunks.
+## Launch and proof posts
 
-### Hook Formulas (use, don't parrot)
+Before drafting, obtain audience and buying situation, promise, sourced proof, desired action, destination, campaign stage, and disclosure obligations. Identify whether the stage is teaser, launch day, proof, objection, or recap. Obtain availability and pricing if mentioned. Deliberately choosing no CTA is valid. If required facts are absent, report the missing evidence and withhold publishable copy; don't invent specifics.
 
-Skeletons — fill with specifics from your experience; never leave the template visible.
+These shapes and length bands are craft choices (directional). “Single” uses the ordinary limit above; “long” uses the verified longer-post limit. No band predicts performance.
 
-- Broken expectation: "My X did Y. It wasn't Z." → "My agent spent $50 in tokens to solve a $5 problem. Not because it's dumb."
-- Contrarian rule: bold imperative against default advice → "Do not be helpful. Be correct."
-- Specific artifact: exact number or moment → "Day 3. Server broke. Here's why:"
-- Pattern callout: name a thing everyone sees but no one says → "Most LLMs start doing when they're not sure."
-- Lost money / time: stakes first → "I burned 40 hours on a config bug. The fix was one line."
-- Cost comparison: reframe scale → "Claude wrote 12k lines last month. I reviewed 400."
-- Anti-credential: puncture authority → "Seven-figure founders don't write better code. They ship more of it."
-- Observed asymmetry: "Everyone's doing X. Nobody's doing Y."
+| Shape | Anatomy | Length band |
+|---|---|---|
+| Launch day | Who can use it now, task it handles, visible proof, access conditions, action | Compact to fuller single; move supporting evidence into follow-ups |
+| Demo or artifact | Task, artifact, what to inspect, known constraint | Short single beside media; thread for distinct steps |
+| Customer outcome | Prior condition, observed change, source and measurement conditions, limitation, permitted attribution | Fuller single; long post when qualifications need room |
+| Founder decision | Decision, evidence considered, actual cost or tradeoff | Fuller single or long post |
+| Objection answer | Fair statement of concern, evidence-based answer, remaining limitation | Reply in context; original if broadly useful |
+| Recap | What changed after use, unresolved issue, next useful artifact | Single or evidence-led thread |
 
-Never start with: a question to the reader, a greeting, a disclaimer, "I think", a famous quote, or "Today I want to talk about."
+Use the strip-test on demos and proof: if the product name disappears, the reader should still learn something or see useful work (directional). Don't invent a customer transformation to satisfy the shape. Keep dates, cohort definitions, and exclusions beside outcome claims. Get permission for customer quotes and private screenshots.
 
-### Thread Structure (4–8 posts)
+| Desired path | Placement decision (directional) |
+|---|---|
+| Immediate trial, booking, purchase, or source inspection | Put the destination in the root when hiding it would obstruct the action |
+| Self-contained explanation with optional detail | Test a link in a clearly identified follow-up reply; compare qualified visits as well as reach |
+| Continuing profile discovery | Keep the profile destination and pinned introduction aligned with the promise |
+| Header artwork | Treat as visual context; don't rely on a printed URL as the conversion path |
+| Long evaluation document | Use an accessible Article or external document; preview the destination and its CTA |
 
-Each post in a thread is ranked independently. Post #2 must re-hook. Post #3 must re-hook. A great post #1 with a weak #2 dies at #2.
+External-link posts showed lower visibility in political-discussion datasets (measured, NDSS, n=over 40M posts across political datasets, 2026-02). That doesn't establish a universal penalty or prove a link-in-reply workaround. Keep a usable destination when conversion is the goal. Use consistent `utm_source`, `utm_medium`, and `utm_campaign`; distinguish placements with `utm_content` (official, Google Analytics, 2026-09).
 
-```
-Post 1 — HOOK. Stand-alone. Must work even if no one reads the thread.
-Post 2 — The setup. What was the situation before.
-Post 3 — The turn. What broke / what you noticed / the insight.
-Post 4 — The specifics. Code, numbers, the actual thing.
-Post 5 — The implication. Why this matters beyond your case.
-Post 6 — (optional) Counter-cases. When this wouldn't apply.
-Post 7 — Takeaway. One poster-able line.
-Post 8 — (optional) CTA: "Follow for more notes on X." + quote of post 1.
-```
+State the author's affiliation. Enable Paid Partnership for compensated, gifted, affiliate, or ambassador promotions (official, X Paid Partnerships, 2026-09). Record AI-media provenance, including synthetic people or scenes. X describes EU “Made with AI” indicators separately from restricted-reach labels (official, X Media Literacy, 2026-07); this doesn't establish a blanket AI-text disclosure rule or AI-label penalty.
 
-Rules:
+Seed through relevant conversations where participation is welcome (directional). Match collaborators to audience and expertise; brief proof and constraints while preserving their own wording. Keep creator results separate from brand results. Agency launch cases support testing this approach, not forecasting sales (directional), citing Clickstrike, undated. Don't use bulk unsolicited replies/DMs, irrelevant promotions, duplicate link drops, or coordinated metric inflation (official, X Authenticity, 2025-04). Employee participation must be voluntary, truthful, and distinct. For a Product Hunt destination, invite feedback without requesting or rewarding upvotes; don't recruit HN votes or comments through X (official, Product Hunt launch guide and Show HN, 2026-09).
 
-- No thread markers. No "1/", no "🧵", no "thread 👇". Just start.
-- No mid-thread filler. If a post doesn't earn its place, cut it. 5 strong posts > 10 with filler.
-- Bookmark bait works when honest. Post 7 can be "Save this if you're building agents — it's the rule I wish I'd known." Don't use if the content doesn't actually deserve saving.
-- Screenshots beat text for anything that's code, numbers, error logs, or DMs. They bypass link suppression and increase dwell time. Include alt text.
-- Link outside — if the thread has a destination URL (blog post, repo, video), put it in a reply under the final thread post, not in any thread post itself.
+Use founder handles for documented decisions and personal answers; use brand handles for product facts and support continuity (directional). No verified X founder-versus-brand conversion uplift is supplied.
 
-### Reply-First Growth (the actual growth engine)
+The following T-7 to T+7 schedule is an editorial plan (illustrative), not a measured optimum. T is launch day. Skip slots without new evidence.
 
-For accounts under ~10k followers, 20 thoughtful replies > 1 original post. Profile visits from a viral reply convert better than from a viral root post because the reader has already seen the substance.
+| Day (illustrative) | Post shape | First-hours reply plan | Measure if available |
+|---|---|---|---|
+| T-7 to T-4 | Problem observation or useful artifact | Listen for exact buying constraints | Relevant replies and recurring objections |
+| T-3 to T-1 | Demo preview and access conditions | Answer fit questions; record blockers | Demo requests and qualified profile interest |
+| T | Original announcement plus working proof | Assign a responder; correct misunderstandings | Qualified replies, destination clicks, trial requests |
+| T+1 to T+3 | Objection answer or additional demonstration | Return to unresolved questions | Resolved blockers and permission-based DM conversations |
+| T+4 to T+7 | Bounded outcome or lessons | Follow up on actual use | Qualified follow-ups and attributed activation |
 
-Pick 5–10 anchor accounts in your exact niche — sweet spot 20k–200k followers (smaller have no traffic; bigger bury you under hundreds of replies). Be there within 15 minutes as the first or second substantive reply; late replies are invisible.
+Keep native observations separate from downstream analytics. Attribute signups only with supporting records; an impression isn't demand. Carry unresolved attribution as unknown.
 
-Reply craft — each reply is a post in miniature, with less patience:
+## Voice on this platform
 
-- Open on content, not courtesy. No "Great post!", "Interesting take," "Love this." Lift a specific phrase from the root and react to it.
-- 2–4 lines max. Longer reads as a blog post and gets skipped. If you need more, write a quote post instead.
-- One move per reply — add a number, a counter-case, a name, or an extension. Pick one. Stacking reads defensive.
-- Disagree clean — "That's not quite right — here's what we saw…" beats "Wrong." Aggression gets muted; specificity gets quoted.
-- Skip the CTA ("Check my pinned", "Follow for more"). Reads desperate, kills amplification.
-- Images earn replies — a screenshot, chart, or DM cap stops the scroll inside the reply chain. Alt text is free ranking.
-- If your reply takes off, reply to yourself with the follow-up thought. Author-reply loops cascade into more feeds via the connected-account hydrator.
+Use the author's approved posts to establish their register. Read a reply's surrounding chain for technical precision, warmth, and expected length. Match conversational context without borrowing someone else's identity or slang. Prefer prose in replies; avoid a miniature slide deck. Add a specific answer or useful counter-case and omit unrelated self-promotion (directional).
 
-Reply shape that works (not a script): one line reacting to their specific claim, one line of your own experience or data, optional one line of implication.
+Preserve natural contractions and fragments. Lowercase is appropriate only when documented in the author's voice; don't add errors, fake edits, missing apostrophes, or typo quotas. Use niche slang or a meme only when its meaning and the author's usage are clear. Have a fluent reviewer check uncertain local idiom (directional).
 
-### Trend Research — What's Going on in a Field
+Apply the generic `content-voice` edit to X's compressed forms: strip contrast-frame hooks, padded triads, rhythmic one-line stacks, empty reveals, moral closers, miracle-fix stories, and repeated emphasis words. Review dash density without replacing it with another formula. These are practitioner editing heuristics, not authorship tests or proven ranker triggers (directional), citing Aborn, 2026-07; Cox, 2026-06; Gichigi, 2026-02.
 
-10-minute research pass before writing on any topic — the difference between fitting the moment and feeling six months late.
+Avoid rhetorical-question openers, “nobody talks about” claims, thread-promo markers, emoji bullets, hashtag stacks, and engagement-bait closers. Omit hashtags unless a relevant event or community convention justifies one; don't infer an organic hashtag ban from ad rules (directional). Use supplied proof for personal stakes; never convert research into a fabricated “I tested” story. Detector scores don't certify authorship; inspect provenance and voice instead (directional).
 
-- Anchor accounts — pull last 7 days from 5–10 niche-defining accounts; note what broke and what flopped.
-- Emerging vocabulary — new terms or product names appearing in multiple accounts same week. Use early.
-- Contested claims — two camps publicly disagreeing. Reply territory + strong-single-post territory.
-- Under-covered angles — high volume of posts, mostly low quality. Gap for a specific, well-argued post.
-- Dead takes — anything said 50× this month. Avoid unless you have a hard contrarian or a much narrower lens.
-- Timing — news / release / launch? Live-event attachment lifts ceiling significantly over evergreen.
+## Cadence and engagement
 
-Before writing, capture: niche / saturated takes / contested claims / gap angle / event to attach to / working hook.
+Publish at a recurring pace the author can sustain and answer substantive responses. Expand output only while useful material and response capacity support it (directional). Buffer associates frequency with growth, with reduced per-post reach at higher frequency; these observations don't establish an X daily quota (measured, Buffer, n=4.8M channel-weeks; separate 15.7M-post reach analysis, 2026-03).
 
-### Timing & Frequency
+Test weekday mid-mornings, then use account evidence and event timing. Buffer's baseline is 9–11 a.m., with Tuesday and Wednesday leading slots (measured, Buffer timing, n=8.7M X posts, 2026-03). Choose and record the audience timezone. Don't impose an evening window.
 
-- Cadence over volume. Phoenix's embedding sharpens with consistent daily activity: 1–2 posts every day beats 5 on Tuesday and nothing else. Skipping days softens your embedding.
-- Spread, don't burst. Author diversity decays your second post in the same feed render. Two posts a few minutes apart cannibalise each other. Leave hours between posts.
-- No hard daily cap exists in the code. Posting 3 times a day is fine if they're spaced. The cap people quote ("2/day") is folklore.
-- Best windows — Tue–Thu mornings and evenings local, but what matters is the recency window: post when your audience will load their feed within a few hours.
-- Reply to your own post early — your replies become first-class candidates on the conversation surface, and connected-account replies cascade into their followers' feeds. Stay present for the first hour.
-- One thread OR one long-form per day. Threads compete for the same author-diversity slot multiple times.
+| Account situation | Time allocation (directional) |
+|---|---|
+| Small follower base, little relevant conversation | Protect time for original proof; use replies to learn buyer language |
+| Growing relevant following | Keep originals recurring; increase response time as substantive questions grow |
+| Established audience or brand support load | Staff replies and escalation; turn repeated objections into sourced originals |
 
-### Tone of Voice That Wins
+Follower count alone doesn't justify a reply/original ratio. Plan coverage in the first hours and return to unresolved questions afterward. Buffer's reply association is uncertain and non-causal (measured, Buffer, n=nearly 2M cross-platform posts, 2026-03). Don't manufacture self-reply loops. Update the bio and pinned introduction when the offer changes; state the real work and reader benefit (directional).
 
-The slop classifier flags abstract/motivational/aggregator content. Calibrate:
+## What gets suppressed
 
-- First-person specific — "I built X / shipped Y / burned Z" beats "founders should…"
-- Concrete numbers and names beat vague aggregates
-- Builder energy — show the artifact, not the inspirational frame
-- One strong opinion per post, not three hedged ones
-- Proof beats prediction — "Here's what I shipped" over "here's what's possible"
-- Direct second-person ("you") over generic ("founders", "people", "we")
-- Contrarian only with personal proof you can defend in replies
+Separate policy evidence from low engagement. X prohibits deceptive manipulated media and spam and can restrict reach for violations (official, X Authenticity, 2025-04). Review sources and context for factual claims; retain correction material if challenged or exposed to Community Notes scrutiny. Don't assert a Notes-specific ranking effect without evidence.
 
-### The Daily Play
-
-1. Post 1–2 specific, defensible takes per day, spaced hours apart. Specific = a real number, name, artifact, or moment. Defensible = you can argue it in replies if challenged.
-2. Pair text with something that earns dwell. Image, screenshot, chart, carousel, or video over the duration floor — but only if the visual is worth opening. Generic stock imagery hurts more than it helps (slop).
-3. Stay present for the first hour. Reply to substantive comments. Your replies become candidates in those repliers' followers' feeds.
-4. One bold opinion per post, written in your voice. Slop classifier flags templated content. First-person specific kills templates.
-5. Stay inside your niche embedding. Don't whiplash topics. If you must pivot, expect the embedding to drag.
-6. Reply daily to 5–15 high-overlap niche accounts — the dominant growth mechanic for sub-50k accounts. Their replies cascade you into their followers' feeds; yours put you in front of their audience.
-
-### Bios, Pinned Posts, Profile
-
-New readers decide in ~3 seconds. Profile must pay off the post.
-
-- Bio: one line — what you do + what they get from following. No emoji stack, no "dad, husband, coffee."
-- Pinned post: single best-performing post or a purpose-built "start here." Update quarterly.
-- Handle + display name: searchable. Niche keyword in one of them.
-- Header image: the safe place for a link. Use it as a CTA billboard.
-
-### Thread-Vibe Matching
-
-Before writing a reply, read the chain — not just the root. Reply chains develop micro-culture within minutes; match it or read out of place.
-
-Scan for: length (match the median), tone (dry/technical vs. punchy/hot-take vs. casual), punctuation style (lowercase-no-period chain → don't be perfectly punctuated), shared slang or running jokes (reference, don't force), energy level (heated debate vs. quiet technical).
-
-Calibration: hot take with 100+ replies → short, punchy, no hedging. Technical thread with 10–30 replies → specific, measured, 3–4 lines OK. Personal story → warmer, first-person, shorter. Joke/meme → match the absurdity or don't reply. Original post → your own voice; no vibe to match.
-
-### Human Imperfection Protocol
-
-X is mobile-first. Replies typed fast on a phone. Perfect grammar in a reply chain reads like a press release. Calibrate imperfections to context — low for original posts (0–1 max), medium for replies in fast threads (1–2), zero on technical claims and proper nouns.
-
-Imperfection menu (pick 1–2 max per reply, never stack all):
-
-- Missing apostrophe — `dont`, `cant`, `wont`, `its` — most natural on mobile
-- Lowercase opener when the chain is already doing it
-- Run-on sentence — two thoughts joined with `and` or `but` without a period
-- Comma splice — "I tried this, it didn't work"
-- Casual contraction — `gonna`, `kinda`, `tbh`, `ngl` — only if thread register supports it
-- No closing punctuation — end without a period; common in casual X replies
-
-Never: misspell a proper noun, brand, or technical term (reads as ignorant); stack 3+ imperfections (reads as noise); apply imperfections to data claims or technical precision; apply to a considered original post.
-
-### Pre-Publish Checklist
-
-Fail on any one → rewrite.
-
-- [ ] First line stops a scroll (gap, number, named thing, broken expectation); visually skim-friendly with line breaks
-- [ ] If media: worth opening (not generic stock, not sub-threshold video)
-- [ ] Hook shape isn't a template you or your niche used recently
-- [ ] Specific over generic — real numbers, names, moments; first-person ("I built/shipped/burned X") not third-person
-- [ ] Reads like you talking — no AI vocabulary, no motivational frame, no roundup template
-- [ ] An LLM reading each PTOS policy prompt comes back clean (the 7 categories); edgy is OK, ad-buyer-hostile (gore, crude profanity) is not
-- [ ] Specific enough to land in a narrow topic feed ("NBA", "AI", "Crypto") not just a supertopic ("sports", "tech")
-- [ ] Inside your established niche embedding — not a random topic-pivot
-- [ ] One idea, one bold opinion, defensible in replies; active voice; stakes visible
-- [ ] No engagement-bait closers; no hashtag stacks; no thread markers; no "This 👇" lead-ins; no emoji bullets
-- [ ] Under ~150 words single; under 8 posts thread; threads have setup → friction → resolution + each post re-hooks
-- [ ] Not within minutes of your last post (author diversity decay); planning to be present for first-hour replies; one thread OR one long-form per day max
-- [ ] Reply only: matched length/tone/vibe of recent replies; 0–2 imperfections calibrated to context; adds a specific (number / counter-case / name / extension), not "Great point!"
+When available, inspect `https://x.com/i/under_the_hood` for aggregate visibility labels before diagnosing suppression; availability is a pilot (official, X algorithm README, 2026-08). Distinguish provenance labels, policy actions, and ad-adjacency classifications. Neither awkward prose nor `slop_score` proves a reach penalty. Open the mechanics reference for the actual safety categories and source limits.
 
 ## Examples
 
-### Example 1: Single post, broken-expectation hook
+These are fictional teaching briefs and drafts, not reported results. Their premises are illustrative; production copy needs equivalent supplied evidence. Bracketed specifics remain unpublishable until filled and verified.
 
-Bad (generic, no stakes, dead vocabulary):
-> Today I want to share an interesting insight about LLMs. It's important to note that they often struggle when they're uncertain. This is a crucial aspect of prompt engineering that developers should leverage to build better systems.
+### Developer tool: artifact post
 
-Good (hook → setup → twist → takeaway):
-> My agent spent $50 in tokens to solve a $5 problem.
->
-> Not because it's dumb. Because I told it to be "helpful."
->
-> Changed one line in the system prompt:
-> "Do not be helpful. Be correct."
->
-> Problem gone.
+Illustrative brief: dry technical voice; patch preview works; generated files are excluded.
 
-What works: specific dollar amount, active voice, one idea, contrarian takeaway that is poster-able on its own.
+> The patch preview shows which files the rename will touch before you accept it. Generated files are excluded for now. The recording follows the change through review.
 
-### Example 2: Pattern-callout hook
+Why it works: the artifact rule makes the demo's inspection task clear.
+The provenance rule keeps the supported limitation beside the claim.
 
-> Most LLMs start doing when they're not sure.
->
-> Humans stop. Ask. Check.
->
-> Models confabulate a path and commit.
->
-> The fix isn't smarter models. It's a system prompt that punishes silent guessing.
+### B2B SaaS: customer proof
 
-What works: observation everyone has seen, nobody named. Short paragraphs. Final line is a concrete handhold, not a moral.
+Example brief: approved customer measurement still needs to be supplied.
 
-### Example 3: Thread (5 posts, no markers)
+> [Customer] reduced invoice review time from [before] to [after] during [period]. This covered [cohort]; disputed invoices still needed manual review. Method and approved results: [source URL].
 
-```
-[Post 1]
-I watched a senior eng debug a CI failure for 4 hours.
+Why it works: the proof shape includes measurement scope and an unresolved condition.
+The provenance rule makes the missing evidence visible; this draft cannot ship yet.
 
-The bug was in the commit message.
-```
-```
-[Post 2]
-The repo had a pre-commit hook that parsed commit messages.
+### Consumer creator: product availability
 
-A trailing space in the conventional-commit prefix broke the parser.
+Illustrative brief: ceramicist's warm, plain voice; pictured mug is a sample; glaze varies.
 
-Silent failure. Non-zero exit. CI red.
-```
-```
-[Post 3]
-What made it 4 hours instead of 4 minutes:
+> The blue glaze runs darker around the handle. I like that part, so I've left it in the shop photos. This is the sample mug; each fired piece will vary. Available pieces: [shop URL].
 
-He trusted the logs.
+Why it works: documented register permits a personal preference without an invented outcome.
+The link rule puts the shopping path beside the product's real limitation.
 
-The logs said "test failed." The test hadn't run.
-```
-```
-[Post 4]
-The real skill wasn't debugging.
+### Local service: reply in a casual chain
 
-It was the moment he stopped reading logs and ran the test manually.
+Illustrative brief: bicycle mechanic's conversational voice; someone asks whether a chain noise can be diagnosed from a clip.
 
-That took 3 hours to get to.
-```
-```
-[Post 5]
-Rule I stole from it:
+Weak draft problem: it offers a confident diagnosis without seeing the bicycle.
 
-If a system says it failed, check whether the system actually ran.
+> That noise could be the chain rubbing the front derailleur. I can't confirm it from the clip, so a side view while you turn the pedals would help.
 
-Most "bugs" are things that never executed.
-```
+Why it works: chain matching keeps the reply conversational and useful.
+The evidence rule preserves uncertainty without adding fake mobile typing errors.
 
-What works: post 1 stands alone as a hook. Each post re-hooks. No thread markers. No filler. Post 5 is quotable on its own.
+## Checklist
 
-### Example 4: Reply that earns a profile visit
-
-Someone with 80k followers posts: "Every AI startup will need to solve the context window problem eventually."
-
-Bad reply:
-> So true! Context windows are the biggest bottleneck for sure.
-
-Good reply:
-> Disagree slightly — it's not context size, it's context relevance.
->
-> We tested 200k-token Claude vs. 32k-token GPT on the same codebase. The 32k model won on bug-fix accuracy because we forced better retrieval upstream.
->
-> The problem is selection, not storage.
-
-What works: disagrees specifically, has a number, names a concrete test, ends with a poster-able reframing. Profile visits from this type of reply convert several times better than from a viral root post.
-
-### Example 5: Trend research output before writing
-
-Niche: AI coding agents
-Saturated takes this week: "Claude Code is replacing junior devs" (seen 40+ times)
-Contested claims: Whether agents should have unrestricted shell access (two camps, both loud)
-Gap angle: Nobody's writing about eval harnesses for agent output quality — high search volume, almost no supply
-Event to attach to: Anthropic released a new tool-use API yesterday
-Working hook: "Agents are shipping code faster than teams can review it. Nobody's built the review layer yet."
+- [ ] First line delivers the actual point or visible result.
+- [ ] The post develops a single idea.
+- [ ] The selected format fits the publishing account's verified constraints.
+- [ ] The link and CTA path works, or no CTA is deliberate.
+- [ ] Every specific has supplied provenance or is marked as an example placeholder.
+- [ ] No unresolved placeholder remains in publishable copy.
+- [ ] Customer attribution and private material have permission.
+- [ ] The AI-tell edit covers rhythm and structure as well as words.
+- [ ] The author recognizes their voice and approves personal claims.
+- [ ] Required partnership disclosure is set.
+- [ ] AI-media provenance and applicable labeling have been checked.
+- [ ] Factual claims retain their conditions and source context.
+- [ ] The package includes final copy and destination.
+- [ ] Applicable images have alt text and an asset brief.
+- [ ] Applicable video has captions and an asset brief.
+- [ ] A follow-up reply plan has an owner.
+- [ ] Measurement separates qualified interest from raw engagement.
 
 ## References
 
-- AgentSkills spec: https://agentskills.io/specification
-- Companion skill: `content-voice` (human voice rules — always co-activate)
-- Companion skill: `content-humanize` (AI-detection diagnostic if rewriting AI-generated drafts)
-- X For You feed algorithm (Phoenix retrieval, Grox classifier, media hydrators, Author Diversity Scorer): https://github.com/xai-org/x-algorithm
-- Measured 2026 benchmarks: consolidated from third-party engagement studies; directional only — the algorithm repo is the authority, re-validate benchmarks periodically.
+- X algorithm: [README](https://github.com/xai-org/x-algorithm/blob/main/README.md), [parameters](https://github.com/xai-org/x-algorithm/blob/main/home-mixer/params/param.rs), [cold-start](https://github.com/xai-org/x-algorithm/blob/main/home-mixer/scorers/author_cold_start.rs). Dated evidence snapshot: August 12–13, 2026; details in `reference/mechanics.md`.
+- X Help: [posting](https://help.x.com/en/using-x/how-to-post), [Premium](https://help.x.com/en/using-x/x-premium), [Paid Partnerships](https://help.x.com/en/rules-and-policies/paid-partnerships-policy), undated, reviewed September 2026; [Authenticity](https://help.x.com/en/rules-and-policies/authenticity), April 2025; [Media Literacy](https://help.x.com/en/rules-and-policies/media-literacy-plan), July 2026.
+- Buffer: [engagement report](https://buffer.com/resources/state-of-social-media-engagement-2026/), March 5, 2026; [timing](https://buffer.com/resources/best-time-to-post-on-twitter-x/), March 13, 2026. [NDSS link study](https://www.ndss-symposium.org/wp-content/uploads/2026-s718-paper.pdf), February 2026.
+- [Google campaign URLs](https://support.google.com/analytics/answer/10917952?hl=en), [Product Hunt launch sharing](https://www.producthunt.com/launch/sharing-your-launch), [Show HN](https://news.ycombinator.com/showhn.html): undated, reviewed September 2026. [Clickstrike](https://clickstrike.com/launch-playbook/), undated agency self-report.
+- Voice heuristics: [Aborn](https://emilyaborn.com/ai-writing-tells-what-they-cost-you/), July 10, 2026; [Cox](https://huntingthemuse.net/library/how-to-tell-if-writing-is-ai), June 2026; [Gichigi](https://tahigichigi.substack.com/p/12-red-flags-of-ai-writing-and-how), February 18, 2026. Scope and further sources in `reference/examples.md`.
+
+Re-validate when:
+- Features, tiers, or publishing controls change.
+- Policies or algorithm commits change, including runtime defaults.
+- New vendor reports replace these samples.
+
+Validated: 2026-09

@@ -1,156 +1,162 @@
 ---
 name: trend-threads
 title: "Threads Trend Harvester Playbook"
-description: "Platform-specific intel for harvesting Threads trends — current conversation-weighted ranking signals, harvest URLs, scoring rubric using reply-to-like ratio and author-reply density (views aren't surfaced), hook taxonomy that's currently winning, and dead patterns in 2026. Activates in browser sessions whenever the user names Threads."
+description: "Harvest current Meta Threads conversations into a source-backed brief with post URLs, visible metrics, audience questions, and reusable structures. Activate for Threads trend scans or campaign research; distinguish observed conversation from inferred reach and buying intent."
 license: Apache-2.0
-compatibility: "Octoweb browser access. Signed-in Threads session recommended for For You / Following surfaces; logged-out works for search and tag pages."
+compatibility: "Octoweb browser access and network. Authorized signed-in access where a surface requires it."
 capabilities: octoweb memory-read memory-write
 domains: browser
 rules:
   - session(trend) content(threads)
-  - match(\bthreads\s+(trend|trends|harvest|brief|post)\b)
+  - match(\bthreads\s+(trend|trends|harvest|brief|research)\b)
   - match(\b(harvest|scan|analyze)\s+threads\b)
 ---
 
 ## Overview
 
-This skill carries the platform-specific mechanics the trend-harvesting agent needs to harvest Threads — current algorithm signals, harvest surface URLs, scoring on conversation depth (not views), hook taxonomy, dead patterns, timing. The agent owns the shared DNA loop; this skill supplies the Threads parameters that plug into it.
+Harvest Meta Threads conversations for a defined audience and purpose. “Threads” in a platform research request means Meta's app; interpret multi-post threads using their named destination.
+
+Return evidence and transferable structures. Drafting or publishing posts is a downstream step. Preserve source wording when quoting; don't turn observed copy into unsupported writing or algorithm rules.
 
 ## Mental model
 
-Threads is conversation-first by design. View counts are not reliably surfaced to authors or harvesters — the visible signals are likes, replies, reposts, and quote-posts. The algorithm weighs replies and time-in-feed heavily. A post with 200 thoughtful replies outranks a post with 50k likes. Author replying to their own post extends timeline life. Reach is built by reply-loop depth, not by raw distribution intent.
+Threads Insights includes views, interactions, follower detail, discovery sources, and trends (official, Meta Personalization, 2025-07). Use public views when visible and owner Insights only with authorized access. Missing metrics mean unavailable, not zero.
 
-## Rules
+Author replies correlated with higher engagement in an observational study (measured, Buffer Replies, n=128,000-plus Threads posts, 2026-02). Record who participates and what they say; author participation doesn't prove automatic distribution or buying interest. Avoid fixed signal weights, virality thresholds, expiry cutoffs, and self-reply resurfacing claims.
 
-### Current ranking signals (2026)
+## Rules and harvest procedure
 
-| Signal | Effect |
+### Define the sample
+
+Take the target audience, geography and language, buyer situation, desired research outcome, and time window from the brief. If absent, state the scope you select before collecting. Keep the resulting sample bounded by that purpose (directional).
+
+Record whether access is signed in and whether a surface is personalized. Treat For You, Following, custom feeds, and other feed names as interface observations when present; don't assume their current defaults, ordering, or audience share.
+
+### Navigate surfaces
+
+Start at [threads.com](https://www.threads.com/), the current web domain after Meta's migration (official, Meta Web, 2025-04). Navigate through visible controls and copy resolved URLs. The verified migration source doesn't document search parameters, tag routes, profile paths, or a Help Center landing path.
+
+| Surface | Procedure | Evidence and use |
+|---|---|---|
+| Search | Enter topic language and buyer-problem wording. Use only tabs or date filters visible in the current interface; record their labels and final URL. | Keyword search began rolling out on mobile and web in September 2023 (official, Meta Introduction, 2023-09). Compare discovery results with recent conversations if that control is available (directional). |
+| Tagged topics | Open the topic from an actual post or search result; copy the destination. | Meta says tagged-topic posts generally receive more views (official, Meta Personalization, 2025-07). Capture the tag as context without assuming a maximum count or multiplier (directional). |
+| Communities Hub | Open the main-menu Hub and select a relevant community. | Communities graduated from beta; Progress and expanded Champion recognition are documented (official, Meta Communities, 2026-06). Use them to find conversations, not certify sales influence (directional). |
+| Local Communities | Look for the relevant native-language tags and inspect actual language use. | Initial scope included Japan, Korea, and Taiwan (official, Meta Communities, 2026-06). Preserve local terminology in the brief (directional). |
+| Feed selection | Inspect For You, Following, or relevant custom feeds when exposed. Record the selected feed and how it was reached. | Availability and contents are session observations. Sample beyond a personalized feed before claiming a niche trend (directional). |
+| Anchor profiles | Open authors from observed posts or search; copy profile and post permalinks. | Include practitioners and potential buyers. Inspect Champions' contributions before assigning relevance (directional). |
+| Live Chats | Inspect a current chat or quoted moment only when available and relevant. | Expanded co-hosting and feed quoting were announced as a rollout (official, Meta Communities, 2026-06). Record availability, context, and participation scope (directional). |
+| Insights | Use only authorized owner data; record period, source, and metric definition. | Insights documents views and interaction trends over 7–90 days (official, Meta Personalization, 2025-07). Don't assume another author's dashboard is public. |
+
+Open independent surfaces in separate tabs when useful. Scroll until the relevant window is covered or successive loads stop adding distinct material. Use the browser's available controls without assuming a particular scroll-tool name. If a surface is blocked, record that limit and continue through accessible surfaces; don't manufacture access or route behavior.
+
+### Capture each candidate
+
+Retain the post permalink, handle, visible author context, publication time, capture time and timezone, originating surface, and query or topic. Mark missing dates or rounded counts explicitly.
+
+Record text, format, media content, root or reply position, and the observed chain structure. Keep visible likes, views, replies, reposts, and quotes as separately named fields. Where useful, retain an account's comparable posts as a baseline. Don't fabricate follower counts or derive exact metrics from rounded displays.
+
+Read the parent and actual replies. Separate author updates from answers to readers. Note whether commenters provide firsthand accounts, ask product-fit questions, request evidence, or merely react. Record contrary evidence and unanswered objections alongside agreement (directional).
+
+Treat missing alt text, AI labels, or sponsorship information as visibility observations. An absent visible label doesn't establish human authorship, policy compliance, or an undisclosed relationship.
+
+### Assess value without fake precision
+
+Use qualitative assessments; this is an editorial rubric, not a platform ranking model (directional).
+
+| Dimension | Strong evidence | Weak or unavailable evidence |
+|---|---|---|
+| Distribution | Visible views or owner Insights compared with the same author's similar-age posts | Likes alone, mismatched observation windows, missing baseline |
+| Conversation | Relevant questions, distinct contributors, substantive exchanges | Author-only additions, repetitive reactions, unrelated argument |
+| Buyer relevance | Fit, adoption, implementation, pricing, or service-availability questions | General applause or broad cultural recognition |
+| Reuse value | Clear structure supported by an artifact or documented experience | A result dependent on celebrity, private context, or unverified claims |
+
+Reply-to-like or repost-to-like ratios can describe the sample. State the calculation inputs and leave ratios undefined when the denominator is zero. Don't use universal pass/fail cutoffs or call them primary virality signals.
+
+Retain a small-account example when its structure is relevant; don't discard it solely for modest counts. Separate paid or coordinated activity only when evidence supports that distinction. A busy comment section alone doesn't establish manipulation (directional).
+
+### Describe structures and formats
+
+Name observed structures in plain language: observation, scene, contextual question, evidence-bounded disagreement, demo/artifact, customer outcome, founder decision, objection answer, or recap. Don't rank them as universally winning hooks.
+
+For each useful cluster, describe what the first line does, which supplied detail carries the claim, why the format was needed, and how readers responded. Transfer the structure without copying someone else's experience, voice, or outcome. Don't add a duplicate writing-style blacklist.
+
+Use these qualitative format bands only when the brief requests recommendations (directional):
+
+| Need | Format guidance |
 |---|---|
-| Reply-to-like ratio | Primary signal. >0.10 strong, >0.20 breakout |
-| Author replies on own post | Multiplier — boosts the whole thread |
-| Repost-to-like ratio | Distribution intent; >0.05 is unusual on Threads |
-| Image / carousel attachment | ~30–60% reach lift |
-| Long-form post with paragraph breaks | Dwell-time bonus |
-| External link in root | ~20–30% suppression. Put link in self-reply |
-| Cross-post-from-Instagram residue | Read as a tell; reach penalty |
-| Topic tags (bare-text, no #) | Discovery surface — one focused tag per post |
+| Observation or contextual question | Brief text: claim plus necessary context. |
+| Scene | Brief if the detail stands alone; developed if context is needed. |
+| Founder decision or bounded proof | Developed text: add evidence and limitation. |
+| Inspectable artifact | Brief or developed caption with an informative image or image sequence. |
+| Visible task or transformation | Video with a brief caption, understandable without audio (directional). |
+| Necessary depth | Extended text attachment; summarize the point in the root. |
+| New information or recurring question | Independently useful self-reply when ready; no prescribed count or delay. |
 
-There is no surfaced "engagement weights" leak the way X has. Calibrate by what's visible on the page.
+Standard posts support up to 500 characters and text attachments up to 10,000 characters (official, Meta Text, 2025-09). These are limits, not optimum lengths. No format recommendation should require filling the cap or splitting a coherent sentence.
 
-### Harvest surfaces (run in parallel)
+Media led Buffer's Threads format medians, but format results overlapped (measured, Buffer Engagement, n=2025 Threads subset of Buffer-published posts, 2026-03). Don't translate this into a reach lift, root-link penalty, or instruction to always move links. Record actual link placement and CTA path.
 
-| Surface | URL | Yields |
-|---|---|---|
-| Topic search, top | `https://www.threads.net/search?q=<topic>&serp_type=top` | Algorithm-picked top performers |
-| Topic search, recent | `https://www.threads.net/search?q=<topic>&serp_type=default` | Last-day live posts |
-| Tag pages | `https://www.threads.net/tag/<tag>` | Topic communities (Threads uses bare-text tags) |
-| For You (signed-in) | `https://www.threads.net/` | Personalized algorithmic surface |
-| Anchor profiles | `https://www.threads.net/@<handle>` | Last 7 days per anchor |
-| Following feed | `https://www.threads.net/?feed=following` | Niche peers if user has built a graph |
+### Timing and interpretation
 
-Run 4–6 in parallel. Threads infinite-scrolls — scroll 2–3× via `browser_scroll` before snapshotting to load enough posts.
+For general timing hypotheses, weekday 6–11 a.m. local was strongest, with Thursday 9 a.m. the peak in Buffer's sample (measured, Buffer Timing, n=2.5 million posts, 2026-02). Report account evidence and geography before recommending a slot. Don't impose an evening/weekend rule, a fixed judgement window, or delayed self-replies.
 
-### Scoring rubric (Threads-specific signals)
+Capture repeat observations at comparable post ages when access permits. Distinguish observation timing from a recommendation to publish at that time.
 
-Virality axis 0–5:
-- Reply-to-like ratio — primary. >0.10 strong, >0.20 breakout.
-- Absolute reply count — >100 replies in <24h is a genuine break.
-- Author-reply density — does the OP reply to their own thread? Multiple self-replies = algorithm boost and extended life.
-- Repost ratio — repost/like >0.05 indicates strong distribution.
-- Account band — micro account hitting 500 replies is a stronger structural signal than mega doing same.
+Your Algo introduced private topic preferences with an initial market-limited rollout (official, Meta Communities, 2026-06). Treat feed observations as personalized samples, not a platform census. Meta announced a phase-in of personalized political recommendations (official, Meta Civic, 2025-01); don't describe all political posts as throttled or assert rollout completion.
 
-Niche-fit axis 0–5 — universal scale.
+To assess saturation, compare wording and claims across the sampled niche and time window. Cite examples of repeated framing and any fresh counterexample. Mark saturation unknown when the sample cannot support it; don't keep a static list of supposedly exhausted topics (directional).
 
-Drop everything below 3 on either axis.
+### Return the brief
 
-Do not score on view counts — Threads doesn't surface them reliably. If a post's metadata shows a view count anyway, treat it as auxiliary, not primary.
+Use the requested output schema. Otherwise return a scope and access note, evidence records, conversation clusters, and implications with their uncertainty. Include source links and capture dates.
 
-### Hook taxonomy currently winning
-
-1. Conversation-starter opinion — bold take that invites disagreement
-2. The honest admission — "I was wrong about X. Here's why I changed my mind."
-3. The specific question — only when narrow enough to invite reply (not "thoughts?")
-4. The micro-story — 2–3 lines, specific moment, ends on tension
-5. The contrarian observation — "Everyone says X. Nobody says Y."
-6. The receipt — screenshot + 1–2 lines of context
-7. The list of three — three specifics, quick rhythm, no expansion
-
-### Dead patterns
-
-- Instagram-style emoji bullets (🔥 ✨ 💎 as line starters)
-- Hashtag stacks (Threads uses tags differently — bare text, max 1)
-- "Drop a 🔥 if you agree" engagement bait
-- Visible cross-post tells — "Link in bio", IG-caption residue
-- AI vocabulary in hook line
-- "Hot take:" / "Unpopular opinion:" prefixes — just state it
-- Self-promotional opener with no hook
-
-### Format and length
-
-| Goal | Length | Format |
-|---|---|---|
-| Hot take, single | 100–250 chars | Single |
-| Story / setup | 400–500 chars | Single, near Threads' post cap |
-| Chain | 3–5 self-replies, ~300 chars each | Self-reply chain |
-| Image post | 200–400 chars + image | Strong default in 2026 |
-
-For any take longer than 250 chars, default to "post + 1–3 self-replies." Self-reply chains extend timeline life — the algorithm re-surfaces the original post each time a reply lands.
-
-### Timing
-
-- Mixed mobile-heavy audience — 9 AM–12 PM ET and 6–9 PM ET work best for tech niches
-- Slower than X — give a post 24–48h to develop replies before judging it dead
-- Self-reply timing — drop reply 1 within 30–60 minutes of the root post, reply 2 a few hours later when the first wave of comments lands
-
-### Saturated-take detection
-
-Threads' tech-niche saturated takes in 2026 cluster around: "AI is the new electricity," "GPTs are sentient" / "GPTs are dumb" hot-take cycles, generic LLM benchmark complaints, "Just use Claude" / "Just use ChatGPT" tribal posts. Verify saturation live before flagging.
+For launch research, separate verified buyer objections from inferred demand. Name useful proof formats and any missing source material needed for a future post. Report the observed link or contact path; don't prescribe unsupported messaging, ad, or cross-posting mechanics. Views and conversation describe native response; qualified interest and downstream outcomes require separate evidence.
 
 ## Examples
 
-### Example 1: Hook taxonomy + reply-pattern labeling
+### Artifact with useful replies
 
-Bad — raw count, no DNA:
-```
-@dev_handle got 800 likes and 150 replies on a Threads post about Claude.
-```
+Illustrative harvest record; bracketed fields represent observations to fill, not real performance:
 
-Good — labeled, DNA called out, reply pattern named:
-```
-@dev_handle (8.2k followers) — 820❤ / 187💬 / 41🔁
-> I tried 3 agent frameworks this week. The one that worked least is the one with the most stars.
-Hook type: contrarian observation + specific count.
-Length: 122 chars.
-Author replied 4 times in own thread (one re-stating the claim, three answering specific replies) — extended timeline life ~3×.
-DNA: short hook + invited disagreement + author-reply discipline.
-```
+> Source: [permalink], [handle], published [time], captured [time and timezone]. Surface: [community and resolved URL]. Views: [visible count or unavailable]. Likes: [count]. Replies: [count]. Reposts: [count]. Quotes: [count].
+>
+> Structure: demo screenshot with a caption naming the unsupported input. Reader questions concern compatibility. The author answers a limitation in a reply. Buyer relevance: supported by [quoted question and reply permalink]. Distribution: unknown without comparable posts.
 
-### Example 2: Dead-pattern call
+This separates source evidence from a performance inference. The future writer needs an equivalent real artifact, not the original author's claim.
 
-Surface a post that LOOKS viral but fails the dead-pattern gate:
-```
-@handle — 1.4k❤ but only 11💬 (reply-to-like 0.008, far below 0.10 floor)
-Hook: "🔥 Hot take: AI agents are dead. Drop a 💀 if you agree."
-Failure: engagement bait + emoji bullet + zero conversation. The like count is shallow; the post is a write-off for niche transplant.
-```
+### Conversation volume without buying evidence
+
+Illustrative conclusion:
+
+> The post attracted [visible reply count] replies about a design preference. In the inspected replies, no one asked about trial access or product fit. It is useful for audience language; buying intent remains unknown. The sample excludes replies hidden behind [access limitation].
+
+This preserves a useful observation without converting engagement into a sales claim. It doesn't infer a reach penalty from tone or link placement.
 
 ## Checklist
 
-Before returning the Threads section of the brief:
-- [ ] Every cited post has handle, like count, reply count, repost count, URL, and posted-time
-- [ ] Reply-to-like ratio computed and used as primary virality signal — not raw likes
-- [ ] Author-reply density noted for every top cluster
-- [ ] Account-size band tagged on every cited post
-- [ ] No score depends on view counts
-- [ ] (Opt-in mode only) Format prescription per recommended angle includes self-reply count (post + N self-replies)
-- [ ] Saturated-take list surfaced — at least one per recommended angle
-- [ ] No recommended hook uses cross-post tells, hashtag stacks, "Hot take:" prefixes, or emoji bullets
-- [ ] (Opt-in mode only) Hook bank entries each tagged to a taxonomy type from this skill
-- [ ] Self-reply timing recommended (reply 1 within 30–60 min of root, reply 2 a few hours later)
-- [ ] All background tabs closed before returning brief
+- [ ] Scope, timezone, capture window, access limits, and selected surfaces documented.
+- [ ] Actual resolved URLs used; no guessed search, feed, profile, tag, or support routes.
+- [ ] Post evidence includes timestamps, format, and visible metrics; unavailable fields aren't treated as zero.
+- [ ] Owner Insights access is authorized; public visibility isn't assumed to match it.
+- [ ] Parent and replies inspected; author activity separated from distinct audience contributions.
+- [ ] Distribution, conversation, and buyer relevance assessed separately with comparable baselines where available.
+- [ ] No numerical ranking weights, ratio gates, penalties, expiry rules, or resurfacing promises added.
+- [ ] Optional recommendations follow verified limits and qualitative bands, with no artificial chain count or delay.
+- [ ] Saturation claims cite the current sample; unsupported claims remain unknown.
+- [ ] Source experience remains attributed; the brief doesn't fabricate a future author's proof.
+- [ ] Research-created tabs closed; pre-existing user tabs preserved.
 
-## Composition / References
+## References
 
-- Pairs with `social-threads` (content domain) for writing the actual post from the brief.
-- Threads search URL pattern: `serp_type=top` for algorithm-picked, `serp_type=default` for recency.
-- Use the agent's universal output schema.
+- [Meta Web](https://about.fb.com/news/2025/04/new-features-threads-web-experience/), 2025-04-24.
+- [Meta Introduction](https://about.fb.com/news/2023/07/introducing-threads-new-app-text-sharing/), keyword-search update 2023-09-07.
+- [Meta Communities](https://about.fb.com/news/2026/06/meta-launching-new-features-500-million-monthly-threads-users/), 2026-06-16.
+- [Meta Personalization](https://about.fb.com/news/2025/03/new-threads-features-more-personalized-experience-you-control/), updated 2025-07-22.
+- [Meta Text](https://about.fb.com/news/2025/09/attach-text-threads-posts-share-longer-perspectives/), 2025-09-04.
+- [Meta Civic](https://about.fb.com/news/2025/01/meta-more-speech-fewer-mistakes/), 2025-01-07.
+- [Buffer Replies](https://buffer.com/resources/threads-comments-engagement/), 2026-02-24.
+- [Buffer Engagement](https://buffer.com/resources/state-of-social-media-engagement-2026/), 2026-03-05.
+- [Buffer Timing](https://buffer.com/resources/the-best-time-to-post-on-threads/), 2026-02-04.
+
+Re-validate when: domain or navigation changes; metric visibility changes; limits or policies update; Meta publishes ranking details; new vendor reports change the baseline.
+Validated: 2026-09

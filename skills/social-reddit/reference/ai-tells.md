@@ -1,25 +1,61 @@
-# Named AI Tells (Reddit)
+## Overview
 
-Companion to `skills/social-reddit/SKILL.md`. Every item here was called out publicly on a real account, or observed as a removal trigger. Load when drafting or auditing a Reddit comment.
+Use this reference during the editorial pass on a Reddit draft. Apply `content-voice` for generic vocabulary; use the table below to resolve formulaic structure in the context of an actual reply chain. These are editorial judgments, not Reddit classifier features or proof of authorship (directional).
 
-## Named tics
+## Pattern review
 
-- "worth noting" / "worth saying plainly" / "worth being blunt about". Never open a sentence with "worth".
-- Three-item lists. An accuser named them explicitly. Use two, or four, or one.
-- The antithesis: "it's not X, it's Y", "less about A, more about B", "A is easy, B is the whole job". The single most-flagged construction. State the right answer and stop.
-- The closing parenthetical disclosure in the identical shape every time: "(we build X, so I'm biased)". Vary it, or put the disclosure mid-comment.
-- Opening by reframing OP's premise: "your X is the part I'd push back on".
-- Effort estimates: "that's one flag and an afternoon", "a single call to the doctor and you're done". Nobody estimates a stranger's afternoon. Say what to do and stop.
-- The three-paragraph shape — diagnosis, mechanism, recommendation — with each paragraph a discrete self-contained argument. Even with perfect wording, that silhouette is itself the tell. Real people answer one thing and stop, or they ramble.
-- Ending on the recommendation or on the experiment that would settle it.
-- Naming a pattern and then defining it. That is essay behaviour.
+| Pattern to inspect | Editing action (directional) | Basis |
+|---|---|---|
+| Forced antithesis, including claims recast as opposing slogans | State the actual conclusion with its conditions | Aborn, practitioner, 2026-07 |
+| Padded triads or parallel phrases chosen for symmetry | Keep only distinct information; don't change a factual list's length for camouflage | Cox, practitioner, 2026-06 |
+| Repeated emphasis words such as “quietly,” “honestly,” or “actually” | Delete empty emphasis; preserve a literal, necessary use | Aborn, practitioner, 2026-07 |
+| Staccato sentence stacks or mechanically equal paragraphs | Let the explanation determine paragraph breaks; don't impose artificial unevenness | Gichigi, practitioner, 2026-02 |
+| Dramatic pivots, “here's the thing,” or “let that sink in” | Connect the substantive sentences directly | Gichigi, practitioner, 2026-02; broader phrase review is directional |
+| Repeated em-dashes | Use ordinary punctuation; retain a useful dash in the author's established register without a quota | Cox, practitioner, 2026-06 |
+| A concluding recap or tidy moral that adds nothing | Stop where the answer ends; retain an actionable recommendation when it answers the question | Gichigi, practitioner, 2026-02 |
+| Miracle-fix story that erases costs or ongoing problems | Restore documented conditions, unresolved outcomes, and other changes | StoryScope extrapolation, directional |
+| Rhetorical-question opener, “nobody talks about” claim, engagement-bait closer | Lead with the supplied observation; ask only a question whose answer is needed | House editorial judgment, directional |
+| Hashtag stacks, emoji bullets, unnecessary bold or slide-like comment headers | Strip decoration; retain meaningful formatting for evidence or requested enumeration | Reddit register judgment, directional |
 
-## Submission-format tells
+The prose advice is directional even when its source is dated. None of these sources establishes a punctuation-based removal rule.
 
-Distinct from prose: result tables, figures to three decimals, a labelled "honest limits" paragraph, a tidy self-deprecating admission, opening with a definition of the thing you're discussing. Each of those gets added to build credibility, and together they are the exact silhouette of generated content.
+## Venue and provenance tests
 
-Round numbers inline in a sentence (0.6 to 0.73, not 0.598 to 0.732), drop one caveat where it naturally belongs and leave the rest out, open mid-thought. Asymmetry beats completeness.
+Read the parent post and adjacent replies before applying the table. A research discussion can need a results table; a casual reply may need a brief answer. Don't call technical precision an AI tell. Preserve exact figures when material, and explain their measurement conditions rather than rounding to look casual (directional).
 
-## Register mismatch
+Keep a genuinely enumerable list when it helps a detailed post or requested answer. Don't pad it for rhythm or forbid a particular item count. This follows the venue-based formatting distinction in `content-voice` (directional).
 
-Analytical density with measured figures is an asset in a research or expertise sub and a liability in a chat sub where everyone writes in shorthand. Match the register or don't enter.
+Don't invent personal anchors, usernames, effort estimates, or a token drawback. Don't add disagreement solely to look independent. Keep consistent, accurate disclosure language when needed; varying it for concealment adds no value (directional).
+
+Treat samples of the author's actual writing as evidence of register. Aborn explicitly rejects deliberate typos as a solution to perceived AI style; her list also acknowledges that these devices occur in human writing (directional, Aborn, 2026-07).
+
+## What the research can establish
+
+A Reddit-like experiment found more dislikes in the AI-assistance treatments than in the control (measured, Scientific Reports, n=680 US participants, 2026-02). The study ran on a custom platform using an earlier model; it didn't measure live Reddit ranking or current-model performance. Inspect relevance and reader feedback alongside output volume; don't translate this into a reach penalty (directional).
+
+Professional editing changed detector scores in conflicting directions across detectors (measured, manuscript-editing preprint, n=135389 manuscript pairs, 2026-08). Academic manuscripts aren't short Reddit replies. Review provenance and actual content rather than optimizing a detector score (directional).
+
+StoryScope reports greater thematic explicitness and tidier plots in AI fiction (measured, StoryScope preprint, n=61608 stories, 2026-08). Restoring real tradeoffs in a launch narrative is an editorial extrapolation, not a validated social-post detector (directional).
+
+The MIDI benchmark finds that conversational context helps idiom understanding without eliminating disparities for lower-resource languages (measured, MIDI preprint, n=18 languages, 2026-06). For localized Reddit copy, request fluent review in the actual thread context; no engagement improvement was measured (directional).
+
+## Checklist
+
+- [ ] The reply adds specific information that the thread needs.
+- [ ] Pattern edits preserve evidence, author register, and useful formatting.
+- [ ] No fake biography, manufactured mistake, or disguised automation was introduced.
+- [ ] Disclosure requirements remain intact regardless of accusations or detector scores.
+
+## References
+
+- [Aborn: perceived writing tells](https://emilyaborn.com/ai-writing-tells-what-they-cost-you/), 2026-07-10, practitioner opinion.
+- [Cox: editing AI-style prose](https://huntingthemuse.net/library/how-to-tell-if-writing-is-ai), revised 2026-06, practitioner opinion.
+- [Gichigi: writing-pattern review](https://tahigichigi.substack.com/p/12-red-flags-of-ai-writing-and-how), 2026-02-18, practitioner opinion.
+- [Scientific Reports: AI-assisted social interaction](https://www.nature.com/articles/s41598-026-40110-8), 2026-02-17; experiment conducted 2025-01.
+- [StoryScope](https://arxiv.org/abs/2604.03136), revision 2026-08-10, preprint.
+- [MIDI](https://arxiv.org/abs/2606.02147), 2026-06-01, preprint.
+- [Human editing and detector scores](https://arxiv.org/abs/2608.26710), 2026-08-27, preprint.
+
+Re-validate when model habits or author samples change, or when reproducible research tests short social writing directly.
+
+Validated: 2026-09

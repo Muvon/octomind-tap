@@ -1,158 +1,135 @@
 ---
 name: trend-linkedin
 title: "LinkedIn Trend Harvester Playbook"
-description: "Platform-specific intel for harvesting LinkedIn trends — dwell-and-comment ranking signals, harvest URLs, scoring on comment-to-reaction ratio and reshare-with-commentary, hook taxonomy that earns the 210-char expand-click in 2026, format-mix shifts (carousel rising / video / text), and dead patterns. Activates in browser sessions whenever the user names LinkedIn."
+description: "Harvest LinkedIn posts and conversations into a sourced brief for a specific audience. Activate for LinkedIn trend scans or research briefs; capture current surfaces, buyer questions, format patterns, and evidence limitations without inventing ranking weights."
 license: Apache-2.0
-compatibility: "Octoweb browser access. Signed-in LinkedIn session required for feed and content-search surfaces."
+compatibility: "Octoweb browser access and network. Signed-in LinkedIn session for personalized feed and search."
 capabilities: octoweb memory-read memory-write
 domains: browser
 rules:
   - session(trend) content(linkedin)
-  - match(\blinkedin\s+(trend|trends|harvest|brief|post)\b)
+  - match(\blinkedin\s+(trend|trends|harvest|brief|research)\b)
   - match(\b(harvest|scan|analyze)\s+linkedin\b)
 ---
 
 ## Overview
 
-This skill carries the platform-specific mechanics the trend-harvesting agent needs to harvest LinkedIn — current algorithm signals, harvest URLs, scoring on dwell-and-comment economics, hook taxonomy engineered for the 210-char fold, dead patterns, timing. The agent owns the shared DNA loop; this skill plugs the LinkedIn parameters into it.
+Collect evidence of what relevant LinkedIn audiences are discussing and how posts deliver useful substance. Return source-linked observations and bounded opportunities; drafting and publishing are downstream steps. Preserve the distinction between a public observation, a study result, and a craft inference.
 
 ## Mental model
 
-LinkedIn's 2026 ranker is dwell-time + comment-quality + reshare-with-commentary on top of a 48–72h feed lifetime (10× longer than X). Likes are decorative. Comments and reshares are amplification. The 210-char fold ("...see more") is the entire game — a post that doesn't earn the expand click is dead. Native uploads (PDF carousel, native video) beat external links ~3–5× on reach. External links in the root post drop reach 40–60% — link in first comment.
+LinkedIn uses profile information and interaction history in retrieval and ranking; it publishes no universal comment multiplier or single dominant signal (official, LinkedIn Feed Engineering, 2026-03). Public engagement cannot reveal dwell time, private conversions, or why a ranker distributed a post. Don't infer those from length or paragraph rhythm (directional).
 
-## Rules
+Keep personal profiles separate from Company Pages. Metricool found similar impressions per post, but profile engagement averaged 2.60% versus 1.60% for Pages (measured, Metricool, n=673,658 posts from 63,108 accounts, 2026-04). Account type belongs in every comparison.
 
-### Current ranking signals (2026)
+## Harvest procedure
 
-| Signal | Effect |
-|---|---|
-| Comment-to-reaction ratio | Primary signal. >5% strong, >10% breakout |
-| Reshare with commentary | Weighted higher than empty reshare |
-| Author replies to comments in first 60 min | Keeps post in feed longer |
-| Dwell time (proxied by post length + paragraph rhythm) | Heavily weighted |
-| Reaction diversity (Like + Celebrate + Insightful + Support) | Multi-audience reach signal |
-| External link in body | ~40–60% reach penalty |
-| Native PDF carousel | ~3–5× reach vs text-only |
-| Native video (<90 sec, auto-captioned) | High lift |
-| Creator Mode / Top Voice badge | +10–25% baseline reach |
-| Posted from company page | ~1/4 the reach of same content posted personally |
+### Establish scope and surfaces
 
-### Harvest surfaces (run in parallel)
+Record the audience, professional problem, campaign stage if supplied, language, target geography/timezone, and observation window. Include practical alternatives to the favored product or thesis. Distinguish exact quotes from paraphrases and redact private material (directional).
 
-| Surface | URL | Yields |
+Start from the signed-in interface and follow controls actually present. The entry URL below is a navigation starting point, not a guaranteed harvest API; record redirects and unavailable controls (directional).
+
+| Surface | Entry and procedure | What to record |
 |---|---|---|
-| Content search, relevance | `https://www.linkedin.com/search/results/content/?keywords=<topic>&sortBy=%22relevance%22` | Algorithm's pick of top posts on topic |
-| Content search, date | `https://www.linkedin.com/search/results/content/?keywords=<topic>&sortBy=%22date_posted%22` | Last-week live posts |
-| Hashtag feed | `https://www.linkedin.com/feed/hashtag/?keywords=<tag>` | Topic communities (LinkedIn does use hashtags) |
-| Creator recent activity | `https://www.linkedin.com/in/<handle>/recent-activity/all/` | Last 30 days per anchor creator |
-| Signed-in feed | `https://www.linkedin.com/feed/` | Personalized algorithmic surface for the user |
+| Personalized feed | Open `https://www.linkedin.com/feed/`; confirm the loaded surface before scanning | Signed-in context, visible filters, suggested versus followed sources where labeled |
+| Topic search | Use the current search box, select Posts if offered, then inspect available sort/date filters | Query, displayed filter names, resulting URL and timestamp; never assume a date filter was applied |
+| Creator or expert activity | Open a discovered profile and follow its visible Activity/Posts controls | Actual activity URL, time span inspected, visible account context |
+| Company Page | Follow the current Page's posts, event, or publication controls | Page identity, original versus employee/customer contribution, format |
+| Article / Newsletter / Event | Follow a visible source link from a relevant account or post | Actual URL, publication/event date, authorship, availability restrictions |
 
-Run 4–6 in parallel. LinkedIn lazy-loads aggressively — scroll 3–5× between snapshots to surface enough posts.
+Don't construct hashtag-feed URLs or hard-coded `sortBy` parameters. If a deep link fails, return to the current UI and record the failure; don't silently substitute a different query. Treat hashtags as searchable text only when the current interface supports the operation (directional).
 
-### Scoring rubric (LinkedIn-specific signals)
+Scan independent sources where available; scroll until additional items stop changing the evidence or the requested scope is met. Avoid a fixed scroll quota. If login, pagination, or access controls block the sample, return a partial brief with the boundary stated (directional).
 
-Virality axis 0–5:
-- Comment-to-reaction ratio — primary. >5% strong, >10% breakout.
-- Absolute reshare count — >50 reshares in 72h means it's escaping the author's network.
-- Reaction breakdown — diverse spread (Insightful + Celebrate + Like) beats mono-Like.
-- Author-comment density — creator replying to 30%+ of comments extends feed life.
-- Account band — micro creator (<5k) hitting 100 comments is a stronger structural signal than mega creator doing same.
+### Capture evidence
 
-Niche-fit axis 0–5 — universal scale.
+For each candidate, record the canonical post URL; author/account type; posted time and observation time; visible follower context; format; link placement; and public reaction, comment, and repost counts. Use “not visible” for inaccessible fields. Inspect the actual asset and a relevant slice of replies; label that slice's scope (directional).
 
-Drop everything below 3 on either axis.
+Capture the opening exactly within quotation limits and note what was visible before expansion on the observed client. Don't assign a fixed mobile character fold. Record total length only if the full text was accessible; it doesn't prove dwell time (directional).
 
-### Hook taxonomy (must fit above the 210-char fold)
+Inspect buyer substance: the problem being discussed, proof provided, stated conditions, credible objections, and the requested action. Separate author replies from independent participants where visible. A comment asking about integration, applicability, or access can indicate evaluation; it isn't a verified lead (directional).
 
-1. Counter-intuitive claim — "I just fired our top-performing SDR."
-2. Specific artifact — "Day 47 of zero meetings. Here's the cost sheet:"
-3. Belief rejection — "Stop writing job descriptions. They're the reason your funnel is broken."
-4. Moment of realization — "I lost a $40k deal last week. The post-mortem is ugly."
-5. Pattern callout — "Every Series A founder I meet has the same broken hiring loop."
+Record hashtags, relevant mentions, collaboration labels, sponsorship, and visible Content Credentials without inferring hidden status. Credentialed media can display a provenance icon; absent icons don't establish human origin (official, LinkedIn Credentials Help, 2026-09 review, undated).
 
-The hook must (a) sit fully above the 210-char fold and (b) create a gap the reader must close to keep reading.
+### Compare and prioritize
 
-### Dead patterns
-
-- Press-release openers: "Thrilled to announce...", "Humbled to share..."
-- Hustle-grindset clichés: "5AM club", "Comfort zones kill", "Mindset is everything"
-- Rocket-emoji stacks (🚀🚀🚀)
-- "Agree?" / "Thoughts?" closing — engagement bait
-- AI vocabulary in hook: delve, leverage, harness, unlock, seamless, cutting-edge, unveil
-- Humble-brags wearing story clothes — apply the strip-test (if removing the company/title kills the lesson, it's a brag)
-- Numbered listicle hooks ("10 lessons...") unless paired with a sharp specific opening
-
-### Format and length
-
-| Goal | Length | Format |
+| Dimension | Prefer | Preserve limitation |
 |---|---|---|
-| Virality | 150–300 chars | Single, sharp, no expand needed |
-| Depth (sweet spot) | 1300–2000 chars | Story / framework, must earn expand |
-| Authority | 2000–3000 chars | Long-form thinking, dwell-time bait |
-| Carousel (PDF) | 8–12 slides | Strongest reshare format in 2026 |
-| Native video | 30–90 sec, auto-captioned | High reach lift |
+| Audience fit | A clearly relevant buying situation and identifiable professional context | Titles and badges don't validate expertise |
+| Evidence quality | Inspectable work, source-linked outcomes, conditions and counterexamples | A claim in a post remains the author's claim |
+| Conversation | Independent questions or reasoned disagreement that affect a decision | Raw comment totals may include author replies |
+| Relative response | Comparable account type, format, audience size, post age, and visible history | Public counts don't expose impressions or causal lift |
+| Reusable pattern | A task, proof structure, or unanswered question that fits the brief | Don't copy the author's lived experience or sentence template |
 
-The 1300–2000 char band is the dwell-time sweet spot. Shorter posts can go viral but rarely generate the comment volume LinkedIn rewards.
+The rubric is directional. Use “prioritize,” “watch,” or “insufficient evidence,” with a reason. A comment-to-reaction ratio may describe the observed sample, but supplies no breakout threshold or ranking weight. Leave it undefined when reactions are absent. Don't divide by an invented follower count, infer a reach rate from reactions, or label reaction diversity an algorithmic signal.
 
-### Closing CTA
+### Interpret formats and distribution
 
-Replace "Agree?" / "Thoughts?" with a real question. "Has anyone tried X in production? Did it actually behave the way I'm describing?" wins comments. Vague closings get scroll-past.
+Documents and multi-image posts are useful testing candidates, while video has no universal advantage (measured, Metricool, n=673,658 posts, 2026-04; AuthoredUp Formats, n=3M+ personal-profile posts, 2026-09). Capture what the asset demonstrates. Don't prescribe slide counts or a video-duration optimum from format alone (directional).
 
-### Timing
+Polls aren't categorically dead: Socialinsider reports 4.50% engagement in its Q2 table, but its methodology dates conflict with that period (measured, Socialinsider, n=1.3M business posts, 2026-03). Keep that caveat with the claim; prioritize the account's observed outcomes over a cross-vendor leaderboard (directional).
 
-- Best windows: Tue–Thu 8–10 AM and 11 AM–12 PM local; second wind 5–6 PM
-- Mon and Fri ~30% lower reach. Weekends near-dead for B2B.
-- Optimal frequency: 3–5 quality posts/week. Daily dilutes engagement.
+Standard posts allow 3,000 characters; Articles are a separate long-form feature (official, LinkedIn Post Help, 2026-08). Never call a long feed post an Article. Record Newsletter or Event formats only when the source identifies them; don't infer current Audio Events availability from old content (directional).
 
-### Saturated-take detection
+Link-post impressions/interactions differed by account type: profiles −27%/−20%, Pages +51%/+41% (measured, Metricool, n=673,658 posts, 2026-04). This doesn't test whether a first-comment link is safer. Describe link placement without assigning a penalty (directional).
 
-LinkedIn's tech-niche saturated takes in 2026 cluster around: "AI will replace developers," "Engineering hiring is broken because of AI," "I built X in a weekend with Claude/Cursor," "AGI will arrive by ...," generic "founders should learn to code" / "founders shouldn't code" cycles. Verify saturation live before flagging.
+Half of impressions arrived within 48 hours in Metricool's cohort, not a hard feed expiry (measured, Metricool, n=673,658 posts, 2026-04). Replying correlated with about 30% higher engagement (measured, Buffer Replies, n=72,000 LinkedIn posts, 2025-12). Record observed timestamps; don't infer a required reply count or minute cutoff.
+
+If timing is requested, offer audience-timezone tests. Buffer found a 3–8 PM window, with Wednesday 4 PM and Friday 3–4 PM strongest (measured, Buffer Timing, n=4.8M+ posts, 2026-07). Rotate global-audience tests and compare like-for-like material (directional). Don't impose a daily maximum: Buffer's LinkedIn frequency analysis found gains at higher cadence (measured, Buffer Timing, n=2M posts, 2026-07).
+
+Creator Mode's toggle was removed in March 2024 (official, LinkedIn Creator Mode Help, 2024-03). Verified-member filtering exists in feed conversations and comments (official, LinkedIn Authenticity, 2026-06). Record any active filter as sampling bias; assign no Premium, verification, or Top Voice reach multiplier.
+
+## Bias and integrity checks
+
+Relevance-ranked search and a signed-in feed aren't a platform census. Report surfaces and filters, plus inaccessible material. Compare repeated angles across unrelated sources before calling an idea saturated; don't maintain a static dead-take list (directional).
+
+LinkedIn acts on scaled automated comments and restatement-only replies, and reduces wider distribution for apparently AI-generated posts without perspective (official, LinkedIn Authenticity, 2026-06). Flag observable duplication or empty discussion without declaring authorship from style. Exclude suspicious activity from recommendations only with a stated observation and uncertainty (directional).
+
+Don't borrow another platform's engagement definition. Public counts omit useful LinkedIn clicks and media activity (measured, Metricool Press, n=673,658 posts, 2026-04). Request authorized analytics if the brief requires qualified traffic or conversion claims; otherwise mark those outcomes unavailable.
 
 ## Examples
 
-### Example 1: Hook + format DNA call
+### Evidence note without a ranking story
 
-Bad — count without DNA:
-```
-This LinkedIn post about hiring got 800 reactions.
-```
+Illustrative schema; every bracketed field requires source capture:
 
-Good — fold analysis, DNA labeled:
-```
-{{Creator}} (Series B founder, 24k followers) — 812 reactions / 94 comments / 38 reshares
-Comment-to-reaction ratio: 11.6% — breakout.
-Reaction breakdown: 412 Like / 198 Insightful / 142 Support / 60 Celebrate — diverse.
-Hook (first 187 chars, above fold):
-> I just fired our top-performing SDR.
-> He hit 140% of quota three quarters running. Here's why letting him go was the single best hiring decision I made this year.
-Hook type: counter-intuitive claim + specific stake.
-Length: 1,580 chars (dwell-time sweet spot).
-Format: text-only, three paragraphs in body each starting with the lesson, no external link, link in first comment.
-Author replied to 27 of 94 comments within 2h — feed life extended.
-```
+> Source: [post URL], observed [timestamp/timezone]. Author: [name], personal profile. Published: [source time]. Format: native document. Public counts: [reactions], [comments], [reposts].
+>
+> The opening names an invoice-review problem. The document shows assignment rules; the inspected replies ask about exceptions. The author explains the manual fallback. The source gives no verified conversion result. Prioritize the unresolved exception question for the brief; don't infer dwell time from the document format.
 
-### Example 2: Strip-test on a humble-brag
+Why it works: the comparison rubric prioritizes buyer relevance and inspectable substance.
+The note separates observed conversation from unavailable business outcomes.
 
-A post by a CMO announcing a $500k pipeline win, framed as "lessons":
-- Strip the company name and the dollar figure → does the lesson still teach? No → it's a brag in story clothes → flag and exclude from recommendations.
+### Bounded trend finding
+
+Weak, illustrative: “Carousels are winning; use more of them.”
+
+> In [observed sample], document posts explained approval workflows, while multi-image posts showed completed installations. These serve different reader tasks. [Source URLs] support the distinction. The sample came from [surface and filters], so it doesn't establish a platform-wide format shift.
+
+Why it works: the harvest procedure preserves asset purpose and sample scope.
+The brief supplies a writing opportunity without copying a hook or claiming an algorithm preference.
 
 ## Checklist
 
-Before returning the LinkedIn section of the brief:
-- [ ] Every cited post has creator name, follower band, reaction count, comment count, reshare count, URL, and posted-time
-- [ ] Comment-to-reaction ratio computed and used as primary signal
-- [ ] Reaction breakdown noted on top cluster posts (diversity signal)
-- [ ] First 2–3 lines (above the 210-char fold) quoted verbatim for every cited post
-- [ ] Strip-test applied to any cited post that mentions a company / title / milestone
-- [ ] Format mix this window noted (text-only / carousel / video / poll percentages)
-- [ ] (Opt-in mode only) Hook bank entries each fit ≤210 chars and use a taxonomy type from this skill
-- [ ] Dead-pattern list applied — no recommended hook uses press-release opener, hustle clichés, rocket-stacks, or AI vocabulary
-- [ ] (Opt-in mode only) Timing recommendation falls in Tue–Thu 8–10 AM / 11 AM–12 PM / 5–6 PM local
-- [ ] (Opt-in mode only) Closing CTA recommended is a real specific question, not "Agree?"
-- [ ] All background tabs closed
+- [ ] State audience, window, language, timezone, surfaces, filters, and access limits.
+- [ ] Every cited post has its actual URL, account type, observation time, source date, and visible counts or explicit unavailable fields.
+- [ ] Inspect assets and relevant comments; distinguish author claims from verified outcomes.
+- [ ] Capture openings as observed; don't assume a fixed fold, date-filter behavior, or hashtag feed.
+- [ ] Compare account type, post age, format, and visible baseline before prioritizing.
+- [ ] Label study claims with cohort/date; qualify format mix as the observed sample.
+- [ ] Keep missing metrics unknown; no hidden dwell, conversion, badge uplift, or breakout-threshold claims.
+- [ ] Record disclosure/credential observations without making authorship accusations.
+- [ ] Return sourced opportunities and unresolved buyer questions; remove duplicated hook and dead-pattern prescriptions.
+- [ ] Close only tabs opened for this task and preserve the user's session.
 
-## Composition / References
+## References
 
-- Pairs with `social-linkedin` (content domain) for writing the actual post from the brief.
-- LinkedIn content-search URL parameters: `sortBy="relevance"` vs `sortBy="date_posted"`.
-- Use the agent's universal output schema.
+- [LinkedIn Feed Engineering](https://www.linkedin.com/blog/engineering/feed/engineering-the-next-generation-of-linkedins-feed), 2026-03-12; [Post Help](https://www.linkedin.com/help/linkedin/answer/a528176), 2026-08.
+- [LinkedIn Authenticity](https://news.linkedin.com/2026/keeping-conversations-real-on-linkedin), 2026-06-04; [Creator Mode Help](https://www.linkedin.com/help/linkedin/answer/a5999182), 2024-03; [Credentials Help](https://www.linkedin.com/help/linkedin/answer/a6282984?lang=en), undated, reviewed 2026-09.
+- [Metricool](https://metricool.com/linkedin-trends/), 2026-04-16; [Metricool Press](https://metricool.com/press-release-linkedin-study-2026/), 2026-04-14.
+- [AuthoredUp Formats](https://authoredup.com/blog/best-performing-content-on-linkedin), 2026-09-02; [Socialinsider](https://www.socialinsider.io/social-media-benchmarks/linkedin), 2026-03-16, period/methodology conflict retained.
+- [Buffer Replies](https://buffer.com/resources/linkedin-engagement-data/), 2025-12-04; [Buffer Timing](https://buffer.com/resources/best-time-to-post-on-linkedin/), 2026-07-22.
+
+Re-validate when search/filter URLs or feature names change; feed engineering or disclosure policies update; new vendor reports revise cohorts or findings.
+Validated: 2026-09

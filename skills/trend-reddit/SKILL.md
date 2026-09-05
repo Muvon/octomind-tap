@@ -1,9 +1,9 @@
 ---
 name: trend-reddit
 title: "Reddit Trend Harvester Playbook"
-description: "Platform-specific intel for harvesting Reddit trends across niche subreddits — upvote-velocity ranking, harvest URLs per-sub (hot/rising/top/new), mod-rules pre-flight that prevents removed posts, per-sub culture map for tech / AI / startup niches, title patterns and dead patterns in 2026. Activates in browser sessions whenever the user names Reddit."
+description: "Harvest Reddit conversations and community-specific opportunities with cited posts, current rule checks, and explicit coverage limits. Activate when researching Reddit trends, scanning subreddits, or preparing a Reddit evidence brief; return observed patterns and qualified angles for downstream drafting."
 license: Apache-2.0
-compatibility: "Octoweb browser access. Logged-out works for most surfaces; logged-in needed for personalized feeds."
+compatibility: "Requires Octoweb browser and network access; some Reddit surfaces require an authenticated session."
 capabilities: octoweb memory-read memory-write
 domains: browser
 rules:
@@ -16,165 +16,153 @@ rules:
 
 ## Overview
 
-This skill carries the platform-specific mechanics the trend-harvesting agent needs to harvest Reddit — current ranking signals (upvote velocity + comment depth + flag tax), per-sub harvest URLs, the mod-rules pre-flight that prevents wasted recommendations, per-sub culture map for the AI / dev / startup niches, title patterns, dead patterns, timing. The agent owns the shared DNA loop; this skill plugs the Reddit parameters in.
+Return a source-backed brief for each target subreddit. Harvest the questions and evidence that matter to the supplied audience, verify community permission for proposed angles, and distinguish observations from editorial hypotheses. Drafting and publishing are downstream steps.
 
 ## Mental model
 
-Reddit is not one audience. Each subreddit has its own ranker quirks, allowed formats, mod culture, and reader expectations. A title that crushes in r/Entrepreneur dies on r/MachineLearning. The hot ranker rewards first-hour velocity heavily — the first 60 minutes decide whether a post hits the sub's top or dies in new. The brief must be per-sub, not pan-Reddit. Mod-rules pre-flight is non-negotiable — recommending a post that violates a sub's rules wastes the user's submission and risks bans.
+Separate the sampled surface, community permission, and buyer intent. Downvotes reduce visibility; moderators enforce community rules alongside sitewide defenses (official, Reddit Safety, 2026-07). Don't infer current Hot or Best formulas, fixed ranking weights, or comment-entry cutoffs from archived code or displayed scores.
 
-## Rules
+The Home-feed X experiment hides an item and signals less similar content for a limited global subset (official, Reddit Changelog, 2026-08). Record Home as a personalized sample; don't combine it with community-sort observations as if they share a population (directional).
 
-### Current ranking signals (2026)
+## Harvest procedure
 
-| Signal | Effect |
-|---|---|
-| Upvotes per hour, first 4h | Primary signal. >100/h in a 100k sub = climbing, >500/h = breakout |
-| Comment-to-upvote ratio | Discussion signal. >10% high engagement, >20% controversial-or-deep |
-| Upvote ratio (% upward) | Quality signal. 90% / 200 upvotes outranks 60% / 400 |
-| OP comment in first 30 min | ~2× comment-count multiplier on average |
-| Crossposts to multiple subs (organic) | Amplification candidate |
-| Flagged or shadow-removed | Visible as `[removed]` / `[deleted]` — surface as teaching example |
+### Establish scope and access
 
-### Harvest surfaces per sub (run in parallel)
+Record the audience and buying situation, target language/geography, research period, product category, supplied proof, and requested campaign stage. Discover communities from actual buyer-language queries before assuming that large builder communities contain buyers (directional).
 
-For EACH target sub:
+If available, use Reddit Pro Trends for keyword conversations and community discovery. Its coverage is public SFW English content; private, banned, quarantined, NSFW, deleted, and messaging content are excluded (official, Reddit Pro Trends, 2026-05). Inspect original posts behind theme summaries. State the coverage limits in the brief.
 
-| Surface | URL | Yields |
+Use modern `www.reddit.com` pages. Old Reddit requires login during the announced transition; new public API requests are being restricted gradually (official, Reddit Infrastructure, 2026-08). Use authorized authentication when available. If blocked, record the blocked URL and missing evidence; don't bypass the gate or call the community inactive.
+
+### Inspect surfaces
+
+Use the following existing URL forms as navigation probes, not guarantees of current availability or sort behavior (directional). Substitute the actual subreddit name and URL-encode search terms; these are URL templates rather than draft placeholders. Verify the rendered sort and date filter after navigation, and retain the actual final URL.
+
+| Purpose | Navigation probe | Capture |
 |---|---|---|
-| Hot | `https://www.reddit.com/r/<sub>/hot/` | What's surfacing now |
-| Rising | `https://www.reddit.com/r/<sub>/rising/` | Early-climb signal; small upvotes, fast velocity |
-| Top — day | `https://www.reddit.com/r/<sub>/top/?t=day` | Last-24h winners |
-| Top — week | `https://www.reddit.com/r/<sub>/top/?t=week` | 7-day winners — recurring DNA |
-| New (sample) | `https://www.reddit.com/r/<sub>/new/` | What's being posted now (saturation check) |
-| Rules | `https://www.reddit.com/r/<sub>/about/rules/` | Mod restrictions — mandatory pre-flight |
+| Current community sample | `https://www.reddit.com/r/{sub}/hot/` | Visible posts and the sort actually selected |
+| Additional discovery sample | `https://www.reddit.com/r/{sub}/rising/` | Use only if the requested surface renders; don't assume it proves acceleration |
+| Recent highly scored sample | `https://www.reddit.com/r/{sub}/top/?t=day` | Selected time filter and observed content |
+| Broader comparison sample | `https://www.reddit.com/r/{sub}/top/?t=week` | Recurring subjects and counterexamples |
+| Submission/saturation sample | `https://www.reddit.com/r/{sub}/new/` | Repeated angles, unanswered questions, and quiet posts |
+| Community permission | `https://www.reddit.com/r/{sub}/about/rules/` | Full rules, linked wiki/sidebar, pinned threads |
+| Topic discovery | `https://www.reddit.com/search/?q={encoded-topic}&t=week` | Actual query, time filter, and returned communities |
+| Broad comparison only | `https://www.reddit.com/r/all/top/?t=day` | Label separately from niche demand |
 
-Plus pan-Reddit:
-- Topic search: `https://www.reddit.com/search/?q=<topic>&t=week`
-- Crossover: `https://www.reddit.com/r/all/top/?t=day`
+If a probe redirects or isn't available, navigate from the community page using the visible controls. Mark unavailable surfaces explicitly; don't relabel a fallback as Rising or claim chronological order without checking. Inspect selected posts and their reply chains rather than stopping at cards. Scroll incrementally if content hasn't rendered (directional).
 
-Cap parallel tabs at 8–12. Run multiple harvest passes if more subs needed.
+Direct rules JSON was verified for r/rust and r/mcp; it isn't a guaranteed logged-out interface (official, Community Rules, checked 2026-09). Use `https://www.reddit.com/r/{sub}/about/rules.json` only when accessible. If it fails, use current rendered rules; if those also fail, mark clearance unknown.
 
-If a feed lazy-loads slowly, scroll incrementally and wait for posts to render before extracting — stay on `www.reddit.com`.
+Where Reddit's limited US shopping experiment surfaces product summaries or source discussions, follow through to the original contribution. Pricing and buy links depend on a participating business catalog (official, Reddit Shopping, 2026-02; expansion checked 2026-09). Don't invent a universal Reddit Answers or shopping harvest endpoint.
 
-### Mod-rules pre-flight (mandatory)
+### Check rules before recommending
 
-For every target sub, navigate to `/r/<sub>/about/rules/` (or sidebar) BEFORE making recommendations. Flag:
-- Self-promotion ratios (9:1 rule is common)
-- AI-generated content disclosure requirements
-- Required post tags / flair
-- Restricted post types (no link posts, no image posts)
-- Weekly thread requirements ("ask all questions in the weekly thread")
-- New-account / low-karma posting limits
+Record rule URLs, access date, and the exact clause relevant to the proposed angle. Check permitted formats, title restrictions, required flair, promotional placement, AI policy, repost permission, and any stated eligibility.
 
-If the user's planned angle clearly violates a sub's rules, do not recommend that sub for that angle. Say so explicitly in the brief.
+Promotion isn't inherently spam; communities decide their own promotional restrictions (official, Reddit Spam Guidance, 2026-03). Don't apply a universal promotional quota or infer approval from another post remaining visible.
 
-### Scoring rubric (Reddit-specific signals)
+Poster Eligibility can check account age, total/subreddit karma, verified email, and approved-contributor status while hiding thresholds. Post Check flags likely rule violations with an LLM but doesn't itself block submission (official, Reddit Eligibility, 2026-08). Report the actual message; don't guess eligibility from a public karma count.
 
-Virality axis 0–5:
-- Upvotes per hour in first 4h — primary signal
-- Comment-to-upvote ratio
-- Upvote ratio (visible on post page)
-- OP-comment density in first hour
-- Crosspost reach when present
+AI-generated or modified content must follow community rules and carry a tag or other disclosure; presenting generated content as human-generated is prohibited (official, Reddit Manipulated Content, 2026-05). Record stricter local rules as publication constraints.
 
-Niche-fit axis 0–5:
-- Sub-fit — does the user's angle match this sub's actual culture?
-- Topic-fit — direct / adjacent / format-transplant / off
+| Verified rule example | Scope to preserve |
+|---|---|
+| r/rust | Prohibits slop regardless of origin and allows discretionary removal of apparently AI-generated submissions (official, r/rust Rules, checked 2026-09) |
+| r/mcp | Allows disclosed self-promotion with Showcase for your work; fake unaffiliated promotion and AI-generated promotional slop can result in bans (official, r/mcp Rules, checked 2026-09) |
 
-Score per sub, not pan-Reddit. A 4×4 in r/MachineLearning matters more than 5×2 in r/all.
+Re-check both examples at research time. Build every other culture/permission row from current evidence; don't maintain subscriber-count stereotypes or assume flair conventions from memory.
 
-### Per-sub culture map (verify each at runtime — rules drift quarterly)
+### Collect and interpret evidence
 
-| Sub | Culture | What wins | What gets removed |
-|---|---|---|---|
-| r/MachineLearning | Academic, gatekept | Paper discussion, novel results, deep technical. Tag with [R] / [D] / [P] / [N] | Marketing, AGI hype, no-paper "discussion" |
-| r/LocalLLaMA | Practitioner, hardware-aware | Model benchmarks, quantization tricks, hardware setups, local-runtime tips | SaaS marketing, closed-model hype with no local angle |
-| r/programming | Skeptical, language-agnostic | Blog posts with depth, war stories, "I read the source of X" | Listicles, "10 tools every dev needs", AI slop |
-| r/startups | Bootstrappers + funded | Honest revenue posts, MRR breakdowns, lessons from failure | "I built X in 3 hours" wrappers, low-effort idea validation |
-| r/SaaS | Indie SaaS, transparent | Real metrics, churn experiments, pricing experiments | Fake success stories, growth-hack listicles |
-| r/Entrepreneur | Mixed quality, hustle-friendly | Specific operator playbooks | Generic motivation, "how I made $1M in 30 days" |
-| r/ChatGPT | Casual, mainstream | Cool prompts, weird outputs, image gens | Technical depth goes ignored |
-| r/ClaudeAI | Small, technical-curious | Workflow comparisons, system prompt tactics, Claude-specific tips | Open-and-shut "Claude vs X" posts |
-| r/singularity | Speculative | Big-picture takes, frontier model commentary | Hands-on technical posts |
+For every cited contribution, record the permalink, verbatim title or relevant short excerpt, community, observed format/flair, publication time, collection time, selected sort, displayed score, comment count, and upvote ratio if shown. Record author participation, relevant reply excerpts, disclosed affiliation, and visible moderation notices. Mark unavailable metrics unknown (directional).
 
-### Title patterns that work
+Use Reddit Pro Performance where authorized for post views, upvote ratio, comments, shares, and available comment/account metrics. Hourly post views cover the first 48 hours and remain available for 45 days; export only fields actually supported by CSV (official, Reddit Pro Performance, 2026-04).
 
-1. Specific result + setup — "Ran [X] on [Y]: here's the [Z] result"
-2. Contested claim — "I think [X] is wrong. Here's my [data/setup/code]"
-3. Honest failure — "[X] didn't work. Here's what I tried and what broke"
-4. Novel artifact — "[New thing] I built / paper I read — sharing for discussion"
-5. Targeted question with context — "How do you handle [specific thing]? Here's my current approach and where it fails"
+Capture awards as context, not a stable demand benchmark: Reddit announced expanded free-award availability (official, Reddit Changelog, 2026-08).
 
-### Dead title patterns
+| Observation | Interpretation rule (directional) |
+|---|---|
+| Displayed score and comment count | Describe the snapshot; don't call score raw upvotes |
+| Score or comments divided by age | Lifetime average only; don't present it as current velocity |
+| Repeated observations | Report change over the observed interval with collection times |
+| Many comments | Read them to distinguish evaluation, argument, and unrelated attention |
+| Repeated angle in New | Compare actual replies and unresolved gaps before calling saturation |
+| Removed/deleted marker | Preserve the visible state; cause stays unknown without an explicit notice |
+| Apparently successful launch | Separate engagement from reported activation or purchase |
 
-- ALL CAPS or excessive punctuation
-- "[Question for the community]" / "[Help]" / "[Question]" prefixes
-- Vague titles ("Help" / "Anyone else?")
-- Marketing slogans ("The [adj] way to [verb]")
-- "Am I the only one who..." engagement bait
-- ShowHN-style "I built X" without specifics — wrong platform tell
+AutoModerator supports configured domain, keyword, pattern, and affiliate-link checks (official, Reddit AutoModerator, 2026-08). Rules Hub uses LLMs to interpret rule intent under moderator control and remains in rollout (official, Reddit Infrastructure, 2026-08). Don't identify a hidden classifier or infer a phrase penalty from a removal.
 
-### Timing
+### Build the opportunity brief
 
-- US-skewed subs: Tue–Thu 9–11 AM ET and 7–9 PM ET. Weekend mornings for hobby subs.
-- EU/global subs (r/MachineLearning, r/programming): morning ET captures EU evening. Avoid 2–6 AM ET.
-- Posting late = new-queue bury. Velocity must hit in the first 30 minutes.
+Use a per-community decision table. Assign qualitative priorities as analyst judgment; don't calculate universal virality scores (directional).
 
-### Saturated-take detection per sub
+| Field | Required output |
+|---|---|
+| Audience/angle | Buyer situation and proposed contribution |
+| Permission | Allowed, prohibited, or unknown; rule clause and URL |
+| Observed register | Current evidence for length/depth and format, with example links |
+| Proof gap | Unanswered question the supplied artifact could address |
+| Fit | Direct, adjacent, or weak, with reasoning |
+| Saturation | Repetition and counterexamples in the sampled period |
+| Follow-up | Likely substantive questions and expertise needed to answer |
+| Evidence limits | Missing surfaces, access restrictions, and selection bias |
 
-Always run a `/new/` sample on each target sub. If 5+ recent posts hit the same angle in the last 48h and most are underperforming, mark the angle saturated for that sub.
+If reporting a format mix or any new count, attach an inline measured label naming the current harvest, its actual sample size, and collection month. Include the sample definition and collection period. Without comparable evidence, use a qualitative hypothesis marked (directional).
+
+Choose timing from recent target-community observations and author availability; no universal ET window or weekend exclusion is supported here (directional). Include timezones and quiet posts when studying timing. A winners-only sample can't establish the effect of publishing time (directional).
+
+Reposts, formerly crossposts, preserve the original username, community, and score; destinations must permit reposting (official, Reddit Reposting, 2026-07). For substantial outbound community promotion, Reddit recommends contacting moderators and avoiding escalation when reposting doesn't bring member growth (official, Reddit Community Seeding, 2026-05). Recommend no fixed small-to-large order or safe daily volume.
+
+Don't seed activity while harvesting. Repetitive mass promotion, unsolicited mass outreach, rapid old-content reposting for karma, and continuously promotional bots violate spam policy (official, Reddit Spam, 2026-05). Close research tabs when the brief is complete.
 
 ## Examples
 
-### Example 1: Per-sub recommendation with mod-clearance
+### Permission remains unknown
 
-Bad — pan-Reddit recommendation, no mod check:
-```
-Submit a post about your new RAG framework to r/MachineLearning and r/SaaS.
-```
+Illustrative brief excerpt:
 
-Good — per-sub, mod-cleared, format-prescribed:
-```
-Target: r/LocalLLaMA (412k subscribers)
-Mod-rules flags checked: no AI-content disclosure required; self-promo allowed if technical depth is genuine; flair required (choose "Discussion" or "Resources").
-Format mix this week: text 62% / link 28% / image 10%.
+> The demo appears relevant to the workflow questions in [post URLs]. The rules page is blocked in the available session, so publication clearance is unknown. The unresolved question is [specific constraint]; obtain the current rules before recommending this venue.
 
-Angle: "Quantization tradeoffs we measured for {{niche model}} at 4-bit vs 8-bit on consumer GPUs"
-- Format: text post with embedded chart screenshot
-- Flair: Resources
-- Title pattern: specific result + setup
-- Why it's open: 3 quantization posts in last week, all anecdotal; gap is rigorous measurement
-- Mod-clearance: passes
-- Survival probability: high — OP-engagement readiness is critical (be ready to answer hardware questions in first hour)
+Why it works: relevance and permission are separate findings.
+The placeholders require actual evidence before the brief can be delivered.
 
-DO NOT submit to r/MachineLearning — mod rules require paper / arxiv link for the [R] flair, anecdote-based posts get removed.
-```
+### Removal without a stated cause
 
-### Example 2: Flagged post as teaching example
+Illustrative brief excerpt:
 
-```
-r/programming — "AI will replace developers in 2 years"
-3.2k upvotes, 487 comments, 62% upvote ratio. Now [removed by mods].
-Reason inferred: low-effort hot take, no technical content, breaks rule 1 (must be programming content).
-Lesson: this sub will surface low-effort hot takes briefly via upvote velocity, then remove them. Do not target this angle.
-```
+> [Post URL] displays a removal notice, but no reason is visible. [Comment URL] objects to the absence of test conditions. Treat that criticism as a proof gap; the moderation cause remains unknown.
+
+Why it works: it preserves the visible evidence without diagnosing a filter.
+The proposed proof requirement comes from the conversation, not guessed ranking mechanics.
 
 ## Checklist
 
-Before returning the Reddit section of the brief:
-- [ ] Every recommended sub had its rules / sidebar checked at runtime
-- [ ] Every cited post has subreddit, title (verbatim), upvotes, upvote ratio, comments, OP karma band, URL, age
-- [ ] Removed / flagged posts surfaced when visible — they teach what the sub rejects
-- [ ] Scored per sub, not pan-Reddit
-- [ ] Format mix per sub noted (text / link / image / video percentages this week)
-- [ ] Per-sub culture map applied — recommendations match sub's actual norms
-- [ ] (Opt-in mode only) Title bank entries each fit one of the title patterns from this skill
-- [ ] Dead-title-pattern list applied — no recommended title uses ALL CAPS, vague help asks, engagement bait, or marketing slogans
-- [ ] (Opt-in mode only) OP-engagement plan included — what top comments to anticipate in first hour
-- [ ] (Opt-in mode only) Crosspost order recommended if relevant (smaller niche sub first for velocity, then larger)
-- [ ] All background tabs closed
+- [ ] Each recommended community has current rule evidence; unknown clearance is explicit.
+- [ ] Each observation records source, timestamp, actual surface, and missing values.
+- [ ] New counts carry sample labels; inferences and proposed angles are marked directional.
+- [ ] Timing, formats, and saturation use community-specific evidence without fixed thresholds.
+- [ ] AI disclosure, promotion, eligibility, and repost constraints preserve their actual scope.
+- [ ] The brief distinguishes exposure, useful discussion, and reported downstream outcomes.
+- [ ] Removed states have no invented causes; access and coverage limits are disclosed.
+- [ ] Research tabs are closed; no content was published or seeded.
 
-## Composition / References
+## References
 
-- Pairs with `social-reddit` (content domain) for writing the actual submission body from the brief.
-- Use the agent's universal output schema.
+- [Reddit Safety](https://redditinc.com/news/how-were-keeping-reddit-real-and-safe-in-the-ai-era), 2026-07-06.
+- [Reddit Changelog](https://support.reddithelp.com/hc/en-us/articles/52393330268436-Changelog-August-12-2026), 2026-08-12.
+- [Reddit Pro Trends](https://support.reddithelp.com/hc/en-us/articles/47619216411284-Reddit-Pro-Feature-Trends), 2026-05-28.
+- [Reddit Infrastructure](https://redditinc.com/news/modernizing-reddits-infrastructure-and-moderation-tools), 2026-08-05.
+- [Community Rules: r/rust](https://www.reddit.com/r/rust/about/rules.json) and [r/mcp](https://www.reddit.com/r/mcp/about/rules.json), undated, checked 2026-09.
+- [Reddit Shopping](https://redditinc.com/news/in-case-you-saw-it-we-are-testing-a-new-shopping-product-experience-in-search), 2026-02-19; page includes a later test expansion, checked 2026-09.
+- [Reddit Spam Guidance](https://support.reddithelp.com/hc/en-us/articles/28012014962580-How-do-I-keep-spam-out-of-my-community), 2026-03-28.
+- [Reddit Eligibility](https://support.reddithelp.com/hc/en-us/articles/33702751586836-Poster-Eligibility-Guide-Post-Check), 2026-08-10.
+- [Reddit Manipulated Content](https://support.reddithelp.com/hc/en-us/articles/41180423371156-Manipulated-Content-and-Misleading-Behavior), 2026-05-19.
+- [Reddit Pro Performance](https://support.reddithelp.com/hc/en-us/articles/47618462633364-Reddit-Pro-Feature-Performance), 2026-04-02.
+- [Reddit AutoModerator](https://support.reddithelp.com/hc/en-us/articles/15484574206484-Automoderator), 2026-08-28.
+- [Reddit Reposting](https://support.reddithelp.com/hc/en-us/articles/4835584113684-What-is-reposting-fka-crossposting), 2026-07-13.
+- [Reddit Community Seeding](https://support.reddithelp.com/hc/en-us/articles/15484360497812-Planting-seeds-aka-encouraging-and-maintaining-an-active-community), 2026-05-28.
+- [Reddit Spam](https://support.reddithelp.com/hc/en-us/articles/360043504051-Spam), 2026-05-19.
+
+Re-validate when feed names, URL behavior, access policy, community rules, moderation tools, analytics fields, or inspectable performance research change.
+
+Validated: 2026-09

@@ -1,121 +1,132 @@
 ---
 name: trend-instagram
 title: "Instagram Trend Harvester Playbook"
-description: "Platform-specific intel for harvesting Instagram trends — per-surface ranking reality (Explore weights engagement velocity; the audio page visit is itself a ranked action), trending-audio discovery via the arrow icon / audio-page use counts / trending leaderboard, the TikTok 3–7-day arbitrage window, harvest surface URLs, a scoring rubric built on views/sends-era metrics, lifecycle heuristics (48-hour buy zone, 1–3 week lifespan), and the April 2026 originality rule that makes take-free trend-riding recommendation-ineligible. Activates in browser sessions whenever the user names Instagram."
+description: "Harvest Instagram post, carousel, Reel, and audio patterns into a sourced trend brief with observed metrics, original adaptation angles, and uncertainty. Activate in trend sessions mentioning Instagram or Reels, or on explicit Instagram trend, scan, analysis, or harvest requests."
 license: Apache-2.0
-compatibility: "Octoweb browser access. Requires signed-in Instagram session in the user's browser for Explore/Reels feeds and audio pages; trending-audio leaderboard and Professional Dashboard are app-only surfaces — harvest their output via audio pages."
-capabilities: octoweb memory-read memory-write
+compatibility: "Browser and network access. An authorized Instagram session may be needed; app-only observations require supplied evidence."
+capabilities: browser memory-read memory-write
 domains: browser
 rules:
   - session(trend) content(instagram)
   - session(trend) content(reels)
-  - match(\binstagram\s+(trend|trends|harvest|brief)\b)
+  - match(\binstagram\s+(trend|trends|trending|harvest|brief)\b)
   - match(\b(harvest|scan|analyze)\s+instagram\b)
 ---
 
 ## Overview
 
-This skill carries the Instagram-specific mechanics the trend-harvesting agent needs — surface behavior, audio-trend discovery, scoring signals, lifecycle timing, dead patterns. The agent owns the shared DNA loop (memory → harvest → score → cluster → DNA → hook bank → brief); this skill plugs in the Instagram parameters.
+Collect current Instagram patterns that a writer can adapt to the supplied audience and business purpose. Return observations with sources and uncertainty; distinguish a visible successful post from evidence that a pattern transfers. Publishing and drafting finished posts are downstream work.
 
 ## Mental model
 
-Every Instagram surface runs its own ranker (official: Instagram Ranking Explained). What matters for harvesting:
+Mosseri named watch time, likes, and sends as leading signals and advised monitoring average watch time, likes per reach, and sends per reach (official, Mosseri via Social Media Today, 2025-01). Average watch time isn't a per-reach ratio. This dated guidance doesn't reveal a complete current ranker or establish that reach without engagement hurts.
 
-- Explore weights engagement velocity more heavily than Feed/Stories — speed of early engagement, not accumulated totals. A post on Explore is there because it accelerated, so Explore is the primary breakout-detection surface.
-- Reels ranking predicts: reshare probability (listed first), watch-through, like, and visiting the audio page. The audio-page visit being a ranked action is the mechanical reason audio trends exist as a growth vector — Instagram is literally optimizing for people tapping into sounds.
-- Sends per reach is a top-3 creator ranking signal (Mosseri), but send counts are invisible in public UI. Proxy: content shaped for DM-forwarding (specific-recipient material) that also shows outsized comment/view ratios.
-- Stories rank on relationship closeness — a Story trend is a retention pattern, not a discovery pattern. Don't harvest Stories for virality signals.
-- The April 2026 originality policy demotes repost-shaped content from all recommendations (photos and carousels now included, not just Reels). Interpretation shift: an aggregator account showing big view counts is coasting on follower base, not algorithm favor — discount aggregator numbers when scoring what's actually being amplified.
-- Views is the universal metric since 2025 (impressions/plays are dead), and it counts repeat views — loop-engineered Reels inflate views by design. Check comments/saves alongside.
+Treat Feed, Explore, Reels, Stories, and profile observations as different contexts. Explore placement alone doesn't establish engagement velocity or its cause. Treat Stories as relationship-pattern samples, not proof of discovery performance (directional).
 
-## Rules
+Total Reel watch time includes replays (official, Meta Reels Insights, 2023-04). A high view count doesn't prove unique viewers, recommendation traffic, sales, or artificial looping. Never estimate private sends or saves from public comments (directional).
 
-### Harvest surfaces (run in parallel)
+## Harvest procedure
 
-| Surface | URL | Yields |
+### Establish scope and recover prior observations
+
+Record the audience, niche, language, geography, objective, and formats requested. Retrieve relevant previous observations when available; retain their capture dates. Don't describe old notes as current trend evidence. Record the browsing account context and whether supplied evidence came from the app or browser (directional).
+
+### Navigate actual surfaces
+
+Start at `https://www.instagram.com/` or a supplied post permalink. Follow visible navigation and copy the resulting URL. Prefer observed links over constructed keyword, tag, or audio routes; the exact deep-link templates aren't verified here. When access fails, record the failure and continue with accessible sources instead of guessing what the surface contains (directional).
+
+| Surface to attempt | Navigation and evidence to capture |
+|---|---|
+| Explore | Follow the current Explore control if present; record returned URL and capture context. Treat results as an account-specific sample. |
+| Reels | Follow Reels navigation or a supplied Reel; record post permalink, opening visual, caption, and displayed counters. |
+| Audio | Follow the sound attribution on a Reel; copy its actual URL, title, owner, and any visible use count. |
+| Keyword search | Use visible search with the buyer's topic language; log exact query, selected result type, and resulting URL. |
+| Hashtag results | Follow an actual tag link; record available sorting and date information. Don't assume Top/Recent tabs exist. |
+| Anchor profiles | Visit supplied or discovered niche accounts; follow their current Reel or post controls and compare recent output. |
+| Stories or app-only features | Use authorized accessible views or supplied captures. Record missing surfaces explicitly; don't invent dashboard or leaderboard output. |
+
+Use separate background tabs for independent sources only when the browser supports that safely. Avoid competing navigation calls on the same page. Snapshot observations, preserve source URLs, and close only tabs opened for the harvest (directional).
+
+Hashtag following ended in December 2024, and the verified feature report describes a five-hashtag cap for posts and Reels (official, Instagram via Metricool Trends, 2026-06). Use tag results as topic samples; don't prescribe hashtag stacks as distribution strategy.
+
+### Capture comparable records
+
+For every candidate, record the permalink and handle; publication date or displayed age; capture timestamp and timezone; format and runtime if visible; follower count if available; exact displayed metric names and values; opening copy; visual sequence; audio URL; CTA destination; and apparent authorship or collaborator context (directional).
+
+Mark unavailable fields as unknown. Treat displayed rounded counts as approximate. Calculate views relative to followers and comments relative to views only when both inputs exist, and label them analyst calculations with the source and capture time. Prefer comparison with the same account's similar-format, similar-age posts. Follower ratios aren't evidence that non-followers supplied the views (directional).
+
+Return illustrative counts only in examples, never as harvested observations. Don't rename shares as private sends, infer saves from a checklist shape, or declare that impressions and plays no longer exist everywhere (directional).
+
+### Track audio and pattern movement
+
+Log a sound's displayed use count with its timestamp, then compare repeated observations. Record any visible trending indicator without assigning an unverified threshold, leaderboard size, or refresh interval. Cross-platform sound activity can supply a candidate to inspect; don't assert a fixed TikTok-to-Reels delay or trend lifespan (directional).
+
+Compare independent accounts using a similar hook, visual structure, sound, or buyer concern. Separate permissioned reuse, shared ownership, paid amplification, and independent adoption when evidence permits. Don't classify a repost-heavy account's views as follower inertia or prove recommendation ineligibility from its profile appearance (directional).
+
+| Assessment | Evidence to seek | Decision |
 |---|---|---|
-| Explore grid (signed-in) | `https://www.instagram.com/explore/` | What Instagram is accelerating for this account's embedding right now |
-| Reels feed (signed-in) | `https://www.instagram.com/reels/` | Current Reels distribution winners; note recurring audio |
-| Audio page | `https://www.instagram.com/reels/audio/<audio_id>/` | Use count (the saturation gauge), top Reels using the sound, recency spread |
-| Keyword search | `https://www.instagram.com/explore/search/keyword/?q=<term>` | Niche posts ranked by Instagram search (captions/keywords, not tags) |
-| Hashtag page | `https://www.instagram.com/explore/tags/<tag>/` | Topic sample — top vs recent tabs show peak vs current state |
-| Anchor account Reels | `https://www.instagram.com/<handle>/reels/` | Last-weeks output of each niche anchor; view counts visible on grid |
+| Emerging | Fresh independent examples and rising repeated observations | Recommend a bounded test if the buyer fit is clear |
+| Established | Recurring successful executions across comparable accounts | Identify the repeatable structure and what must be original |
+| Saturated | Near-identical executions with weakening recent comparisons | Require a useful new angle; otherwise omit |
+| Uncertain | Isolated post, missing ages, hidden metrics, or conflicting samples | Report uncertainty and the observation needed next |
 
-Open 4–8 in one parallel block of `browser_navigate` calls; snapshot, scrape, close. The in-app trending-audio leaderboard (music icon → Trending, top ~50, refreshed every few days) and Professional Dashboard "Trending audio" panel are app-only and regionally limited — when the user can check them, have them feed you the shortlist, then harvest each sound's audio page in the browser.
+These are qualitative research judgments, not platform thresholds (directional).
 
-### Audio-trend discovery and timing
+### Apply platform constraints to recommendations
 
-- The arrow icon next to a track name on a Reel is Instagram's native "trending now" marker — fastest in-feed confirmation.
-- The audio page's use count is the buy-signal: low-but-climbing count with fresh top Reels = early; six figures with stale top Reels = late. Log use count + timestamp on every harvested sound so the next session sees the velocity, not just the level.
-- Cross-platform arbitrage: sounds trending on TikTok reach Reels roughly 3–7 days later (directional, consistently reported). If a TikTok harvest ran recently, its rising sounds are the Reels pre-list.
-- Lifecycle heuristics (practitioner consensus, no published methodology — treat as heuristics): first ~48 hours after a sound starts rising is the strong-adoption window; typical trend lifespan 1–3 weeks; emotionally/culturally anchored sounds can run 2–3 months while format-locked memes die in days.
+The reported Reel maximum is 20 minutes; those over 3 minutes aren't recommended to non-followers through Explore or the Reels tab (official, Instagram Help via Socialinsider, 2026-07). Separate long existing-audience examples from discovery candidates. For narrative experiments, 45–60 seconds led Socialinsider's length analysis, without establishing a universal optimum (measured, Socialinsider, n=Reels length analysis; sample size unstated, 2026-07).
 
-### Scoring rubric (Instagram-specific signals)
+Carousels can resurface on another frame after an unengaged exposure (official, Instagram behavior reported by Socialinsider, 2026-02). Capture how opening frames stand alone; don't promise a fixed repeat exposure. Trial Reels are non-followers-first and were announced available to everyone (official, Meta Creativity, 2025-06). Don't label another account's post a trial without evidence or attach unsupported eligibility gates and testing windows.
 
-Virality axis 0–5:
-- Views-to-follower ratio on the poster — a 20K-follower account with a 2M-view Reel is a structural breakout; a 5M-follower account with 2M views is baseline. Tag account bands (micro <50K / mid / mega).
-- Comments-to-views — with likes cheap and sends invisible, comment ratio is the strongest public depth signal. Saves visible only to the owner; save-shaped content (frameworks, lists) earns an inference note, not a number.
-- Velocity — post age vs current views; Explore placement of a young post is itself velocity evidence.
-- Audio momentum — for sound-driven Reels, the audio page's use-count trajectory outranks the individual post's numbers.
+Accounts primarily reposting unoriginal Reels, photos, or carousels can lose recommendation distribution; licensed publishers are exempt and followers may still see content (official, Instagram via TechCrunch, 2026-04). For each recommendation, name an original contribution and required source assets. A copied post with cosmetic changes isn't a useful adaptation; don't classify all participation in a shared format as a violation (directional).
 
-Niche-fit axis 0–5 — same scale the agent applies on every platform. Drop everything below 3 on either axis.
+## Brief assembly
 
-### Cluster interpretation
+Return a concise account of scope and inaccessible surfaces, followed by candidate records, pattern clusters, and recommended tests. For each recommendation, include buyer relevance, original contribution, required proof, suggested format, audio context, CTA-path observation, and confidence. Keep observed performance separate from editorial inference (directional).
 
-- A trend is 3+ independent accounts on the same format/sound/angle with breakout ratios — one mega account is a post, not a trend.
-- Discount aggregator/repost accounts entirely (originality demotion means their reach is follower-inertia, not amplification).
-- Loop-inflated views: hyper-short Reels with huge views but thin comments are replay artifacts — score on comment ratio.
-- Carousel trends exist too (Instagram's strongest format for saves): recurring carousel skeletons across accounts (same slide-1 hook shape) are harvestable DNA, and since April 2026 the skeleton must be re-fleshed, never re-posted.
-
-### The originality gate on every recommendation
-
-Any angle recommended from a trend must specify the original layer — the take, voiceover, niche translation, or commentary that clears Meta's "materially edited" bar. A brief that says "do this trending format" without the original-layer line is recommending recommendation-ineligible content. Watermark-swaps and re-cuts explicitly don't count.
-
-### Dead patterns (don't recommend, discount when harvested)
-
-- Repost/aggregator content of any format — no recommendations since Apr 2026
-- TikTok-watermarked Reels — suppressed from Explore/recs since 2021
-- Majority-text or muted Reels — named in Instagram's Recommendation Guidelines
-- Hashtag-wall captions — measured −31.7% views correlation (Metricool, n=24.4M); hashtags can't even be followed since Dec 2024
-- Engagement-bait formulas ("tag 3 friends", "comment YES") — account-level demotion, repeat-offender based
-- Send-bait ("share this with someone who…") — Mosseri's explicit "don't force it" target
-- Low-res, bordered, obviously-recycled production — recommendation-gate hygiene failures
-
-### Saturated-trend detection
-
-When 5+ near-identical executions of a sound/format cluster in the harvest AND the youngest high-performers are older than ~1 week, mark it saturated: late entrants are competing against the trend's own back catalog on a velocity-weighted surface. Recommend saturated trends only with a hard niche-twist or contrarian inversion, and say so in the brief.
+Preserve contradictory evidence and unsuccessful comparable executions. State whether an apparent trend concerns awareness, useful conversation, or a visible conversion path. Don't turn view totals into predicted leads or repeat vendor case-study outcomes as expected results (directional).
 
 ## Examples
 
-### Example 1: Audio-page read
+### Audio candidate with incomplete evidence
 
-```
-Sound: "original audio — @nichecreator" — use count 8,400 (was ~3K when first seen per memory, 4 days ago)
-Top Reels: 3 of 6 posted <48h, all micro accounts with 10–40x views/follower ratios
-Verdict: early-mid window, rising velocity, micro-driven = algorithm-amplified not follower-driven. BUY for niche X with original voiceover layer.
-```
+Illustrative record, not a real harvest:
 
-### Example 2: Discounting a fake signal
+“Sound [observed title], [copied URL]. Use count [earlier count] at [earlier timestamp], then [current count] at [current timestamp]. Recent independent accounts use it for repair demonstrations. Private sends and paid distribution are unknown.”
 
-Harvest finds a 4M-view Reel on a meme format — but the account is an aggregator (reposts across niches, no original commentary), comments run 0.01% of views, and the format's other instances are all 2+ weeks old. Verdict: follower-inertia artifact on a demoted account class, late-stage format. Excluded from the brief; logged to memory as saturated.
+Recommendation: “Test the structure with a supplied repair recording and the author's explanation of the diagnosis. Confirm soundtrack rights. Confidence is provisional until comparable fresh posts are observed.”
+
+This records change without inventing an adoption window or claiming algorithmic causation.
+
+### Large count without a transferable pattern
+
+Illustrative record, not a real harvest:
+
+“Reel [permalink] has [displayed views]. Publication age is unavailable; surrounding posts mix unrelated topics. No independent recent examples were found in the searched sample.”
+
+Decision: “Keep as an isolated example. We can't infer recommendation traffic, private engagement, or current demand from the visible count. Recheck age and comparable accounts before recommending the format.”
+
+This preserves the evidence instead of declaring the account demoted or the views fake.
 
 ## Checklist
 
-Before returning the Instagram section of the brief:
-- [ ] Explore + Reels feed + at least one audio page and one keyword search harvested in parallel
-- [ ] Every cited post has handle, account-size band, views, comments, post age, and URL
-- [ ] Views-to-follower and comments-to-views ratios computed — likes not used as a primary signal
-- [ ] Sounds logged with use count + timestamp to memory for velocity tracking across sessions
-- [ ] Aggregator/repost accounts discounted; loop-inflation checked via comment ratios
-- [ ] Every recommended angle names its original layer (the Apr 2026 originality gate)
-- [ ] Saturation verdict given per trend, with the 48h/1–3-week heuristics labeled as heuristics
-- [ ] TikTok-arbitrage cross-check noted when a recent TikTok harvest exists in memory
-- [ ] All background harvest tabs closed before returning the brief
+- [ ] Scope, capture context, timezone, and searched surfaces are recorded.
+- [ ] Explore, Reels, search, relevant profiles, and audio were attempted where applicable; blocked or app-only surfaces are identified.
+- [ ] Links came from visible navigation or supplied permalinks; no assumed deep routes or sorting tabs remain.
+- [ ] Every candidate distinguishes observed values, unknown fields, and calculated ratios.
+- [ ] Repeated audio observations retain timestamps; no fixed lifecycle or cross-platform lag is asserted.
+- [ ] Pattern confidence uses comparable independent examples, including contradictory evidence.
+- [ ] Recommended angles specify original contribution, buyer relevance, proof needs, and an observed or testable action path.
+- [ ] Runtime, Trial Reels, carousel, hashtag, and originality statements retain their scope and dates.
+- [ ] Only harvest-created tabs were closed; the brief doesn't imply publication occurred.
 
-## Composition / References
+## References
 
-- Pairs with `social-instagram` (content domain) for drafting the posts once the brief is in hand — same mechanics, applied to creation.
-- Instagram Ranking Explained (official, per-surface signals): https://about.instagram.com/blog/announcements/instagram-ranking-explained
-- Originality/aggregator policy (Apr 2026) + engagement-bait policy: https://transparency.meta.com
-- Measured correlations: Metricool 2026 study (n=24.4M posts). Lifecycle windows are practitioner consensus — re-validate periodically; no Instagram equivalent of TikTok's Creative Center exists, which is why in-app surfaces + TikTok lead-time monitoring are the method.
-- Use the agent's universal output schema; this skill only supplies the parameters that go into it.
+- [Mosseri signals](https://www.socialmediatoday.com/news/instagram-shares-algorithm-insights-2025/738034/), 2025-01-22.
+- [Meta Reels Insights](https://about.fb.com/news/2023/04/instagram-reels-trending-audio-and-gifts-updates/), 2023-04-14.
+- [Metricool Trends](https://metricool.com/instagram-trends/), 2026-06-16.
+- [Socialinsider length](https://www.socialinsider.io/blog/instagram-reels-length/), 2026-07-14; [benchmark](https://www.socialinsider.io/social-media-benchmarks/instagram), 2026-02-20, Q2 update.
+- [Meta Creativity](https://about.fb.com/news/2025/06/inspiring-creativity-that-brings-people-together/), 2025-06-12.
+- [Instagram originality announcement reporting](https://techcrunch.com/2026/04/30/instagram-restricts-reach-of-content-aggregators-in-new-crackdown/), 2026-04-30.
+- Re-validate when: navigation paths or surface names change; feature eligibility or runtime limits change; ranking or originality guidance updates; new vendor reports arrive.
+Validated: 2026-09

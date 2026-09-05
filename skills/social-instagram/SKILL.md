@@ -1,9 +1,9 @@
 ---
 name: social-instagram
 title: "Instagram Publishing Playbook"
-description: "Ground-truth 2026 playbook for organic Instagram. Covers the three official ranking signals (watch time, likes per reach, sends per reach — all ratios), the format-by-objective split the benchmark studies actually show (Reels for non-follower reach, carousels for engagement and 9x saves, single images economically dead), the measured 8.5-second Reels watch-time budget, the carousel second-chance mechanic, Trial Reels as the platform's cleanest A/B test, the April 2026 originality/aggregator demotion, hashtag reality (−31.7% views correlation; context only), and Meta's AI-label mechanics. Activate when drafting anything destined for Instagram."
+description: "Write and revise Instagram captions, Reels, carousels, Stories, and launch or proof posts in the supplied author's voice. Activate when drafting for Instagram; choose formats, build a usable publishing package, and connect attention to a relevant next action with evidence-backed platform guidance."
 license: Apache-2.0
-compatibility: "Octomind content agents. Platform-specific to Instagram (Reels, carousels, Stories, captions)."
+compatibility: "Network access for current platform checks; Instagram account access for composer previews and account-level Insights."
 domains: content
 rules:
   - content(instagram)
@@ -13,130 +13,194 @@ rules:
 
 ## Overview
 
-Instagram in 2026 is a watch-time platform wearing a photo app's clothes. Every surface (Feed, Stories, Explore, Reels) runs its own ranking algorithm, but three signals dominate creator reach per Mosseri's own statements: watch time, likes per reach, and sends per reach. All three are ratios — reach without engagement actively hurts, and raw counts flatter you while the algorithm divides.
+Draft from supplied facts and proof, then the author's documented voice, then platform conventions. Use `content-voice` for generic editing; this playbook adds Instagram packaging and conversion decisions. Never invent experience or results to make a caption sound personal.
 
-The market context is brutal and measured: publishing volume grew ~24% year over year while engagement grew ~19% (Metricool, n=24.4M posts), so median engagement rate fell to 0.30% (Rival IQ 2026) and only 21% of sub-10K accounts grew at all. Winning here means picking the right format for the objective and engineering for the specific ratios the ranker predicts — not posting more.
+Open reference/mechanics.md when choosing runtime, interpreting benchmarks, using audio or experimental features, or preparing AI disclosure. Open reference/launch.md when drafting any launch or proof package, planning creator participation, or measuring a conversion path.
 
-Pair with `content-voice`. Templated, mass-produced content now collides with the April 2026 originality policy regardless of who or what wrote it.
+## Mental model
 
-## Instructions
+Monitor average watch time, likes per reach, and sends per reach. Mosseri named watch time, likes, and sends as leading signals, with likes more relevant to connected reach and sends to unconnected reach; average watch time isn't a per-reach ratio (official, Mosseri via Social Media Today, 2025-01). This dated statement isn't a complete current ranking formula.
 
-### The Format Decision — different denominators, different winners
+Treat Feed, Explore, Reels, and Stories separately. Don't infer distribution weights from a visible post. For Feed, design for time worth spending, substantive comments, and a clear reason to visit the profile; these are editorial objectives, not verified current signal weights (directional). Use Stories for relationship follow-up (directional).
 
-The eternal "Reels vs carousels" argument is two study designs talking past each other. Engagement-rate studies divide by followers (Socialinsider, Rival IQ, Buffer) — carousels win. Reach studies count views from non-followers (Metricool, Buffer) — Reels win. Both are right. Choose by objective:
+Choose a format by its job. Reels led discovery in Metricool's sample; carousels led follower-based engagement in Socialinsider's sample (measured, Metricool, n=24,364,803 posts, 2026-06; measured, Socialinsider, n=35M posts, 2026-02, updated through Q2). Neither finding guarantees sales.
 
-| Objective | Format | Measured basis |
+## Format and caption rules
+
+| Job | Format and anatomy | Length decision |
 |---|---|---|
-| Reach new audience | Reels | Reels far outrank carousels on non-follower reach; >4x interactions of single images (Metricool 2026, n=24.4M) |
-| Deepen existing audience, saves | Carousel | 9x more saves than single images; highest per-follower ER every year measured (0.50–0.55%) |
-| Quick presence between bigger posts | Story | Relationship surface — reaches people who already follow closely; not discovery |
-| Almost never | Single image | Interactions −25%, engagement −46% YoY (Metricool); reach −22% |
+| Show a result or process | Reel: visible task, action, observable result, limitation | Use a micro-loop for a repeatable visual; a compact narrative for a decision; an extended explainer only while each beat advances it (directional). Test 45–60 seconds for narratives (measured, Socialinsider, n=Reels length analysis; sample size unstated, 2026-07). |
+| Explain or document proof | Carousel: independent opening frames, evidence, conditions, useful ending | Use only slides that add information; preview the current composer's capacity (directional). |
+| Maintain a conversation | Story: immediate context, demonstration, relevant reply or link invitation | Keep a short sequence and remove any frame whose loss changes nothing (directional). |
+| Let an asset speak | Single image: strong photograph or legible artifact with necessary context | Keep the caption brief unless interpretation needs space (directional). |
 
-Carousels are also Instagram's comparative advantage as a platform: 4.7x more views and 5.8x more interactions than the same carousels get on TikTok (Metricool).
+Reels accept up to 20 minutes, but those over 3 minutes aren't recommended to non-followers through Explore or the Reels tab, according to the cited Help Center summary (official, Instagram Help via Socialinsider, 2026-07). Keep discovery explainers within that ceiling; don't pad a simple visual to the measured narrative band.
 
-### Reels Craft — budget 8.5 seconds
+Open with the action or evidence instead of a logo card. Script hook, on-screen text, voiceover, shot changes, and last frame separately. Make meaning understandable without hearing; check subtitle accuracy, contrast, and whether overlays obscure the demonstration. Choose original speech or licensed music for the idea; a trending track needs both relevance and suitable rights (directional).
 
-Average Reels watch time measured across 24M posts is 8.5 seconds (Metricool 2026 — doubled YoY). That, not a target duration, is the design constraint; no single "ideal length" survives scrutiny across studies.
+Total watch time includes replay time (official, Meta Reels Insights, 2023-04). A natural loop can be useful; it doesn't guarantee a ranking advantage (directional).
 
-- Hook lands in the first 1–2 seconds — visually, not after a logo card. Most viewers are gone before second 9 no matter the runtime.
-- Loops beat length: total seconds watched counts replays, so a 15-second Reel watched three times outranks a 60-second Reel abandoned once. Engineer the last frame to flow into the first.
-- Silent-watchable with burned-in captions — but not a text card: Instagram's own Recommendation Guidelines demote muted Reels AND majority-text Reels. The target is video that works muted without being a slideshow of sentences.
-- Production hygiene is a ranking gate, not polish: no low resolution, no borders, no other platform's watermark (TikTok logo = suppressed from Explore/recommendations since 2021). Your own logo is officially fine — Mosseri said so directly (Oct 2024).
-- Captions are a confirmed Reels ranking factor: front-load the niche keywords people would search; Instagram search matches captions, bios, on-screen text.
+Carousels can be resurfaced on another frame after an unengaged exposure (official, Instagram behavior reported by Socialinsider, 2026-02). Make the opening and following frame understandable independently; don't promise a specific repeat exposure. End with usable reference material rather than a compulsory save request (directional).
 
-### Design for Sends
+### Caption, cover, and profile
 
-"Sends per reach" is one of the biggest ranking signals by Mosseri's explicit statement — of everyone who saw it, how many DM'd it to a friend. It's a ratio, and he warns "don't force it" (send-bait is engagement bait). The craft translation: make content with a specific identifiable recipient in mind — the "this is so you" post for a defined kind of person, the reference material useful enough to forward, the in-joke for a niche. If you can't name who would send it to whom, it won't be sent.
+Use these caption bands as editorial shapes, without a universal character cutoff (directional):
 
-### Carousels — two hooks per post
+| Band | Use | Shape |
+|---|---|---|
+| Brief | Self-explanatory Reel or image | Opening claim, essential condition, optional action |
+| Medium | Demo or carousel | Opening claim followed by a compact explanation of what the visual omits |
+| Extended | Customer proof or founder decision | Connected paragraphs explaining evidence, conditions, and unresolved tradeoffs |
 
-Official mechanic (Mosseri): if someone sees your carousel and doesn't swipe, Instagram often gives it a second chance later, opening on slide 2. No other format gets two independent hook attempts.
+Put the specific subject and reason to care in the first line. Preview the actual collapsed caption and move the payoff above “more”; don't assume a fixed truncation count. Use blank lines between changes of thought, not after every sentence. Place the CTA after value, unless access instructions are needed immediately. Use emojis only when they match the author and carry meaning; don't replace words or bullets with them (directional).
 
-- Slide 1 and slide 2 must each work as a cold open — slide 2 written as a continuation wastes the second chance.
-- Save-bait is the carousel's job: frameworks, checklists, step-by-steps, before/afters — brands at 100K–1M followers average ~98 saves per carousel vs 43 per image (Socialinsider).
-- Swipe-through is dwell; end with a slide worth screenshotting.
+Use literal topic language early for clarity and search intent; don't call captions a confirmed Reels ranking factor. Write alt text describing the actual image and essential embedded text; don't stuff keywords into accessibility copy. Supply an accessible visual description alongside video captions when needed (directional).
 
-### Trial Reels — the platform's built-in A/B test
+Posts and Reels have a five-hashtag cap in the verified feature report (official, Instagram via Metricool Trends, 2026-06). Use fewer when no additional descriptive tag helps. Preview cover crops in both feed and profile views; keep the central subject and title readable. Align bio wording, destination link, pinned posts, and Highlights with the visitor's buying question, and remove obsolete launch promises (directional).
 
-Trial Reels (official, Dec 2024) publish to non-followers only: off your grid, invisible to followers, evaluated within ~72 hours, one tap (or automatic threshold) to promote to everyone. It is the cleanest legitimate way to test hooks against the recommendation system without spending follower goodwill. Use it to race two hook variants of the same content; promote the winner. Commonly reported as requiring 1,000+ followers (unofficial).
+Live, Broadcast Channels, and Notes are optional support formats: propose Live for a staffed demonstration, Channels for opted-in updates, and Notes for a brief prompt only after checking account availability. Feature eligibility and limits aren't established here. Threads cross-posting requires a separate destination edit; don't assume the Instagram caption and CTA transfer unchanged (directional).
 
-### Collabs
+## Launch and proof posts
 
-Collab posts with up to 5 co-authors measured at 4.78x impressions and 4.39x interactions vs solo posts (Emplifi). The value comes from audience disjointness — a collab with an account whose followers are your followers adds nothing. Pick partners whose audience you want and don't have.
+Collect the audience and buying situation, promise, available proof with source, desired action, destination link, campaign stage, and disclosure obligations. Name the recurring buyer problem and the author's role. “No CTA” is a valid choice. If required evidence is missing, omit the unsupported claim or hold the draft; placeholder examples below aren't publishable until filled (directional).
 
-### Hashtags and SEO — context, not reach
+| Shape | Native execution | Caption band |
+|---|---|---|
+| Launch day | Show the product doing the promised job; state availability and the access path. Strip the product name and check that something useful remains. | Medium |
+| Demo or artifact | Record the task and result; expose a boundary or dependency. | Brief or medium |
+| Customer outcome | Show before/after under comparable conditions, with permission and sourced results; state other changes that could explain them. | Extended |
+| Founder decision | Explain the chosen tradeoff using an actual build artifact; retain what remains unresolved. | Extended |
+| Objection answer | State the buyer's concern fairly, show the relevant evidence, and identify who still shouldn't buy. | Medium |
+| Recap or lessons | Show observed use after launch, correct earlier assumptions, and state current availability. | Medium or extended |
 
-- Mosseri, repeatedly and verbatim: hashtags are "not a way to get more reach"; they help search and categorization "on the margins." Following hashtags was removed entirely in Dec 2024.
-- Measured correlation is negative: posts with hashtags averaged 31.7% fewer views and 33.9% fewer interactions (Metricool; correlational — heavy hashtag use proxies for spammy accounts, but it kills the "more tags = more reach" theory).
-- Use 3–5 that literally describe the content, for search. Spend the effort on caption keywords instead — captions rank; tag walls don't.
-- One clear niche outranks keyword-stuffed everything-accounts in Instagram search (directional but consistent).
+These are craft choices, not measured optimal post shapes (directional).
 
-### Stories — the relationship surface
+Choose a tested bio link, Story link sticker, or requested DM delivery path. Don't rely on caption-link availability without checking the account. Make the destination match the promise and test it inside Instagram before publication (directional).
 
-Stories rank on closeness (interaction history, likely friends-and-family connection) — they deepen existing followers and are not a discovery tool. The measured shape (vendor-published data, softer sourcing than the format studies — trust the shape, not the decimals): ~24% of viewers exit on frame 1, strong Stories keep 60–80% to the last frame. Craft: front-load the point on frame 1, use interactive stickers (polls/questions/sliders engage ~12–18% of viewers and replies grew +88% YoY), keep sequences short. Link stickers convert at 1–5% typically.
+Permit a comment keyword when it requests a clearly named resource and the delivery flow works. Send that resource before qualification; ask permission before further commercial follow-up. Provide a usable alternative path. Empty comment farming, unsolicited bulk DMs, fake testimonials, engagement exchanges, and concealed employee endorsements aren't acceptable editorial practice. No verified Instagram-specific account-demotion rule or blanket automation exemption is established here (directional).
 
-### Comments — genuine questions, not bait
+Invite relevant Collab partners and obtain acceptance before relying on shared publication. Brief creators on proof and boundaries while preserving their voice. Tag actual contributors with permission; don't mass-tag unrelated accounts. Disclose employment, gifts, and paid relationships plainly and use applicable native disclosure controls. Confirm account-specific requirements before publishing sponsored work (directional).
 
-Questions in captions measured +36.7% comments; explicit comment-CTAs +203% (Metricool). But Meta demotes accounts that repeatedly post engagement bait ("tag 3 friends", "comment YES") at the account level — with explicit carve-outs for genuine questions and advice requests. Ask real questions you want answered; skip the vote-farming formats.
+Use founders for decisions they personally own and the brand handle for maintained product information; no verified Instagram founder-versus-brand multiplier supports a universal preference (directional).
 
-### The Originality Line (April 2026 — the big one)
+### Launch-week rhythm
 
-Accounts that repeatedly repost content they didn't create lose recommendation eligibility app-wide — extended in April 2026 from Reels to photos and carousels too. Meta's stated bar for "original": wholly created, or materially edited third-party content (added humor, commentary, voiceover, a take). Watermark-slaps and speed changes explicitly don't qualify. Followers still see demoted content; non-followers never will. Trend participation therefore must carry your original framing — riding a trending format without adding anything is precisely what this policy targets.
+This is an illustrative schedule, not an algorithmic timing rule. T is launch day; shift or skip rows when proof or reply coverage is missing (directional).
 
-### AI Content — what's actually true
+| Illustrative day | Package | First-hours reply plan | Measure |
+|---|---|---|---|
+| T-7 | Story showing the buying problem | Collect wording and objections with consent | Relevant replies |
+| T-3 | Demo Reel; Trial Reel if available | Answer fit questions | Watch time, qualified profile interest |
+| T | Announcement plus Story access path | Assign a human owner for access and purchase questions | Link taps, requested DMs, registrations |
+| T+2 | Proof carousel | Explain conditions behind results | Saves, evidence questions, qualified conversations |
+| T+4 | Objection Reel or staffed Live | Address unresolved limitations | Useful replies, destination actions |
+| T+7 | Use-in-context recap; refresh Highlights | Follow up only with consent | Activation or bookings attributable to the path |
 
-- Meta labels AI content "AI info" (renamed from "Made with AI" July 2024), triggered by C2PA metadata or self-disclosure. AI-modified (not generated) content gets the label tucked in the post menu.
-- Meta has never stated a ranking penalty for the label itself; the only stated demotion in that policy is for fact-checker-rated misinformation. Claims of "80% reach loss for AI labels" trace to SEO blogs, not Meta — ignore them.
-- The real algorithmic risk for AI-assisted content is the originality policy above: templated, mass-produced material is what loses recommendations, however it was made. The audience discount on obviously-AI content is real even where the algorithm is neutral.
-- Ads are different: AI-generated visuals/text/audio in sponsored content require explicit disclosure, and Meta auto-flags.
+## Voice on this platform
 
-### Cadence
+Use supplied captions or a speech transcript to match the author's register in each format. Without samples, use clear conversational prose and functional on-screen labels; don't borrow meme dialect to imply a personality. Preserve natural contractions and fragments without adding typos, fake edits, artificial lowercase, or manufactured anecdotes. Keep on-screen copy short enough to read during the shot; let the caption supply conditions the visual can't carry (directional).
 
-- Consistency compounds: consistent posters measured ~5x engagement per post vs occasional posters (Buffer, n=100K+ accounts). Brands average ~8 Reels/month and rising.
-- Don't dump posts back-to-back — Buffer observed Instagram suppressing some of a burst. Space them.
-- Metrics that matter post-2025: views, reach, sends (impressions and plays no longer exist as metrics). Judge Reels by watch-time-completed and sends-per-reach, not likes.
+Apply the generic voice pass to cover text and every slide, too. Remove contrast-frame hooks, padded triads, staccato stacks, empty suspense such as “Here's the thing” or “Let that sink in,” repetitive emphasis words, tidy moral endings, rhetorical-question openers, and “nobody talks about” claims. Strip miracle-fix stories that erase tradeoffs. Avoid hashtag stacks and emoji bullets. Review em-dashes for density; keep useful punctuation without quotas or camouflage. These are editorial heuristics, not authorship tests (directional; Aborn, 2026-07; Cox, 2026-06; Gichigi, 2026-02).
 
-### What Dies on Instagram
+Make replies sound like an answer to that person. Don't turn every answer into a pitch. Use a fluent local editor for localized idiom; don't manufacture regional speech (directional).
 
-- Single images as a strategy — measured freefall across every study.
-- Reposted TikToks with the watermark — suppressed from Explore/recs since 2021.
-- Aggregator/repost accounts — zero recommendations since April 2026.
-- Hashtag walls — negative measured correlation, no follow-a-hashtag pathway left.
-- Engagement bait — account-level demotion for repeat offenders.
-- Text-card "Reels" (majority-text) and muted video — named in the Recommendation Guidelines.
-- Send-bait ("share this with someone who…" as a formula) — the signal is genuine sends; Mosseri's "don't force it" was aimed at exactly this.
+## Cadence and engagement
 
-## Pre-publish Checklist
+Prefer sustainable production and staffed replies. Buffer's account analysis associated 3–5 weekly posts with about 12% higher reach per post than 1–2, without proving causality (measured, Buffer Frequency, n=2.1M posts/102K accounts, 2025-08). Use account results to adjust; no burst-suppression penalty is established.
 
-- [ ] Format matches objective: Reels for reach, carousel for depth/saves, Story for existing audience
-- [ ] Hook in first 1–2 seconds (Reel) or slides 1 AND 2 (carousel second-chance)
-- [ ] Watch-time budget respected: would a viewer still be there at second 9?
-- [ ] Works muted, has burned-in captions, isn't a text card
-- [ ] No low-res, borders, or other-platform watermarks; own logo OK
-- [ ] Caption front-loads searchable keywords; 3–5 descriptive hashtags max
-- [ ] The send test passes: you can name who would DM this to whom
-- [ ] Original take present — survives the "materially edited?" bar if trend-derived
-- [ ] Genuine question over engagement-bait formula, if soliciting comments
-- [ ] High-stakes hook variants → Trial Reel first, promote the winner
-- [ ] Judged after publish on views/reach/sends, not likes
+For a cold start, test Thursday at 9 a.m., Wednesday at noon, or Wednesday at 6 p.m. as candidates, recording the chosen audience timezone. These are global study leaders, not guarantees in that timezone; use follower activity and reply availability to refine them (measured, Buffer Timing, n=9.6M posts, 2026-07).
+
+Assign reply coverage at publication and during the following days. Remove spam and fraudulent links; escalate sensitive complaints privately with consent. Compare equivalent formats and reporting windows; record actual Insights field names and denominators. Don't substitute public comments for private sends or count registrations as sales (directional).
+
+## What gets suppressed
+
+Accounts primarily reposting unoriginal Reels, photos, or carousels can lose recommendation distribution. Material additions matter; watermark changes, speed changes, and credited screenshots are insufficient. Followers may still see content; licensed publishers are exempt. This doesn't mean non-followers can never encounter it (official, Instagram via TechCrunch, 2026-04).
+
+Other-app logos can limit Reel recommendations; your own logo is allowed (official, Mosseri via Social Media Today, 2024-10). Export a clean master. Keep video legible and avoid borders or text that hides the subject as production craft; don't claim a verified current muted-video penalty (directional).
+
+Use the disclosure tool for digitally created or altered photorealistic video or realistic-sounding audio (official, Meta Midterms, 2026-06 update). Profiles centered on an AI-generated person must use the “AI-generated profile” disclosure; undisclosed profiles face reduced reach, while disclosure itself isn't a penalty for synthetic identity (official, Instagram via TechCrunch, 2026-08). Consult the mechanics reference for post labels and ads; don't infer a general AI-caption ranking penalty.
 
 ## Examples
 
-### Example 1: The send test applied
+All examples are illustrative drafting scenarios. Bracketed facts and access paths require supplied evidence and verification before publication. Directions, quoted outcomes, and first-person claims are not real customer evidence.
 
-Draft caption: "10 productivity tips every founder needs 🚀 #productivity #founder #hustle #entrepreneur #startup #grind"
+### Developer tool: demo Reel
 
-Fails: generic listicle (no identifiable recipient), hashtag wall, AI-cliché energy. Rewrite as a carousel: slide 1 "Your calendar isn't full. It's leaking." — slide 2 cold-open "The 3 leaks nobody audits:" — specific, screenshot-worthy final slide. Caption: "Audited 40 founder calendars this quarter. Same three leaks every time. Which one is yours?" Two hooks, save-bait structure, genuine question, zero tag wall — and it's the post an operator forwards to their co-founder.
+Scenario: a maintainer supplies a recording and confirms the supported boundary.
 
-### Example 2: Trend participation that survives the originality bar
+| Beat | Visual / on-screen copy | Voiceover |
+|---|---|---|
+| Hook | Actual stale-file result: “Find the caller of [symbol]” | “I'm tracing [symbol] after this rename.” |
+| Action | Show the query and result opening | “Here's the match in [file]. Opening it takes me to the call site.” |
+| Limitation | Show the unsupported case | “Generated files still need [manual step].” |
+| Last frame | “Try it on your repository” plus verified access path | “The setup guide is linked in my bio.” |
 
-A trending audio is peaking in your niche. Lazy version: lip-sync the meme format verbatim — recommendation-ineligible territory for repeat offenders since April 2026. Surviving version: same audio, but the on-screen text and voiceover carry your niche's specific version of the joke plus one insight only your account would know. Material edit, original commentary — eligible, and differentiated in a saturated trend.
+Caption: “In this recording, [tool/version] follows [symbol] through a rename in [repository]. Generated files still need [manual step]; the setup guide in my bio covers that boundary.”
+Cover: “Trace a renamed symbol.” Supply accurate subtitles and a description of the demonstrated result.
+
+Why it works: the format rule puts an observable task before the product pitch.
+The provenance rule keeps compatibility and unresolved work visible.
+
+### B2B SaaS: proof carousel
+
+Opening slide: “[Customer]'s approval queue before the routing change.”
+Following slide: “Requests waiting for an owner: [before] to [after].”
+Evidence slide: “[Dated export], measured over [window]. [Other process change] also happened.”
+Boundary slide: “Legal exceptions still need [manual review].”
+Final slide: “The routing worksheet is available through the bio link.”
+
+Caption: “[Customer] shared these approval logs with permission. The queue changed after [intervention], alongside [other change]. We can't isolate the software's effect from this comparison. The worksheet shows the routing rules.”
+Asset brief: crop the approved export without hiding labels; redact private data. Alt text explains the comparison and conditions.
+
+Why it works: independent opening frames follow the carousel rule.
+The proof rule separates an observed change from a causal claim.
+
+### Consumer maker: product photograph
+
+Weak: “Meet the perfect mug for everyone.”
+Revision: “The handle on [mug] leaves room for [demonstrated grip]. I photographed it beside [known-size object] so you can judge the scale. It hasn't been tested for [use]. Dimensions and current stock are linked in bio.”
+
+Asset brief: photograph the actual mug in hand, without a generated product substitute. Alt text: “[Colour] mug held by its handle beside [object], showing [visible feature].” Follow-up Story: demonstrate the grip and answer material-care questions from supplied instructions.
+
+Why it works: the single-image rule lets the physical evidence carry the post.
+The caption rule replaces a universal promise with a visible detail and boundary.
+
+### Local service: objection Stories and requested DM
+
+Opening frame, actual work photo: “Assessing this sofa fabric for on-site cleaning.”
+Following frame: “We need the care label and a patch check before quoting.”
+Final frame: “Reply ‘fabric’ for the photo checklist. A photo alone can't confirm treatment safety.”
+
+Accompanying caption: “Send the care-label photo privately; leave your address out of public replies. The checklist explains what we need before a booking.”
+Requested DM: “Here's the checklist: [verified link]. If you'd like an assessment, may we ask about the fabric and stain?”
+Asset brief: use a consented job photo with no identifying details; caption speech and describe the visible fabric.
+
+Why it works: the CTA rule delivers a named resource before further qualification.
+The voice rule answers a buying concern without inventing a successful treatment.
+
+## Checklist
+
+- [ ] First line works before “more”; opening visual carries the same promise.
+- [ ] The post develops a single idea; runtime and format fit its job.
+- [ ] Every specific is supplied or marked as an example placeholder; remove placeholders before publication.
+- [ ] Cover and grid crops work; carousel entry frames stand alone.
+- [ ] Caption, alt text or visual description, accurate subtitles, contrast, and asset brief are ready.
+- [ ] Audio fits the work and its rights; audio-page context is checked where relevant.
+- [ ] CTA and bio/sticker/DM path work in the account and in-app browser; “no CTA” is deliberate.
+- [ ] Collab acceptance, contributor permission, affiliation, sponsorship, and applicable AI disclosures are checked.
+- [ ] Every example-derived line passes the AI-tell and documented author-voice checks.
+- [ ] Approved owned-channel references to the Instagram handle are prepared where relevant.
+- [ ] Story follow-up and human reply coverage are assigned; measurement distinguishes interest from sales.
 
 ## References
 
-- Instagram Ranking Explained (Mosseri, official): https://about.instagram.com/blog/announcements/instagram-ranking-explained
-- Meta Recommendation Guidelines + Transparency Center (engagement bait, originality): https://transparency.meta.com
-- Meta AI-labeling policy: https://about.fb.com/news/2024/04/metas-approach-to-labeling-ai-generated-content-and-manipulated-media/
-- Measured figures: Socialinsider 2026 (n=35M posts), Metricool 2026 (n=24.4M posts / 375K accounts), Rival IQ 2026 benchmark, Buffer format/timing studies (n=4M posts), Emplifi collab study (2024). ER figures are per-follower unless stated; reach figures are view-based — the denominators differ by study and that difference drives the format guidance above.
-- Numbers dated 2025–2026; platform policy shifts fast — re-validate the originality-policy scope, Trial Reels eligibility, and caption-links rollout (Meta Verified test, March 2026) before advising on them as current.
-- Companion skills: `content-voice` (kill the AI markers), `trend-instagram` for harvesting what's currently working.
+- [Mosseri signals](https://www.socialmediatoday.com/news/instagram-shares-algorithm-insights-2025/738034/), 2025-01; [logos](https://www.socialmediatoday.com/news/instagram-clarifies-including-your-own-logo-on-a-reel-is-ok/730852/), 2024-10.
+- [Metricool study](https://metricool.com/press-release-instagram-study-2026/) and [Trends](https://metricool.com/instagram-trends/), 2026-06.
+- [Socialinsider benchmark](https://www.socialinsider.io/social-media-benchmarks/instagram), 2026-02, Q2 update; [Reel length](https://www.socialinsider.io/blog/instagram-reels-length/), 2026-07.
+- [Meta Reels Insights](https://about.fb.com/news/2023/04/instagram-reels-trending-audio-and-gifts-updates/), 2023-04.
+- [Buffer frequency](https://buffer.com/resources/how-often-to-post-on-instagram/), 2025-08; [timing](https://buffer.com/resources/when-is-the-best-time-to-post-on-instagram/), 2026-07.
+- [Originality](https://techcrunch.com/2026/04/30/instagram-restricts-reach-of-content-aggregators-in-new-crackdown/), 2026-04; [AI profiles](https://techcrunch.com/2026/08/31/instagram-puts-new-limits-on-undisclosed-ai-profiles/), 2026-08.
+- [Meta Midterms disclosure](https://about.fb.com/news/2026/02/meta-prepares-for-2026-us-midterms/), updated 2026-06.
+- [Aborn](https://emilyaborn.com/ai-writing-tells-what-they-cost-you/), 2026-07; [Cox](https://huntingthemuse.net/library/how-to-tell-if-writing-is-ai), 2026-06; [Gichigi](https://tahigichigi.substack.com/p/12-red-flags-of-ai-writing-and-how), 2026-02.
+- Re-validate when: feature names or limits change; policy or ranking guidance changes; new vendor reports arrive; account eligibility or link controls differ.
+Validated: 2026-09

@@ -1,115 +1,131 @@
 ---
 name: trend-youtube
 title: "YouTube Trend Harvester Playbook"
-description: "Platform-specific intel for harvesting YouTube trends after the July 2025 Trending-page removal — the replacement stack (category Charts, Studio Inspiration tab with content gaps, Hype, the experimental Research tab with outlier multipliers), outlier-hunting methodology (channel-relative multiples, never absolute views; format outliers over timing outliers; one is luck, three is a strategy), Google Trends' separate YouTube Search dataset, Shorts trend surfaces, and a scoring rubric built on views-vs-channel-baseline. Activates in browser sessions whenever the user names YouTube."
+description: "Harvest YouTube topic demand, channel-relative outliers, buyer questions, and reusable format ideas. Activate for YouTube trend scans, competitor or launch monitoring, and evidence-backed content briefs. Separate observed public data from private analytics and turn findings into original angles with explicit limitations."
 license: Apache-2.0
-compatibility: "Octoweb browser access. Charts and Google Trends work logged-out; Studio Inspiration tab and Hype data require the user's signed-in session; outlier tools (1of10, ViewStats, vidIQ) are third-party freemium."
-capabilities: octoweb memory-read memory-write
+compatibility: "Requires browser and network access. Account-specific Studio research requires an authorized signed-in session."
+capabilities: browser memory-read memory-write
 domains: browser
 rules:
   - session(trend) content(youtube)
   - match(\byoutube\s+(trend|trends|trending|harvest|brief)\b)
   - match(\b(harvest|scan|analyze)\s+youtube\b)
+  - match(\byoutube\s+(competitor|launch)\s+(research|monitoring|scan)\b)
   - session(trend) match(\boutlier\s+(video|videos|hunting)\b)
 ---
 
 ## Overview
 
-This skill carries the YouTube-specific mechanics the trend-harvesting agent needs. YouTube killed the global Trending page in July 2025 ("more micro-trends than ever… discovery shifted to personalized recommendations"), so YouTube trend-harvesting is now outlier-hunting across niches plus the official replacement surfaces — there is no single chart to read. The agent owns the shared DNA loop (memory → harvest → score → cluster → DNA → hook bank → brief); this skill plugs in the YouTube parameters.
+Build a reproducible evidence brief for a specific audience, topic and campaign stage. Collect current URLs and observable facts, compare similar uploads, and identify what could be adapted with the user's own proof. Publishing and scriptwriting are downstream steps.
+
+Don't turn a public breakout into a claim about retention, conversion, or algorithm causation. Separate observation, calculation and interpretation in every recommendation.
 
 ## Mental model
 
-- Ranking is per-video and per-viewer ("the algorithm follows the audience"; discovery is pull, not push). A breakout is therefore a statement about audience demand, not channel authority — which is exactly what makes outliers harvestable: the demand transfers, the channel doesn't need to.
-- The outlier is the unit of signal: a video doing 3–10x+ its own channel's baseline. Absolute view counts are meaningless across channels; multiples are comparable everywhere.
-- Format outliers transfer; timing outliers don't. A repeatable format/structure that broke out is a strategy; a news-cycle or controversy spike is an expired lottery ticket. Classify before recommending.
-- One outlier is luck; three similar outliers across independent channels is a repeatable pattern — the same 3-instance bar the agent applies on every platform, here it's the core method.
-- Finding the outlier is not the win: the win is converting it into an original title/thumbnail/angle. Every recommendation carries its transformation, or it's a plagiarism instruction.
-- Shorts and long-form are separate markets with separate surfaces (Shorts has its own Trends page) and wildly different economics (~$0.05 vs ~$2.50 median RPM) — label every finding with its format lane.
+Treat channel-relative performance as a useful comparison, not a transferable guarantee. Compare similar formats at comparable ages and record the channel's size and context. A launch, news event or paid campaign can confound the apparent format advantage (directional).
 
-## Rules
+Use separate Shorts and long-form baselines. Metricool found format, channel-size and frequency associations that differed across cohorts (measured, Metricool Shorts, n=799,718 videos, 2026-08). Don't infer that Shorts subscribers convert at a known rate or that adopting Shorts causes long-form decline.
 
-### Harvest surfaces (run in parallel)
+Public views count playback starts; they don't establish qualified demand (official, YouTube performance FAQ, 2026-09). Qualified Shorts views exclude loops and require engaged views on public Shorts (official, YouTube qualified metrics, 2026-08). Keep public counts separate from private engagement and eligibility metrics.
 
-| Surface | URL / access | Yields |
+## Harvest procedure
+
+### Establish scope and access
+
+Record the audience's job, language, geography, campaign stage, competitor set and research question. Read relevant prior observations when available. Use the user's authorized browser session for private surfaces; otherwise continue with public data and mark private metrics unavailable.
+
+The evidence set does not establish current Charts category coverage, the legacy Trending-page status, Studio research-tab names, Hype eligibility, or the Google Trends query parameter. Discover these in the current interface rather than treating remembered URLs or menu paths as confirmed platform facts.
+
+### Discover surfaces and capture working URLs
+
+| Candidate surface | Navigation procedure | Capture or fallback |
 |---|---|---|
-| YouTube Charts | `https://charts.youtube.com` | Official category trends (music, podcasts, trailers) — the Trending page's replacement |
-| Niche search, filtered | `https://www.youtube.com/results?search_query=<topic>` → apply Filters UI: upload date = this week, sort = view count | Current high-performers per topic (the `sp=` filter token in the resulting URL is reusable for repeat harvests) |
-| Anchor channels | `https://www.youtube.com/@<handle>/videos` | Grid shows views + age → channel baseline and outliers by eye |
-| Shorts Trends page | Shorts feed → pause → Trends tab (app/web, signed-in) | Trending audio + formats for the Shorts lane |
-| Google Trends, YouTube dataset | `https://trends.google.com/trends/explore?gprop=youtube&q=<term>` | Search demand INSIDE YouTube — a different dataset than web search; sort related queries by Rising |
-| Studio Inspiration tab | user's Studio session → Inspiration | Search trends, Breakout clips, and content gaps ("Top searches for this topic" → Show all → Content gaps) |
-| Hype | signed-in surface | Viewer-amplified emerging videos from sub-500K channels — early-signal pool |
-| Outlier tools | 1of10 / ViewStats / vidIQ Outliers (freemium) | Pre-computed outlier multipliers when available |
+| Public YouTube search | Open `https://www.youtube.com/`, enter the literal buyer task, inspect available filters | Copy the resulting URL and visible filter settings; don't construct or reuse an opaque filter token without checking it |
+| Anchor and competitor channels | Follow the channel link from a verified result; open the relevant upload-format view | Copy the resolved channel and video URLs, displayed views and upload dates |
+| Category charts, if present | Follow current YouTube navigation to the category surface relevant to the brief | Record its exact title, scope, country and resolved URL; don't assume a music endpoint covers podcasts or trailers |
+| Google Trends | Open `https://trends.google.com/`; select YouTube Search if offered | Record the selected search property, region, time range and generated URL; omit corroboration if the YouTube property cannot be verified |
+| Studio research, if accessible | Inspect the authorized account's current research and audience surfaces | Copy exact tab and card labels; inspect any searches or gaps shown. Don't assume Inspiration contains research cards |
+| Shorts discovery, if offered | Inspect the current player and any visible trend or audio entry point | Capture the exact path and locale. Don't prescribe a pause-to-Trends route across app and web |
+| Hype or experimental outlier tools, if offered | Inspect visible eligibility information and the account's available controls | Record the displayed definition and restrictions; omit absent features without guessing a subscriber threshold |
+| Third-party outlier service, if authorized | Use available results with their disclosed methodology | Preserve source and denominator; independently inspect candidate videos |
 
-Open 4–8 in one parallel block, snapshot, scrape, close. When the user's signed-in session is available, the Inspiration tab's content gaps (high search volume, low supply) are the highest-value single pull — it's YouTube telling you unmet demand directly. YouTube is also testing a Research tab with native outlier multipliers (4x–132x in the UI) and a "Watched by my Viewers" filter — use it when the account has access.
+These are conditional navigation procedures, not assurances of availability. An unavailable surface is a coverage limitation, not evidence of absent demand. Close only research tabs you opened.
 
-### Computing outliers by hand (when tools aren't available)
+### Record observations
 
-Channel baseline = median views of the channel's last ~10 uploads of the same format (Shorts and long-form baselines computed separately — the grids mix them). Outlier multiple = candidate views ÷ baseline. Thresholds: 3–5x notable, 5–10x strong, 10x+ exceptional. Recency-weight: an outlier from this month is an opportunity; one from last year is a format that may already be saturated — check whether recent imitators still outperform.
+For each candidate, save its resolved URL, channel, title, thumbnail description, publication date, observation timestamp, displayed views, format, language, duration and relevant audience context. Quote only the passage needed to establish the finding; inspect the video or transcript before claiming that its packaging promise is delivered.
 
-### Scoring rubric (YouTube-specific signals)
+Record representative buyer questions and objections from comments with their source URLs. Distinguish commenters' assertions from verified product facts. For competitor launches, record the shown feature, actual availability statement, CTA destination, commercial relationship if stated, and unresolved objections. Don't infer sales from praise or a busy thread (directional).
 
-Virality axis 0–5:
-- Outlier multiple vs channel baseline — the primary signal, never absolute views.
-- Independent replication — the same format/topic breaking out on 3+ unrelated channels scores structurally higher than one 100x monster.
-- Velocity — views ÷ days-since-upload against that channel's typical accumulation; recent-and-rising beats big-and-old.
-- Demand corroboration — Google Trends (YouTube dataset) rising, or the topic appearing in Inspiration content gaps.
+If private analytics are authorized, copy the metric name and date range exactly. “How many chose to view” means viewed versus swiped away (official, YouTube Shorts analytics, 2026-09). The Shorts player update uses hearts and the feedback controls “Not Interested” and “Don't recommend this channel” (official, YouTube Shorts experience, 2026-06). Don't relabel unavailable feedback as dislikes or invent a healthy swipe-away band.
 
-Niche-fit axis 0–5 — same scale the agent applies everywhere. Drop below 3 on either axis.
+### Compare and classify
 
-### Classification gates (apply to every cluster)
+Compute the baseline as the median of a declared set of comparable uploads. Record every baseline video and its observation age. Candidate views divided by that median gives the outlier multiple; if the denominator is missing or zero, report the multiple as unavailable. Avoid universal multiple cutoffs (directional).
 
-- Format vs topic vs timing: format outliers (structure/packaging pattern) transfer across niches and time; topic outliers transfer while search demand holds (check Trends trajectory); timing outliers (news, drama, platform moments) do not transfer — report them as context, never as recommendations.
-- Lane: Shorts vs long-form, scored against lane-appropriate baselines and briefed separately (different economics: a Shorts trend feeds discovery; a long-form trend feeds revenue).
-- Evergreen vs decaying: is the format's newest strong instance <30 days old? If all strong instances are old, the format is likely saturated — verify with one fresh imitator's numbers before recommending.
+Prefer comparable time-since-upload windows. If only current totals exist, state the age mismatch. Exclude dissimilar formats and label selection rules before comparing. Public counts do not reveal traffic source, paid support, private retention or unique buyers; treat these as unknown unless source evidence supplies them.
 
-### The transformation requirement
+| Finding | Decision |
+|---|---|
+| Repeated packaging or structure across independent relevant channels | Propose a test using original proof; replication strengthens the hypothesis but doesn't establish transfer |
+| Durable task query with current supporting examples | Propose a buyer-intent tutorial and show the demand evidence |
+| News or controversy spike | Report the timing dependency; recommend only if the brief can act while it remains relevant |
+| Isolated breakout or weak baseline | Mark tentative; collect corroboration before calling it repeatable |
+| High views with irrelevant audience or uncheckable promise | Exclude from recommendations and state the reason |
 
-Every recommended angle names: the source outlier(s) (URL + multiple), the extracted DNA (what structurally made it work — the packaging pattern, not the topic surface), and the original transformation for the user's niche. "Make a video like X" without the transformation line fails both YouTube's reused-content policy and the brief's quality bar. Titles/thumbnails are re-derived, never copied — egregious-clickbait enforcement (Dec 2024) also applies to inherited packaging that over-promises.
+These classification decisions are craft judgments (directional). Rank candidates by evidence quality and audience fit, with production feasibility as a gate. Don't assign precise scores that imply validated thresholds.
 
-### Dead signals (discount when harvested)
+### Return an actionable brief
 
-- Timing/controversy spikes presented as formats — expired opportunities
-- Mass-produced template channels (near-identical uploads) — "inauthentic content" demonetization class; their volume distorts baseline math, exclude them
-- Clickbait-mismatch packaging — removal-eligible since Dec 2024; a breakout riding an undelivered promise is not a repeatable strategy
-- AI-slop breakouts — measured ~70% lower retention class; a view spike with cratered satisfaction doesn't transfer
-- Pre-July-2025 "Trending page" methodology in any source — the page no longer exists; treat advice built on it as stale
+Each recommendation includes source observations, the explicit baseline calculation, corroboration or its absence, audience fit, and the original transformation. Describe the structural pattern as a hypothesis. Name the user's proof needed to execute it and a bounded outcome to evaluate (directional).
+
+For a launch brief, separate the announcement opportunity from proof and objection-answer opportunities. Suggest a next-step destination only when verified. Include substantive buyer questions even when the source upload is not a view outlier (directional).
+
+Save permitted observations with timestamps for later comparison. Return observed facts and source URLs before interpretation, then limitations and the next useful research check. Don't reproduce a publishing-policy or dead-pattern checklist here.
 
 ## Examples
 
-### Example 1: Outlier write-up shape
+### Workflow opportunity
 
-```
-Channel @midtier-dev (baseline ~8K views/video) — "I replaced our CI with 3 bash scripts" — 214K views, 11 days old → 26.7x outlier
-Corroboration: same "boring tool replaces fancy stack" format at 9.4x (@platform-eng) and 6.1x (@sre-diaries) within 3 weeks; "CI alternatives" rising on Google Trends (YouTube dataset, US, 12mo)
-Class: FORMAT outlier (contrarian simplification + named stack), long-form lane
-DNA: specific cost/complexity number in title, before/after thumbnail split, first-person stakes
-Transform for user niche: "I replaced our RAG pipeline with grep" — same skeleton, user's domain, packaging re-derived
-```
+Illustrative record, not an actual harvest:
 
-### Example 2: Refusing a timing outlier
+Candidate: [video URL], [channel], [observation timestamp], [format].
+Baseline: [comparable upload URLs and ages]; median [views].
+Calculation: [candidate views] divided by [baseline views] = [multiple].
+Corroboration: [independent source URLs], or “unavailable.”
+Buyer question: [sourced comment and URL].
+Interpretation: a reproducible failure diagnosis may fit the audience (directional).
+Transformation: demonstrate the user's documented failure and its limits using original footage; don't inherit the source creator's personal story.
 
-Harvest finds a 130x outlier reacting to a platform outage. Trends shows the query already collapsing; no second channel sustains the format a week later. Verdict: timing outlier — reported in the brief's context section as evidence of audience interest in reliability topics, explicitly NOT recommended as a video to imitate.
+### Timing-dependent result
+
+Illustrative decision: a platform-outage reaction has unusually high public views, but the available examples depend on that outage. Record it as a timing-dependent topic. A reliability tutorial remains only a proposed transformation until supported by current buyer questions and the user's own evidence (directional).
 
 ## Checklist
 
-Before returning the YouTube section of the brief:
-- [ ] Charts + niche search + anchor channels harvested; Inspiration content gaps pulled when a signed-in session exists
-- [ ] Google Trends checked on the YOUTUBE dataset (gprop=youtube), not web search
-- [ ] Every cited video has channel, baseline, outlier multiple, age, lane (Shorts/long-form), and URL
-- [ ] Multiples computed vs same-format channel baseline — no absolute-view comparisons anywhere
-- [ ] Every cluster classified format/topic/timing; timing outliers excluded from recommendations
-- [ ] 3+ independent instances behind every recommended pattern (one outlier = luck)
-- [ ] Every recommendation carries source DNA + original transformation — no "copy this video"
-- [ ] Template-farm channels excluded from baselines and clusters
-- [ ] Outlier records (channel, multiple, date) logged to memory for cross-session velocity
-- [ ] All background harvest tabs closed before returning the brief
+- [ ] Scope and access recorded; unavailable surfaces listed without fabricated findings.
+- [ ] Harvest URLs copied from the current interface; Google Trends property confirmed before citing YouTube demand.
+- [ ] Candidate and baseline records include observation timestamps, comparable formats and upload ages.
+- [ ] Public observations separated from private metrics; unknown retention and conversion remain unknown.
+- [ ] Calculation reproducible; no arbitrary universal outlier or swipe-away cutoff.
+- [ ] Recommendation includes corroboration, timing dependency, buyer fit and original transformation.
+- [ ] Launch monitoring includes verified CTA paths and unresolved buyer objections when relevant.
+- [ ] No copied personal claims; examples and missing fields explicitly marked.
+- [ ] Permitted observations saved; research-created tabs closed.
 
-## Composition / References
+## References
 
-- Pairs with `social-youtube` (content domain) for packaging/structure once the brief lands — the DNA extracted here plugs into its title/thumbnail/hook rules.
-- Trending-page removal + Charts replacement: YouTube announcement July 2025 (TechCrunch/Tubefilter coverage); Hype + Inspiration tab: official Studio features; experimental Research tab with outlier multipliers: Tubefilter, Aug 2026 — in limited testing, re-check availability.
-- Google Trends YouTube filter: official Google Search Central tutorials (Sept 2024).
-- Outlier tools landscape (third-party, freemium): 1of10, ViewStats, vidIQ Outliers, OutlierKit, TubeLab. Methodology (channel-relative multiples, format-vs-timing, 3-instance rule) is practitioner consensus — directional by nature; the harvest itself is the evidence.
-- Beware fabricated "algorithm update timelines" circulating in outlier-tool marketing content — verify any claimed YouTube change against YouTube's own blog/Creator Insider before citing.
-- Use the agent's universal output schema; this skill only supplies the parameters that go into it.
+Dates on undated Help pages denote validation month.
+
+- [YouTube performance FAQ](https://support.google.com/youtube/answer/12220281?co=GENIE.Platform%3DDesktop&hl=en), undated; checked 2026-09.
+- [Qualified Shorts metrics](https://blog.youtube/news-and-events/youtube-monetization-qualified-watch-hours-shorts-views/), 2026-08-12.
+- [YouTube Shorts analytics](https://support.google.com/youtube/answer/12942217?co=YOUTUBE._YTVideoType%3Dshorts&hl=en), undated; checked 2026-09.
+- [Shorts player update](https://blog.youtube/news-and-events/youtube-shorts-experience-updates-features/), 2026-06-25.
+- [Metricool Shorts study](https://metricool.com/youtube-shorts-algorithm/), 2026-08-05; observational comparisons.
+
+Re-validate when:
+- Harvest surfaces, category coverage, URLs, account access or feature names change.
+- View definitions, player controls or monetization metrics change.
+- New reports revise comparative baselines or methodology.
+
+Validated: 2026-09

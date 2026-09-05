@@ -1,9 +1,9 @@
 ---
 name: trend-hackernews
 title: "Hacker News Trend Harvester Playbook"
-description: "Platform-specific intel for harvesting Hacker News trends — point-velocity ranking, harvest URLs (front page, new, Show, Ask, Algolia), flag-tax mechanics, title rules from HN guidelines, Show HN / Ask HN / link-submission patterns, anchor commenters and dead patterns in 2026. Activates in browser sessions whenever the user names HN / Hacker News."
+description: "Harvest Hacker News discussions and inspectable artifacts into a dated, source-linked brief. Activate when researching HN trends, prior submissions, launch examples, or audience objections. Separate observed attention from ranking hypotheses and product demand."
 license: Apache-2.0
-compatibility: "Octoweb browser access. Logged-out works for all front-page and Algolia surfaces; logged-in needed to see [dead] posts and to submit."
+compatibility: "Requires browser access to Hacker News and Algolia. Inspect removed items with a logged-in profile configured for showdead."
 capabilities: octoweb memory-read memory-write
 domains: browser
 rules:
@@ -17,157 +17,146 @@ rules:
 
 ## Overview
 
-This skill carries the platform-specific mechanics the trend-harvesting agent needs to harvest Hacker News — current ranking signals (point velocity × comment depth × flag-tax × age-decay), harvest URLs, title rules from HN guidelines, Show HN / Ask HN / link-submission patterns, anchor commenters, dead patterns. The agent owns the shared DNA loop; this skill plugs the HN parameters in.
+Harvest HN evidence for a specific topic, audience, and decision. Return a dated brief with inspectable sources and limits on what the observations establish. Publishing and human-authored responses are downstream work; don't produce pasteable posts or contact commenters.
 
 ## Mental model
 
-HN is one audience with one strict culture: skeptical, technical, anti-marketing, anti-listicle. The ranker is point velocity × comment depth × flag-tax × age-decay. Point velocity in the first 90 minutes is the entire game — a post is either on the front page or dead after that. Comments boost ranking sub-linearly but heavily — a post with 50 points and 80 comments often outranks one with 100 points and 5 comments. Flags are anonymous and powerful — 3–5 flags can sink a climbing post. A title that wins on Reddit dies on HN in 4 minutes if it editorializes or sounds like marketing.
+Separate attention from usefulness. Compare public points and comments within a declared sample, then read the conversation to find evaluation problems and unanswered questions. Don't infer ranking weights from correlations, profile karma, domain names, or a popular commenter (directional).
 
-## Rules
+HN describes ranking as points divided by a power of age, with flags, anti-abuse software, overheated-discussion demotion, account or site weighting, and moderator action also affecting placement. The FAQ says higher submitter karma doesn't make posts rank higher (official, HN FAQ, 2026-09). Don't convert these mechanisms into invented constants or a comment-to-point target.
 
-### Current ranking signals (2026)
+Quiet submissions belong in the sample: the median Show HN received 2 points and 0 comments in a recent corpus (measured, Jonno, n=41,301 submissions, 2026-07). A front-page-only collection can't estimate typical outcomes. Comment volume isn't evidence that replies boost rank; don't label a rank drop a penalty without direct evidence.
 
-| Signal | Effect |
-|---|---|
-| Points per hour, first 90 min | Primary signal. >30/h = front-page-bound, >60/h = breakout |
-| Comment-to-point ratio | Discussion signal. >30% high, >50% contested |
-| Survival past 90 min | Most posts die in new. Still on front page at 4h = winner |
-| Flag tax | Visible `[flagged]` or sudden rank drop despite point accumulation |
-| Domain authority bias | github.com / arxiv.org / personal blogs get small lift; SaaS company blogs get tax |
-| Submitter karma band | Visible on profile; low-karma submitters get more flag-prone |
+## Harvest procedure
 
-### Harvest surfaces (run in parallel)
+### Define the scope
 
-| Surface | URL | Yields |
+Record the research question, relevant audience, candidate topic terms, and intended product-evaluation decision. Define time bounds and comparison formats before selecting examples. Use the same bounds when comparing angles; keep evergreen exemplars separate from the current sample (directional).
+
+### Open the relevant surfaces
+
+All HN paths below use https://news.ycombinator.com. Follow the live navigation and record the resolved URL. The directory names and descriptions come from HN's list directory and FAQ (official, HN Lists and HN FAQ, 2026-09).
+
+| Surface | URL | Use and limit |
 |---|---|---|
-| Front page | `https://news.ycombinator.com/news` | Top 30 right now |
-| Page 2–3 | `https://news.ycombinator.com/news?p=2` / `?p=3` | Decaying posts — what's losing velocity |
-| New | `https://news.ycombinator.com/newest` | First-30-min submissions — most die here |
-| Show HN | `https://news.ycombinator.com/show` | Show-format breakouts |
-| Ask HN | `https://news.ycombinator.com/ask` | Discussion-format breakouts |
-| Best (recent) | `https://news.ycombinator.com/best` | Highest-point posts of the day |
-| Algolia, last 24h, by topic | `https://hn.algolia.com/?dateRange=last24h&query=<topic>&sort=byPopularity` | Topic-filtered by score |
-| Algolia, last week, by topic | `https://hn.algolia.com/?dateRange=pastWeek&query=<topic>&sort=byPopularity` | 7-day niche window |
-| Algolia all-time on topic | `https://hn.algolia.com/?query=<topic>&sort=byPopularity` | Durable-angle reference |
+| Front page | https://news.ycombinator.com/news | Record current placement; follow More for later pages without assuming they're all decaying. |
+| New submissions | https://news.ycombinator.com/newest | Include overlooked work; don't infer an age cutoff from inclusion. |
+| New Show HN | https://news.ycombinator.com/shownew | Sample new artifacts before selection into the main Show feed. |
+| Show HN | https://news.ycombinator.com/show | Selected Show HNs; don't treat as the full population. |
+| New Ask HN | https://news.ycombinator.com/asknew | Sample new text submissions and genuine questions. |
+| Ask HN | https://news.ycombinator.com/ask | Questions and other text submissions; inspect the actual format. |
+| Best | https://news.ycombinator.com/best | Highest-voted recent links, not a calendar-day leaderboard. |
+| Launches | https://news.ycombinator.com/launches | YC launches; separate this curated program from ordinary Show HN. |
+| Highlights | https://news.ycombinator.com/highlights | Selected comments from across years; use for depth and register, not current trend frequency. |
+| Second-chance pool | https://news.ycombinator.com/pool | Record pool inclusion when visible; don't infer the original submission's trajectory. |
+| Repost invitations | https://news.ycombinator.com/invited | Overlooked links invited to repost; don't treat an invitation as a self-serve entitlement. |
+| Hiring threads | https://news.ycombinator.com/whoishiring | Locate the relevant recurring thread and read its own instructions. |
+| Algolia | https://hn.algolia.com/ | Search topic terms and prior URLs; set filters in the live interface. |
 
-Run 5–8 in parallel.
+Ask and Show have a small points threshold before inclusion in their main feeds; their new feeds cover incoming submissions (official, HN FAQ, 2026-09). Don't assign a numeric threshold.
 
-### Scoring rubric (HN-specific signals)
+For Algolia, open the base search URL, enter the topic, choose the requested date range and sort in the interface, then copy the URL the interface produces. Verify the visible filter state and returned timestamps. Don't hand-assemble remembered last24h or pastWeek parameter values. Record exact window bounds, sort choice, returned count, and whether pagination was exhausted; if the interface fails, report the missing coverage. This is a reproducibility procedure, not a claim about undocumented query parameters (directional).
 
-Virality axis 0–5:
-- Point velocity (pts/hour in first 4h) — primary
-- Comment-to-point ratio
-- Survival past 90 min on front page
-- Flag-tax presence — visible `[flagged]` or rank drop
-- Domain authority — github / arxiv / personal blog get bonus, SaaS-blog gets tax
+Repeat for the product URL and distinctive title phrases to find previous submissions. Separate retries, materially changed releases, and articles that merely mention the same technology (directional).
 
-Niche-fit axis 0–5 — universal scale. Note HN's niche shifts weekly; weight against last-week saturation.
+### Read before classifying
 
-### Title rules (HN guidelines + 2026 observed reality)
+For each candidate, record the verbatim title, item URL, destination, submitter handle, submission timestamp, collection timestamp, points, comments, observed feed placement, and literal visible status. Mark unavailable values unknown. Follow the source link and read relevant reply branches before describing the claim or audience response (directional).
 
-DO:
-- Use the article's exact title for link submissions (HN guideline)
-- Use precise, specific noun phrases
-- Lead with the artifact, not the actor
+Record author context as submission text or first comment, whichever is present. Show HN moderator guidance accepts either placement if submission text doesn't appear; it sets no mandatory first-comment deadline (official, Show HN Tips, 2026-09).
 
-DO NOT:
-- ALL CAPS or excessive punctuation (auto-flags)
-- Editorialize beyond the article's own phrasing
-- Use marketing-speak ("revolutionary," "game-changer," "unleash," "groundbreaking")
-- Add a year suffix unless the article is dated
-- Use question titles unless Ask HN
+Inspect whether strangers can try the work. Show HN excludes landing pages, signup-only pages, newsletters, and ordinary blog posts, and asks makers to be available (official, Show HN Guidelines, 2026-09). Record pricing visibility and evaluation barriers as product-readiness observations, not automated penalty causes (directional).
 
-Show HN pattern: `Show HN: <noun phrase, what it is> — <one-clause clarifier if needed>`
-Ask HN pattern: `Ask HN: <direct question, no preamble>`
+Read for reusable evidence: the question a prospective user asks, an implementation report, a specific objection, or a limitation the maker acknowledges. Record the source comment and distinguish the author's claim from independent corroboration. Don't copy another person's first-person experience into a writing brief as the user's experience (directional).
 
-### Body / first-comment patterns
+### Compare without inventing causality
 
-Show HN — first author comment with:
-- 3–5 line context (what it is, what problem it solves, why you built it)
-- Pricing transparency if commercial (free for X, paid for Y) — opacity flags
-- Tech stack mention if relevant
-- Honest limits ("doesn't yet do X") — preempts critical comments
+| Evidence available | Permitted inference |
+|---|---|
+| A single timestamped snapshot | Report visible counts and age; don't call lifetime average points an early velocity curve. |
+| Repeated snapshots | Calculate change in visible points divided by elapsed time; label the interval and missing observations. This arithmetic isn't a model of HN ranking. |
+| Similar subject across sampled threads | Compare questions and proof; describe repetition within the searched scope rather than declaring universal saturation. |
+| A rank drop | Report the observed movement. Leave the cause unknown. |
+| A flagged or dead label | Record the literal state; don't invent a flag count, account diagnosis, or detection input. |
+| Self-reported signups or purchases | Attribute them to the author with the stated window; don't infer paid adoption from comments or stars. |
 
-Ask HN — body sets up the question with 3–6 lines of concrete context (specific situation, what you tried, where you're stuck). Vague Ask HN dies.
+The table is an analysis procedure (directional). Label every measurement with its source name, actual reviewed scope, and collection month; the specimen below shows the format. Label interpretive recommendations “(directional)” and omit precise numerical prescriptions without evidence.
 
-Link submissions — no body needed. First-comment from submitter sometimes worth it if the article is dense.
+For removed items, check the item page and profile showdead setting; dead content is hidden by default (official, HN FAQ, 2026-09). Don't claim that logging in alone reveals every removed post. Missing pages and inaccessible sources are coverage gaps, not negative findings.
 
-### Dead patterns (flagged / killed reliably)
+## Launch evidence and handoff
 
-- "I built X with AI" without substantive demo
-- Listicle blog posts ("10 tools for ...")
-- LinkedIn-style motivational
-- Recycled OpenAI / Anthropic press releases without analysis
-- Pure SaaS launch posts not in Show HN format
-- Anything reading as "ChatGPT wrote this" / generative-content tells
-- Self-promotional past Show HN format
+Keep approved Launch HN separate: it is a curated, one-time YC program with an agreed day and front-page placement (official, Launch HN Instructions, 2026-09). Copy observed batch codes verbatim without generating a current-code list or a scheduling rule.
 
-### Anchor commenters
+For Show HN, report the audience problem, artifact, available proof, desired action, and destination. Include commercial terms, affiliation, and remaining limits as observations. Suggest a missing-proof question when needed. Don't transform the harvest into a launch copy template (directional).
 
-Specific high-karma users reliably comment on niche threads. Identify them during harvest — their participation often signals the post will survive the front-page filter. Do not @-mention them in the post (HN doesn't support that culturally) but note them for the user's awareness.
+Use founder availability as the scheduling input. Treat weekday audience overlap as an experiment rather than asserting a universal best hour (directional). Response coverage can extend beyond the opening burst: the median cumulative curve reached 50% of comments at 7.2 hours and 90% at 26 hours (measured, Jonno, n=2,066 Show HNs with at least 10 comments, 2026-07). These are discussion-subset observations, not survival gates or optimal posting times.
 
-### Timing
+Don't recommend community voting, booster comments, or asking friends to participate. HN prohibits soliciting votes, comments, or submissions (official, HN Guidelines and Show HN Guidelines, 2026-09). Note a useful contributor's public evidence only when it bears on the research question; don't turn handles into an outreach or influence list.
 
-- Best windows: Tue–Thu 8–11 AM ET. Weekend mornings work for personal-blog technical writing.
-- Late Friday and weekends: slower for hard-tech, faster for opinion pieces.
-- Post then be available — first 90 minutes the submitter must answer top comments.
+## Brief output
 
-### Saturated-angle detection
+Return the scope and coverage limits before the candidate table. For each useful example, include the source and collection time, factual observation, possible lesson, and counterevidence. Keep title text verbatim; for linked articles, flag unexplained differences from the source headline rather than generating alternatives (official, HN Guidelines, 2026-09).
 
-HN's tech-niche saturation cycles fast. Run Algolia "pastWeek" search on the user's topic terms. If 5+ front-page posts hit the same angle in the last 7 days, mark saturated. Common 2026 saturated angles in agents / LLM space: "Why we moved off OpenAI / off Anthropic," "Why we built our own RAG," "GPT-X benchmark results," generic "agent failure" post-mortems without specifics.
+Group substantive objections by evaluation problem, with links to the supporting comments. Separate native attention counts from destination conversion evidence. End with what the author needs to supply and which sources remain inaccessible (directional).
+
+HN prohibits generated or AI-edited text in comments, and moderator guidance extends the hand-writing requirement to Show HN text (official, HN Guidelines and Show HN Tips, 2026-09). Deliver research notes; don't propose disguising AI authorship.
 
 ## Examples
 
-### Example 1: Front-page post with full DNA call
+### Illustrative artifact record
 
-Bad — count without context:
-```
-Show HN post got 400 points yesterday.
-```
+This is a schema specimen, not a real result. Brackets must be replaced with observed evidence in a delivered brief.
 
-Good — velocity, flag-state, domain, anchor commenters labeled:
-```
-"Show HN: {{tool name}} – local agent eval harness"
-412 pts / 187 comments / 5h on front page / 82% upvote-implied / not flagged
-Submitter: {{handle}} (karma 3,400 — credible)
-Domain: github.com — domain trust bonus
-Front-page entry: 14 minutes after submission (very fast climb)
-Points/hour first 4h: ~75/h (breakout band)
-Anchor commenters participating: {{handle1}}, {{handle2}} — high-karma niche regulars
-Title type: Show HN, noun phrase + one-clause clarifier
-First-comment author post: 5 lines — what it is, problem it solves, stack, free / paid, known limits
-DNA: github-hosted artifact + transparent pricing + honest-limit preempt
+```text
+Title: [verbatim title]
+Item and destination: [item URL] / [artifact URL]
+Collected: [timestamp]; submitted: [timestamp]
+Surface and status: [observed feed] / [literal label or no visible label]
+Points and comments: [observed values]
+Evidence label: (measured, [harvest name], n=[reviewed scope], [collection month])
+Evaluation: [what a stranger could inspect]
+Author context placement: [submission text or first comment]
+Qualified-interest evidence: [comment URL and accurate paraphrase]
+Limitation: [unanswered evaluation concern]
+Interpretation: [bounded editorial inference] (directional)
+Ranking cause: unknown
 ```
 
-### Example 2: Flagged-cluster teaching example
+### Illustrative moderation comparison
 
-```
-{{Title}} — 84 pts in 35 min then [flagged] at 47 pts
-Submitter karma: 120 (new account)
-Domain: marketing-domain.com
-Inferred flag reason: SaaS-launch tone + marketing domain + new-account submitter + non-Show-HN format
-Lesson: do not submit a SaaS launch post outside the Show HN format from a low-karma account.
-```
+Rejected reasoning: infer that a SaaS domain or submitter karma caused a flagged state.
+
+Accepted record: preserve [item URL], [collection timestamp], and [visible label]. Note whether an explicit moderator explanation exists. With no explanation, record the cause as unknown. Keep product-readiness criticism separate from platform enforcement.
+
+### Illustrative repeated angle
+
+Search [topic terms] over [declared date bounds]. Link the reviewed threads and identify the repeated implementation claim. If the user's material supplies [new evidence or a different constraint], explain how it differs. Otherwise report that the searched examples leave the proposed contribution unclear; don't apply a fixed saturation count.
 
 ## Checklist
 
-Before returning the HN section of the brief:
-- [ ] Every cited post has title (verbatim), points, comments, hours-since-submit, domain, submitter handle and karma band, URL, flag-state
-- [ ] Point velocity (pts/hour first 4h) computed and used as primary signal — not raw points
-- [ ] Survival past 90 min noted
-- [ ] Flagged-but-alive and outright-flagged posts surfaced as teaching examples
-- [ ] Anchor commenters identified for the niche (not @-mentioned, just noted)
-- [ ] Domain mix tabulated (% github / arxiv / personal-blog / news / SaaS) on front-page winners
-- [ ] (Opt-in mode only) Title bank entries pre-cleared against HN title rules — no editorializing, no caps, no marketing speak
-- [ ] (Opt-in mode only) Show HN / Ask HN format prescriptions match this skill's templates
-- [ ] (Opt-in mode only) First-comment seed includes pricing transparency for Show HN if commercial
-- [ ] Dead-pattern list applied — no recommendation matches "AI wrote this" / listicle / press-release patterns
-- [ ] (Opt-in mode only) Submit-time recommendation falls in Tue–Thu 8–11 AM ET unless niche evidence shifts it
-- [ ] All background tabs closed
+- [ ] Scope, queries, date bounds, resolved URLs, collection time, and incomplete coverage are recorded.
+- [ ] New and overlooked submissions balance selected winners; Launch HN and historical comments remain separate.
+- [ ] Each example has a source link, literal status, observed counts, and an evidence label.
+- [ ] Velocity uses repeated snapshots; no hidden upvote ratio, domain bonus, or karma weight is inferred.
+- [ ] Qualified interest comes from substantive thread evidence; conversion is source-attributed separately.
+- [ ] Author context placement, pricing, trial access, affiliation, and limitations are observed rather than invented.
+- [ ] Shared title, timing, feed, repost, and human-authorship facts follow the cited official sources.
+- [ ] No booster-comment plan, pasted prose, or invented personal experience enters the handoff.
+- [ ] All research tabs opened for this task are closed when no longer needed.
 
-## Composition / References
+## References
 
-- Pairs with `social-hackernews` (content domain) for writing the actual submission body and first-comment from the brief.
-- Algolia URL parameters: `dateRange=last24h|pastWeek|pastMonth`, `sort=byPopularity|byDate`, `query=<terms>`.
-- HN guidelines: https://news.ycombinator.com/newsguidelines.html — title rules in particular.
-- Use the agent's universal output schema.
+Official pages are undated unless stated; labels use the validation month.
+
+- [HN Guidelines](https://news.ycombinator.com/newsguidelines.html), [HN FAQ](https://news.ycombinator.com/newsfaq.html), [HN Lists](https://news.ycombinator.com/lists): checked 2026-09.
+- [Show HN Guidelines](https://news.ycombinator.com/showhn.html), [Show HN Tips](https://news.ycombinator.com/item?id=22336638), [Launch HN Instructions](https://news.ycombinator.com/yli.html): checked 2026-09.
+- [Algolia search](https://hn.algolia.com/): use the current interface; coverage recorded per harvest, 2026-09.
+- [Jonno study](https://jonno.nz/posts/your-show-hn-dies-in-7-hours/): 2026-07; distinguish the full corpus from the discussion subset.
+
+Re-validate when:
+- Feed names or Algolia filter behavior change.
+- HN policy, moderation guidance, or submission text placement changes.
+- New reproducible outcome or response-timing studies appear.
+
+Validated: 2026-09

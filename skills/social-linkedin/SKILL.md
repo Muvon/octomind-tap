@@ -1,13 +1,13 @@
 ---
 name: social-linkedin
 title: "LinkedIn Publishing Playbook"
-description: "Ground-truth 2026 playbook for writing posts, comments, and articles on LinkedIn. Covers the 2026 algorithm (dwell time as top signal, comments weighted 15× likes, golden hour, platform-wide reach decline, the measured −18.8% link penalty), the 210-character 'see more' fold, format craft for the 1300–2000 char sweet spot, post types, and what gets suppressed as motivational slop. Activate whenever drafting anything destined for LinkedIn."
+description: "Write and revise LinkedIn posts, launch copy, comments, and supporting profile or long-form copy in the author's documented voice. Activate for LinkedIn drafting, with evidence-led format selection, customer-proof handling, and a complete publishing package."
 license: Apache-2.0
-compatibility: "Octomind content agents. Platform-specific to LinkedIn."
+compatibility: "Browser and network access for source checks and LinkedIn previews."
 domains: content
 rules:
   - content(linkedin)
-  - match(\blinkedin\s+post\b)
+  - match(\blinkedin\s+(post|comment|article|newsletter|launch|profile)\b)
   - match(\bpost\s+(on|to|for)\s+linkedin\b)
   - match(\bprofessional\s+post\b)
   - match(\bcareer\s+post\b)
@@ -15,359 +15,187 @@ rules:
 
 ## Overview
 
-LinkedIn in 2026 is not the LinkedIn of 2020. The algorithm rewards dwell time above everything else, comments weigh ~15× a like, and overall impressions have dropped ~63% platform-wide since 2024 — meaning the remaining audience is harder to earn and easier to lose. At the same time, the "motivational quote + emoji + humble brag" era is over; LinkedIn's 2026 LLM-powered ranking actively suppresses generic inspirational content.
+Write LinkedIn content that expresses the author's actual judgment and helps a specific reader act. Apply supplied facts and proof first, then documented author voice, then platform conventions. Use `content-voice` for generic editing; this skill adds LinkedIn execution.
 
-Pair with `content-voice` for human voice. LinkedIn has its own dialect ("excited to announce," "humbled to share") that reads instantly as AI or PR. Kill it hard.
+## Mental model
 
-## Instructions
+LinkedIn uses profile information and interaction history in retrieval and ranking; it publishes no universal comment multiplier or single dominant signal (official, LinkedIn Feed Engineering, 2026-03). Write for a reader's professional problem, rather than an imagined scoring formula (directional).
 
-### The 2026 Algorithm — What Actually Matters
+Keep evidence labels with advice. Official labels identify documented features or policy; measured labels identify observational cohorts, not causal promises. Directional labels identify craft judgment. Keep sample scope and limitations when quoting a benchmark. Never combine vendor engagement rates into a universal target.
 
-LinkedIn's LLM-powered ranking tracks two signals the rest of social media undervalues: dwell time (how long a user's eyeballs stay on your post as they scroll) and substantive comments (not reactions, not emoji replies).
+Open `reference/mechanics.md` when selecting formats from benchmarks, checking feature availability, or explaining ranking and disclosure. Open `reference/launch.md` when preparing customer proof, a joint launch, paid-support copy, or attribution handoff.
 
-| Signal | Weight / Effect |
+## Format and anatomy rules
+
+Standard posts allow 3,000 characters; Articles are a separate long-form feature (official, LinkedIn Post Help, 2026-08). Count the finished post including its link and disclosure. Use the shortest complete explanation (directional). AuthoredUp observed strong engagement medians at 1,301–2,500 characters (measured, AuthoredUp Length, n=372,126 personal-profile posts, 2026-08); Flypost found no measurable text-only length effect in its matched subset (measured, Flypost, n=121 paired creators, 2026-07).
+
+Put the concrete subject and stake in the opening. Follow with the evidence and its conditions; end with an appropriate next action or stop. Use paragraph breaks where the thought changes, without a staircase of isolated sentences (directional). Preview the actual mobile opening; treat published mobile/desktop fold estimates as approximate interface observations, not a guaranteed character budget (directional; AuthoredUp Length, 2026-08). Don't place a fictional fold marker after a fixed line.
+
+| Reader need / available asset | Format and execution |
 |---|---|
-| Dwell time | Top hidden signal. Measured as scroll pause + expansion + read time |
-| Comment (real reply, not emoji) | ~15× a like |
-| Comment-on-your-comment (author re-engagement) | Compounds — re-enters the feed for people who missed it |
-| Share with text (repost with commentary) | Very high weight; pure reshare is worth less |
-| Like / reaction | Low weight; mostly just a reach-base floor |
-| Click "see more" to expand post | Dwell + intent signal |
-| External link in root post | Measured on 1.3M posts (Algorithm Insights 2026): one link in body = −18.8% median reach. Real but smaller than the folklore "60%"; first-comment links still safer |
-| Video (native, vertical, short) | Boosted; outperforms text of same quality |
-| Document carousel (PDF upload) | Highest measured format in 2026: ~6.6% engagement rate vs <2% for text posts |
-| Polls | Dead — ~0.07% engagement rate after the March 2026 Authenticity Update killed engagement bait and pods |
+| Understand a decision or lived experience | Text post: show the decision, what informed it, and the unresolved cost (directional). |
+| Follow a procedure or inspect a mini-report | Native PDF document: make the cover promise specific, give each slide a substantive job, and finish with the usable takeaway. Choose slide count from the material (directional). |
+| Inspect physical evidence or compare states | Image or multi-image post: label context and comparison conditions; make each image legible on a phone. Test portrait framing without cropping proof (directional). |
+| See behavior or hear an explanation | Native captioned video: start with the task/result, show the operation, retain failure boundaries. Let necessary demonstration determine duration (directional). |
+| Evaluate a launch | Announcement with a demonstration or artifact. Apply the strip-test below (directional). |
+| Read a durable argument | Article: give it a specific title, sourced sections, and a feed introduction that delivers a useful finding (directional). |
+| Return to a recurring subject | Newsletter brief: define the recurring reader promise and issue scope; confirm account availability before packaging it. Don't promise notification delivery or growth (directional). |
+| Participate in a demonstration or discussion | Live: schedule an Event before broadcasting (official, LinkedIn Live Help, 2026-06). For audio-only requests, confirm the current event options before promising standalone Audio Events (directional). |
+| Help decide between real alternatives | Poll: use meaningful options and explain who the answer applies to. Treat votes as self-selected input (directional). |
+| Discuss someone else's work | Repost with commentary: name the original contribution, add a supported implication or disagreement, and credit the source. Avoid an empty reshare (directional). |
 
-Critical structural facts:
-- Golden hour: reach is mostly determined within the first 90 minutes. Measured: replying to comments within the first 30 minutes earns 64% more total comments and 2.3× more views.
-- Dwell pays disproportionately: posts holding 61+ seconds of reader attention measure ~15.6% engagement rate.
-- The decline continues: the latest Algorithm Insights editions measure views −50%, engagement −25%, follower growth −59% year over year (on top of the 63% impression drop since 2024). What counted as a flop two years ago is now a good post.
-- The 210-character fold: only the first ~210 chars show before "…see more" on mobile. If the user doesn't click "see more," you get close to zero dwell time. The hook must earn the expand click.
+Documents and multi-image posts are strong testing candidates, while video has no universal advantage (measured, Metricool, n=673,658 posts, 2026-04; AuthoredUp Formats, n=3M+ personal-profile posts, 2026-09). Don't discard polls: Socialinsider reports 4.50% engagement for its Q2 table, but its collection dates conflict with that table's period (measured, Socialinsider, n=1.3M business posts, 2026-03; see reference caveat).
 
-### What LinkedIn Kills in 2026 (dead patterns)
+Package image descriptions and alt text wherever supported. For documents, include accessible text and a text summary if the uploader lacks per-slide descriptions. Supply corrected captions, an asset brief, and source permissions; protect readable evidence before visual decoration (directional).
 
-These used to work. They don't now. The 2026 LLM-based ranker actively downranks them:
+## Launch and proof posts
 
-- Motivational platitudes: "Success is a journey, not a destination" — instant suppression
-- Humble-brag clichés: "I'm humbled/blessed/honored to announce…"
-- Emoji bullet lists: 💡✨🚀 at the start of every line
-- "🚨 BREAKING:" or "🚨 ATTENTION:" openers
-- "Who agrees?" / "Thoughts?" endings — these are dead CTAs
-- "Agree / Disagree? Comment below." — reads as engagement bait
-- Poll posts with fake options designed only to farm votes
-- Text that reads like a press release: "excited to announce," "delighted to share," "thrilled to partner with"
-- Screenshots of your own tweets
-- AI vocabulary: leverage, unlock, harness, delve, seamless, cutting-edge, transformative (full list in `content-voice`)
-- "As a leader…" / "As a founder…" / "As an entrepreneur…" opens
-- Story-that-isn't-a-story: "Yesterday a junior dev asked me…" followed by a generic lesson. The 2026 ranker detects fabricated parables
+Before drafting, obtain the audience and buying situation; promise; available proof and source; desired action and destination; campaign stage (teaser, launch day, proof, objection, or recap); disclosure obligations; author voice samples; and who will answer replies. Deliberately choosing no CTA is valid. If proof is missing, narrow the claim or obtain it before calling the draft publishable.
 
-### Post Length — 3 Modes
+Use problem framing before announcement and follow with deeper evaluation material. This follows LinkedIn's ramp, launch, and nurture guidance (official, LinkedIn Launch Guide, 2026-05). Bundle minor changes when they don't justify a distinct buyer story (directional; Oakley, 2026-03).
 
-LinkedIn allows up to 3000 characters. Three viable modes:
+Use the observed AuthoredUp depth band above as an optional starting range for developed feed posts, without padding. Use shorter captions when the asset supplies the explanation; use an Article when the argument exceeds the post constraint. These shape choices are craft judgment (directional).
 
-| Mode | Chars | Use When |
+| Shape | Anatomy | Length band |
 |---|---|---|
-| Virality | 150–300 | Sharp take, one idea, no "see more" needed |
-| Depth | 1300–2000 | Story, framework, breakdown — most engagement per post |
-| Authority article | 2000–3000 | Long-form thinking, white paper bait |
+| Launch day | Buyer task → available change → visible proof → eligibility/limitation → action | Short caption with proof asset; developed feed post otherwise |
+| Demo or artifact | Show task → demonstrate operation → state test conditions → offer access | Short caption; explanation in asset |
+| Customer outcome | Prior state → intervention → observed outcome with timeframe/denominator → confounders → source | Developed feed post |
+| Founder decision / build update | Actual choice → rejected alternative → cost → next unresolved test | Short or developed feed post |
+| Objection answer | Specific buyer concern → evidence → cases where concern still applies → next step | Developed feed post |
+| Recap / lessons | Expected outcome → observed result → attribution limits → changed plan | Developed feed post; Article for detailed analysis |
 
-The 1300–2000 band is the sweet spot for dwell time + comment generation. Shorter posts can go viral but rarely generate the conversation LinkedIn rewards.
+For announcement and proof posts, remove the product name temporarily: the remaining post should still show something useful. If it doesn't, add the artifact or explain the decision. A factual availability notice may remain short when availability itself serves the audience; don't invent a lesson (directional).
 
-### The Post Anatomy (1300–2000 char mode)
+Use a root-post link when the reader needs immediate access. If testing a first-comment link, prepare a descriptive resource sentence and publish it immediately with the post; state where it is and check visibility. This is publishing discipline, with no proven ranking protection (directional). Link effects differed by account type: profile link posts had fewer impressions, Page link posts more (measured, Metricool, n=673,658 posts, 2026-04). Test qualified visits, not reach alone.
 
-```
-[LINE 1 — HOOK]               ← fits above the 210-char fold; must pull the expand click
-[BLANK LINE]
-[LINE 2–3 — SETUP]            ← still above the fold ideally
-[BLANK LINE]                  ← "...see more" appears around here
-[LINE 4–N — BODY]             ← one idea per paragraph, blank line between each
-[BLANK LINE]
-[CLOSING LINE OR QUESTION]    ← earns the comment, not an "Agree?" beg
-```
+Disclose employment, ownership, sponsorship, or another material relationship plainly; obtain customer/partner consent for names, quotes, screenshots, tags, and reuse (directional). LinkedIn recommends disclosing heavy AI reliance when non-obvious, and retains author responsibility (official, LinkedIn AI Help, 2026-08). Preserve C2PA Content Credentials; credentialed media can display a provenance icon, but missing icons don't establish human origin (official, LinkedIn Credentials Help, 2026-09 review, undated).
 
-Rules:
+Use genuine Collaborative Posts for joint work; members and Pages can invite up to five collaborators (official, LinkedIn Collaborative Posts, 2026-07). Give voluntary employee contributors their own experience angle. Don't organize reciprocal engagement rings, copy-paste praise, automated replies, or concealed endorsements (directional application of LinkedIn Authenticity, 2026-06). Open the launch reference for destination-specific voting rules and paid permissions.
 
-- First line is the whole gamble. If it doesn't earn the "see more" click, the post is done. Treat it like an email subject line.
-- Line breaks are structural. Dense paragraphs flop. One idea per short paragraph, blank line between. This triples scan-readability and dwell time.
-- No emoji bullets. Use them sparingly inline for tone, never as list markers.
-- Body in the expanded section is where specifics go — numbers, names, concrete artifacts, your actual experience.
-- Closing question must be answerable. "What's your take?" is dead. "Has anyone tried X in production? Did it behave the way I'm describing?" works.
+Prefer a founder or expert for personal decisions and discussion; keep the Page useful for verified product facts, shareable proof, and buyer evaluation (directional). Similar impressions per post, but higher profile engagement, were observed in Metricool's sample; a universal Page reach discount isn't supported (measured, Metricool, n=673,658 posts, 2026-04).
 
-### Hook Patterns That Earn the Expand Click
+Illustrative launch-week schedule, not a measured timing prescription; offsets below are planning examples. Choose posts only when new substance exists.
 
-LinkedIn's 210-char fold is brutal. These hook shapes survive it:
+| Illustrative day | Shape | Reply plan during first hours | Measure |
+|---|---|---|---|
+| T−7 (illustrative) | Buyer problem or founder decision | Author handles context questions | Relevant objections and reader roles |
+| T−3 (illustrative) | Artifact preview | Expert answers feasibility questions | Requests to inspect or try |
+| T0 (illustrative) | Launch demonstration | Staff product answers; check promised link immediately | Qualified comments and outbound clicks |
+| T+2 (illustrative) | Proof or objection answer | Return to unresolved questions | Evaluation requests and consenting DM conversations |
+| T+7 (illustrative) | Bounded recap | Answer late replies; acknowledge missing evidence | Qualified visits and attributed next actions |
 
-1. The counter-intuitive claim — "I just fired our top-performing SDR." → reader has to click to find out why
-2. The specific artifact — "Day 47 of running our ops with zero meetings. Here's the cost sheet:"
-3. The rejection of a common belief — "Stop writing job descriptions. They're the reason your funnel is broken."
-4. The moment of realization — "I lost a $40k deal last week. The post-mortem is ugly."
-5. The pattern callout — "Every Series A founder I meet has the same broken hiring loop."
-6. The asymmetric result — "We cut our AWS bill by 73%. One config change."
-7. The confession — "I've been running performance reviews wrong for 8 years. Here's what I changed."
+Review native clicks and media consumption where exposed alongside public reactions; public counts omit useful activity (measured, Metricool Press, n=673,658 posts, 2026-04). Keep inquiries separate from verified signups or opportunities. Supply consistent campaign tags and distinguish creative/link placement with `utm_content` (official, Google URL Builder, 2026-09 review, undated). Attribution implementation and publishing are downstream steps.
 
-Never open with: "Excited to," "Thrilled to," "Humbled to," "Happy to," "I'm proud to," a generic quote, or a motivational aphorism.
+## Voice on this platform
 
-### Post Types That Work in 2026
+Read supplied LinkedIn samples for formality and how the author explains a decision. Preserve that register; fall back to direct professional prose. Keep natural contractions and fragments without adding errors. Don't inject dropped articles, lowercase camouflage, fake edits, or typos to simulate humanity (directional; Aborn, 2026-07).
 
-| Type | Structure | Why It Works |
-|---|---|---|
-| Personal story with lesson | Scene → turn → lesson (not a moral) | Highest dwell time; feels human |
-| Framework / how-we-did-it | Problem → approach → numbers → trade-offs | Bookmark-bait; reshared with commentary |
-| Contrarian take | Claim → evidence → implication | Drives comments both supporting and disagreeing |
-| Data reveal | Here's what we found → what surprised us | Quoted by others; builds authority |
-| Document carousel | 6–10 slide PDF uploaded as native doc | Still gets a boost; works for step-by-step teaching |
-| Short-form vertical video (< 90s) | Face-to-camera or screen recording | The single most boosted format in 2026 |
-
-What doesn't work as its own post type: pure product announcement, pure inspirational quote, pure request-for-network-help without value offered in return.
-
-### Comment Strategy
-
-Comments are worth ~15× a like on your own posts AND the biggest growth lever if you comment on others' posts.
-
-On your own post:
-- Respond to the first 5 comments within 60 minutes. This is the single biggest thing you control for amplification.
-- Author-reply with substance. Don't just "Thanks!" — add a follow-up thought, a related story, or a question back.
-- Never like your own post. The signal is noise.
-- Pin the best comment if it adds real value; it anchors the conversation.
-
-On others' posts (the actual growth play):
-- Reply early. Top 3 comments get seen; later comments are buried.
-- Minimum 2 lines of substance. One-liners don't earn profile clicks.
-- Add, don't echo. "Great post!" is invisible. Extending the idea with a specific example is read and clicked.
-- Disagree respectfully with specifics. "I had the opposite experience at [scale / domain]" beats "Disagree."
-- No links in comments unless asked. LinkedIn throttles them.
-- Tag people sparingly and only when genuinely relevant.
-
-### Documents (PDF Carousels)
-
-The top-measured format of 2026 (~6.6% engagement rate) — but only when the content earns the swipe.
-
-- 6–10 slides max. Longer fatigues the swipe.
-- Slide 1 = hook slide. Same rule as a post first line.
-- One idea per slide. Massive font, minimal text, one visual anchor per slide.
-- Last slide = soft CTA — "Save this if it was useful" or "Follow for more on [niche]"
-- Design matters. Canva-default templates are obvious; bespoke or minimalist wins.
-
-### Videos (the 2026 growth edge)
-
-- Vertical (9:16), native upload. Re-uploads from TikTok/IG get suppressed.
-- < 90 seconds for best watch-through rate.
-- First 3 seconds = hook. Same principle as text — break the expected.
-- Captions burned in. Most LinkedIn users watch muted.
-- Face-to-camera outperforms voiceover for personal accounts.
-- No intro logos, no "hey guys welcome back." Straight to the point.
-
-### Timing
-
-- Best windows: Tue–Thu, 8–10 AM local and 12–1 PM local (lunch scroll).
-- Avoid: Friday afternoon, all weekend for B2B audiences; Sunday evening can work for career/personal-development content.
-- One post per day max for personal accounts; more dilutes each post's reach budget.
-- Company pages are separate and generally have 5–10× less organic reach — don't mix strategies.
-
-### Thread-Vibe Matching (Comments)
-
-Before writing a comment on someone else's post, scan the existing comment section. LinkedIn comments develop a tone quickly — formal vs. casual, long vs. short, personal vs. analytical.
-
-What to scan:
-- Length — are comments 1 line or 4–5 lines? Match the median. A 4-line comment in a 1-line thread reads like a lecture.
-- Formality — are people writing in full sentences with punctuation, or is it casual and clipped?
-- Personal vs. analytical — is the thread sharing personal stories, or debating a claim? Match the mode.
-- First-name culture — if people are addressing the author by first name, you can too. If not, don't.
-
-Vibe calibration by post type:
-
-| Post type | Comment vibe |
+| Surface | Register choice |
 |---|---|
-| Personal story / vulnerability post | Warmer, shorter, first-person, no data |
-| Framework / how-we-did-it | Analytical, can be 3–4 lines, add your own data |
-| Contrarian take | Engage the claim directly; disagree or extend with specifics |
-| Announcement / milestone | Brief acknowledgment + a real question (not "congrats!") |
-| Data reveal | Add a counter-data point or a "we saw the same/opposite" |
+| Feed post | State the actual subject before institutional excitement. Retain the author's specific judgment and bounded uncertainty (directional). |
+| Professional comment | Read the thread; address its claim with evidence or a useful clarification. Don't invent a matching workplace anecdote (directional). |
+| Personal announcement reply | A sincere acknowledgment is enough. Don't turn another person's news into a pitch or forced question (directional). |
+| Document / Article | Use structure for navigation; proofread labels and preserve technical precision (directional). |
+| Profile headline / About | Name the work and whom it helps. Support credentials with evidence; make the next step clear. Avoid an invented founder persona (directional). |
+| Connection note / DM / InMail | Refer to an observed buyer problem or actual conversation. Explain relevance and ask permission before sending a resource; don't treat a reaction as purchase intent (directional; Venetz, 2026-07). |
 
-### Human Imperfection Protocol
+Use the AI-tell pass as editing judgment, never authorship detection. Remove padded triads, repetitive emphasis words, contrast slogans, suspense filler, staccato stacks, and obligatory moral endings (directional; Aborn, 2026-07; Cox, 2026-06; Gichigi, 2026-02). Cut rhetorical-question openers, “nobody talks about” framing, “Let that sink in,” engagement-bait closers, hashtag stacks, and emoji bullets (directional). Preserve necessary uncertainty; don't turn a complex result into a miracle-fix parable (directional inference from StoryScope, 2026-08).
 
-LinkedIn is the most polished of all social platforms — posts are professional, people proofread. But comments are typed casually, often from a phone between meetings. Calibrate accordingly.
+Retain useful punctuation in the author's register; avoid dense em-dashes without imposing an artificial quota (directional; Cox, 2026-06). Add no errors. Use genuine records for personal stakes; request missing detail or remove the claim (directional; Lees, 2026-08). Open the mechanics reference for localization and detector limitations.
 
-Imperfection level by content type:
+## Cadence and engagement
 
-| Content type | Level | What that means |
-|---|---|---|
-| Original post | Very low | 0 imperfections for posts; one subtle slip max if it's a personal/casual post |
-| Document carousel | Zero | Slides are designed artifacts — no imperfections |
-| Comment on others' post | Low-medium | 1 natural imperfection is fine; reads human, not careless |
-| Reply to a comment on your own post | Low | 1 subtle imperfection acceptable; you're in a conversation |
+Choose sustainable frequency around available proof and reply capacity. Don't impose a daily maximum: Buffer's LinkedIn frequency analysis found gains at higher cadence (measured, Buffer Timing, n=2M posts, 2026-07). This doesn't justify repeated launch copy.
 
-Imperfection menu for LinkedIn (pick 0–1 per comment, never in posts):
+Test audience-local afternoons/evenings against account history: Buffer found a 3–8 PM window, with Wednesday 4 PM and Friday 3–4 PM strongest (measured, Buffer Timing, n=4.8M+ posts, 2026-07). For global audiences, rotate tests across named audience timezones and compare like-for-like posts. Don't schedule solely from the author's timezone (directional).
 
-- Missing comma — `I saw the same thing at our last company and it surprised me` — natural in fast typing
-- Lowercase opener — only if the comment thread is already casual/lowercase
-- Casual contraction — `gonna`, `kinda`, `tbh` — only in clearly informal threads, never in professional/formal ones
-- Dropped article — `We ran [the] same experiment` — one small omission
-- Run-on with "and" — two thoughts joined without a period — common in typed-fast comments
-- No closing period — end a comment without a period — very common in LinkedIn comments
+Assign an author or informed reply owner, cover the first hours, revisit later questions, and plan handoff beyond office hours (directional). Replying correlated with about 30% higher engagement (measured, Buffer Replies, n=72,000 LinkedIn posts, 2025-12). Half of impressions arrived within 48 hours in another cohort; that isn't a feed expiry or reply deadline (measured, Metricool, n=673,658 posts, 2026-04).
 
-Never do on LinkedIn:
-- Typos in a post — credibility damage is real; LinkedIn audiences notice and judge
-- Typos in a document/carousel — these are designed artifacts, zero tolerance
-- Casual slang (`lol`, `ngl`, `tbh`) in a formal or B2B thread
-- More than 1 imperfection per comment — stacking reads as careless, not human
-- Imperfections when citing data, numbers, or making a technical claim
+Answer the question and add what is missing. Use a specific answerable prompt only when its answers will matter. Don't attach a question to every post (directional). Direct questions correlated with more comments (measured, Metricool, n=673,658 posts, 2026-04). Moderate spam and fraud links while preserving reasoned criticism (directional).
 
-Calibration check before posting:
-1. Is this a post or a comment? Posts = zero imperfections (or one subtle slip in a personal post only).
-2. Read the existing comment thread — what's the formality level?
-3. Does your comment have 0–1 natural imperfections appropriate to the register?
-4. Would a professional typing this between meetings plausibly have written exactly this?
+Omit hashtags unless they clarify a topic or campaign; if useful, place them unobtrusively after the copy. Mention people only for a relevant contribution and with consent where appropriate. Promise no discovery boost or hashtag-feed access (directional).
 
-### Pre-Publish Checklist
+## What gets suppressed
 
-- [ ] First 210 characters stand alone and pull the expand click
-- [ ] No motivational aphorisms, no "excited to," no "humbled to"
-- [ ] No emoji bullets
-- [ ] Length in the 1300–2000 sweet spot (unless virality mode or article mode, intentional)
-- [ ] One idea per paragraph, blank line between paragraphs
-- [ ] No external link in the root post (put links in first comment)
-- [ ] Closing question is answerable, not engagement-bait
-- [ ] Scheduled for Tue–Thu morning or lunch window
-- [ ] Ready to respond to first 5 comments within 60 minutes
-- [ ] Reads like a person talking, not a press release
-- [ ] Strip-test (announcement / win / company-mention posts): if the announcement, milestone, or company name is removed, is the post still useful or interesting to a reader? If no, it's a humble-brag wearing a story's clothes — rewrite around the actual lesson, or skip the post
-- [ ] Post: zero imperfections (or one subtle slip in a personal/casual post only)
-- [ ] Comment only: scanned existing comments for length/formality before writing; 0–1 natural imperfection calibrated to register
+LinkedIn reduces wider distribution of apparently AI-generated content without perspective and acts on scaled automated comments or replies that merely restate a post (official, LinkedIn Authenticity, 2026-06). No cited policy establishes word-specific suppression or fabricated-story detection.
+
+Treat “Seems like AI slop” analytics feedback as a revision cue; the feedback itself isn't a takedown or policy decision (official, LinkedIn AI Help, 2026-08). Diagnose weak substance before cosmetic edits. Don't describe legitimate stories, announcements, or promotional links as automatically prohibited (directional).
 
 ## Examples
 
-### Example 1: Hook that earns the expand click
+These are fictional teaching scenarios with bounded outcomes, not customer evidence. Bracketed fields are provenance placeholders; affected drafts aren't publishable until filled and verified. Package notes stay outside the post.
 
-Bad (press-release opener):
-> I'm absolutely thrilled and humbled to announce that after many months of hard work, our team has successfully launched our brand-new initiative focused on driving impactful outcomes for our customers 🚀🎉
+### Developer tool: demo caption
 
-Bad (generic motivational):
-> Success isn't about being the smartest in the room. It's about showing up every day and putting in the work 💪
-
-Good (counter-intuitive + specific):
-> I just fired our top-performing SDR.
+> The migration preview flags an index rebuild before you apply the schema change.
 >
-> He hit 140% of quota three quarters running. Here's why letting him go was the single best hiring decision I made this year.
+> I'm showing it against a disposable database in this recording. It catches the rebuild in this example; it doesn't estimate the lock time on your production workload. The runnable example and setup notes are at [demo URL].
+
+Package: native screen recording, corrected captions, readable command output.
+
+Why it works: the demo shape gives the buyer an inspectable task.
+It follows the provenance rule and names what the demonstration cannot establish.
+
+### B2B SaaS: customer proof
+
+> The review queue got shorter after [customer] changed how disputed invoices were assigned.
 >
-> [body below the fold…]
+> In [source period], the median wait moved from [before] to [after] for [eligible invoices]. They also changed staffing, so we can't isolate our routing feature's contribution. [Approved case-study URL] includes the measurement method and the cases excluded.
 
-What works: line 1 creates a gap the reader must close. Specific number. Promise of a counter-intuitive lesson. No LinkedIn-speak.
+Package: approved comparison image, alt text with conditions; disclose the supplier relationship.
 
-### Example 2: 1300–1800 char story post
+Why it works: the customer-outcome shape retains denominator and confounder.
+Every missing specific is marked; the copy avoids a miracle-fix claim.
 
-```
-I lost a $40k deal last week because of a single sentence in my email.
+### Consumer product maker: design decision
 
-Not the pricing. Not the features. One sentence.
-
-Here's what happened.
-
-We were two weeks into procurement with a mid-market SaaS company. Demo went well, technical eval passed, legal was reviewing the MSA. On Thursday, their VP asks for a "final summary of why we should pick you."
-
-I wrote back a nine-point email. Point four was: "Our platform is built to scale to enterprise, so you won't need to replatform when you grow."
-
-Monday morning, they went with our competitor.
-
-In the debrief, their VP was honest: "That line made us feel like you saw us as a stepping stone, not a customer."
-
-Three things I learned, hard:
-
-1. The "future-proof" pitch reads as condescending when someone hasn't asked for it. They know they'll need to scale. They don't need me telling them.
-
-2. Enterprise-readiness is a hygiene factor — useful if asked, insulting if volunteered. It signals "you're small now."
-
-3. The worst sales mistakes aren't in the demo. They're in the tone of one line in one email after the close.
-
-I've rewritten our follow-up templates. Every "built to scale" claim is gone. I now ask, at the start, what tier of growth they're planning for — and match the pitch to that tier, not the biggest customer we have.
-
-Has anyone else had a deal die on a specific line they wrote? Curious which phrases have cost you money.
-```
-
-What works: specific dollar amount, concrete scene, three numbered lessons that are actually lessons (not platitudes), honest failure, closing question is answerable from real experience not a forced prompt.
-
-### Example 3: Short virality-mode post
-
-```
-Stop writing job descriptions.
-
-They're the reason your funnel is broken.
-
-Every JD I've read in 2026 asks for the same 14 skills, the same "fast-paced environment," the same "drive for results."
-
-Candidates skim them, pattern-match to 100 identical postings, and apply to all of them equally. Your JD isn't doing the filtering you think it is.
-
-Write a 3-line "what this role actually does on Monday morning" instead. Watch your inbound quality double.
-```
-
-What works: under 300 characters would be tighter, but this reads as a sharp single-idea post. No fold problem because it's short enough to read whole. Contrarian claim, evidence, actionable alternative, specific prediction.
-
-### Example 4: Closing question comparison
-
-Dead (engagement bait):
-> What do you think? Agree? Disagree? Let me know in the comments! 👇
-
-Dead (too generic):
-> Thoughts?
-
-Alive (answerable from experience):
-> Has anyone seen the opposite — where "built to scale" language actually helped close a mid-market deal? Curious if there's a segment where it still lands.
-
-What works: specific, bounded, invites someone who has a counter-example to contribute something the OP hasn't thought of. These replies drive the dwell time and comment chains that amplify reach.
-
-### Example 5: Comment that earns a profile visit
-
-Someone posts: "We cut our engineering hiring in half this year and shipped more features than the year before."
-
-Bad (echo, no substance):
-> This is so true! Quality over quantity, always.
-
-Good (extending with specifics):
-> Seeing the same in our org. We went from 38 engineers to 24 over 18 months and throughput went up, not down.
+> I kept the notebook cover replaceable after the pocket test.
 >
-> The thing that surprised me: it wasn't the layoffs that helped, it was the meetings we stopped holding because there weren't enough people to staff them. We accidentally killed 12 recurring syncs.
+> The corners wore before the pages were used up. A replaceable cover adds bulk at the hinge, which you can see in the side-view photo. I'm keeping that tradeoff in this version; it won't suit someone who wants the thinnest notebook.
+
+Package: multi-image wear detail and side view, descriptive alt text. No CTA.
+
+Why it works: register matching preserves a maker's direct explanation.
+The decision has a visible cost and makes no durability promise beyond the test.
+
+### Local services: availability notice
+
+Weak, illustrative: “Delighted to announce our amazing new service.”
+
+> We're opening evening repair appointments for people who can't leave a bike during work.
 >
-> Has the meeting load gone down on your side too, or did you consciously cut it?
+> The booking page lists jobs we can finish during the appointment. If inspection finds damage that needs parts, we'll agree a return visit before starting that work. Availability and the inspection fee are at [booking URL].
 
-What works: specific numbers from own experience, extends the idea with an unexpected angle (meetings disappeared), closes with a real question that invites a reply. High chance of profile visit, very high chance of a reply-to-your-reply (the compounding signal).
+Package: booking link in the root post; staffed replies about eligible repairs.
 
-### Example 6: Thread-vibe matching in a casual comment thread
+Why it works: the launch shape makes availability useful without a fabricated lesson.
+The service boundary replaces generic excitement and avoids promising every repair immediately.
 
-Post: "We cut our engineering hiring in half this year and shipped more features than the year before."
+## Checklist
 
-Comment thread vibe: casual, 1–3 lines, conversational, no formal punctuation.
-
-Bad comment (ignores vibe — reads like a formal reply):
-> This is a fascinating observation that aligns with research on team efficiency. Smaller, more focused teams often outperform larger ones due to reduced coordination overhead and clearer ownership boundaries.
-
-Good comment (matches casual vibe, 1 natural imperfection):
-> Same here — went from 22 to 14 and honestly the velocity went up
->
-> I think we just stopped having meetings to coordinate the coordination
-
-What works: matches the short/casual register of the thread, missing period at the end of line 1 reads natural, adds a specific angle (meta-meetings) without lecturing.
-
-### Example 7: Comment with calibrated imperfection (professional thread)
-
-Post: "I lost a $40k deal last week because of a single sentence in my email."
-
-Comment thread vibe: professional, 3–5 lines, full sentences, sharing real experiences.
-
-Bad comment (over-imperfected for a professional thread):
-> omg yeah this happens all the time lol, we had the same thing happen and it was kinda embarrassing tbh
-
-Good comment (low imperfection, matches professional register):
-> Had the exact same thing happen with "future-proof architecture" in a proposal.
->
-> The client read it as "you're not ready for us yet." We meant it as a selling point.
->
-> Now we only mention scale if they bring it up first.
-
-What works: one missing article (`[the] exact same thing` → `the exact same thing` — actually clean here, which is right for a professional thread), specific parallel experience, concrete lesson, no imperfections because the register doesn't call for them.
+- [ ] Opening names the subject and stake; preview the real mobile fold.
+- [ ] Keep a single main idea; choose the format for its evidence and check current constraints.
+- [ ] Every specific is supplied or placeholder-marked; verify cited numbers, denominators, dates, and sources. Unfilled drafts aren't publishable.
+- [ ] Preserve documented author voice; complete the AI-tell pass without manufactured mistakes.
+- [ ] Choose CTA or deliberate no-CTA; verify destination, campaign tags, and first-comment timing if used.
+- [ ] Check customer/partner consent, relevant mentions, and restrained hashtags.
+- [ ] Review affiliation/sponsorship disclosure, heavy AI-use disclosure, and Content Credentials.
+- [ ] Supply asset brief, readable assets, alt text/accessibility fallback, corrected captions, and source rights.
+- [ ] Assign reply and moderation coverage in audience timezones; include late follow-up and qualified-interest measures.
 
 ## References
 
-- AgentSkills spec: https://agentskills.io/specification
-- Companion skill: `content-voice` — essential for stripping LinkedIn-dialect cliché
-- Companion skill: `content-humanize` — use when rewriting AI-generated LinkedIn drafts
-- Measured figures: Richard van der Blom's Algorithm Insights Report 2026 (1.3M-post dataset) and corroborating 2026 studies. LinkedIn publishes no ranking source — treat numbers as directional and re-validate annually.
+Dates identify publication/update unless marked review. Detailed sources and cohort caveats: [mechanics](reference/mechanics.md) and [launch execution](reference/launch.md).
+
+- [LinkedIn Feed Engineering](https://www.linkedin.com/blog/engineering/feed/engineering-the-next-generation-of-linkedins-feed), 2026-03-12; [Post Help](https://www.linkedin.com/help/linkedin/answer/a528176), 2026-08.
+- [LinkedIn Authenticity](https://news.linkedin.com/2026/keeping-conversations-real-on-linkedin), 2026-06-04; [AI Help](https://www.linkedin.com/help/linkedin/answer/a1481496/best-practices-for-content-created-with-the-help-of-ai?lang=en), 2026-08; [Credentials Help](https://www.linkedin.com/help/linkedin/answer/a6282984?lang=en), undated, reviewed 2026-09.
+- [LinkedIn Live Help](https://www.linkedin.com/help/linkedin/answer/a7460595), 2026-06-22; [Collaborative Posts](https://news.linkedin.com/2026/introducing-collaborative-posts-now-available-to-members-and-company-pages-on-linkedin), 2026-07-23; [Launch Guide](https://www.linkedin.com/business/marketing/blog/linkedin-ads/how-to-launch-a-product-on-linkedin), 2026-05-26.
+- [Metricool](https://metricool.com/linkedin-trends/), 2026-04-16; [Metricool Press](https://metricool.com/press-release-linkedin-study-2026/), 2026-04-14; [Socialinsider](https://www.socialinsider.io/social-media-benchmarks/linkedin), 2026-03-16.
+- [AuthoredUp Formats](https://authoredup.com/blog/best-performing-content-on-linkedin), 2026-09-02; [AuthoredUp Length](https://authoredup.com/blog/linkedin-character-limit), 2026-08-11; [Flypost](https://www.flypost.io/learn/linkedin-post-length), 2026-07-24.
+- [Buffer Timing](https://buffer.com/resources/best-time-to-post-on-linkedin/), 2026-07-22; [Buffer Replies](https://buffer.com/resources/linkedin-engagement-data/), 2025-12-04.
+- [Aborn](https://emilyaborn.com/ai-writing-tells-what-they-cost-you/), 2026-07-10; [Cox](https://huntingthemuse.net/library/how-to-tell-if-writing-is-ai), 2026-06; [Gichigi](https://tahigichigi.substack.com/p/12-red-flags-of-ai-writing-and-how), 2026-02-18; [Lees](https://www.housingwire.com/articles/taste-guts-receipts-ai-writing/), 2026-08-07; [StoryScope](https://arxiv.org/abs/2604.03136), 2026-08-10 revision.
+- [Oakley](https://dreamdata.io/blog/b2b-product-launches-should-be-campaigns-not-single-events), 2026-03-13; [Venetz](https://dreamdata.io/blog/leslie-venetz-why-your-b2b-outbound-is-killing-your-brand), 2026-07-03; [Google URL Builder](https://support.google.com/analytics/answer/10917952?hl=en), undated, reviewed 2026-09.
+
+Re-validate when feature names or composer controls change; disclosure/policy pages update; feed engineering changes; new vendor reports revise cohorts or findings.
+Validated: 2026-09
