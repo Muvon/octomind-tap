@@ -1,9 +1,9 @@
 ---
 name: programming-csharp
 title: "C# / .NET Development"
-description: "Modern idiomatic C# — nullable reference types, records, async discipline, minimal APIs, and EF Core patterns. Auto-activates in .NET projects."
+description: "Modern C# and .NET: nullable contracts, async ownership, data access, and explicit failure handling. Auto-activates in .NET projects."
 license: Apache-2.0
-compatibility: "Requires modern cross-platform .NET (10 LTS current; 8/9 reach EOL Nov 2026) — not .NET Framework."
+compatibility: "Requires the project's modern .NET SDK and target framework; newer language/API features are version-gated."
 domains: developer
 rules:
   - file(*.sln)
@@ -15,52 +15,82 @@ rules:
   - content(dotnet)
 ---
 
+## Overview
+
+Use for modern .NET implementation and review, including libraries and services. Write explicit contracts with the existing framework and project conventions; avoid adding architecture or replacing working tools as incidental cleanup.
+
 ## Mental model
 
-Modern .NET is cross-platform, fast, and batteries-included — the framework almost always already has the thing (DI, config, logging, HTTP, JSON, testing hooks). C# rewards using its current idioms: file-scoped namespaces, records, pattern matching, nullable reference types. The main anti-patterns are .NET-Framework-era habits (service locators, `.Result` blocking, config soup) and fighting the framework instead of composing with it.
+The compiler checks declared contracts, while runtime boundaries still validate real input. Keep values, service lifetimes, asynchronous work, and database units of work explicit; concise syntax is useful when it makes these easier to inspect.
 
-## Language — write current C#
+## Version gate
 
-- Nullable reference types ON (`<Nullable>enable</Nullable>`) in every project; treat warnings as errors — `null` bugs move to compile time. Never silence with `!` where a real check belongs
-- Records for immutable data (`record Order(string Id, decimal Total)`); `with` expressions for updates; classes for identity + behavior
-- Pattern matching over type-checks: switch expressions, property patterns (`order is { Total: > 100, Status: OrderStatus.Paid }`), list patterns where they clarify
-- Primary constructors and collection expressions (`[1, 2, ..rest]`) in new code; file-scoped namespaces always
-- C# 14 additions worth using: extension members (properties/static, not just methods), the `field` keyword in accessors, null-conditional assignment (`obj?.Prop = value`)
-- LINQ for querying and transformation; a `foreach` when it's clearer or hot-path (LINQ allocates) — measure before optimizing either way
-- `Span<T>`/`Memory<T>` only where profiling justifies it — correctness first, then allocations
+Verified 2026-09-05: .NET 10 LTS and C# 14 are stable. Check `global.json`, target frameworks, `LangVersion`, nullable settings, and CI SDKs before selecting APIs. Don't set `latest` or `preview` to make an example compile; the target framework's default language version normally supplies the supported pairing.
 
-## Async discipline (where .NET codebases die)
+C# 12 supplies primary constructors and collection expressions. C# 14 adds extension members, field-backed property accessors using `field`, and null-conditional assignment. Use them where ownership remains clear: a primary-constructor parameter is not automatically a property, and `obj?.Property = value` deliberately skips an update when null rather than validating a required receiver.
 
-- async all the way down: never `.Result`, `.Wait()`, or `.GetAwaiter().GetResult()` on async code — that's the classic deadlock + threadpool-starvation combo
-- `CancellationToken` parameters flow through every async public API and reach the actual I/O call
-- Library code: `ConfigureAwait(false)`; application code (ASP.NET Core has no sync context): don't bother
-- `IAsyncEnumerable<T>` for streams; `Task.WhenAll` for genuine parallel fan-out; `ValueTask` only on proven hot paths
-- Fire-and-forget is a bug until proven otherwise — unobserved task exceptions vanish; use a background service or at minimum log continuations
+## Values and public contracts
 
-## Architecture defaults
+- Enable nullable analysis for new code; migrate existing projects within scope. Nullable annotations and `!` have no runtime validation effect. Check deserialized data and public inputs; suppress warnings only for an invariant the compiler cannot express.
+- Use records for value semantics and ordinary classes for identity. `init`, `readonly`, and record `with` do not freeze referenced objects; copy or use immutable collections when ownership requires isolation. EF entities usually need reference identity.
+- A `required` member requires initialization by callers; it does not prove a non-null or domain-valid value. Validate invariants in constructors/factories or the established validation boundary.
+- Use pattern matching for clear closed decisions. An enum can contain unnamed numeric values; reject unknown external values rather than assuming switch coverage proves input validity.
+- Follow `.editorconfig` for braces and namespace style. Use LINQ for readable transformations; account for deferred execution and repeated enumeration. Don't replace a clear loop with a chain of side effects.
+- Keep generic abstractions, interfaces, and result wrappers proportional to the boundary. Use existing dependency injection and error conventions consistently.
 
-- Built-in DI with constructor injection; lifetimes deliberate: singleton for stateless services, scoped for per-request state, transient rarely — never resolve scoped from singleton (captive dependency)
-- Options pattern (`IOptions<T>` bound to config sections) over raw `IConfiguration` reads scattered through code
-- Minimal APIs for services and small apps; controllers when filters/conventions/versioning earn their weight — match the repo
-- One `HttpClient` policy: `IHttpClientFactory` always — naked `new HttpClient()` per request exhausts sockets
-- Structured logging via `ILogger<T>` with message templates (`"Order {OrderId} failed"`) — never string interpolation into log calls
+## Async and resource ownership
 
-## EF Core without surprises
+- Await asynchronous I/O through the call chain. Avoid `.Result`, `.Wait()`, and sync-over-async wrappers; don't use `Task.Run` to wrap naturally asynchronous I/O.
+- Pass cancellation tokens to operations that can cancel, including HTTP, database calls, and async enumeration. Treat caller cancellation separately from an operational failure or timeout.
+- `Task.WhenAll` is suitable for independent bounded work; it does not automatically cancel siblings. Give fan-out a concurrency limit and define partial-failure handling.
+- Own background work with the application's background-service/lifecycle mechanism. `async void` is for required event-handler signatures; observe other work through Task-returning APIs.
+- Use `ConfigureAwait(false)` where library code must avoid a caller's synchronization context; keep context when UI code needs it. It does not move work to a dedicated background thread.
+- Dispose owned resources with `using`/`await using`. Don't dispose injected resources owned by the container. Reuse HTTP connections via a long-lived HttpClient with appropriate `PooledConnectionLifetime` or factory-managed clients; per-request client construction is not the default.
 
-- `AsNoTracking()` for read-only queries — tracking is the default and costs memory
-- Project to DTOs in the query (`Select`) rather than loading entities and mapping after
-- N+1 is the classic failure: eager-load deliberately (`Include`) or restructure the query; log/inspect generated SQL for anything hot
-- Migrations in version control, applied deliberately (not `EnsureCreated` in production); no lazy-loading proxies in new designs
+## Services, persistence, and failures
 
-## Errors
+- Match DI lifetime to ownership. Don't capture scoped services in singletons; create a scope for each background unit of work. Validate required configuration early instead of silently substituting defaults.
+- DbContext is a unit of work and is not thread-safe. Await each operation or use separate contexts for actual parallel operations. Keep transactions and optimistic-concurrency behavior explicit.
+- For EF reads, project only needed columns and use no-tracking when identity/change tracking is unnecessary. Inspect SQL for N+1 queries and pagination; an in-memory provider does not verify production SQL semantics.
+- Catch exceptions where recovery or translation is meaningful; preserve the stack with `throw;`. Log structured context once at the responsible boundary. Don't convert canceled, unauthorized, or failed operations into empty successful responses.
+- Retry only bounded transient failures when the operation is safe to repeat. Test failure and cancellation paths with the existing test framework; don't add a new assertion library by habit.
 
-- Exceptions for exceptional; catch specifically, enrich with context, rethrow with `throw;` (never `throw ex;` — it resets the stack trace)
-- Result-object patterns only as a whole-team convention, not a per-file experiment
-- `using`/`await using` declarations for disposables; implement `IAsyncDisposable` where cleanup does I/O
+## Example
 
-## Testing
+An injected, reused HttpClient keeps ownership outside this operation while failures remain visible:
 
-- xUnit as the default runner; assertion library per repo convention (note: FluentAssertions v8+ moved to a paid license for commercial use — check before adding it; xUnit asserts or its forks cover most needs)
-- `[Theory]` + `[InlineData]`/`[MemberData]` for input matrices — the table-driven idiom
-- Integration tests with `WebApplicationFactory<T>` hitting the real pipeline; Testcontainers for real databases
-- Mock only process boundaries you don't own; in-memory EF provider lies about SQL semantics — use SQLite in-memory or Testcontainers instead
+```csharp
+using System.Net.Http.Json;
+
+public sealed record Profile(string Name);
+
+public static class Profiles
+{
+    public static async Task<Profile> LoadAsync(
+        HttpClient client, Uri uri, CancellationToken cancellationToken)
+    {
+        var profile = await client.GetFromJsonAsync<Profile>(
+            uri, cancellationToken).ConfigureAwait(false);
+        if (profile is null || string.IsNullOrWhiteSpace(profile.Name))
+            throw new InvalidDataException("Profile requires a name.");
+        return profile;
+    }
+}
+```
+
+The .NET SDK's implicit usings are assumed. HTTP, JSON, and cancellation failures propagate; validation rejects a missing or invalid payload.
+
+## Checklist
+
+- [ ] Syntax and APIs fit SDK, language version, and target frameworks.
+- [ ] Nullability, required members, and external validation agree.
+- [ ] Async operations, cancellation, disposal, and DI lifetimes have owners.
+- [ ] Database concurrency and failure semantics remain explicit.
+- [ ] Relevant checks were run when authorized; omissions are reported.
+
+## References
+
+- [.NET 10](https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-10/overview) and [C# 14](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-14)
+- [Nullable references](https://learn.microsoft.com/en-us/dotnet/csharp/nullable-references) and [record semantics](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/record)
+- [HttpClient lifetimes](https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/http/httpclient-guidelines)
+- [DbContext ownership](https://learn.microsoft.com/en-us/ef/core/dbcontext-configuration/)

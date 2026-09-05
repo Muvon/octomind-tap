@@ -1,9 +1,9 @@
 ---
 name: programming-ios
 title: "iOS Development"
-description: "iOS architecture with SwiftUI, SwiftData, App Intents, WidgetKit, and modern platform integrations. Auto-activates for iOS projects."
+description: "iOS state ownership, SwiftUI/UIKit integration, persistence, lifecycle, and platform services. Auto-activates for iOS projects."
 license: Apache-2.0
-compatibility: "Requires Xcode 16+ and iOS 17+ SDK."
+compatibility: "Requires Xcode and the project's supported iOS SDK/deployment target; newer frameworks require availability checks."
 capabilities: programming-swift
 domains: developer
 rules:
@@ -15,67 +15,84 @@ rules:
   - file(*.xcodeproj)
 ---
 
+## Overview
+
+Use for iPhone and iPad app implementation and review. Preserve existing UI and persistence choices; improve state ownership, lifecycle behavior, and platform integration without imposing a new architecture.
+
 ## Mental model
 
-A modern iOS app is SwiftUI views over `@Observable` models, with SwiftData (or a small repository layer) for persistence and App Intents for system-level integration. UIKit is the escape hatch for what SwiftUI can't yet express. Architectural mistakes show up as massive view bodies, scattered singletons, and tight coupling to `UIApplication` — design for testability by isolating side effects behind protocols.
+Views render state; owners decide its lifetime. Durable data, scene state, and temporary UI state are different concerns. A newer SDK does not raise the deployment target, and an app task is not a guarantee of background execution.
 
-## Architecture
+## Platform gate
 
-- Feature-first organization: each feature owns its views, models, intents, and tests in one folder
-- Domain logic lives in framework-free Swift modules (a separate SPM target) — the UI imports the domain, not the other way around
-- Side effects (network, persistence, system services) hide behind protocols injected via `@Environment` or initializer parameters
-- Avoid singletons except for genuinely process-wide resources (logger, telemetry); inject everything else
-- Keep `App` and `Scene` definitions thin — they wire dependencies and nothing more
+Verified 2026-09-05: Apple's stable Xcode 26.x line includes Swift 6.3 and iOS 26.x SDKs; Xcode/iOS 27 are beta. Check the selected Xcode, language/isolation settings, minimum OS, entitlements, and framework availability before adding APIs.
 
-## SwiftUI patterns
+Observation and SwiftData require iOS 17+; NavigationStack requires iOS 16+. Use `#available` only where supported older systems need a deliberate compatible implementation. Do not add speculative fallback trees for unsupported OS versions, or raise minimum deployment versions as incidental cleanup. Recheck Apple's live SDK submission requirements when preparing a release.
 
-- `@Observable` model classes for view state; `@Bindable` to create bindings to their properties
-- `NavigationStack` with typed `NavigationLink(value:)` for type-safe routing; `NavigationPath` for heterogeneous stacks
-- `NavigationSplitView` for iPad/macOS layouts — collapses to stack on iPhone automatically
-- `.task` modifier for async work tied to view lifetime — cancels on disappear
-- `.environment(...)` to inject services down the tree; custom `EnvironmentKey` for app-specific dependencies
-- View bodies should read like a layout description — push computation into the model
+## State and UI ownership
 
-## Data and persistence
+- For supported SwiftUI code, use `@Observable` for observation, `@State` to own a model's stable view lifetime, and `@Bindable` only when bindings are needed. Observation alone does not imply MainActor isolation; declare UI-state isolation deliberately.
+- Keep existing ObservableObject/UIKit implementations where they satisfy the task. Don't create a view model, protocol, or separate package for every view; extract logic when ownership, reuse, or testing warrants it.
+- Give lists stable domain identifiers. Avoid generating UUIDs in computed view data or using array indices as identity for reorderable items; incorrect identity corrupts selection and local state.
+- Express navigation as route values when useful. Validate deep links as untrusted input and reconcile restored routes with current authentication/data; restoration is not authorization.
+- Use native controls and system surfaces so current platform styling and accessibility work together. For iOS 26 Liquid Glass, avoid recreating system materials or applying glass to every content surface. Check contrast, reduced transparency/motion, Dynamic Type, and keyboard/VoiceOver behavior.
+- Support iPad resizing and multiple scenes. Keep per-window selection/navigation separate from shared domain state; don't assume a single active window or fixed screen dimensions.
 
-- SwiftData with `@Model` for new projects — schema is derived from the type, lightweight migrations are automatic
-- `@Query` in views for filtered, sorted, animated fetches
-- `ModelContainer` configured at the app entry point; injected via `.modelContainer(...)`
-- CloudKit sync via SwiftData when cross-device persistence is needed
-- `#Predicate` macro for type-safe queries; `VersionedSchema` + `SchemaMigrationPlan` for non-trivial migrations
-- For non-SwiftData persistence, hide Core Data / files / keychain behind a repository protocol
+## Tasks and persistence
 
-## System integration
+- Use `.task(id:)` for asynchronous work whose lifetime follows a view and input. SwiftUI requests cancellation when that lifetime ends or the ID changes; work must cooperate, and stale results still need protection before updating state.
+- Keep UI mutation on its intended actor. `Task {}` and async functions are not automatic background execution; move heavy computation through a deliberate concurrency boundary, not arbitrary detached tasks.
+- For work surviving a screen, choose a longer-lived owner. Use supported background APIs for system-managed execution; don't assume a task keeps running after suspension or termination.
+- SwiftData is an option, not a mandatory replacement for Core Data or an existing store. Make container/context ownership explicit; transfer identifiers or detached values between concurrency domains instead of sharing live context-bound models.
+- Persist meaningful mutations at an explicit success boundary. Treat save/migration errors as errors; don't silently recreate the store or substitute an in-memory container in production.
+- Version schemas when evolution requires it and test migration from real prior schemas. Automatic lightweight migration handles only compatible changes. CloudKit adds schema and entitlement constraints; do not assume local uniqueness or immediate cross-device consistency.
 
-- App Intents make actions discoverable by Shortcuts, Siri, Spotlight, and Apple Intelligence
-- `AppEntity` for domain objects the system can reason about; `AppShortcutsProvider` for surfaced shortcuts
-- Widgets via WidgetKit with `TimelineProvider`; Live Activities via ActivityKit for lock-screen and Dynamic Island
-- StoreKit 2 (`Product.products(for:)`, `Transaction.currentEntitlements`) — no delegate callbacks, no receipt parsing
-- `PrivacyInfo.xcprivacy` declares all required-reason API usage — ship with it from day one
+## System boundaries and checks
 
-## UIKit interop
+- Inject side-effect boundaries where substitution is useful; use concrete types or closures when sufficient. Keep UIKit representables thin and pair observer/delegate setup with teardown.
+- StoreKit: distinguish cancellation, pending, and verified success. Grant entitlements only after appropriate verification, process updates/revocations, and finish transactions after delivery; make repeat delivery safe.
+- App Intents and widgets run with their own lifecycle constraints. Revalidate authorization and durable state; don't depend on an open app scene or in-memory singleton.
+- Request permissions at the relevant user action. Handle denial explicitly and store secrets in Keychain; inspect required-reason APIs and SDK privacy manifests for the actual dependencies.
+- Use existing unit tests for state transitions and focused UI tests for user flows. Previews aid inspection but are not assertions. Verify device-only integration separately from simulator behavior.
 
-- Wrap UIKit views with `UIViewRepresentable` / `UIViewControllerRepresentable` only when SwiftUI lacks an equivalent
-- Keep the bridge thin: a single representable per feature, not scattered across views
-- For UIKit-first apps, embed SwiftUI screens via `UIHostingController` — incremental migration works well
+## Example
 
-## Concurrency
+Own an observable editor in its parent; borrow bindings in the child (iOS 17+):
 
-- Adopt Swift 6 strict concurrency — main-thread mistakes become compile errors
-- `@MainActor` on view models and anything touching UIKit/SwiftUI
-- Network and persistence on background actors or detached tasks; results cross back via `await`
-- Cancel structured tasks (`.task`) automatically; for unstructured work, hold `Task` handles and cancel explicitly
+```swift
+import SwiftUI
+import Observation
 
-## Testing
+@MainActor @Observable final class Draft {
+    var title = ""
+}
 
-- Swift Testing (`@Test`, `#expect`, `@Suite`) for unit and integration tests
-- Test the domain target without the app — fast, deterministic, no simulator
-- `#Preview` doubles as a visual test for layout across states
-- XCUITest for end-to-end flows; keep them short and focused on critical user paths
-- Mock system services by injecting the protocol you defined, not by stubbing Apple's classes
+@MainActor struct Editor: View {
+    @State private var draft = Draft()
+    var body: some View { TitleField(draft: draft) }
+}
 
-## Distribution
+@MainActor struct TitleField: View {
+    @Bindable var draft: Draft
+    var body: some View { TextField("Title", text: $draft.title) }
+}
+```
 
-- TestFlight for internal and external betas; phased rollouts on App Store releases
-- Stay current with the Privacy Manifest required-reason API list — Apple expands it regularly
-- Symbolicate crash reports via dSYMs uploaded with each build
+Creating `Draft()` inside `body` would lose the intended owner and stable lifetime.
+
+## Checklist
+
+- [ ] APIs match deployment targets; beta features are identified.
+- [ ] View, scene, task, and durable-data lifetimes are distinct.
+- [ ] Cancellation and stale results cannot overwrite current state.
+- [ ] Persistence and purchase failures remain visible and recoverable.
+- [ ] Accessibility and relevant checks were verified when authorized; limits are stated.
+
+## References
+
+- [Xcode/SDK matrix](https://developer.apple.com/xcode/system-requirements)
+- [Observation migration](https://developer.apple.com/documentation/swiftui/migrating-from-the-observable-object-protocol-to-the-observable-macro)
+- [Task cancellation](https://developer.apple.com/documentation/swift/task/cancel())
+- [SwiftData](https://developer.apple.com/documentation/swiftdata/) and [CloudKit integration](https://developer.apple.com/documentation/swiftdata/syncing-model-data-across-a-persons-devices)
+- [StoreKit transactions](https://developer.apple.com/documentation/storekit/transaction)
+- [Liquid Glass](https://developer.apple.com/videos/play/wwdc2025/219/)

@@ -1,9 +1,9 @@
 ---
 name: programming-kotlin
 title: "Kotlin Development"
-description: "Idiomatic Kotlin — null-safety discipline, coroutines and Flow, expression-oriented style, and Android/Compose conventions. Auto-activates in Kotlin projects."
+description: "Idiomatic Kotlin — null-safety, coroutine ownership, Flow delivery, and Android/Multiplatform boundaries. Auto-activates in Kotlin projects."
 license: Apache-2.0
-compatibility: "Requires JDK + Gradle with Kotlin 2.x; Android SDK for Android targets."
+compatibility: "Requires the project's Kotlin toolchain; JDK for JVM targets, Android SDK for Android, platform tools for Native targets."
 domains: developer
 rules:
   - file(build.gradle.kts)
@@ -11,49 +11,78 @@ rules:
   - content(kotlin)
 ---
 
+## Overview
+
+Use for Kotlin implementation and review across JVM, Android, and Multiplatform projects. Prefer concise expressions with visible ownership and failure semantics; preserve the repository's architecture and toolchain constraints.
+
 ## Mental model
 
-Kotlin is pragmatic conciseness with compiler-enforced null-safety. Idiomatic Kotlin is expression-oriented (`when`, `if` as expressions, single-expression functions) and immutable-first. The two failure modes are opposite: writing Java in Kotlin (mutable beans, null-check boilerplate, util classes), and scope-function golf that nobody can read. Clarity beats cleverness; the compiler beats convention.
+Nullability describes absence, immutability describes ownership, and coroutine scopes describe lifetime. These are separate contracts: `val`, `List`, and `suspend` do not by themselves guarantee immutable data, thread safety, or background execution.
 
-## Language — the idioms that matter
+## Version gate
 
-- `val` by default; `var` is a flag for deliberate mutability. Collections: read-only types (`List`, `Map`) in signatures, mutable ones as local implementation detail
-- Data classes for values; sealed interfaces/classes for closed hierarchies with exhaustive `when` (no `else` on sealed matches — let the compiler catch new cases)
-- Null-safety is a design tool, not syntax tax: model absence with `?` types, handle with `?.`, `?:`, and early returns. `!!` is a bug report to your future self; `lateinit` only for framework-injected lifecycles
-- Extension functions to give existing types domain vocabulary — not to hide business logic where nobody looks for it
-- Scope functions sparingly and conventionally: `let` for null-safe transforms, `apply` for object configuration, `also` for side effects — nesting two is the readability ceiling
-- Expression style: single-expression functions, `when` over if-chains; named + default arguments over builders and telescoping overloads
-- Delegation over inheritance: `by lazy` for expensive init, `by` interface delegation over deep hierarchies
+Verified 2026-09-05: Kotlin 2.4 is the stable language line. It stabilizes context parameters, explicit backing fields, and annotation use-site target changes. Explicit context arguments, context-parameter callable references, and collection literals remain experimental. Check the actual compiler, language/API version, Gradle plugin, JVM target, and platform compatibility before using new syntax.
 
-## Coroutines — structured or broken
+Use context parameters for an existing contextual API need, not to obscure ordinary constructor dependencies. Explicit backing fields can expose a narrower public type without a second property. New annotation targeting can affect frameworks and generated code; verify effective targets during upgrades. Do not enable experimental features merely to shorten an example.
 
-- Structured concurrency always: launch inside a scope that owns the lifecycle (`coroutineScope`, `viewModelScope`, `SupervisorJob` services). `GlobalScope` is a leak with a name
-- suspend functions are main-safe by contract: they switch their own dispatcher (`withContext(Dispatchers.IO)`) — callers never have to know
-- Inject dispatchers (constructor parameter, default `Dispatchers.Default/IO`) — hardcoded dispatchers make code untestable
-- Cancellation is cooperative: long CPU loops check `isActive`/`ensureActive`; never swallow `CancellationException` in a generic catch
-- Flow for cold streams (emits per collector); StateFlow for observable state (always has a value); SharedFlow for events. Convert callbacks with `callbackFlow` + `awaitClose`
-- Parallel fan-out: `coroutineScope { things.map { async { ... } }.awaitAll() }` — an `async` you never await is a swallowed error
+## Values and readable APIs
 
-## Android specifics (when the target is Android)
+- Prefer `val`, but remember it fixes the reference, not its contents. `List<T>` is a read-only interface that may alias mutable storage; snapshot at ownership boundaries. Data-class `copy()` is shallow.
+- Use data classes for values and sealed types for closed outcomes. Exhaustive `when` without a default exposes newly added cases; don't fabricate an unknown case unless external input really needs one.
+- Normalize Java platform types at the interop boundary. Use `require` for invalid arguments and `check` for invalid state; `!!` needs a proven invariant, not optimism about input.
+- Nullable returns represent expected absence. Don't use `?: emptyList()`, `getOrDefault`, or `runCatching` to turn parsing or network failures into valid-looking data.
+- Prefer named arguments and small functions over nested scope functions. Use `let`, `apply`, and `also` only when their receiver and result remain obvious. Extensions should reveal domain vocabulary without hiding I/O in property-like access.
+- Write explicit public return types. Prefer straightforward collections until sequence laziness or reduced intermediates benefits the actual workload; sequences are not automatically faster.
 
-- Jetpack Compose is the UI toolkit, officially: the Views toolkit entered maintenance mode in 2026 and 68% of the top-1,000 Play Store apps ship Compose — XML views are legacy-maintenance only. State hoisting (stateless composables take value + lambda), `remember`/`rememberSaveable` deliberately, ViewModel exposes `StateFlow<UiState>` collected via `collectAsStateWithLifecycle`
-- Unidirectional data flow: UI sends events up, state flows down — no business logic in composables
-- One immutable `UiState` data class per screen beats a dozen loose observable fields
-- Repository layer owns data source choice; ViewModels never touch Android framework types the emulator can't fake (keeps them JVM-testable)
+## Coroutines and streams
 
-## Multiplatform (KMP)
+- Launch into a scope with an owner and cancellation policy. Use `coroutineScope` for related work that should fail together; supervision isolates child failures only when each failure has a handler. Avoid ownerless GlobalScope work.
+- `suspend` does not switch threads. Blocking functions used by UI callers must move blocking work to an appropriate injected dispatcher; already-suspending network APIs usually need no IO wrapper. CPU-heavy work belongs on a suitable computation dispatcher.
+- Propagate `CancellationException`; broad catches and `runCatching` can capture it. Long computations must check cancellation. Use `NonCancellable` only for narrowly bounded suspending cleanup, not to keep normal work alive.
+- Await async results and bound fan-out when inputs are unbounded. A structured child can fail its parent before await; ignoring Deferred is not an error-handling policy.
+- A `flow {}` is cold; StateFlow/SharedFlow are hot. StateFlow conflates equal values, so update with immutable snapshots and `update` for concurrent read-modify-write.
+- SharedFlow is a broadcast mechanism, not durable event storage: with no subscribers, only replay values survive. Model important UI outcomes as state or an acknowledged durable operation when losing them would be incorrect.
+- Use `callbackFlow` with `awaitClose` to unregister callbacks. Choose buffering and overflow behavior explicitly; don't silently drop business-critical values.
 
-- Production-ready pattern: share business logic, models, and networking (`commonMain`); keep platform UI native or use Compose Multiplatform where team skills fit
-- `expect`/`actual` for the thin platform seam — the smaller the actual surface, the healthier the module
+## Platform boundaries and verification
 
-## Ecosystem defaults
+- Android: hoist Compose state and collect flows with lifecycle-aware APIs. Preserve functioning Views-based code; toolkit adoption is not an instruction to rewrite unrelated screens. Keep long-lived work out of view-owned scopes.
+- Multiplatform: share logic that is actually portable; keep `expect`/`actual` seams small. Check each library's supported targets and stability rather than assuming JVM availability implies Native availability.
+- Follow existing serialization, formatting, and test libraries. Test coroutine behavior with `runTest` and dispatchers sharing its test scheduler; cover cancellation, delayed collectors, and errors, not only successful emissions.
 
-- Gradle with Kotlin DSL and version catalogs (`libs.versions.toml`) — the standard for both server and Android; context parameters are stable since 2.4 for the DI-adjacent cases that used to force receiver gymnastics
-- Serialization: `kotlinx.serialization` (`@Serializable`) for Kotlin-first codebases
-- Lint discipline: ktlint or detekt wired into CI, not into arguments
+## Example
 
-## Testing
+Keep cancellation distinct from a recoverable network failure:
 
-- JUnit 5 or kotest per repo convention; MockK for mocks (`coEvery` for suspend functions) — mock boundaries, not data classes
-- Coroutines: `runTest` + injected `TestDispatcher`; assert Flow emissions with Turbine (`flow.test { ... }`)
-- Compose UI: `createComposeRule` for behavior-level checks; keep logic in ViewModels so most tests stay on the JVM
+```kotlin
+import java.io.IOException
+
+suspend fun <T> loadOrReport(
+    load: suspend () -> T,
+    report: (IOException) -> Unit,
+): T {
+    try {
+        return load()
+    } catch (failure: IOException) {
+        report(failure)
+        throw failure
+    }
+}
+```
+
+This JVM boundary reports only I/O failures; cancellation passes through unchanged. In ordinary lower-level code, simply propagate failures without catching.
+
+## Checklist
+
+- [ ] New syntax fits compiler, plugins, and target; experiments are explicit.
+- [ ] Read-only interfaces do not leak unintended mutable aliases.
+- [ ] Coroutine lifetime, cancellation, and stream delivery are defined.
+- [ ] Absence and failure are distinct; fallback behavior is contractual.
+- [ ] Relevant checks were run when authorized; skipped checks are stated.
+
+## References
+
+- [Release process](https://kotlinlang.org/docs/releases.html) and [Kotlin 2.4 changes](https://kotlinlang.org/docs/whatsnew24.html)
+- [Collections](https://kotlinlang.org/docs/collections-overview.html)
+- [Coroutine practices](https://developer.android.com/kotlin/coroutines/coroutines-best-practices)
+- [SharedFlow contract](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-shared-flow/)

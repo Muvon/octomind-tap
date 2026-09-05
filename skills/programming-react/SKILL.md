@@ -12,76 +12,79 @@ rules:
   - content(react)
 ---
 
+## Overview
+
+Build React interfaces with explicit state ownership, pure rendering, and dependable loading and mutation behavior. Research baseline: 2026-09-05, React 19.2 stable and React Compiler 1.0 stable. Inspect installed React, framework, renderer, and compiler configuration first; documentation can include Canary-only APIs. Keep existing routing, styling, and state libraries unless the task requires changing them.
+
 ## Mental model
 
-React is a rendering library; state, data fetching, routing, and persistence are choices on top. The maintainable React app has clear state boundaries: server state separated from client state, local state separated from shared, and side effects pushed to the edges. Most pain comes from `useEffect` doing the work of data fetching, derived state, and event handling all at once; from prop drilling masquerading as composition; and from global stores swallowing everything.
+A render describes UI from a snapshot of props, state, and context; React may repeat or abandon it. Events cause user-directed changes, while effects synchronize committed UI with external systems. React's server component model requires supporting infrastructure; it is not automatically enabled by using React 19.
 
-## State boundaries
+## State and component boundaries
 
-- Local UI state: `useState` / `useReducer` — colocate with the component that owns it
-- Derived state is not state: compute it during render from props/state, don't sync via `useEffect`
-- Server state belongs to a server-state library (`TanStack Query`, `SWR`, `Apollo`) — not `useEffect` + `fetch` + `useState`
-- Global client state (theme, auth, feature flags) goes in Context or a small store (`zustand`, `jotai`) — never the whole app
-- URL state belongs in the router (`searchParams`, route params) — single source of truth for shareable state
+- Store the smallest authoritative state. Derive filtered lists, counts, and validation summaries during render; do not mirror props or derived values through effects.
+- Keep state near its consumers. Lift it to the closest shared owner when necessary; use composition before introducing context or a global store. Shareable navigation state belongs in the URL.
+- Use functional updates when the next value depends on pending previous state. Treat props/state as immutable snapshots; mutate neither during rendering.
+- Model mutually exclusive UI states explicitly. Keep initial loading, refreshing existing data, empty results, and failures distinguishable; a failed fetch is not an empty list.
+- Define components at module scope to preserve identity. Use stable domain keys for reorderable lists; change a subtree's key only when resetting its state is intended.
+- Make props reflect behavior rather than internal switches. Follow framework export conventions; neither named exports nor one-component-per-file is universally required.
 
-## Components and composition
+## Effects and current APIs
 
-- One component per file; named exports over default
-- Props are an API — define them with intent (`variant`, `size`) rather than dumping internal flags
-- Composition over configuration — `<Card><Card.Header /><Card.Body /></Card>` beats `<Card hasHeader hasBody />`
-- Children and render props beat prop drilling beyond two levels
-- Keep components small and focused; extract sub-components when a section has its own state or logic
-- Server Components (Next.js / React 19) by default; `"use client"` only when interactivity is needed
+- Hooks belong at the top level of components/custom hooks, before conditional returns. React's `use(resource)` is an exception: it permits conditions and loops, but still belongs inside a component or hook and cannot be wrapped in `try/catch`.
+- Effects must list their reactive dependencies and clean up subscriptions, timers, and pending work. Strict Mode's extra development setup/cleanup cycle exposes lifecycle errors; do not hide it with a "run once" ref.
+- React 19.2's `useEffectEvent` reads current values for non-reactive logic called from effects. It is not a dependency-avoidance trick, a UI event handler, or a callback to pass elsewhere.
+- React 19 permits function components to receive `ref` as a prop. Use this for new 19-targeted APIs; preserve `forwardRef` where older consumers need it.
+- React 19.2's `Activity` can hide UI while preserving state and cleaning up its effects. Use it when that lifecycle is needed; ordinary conditional rendering remains appropriate.
+- React Compiler can memoize supported code when enabled in the build. Do not assume it is active because React is installed. Profile before adding manual memoization; memoization must never be required for correctness.
 
-## Hooks discipline
+## Data, server boundaries, and forms
 
-- `useEffect` is for synchronizing with external systems (DOM APIs, subscriptions, non-React libraries) — not for derived data, not for event handling
-- Custom hooks extract reusable stateful logic; name them `useX` so the rules of hooks apply
-- `useMemo` / `useCallback` only when profiling shows a real problem — they're not free
-- `useRef` for DOM references and mutable values that shouldn't trigger renders
-- Never call hooks conditionally, in loops, or after early returns
+- Prefer existing framework loaders or cache infrastructure for shared server data. A small effect-based fetch is valid when it handles races, cancellation, and errors; a cache library is not mandatory.
+- Suspense handles participating data sources, lazy components, and promises consumed through `use`; it does not detect arbitrary effect-based fetching. Reuse a stable promise rather than creating one every client render.
+- Use Server Components only in a supporting framework. Keep secrets server-side, and authorize each server mutation. `"use client"` marks a module dependency boundary; Client Components can still be prerendered on the server.
+- Use native form semantics and labels. Controlled inputs are useful when React must drive their value; uncontrolled inputs and `FormData` suit many ordinary forms.
+- React 19 form actions and `useActionState` provide pending state and action results. `useFormStatus` observes its parent form, not a form rendered by the same component. Follow existing form infrastructure when it already meets the need.
+- Show expected validation failures as action state. Let unexpected failures reach the appropriate error boundary; handle event-handler and unrelated asynchronous failures explicitly because boundaries do not catch every error.
+- Keep optimistic state temporary and reconciled with authoritative results. Failed or conflicting mutations need recovery; avoid optimistic updates when the operation cannot be safely predicted.
 
-## Data fetching
+## Example
 
-- Server state library handles cache, deduplication, retries, and invalidation — don't reinvent this
-- Mutations: optimistic updates with rollback on error; invalidate queries after success
-- Pagination via `useInfiniteQuery` or cursor-based pages — never fetch entire lists into client state
-- Suspense boundaries for loading states in React 18+; `ErrorBoundary` for failures
-- In Next.js / Remix: prefer server-side data loading; client fetching only for truly client-driven data
+Derive visible content directly and retain stable item identity:
 
-## Forms
+```tsx
+type Item = { id: string; title: string; archived: boolean };
 
-- Controlled inputs for anything that needs validation, conditional logic, or remote submission
-- `react-hook-form` for non-trivial forms — performance and ergonomics beat raw `useState` chains
-- Validation schemas (`zod`, `valibot`) shared between client and server so both validate the same way
-- Submit handlers return promises; UI shows loading/error/success state via the form library, not ad-hoc flags
+function ItemList({ items, showArchived }: {
+  items: readonly Item[];
+  showArchived: boolean;
+}) {
+  const visible = items.filter(item => showArchived || !item.archived);
+  return (
+    <ul>
+      {visible.map(item => <li key={item.id}>{item.title}</li>)}
+    </ul>
+  );
+}
+```
 
-## Performance
+No effect or duplicate state is needed. The caller remains responsible for distinguishing loading, failure, and a successful empty result.
 
-- Stable keys in lists — never the array index for items that can reorder or delete
-- `React.memo` only for components that re-render frequently with stable props
-- Code-split at route boundaries with `React.lazy` + `Suspense`
-- Avoid creating new objects/arrays/functions inline when they're props to memoized children
-- Measure with the React DevTools Profiler before optimizing — most "slowness" is one bad component, not the whole tree
+## Checklist
 
-## Architecture
+- Confirm the installed stable APIs and the framework's server/client model.
+- Give each value one owner; derive values without synchronization effects.
+- Check hook ordering, effect dependencies, cleanup, and stable identity.
+- Exercise keyboard interaction, labels, pending/error states, and mutation reconciliation.
+- Use existing installed lint, type-check, component, and critical-flow tests when authorized. Report what was source-reviewed versus executed.
 
-- Feature-first folder layout: `features/billing/{components,hooks,api,types}` beats `components/`, `hooks/`, `api/` siblings
-- A `features/` folder for app-specific code, `components/` for the design system, `lib/` for cross-cutting utilities
-- Routes are thin: they compose feature components and pass route params, no business logic
-- Side-effect-free render — anything that touches `window`, `localStorage`, or fetches data goes inside an effect, a custom hook, or a server component
+## References
 
-## Testing
-
-- Vitest or Jest + React Testing Library — test what the user sees, not implementation details
-- Query by role, label, and text; reach for test IDs only when accessible queries fail
-- MSW for HTTP at the network layer — no mocking `fetch` or query-library internals
-- Playwright for end-to-end flows; keep them few and focused on critical paths
-- Snapshot tests sparingly — they catch unintended changes but tempt people to accept noise
-
-## Ecosystem
-
-- Framework: Next.js (App Router) or Remix for full-stack; Vite for SPAs
-- Styling: Tailwind, CSS Modules, or vanilla-extract — avoid runtime CSS-in-JS for new projects (bundle and perf cost)
-- Routing: framework router; for SPAs, `TanStack Router` (typed) or `React Router`
-- Types: TypeScript with strict mode; props typed with `interface`, public APIs with explicit return types
+- [Current React versions](https://react.dev/versions) and [React 19.2](https://react.dev/blog/2025/10/01/react-19-2)
+- [Removing unnecessary effects](https://react.dev/learn/you-might-not-need-an-effect)
+- [use and promise ownership](https://react.dev/reference/react/use)
+- [useEffectEvent constraints](https://react.dev/reference/react/useEffectEvent)
+- [Server Components](https://react.dev/reference/rsc/server-components)
+- [Form actions](https://react.dev/reference/react-dom/components/form) and [useActionState](https://react.dev/reference/react/useActionState)
+- [React 19 APIs](https://react.dev/blog/2024/12/05/react-19)
+- [React Compiler](https://react.dev/learn/react-compiler/introduction)

@@ -11,61 +11,77 @@ rules:
   - content(typescript)
 ---
 
+## Overview
+
+Write code whose types describe real runtime guarantees, with small APIs and explicit failure behavior. Research baseline: 2026-09-05, TypeScript 7.0 stable. Read the repository's compiler version, inherited configuration, package exports, runtime targets, and toolchain constraints before applying newer features. A language update does not authorize a dependency or framework migration.
+
 ## Mental model
 
-TypeScript's value is the type system at boundaries — between modules, packages, and processes. Type internals when it pays for itself; type boundaries always. Most maintenance pain comes from `any` leaking through one layer and infecting the whole call graph, or from runtime data assumed to match its declared type without validation.
+TypeScript checks JavaScript before execution; it does not validate JSON, freeze objects, or install runtime APIs. Keep external uncertainty at the boundary, then use ordinary control flow and domain types internally. Prefer a readable concrete type over generic machinery that only abbreviates one implementation.
 
-## Type-driven design
+## Version and configuration
 
-- Make illegal states unrepresentable: discriminated unions with a `kind` field beat optional fields and boolean flags
-- `unknown` at the edge of trust (external input, JSON, errors in `catch`), narrowed by a runtime check before use
-- `as` assertions silently lie — prefer `satisfies` for inference, or a runtime validator (`zod`, `valibot`, `arktype`) when the value is external
-- Prefer `readonly` arrays and `Readonly<T>` for inputs — signals intent and prevents accidental mutation
-- Branded/nominal types for domain identifiers (`type UserId = string & { __brand: 'UserId' }`) — stops cross-wiring different IDs
+- TypeScript 7 is the native compiler, available through the regular `typescript` package. It does not expose the old compiler API. Check framework checkers, language plugins, and type-aware linters before upgrades; tooling that embeds the compiler may still require TypeScript 6. The official release documents side-by-side compatibility; do not invent a fallback compiler on failure.
+- In 6/7, `strict` defaults to true, `types` to `[]`, and `rootDir` to the configuration directory. Declare intended global types and source root explicitly when needed; inspect emitted paths during migration.
+- TypeScript 7 rejects options deprecated in 6, including `baseUrl`, `moduleResolution: node10`, and ES5 targets. Fix the underlying configuration; suppressing deprecations is not a durable migration.
+- Keep `strict` enabled. Consider `noUncheckedIndexedAccess` for potentially missing indexed values and `exactOptionalPropertyTypes` when absence differs from explicit `undefined`; neither follows automatically from `strict`. Introduce them within the authorized configuration scope.
+- Match `module` and `moduleResolution` to execution: Node-aware modes for Node resolution, `bundler` for a bundler. `paths` changes type resolution, not emitted imports. Prefer package exports/imports or the existing resolver over new aliases.
+- Pin `target`/`lib` to supported environments. New declarations do not supply polyfills. Use `import type` for erased dependencies, preserving any intentionally required side-effect import.
 
-## Modules and boundaries
+## Types that carry their weight
 
-- One concept per file; named exports over default exports — refactor tools and IDEs handle them better
-- A package's entry point declares the public surface; internals stay internal even if technically reachable
-- Path aliases in `tsconfig.json` keep imports stable across moves — mirror them in the bundler/runtime resolver
-- ESM is the default for new code; CJS only when integrating with legacy
-- Separate types from values when crossing package boundaries (`import type { ... }`) — keeps runtime bundles lean
+- Accept `unknown` for untrusted values; validate shape and domain constraints before constructing an internal value. Use existing schema tooling for complex boundaries, not a new dependency for a three-field check.
+- Prefer discriminated unions to combinations of optional fields and flags. Use exhaustive narrowing with `never` so new variants require a decision.
+- Use `satisfies` to check a known expression's compatibility while retaining useful inference. It is not runtime validation or a replacement for every annotation. Assertions and non-null `!` require a concrete invariant.
+- Annotate public contracts and ambiguous returns; let locals infer. Add a generic only when it expresses a relationship between inputs and outputs. Keep conditional/mapped types bounded and understandable.
+- `readonly`, `Readonly<T>`, and `as const` provide compile-time restrictions, not runtime deep immutability. A mutable alias can still change an object. Copy or freeze only where ownership requires it.
+- Distinguish missing, empty, and invalid values. Use `??` only for an intentional nullish default; avoid `||` when zero, false, or an empty string is valid.
 
-## Async patterns
+## Async work and failures
 
-- `async`/`await` everywhere; raw `.then` chains are legacy
-- `Promise.all` for parallel work that must all succeed; `Promise.allSettled` when partial results are useful
-- An async function that doesn't await anything probably shouldn't be async — return the value directly
-- Cancellation flows through `AbortSignal` — accept one on any function that does I/O, pass it down
-- Errors thrown inside async iteration (`for await`) propagate normally; handle them where they're meaningful
+- Use `await` for readable sequential dependencies; promise composition remains legitimate. Preserve an existing async API's rejection semantics when simplifying it.
+- Start independent bounded work together. `Promise.all` rejects on failure but does not cancel siblings; `allSettled` is useful only when callers actually handle each outcome.
+- Propagate supported cancellation signals and deadlines through I/O. Avoid detached promises; explicitly own completion and rejection handling.
+- Preserve error context with `cause` where supported. Narrow caught values before reading properties. Follow the module's established thrown-error or result-union contract.
+- Recover only when an alternative is valid for the operation. Never translate a failed request or malformed payload into a successful empty collection. Retry only identified transient failures, with bounds and appropriate idempotency.
 
-## Error handling
+## Example
 
-- Throw for programmer errors and unexpected conditions; return `Result`-shaped values for expected failures in hot paths
-- Custom error classes extend `Error` and set `name` — enables `instanceof` and structured logging
-- `cause` (ES2022) preserves the original error: `throw new AppError('loading user', { cause: err })`
-- In `catch (err)` the type is `unknown` — narrow before reading properties
+Validate a boundary without asserting a desired type:
 
-## Architecture
+```typescript
+type User = Readonly<{ id: string; enabled: boolean }>;
 
-- Dependency direction goes inward: domain logic doesn't import from web/CLI/DB layers — inject those via interfaces
-- Keep business logic in framework-free modules; the framework adapter is a thin wrapper
-- Side effects at the edge: pure functions in the core simplify testing and avoid mock sprawl
-- Configuration is a typed value passed at startup, not a global to mutate
+function parseUser(value: unknown): User {
+  if (
+    typeof value !== "object" || value === null ||
+    !("id" in value) || typeof value.id !== "string" ||
+    value.id.length === 0 ||
+    !("enabled" in value) || typeof value.enabled !== "boolean"
+  ) {
+    throw new TypeError("Invalid user payload");
+  }
 
-## Ecosystem defaults
+  return { id: value.id, enabled: value.enabled };
+}
+```
 
-- Node servers: Fastify or Hono for new projects; Express is fine but pre-modern
-- Full-stack: Next.js (App Router) or Remix
-- Frontend: React with TanStack Query for server state; Svelte/SvelteKit; Solid where fine-grained reactivity helps
-- Validation at boundaries: `zod` is the default; `valibot` when bundle size matters
-- ORMs: Prisma for productivity, Drizzle for control and small bundles
-- HTTP client: `fetch` (native everywhere now); `ky` or `ofetch` for ergonomics
-- Testing: Vitest for new projects; Playwright for E2E; MSW for HTTP-level mocking
+The boolean check preserves valid `false`; it does not replace malformed input with a default.
 
-## Project layout
+## Checklist
 
-- `src/` for sources, `dist/` for build output (gitignored)
-- Monorepo with pnpm workspaces + Turborepo when sharing types/code across apps
-- Per-package `tsconfig.json` extending a shared base; `tsc --build` with project references for fast incremental builds
-- Co-locate tests with code (`foo.ts` + `foo.test.ts`) for unit, separate `e2e/` directory for integration
+- Confirm compiler, framework tooling, module resolution, and runtime compatibility.
+- Validate external data; justify assertions and intentional defaults.
+- Keep state variants exhaustive and public types simpler than their implementations.
+- Check cancellation, rejection ownership, and partial-failure semantics.
+- Use existing type-check/lint/test scripts and installed tools when execution is authorized; test invalid inputs and meaningful async failures. Report skipped checks.
+
+## References
+
+- [TypeScript 7.0 release and compiler API compatibility](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/)
+- [TypeScript 6.0 migration details](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-6-0.html)
+- [Module resolution reference](https://www.typescriptlang.org/docs/handbook/modules/reference.html)
+- [Narrowing and exhaustiveness](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
+- [Object types and readonly limits](https://www.typescriptlang.org/docs/handbook/2/objects.html)
+- [Indexed access checking](https://www.typescriptlang.org/tsconfig/noUncheckedIndexedAccess.html) and [exact optional properties](https://www.typescriptlang.org/tsconfig/exactOptionalPropertyTypes.html)
+- [The satisfies operator](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html)

@@ -1,9 +1,9 @@
 ---
 name: programming-swift
 title: "Swift Development"
-description: "Modern Swift architecture: value types, concurrency, protocol-oriented design, and SPM. Auto-activates in Swift package projects."
+description: "Modern Swift value semantics, API design, isolation, task ownership, and package compatibility. Auto-activates in Swift projects."
 license: Apache-2.0
-compatibility: "Requires Swift 6.0+ toolchain."
+compatibility: "Requires the project's Swift toolchain; newer features are gated by compiler, language mode, and target platform."
 capabilities: programming-swift
 domains: developer
 rules:
@@ -11,60 +11,78 @@ rules:
   - content(swift)
 ---
 
+## Overview
+
+Use for Swift language implementation and review across packages, services, and apps. Keep platform UI, persistence, and distribution decisions in their platform context; focus here on values, APIs, concurrency, and explicit failures.
+
 ## Mental model
 
-Swift is a value-oriented language with strong static typing and modern concurrency. The maintainable Swift codebase keeps domain logic in `struct`s and `enum`s, uses classes only for identity or shared mutable state, and isolates concurrency boundaries with actors and `@MainActor`. Reaching for class hierarchies and reference semantics by default produces fragile, hard-to-test code.
+Value semantics control mutation; actor isolation controls access; task structure controls lifetime. None substitutes for the others. Make these contracts visible instead of quieting compiler diagnostics with unchecked annotations or detached tasks.
 
-## Value-oriented design
+## Version and isolation gate
 
-- `struct` by default; reach for `class` only when you need identity, shared state, or Obj-C interop
-- `enum` with associated values models finite, exhaustive cases — pattern-match instead of branching on optional fields
-- Protocol-oriented composition: small protocols + extensions beat deep inheritance hierarchies
-- Generics with associated types (`some Protocol`, `any Protocol`) let APIs stay value-typed while remaining flexible
-- Avoid `AnyObject`-only protocols unless you genuinely need reference semantics
+Verified 2026-09-05: Swift 6.3 is released; Apple's Xcode 27 beta lists Swift 6.4. Check the repository's toolchain, `swift-tools-version`, language mode, upcoming-feature flags, default isolation, and deployment targets separately. A Swift 6 compiler can compile in Swift 5 language mode.
 
-## Concurrency (Swift 6)
+- Swift 6 language mode enables data-race safety checks. Migrate boundaries deliberately; don't assume a toolchain upgrade changes the package's language mode.
+- Swift 6.2 adds opt-in default MainActor isolation and `NonisolatedNonsendingByDefault`, under which nonisolated async functions inherit caller isolation. Read actual settings before inferring where a function runs. `async` does not mean background execution.
+- `@concurrent` on supported toolchains explicitly moves eligible async work to the concurrent executor. Use it for computation that must leave an actor, not as an annotation on every async function.
+- Swift 6.2 also introduces `InlineArray` and `Span`; use them for demonstrated fixed-storage or borrowing requirements. Swift 6.3 adds `@c` interoperability; prefer supported declarations over underscored attributes when the compiler and C contract permit them.
 
-- Strict concurrency checking enforces `Sendable` at compile time — design data flow so values cross actor boundaries, not shared references
-- Actors own mutable state — replace `class + lock` patterns with an `actor` that exposes async methods
-- `@MainActor` for all UI-bound state and code; main-actor-isolated types can't be passed across boundaries without `await`
-- `async`/`await` only — no completion handlers in new code; bridge old APIs with `withCheckedContinuation`
-- Structured concurrency via `TaskGroup` / `async let` — child tasks are bounded by the parent; prefer over `Task { }` detached work
-- `Task.detached` only when you need to escape actor inheritance — it's an exception, not a default
+## Values and API design
 
-## Error handling
+- Prefer structs for independent values and enums with associated values for distinct states. Use classes for identity or shared lifecycle; don't impose reference semantics merely to enable inheritance.
+- A struct containing a mutable class reference is not deeply independent. Keep mutation private, and validate invariants at creation rather than distributing checks through callers.
+- Read APIs at their call sites. Labels should distinguish meaning (`remove(at:)` versus `remove(_:)`); expose minimal access and document non-obvious ownership, failure, or complexity contracts.
+- Use generics or `some Protocol` when one concrete type remains statically determined. Use `any Protocol` for a heterogeneous existential contract; neither guarantees value semantics.
+- Add protocols where substitution or a boundary is useful, not for every concrete type. Keep computed properties predictable; expensive or failing work usually deserves an explicit method.
+- Model valid absence with Optional. Use `throws` for failures and typed throws only when a stable error set benefits callers; don't replace informative failures with `try?`, sentinel values, or empty collections.
 
-- `throws` for recoverable failures; typed throws (`throws(MyError)`) for library APIs where callers benefit from knowing the exact error type
-- `Result<T, E>` for stored errors, callback bridges, and crossing async boundaries when needed
-- `try?` only when the error genuinely doesn't matter; `try!` belongs in tests and prototypes, never in shipping paths
-- Don't use exceptions for control flow — model expected outcomes as enum cases or `Result`
+## Concurrency and resource lifetime
 
-## API design
+- Actors protect isolated mutable state. Actor references can cross isolation boundaries; accessing isolated members requires the appropriate isolation, often `await`. Transfer data using Sendable values or valid ownership transfer, not unsafe shared references.
+- An actor method can interleave with other work at each await. Recheck state after suspension when correctness depends on it; serial access does not make a multi-await operation atomic.
+- Prefer `async let` and task groups for child work that belongs to the current operation. Bound large fan-out. A `Task {}` is unstructured and may inherit actor context; retain its handle when explicit cancellation or result observation is needed.
+- `Task.detached` loses inherited context and structured cancellation. Use only for a deliberate independent boundary, with explicit lifetime and failure handling.
+- Cancellation is cooperative. Propagate cancellation rather than displaying it as failure; check it in long computations and before publishing stale results. Don't assume cancellation guarantees an underlying callback or I/O operation stopped.
+- Checked continuations must resume exactly once on every path; bridge cancellation and callback lifetimes explicitly. Use `defer` for synchronous cleanup and deliberate asynchronous cleanup where necessary.
+- `@unchecked Sendable`, `nonisolated(unsafe)`, and force operations require a documented invariant; don't use them to bypass an unresolved ownership problem.
 
-- Methods read like English at the call site — the first argument label completes the verb (`array.insert(x, at: 0)`)
-- Initializers and factories are deliberate: provide the few configurations users actually need, not every permutation
-- `@Observable` (Observation framework) replaces `ObservableObject`/`@Published` for new SwiftUI code
-- Prefer `some Protocol` return types for stable APIs; `any Protocol` only when runtime polymorphism is required
-- Mark internal types `internal` (the default) — `public` is an opt-in commitment
+## Packages and checks
 
-## SwiftUI patterns
+- Preserve the dependency manager and target layout. Create an SPM target only for a real reusable or independently testable boundary; macros require their supported compiler-plugin setup.
+- Follow existing formatters and tests. Swift Testing supports modern unit tests; XCTest remains appropriate for existing suites, UI automation, and XCTest-specific facilities. Don't migrate tests merely for syntax.
+- Test actor reentrancy, cancellation, and invalid input when affected. Distinguish source review from checks actually executed under the supported toolchain.
 
-- `NavigationStack` with value-based `NavigationLink` for type-safe routing
-- `@Observable` model classes + `@Bindable` for two-way binding in views
-- `.task` modifier for async work tied to view lifetime — cancels automatically
-- Keep views small; push logic into observable models or pure functions
-- Previews (`#Preview`) double as living documentation — make them work across data states
+## Example
 
-## Project layout and SPM
+Keep an actor's invariant inside a non-suspending operation:
 
-- Swift Package Manager for everything new — no CocoaPods/Carthage
-- Split into targets along boundaries that compile and test independently; resist the "one big target" temptation
-- Resources, plugins, and macros each get their own target
-- Use `swiftLanguageMode: .v6` in `Package.swift` to opt into strict concurrency from day one
+```swift
+actor Inventory {
+    private var available = 10
 
-## Testing
+    func reserve(_ quantity: Int) -> Bool {
+        guard quantity > 0, quantity <= available else { return false }
+        available -= quantity
+        return true
+    }
+}
+```
 
-- Swift Testing (`@Test`, `#expect`, `@Suite`) for new test code — better diagnostics, trait-based organization, parameterized tests
-- XCTest only for UI automation (`XCUIApplication`) and Obj-C interop
-- Test value types directly — no mocks needed; for protocols, provide a hand-written conforming type
-- `#expect(throws: MyError.self) { try someCall() }` for error paths
+A caller uses `await inventory.reserve(2)` across isolation. If remote authorization is added before mutation, state must be revalidated after that await or reserved with an explicit rollback protocol.
+
+## Checklist
+
+- [ ] Compiler, language mode, isolation flags, and deployment target are known.
+- [ ] Value ownership and actor access remain correct across suspension.
+- [ ] Every task and callback bridge has a lifetime and failure path.
+- [ ] Absence, cancellation, and failure remain distinct.
+- [ ] Relevant checks were run when authorized; skipped checks are stated.
+
+## References
+
+- [Swift 6.3](https://www.swift.org/blog/swift-6.3-released/) and [Swift 6.2](https://www.swift.org/blog/swift-6.2-released/)
+- [Compiler and SDK matrix](https://developer.apple.com/xcode/system-requirements)
+- [Concurrency](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/)
+- [Migration guide](https://www.swift.org/migration/documentation/swift-6-concurrency-migration-guide/incrementaladoption/)
+- [API design guidelines](https://www.swift.org/documentation/api-design-guidelines/)
