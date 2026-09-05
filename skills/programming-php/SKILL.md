@@ -1,89 +1,99 @@
 ---
 name: programming-php
 title: "PHP Development"
-description: "Modern PHP 8.x architecture, strict types, framework patterns (Laravel/Symfony), and domain modeling. Auto-activates in PHP projects."
+description: "Write and review concise, typed PHP 8.x code with version-aware features through PHP 8.5, explicit validation, and practical quality checks."
 license: Apache-2.0
-compatibility: "Requires PHP 8.2+ and Composer."
+compatibility: "PHP 8.2+ and Composer. Newer features require the corresponding PHP version and compatible tooling."
 domains: developer
 rules:
   - file(composer.json)
   - content(php)
 ---
 
+## Overview
+
+Write clear PHP with explicit types, validated inputs, and small, cohesive functions and objects. Apply modern features where they simplify the task; preserve existing project conventions except for the brace rule below.
+
 ## Mental model
 
-Modern PHP is a strictly-typed, object-oriented language with mature frameworks (Laravel, Symfony) covering routing, persistence, queues, and templating. The maintenance trap is writing PHP as if it were still 5.x: untyped arrays as data, controllers full of business logic, Eloquent/Doctrine calls scattered across the app, and global state via facades and singletons. Build a typed domain layer, keep the framework at the edges.
+PHP is dynamically typed with optional declarations and opt-in strict scalar checking. Types describe values; validation checks inputs; constructors and mutations enforce business invariants.
 
-## Type-driven design
+## Runtime
 
-- `declare(strict_types=1);` at the top of every file — non-negotiable
-- Native types everywhere: parameters, return types, properties — `mixed` only at boundaries with foreign data
-- Readonly properties / readonly classes (8.2+) for DTOs and value objects — immutability is the default
-- Constructor property promotion for DTOs and services — less boilerplate, clearer intent
-- Backed enums for finite sets (status, role, currency) — never string constants
-- Union and intersection types when the type system supports the real shape
+- Checked 2026-09-05: PHP 8.5 is the latest stable branch. Recheck the official support table when choosing a new baseline; prereleases are not production defaults.
+- Determine the minimum runtime from Composer requirements, `config.platform`, CI, and deployment. Match syntax, extensions, dependencies, and analyzer settings to that minimum. A runtime condition cannot hide unsupported syntax in the same file.
+- Composer's platform setting simulates dependency resolution, not runtime compatibility. Verify with `composer check-platform-reqs` in the target environment. Preserve version constraints unless an upgrade is requested.
 
-## Architecture
+## Style and design
 
-- Separate domain, application, and infrastructure layers — controllers and Eloquent models are infrastructure, not the domain
-- Domain in framework-free PHP: entities, value objects, domain services, repository interfaces
-- Application layer: command/query handlers or service classes orchestrating domain operations
-- Infrastructure: Eloquent/Doctrine implementations of repository interfaces, HTTP/queue adapters
-- Dependency direction inward — the domain knows nothing about Laravel or Symfony
+- Always place function, method, and closure opening braces on the final signature line: `function name(): void {`. For multiline signatures, place the brace after the closing parenthesis and any return type. This overrides PER/PSR-12 brace placement.
+- Follow other repository formatting rules. Without an existing standard, use PHP-FIG PER Coding Style (3.1 at research time) with this brace exception.
+- Use descriptive names, guard clauses, and focused functions. Prefer a clear loop to clever callbacks or nested ternaries. Add abstractions for real responsibilities, not pattern compliance.
+- Inject dependencies; separate calculations from I/O. Preserve framework/ORM conventions and Composer PSR-4 mappings. Don't introduce layers, repository wrappers, or a message bus for simple CRUD.
+- Keep request state out of shared long-running services. Respect ORM/proxy requirements before adding `final`, readonly properties, or hooks.
 
-## Error handling
+## Types and correctness
 
-- Custom exception hierarchy per bounded context, rooted at one base extending `RuntimeException` or `DomainException`
-- Named constructors for clarity: `UserNotFound::withId($id)` over `new UserNotFound("user 42 not found")`
-- Catch specific exceptions; never `catch (\Exception)` outside the outermost handler
-- Don't use exceptions for predictable control flow — return a Result-shaped value or `null` for "not found"
+- Use `declare(strict_types=1);` in new PHP files; assess coercion changes before adding it to existing files. Scalar argument strictness follows the caller's file and does not validate external data.
+- Type parameters, returns, and properties. Narrow external `mixed`; use PHPDoc only for additional contracts such as `list<User>`, array shapes, and generics. PHPDoc is not runtime validation.
+- Prefer constructor promotion and readonly value objects for stable data. Readonly is shallow: contained objects can still mutate. Prefer `DateTimeImmutable` for immutable dates.
+- Enforce invariants at construction and mutation, including CLI/queue callers. An `int` is not necessarily positive. Use integer minor units or decimal arithmetic for exact money.
+- Use enums for closed sets, backed enums for scalar serialization, and constants for independent values. Validate scalar types before `tryFrom()`; use `from()` when invalid values should throw.
+- Prefer `===`, strict `in_array(..., true)`, and explicit absence checks. `empty()` conflates zero/false with absence; `isset()` and `??` conflate null with missing keys. Use `array_key_exists()` when needed.
+- Use `match` for strict selection and `?->` for expected absence. Don't hide unhandled enum cases with a fallback. Named arguments couple callers to parameter names.
 
-## Laravel conventions
+## Modern features
 
-- Form Requests for input validation and authorization; controllers stay thin
-- Policies for authorization rules; never inline `if` checks scattered through controllers
-- Eloquent models hold persistence and trivial accessors — business rules belong in services or domain objects
-- Service classes (`app/Services/` or a domain-oriented namespace) for orchestration
-- Jobs for async work; Events + Listeners for decoupling side effects
-- Migrations describe schema evolution; seeders for reference data; factories for test fixtures
-- Avoid Facades in business logic — inject dependencies via the container
+Use only when the minimum runtime and tooling support them.
 
-## Symfony conventions
+| PHP | Useful features | Important limits |
+|-----|-----------------|------------------|
+| 8.3 | Typed class constants; `#[\Override]` on methods | Preserve parent/interface contracts. |
+| 8.4 | Property hooks; `public private(set)` | Keep hooks local and free of I/O. Hooked properties cannot be readonly; restricted setters still permit internal mutation. |
+| 8.4 | `array_find()`, `array_find_key()`, `array_any()`, `array_all()`; native lazy objects | Use the key variant to distinguish a matched null from absence. Let compatible frameworks manage lazy objects. |
+| 8.5 | `\|>` pipelines; `array_first()`, `array_last()` | Prefer ordinary calls when clearer. Endpoint helpers return null for empty arrays or stored null values. |
+| 8.5 | `clone($object, [...])`; `#[\NoDiscard]` | Cloning is shallow and does not rerun constructor validation. Preserve invariants. NoDiscard warns about ignored results, not failed operations. |
+| 8.5 | `Uri\Rfc3986\Uri`, `Uri\WhatWg\Url` | Choose the required standard; parsing alone does not prevent SSRF or authorize destinations. |
 
-- Autowiring with constructor injection; attributes (`#[Route]`, `#[AsCommand]`, `#[AsEventListener]`) over YAML
-- Doctrine entities with repository services; queries via DQL or the query builder, encapsulated in repositories
-- Symfony Messenger for command/query buses and async workers
-- Form component for complex inputs; plain DTOs + Validator for JSON APIs
-- Voters for authorization; never inline `is_granted` chains
-- Twig for server-rendered HTML; component libraries (Symfony UX) for richer UI
+During upgrades, read each crossed version's migration guide. Avoid ordinary dynamic properties (deprecated in 8.2); preserve intentional framework magic. Use explicit `?T $value = null` (implicit nullability deprecated in 8.4). Use canonical casts such as `(int)` and `(bool)`; noncanonical casts and backtick execution are deprecated in 8.5.
 
-## Data and persistence
+## Boundaries and errors
 
-- Repository interfaces in the domain, implementations in infrastructure — keeps the domain testable without a database
-- Transactions wrap multi-step writes; use the framework's transaction helper or a UoW pattern
-- Migrations are immutable in production; new changes are new migrations
-- Avoid N+1 queries — eager-load relationships explicitly (`with(...)` in Eloquent, `fetchJoin` in Doctrine)
-- Pagination on every list endpoint that can grow unbounded
+- Decode JSON with `JSON_THROW_ON_ERROR`, then validate shape and values. Don't cast malformed input into plausible data or deserialize untrusted PHP objects.
+- Preserve established exception/result conventions. Catch specific failures, retain exception causes, and use `finally` for owned resources. Catch `Throwable` at execution boundaries where appropriate; don't turn programming bugs into success.
+- Bind SQL values; allowlist identifiers and sort directions. Use transactions, database constraints, and appropriate locking for related writes. Bound queries, prevent N+1 access, and preserve applied migrations.
+- Make retried mutations idempotent and coordinate external effects with durable state. Validate and authorize separately; serialize explicit responses and escape output for its destination. Use password hashing APIs and cryptographic random tokens; exclude secrets from logs.
 
-## Testing
+## Example
 
-- PHPUnit (10+) with attributes (`#[Test]`, `#[DataProvider]`) for unit and integration tests
-- Pest for projects that want a more expressive DSL
-- Unit tests on the domain layer — no database, no HTTP, no framework
-- Integration tests use the framework's testing kernel with a test database
-- `assertSame` over `assertEquals` — strict comparison catches type-juggling bugs
-- Fakes over mocks for collaborators you own; use mocking libraries sparingly
+Validate a positive integer without coercing strings, floats, or booleans:
 
-## API and HTTP
+```php
+<?php
 
-- JSON APIs return resource representations, not Eloquent models directly — use API Resources (Laravel) or Serializer (Symfony)
-- Validate input at the controller boundary; the domain trusts its inputs
-- HTTP status codes match semantics: 422 for validation, 404 for missing, 409 for conflict, 5xx only for genuine server errors
-- Idempotency keys for unsafe operations exposed publicly
+declare(strict_types=1);
 
-## Project layout
+function positiveInt(mixed $value): int {
+    if (!is_int($value) || $value < 1) {
+        throw new InvalidArgumentException('Expected a positive integer.');
+    }
 
-- PSR-4 autoload from `src/` (libraries) or `app/` (Laravel apps)
-- Group by feature/bounded context, not by technical layer — `src/Billing/{Domain,Application,Infrastructure}` beats `src/{Models,Controllers,Services}`
-- Composer scripts (`composer test`, `composer analyse`) for the common dev workflows
-- Configuration in environment variables, loaded via the framework's config layer; secrets never in code
+    return $value;
+}
+```
+
+`positiveInt(2)` succeeds; `'2'`, `2.5`, `true`, `0`, and `null` fail. Domain objects must also enforce their own invariants.
+
+## Checklist
+
+- [ ] Runtime, dependencies, syntax, and analyzer targets agree.
+- [ ] Braces follow the same-line rule; new abstractions improve clarity.
+- [ ] Inputs, invariants, authorization, and persistence behavior are checked.
+- [ ] Relevant syntax/style checks, PHPStan or Psalm, and PHPUnit or Pest pass using existing project tooling and execution permissions. Test behavior and failure cases; use strict assertions where types matter.
+- [ ] Dependency changes include Composer validation, platform checks, and an advisory audit. Report unexecuted checks; don't suppress findings or broadly update dependencies to make checks pass.
+
+## References
+
+- Versions and upgrades: [support table](https://www.php.net/supported-versions.php), [8.3 migration](https://www.php.net/manual/en/migration83.php), [8.4 migration](https://www.php.net/manual/en/migration84.php), [8.5 migration](https://www.php.net/manual/en/migration85.php), [8.5 features](https://www.php.net/releases/8.5/en.php).
+- Language semantics: [types](https://www.php.net/manual/en/language.types.declarations.php), [properties](https://www.php.net/manual/en/language.oop5.properties.php), [hooks](https://www.php.net/manual/en/language.oop5.property-hooks.php), [cloning](https://www.php.net/manual/en/language.oop5.cloning.php).
+- Tooling: [PER style](https://www.php-fig.org/per/coding-style/), [PHPStan types](https://phpstan.org/writing-php-code/phpdoc-types), [Composer platform](https://getcomposer.org/doc/06-config.md#platform).
