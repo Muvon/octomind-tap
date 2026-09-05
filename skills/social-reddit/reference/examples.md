@@ -15,6 +15,15 @@ For each candidate, record a rule URL and check date alongside the actual propos
 
 Don't infer permission for r/SideProject, r/SaaS, or any other community from its name or earlier success stories. Build its row from the current rules and the current designated threads. If proposing an AMA, include moderator agreement and proof requirements in that row (directional).
 
+## Private replies and profile bios
+
+Additional formats (directional); check current composer constraints before drafting:
+
+| Format | Drafting requirements |
+|---|---|
+| Permission-based private reply | Record the recipient's request or consent before drafting; answer that request, disclose affiliation, and include a destination only when relevant. Don't turn public engagement into unsolicited private outreach. |
+| Profile bio | State the supplied role/affiliation and a useful destination without invented credentials. Don't use the bio as a detour around community promotion bans. |
+
 ## Measurement package
 
 Record the contribution URL, subreddit, date/time with timezone, angle, format, disclosure, destination, and definition of the desired action. Preserve the observed values and collection time; missing data stays unknown (directional).
@@ -68,7 +77,7 @@ Weak draft, illustrative:
 
 Revised draft, illustrative and incomplete:
 
-> We changed [onboarding step] after [documented customer problem]. In [measurement window], [defined cohort] showed [observed result]. [Other concurrent change] also happened, so we can't isolate the onboarding effect. The part I can share is [permissioned artifact].
+> We changed [onboarding step] after [documented customer problem]. Using [metric definition] in [unit], [observed count] of [eligible count] in [defined cohort] showed [observed result] during [measurement window] (measured, [source], n=[actual sample/cohort size], [date]). Compare with [comparable baseline if claiming improvement]. [Other concurrent change] also happened, so we can't isolate the onboarding effect. The part I can share is [permissioned artifact].
 
 Why it works: the proof-post rule separates observation from causation.
 The artifact remains useful without a miracle-fix claim or fabricated customer numbers.
@@ -109,6 +118,7 @@ The evidence limitation is attached to the result it qualifies.
 ## Checklist
 
 - [ ] Community clearance cites the actual rule and planned angle, not a culture stereotype.
+- [ ] Customer proof is permissioned and identifies its source, measurement window, other changes, and unresolved limitation. Numerical results define the metric and unit, actual sample/cohort size, and denominator for rates; change claims include comparable before/after values. Attach an appropriate source/sample/date label, such as (measured, [source], n=[actual sample size], [date]). Keep qualitative proof qualitative.
 - [ ] Measurement separates observed Reddit behavior from destination outcomes and attribution assumptions.
 - [ ] Examples remain illustrative until evidence placeholders are filled and checked.
 - [ ] Commerce experiments, paid features, and self-reported cases retain their scopes.

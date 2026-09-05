@@ -14,14 +14,14 @@ Keep the announcement usable when forwarded outside the feed. Include what the p
 
 | Evidence | Writing or measurement decision |
 |---|---|
-| Buffer format medians: text 3.56%, image 3.40%, video 2.96%, links 2.25% (measured, Buffer, n=X subset of 52M+ cross-platform posts, 2026-03) | Start with text when language suffices; test an image when it carries proof. Don't declare video mandatory |
-| X engagement improved in Buffer's historical comparison while remaining low among the networks measured (measured, Buffer, n=X subset of cross-platform report, 2026-03) | Use account and within-platform baselines; don't combine differently defined engagement rates |
+| Buffer median X engagement rates: text 3.56%, image 3.40%, video 2.96%, links 2.25% (measured, Buffer, n=X subset of 52M+ cross-platform posts, 2026-03) | Start with text when language suffices; test an image when it carries proof. Don't declare video mandatory |
+| X engagement improved in Buffer's historical comparison while remaining low among the networks measured (measured, Buffer, n=not established for the X subset; scope=Buffer cross-platform report, 2026-03) | Use account and within-platform baselines; don't combine differently defined engagement rates |
 | Author replies correlate with 8% higher X engagement; X is Buffer's least certain platform estimate because its reply sample is smaller (measured, Buffer, n=nearly 2M cross-platform posts, 2026-03) | Assign response coverage; don't promise an early-engagement gate or causal uplift |
 | Premium and regular-account performance diverged in the study (measured, Buffer, n=18.8M X posts, 2026-03) | Segment by known subscription status; don't attribute the whole difference to format or treat this as a reason to buy a tier |
 | GIFs had median 7 interactions, over twice links, video, and images; status updates had approximately 67% more interactions than richer media (measured, Emplifi, n=16,879 X profiles in the preceding calendar year, reviewed 2026-09) | Include appropriate GIF reactions and text status updates in tests. Don't combine raw interactions with Buffer's engagement percentages |
 | Link posts had up to an eightfold visibility reduction in political-discussion datasets (measured, NDSS, n=over 40M posts from over 9M users, 2026-02) | Compare root links and optional-detail replies on qualified traffic. The study doesn't test a universal workaround or commercial-post multiplier |
 | More frequent posting was associated with growth; reach per post declined at higher frequency (measured, Buffer, n=4.8M channel-weeks across roughly 161,000 profiles; separate 15.7M-post reach study, 2026-03) | Sustain useful recurring output, then test added volume against workload and per-post results |
-| Top performers' frequency gap was especially wide on X (measured, Buffer, n=cross-platform account comparison, 2026-03) | Make room for low-production observations, while retaining the possibility that resources and momentum explain the association |
+| Top performers' frequency gap was especially wide on X (measured, Buffer, n=not established for this comparison; scope=cross-platform accounts, 2026-03) | Make room for low-production observations, while retaining the possibility that resources and momentum explain the association |
 
 The Emplifi report is undated; the review month is not a claimed publication date. Buffer's cross-platform total isn't an X-only sample. Neither vendor's sample is the complete X population.
 
@@ -53,7 +53,7 @@ Separate downstream visits and signups from native observations. Continue throug
 
 Use consistent `utm_source`, `utm_medium`, and `utm_campaign`; use `utm_content` to distinguish creatives or link placements (official, Google Analytics URL builder, 2026-09). Compare the same observation windows and keep known tier differences visible. Record campaign totals separately from results attributable to an individual X post.
 
-Chartbeat documents referral loss from apps and messages in its news-media network; it doesn't establish SaaS conversion attribution (measured, Chartbeat, n=news-media network traffic, January data reviewed 2026-09). Keep the explanation understandable when forwarded (directional). Retain raw self-reported discovery alongside tracked visits and allow unknown origin. HockeyStack's documented example groups reported company and personal LinkedIn sources into an organic bucket; using that pattern for X is an adaptation, not validation of recall accuracy (directional).
+Chartbeat documents referral loss from apps and messages in its news-media network; it doesn't establish SaaS conversion attribution (measured, Chartbeat, n=not established here; scope=Chartbeat news-media network traffic, January data reviewed 2026-09). Keep the explanation understandable when forwarded (directional). Retain raw self-reported discovery alongside tracked visits and allow unknown origin. HockeyStack's documented example groups reported company and personal LinkedIn sources into an organic bucket; using that pattern for X is an adaptation, not validation of recall accuracy (directional).
 
 ## References
 

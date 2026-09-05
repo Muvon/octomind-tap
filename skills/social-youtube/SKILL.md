@@ -72,11 +72,11 @@ Use this description anatomy as a template (directional):
 | Evidence | Source links, conditions, corrections, credits and relevant disclosures |
 | Optional metadata | Relevant hashtags only; preview their rendered placement rather than promising where they appear |
 
-Make the pinned comment useful on its own: clarify a limitation, answer the likely setup question, or explain the next step. Use descriptive tags only where useful; don't keyword-stuff descriptions or promise transcript-indexing gains. Correct captions for names and technical terms. Reserve the final useful beat for the next-video invitation and check the actual end-screen timing allowed by the editor (directional).
+Make the pinned comment useful on its own: clarify a limitation, answer the likely setup question, or explain the next step. Use descriptive tags only where useful; don't keyword-stuff descriptions or promise transcript-indexing gains. Correct captions for names and technical terms. Invite viewers to a verified next video only when it helps continue their task; check the editor's end-screen timing. Otherwise, end on the result or material limitation without a CTA (directional).
 
 ## Launch and proof posts
 
-For campaign planning, record audience, buying situation, promise, sourced proof, desired action/destination, stage, and disclosures. Verify availability and price conditions if claimed; name the speaker and reply owner. Use voice samples when available; missing samples or optional fields don't block supported copy. No CTA is valid, and unsupported outcomes stay out of the script.
+For campaign planning, record audience, buying situation, promise, proof inventory with sources and reuse-permission status for each asset or quotation, desired action/destination, stage, and disclosures. Verify availability and price conditions if claimed; name the speaker and reply owner. Use voice samples when available; missing samples or optional fields don't block supported copy. No CTA is valid, and unsupported outcomes stay out of the script.
 
 Use task-complete length bands, not invented minute targets (directional):
 
@@ -96,6 +96,8 @@ Route long-form CTAs through the description and an available pinned comment; fo
 For eligible U.S. creators, Amazon products can be tagged in Shorts, long-form and live streams through Shopping (official, YouTube Amazon affiliate announcement, 2026-08). Disclose the commercial relationship and check account eligibility before writing a native-shopping CTA (directional).
 
 Collaborate with relevant creators and voluntary, openly affiliated employees; give them proof constraints without scripting fake reactions. YouTube permits ordinary like/comment/subscribe requests, but prohibits deceptive engagement manipulation, repetitive promotional spam, and synthetic mass-production that floods the platform (official, YouTube Spam Policy, 2026-09). Editorially, ask for an action only when it fits the viewer's next step.
+
+Distinguish own-channel updates from seeding another creator's comments, live chat or Community. Read the conversation and host rules; give a standalone answer. Link the launch only when directly useful and promotion is permitted; disclose affiliation. Otherwise omit it. Don't coordinate duplicate comments or fake independent reactions (directional).
 
 Use this illustrative launch-week schedule only as a planning example, adjusting to proof readiness and staffing (directional):
 
@@ -188,6 +190,7 @@ Why it works: the booking path preserves the condition instead of promising an u
 - [ ] Description, verified CTA/link path, pinned comment and chapter labels prepared where applicable.
 - [ ] Caption/subtitle copy checked; asset brief includes visual descriptions and alt text where supported; end-screen timing checked in the editor.
 - [ ] Every specific is supplied or placeholder-marked; unresolved factual placeholders block publication.
+- [ ] Proof inventory records sources, reuse permissions and restrictions for customer material, quotations and footage; publishing handoff identifies unresolved permissions.
 - [ ] Meaning and author-voice review covers the whole package; captions and excerpts preserve qualifications without style quotas.
 - [ ] Affiliation, sponsorship/paid-promotion controls and required synthetic-media labels checked.
 - [ ] Optional channel-post teaser and first-hours reply plan ready; moderation and later follow-up assigned.

@@ -31,7 +31,7 @@ Publication acceptance and authentic recommendations matter: Medium attributes m
 
 Permission to publish is separate from distribution eligibility. Current guidelines exclude content marketing/PR and stories primarily collecting traffic, signups, or sales from General distribution. They also limit General/Boost review to English; don't promise those routes for a localized story or change its audience just to pursue them (official, Distribution Guidelines, checked 2026-09-05).
 
-Open [reference/mechanics.md](reference/mechanics.md) when advising on earnings, interpreting performance evidence, preparing newsletter or technical assets, or checking a publication's submission controls.
+Open [reference/mechanics.md](reference/mechanics.md) when advising on earnings, interpreting performance evidence, planning launch cadence, preparing newsletter or technical assets, or checking a publication's submission controls.
 
 ## Rules and format decisions
 
@@ -52,7 +52,7 @@ Record the author's actual position and supporting source for each factual asser
 
 ### AI disclosure and authorship
 
-Apply Medium's own categories, checked 2026-09-05: generated writing means predominantly AI-created prose with little human revision, improvement, or verification. Its FAQ exempts outlining, fact verification, and spelling/grammar assistance from disclosure; incorporating generated prose or images requires disclosure. Don't classify a spelling check as a generated story or claim that superficial rewording establishes independent authorship.
+Apply Medium's own categories, checked 2026-09-05: generated writing means predominantly AI-created prose with little human revision, improvement, or verification. Its FAQ exempts outlining, fact verification, and spelling/grammar assistance from disclosure; incorporating generated prose or images requires disclosure. (official, AI policy, checked 2026-09-05) Don't classify a spelling check as a generated story or claim that superficial rewording establishes independent authorship.
 
 | Actual contribution | Action |
 |---|---|
@@ -76,7 +76,7 @@ Prepare readable code blocks for short excerpts and a linked gist or repository 
 
 Choose a cover that explains the subject. Supply an asset brief stating the image's purpose and source, with crop guidance. Write a factual caption, attribution, and useful alt text; verify rights and mobile readability. Don't manufacture screenshots or customer scenes. (directional)
 
-For private correspondence used as evidence, Medium requires explicit permission from all parties; removing names is not a substitute. Label paraphrases as paraphrases, and don't combine several people's statements into a direct quote (official, Medium Rules; quote handling: directional).
+For private correspondence used as evidence, Medium requires explicit permission from all parties; removing names is not a substitute. Label paraphrases as paraphrases, and don't combine several people's statements into a direct quote (official, Medium Rules, checked 2026-09-05; quote handling: directional).
 
 Use all five topic slots when accurate fits exist; relevance beats broad popularity. Topic pills now appear at the story's top. (official, Reader tips, 2026-03; official, Writer newsletter, 2026-08)
 
@@ -112,19 +112,11 @@ Use these qualitative length bands as craft guidance; they aren't word-count ben
 
 Put a relevant first-party link beside the artifact or at the earned ending; keep a profile link as a secondary path. State founder, employee, or commercial affiliation where it affects trust. First-party business and mailing-list links are allowed; traffic-first spam and third-party advertising or sponsorships are prohibited. Disclosure doesn't authorize a prohibited sponsored placement. (official, Medium Rules, 2026-09)
 
+Beside an offsite subscription link, state that it leaves Medium. Collect personal information through an external destination, not Medium comments or embedded collection fields; choose an external form that identifies its applicable terms and privacy policy. (directional, no numbers)
+
 Use consistent `utm_source`, `utm_medium`, and `utm_campaign`; distinguish links with `utm_content`. (official, Google URL builder, 2026-09) Measure destination actions separately from Medium engagement; attributed visits don't prove sales causation. (directional)
 
 Seed through relevant editorial relationships and willing readers who can recommend the work in their own words. Repost notes allow up to 280 characters and appear in followers' For You feeds. (official, Repost notes, 2026-07) Give context about the audience and useful passage. Don't script employee praise or trade claps. (directional)
-
-Illustrative launch-week offsets below are a planning example, not measured timing advice. Shift them to editorial availability and actual proof; a row can be preparation rather than another published story. (directional)
-
-| Offset (illustrative) | Medium work | Reply commitment and measurement |
-|---|---|---|
-| T−7 | Prepare problem essay and publication pitch; choose solo fallback. | Owner reviews substantive responses; record recurring buyer problems. |
-| T−3 | Finish demo and access checks; coordinate newsletter inclusion if available. | Reserve opening-hours coverage; record baseline audience totals. |
-| T0 | Publish the launch explanation and artifact. | Author answers evidence questions during the first hours; record views/reads actually exposed. |
-| T+1 to T+3 | Correct errors; answer a substantive objection if evidence warrants it. | Return at the promised check-in; log qualified questions and reported trial attempts. |
-| T+7 | Publish a bounded recap if there is enough evidence; update the portfolio. | Review read ratio and audience change alongside attributed destination actions. |
 
 Prefer the accountable founder or practitioner byline for personal decisions; use a company publication for a maintained collection. This is a voice and ownership choice, with no verified founder-versus-brand reach multiplier here. (directional)
 
@@ -134,7 +126,9 @@ Use connected essay prose with informative subheads. Keep technical register pre
 
 Apply `content-voice` to the reader's actual difficulty: unsupported claims, weak transitions, redundant passages, and unclear stakes. Preserve purposeful repetition and the author's sentence rhythm. Similar paragraphs, a three-part argument, or a dash are not defects by themselves; practitioner AI-tell lists supply prompts for review, not mandatory replacements. (directional)
 
-Use headings that help readers navigate the argument. Keep a recap when it aids a long reference piece; remove one that merely repeats a short ending. A question opening is valid when the essay genuinely investigates it. Correct miracle-fix narratives and unsupported claims of novelty rather than replacing them with another formula. Don't add typos, fake edits, or dramatic line breaks to manufacture a personal voice. (directional)
+Adapt these practitioner prompts to the argument, without treating them as authorship tests: review empty contrast frames and reject deliberate mistakes (Aborn, 2026-07-10); remove padded triads while retaining meaningful lists and useful dashes (Cox, updated 2026-06); review repetitive cadence and redundant summaries while preserving purposeful rhythm and recaps (Gichigi, 2026-02-18). (directional, no numbers) Sources: [mechanics references](reference/mechanics.md#references).
+
+A question opening is valid when the essay genuinely investigates it. Correct miracle-fix narratives and unsupported claims of novelty rather than replacing them with another formula. Don't add typos, fake edits, or dramatic line breaks to manufacture a personal voice. (directional)
 
 Medium describes AI detection as unreliable and rejects phrase or punctuation tells as durable evidence. Treat provenance and disclosure as separate checks from prose quality. (official, Write for humans, 2026-08)
 
@@ -147,10 +141,6 @@ Build toward a continuing editorial relationship if you have access. Without acc
 Use the 160-character bio for your subject and relevant credentials; add a clear photo and expand About with context and links. (official, Reader tips, 2026-03) Medium reports more followers for completed bios without measuring each profile element separately. (measured, Reader tips, n=Medium platform data with sample undisclosed, 2026-03)
 
 For writer newsletters, prepare an accurate subscription promise. For publication newsletters, pitch the story's relevance to the editor; verify the available sending controls and access path. Don't promise automatic sends or infer per-story subscriber attribution from account totals. (directional)
-
-Open the story Stats view or request its screenshot/export. Record the fields actually shown and their date range. Separate feed presentations from all-source views; calculate feed CTR only from corresponding feed views and presentations. Never divide total views by feed presentations. (directional) Treat read ratio as distinct from completion: a qualifying read requires at least 30 seconds. (official, Earnings, 2026-09)
-
-Compare similar stories using sufficient observations; change a weak title or preview deliberately and log the change. If feed data is unavailable, use views, reads and qualitative responses without inventing CTR. No fixed rewrite deadline or threshold is required. (directional)
 
 ## What gets suppressed
 
@@ -230,7 +220,7 @@ Why it works: the service claim stays bounded instead of inventing a success sta
 - [ ] Publication guide and live controls checked; rejection/solo path ready.
 - [ ] Accurate topics selected within the documented limit.
 - [ ] Import date and canonical verified when syndicated; Friend Link tested when used.
-- [ ] Affiliation clear; first-party CTA and destination work; promotion stays subordinate.
+- [ ] Affiliation clear; first-party CTA and destination work; offsite subscription notice beside the link; personal information collected externally with applicable terms and privacy policy identified; promotion stays subordinate. (directional, no numbers)
 - [ ] Asset brief, credits, caption and alt text supplied; code and embeds previewed with fallbacks.
 - [ ] Newsletter or List package included when relevant; no assumed send automation.
 - [ ] Response owner and commitment window recorded; follow-up reply plan ready.

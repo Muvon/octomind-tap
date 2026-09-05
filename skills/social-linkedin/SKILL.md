@@ -33,7 +33,7 @@ Put the concrete subject and stake in the opening. Follow with the evidence and 
 
 | Reader need / available asset | Format and execution |
 |---|---|
-| Understand a decision or lived experience | Text post: show the decision, what informed it, and the unresolved cost (directional). |
+| Understand a decision or lived experience | Text post: show the supplied decision or experience and what informed it; retain relevant costs or unresolved questions when supported (directional). |
 | Follow a procedure or inspect a mini-report | Native PDF document: make the cover promise specific, give each slide a substantive job, and finish with the usable takeaway. Choose slide count from the material (directional). |
 | Inspect physical evidence or compare states | Image or multi-image post: label context and comparison conditions; make each image legible on a phone. Test portrait framing without cropping proof (directional). |
 | See behavior or hear an explanation | Native captioned video: start with the task/result, show the operation, retain failure boundaries. Let necessary demonstration determine duration (directional). |
@@ -44,7 +44,7 @@ Put the concrete subject and stake in the opening. Follow with the evidence and 
 | Help decide between real alternatives | Poll: use meaningful options and explain who the answer applies to. Treat votes as self-selected input (directional). |
 | Discuss someone else's work | Repost with commentary: name the original contribution, add a supported implication or disagreement, and credit the source. Avoid an empty reshare (directional). |
 
-Documents and multi-image posts are strong testing candidates, while video has no universal advantage (measured, Metricool, n=673,658 posts, 2026-04; AuthoredUp Formats, n=3M+ personal-profile posts, 2026-09). Don't discard polls: Socialinsider reports 4.50% engagement for its Q2 table, but its collection dates conflict with that table's period (measured, Socialinsider, n=1.3M business posts, 2026-03; see reference caveat).
+Metricool observed stronger results for some document and multi-image formats than for video in its cohort (measured, Metricool, n=673,658 posts, 2026-04); AuthoredUp observed stronger document than video results in its personal-profile cohort (measured, AuthoredUp Formats, n=3M+ personal-profile posts, 2026-09). Include documents and multi-image posts among relevant format tests; do not infer a universal video advantage from these cohorts (directional). Don't discard polls: Socialinsider reports 4.50% engagement for its Q2 table, but its collection dates conflict with that table's period (measured, Socialinsider, n=1.3M business posts, 2026-03; see reference caveat).
 
 Package image descriptions and alt text wherever supported. LinkedIn may supply automatic alt text, with no assignment alert on mobile; review each image's description rather than assuming missing warnings mean it is ready (official, LinkedIn Alt Text Help, reviewed 2026-09-05). For documents, include accessible text and a text summary if the uploader lacks per-slide descriptions. Supply corrected captions, an asset brief, and source permissions (directional).
 
@@ -61,7 +61,7 @@ Use the observed AuthoredUp depth band above as an optional starting range for d
 | Launch day | Buyer task → available change → visible proof → eligibility/limitation → action | Short caption with proof asset; developed feed post otherwise |
 | Demo or artifact | Show task → demonstrate operation → state test conditions → offer access | Short caption; explanation in asset |
 | Customer outcome | Prior state → intervention → observed outcome with timeframe/denominator → confounders → source | Developed feed post |
-| Founder decision / build update | Actual choice → rejected alternative → cost → next unresolved test | Short or developed feed post |
+| Founder decision / build update | Actual choice and evidence; include a rejected alternative, cost, or next test only when supported and relevant | Short or developed feed post |
 | Objection answer | Specific buyer concern → evidence → cases where concern still applies → next step | Developed feed post |
 | Recap / lessons | Expected outcome → observed result → attribution limits → changed plan | Developed feed post; Article for detailed analysis |
 

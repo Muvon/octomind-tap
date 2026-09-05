@@ -23,7 +23,7 @@ For media replies, check what the current composer and community permit. Use an 
 
 Distinguish the author's factual source material from the process used to produce the final content. Editing an author's notes with generative AI still involves AI modification; human review doesn't justify claiming that the final content was wholly human-generated. Reddit directs posters to tag or otherwise disclose permissible AI-generated or modified content, subject to community rules (official, Reddit Manipulated Content, 2026-05).
 
-For automated posting, state that the account or contribution is automated and check the applicable Responsible Builder requirements before activation. Don't simulate a human typing in real time. If the community prohibits the planned content, select a permitted venue or refrain from posting; register edits don't fix a permission problem.
+For automated posting, state that the account or contribution is automated and establish the applicable requirements and authorization before activation (directional). Don't simulate a human typing in real time. If the community prohibits the planned content, select a permitted venue or refrain from posting; register edits don't fix a permission problem.
 
 ## Worked response choices
 

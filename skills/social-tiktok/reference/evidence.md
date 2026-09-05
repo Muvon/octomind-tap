@@ -6,7 +6,7 @@ Open this reference when quoting benchmarks, explaining recommendation or AI mec
 
 | Evidence | What to do with it |
 |---|---|
-| Video volume rose 72.10% year over year and image/carousel volume nearly 140%; video views fell 31.30%, reach 28.73%, and interactions 31.17% (measured, Metricool, n=2,314,756 posts from over 92,000 accounts, 2026-05). | Compare performance with account history and matched peers; don't treat more output as sufficient. |
+| Comparing January–February 2025 with January–February 2026, published video volume rose 72.10% and image/carousel volume nearly 140%; average per-post video views fell 31.30%, reach 28.73%, and interactions 31.17% (measured, Metricool, n=2,314,756 posts from over 92,000 accounts, 2026-05). These are sampled publishing and per-post performance changes, not platform-wide consumption totals. | Compare performance with account history and matched peers; don't treat more output as sufficient. |
 | For You supplied 72.70% of video views (measured, Metricool, n=2,314,756 posts, 2026-05). | Give unfamiliar viewers enough context to understand the proof (directional). |
 | Questions correlated with 26.19% more comments; requests for comments with 14% higher engagement; requests for likes with 60% fewer interactions (measured, Metricool, n=2,314,756 posts, 2026-05). | Ask only an answerable question that serves the discussion. Don't extrapolate the like-request result to follows or claim causality. |
 | Hashtag-bearing posts had nearly 5% more views and over 9% more interactions; hashtag traffic grew 114% year over year (measured, Metricool, n=2,314,756 posts, 2026-05). | Use descriptive tags without prescribing an optimal count. |

@@ -57,6 +57,8 @@ Choose qualitative length bands from the surrounding posts, not a platform-wide 
 | Casual chat | Text or enabled media reply | Brief observation | Brief conversational reply |
 | Existing relevant submission | Repost, formerly crosspost | Short destination-specific context | Match the destination's discussion depth |
 
+Private replies and bios: `reference/examples.md` (directional).
+
 Reposts preserve the original username, community, and score in the preview; destinations must allow reposting (official, Reddit Reposting, 2026-07). No permission follows from the original post's success.
 
 Title decisions (directional):
@@ -72,7 +74,7 @@ Check the actual composer and local title rules. Front-load useful information; 
 
 ## Launch and proof posts
 
-For campaign work, record audience, buying situation, promise, sourced proof, desired action/destination, stage, disclosures, and author role. Use voice samples when available; missing samples alone don't block a restrained factual draft. No CTA is valid. Narrow unsupported claims or mark essential gaps in a nonpublishable working draft; don't invent evidence to fill the brief.
+For campaign work, record audience, buying situation, promise, sourced proof, desired action/destination, stage, disclosures, and author role. Use voice samples when available; missing samples alone don't block a restrained factual draft. Omitting a CTA is a valid deliberate choice. Narrow unsupported claims or mark essential gaps in a nonpublishable working draft; don't invent evidence to fill the brief.
 
 Post shapes and qualitative length bands are craft choices (directional):
 
@@ -80,7 +82,7 @@ Post shapes and qualitative length bands are craft choices (directional):
 |---|---|---|
 | Launch day | Ownership, buying problem, inspectable result, limitation, permitted action | Compact announcement with supporting context |
 | Demo/artifact | Visible task, actual input/output, operating conditions, access path | Brief caption; extend only to explain proof |
-| Customer outcome | Permissioned before/after, source and measurement window, other changes, unresolved limitation | Developed evidence account |
+| Customer outcome | Permissioned result bounded by the proof checklist in `reference/examples.md` | Developed evidence account |
 | Founder decision | Decision, rejected option, actual cost, current uncertainty | Compact operator account |
 | Objection answer | Fair statement of objection, evidence relevant to it, unsuitable cases | Brief answer or developed technical explanation |
 | Recap | What changed, what failed, unresolved question, source-specific outcomes | Developed retrospective without repeated launch copy |
@@ -91,7 +93,7 @@ Apply the strip-test: after removing the product mention, the post should still 
 
 Put a relevant destination in the root post where permitted. Use the designated promotional thread when required. In comments, link when it directly answers the question and local rules permit; don't hide a prohibited pitch in a reply or profile detour. Prefer a direct inspectable destination (directional). Repetitive promotion and unsolicited mass outreach violate spam policy (official, Reddit Spam, 2026-05).
 
-Disclose ownership, employment, sponsorship, gifted products, or affiliate benefit beside the recommendation as applicable (directional). AI-generated or modified content must follow community rules and carry a tag or other disclosure; presenting generated content as human-generated is prohibited (official, Reddit Manipulated Content, 2026-05). Human review doesn't create an exemption. For automation, disclose the automated nature and check Responsible Builder requirements before enabling posting; editing for natural voice must never conceal automation.
+Disclose ownership, employment, sponsorship, gifted products, or affiliate benefit beside the recommendation as applicable (directional). AI-generated or modified content must follow community rules and carry a tag or other disclosure; presenting generated content as human-generated is prohibited (official, Reddit Manipulated Content, 2026-05). Human review doesn't create an exemption. For automation, verify applicable permissions and requirements, disclose automation, and never conceal it through voice edits (directional).
 
 Use a disclosed founder account for personal decisions and an identifiable brand account for official support (directional). Eligible Reddit Pro organizations can seek verification; individual verification remains an alpha test, and verification doesn't override community rules (official, Reddit Verified Profiles, 2026-07).
 

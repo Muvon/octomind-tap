@@ -32,7 +32,7 @@ Record the audience and buying situation, target language/geography, research pe
 
 If available, use Reddit Pro Trends for keyword conversations and community discovery. Its coverage is public SFW English content; private, banned, quarantined, NSFW, deleted, and messaging content are excluded (official, Reddit Pro Trends, 2026-05). Inspect original posts behind theme summaries. State the coverage limits in the brief.
 
-Use modern `www.reddit.com` pages. Old Reddit requires login during the announced transition; new public API requests are being restricted gradually (official, Reddit Infrastructure, 2026-08). Use authorized authentication when available. If blocked, record the blocked URL and missing evidence; don't bypass the gate or call the community inactive.
+Use modern `www.reddit.com` pages. Old Reddit requires login during the announced transition; new public API requests are being restricted gradually (official, Reddit Infrastructure, 2026-08). Use authorized authentication when available. Before automated collection, establish that the collection method and intended use are authorized. Don't treat a working login or publicly rendered page as evidence of scraping permission. If permission is unknown, use supplied records or an authorized research surface and report the coverage gap (directional). If blocked, record the blocked URL and missing evidence; don't bypass the gate or call the community inactive.
 
 ### Inspect surfaces
 
@@ -90,6 +90,14 @@ Capture awards as context, not a stable demand benchmark: Reddit announced expan
 | Removed/deleted marker | Preserve the visible state; cause stays unknown without an explicit notice |
 | Apparently successful launch | Separate engagement from reported activation or purchase |
 
+For a requested campaign stage, collect evidence for downstream drafting; these are harvest judgments (directional):
+
+| Stage/evidence | Capture for the brief |
+|---|---|
+| Before launch | Current buyer questions, rule clause for the proposed angle, and missing proof |
+| Launch/demo | Inspectable artifact, operating conditions, disclosed affiliation, and substantive evaluation questions |
+| Customer proof/recap | Permissioned source, metric definition and unit, actual sample and rate denominator, measurement window, comparable baseline for change claims, confounders, and unresolved objections; keep qualitative evidence qualitative |
+
 AutoModerator supports configured domain, keyword, pattern, and affiliate-link checks (official, Reddit AutoModerator, 2026-08). Rules Hub uses LLMs to interpret rule intent under moderator control and remains in rollout (official, Reddit Infrastructure, 2026-08). Don't identify a hidden classifier or infer a phrase penalty from a removal.
 
 ### Build the opportunity brief
@@ -135,8 +143,25 @@ Illustrative brief excerpt:
 Why it works: it preserves the visible evidence without diagnosing a filter.
 The proposed proof requirement comes from the conversation, not guessed ranking mechanics.
 
+### Consumer repair: proof does not generalize
+
+Illustrative opportunity brief with unfilled evidence placeholders; no real community clearance or result is asserted:
+
+> Permission: [current rule clause, URL, access date] governs repair demonstrations and affiliation disclosure. Observed question: [short excerpt and permalink] asks whether [repair method] holds under [use condition]. Source/sample limits: [sample definition, selected surface, collection period, source URLs]; these conversations don't establish repair durability. Supplied proof gap: [permissioned repair photos] show appearance but leave [load or wear condition] untested. Qualified angle: a scoped explanation of what the photos demonstrate and what remains untested, conditional on the cited rule permitting it (directional).
+
+Why it works: the handoff uses a relevant artifact without treating visible repair as proof of durability.
+
+### Local service: buying interest does not authorize outreach
+
+Illustrative opportunity brief with unfilled evidence placeholders; no real request or consent is asserted:
+
+> Permission: [current rule clause, URL, access date] determines whether service recommendations belong in [designated thread]. Observed question: [short excerpt and permalink] asks which [service] fits [location and job constraint]. Source/sample limits: [query, surface, collection period, source URLs]; search selection may omit other buying situations. Supplied proof gap: [documented service scope] lacks [evidence of suitability for this job]. Qualified angle: a sourced scope comparison for downstream drafting if permitted, with suitability unresolved until that evidence is supplied; the public question supplies no private-message consent (directional).
+
+Why it works: buyer relevance, proof sufficiency, and permission remain separate decisions.
+
 ## Checklist
 
+- [ ] Collection method and intended use are authorized; unknown permission switches research to supplied records or an authorized surface with a coverage note.
 - [ ] Each recommended community has current rule evidence; unknown clearance is explicit.
 - [ ] Each observation records source, timestamp, actual surface, and missing values.
 - [ ] New counts carry sample labels; inferences and proposed angles are marked directional.

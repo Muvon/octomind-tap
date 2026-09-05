@@ -52,6 +52,15 @@ Inspect buyer substance: the problem being discussed, proof provided, stated con
 
 Record hashtags, relevant mentions, collaboration labels, sponsorship, and visible Content Credentials without inferring hidden status. Credentialed media can display a provenance icon; absent icons don't establish human origin (official, LinkedIn Credentials Help, 2026-09 review, undated).
 
+For a launch-focused brief, extend the evidence record with this compact handoff (directional). Capture observed material only; mark missing fields unknown.
+
+| Harvest field | Record and boundary |
+|---|---|
+| Campaign context and shape | Supplied audience, buying situation, promise, and stage; observed announcement, demo, customer proof, founder decision, or objection answer. Don't infer an unseen campaign plan. |
+| Bounded proof | Source URL, artifact, conditions, outcome period, denominator, exclusions, and competing explanations where supplied; distinguish author claims from verified results. |
+| Action and participation | Actual link placement, CTA or absence, disclosure, and founder-versus-Page context; record evidence of voluntary community participation, leaving consent unknown when unstated. |
+| Launch-week observations | Build a source-linked table of actual post dates, observed shapes, replies, and available outcomes; state the inspected window and unknowns. Don't convert gaps into a prescribed schedule. |
+
 ### Compare and prioritize
 
 | Dimension | Prefer | Preserve limitation |
@@ -66,7 +75,7 @@ The rubric is directional. Use “prioritize,” “watch,” or “insufficient
 
 ### Interpret formats and distribution
 
-Documents and multi-image posts are useful testing candidates, while video has no universal advantage (measured, Metricool, n=673,658 posts, 2026-04; AuthoredUp Formats, n=3M+ personal-profile posts, 2026-09). Capture what the asset demonstrates. Don't prescribe slide counts or a video-duration optimum from format alone (directional).
+Metricool observed stronger results for some document and multi-image formats than for video in its cohort (measured, Metricool, n=673,658 posts, 2026-04); AuthoredUp observed stronger document than video results in its personal-profile cohort (measured, AuthoredUp Formats, n=3M+ personal-profile posts, 2026-09). Capture relevant examples of these formats as testing opportunities, without inferring a universal video advantage (directional). Capture what the asset demonstrates. Don't prescribe slide counts or a video-duration optimum from format alone (directional).
 
 Polls aren't categorically dead: Socialinsider reports 4.50% engagement in its Q2 table, but its methodology dates conflict with that period (measured, Socialinsider, n=1.3M business posts, 2026-03). Keep that caveat with the claim; prioritize the account's observed outcomes over a cross-vendor leaderboard (directional).
 
@@ -109,6 +118,22 @@ Weak, illustrative: “Carousels are winning; use more of them.”
 
 Why it works: the harvest procedure preserves asset purpose and sample scope.
 The brief supplies a writing opportunity without copying a hook or claiming an algorithm preference.
+
+### Local service: separate account baselines
+
+Illustrative source-placeholder comparison; fill each field from the inspected sources:
+
+> [Mechanic profile post URL] explains an evening repair appointment; [workshop Page post URL] shows eligible repairs. Record [post dates], [observation time], [formats], and [visible counts] separately. Compare each with [its own comparable history URLs]; keep impressions and bookings unavailable unless authorized analytics supplies them. The profile has more visible comments in this scenario, but account context and post age differ.
+
+Decision: retain appointment eligibility as a topic opportunity. Don't rank profile versus Page effectiveness from unmatched public totals (directional).
+
+### Access-limited candidate: insufficient evidence
+
+Illustrative source-placeholder rejection:
+
+> Proposed trend: repair demos are producing more bookings. At [candidate URL], [observed timestamp/timezone], the opening mentions appointments, but [access restriction] prevents inspection of the full asset and replies. Public counts: [visible fields or not visible]. Impressions, clicks, and bookings: unavailable. Search scope: [query, surface, filters, inspected window]; further results blocked by [observed limit].
+
+Decision: return a partial brief and mark the proposed booking trend insufficient evidence. The accessible opening supports only a topic observation; neither the demo's proof nor its business outcome can be assessed (directional).
 
 ## Checklist
 

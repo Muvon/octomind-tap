@@ -20,6 +20,8 @@ Keep founding experience with the person who lived it. For a brand channel, name
 
 ## Commercial paths and community participation
 
+Apply the [community-seeding rule](../SKILL.md#launch-and-proof-posts) before proposing launch links in another creator's conversation.
+
 Use consistent campaign source, medium and campaign fields, and use `utm_content` to distinguish creatives or link placements (official, Google Analytics URL builder, 2026-09). Test the complete destination path through the relevant action. Count visits, trials and paid outcomes separately; retain unknown attribution instead of assigning untracked conversions to the video (directional).
 
 Native in-app video sharing and messaging began expanding to adults in the U.S. and other markets (official, YouTube messaging, 2026-06). Make the video understandable when privately forwarded without surrounding campaign copy. Treat messaging availability as conditional and don't claim it is a proven distribution advantage (directional).

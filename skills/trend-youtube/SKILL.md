@@ -65,6 +65,8 @@ Compute the baseline as the median of a declared set of comparable uploads. Reco
 
 Prefer comparable time-since-upload windows. If only current totals exist, state the age mismatch. Exclude dissimilar formats and label selection rules before comparing. Public counts do not reveal traffic source, paid support, private retention or unique buyers; treat these as unknown unless source evidence supplies them.
 
+For historical comparisons, record the metric definition at each observation. Separate observations across a verified definition change; if comparable counts cannot be established, report the multiple as unavailable rather than pooling them (directional).
+
 | Finding | Decision |
 |---|---|
 | Repeated packaging or structure across independent relevant channels | Propose a test using original proof; replication strengthens the hypothesis but doesn't establish transfer |
@@ -80,6 +82,21 @@ These classification decisions are craft judgments (directional). Rank candidate
 Each recommendation includes source observations, the explicit baseline calculation, corroboration or its absence, audience fit, and the original transformation. Describe the structural pattern as a hypothesis. Name the user's proof needed to execute it and a bounded outcome to evaluate (directional).
 
 For a launch brief, separate the announcement opportunity from proof and objection-answer opportunities. Suggest a next-step destination only when verified. Include substantive buyer questions even when the source upload is not a view outlier (directional).
+
+Use this compact launch-evidence handoff within the harvest, selecting relevant rows (directional):
+
+| Opportunity | Capture and original proof needed |
+|---|---|
+| Launch walkthrough | Source URL, shown availability and limitations; user's working walkthrough and verified destination |
+| Demo or artifact | Demonstrated steps and result; user's reproducible footage and prerequisites |
+| Bounded customer proof | Source claim, baseline, conditions and exclusions; user's customer records and reuse permissions |
+| Founder or build-in-public update | Speaker, stated role and actual decision; user's firsthand evidence, keeping founder testimony distinct from brand claims |
+| Objection answer | Question and comment URL, existing answer and remaining uncertainty; user's relevant test and limitations |
+| Handoff checks | Campaign audience, promise, stage and desired action; verified CTA route or unavailable; stated affiliations, permission gaps and observed enforcement evidence, without inferring suppression from low views |
+| Community opportunity | Conversation URL, host rules and unanswered question; whether a launch link could directly help where promotion is permitted. Hand off the observation without posting |
+| Follow-up, illustrative | Before launch: capture questions; at launch: inspect walkthrough and destinations; afterward: revisit objections at recorded comparable ages. Adjust checks to the research window |
+
+Preserve sourced quotations and the speaker's register. Refer publishing execution to [social-youtube](../social-youtube/SKILL.md#launch-and-proof-posts).
 
 Save permitted observations with timestamps for later comparison. Return observed facts and source URLs before interpretation, then limitations and the next useful research check. Don't reproduce a publishing-policy or dead-pattern checklist here.
 
@@ -100,6 +117,29 @@ Transformation: demonstrate the user's documented failure and its limits using o
 ### Timing-dependent result
 
 Illustrative decision: a platform-outage reaction has unusually high public views, but the available examples depend on that outage. Record it as a timing-dependent topic. A reliability tutorial remains only a proposed transformation until supported by current buyer questions and the user's own evidence (directional).
+
+### Consumer comparison: objection without an outlier
+
+Illustrative record, not an actual harvest:
+
+Candidate: [bag-comparison video URL], [channel], [format], [views], [observation timestamp and upload age].
+Baseline: [same-channel comparable comparison URLs, views, timestamps and upload ages]; median [views].
+Calculation: [candidate views] divided by [baseline median] = [multiple], or unavailable if comparable counts are missing.
+Buyer objection: [comment asking whether a rigid lunchbox fits, quotation and URL].
+Corroboration: [independent question or demonstration URL and observation], or unavailable.
+Interpretation: the fit question may justify research even without an outlier; a comment establishes an objection, not the bag's capacity (directional).
+Original proof needed: the user's matched packing demonstrations, documented bag and lunchbox dimensions, and observed exclusions; outcome [unverified].
+
+### Local service: seasonal interest outside the service area
+
+Illustrative record, not an actual harvest:
+
+Candidate: [seasonal pruning video URL], [channel], [format], [views], [observation timestamp and upload age].
+Baseline: [comparable local upload URLs, views, timestamps, upload ages and seasonal windows], or unavailable.
+Calculation: unavailable until a comparable geographic and seasonal baseline is established; then [candidate views] divided by [baseline median] = [multiple].
+Geographic scope: [verified source location and URL], [user's service-area source]; query corroboration [YouTube Search property, selected region, period, URL and observation], or unavailable.
+Interpretation: interest outside the verified service area does not establish local buyer demand; a regional query cannot locate every viewer (directional).
+Original proof needed: the user's local site assessment, applicable seasonal constraints and available service scope; outcome [unverified].
 
 ## Checklist
 

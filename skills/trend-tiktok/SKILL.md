@@ -100,6 +100,15 @@ Include the audience/job, coverage and access gaps, candidate clusters, source r
 
 For launch research, identify real objections, demonstrable use cases, relevant creators, and which source asset could support each recommendation. Don't invent customer outcomes or convert campaign case studies into forecast returns. Give the writer the evidence and its limitations; don't draft an entire launch calendar during a harvest.
 
+Map available launch evidence to a brief purpose (directional); publishing rhythm belongs in the downstream social-tiktok playbook:
+
+| Brief purpose | Harvest and hand off |
+|---|---|
+| Launch/demo | Release or availability record and inspectable input/action/output; flag missing access or test conditions. |
+| Customer proof | Authorized outcome record with metric/unit, baseline, result, cohort/sample and measurement dates; mark self-reporting and gaps. |
+| Founder decision | Supplied decision record and artifact, with rationale and unresolved tradeoff; don't infer personal experience. |
+| Objection answer | Contextual buyer question and relevant demonstration source; distinguish exact quotation from paraphrase and record permissions. |
+
 ## Examples
 
 ### A rising sound with incomplete clearance
@@ -120,6 +129,26 @@ Illustrative brief, not live observations (directional):
 Source: [post URL], with [displayed views] at [timestamp]. Duration: [displayed duration]. Comparable posts: [URLs and visible counts]. Comments include [verbatim relevant excerpt].
 
 Conclusion: relative attention is observable; completion and sales are unknown. Recommend inspecting the opening and the visible demonstration. Do not call the duration/view combination a retention win.
+
+### B2B software: recommend a matched objection/demo candidate
+
+Illustrative judgment, not live observations; placeholders require verification before handoff (directional):
+
+- Scope/source records: [procurement buyer situation], [market/language], [post URLs, handles, publication dates, observation timestamps, filters and visible metrics]. Comparable account contexts and post ages: [matched records].
+- Evidence: [contextual buyer-question excerpts] concern unowned approvals; [independent demonstration records] address that task. These observations support audience fit, not faster decisions.
+- Original contribution: show the author's own sandbox routing and permission boundary. Launch handoff: [question source] plus [authorized demo asset and test conditions]; no customer outcome claim.
+- Rights: [confirmed rights record for owned footage/narration]; source clips are research references, not cleared reuse.
+- Decision: recommend the format if the matched records support this brief. Recheck if the buyer question, product behavior or asset permission changes.
+
+### Local service: reject attention outside the service audience
+
+Illustrative judgment, not live observations; placeholders require verification before handoff (directional):
+
+- Scope/source records: [furniture-repair service area and buyer need], [post URLs, handles, publication dates, observation timestamps, filters and visible metrics]; [comment excerpts with market context].
+- Evidence: sampled executions repeat a reveal device and address [out-of-area DIY audience], with no observed match to the supplied booking need. High attention alone does not resolve that mismatch.
+- Original contribution: a proposed owned joint-inspection demonstration could help local buyers, but repeating the sampled reveal adds no service-specific evidence.
+- Rights: [owned-footage status]; [customer permission unresolved]; trending music clearance unknown.
+- Decision: reject this candidate for audience mismatch and duplicated execution. Recheck only when relevant local observations and a distinct, permissioned demonstration support reconsideration.
 
 ## Checklist
 

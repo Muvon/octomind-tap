@@ -20,7 +20,7 @@ This repeats the announcement instead of adding information.
 
 Revised root:
 
-> The rename preview shows the proposed diff before it writes to disk. The recording uses a small example project. Generated files are excluded for now. Demo: [URL].
+> The rename preview shows the proposed diff before it writes to disk. The recording uses a small example project. Generated files haven't been checked. Demo: [URL].
 
 Revised continuation:
 

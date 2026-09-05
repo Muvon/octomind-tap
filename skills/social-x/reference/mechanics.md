@@ -50,7 +50,7 @@ X describes expanded EU “Made with AI” indicators separately from restricted
 
 ## Format and monetization boundaries
 
-The ordinary text limit is 280 characters. App help permits mixed photos, GIFs, and video up to 4 total media items; inspect the target client's combination and layout (official, X posting help, reviewed 2026-09-05). Premium help supports longer posts up to 25,000 characters, while posting-help mobile instructions still mention 4,000: verify the actual composer rather than assuming parity. A cap isn't a target length.
+The ordinary text limit is 280 characters. App help permits mixed photos, GIFs, and video up to 4 total media items; inspect the target client's combination and layout (official, X posting help, reviewed 2026-09-05). Premium help supports longer posts up to 25,000 characters, while posting-help mobile instructions still mention 4,000 (official, X Premium and X posting help, reviewed 2026-09-05). Verify the actual composer rather than assuming parity. A cap isn't a target length.
 
 The evidence supplied for this playbook doesn't settle the following. Resolve them in the intended account before making a publishing promise:
 

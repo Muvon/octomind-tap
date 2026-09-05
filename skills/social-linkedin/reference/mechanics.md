@@ -84,7 +84,7 @@ Use these editing lenses without making authorship accusations:
 
 Assign escalation and out-of-hours coverage according to audience activity; remove fraud links and spam while preserving substantive criticism (directional). Respondology found comments often arrived outside office hours and moderation correlated with less negative feedback (measured, Respondology, n=168.8M comments, multi-platform brand sample, 2026-04). That study isn't a LinkedIn-specific response-time test.
 
-Make the subject understandable quickly without stripping necessary conditions (directional). Reported Android daily-use observations indicate limited LinkedIn session attention compared with entertainment platforms (measured, The Star/DataReportal, n=February Android app users, sample count unspecified, 2026-08); those observations don't establish a post-length optimum. Use external destinations when useful, but don't infer a LinkedIn publishing sequence from global audience totals (directional; DataReportal, 2026-04).
+Make the subject understandable quickly without stripping necessary conditions (directional). Reported average daily Android app use was lower for LinkedIn than for the entertainment platforms compared (measured, The Star/DataReportal, n=Android users, sample count unspecified, observation period 2026-02, published 2026-08-19). This measures total daily use, not session duration, attention per post, or an optimal post length. Use external destinations when useful, but don't infer a LinkedIn publishing sequence from global audience totals (directional; DataReportal, 2026-04).
 
 ## References
 

@@ -19,7 +19,7 @@ Collect current Instagram patterns that a writer can adapt to the supplied audie
 
 ## Mental model
 
-Mosseri named watch time, likes, and sends as leading signals and advised monitoring average watch time, likes per reach, and sends per reach (official, Mosseri via Social Media Today, 2025-01). Average watch time isn't a per-reach ratio. This dated guidance doesn't reveal a complete current ranker or establish that reach without engagement hurts.
+Mosseri named watch time, likes, and sends as leading signals and advised monitoring average watch time, likes per reach, and sends per reach (reported platform guidance, Mosseri via Social Media Today, 2025-01). Average watch time isn't a per-reach ratio. This dated guidance doesn't reveal a complete current ranker or establish that reach without engagement hurts.
 
 Treat Feed, Explore, Reels, Stories, and profile observations as different contexts. Explore placement alone doesn't establish engagement velocity or its cause. Treat Stories as relationship-pattern samples, not proof of discovery performance (directional).
 
@@ -47,7 +47,7 @@ Start at `https://www.instagram.com/` or a supplied post permalink. Follow visib
 
 Use separate background tabs for independent sources only when the browser supports that safely. Avoid competing navigation calls on the same page. Snapshot observations, preserve source URLs, and close only tabs opened for the harvest (directional).
 
-Hashtag following ended in December 2024, and the verified feature report describes a five-hashtag cap for posts and Reels (official, Instagram via Metricool Trends, 2026-06). Use tag results as topic samples; don't prescribe hashtag stacks as distribution strategy.
+Hashtag following ended in December 2024, and the verified feature report describes a five-hashtag cap for posts and Reels (reported platform guidance, Instagram via Metricool Trends, 2026-06). Use tag results as topic samples; don't prescribe hashtag stacks as distribution strategy.
 
 ### Capture comparable records
 
@@ -56,6 +56,16 @@ For every candidate, record the permalink and handle; publication date or displa
 Mark unavailable fields as unknown. Treat displayed rounded counts as approximate. Calculate views relative to followers and comments relative to views only when both inputs exist, and label them analyst calculations with the source and capture time. Prefer comparison with the same account's similar-format, similar-age posts. Follower ratios aren't evidence that non-followers supplied the views (directional).
 
 Return illustrative counts only in examples, never as harvested observations. Don't rename shares as private sends, infer saves from a checklist shape, or declare that impressions and plays no longer exist everywhere (directional).
+
+For a launch-focused harvest, add these fields to the existing records and pass the evidence to [the publishing playbook](../social-instagram/SKILL.md); these are research prompts (directional).
+
+| Evidence to harvest | Handoff judgment |
+|---|---|
+| Supplied campaign brief: audience, buyer problem, promise, proof, desired action, destination, and stage | Record missing inputs; don't invent a campaign or its results. |
+| Observed launch, demo, proof, founder-decision, or objection sequence | Retain source URLs, frame order, exact wording, and the author's register; distinguish observation from inferred purpose. |
+| Outcome claim and source artifact | Capture customer, comparable scope, dates/windows, source identifier, and concurrent changes; flag qualifiers absent from the numerical frame. |
+| Visible CTA route, affiliation/disclosure, and community replies | Record the actual access path, disclosed relationships, and questions answered; mark inaccessible delivery or conversion evidence unknown. |
+| Publication/capture dates and available follow-ups | Map observed sequence only; the [illustrative launch-week rhythm](../social-instagram/SKILL.md#launch-week-rhythm) is downstream planning guidance, not evidence of an optimal cadence. |
 
 ### Track audio and pattern movement
 
@@ -74,11 +84,11 @@ These are qualitative research judgments, not platform thresholds (directional).
 
 ### Apply platform constraints to recommendations
 
-The reported Reel maximum is 20 minutes; those over 3 minutes aren't recommended to non-followers through Explore or the Reels tab (official, Instagram Help via Socialinsider, 2026-07). Separate long existing-audience examples from discovery candidates. For narrative experiments, 45–60 seconds led Socialinsider's length analysis, without establishing a universal optimum (measured, Socialinsider, n=Reels length analysis; sample size unstated, 2026-07).
+The reported Reel maximum is 20 minutes; those over 3 minutes aren't recommended to non-followers through Explore or the Reels tab (reported platform guidance, Instagram Help via Socialinsider, 2026-07). Separate long existing-audience examples from discovery candidates. For narrative experiments, 45–60 seconds led Socialinsider's length analysis, without establishing a universal optimum (measured, Socialinsider, n=Reels length analysis; sample size unstated, 2026-07).
 
-Carousels can resurface on another frame after an unengaged exposure (official, Instagram behavior reported by Socialinsider, 2026-02). Capture how opening frames stand alone; don't promise a fixed repeat exposure. Trial Reels are non-followers-first and were announced available to everyone (official, Meta Creativity, 2025-06). Don't label another account's post a trial without evidence or attach unsupported eligibility gates and testing windows.
+Carousels can resurface on another frame after an unengaged exposure (reported platform guidance, Instagram behavior via Socialinsider, 2026-02). Capture how opening frames stand alone; don't promise a fixed repeat exposure. Trial Reels are non-followers-first and were announced available to everyone (official, Meta Creativity, 2025-06). Don't label another account's post a trial without evidence or attach unsupported eligibility gates and testing windows.
 
-Accounts primarily reposting unoriginal Reels, photos, or carousels can lose recommendation distribution; licensed publishers are exempt and followers may still see content (official, Instagram via TechCrunch, 2026-04). For each recommendation, name an original contribution and required source assets. A copied post with cosmetic changes isn't a useful adaptation; don't classify all participation in a shared format as a violation (directional).
+Accounts primarily reposting unoriginal Reels, photos, or carousels can lose recommendation distribution; licensed publishers are exempt and followers may still see content (reported platform guidance, Instagram via TechCrunch, 2026-04). For each recommendation, name an original contribution and required source assets. A copied post with cosmetic changes isn't a useful adaptation; don't classify all participation in a shared format as a violation (directional).
 
 ## Brief assembly
 
@@ -107,6 +117,26 @@ Illustrative record, not a real harvest:
 Decision: “Keep as an isolated example. We can't infer recommendation traffic, private engagement, or current demand from the visible count. Recheck age and comparable accounts before recommending the format.”
 
 This preserves the evidence instead of declaring the account demoted or the views fake.
+
+### B2B proof carousel with comparable records
+
+Illustrative records, not a real harvest:
+
+“Independent accounts [handles/permalinks] repeat a queue-comparison structure. Records retain [publication dates], [capture timestamps/timezone], [similar post ages], [account sizes], and [displayed metric names/values], including weaker comparable executions. Each numerical frame names [customer], [same queue scope], [baseline/comparison windows], [source identifier], and [concurrent change]. Source wording is [verbatim excerpt]; register is [observed register].”
+
+Decision: “Supported candidate for a bounded test: comparable independent executions make the evidence structure worth testing. Use the recipient's permissioned queue exports and documented voice; retain material qualifications beside the result. Don't transfer the source authors' outcomes or claim the format caused performance.”
+
+This separates evidence for trying a format from evidence for the customer result.
+
+### Local-service Story launch with incomplete access evidence
+
+Illustrative record, not a real harvest:
+
+“Authorized captures [source identifiers, publication/capture timestamps and timezone] show [service demonstration] followed by [booking invitation]. The observed route is [visible link control] to [copied destination URL]; booking completion is inaccessible. [Visible disclosure wording] identifies [commercial relationship]. Replies show [buyer question]; conversion metrics are unavailable. Preserve [verbatim wording] and its [observed register].”
+
+Decision: “Retain as an objection-and-access sequence, not a demonstrated sales trend. Test only after the recipient supplies a consented demonstration and verifies its own booking path. Carry the unanswered buyer question and disclosure context into the brief; don't infer bookings or imitate the source author's persona.”
+
+This keeps a usable sequence while withholding unsupported conversion conclusions.
 
 ## Checklist
 

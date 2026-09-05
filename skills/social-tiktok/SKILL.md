@@ -35,7 +35,7 @@ Default to video when motion carries the demonstration. Video led photos/carouse
 | Search-intent explanation or a substantial story | Test the extended band: 120–180 seconds led median views in that sample, not necessarily search conversions (measured, Socialinsider, n=6M brand videos, 2026-07). |
 | Reference material the viewer needs to inspect | Consider Photo Mode/carousel; make each frame readable and the sequence useful (directional). |
 | A written observation without useful footage | Consider a text post if the account offers it; preserve the author's wording and avoid pretending motion adds proof (directional). |
-| Product inspection and live questions | Consider LIVE with Shop only after checking account eligibility and purchase controls. The UK Lux Laces case used launch LIVE (measured, TikTok case report, n=Lux Laces campaign, 2026-08). |
+| Product inspection and live questions | Consider LIVE with Shop only after checking account eligibility and purchase controls. TikTok's UK case report describes Lux Laces using a debut Shop LIVE (official, Lux Laces case report, 2026-08; platform-reported case, not a comparative format test). |
 | A response to an existing post or comment | Consider reply-video, Duet or Stitch if available and permitted; contribute a demonstration or substantive response (directional). |
 | A timely follow-up | Consider Stories if available; put durable proof in a standalone post too (directional). |
 | Related explanations or paid depth | Check Playlists or Series availability and terms before planning grouping or paid access; these are different publishing decisions (directional). |
@@ -50,7 +50,7 @@ TikTok's ad playbook emphasizes the opening 3–6 seconds and a hook → selling
 
 Use the first frame to show the object of the claim. Skip greetings and logo cards in the opening. Put a readable topic label beside it. Continue with the action that demonstrates the claim, explain its boundary, then give a useful next step or stop. Read the script aloud while watching the asset; cut sentences that merely narrate visible movement (directional).
 
-Use the example hooks as a bank of archetypes: visible fault, operational boundary, physical inspection, and service diagnosis. Substitute source-backed specifics; don't copy their fictional experiences.
+Use the example hooks as optional approaches: visible fault, buyer question, founder decision/artifact, and observable result. Choose what fits the source and author's register, without rotation quotas; don't copy fictional experiences.
 
 ### Package the post
 
@@ -58,11 +58,11 @@ Use full-screen 9:16, at least 720p, and purposeful sound as the ad-playbook pro
 
 Front-load the subject in the caption using language the buyer uses. Keep it to a compact thought unless conditions need more space; omit script repetition. Place descriptive hashtags after the prose without a tag stack. Hashtag-bearing posts performed better observationally, but no optimal count was established (measured, Metricool, n=2,314,756 posts, 2026-05). Spoken keywords can clarify the topic; don't promise speech-indexing benefits (directional).
 
-Export clean source footage and recut it for this opening and CTA. Choose a cover showing the evidence; write alt text for photo assets (directional). TikTok recommends its Commercial Music Library for product/business promotion; other sounds require the necessary rights and its Music Usage Confirmation. A trending sound's availability isn't commercial clearance or permission to export it elsewhere (official, Commercial Music Help, indexed text checked 2026-09; rights-check application is directional).
+Export clean source footage and recut it for this opening and CTA. Choose a cover showing the evidence; write alt text for photo assets (directional). TikTok recommends its Commercial Music Library for product/business promotion; other sounds require the necessary rights and its Music Usage Confirmation. A trending sound's availability isn't commercial clearance or permission to export it elsewhere (official, Commercial Music Help, undated; indexed text checked 2026-09; rights-check application is directional).
 
 ## Launch and proof posts
 
-For campaign planning, record audience, buying situation, promise, sourced proof, desired action/destination, stage, disclosures, and account market/type. Use author samples when available; missing samples don't block a restrained factual script. Distinguish owned, sponsored, affiliate, and paid-amplified content. No CTA is valid. If outcome proof is absent, prepare a demonstration brief rather than inventing customer success.
+For campaign planning, record audience, buying situation, promise, sourced proof, desired action/destination, stage, disclosures, and account market/type. Use author samples when available; missing samples don't block a restrained factual script. Distinguish owned, sponsored, affiliate, and paid-amplified content. Choosing no CTA is valid. If outcome proof is absent, prepare a demonstration brief rather than inventing customer success.
 
 Use the short or extended bands above as testing options, never compulsory duration (directional):
 
@@ -70,14 +70,14 @@ Use the short or extended bands above as testing options, never compulsory durat
 |---|---|---|
 | Launch day | Show the task/result; identify the released product and availability; demonstrate; give the verified access path. | Short |
 | Demo or artifact | Show input, perform the relevant operation, inspect output, explain the failure boundary. | Short for a single operation; extended for a walkthrough |
-| Customer proof | Establish before/after conditions, show the authorized record, state outcome and remaining limitation. | Short if proof fits; extended for context |
+| Customer proof | Show the authorized source record; state [metric and unit], [baseline] → [result], [cohort/sample], [measurement dates], and relevant test conditions beside the number in speech or readable overlay. Identify self-reported results and remaining limitations; if these bounds are missing, show a demo without an outcome claim. Placeholders are nonpublishable until verified. | Short if proof fits; extended for context |
 | Founder decision/build update | Name the decision, show its artifact, explain the cost and unresolved tradeoff. | Short |
 | Objection answer | Quote a real objection with permission or paraphrase it; test it visibly; state who the result applies to. | Short; extended when the test needs it |
 | Recap/lessons | Revisit the promise using observed evidence; name what remains unresolved and the next action. | Extended only when earned |
 
 Apply the strip-test: with the product name removed, the post should still show or teach something useful (directional).
 
-Confirm the destination before finalizing the CTA: an available profile link, verified Shop control, or staffed requested-DM path. Don't promise a typed URL is clickable; test the complete path. TikTok requires its content-disclosure setting for promotion of your own business as well as third-party branded content; identify that relationship in the writing and select the appropriate disclosure category (official, Commercial Guidelines, rechecked 2026-09). Verify account/market-specific controls before publication.
+Confirm the destination before finalizing the CTA: an available profile link, verified Shop control, or staffed requested-DM path. Don't promise a typed URL is clickable; test the complete path. TikTok requires its content-disclosure setting for promotion of your own business as well as third-party branded content; identify that relationship in the writing and select the appropriate disclosure category (official, Commercial Guidelines, 2025-08; rechecked 2026-09). Verify account/market-specific controls before publication.
 
 Seed through relevant creator collaborations and useful participation in existing conversations. Give employees distinct observations and disclose their relationship; agree compensation for additional creator work. Don't script fake customer reactions or coordinate engagement trades. TikTok's rules restrict spam, fake engagement and deceptive incentives (official, Integrity and Authenticity, 2025-08).
 
@@ -112,7 +112,7 @@ Bad: “This changed everything.” Better: “The seam still catches when I pul
 
 ## Cadence and engagement
 
-Choose a cadence the author can sustain with fresh evidence and reply coverage. A brand should budget demonstrations and customer permissions; a creator should budget original episodes and, if relevant, verified program requirements. Increase output only while typical-post quality and qualified response remain useful (directional). Benchmark within TikTok using consistent metric definitions (measured, Buffer Engagement, n=52M+ cross-platform posts, 2026-03).
+Choose a cadence the author can sustain with fresh evidence and reply coverage. A brand should budget demonstrations and customer permissions; a creator should budget original episodes and, if relevant, verified program requirements. Increase output only while typical-post quality and qualified response remain useful (directional). Buffer warns that platform engagement definitions are not directly comparable (measured, Buffer Engagement, n=52M+ cross-platform posts, 2026-03). Benchmark within TikTok using consistent metric definitions (directional).
 
 Use audience analytics first. Buffer found evenings from 6–11 p.m. generally strongest, Saturday strongest overall, and Sunday at 9 a.m. the strongest individual slot; test these rather than asserting a universal best time (measured, Buffer Timing, n=7.1M posts, 2026-07).
 
@@ -143,37 +143,37 @@ Sound: recorded explanation, no music. Closer: “The runnable example is linked
 Why it works: The visible-fault hook names what the recording proves.
 The limitation follows the provenance rule and bounds the access CTA.
 
-### B2B SaaS: operational boundary
+### B2B SaaS: buyer question
 
-Hook/script: “This approval is waiting on a missing owner. I assign the owner here, then the request appears in their queue. The routing works in this sandbox; nobody has measured response time from this demo.”
+Hook/script: “[Verified buyer question about assigning an unowned approval]? I assign the owner here, then the request appears in their queue. The routing works in this sandbox; nobody has measured response time from this demo.” Use a real question, quoted with permission or clearly paraphrased.
 
 First-frame/overlay: show the unassigned request; “Approval routing demo.” Caption: “Approval routing with an assigned owner. Sandbox data; this doesn't establish faster decisions. #Procurement”
 
 Sound: own narration. Closer: “The setup guide is linked in our profile.” Verify that path before use. Cover: the owner field. Follow-up: explain permissions and distinguish routing from adoption.
 
-Why it works: The operational-boundary hook makes a buyer's task visible.
+Why it works: The buyer-question opening answers a documented concern visibly.
 The caption prevents a product action becoming an invented business outcome.
 
-### Consumer product: physical inspection
+### Consumer product: founder decision and artifact
 
-Hook/script: “The mug fits, but the lid rubs the zip. I'll close the bag with it upright so you can see the pressure here. This is the fit on this mug; the size guide has the internal dimensions.”
+Hook/script: “I kept [documented pocket design] in this prototype because [supplied founder rationale]. Here's the tradeoff: the mug fits, but the lid rubs the zip. I'll close the bag with it upright so you can see the pressure here. The size guide has the internal dimensions.” Use first person only for the founder's own supplied decision.
 
-First-frame/overlay: show contact at the zip; “Mug fit check.” Caption: “Mug fit in the side pocket. Check your mug against the internal dimensions. #BagDetails”
+First-frame/overlay: show the prototype and design record; “Pocket design tradeoff.” Caption: “Mug fit in the side pocket. Check your mug against the internal dimensions. #BagDetails”
 
 Sound: own speech with the zip audible. Closer: “Check the size guide before ordering.” Point to the verified product destination. Cover: contact point. Follow-up: answer sizing questions using supplied dimensions. Disclose the seller relationship.
 
-Why it works: The physical-inspection hook lets the viewer evaluate fit.
+Why it works: The decision-led opening connects the founder's rationale to an inspectable artifact.
 The honest limitation avoids the miracle-fix pattern and supports a buying decision.
 
-### Local service: diagnosis and proof
+### Local service: observable result
 
-Hook/script: “The chair rocks at this joint. Here's the movement before repair and the same check afterward. The repair was [documented repair]; this is [inspection date], so it doesn't establish long-term durability.”
+Hook/script: “This joint stays still in the repair check. Here's the movement before repair and the same check afterward. The repair was [documented repair]; this is [inspection date], so it doesn't establish long-term durability.”
 
-First-frame/overlay: show the loose joint; “Chair joint repair.” Caption: “Chair joint repair in [service area]. Result shown at inspection; other joints weren't part of this job. #FurnitureRepair”
+First-frame/overlay: show the repaired joint under the check; “Chair joint repair.” Caption: “Chair joint repair in [service area]. Result shown at inspection; other joints weren't part of this job. #FurnitureRepair”
 
-Sound: workshop recording and explanation. Closer: “Use the booking link in the profile for an assessment.” Cover: the joint, with customer permission. Follow-up: request consent before moving identifiable job details into a private inquiry.
+Sound: workshop recording and explanation. End after the inspection limitation; no CTA is needed. Cover: the joint, with customer permission. Follow-up: request consent before moving identifiable job details into a private inquiry.
 
-Why it works: The diagnosis hook anchors before/after footage to the same check.
+Why it works: The result-led opening anchors before/after footage to the same check.
 The placeholders enforce provenance; the bounded result avoids a durability promise.
 
 ## Checklist
@@ -194,7 +194,7 @@ The placeholders enforce provenance; the bounded result avoids a durability prom
 - [Socialinsider lengths](https://www.socialinsider.io/blog/how-long-are-tiktok-videos/), 2026-07-10.
 - [TikTok recommendation explainer](https://newsroom.tiktok.com/how-tiktok-recommends-videos-for-you?lang=en), 2020-06-18; [SMB Playbook](https://ads.tiktok.com/business/library/Global_SMB_Creative_Playbook.pdf), undated, verified 2026-09.
 - [Integrity and Authenticity](https://www.tiktok.com/community-guidelines/en/integrity-authenticity), 2025-08-14; [US Shop AIGC Rules](https://seller-us.tiktok.com/university/essay?knowledge_id=491489038501663&lang=en), 2026-07-31; [TikTok AI Update](https://newsroom.tiktok.com/helping-people-spot-and-understand-ai-generated-content-on-tiktok-nz?lang=en-NZ), 2026-07-10.
-- [Commercial Guidelines](https://www.tiktok.com/community-guidelines/en/regulated-commercial-activities), rechecked 2026-09; [Commercial Music Help](https://support.tiktok.com/en/business-and-creator/creator-and-business-accounts/commercial-use-of-music-on-tiktok), indexed text checked 2026-09; [TikTok accessibility](https://newsroom.tiktok.com/creating-an-accessible-and-inclusive-tiktok?lang=en-150), checked 2026-09.
+- [Commercial Guidelines](https://www.tiktok.com/community-guidelines/en/regulated-commercial-activities), 2025-08-14, effective 2025-09-13; rechecked 2026-09; [Commercial Music Help](https://support.tiktok.com/en/business-and-creator/creator-and-business-accounts/commercial-use-of-music-on-tiktok), undated, indexed text checked 2026-09; [TikTok accessibility](https://newsroom.tiktok.com/creating-an-accessible-and-inclusive-tiktok?lang=en-150), checked 2026-09.
 - [Lux Laces](https://newsroom.tiktok.com/tiktokshoplivefashionandcollectables?lang=en-GB), 2026-08-04; [CreatorIQ](https://www.creatoriq.com/press/releases/creatoriq-state-of-creators-report-2026?hs_amp=true), 2026-08-11.
 - [Aborn](https://emilyaborn.com/ai-writing-tells-what-they-cost-you/), 2026-07-10; [Cox](https://huntingthemuse.net/library/how-to-tell-if-writing-is-ai), 2026-06; [Gichigi](https://tahigichigi.substack.com/p/12-red-flags-of-ai-writing-and-how), 2026-02-18; [MIDI](https://arxiv.org/abs/2606.02147), 2026-06-01.
 

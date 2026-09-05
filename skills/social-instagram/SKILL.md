@@ -40,7 +40,7 @@ Open with the action or evidence instead of a logo card. Script hook, on-screen 
 
 Total watch time includes replay time (official, Meta Reels Insights, 2023-04). A natural loop can be useful; it doesn't guarantee a ranking advantage (directional).
 
-Carousels can be resurfaced on another frame after an unengaged exposure (official, Instagram behavior reported by Socialinsider, 2026-02). Make the opening and following frame understandable independently; don't promise a specific repeat exposure. End with usable reference material rather than a compulsory save request (directional).
+Carousels can be resurfaced on another frame after an unengaged exposure (reported platform guidance, Instagram behavior via Socialinsider, 2026-02). Make the opening and following frame understandable independently; don't promise a specific repeat exposure. End with usable reference material rather than a compulsory save request (directional).
 
 ### Caption, cover, and profile
 
@@ -146,8 +146,9 @@ The provenance rule keeps compatibility and unresolved work visible.
 ### B2B SaaS: proof carousel
 
 Opening slide: “[Customer]'s approval queue before the routing change.”
-Following slide: “Requests waiting for an owner: [before] to [after].”
-Evidence slide: “[Dated export], measured over [window]. [Other process change] also happened.”
+Following slide: “[Customer], [same queue scope and counting rule]: requests waiting for an owner, [before] during [baseline date/window] to [after] during [comparable comparison date/window]. [Other process change] also happened; this comparison can't isolate the software's effect. Source: [dated export identifier].”
+Evidence slide: “[Dated export identifier]: [measurement method, comparable windows, and concurrent-change details].”
+Keep the source identifier and conditions readable on the numerical frame. If they won't fit legibly, narrow the numerical claim; don't move its conditions to another frame.
 Boundary slide: “Legal exceptions still need [manual review].”
 Final slide: “The routing worksheet is available through the bio link.”
 

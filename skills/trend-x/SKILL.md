@@ -62,6 +62,15 @@ Record views and public interactions only when visible. Preserve unavailable fie
 
 Capture displayed disclosure or restriction labels separately. Retain source context for factual claims and any visible corrections or Community Notes. A missing label doesn't verify a claim. Don't infer a reach consequence from a label's name without supporting evidence.
 
+For launch evidence, use this illustrative collection sequence (directional). Skip empty phases; publishing remains downstream. See the [publishing rhythm and drafting anatomy](../social-x/SKILL.md#launch-and-proof-posts) for the downstream plan.
+
+| Launch phase | X evidence to harvest | Downstream handoff |
+|---|---|---|
+| Pre-launch | Problem language and objections in relevant conversations | Sourced buying constraints and unanswered questions |
+| Launch day | Original announcement, actual demo, and working destination | Availability, inspectable artifact, access conditions, and gaps |
+| Early follow-up | Objections in context, answers, and unresolved blockers | Evidence for an answer or further demonstration |
+| Later follow-up | Bounded outcomes from actual use and their measurement conditions | Permitted proof candidates and remaining limitations |
+
 ### Compare and cluster
 
 Use matched observation windows and comparable account histories. Include ordinary posts as well as apparent breakouts so the sample doesn't consist only of winners (directional).
@@ -87,7 +96,20 @@ For a launch harvest, obtain audience and buying situation, promise, proof sourc
 
 Search for the exact problem language and inspect what prospective users ask before recommending an announcement angle. The MailTest founder's reported change toward problem searches is anecdotal guidance, not a tested B2B conversion method (directional), citing MailTest founder account, 2026-04.
 
-Return a source-backed candidate for each useful launch shape: announcement, demo, customer outcome, founder decision, objection answer, or recap. Name the available artifact, missing proof, and fit limitation. Don't force a candidate where the harvest contains no evidence. Community and creator seeding recommendations must concern relevant, distinct participation. X prohibits bulk unsolicited promotion, repeated link drops, and coordinated metric inflation (official, X Authenticity, 2025-04).
+Return source-backed candidates using these harvest decisions (directional). Name the available artifact, missing proof, and fit limitation. Don't force a candidate where the harvest contains no evidence.
+
+| Candidate shape | Evidence to capture |
+|---|---|
+| Announcement | Who can use what now, access conditions, and working destination |
+| Demo | Actual task, action, and artifact; edits, omitted waiting, or human intervention |
+| Customer outcome | Baseline and result, units, measurement window, cohort, exclusions, source, and permission for reuse and attribution; mark missing conditions explicitly |
+| Founder decision | An owned decision, evidence considered, and actual cost or tradeoff |
+| Objection answer | Original concern in context, supporting evidence, and unresolved limit |
+| Recap | New evidence from actual use, what changed, and what remains unresolved |
+
+Include observed root, reply, or profile CTA placement in the handoff; record absent or unavailable placements explicitly. Use the [social publishing launch section](../social-x/SKILL.md#launch-and-proof-posts) for downstream drafting anatomy.
+
+Community and creator seeding recommendations must concern relevant, distinct participation. X prohibits bulk unsolicited promotion, repeated link drops, and coordinated metric inflation (official, X Authenticity, 2025-04).
 
 Keep founder, brand, and creator observations separate. Agency case reports are possible approaches to test, not conversion forecasts (directional), citing Clickstrike, undated. If a harvested post is compensated, gifted, affiliate, or ambassador promotion, the Paid Partnership requirement applies (official, X Paid Partnerships, 2026-09). Don't infer independent customer enthusiasm from disclosed paid endorsements.
 
@@ -105,7 +127,7 @@ Buffer associates frequency with growth, with reduced per-post reach at higher f
 
 Text narrowly led images in Buffer's X format sample; video wasn't the engagement leader (measured, Buffer, n=X subset of 52M+ cross-platform posts, 2026-03). GIFs led raw interactions in Emplifi's different sample (measured, Emplifi, n=16,879 X profiles, reviewed 2026-09). Keep these metrics separate; recommend format tests instead of declaring mandatory media.
 
-Code format observations conservatively: ordinary text is capped at 280 characters, Premium longer posts at 25,000, and the verified attachment plan is up to 4 photos, a GIF, or a video (official, X posting help and Premium, 2026-09). Don't call a multi-image post a swipe carousel. Article access, video tier caps, and other optional-surface details remain unverified until checked in the account. Log them as observed formats without inventing entitlements.
+Code format observations conservatively: ordinary text is capped at 280 characters, Premium longer posts at 25,000 (official, X posting help and Premium, 2026-09). Record the observed media combination and client; don't reject an observed mixed-media post using a generic attachment summary (directional). Don't call a multi-image post a swipe carousel. Article access, video tier caps, and other optional-surface details remain unverified until checked in the account. Log them as observed formats without inventing entitlements.
 
 Link-post visibility was lower in political-discussion datasets (measured, NDSS, n=over 40M posts, 2026-02). Record root, reply, and profile link placement as separate observations. The evidence doesn't prove that moving a link to a reply fixes reach. A recommendation must retain the intended conversion path.
 
@@ -151,6 +173,40 @@ Recommendation: explain the boundary for disputed invoices using supplied proof
 
 Why it works: the cluster rule requires independent source evidence and explicit coverage.
 The brief identifies a defensible contribution instead of declaring an entire topic dead.
+
+### Paid creator launch without independent customer proof
+
+Fictional teaching record; source fields are placeholders.
+
+```text
+Source: [creator post URL], [handle]; product launch: insulated lunch bag
+Published: [observed timestamp]; captured: [timestamp]
+Context: packing demonstration with a visible Paid Partnership label
+Observation: the clip shows containers fitting inside; replies ask about cleaning.
+Evidence limit: no temperature test or independent customer outcome is supplied.
+Coverage limit: accessible creator post and replies; sales records unavailable.
+Recommendation: retain the disclosure, separate promotion from customer proof,
+and request care instructions before recommending an objection-answer angle.
+```
+
+Why it works: the disclosure changes how the evidence is classified; the visible demonstration doesn't establish an untested product benefit.
+
+### Local-service uncertainty with unavailable metrics
+
+Fictional teaching record; source fields are placeholders.
+
+```text
+Source: [neighborhood conversation URL], [handle]; reply: [plumber reply URL]
+Published: [observed timestamps]; captured: [timestamp]
+Context: a resident reports a damp wall; a plumber requests an inspection.
+Observation: the photo shows staining, but the cause remains unconfirmed.
+Views and booking outcomes: unavailable
+Coverage limit: supplied public chain; neighborhood search was inaccessible.
+Recommendation: collect inspection criteria and verified service-area details
+for a useful answer; infer neither a diagnosis nor absent local demand.
+```
+
+Why it works: the record distinguishes an unresolved service question from proof of a defect, and blocked coverage from absence of discussion.
 
 ## Checklist
 
