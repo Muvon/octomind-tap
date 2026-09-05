@@ -106,8 +106,12 @@ For an unverified command in a supplied draft, preserve it during a wording edit
 
 ## References
 
-Guidance reviewed 2026-09-05.
+Guidance reviewed 2026-09-05. This is a review date, not a publication/update date for the sources below.
 
 - [Google people-first content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content) — sourcing, authorship, evidence of experience, and the limits of ranking inferences.
 - [FTC endorsement disclosures](https://www.ftc.gov/business-guidance/resources/disclosures-101-social-media-influencers) and [reviews/testimonials questions](https://www.ftc.gov/business-guidance/resources/consumer-reviews-testimonials-rule-questions-answers) — US-facing commercial claims.
 - [Professional voice](../content-voice/SKILL.md) — preserve facts through stylistic revision.
+
+Validated: 2026-09
+
+Re-validate when source-verification guidance or endorsement/testimonial requirements change.

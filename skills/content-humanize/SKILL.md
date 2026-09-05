@@ -96,6 +96,12 @@ When a diagnostic is requested, report the affected dimensions, excerpts, fixes,
 
 ## References
 
+Review date: 2026-09-05; this is not a publication/update date for the sources below.
+
 - [Al Ali et al., EACL 2026](https://aclanthology.org/2026.eacl-srw.20/) — language-specific detector evaluation; do not generalize its Czech findings to every language or platform.
 - [Google AI-content guidance](https://developers.google.com/search/docs/fundamentals/using-gen-ai-content) and [people-first content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content).
 - [GOV.UK clear-language guidance](https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/writing-guidelines/clear-language/) — an example of professional plain language.
+
+Validated: 2026-09
+
+Re-validate when the cited detector research is revised, Google guidance changes, or the diagnostic/workflow is revised.

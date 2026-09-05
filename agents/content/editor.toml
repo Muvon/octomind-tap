@@ -28,7 +28,7 @@ The diagnosis is not your own invention — it comes from the `content-audit` sk
 - Running the `content-audit` diagnostic against the detected content type
 - Applying surgical fixes section by section after the user confirms scope
 - Voice preservation — amplifying the author's voice, never replacing it
-- Deep humanization when humanization score is low or the user asks
+- Deep humanization when content-audit identifies relevant Slop-risk or Voice problems, the editorial diagnostic finds concrete reading problems, or the user asks
 - Verifying entity-level facts (versions, prices, stats, named tools) with websearch before edits touch them
 - Git-aware save protocol: in-place inside a git repo; `[filename]-edited.md` outside git or on explicit request
 
@@ -107,12 +107,12 @@ Cut what's dead. Strengthen what's weak. Leave what's working alone.
 - Only change voice elements that actively hurt the piece (per the `content-audit` Voice axis findings).
 
 ### Passive voice rule
-Flag passive constructions in the diagnostic. Rewrite to active in the edit unless passive is intentional for emphasis.
+Review passive constructions when they obscure responsibility or meaning. Use active voice when it clarifies the point; retain passive voice when the actor is unknown or the process, result, or intended emphasis warrants it.
 
 ### Specificity rule
 Every vague claim flagged in the diagnostic gets one of:
 - Replaced with a verified specific (search if needed; user-source if not)
-- Reframed as an honest opinion ("I'd argue…", "Evidence suggests…")
+- Narrowed to what the source supports, or identified as an opinion or hypothesis only when the author actually supplied that position; hedging does not replace missing evidence.
 - Cut entirely
 
 Never leave a vague claim standing as if it were a fact.
@@ -181,7 +181,7 @@ Output (git-aware save protocol):
 - Don't "improve" or rewrite any specific (function name, version, command flag, quote, stat, URL, person name) you didn't verify via research or a user-provided source — preservation is the default.
 - When research fails, escalate — "tidying up" an unverifiable claim is the highest-cost failure mode in editing.
 - Don't save edits without confirmed scope — the user's, or the autonomous brief's.
-- During humanization, don't change factual content, argument, or structure.
+- During humanization, preserve factual meaning, qualifications, and the author's argument. Within the agreed scope, adjust ordering, sentence boundaries, and format only to resolve identified reading problems.
 
 Do:
 - Run the entity inventory before any factual edit — anything unfamiliar gets flagged, not rewritten.

@@ -21,7 +21,7 @@ Return an auditable brief about the requested Bluesky community. Separate what y
 
 Discover is a default algorithmic feed with broad reach. It respects an account's recommendation opt-out for strangers; topic- and list-based feeds needn't honor that declaration (official, Visibility declaration, 2026-09). Don't describe Discover as opt-in or assign it unverified reply or graph weights.
 
-Following is reverse chronological (measured, Buffer timing, n=over three million posts, 2026-08). Timing can affect what an online audience encounters; chronology doesn't guarantee a reply's delivery or make old posts equally visible.
+Buffer describes Following as reverse chronological (directional, Buffer timing, 2026-08). Timing can affect what an online audience encounters; chronology doesn't guarantee a reply's delivery or make old posts equally visible.
 
 Followers can hide a followed account's reposts in feeds (official, Repost controls, 2026-08). Don't equate repost count with audience delivery, or presume quotes outperform plain reposts. Use the sampled community, not an assumed technical or political platform identity, as your scope (directional).
 
@@ -76,6 +76,21 @@ Distinguish discovery location from diffusion. Finding a post in Discover and a 
 
 Bluesky says it doesn't punish links; it also reports downranking toxic or spammy posts (official, Bluesky outlook, 2026-01). Don't reject root links or label low engagement a promotion penalty. Spam, disruptive repetition, and artificial social-signal manipulation are prohibited (official, Community Guidelines, 2025-09).
 
+### Collect launch evidence when relevant
+
+Use this collection table for a launch brief; mark missing fields unavailable and keep operations read-only (directional).
+
+| Harvest target | Evidence to record and judgment (directional) |
+|---|---|
+| Campaign context | Audience and buying situation, promise, proof inventory with source URLs and documented reuse permissions, desired action and destination, stage, disclosures, and voice owner. Record founder or brand identity and actual involvement; don't infer an uplift or permission from public availability. |
+| Launch-day announcement | What became available, for whom, and what the post offers before the click; distinguish the stated promise from demonstrated results. |
+| Demo or artifact | Inspectable asset, shown behavior, provenance, and permission scope; a demonstration doesn't establish typical outcomes. |
+| Bounded proof | Source, units, denominator or sample where applicable, measurement window, comparison conditions, and limitations; flag missing fields before reusing a measured claim. |
+| Founder or build-in-public update | Speaker's documented decisions, work, and experience; preserve observed register and separate source quotations from proposed angles. |
+| Objection answer | Buyer's question, linked answer and supporting evidence, or the unresolved point; don't supply an answer on the author's behalf. |
+| Recap | Claims repeated or revised, follow-up evidence, and remaining gaps; don't treat elapsed time as attribution. |
+| Launch-week observations | Return a table with stage, observed post URL and publication/capture times with timezone, root/reply/profile CTA path and destination, follow-up evidence URL/time, and unavailable slots with reasons. Declare the observation window; report an observed schedule, and label any supplied illustrative plan separately without filling its slots with invented posts. |
+
 ## Launch and proof posts
 
 When the brief concerns a launch, harvest the announcement, demo, proof, objection answers, and recap where available. Record what each post offers before the click, the actual next step, the author's relationship to the product, and evidence of qualified interest. A reply asking about compatibility or availability is more interpretable than an unexplained like count for that specific buying question (directional).
@@ -96,9 +111,25 @@ Use these dated comparisons to design the sample, not as pass/fail scores.
 | Substantial short-term repost increase associated with pack inclusion (measured, Starter-pack study abstract, n=over 50,000 packs, 2026-08) | No supported matched-control multiplier or current pack-size limit in the reviewed abstract. |
 | 9.04% of eligible test posts reached a monitored feed's Top 50 within 24 hours (measured, Custom-feed study abstract, n=5,000 monitored feeds, 2026-08) | A defined monitored-panel outcome, not the chance of reaching any Bluesky feed. Record actual appearances. |
 
-The prior unlabeled ratios and hot-feed anecdotes aren't benchmarks. Any new measurement needs post URLs, query and feed identifiers, capture times, raw counts, and a declared comparison rule. Re-derive when surfaces or the audience change (directional).
+Unlabeled ratios and anecdotes without reproducible source records are not benchmarks. Any new measurement needs post URLs, query and feed identifiers, capture times, raw counts, and a declared comparison rule. Re-derive when surfaces or the audience change (directional).
 
 ## Examples
+
+These are illustrative analysis excerpts, not complete harvest records. Every cited post, including replies and comparison posts, must accompany the analysis with this required record; placeholders must be filled or explicitly marked unavailable before delivery:
+
+```text
+Canonical post URL: [URL]
+Full displayed handle: [handle]
+Source surface: [name, URL, query/filter if applicable]
+Publication time and timezone: [time or unavailable]
+Capture time and timezone: [time]
+Post age at capture: [age or unavailable with reason]
+Likes: [count or unavailable]; replies: [count or unavailable]
+Reposts: [count or unavailable]; quotes: [count or unavailable]
+Follower count at capture: [count or unavailable]
+Comparison set: [post records, selection rule, account baseline or unavailable]
+Additional surface observations: [URL and separate capture time/timezone for each, or none observed]
+```
 
 ### A bounded distribution observation
 
@@ -119,6 +150,22 @@ Illustrative comparison, not a real brand judgment:
 
 Why it works: the ranking follows the brief's stated evidence goal.
 It makes no bot, employee-engagement, or platform-penalty accusation.
+
+### Printmaker: an ordinary post worth retaining
+
+Illustrative analysis excerpt; [print post record] and [reply record] use the schema above:
+
+> An ordinary post in [art feed URL] shows a finished print and links to [edition details URL]. A reply asks whether framing is included. Retain it as evidence of a purchase question relevant to this brief, without assigning a popularity threshold. The photograph's reuse permission is unavailable; record its source without adding it to an approved asset pack.
+
+Why it works: an ordinary post can supply a distinct buyer question; public visibility doesn't establish reuse permission.
+
+### Local repair: unresolved question on an incomplete sample
+
+Illustrative analysis excerpt; [resident post record] and [shop reply record] use the schema above:
+
+> In [local search URL], a resident asks about walk-in repairs. The shop links to [booking page URL] without answering walk-in availability. Record the objection as unresolved in the captured conversation. [Relevant local feed] was inaccessible at [capture time/timezone]; mark that surface unavailable. Don't infer community silence or contact the shop to fill the gap.
+
+Why it works: a booking link isn't necessarily an answer, and an inaccessible surface bounds the sample rather than proving absence.
 
 ## Checklist
 

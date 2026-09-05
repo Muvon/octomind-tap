@@ -92,6 +92,15 @@ Buffer's Mastodon image/video medians exceeded link/text medians modestly; its M
 
 Separate harvested evidence from optional writing hypotheses. For each hypothesis, identify the unmet question, usable proof, relevant live tags if any, and a limitation. Choose tags by topical need, not account-size quotas. Use the audience's observed timezone and account history for timing experiments; label recommendations directional (directional).
 
+For requested campaign research, capture these inputs for a downstream [Mastodon posting handoff](../social-mastodon/SKILL.md); leave unavailable inputs unresolved (directional).
+
+| Input | Harvest record |
+|---|---|
+| Campaign stage and opportunity | Supplied stage; requested launch, demo, proof, founder account, or objection angle; source question and faithful excerpt separate from the writing hypothesis. |
+| Proof and destination | Artifact URL, what it demonstrates, its limits, and the supplied destination; distinguish observed evidence from an unverified claim in the brief. |
+| Relationship and policy | Speaker's supplied affiliation; posting server's promotion and disclosure rules with URL, retrieval date, and scope; unresolved permission checks. |
+| Timing and replies | Launch-period observations with timestamps and comparable post ages; audience timezone if observed; supplied reply owner or an unresolved assignment. No inferred posting schedule. |
+
 Record actual CW practice alongside local policy; don't declare politics, promotion, or ordinary technical content universally CW-required or exempt. Media descriptions are optional but recommended in Mastodon; absence doesn't establish automatic blocking (official, Posting, 2026-07).
 
 When quotes matter, record the source post's permissions. Anyone is the documented default, with followers or Just me restrictions and revocation controls (official, Quote posts, 2025-11). Don't infer that most authors disable quotes.
@@ -115,6 +124,33 @@ Illustrative reporting pattern:
 > The tag surface requires authentication in the available session. Current activity and follower coverage weren't observed. The accessible profile post links to a useful artifact, but it cannot establish that the tag is active.
 
 Return the access limitation and available source. Don't recommend the tag as verified or replace the missing sample with a guessed tag size.
+
+### Artisan topic capture with a reproducible denominator
+
+Illustrative fictional capture, not a measured platform result. All URLs and timestamps below are unresolved placeholders; this example is unpublishable as evidence.
+
+| Canonical post URL | Exact queried surface URL | Retrieved at, including timezone | Asks about glaze durability? |
+|---|---|---|---|
+| `https://[maker-server]/@[author-a]/[post-a]` | `[topic-surface-url]` | `[capture-time-a]` | Yes |
+| `https://[maker-server]/@[author-a]/[post-a]` | `[other-server-surface-url]` | `[capture-time-b]` | Yes; duplicate appearance |
+| `https://[buyer-server]/@[author-b]/[post-b]` | `[topic-surface-url]` | `[capture-time-c]` | No |
+| `https://[craft-server]/@[author-c]/[post-c]` | `[topic-surface-url]` | `[capture-time-d]` | Yes |
+
+Fictional arithmetic: deduplicate by canonical URL to obtain 3 unique posts from 4 appearances. The denominator is every unique post in this illustrative capture; the numerator is the 2 posts coded Yes. The sample share is `2 / 3 × 100 ≈ 66.7%`. It describes captured questions, not the share of buyers with that concern.
+
+For a real capture, retain the excerpts supporting each coding decision, full handles, publication times, observation window, and pagination boundaries. Replace every placeholder and label the recomputed result “measured, [capture name], n=[unique posts], [capture month]” only after the underlying capture is reproducible.
+
+### Local repair-service objection handoff
+
+Illustrative research output for a requested launch brief; all source fields are unresolved placeholders and unpublishable until verified.
+
+| Handoff field | Research output |
+|---|---|
+| Observed question | “[Can you assess a repair from a photo before I visit?]” — preserve the actual excerpt at `[canonical-question-url]`, retrieved `[timestamp and timezone]`. |
+| Supplied proof | `[service-intake-page]` describes photo submissions. Check its text before using it as proof; accepting photos alone does not establish diagnosis accuracy, price, or turnaround. |
+| Promotion and disclosure checks | Record `[posting-server-rules-url]`, `[retrieval date]`, relevant commercial and disclosure clauses, and the supplied speaker relationship. Permission remains unresolved until checked for this server. |
+| Directional opportunity | Investigate a photo-intake explanation answering the observed question, with the verified intake page as destination and its assessment limits retained (directional). |
+| Reply handoff | `[supplied reply owner]` and unresolved service questions; return to the requester without publishing or contacting the questioner. |
 
 ## Checklist
 

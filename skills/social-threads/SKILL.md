@@ -44,7 +44,8 @@ Length bands below are qualitative drafting choices, not performance optima (dir
 
 | Goal | Choose | Anatomy and length band |
 |---|---|---|
-| Contribute to an existing discussion | Reply | Answer the actual point, then add relevant experience or a correction; brief prose. Read the parent and surrounding replies first (directional). |
+| Contribute to an existing discussion | Reply | Answer the actual point, then add relevant experience or a correction; prose by default, with steps or code when useful. Read the parent and surrounding replies first (directional). |
+| Introduce the account | Bio/profile copy | Use supplied identity, audience relevance, supported work, and an optional verified destination; preserve author register and affiliation. Follow the [profile account check](reference/platform-and-evidence.md#features-requiring-an-account-check), not the standard-post cap (directional). |
 | Introduce a useful idea or announcement | Root post | Concrete first line, context, optional action; brief or developed (directional). |
 | Discuss someone else's artifact | Quote post | Credit the source and supply your own interpretation; brief. Don't use quotation as a pretext to target the author (directional). |
 | Show an interface, object, or result | Image or image sequence | Brief or developed caption explaining what to inspect. Crop for legibility, redact private data, and give each image a purpose (directional). |
@@ -111,13 +112,13 @@ Use supplied decisions and their costs for specificity (directional; Lees). Have
 
 ## Cadence and engagement
 
-Buffer associated creator replies with about 42% higher engagement, with positive effects for roughly two-thirds of profiles; this was observational, not causal (measured, Buffer Replies, n=128,000-plus Threads posts, 2026-02). Assign sustainable reply coverage. Answer substantive questions in sentences without a word minimum, and don't force follow-up questions into finished exchanges (directional).
+Buffer associated creator replies with about 42% higher engagement, with positive effects for roughly two-thirds of profiles; this was observational, not causal (measured, Buffer Replies, n=128,000-plus Threads posts, 2026-02). Assign sustainable reply coverage. Answer substantive questions in the format they need, without a word minimum, and don't force follow-up questions into finished exchanges (directional).
 
 Start timing experiments on weekday mornings at 6–11 a.m. local; Thursday at 9 a.m. was the strongest slot in this sample (measured, Buffer Timing, n=2.5 million posts, 2026-02). Replace this starting point with account evidence. Open the reference for regional results; don't impose a worldwide evening or weekend rule.
 
 Top Threads performers posted more often, but the report establishes no universal optimum and warns that higher frequency can reduce reach per post (measured, Buffer Engagement, n=Buffer-published social posts, 2026-03). Schedule evergreen material only when the publishing tool supports it, leaving live time for replies. Pre-approve themes and escalation boundaries (directional; Sendible).
 
-Review posts at comparable ages and keep listening while useful replies arrive; don't invent an expiry cutoff. Provide off-hours triage for active launches and escalate fraud links or abuse through available controls (directional; Respondology). Separate native engagement from qualified interest and downstream conversion; compare metrics within Threads, with consistent definitions (measured, Buffer Engagement, n=Buffer-published social posts, 2026-03).
+Review posts at comparable ages and keep listening while useful replies arrive; don't invent an expiry cutoff. Provide off-hours triage for active launches and escalate fraud links or abuse through available controls (directional; Respondology). Separate native engagement from qualified interest and downstream conversion; compare metrics within Threads, with consistent definitions (directional; informed by Buffer Engagement, 2026-03).
 
 ## What gets suppressed
 
@@ -177,7 +178,7 @@ The inspection boundary prevents a remote-diagnosis promise.
 - [ ] Format and finished character count fit the verified constraints, including the actual URL.
 - [ ] Every specific has provenance; customer permissions are recorded; no example placeholders remain.
 - [ ] Meaning and author-voice review completed; no invented experience, manufactured errors, or punctuation quotas.
-- [ ] Reply reads as prose, answers its parent, and matches the conversation's emotional register.
+- [ ] Reply answers its parent and matches its register; use prose by default and steps or code when they clarify the answer.
 - [ ] CTA or deliberate no-CTA choice matches the goal; destination works; any required link reply is included in the publishing package.
 - [ ] Topic choice fits; any newer feature was checked in the target account.
 - [ ] Affiliation, sponsorship, and applicable AI disclosure checked; media provenance preserved.

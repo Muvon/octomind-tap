@@ -66,7 +66,7 @@ Cross-post complete useful work with `canonical_url` pointing to the original; D
 
 ## Launch and proof posts
 
-For campaign planning, record audience, buying situation, promise, sourced proof, desired action/destination, stage, and disclosures. Use the author's notes and voice samples when available; missing samples alone don't block permitted work. No CTA is valid. Narrow unsupported claims or request essential missing evidence instead of manufacturing experience; the authorship gate below still applies (directional).
+For campaign planning, record audience, buying situation, promise, sourced proof, desired action/destination, stage, and disclosures. Use the author's notes and voice samples when available; missing samples alone don't block permitted work. Choosing no CTA is valid when no reader action is needed. Narrow unsupported claims or request essential missing evidence instead of manufacturing experience; the authorship gate below still applies (directional).
 
 Apply the policy gate before drafting promotional copy: the currently linked guidelines prohibit AI-assisted or generated articles that promote a business, program, or course, or primarily build a personal brand or social presence. They also prohibit using generated educational information the author does not understand. AI-written launch copy from this workflow isn't cleared for DEV publication. Provide an evidence brief for independent human authorship, or qualifying nonpromotional education within the author's knowledge; removing a CTA or selecting a label doesn't erase promotional purpose. The August disclosure announcement still links these rules and says revision is forthcoming; it doesn't repeal them (official, DEV AI Guidelines and DEV AI Disclosure, checked 2026-09-05).
 
@@ -80,6 +80,8 @@ For policy-eligible work, choose the following anatomy and qualitative length ba
 | Founder decision | Actual disputed choice → evidence considered → cost accepted → next unresolved test | Short update to technical essay |
 | Objection answer | Reader's objection → direct answer → reproducible evidence → remaining limit | Brief answer to worked comparison |
 | Recap | Original promise → observed outcome → unresolved issue → useful next artifact | Compact review to reference article |
+
+For numerical proof, name the metric and unit, baseline and comparison values, sample size, measurement window, workload or cohort, exclusions, and source with reuse permission. For rates, retain the numerator and denominator; distinguish relative change from percentage-point change. Keep these bounds beside the result. If essential inputs are missing, omit the numerical claim or leave it explicitly unpublishable (directional).
 
 Use the strip-test: removing the product name and CTA should leave something worth learning. DEV recommends complete educational articles and warns against over-promotion (official, DEV Organization Guide, 2026-09). Bring niche expertise through a familiar developer problem; open the reference for the bounded case evidence behind that choice.
 
@@ -147,7 +149,7 @@ The provenance rule leaves outcome and coverage unclaimed until sourced.
 
 > Title: The webhook retries our billing test missed
 >
-> I work on [service]. With [customer's permission], we compared [before] and [after] on [same workload] over [window]. [Source record] shows the change, including the retries excluded from the headline result. We haven't repeated the comparison under [unmeasured condition], so this result only supports [bounded conclusion]. The reproduction notes are at [source link].
+> I work on [service]. With [customer's permission], we compared [metric and unit]: [before value] against [after value], using [sample size; numerator and denominator for rates] on [same workload] over [window]. [Source record] shows the change, including the retries excluded from the headline result. We haven't repeated the comparison under [unmeasured condition], so this result only supports [bounded conclusion]. The reproduction notes are at [source link].
 
 Why it works: the proof anatomy keeps conditions and exclusions beside the result.  
 The link rule gives the reader evidence before any conversion request.

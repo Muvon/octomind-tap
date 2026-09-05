@@ -98,10 +98,14 @@ Use:
 
 ## References
 
-Reviewed 2026-09-05. Apply source principles within their stated scope; they do not establish social-platform ranking factors.
+Reviewed 2026-09-05. Apply source principles within their stated scope; they do not establish social-platform ranking factors. This is a review date, not a publication/update date for the sources below.
 
 - [GOV.UK clear-language guidance](https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/writing-guidelines/clear-language/) — a public-service style guide supporting audience-focused clarity, not a universal brand voice.
 - [FTC endorsement disclosures](https://www.ftc.gov/business-guidance/resources/disclosures-101-social-media-influencers) — US-facing endorsements and truthful experience.
 - [W3C image alternatives](https://www.w3.org/WAI/tutorials/images/decision-tree/) — communicate an image's purpose and relevant information.
 - [Google's AI-content guidance](https://developers.google.com/search/docs/fundamentals/using-gen-ai-content) — accuracy and reader value, not guaranteed traffic from “human” style.
 - [Fact grounding](../content-grounding/SKILL.md) and [structured revision](../content-humanize/SKILL.md).
+
+Validated: 2026-09
+
+Re-validate when disclosure or accessibility guidance changes, or house voice guidance is revised.

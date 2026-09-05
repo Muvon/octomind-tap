@@ -46,7 +46,7 @@ Silence is common: a Show HN corpus had median outcomes of 2 points and 0 commen
 
 For linked articles, start from the source headline. Remove the site name and gratuitous number phrases; retain meaningful quantities. Change misleading or linkbait wording accurately, without editorializing. Append [video] or [pdf] for those formats. Don't strip a product name that is the subject merely because it resembles the domain (official, HN Guidelines, 2026-09).
 
-For Show HN or a text submission, have the human author state the artifact or actual question plainly. Prefer a name plus capability or a documented build story (directional). Use the Show HN prefix for eligible work (official, Show HN Guidelines, 2026-09). Keep titles within 80 characters, counting the prefix and format tag; the cited official title limit is stated in Launch HN instructions, not as automatic truncation (official, Launch HN Instructions, 2026-09). Don't import an unsupported shorter target.
+For Show HN or a text submission, have the human author state the artifact or actual question plainly. Prefer a name plus capability or a documented build story (directional). Use the Show HN prefix for eligible work (official, Show HN Guidelines, 2026-09). For Launch HN, keep the complete title within 80 characters (official, Launch HN Instructions, 2026-09). For other submission types, check the current submission form before stating a numeric limit; the Launch HN citation alone does not establish their cap. Don't import an unsupported shorter target.
 
 Submit the original source (official, HN Guidelines, 2026-09). Prefer a canonical destination without tracking clutter or shorteners; use the specific repository file when that file is the story (directional). A paywall with a workaround is allowed; don't automatically substitute an archive for the original source (official, HN FAQ, 2026-09). Search Algolia for the URL, title, and related prior submissions before choosing an angle (directional).
 
@@ -89,7 +89,7 @@ Use an affiliation opener when relevant and skip generic flattery (directional).
 
 In editorial feedback, point to the actual problem: an unsupported contrast, redundant emphasis, ambiguous claim, or ending that repeats the answer. Don't prescribe sentence-length variation, remove every dash or three-item list, or treat polish as evidence of machine authorship. A real question can belong in a comment when it seeks missing information; avoid questions used to cross-examine or manufacture engagement (directional; HN Guidelines).
 
-When preparing a disagreement brief, identify the strongest plausible reading of the other person's claim, then the evidence or condition that changes the conclusion. Don't speculate about the commenter's motives or whether they read the source. Distinguish a defect report from a personal preference and make the technical consequence clear (official, HN Guidelines; briefing method: directional).
+When preparing a disagreement brief, identify the strongest plausible reading of the other person's claim, then the evidence or condition that changes the conclusion. Don't speculate about the commenter's motives or whether they read the source. Distinguish a defect report from a personal preference and make the technical consequence clear (official, HN Guidelines, 2026-09; briefing method: directional).
 
 Retain the costs and remaining failures in a build story; don't turn it into a miracle-fix parable (directional; extrapolation from StoryScope fiction research). Use source records to identify the author's actual decision and stakes (directional; Lees). Check provenance instead of treating an AI-detector score as proof; manuscript research doesn't validate detection of HN comments (directional; Editing Study).
 
@@ -183,7 +183,7 @@ The unresolved constraint keeps the outcome honest and the article useful beyond
 
 - [ ] Human writes final wording independently; no generated or AI-edited HN text is queued for publication.
 - [ ] Hook or first line identifies the actual subject; the package develops a coherent idea.
-- [ ] Format fits the goal; link title follows source handling and the documented title cap above.
+- [ ] Format fits the goal; link title follows source handling, and any numeric title cap is verified for that submission type.
 - [ ] Rendering uses native prose, indented code where needed, and plain URLs.
 - [ ] Algolia search checked prior submissions; the repost decision follows the table.
 - [ ] Show HN is usable by strangers; pricing and evaluation barriers are explicit.

@@ -8,7 +8,7 @@ These are live verification procedures, not claims that every server exposes the
 
 | Item | Check before marking ready |
 |---|---|
-| Post length | Inspect `/api/v2/instance` on Mastodon 4.0+ for `configuration.statuses.max_characters` and `characters_reserved_per_url`; v1 is deprecated. For older servers use their documented endpoint or composer. Validate final copy with tags, CW, and disclosure included. |
+| Post length | Inspect `/api/v2/instance` on Mastodon 4.0+ for `configuration.statuses.max_characters` and `characters_reserved_per_url`; `/api/v1/instance` is deprecated (official, Instance API and version history, reviewed 2026-09-05). For older servers use their documented endpoint or composer. Validate final copy with tags, CW, and disclosure included. |
 | Multi-image post | Read the accepted image count, formats, and per-file size limits. Confirm ordering and crops in preview; describe each image separately. |
 | Video or audio | Read accepted formats and file-size limits before commissioning the asset. Check playback, supply captions or a transcript, and inspect attachment compatibility. |
 | Alt text | Check the actual description-field character cap. Describe visible evidence and relevant embedded text; link an accessible table or transcript when the complete content won't fit. Check any client reminder independently from server enforcement. |

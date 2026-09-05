@@ -31,7 +31,7 @@ All times below are audience-local (measured, Buffer timing, n=over three millio
 
 Test weekend slots or audience-local weekday evenings; use Monday as a weekday candidate rather than assuming Thursday is best (directional). Record the timezone and staff availability. Don't delay important news just to fit a benchmark (directional).
 
-Following is reverse chronological in the same study (measured, Buffer timing, n=over three million posts, 2026-08). This supports testing audience presence, not a universal post-expiry interval. Don't impose a daily thread ceiling without account evidence.
+Buffer describes Following as reverse chronological (directional, Buffer timing, 2026-08). This supports testing audience presence, not a universal post-expiry interval. Don't impose a daily thread ceiling without account evidence.
 
 ### Community distribution
 

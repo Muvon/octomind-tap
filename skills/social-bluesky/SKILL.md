@@ -22,7 +22,7 @@ Write something the intended reader can use, in language the actual author would
 
 | Surface | Supported behavior | Writing decision |
 |---|---|---|
-| Following | Reverse chronological (measured, Buffer timing, n=over three million posts, 2026-08) | Test when your audience is online; chronology doesn't make timing irrelevant. |
+| Following | Reverse chronological (directional, Buffer timing, 2026-08) | Test when your audience is online; chronology doesn't make timing irrelevant. |
 | Discover | Default algorithmic feed with broad reach; strangers' Discover respects the recommendation opt-out (official, Visibility declaration, 2026-09) | Check the account's intended visibility; don't invent ranking weights. |
 | Custom feeds | Topic- and list-based feeds needn't honor that opt-out (official, Visibility declaration, 2026-09) | Inspect the specific feed's description and returned posts before claiming fit. |
 

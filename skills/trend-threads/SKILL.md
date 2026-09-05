@@ -112,6 +112,15 @@ Use the requested output schema. Otherwise return a scope and access note, evide
 
 For launch research, separate verified buyer objections from inferred demand. Name useful proof formats and any missing source material needed for a future post. Report the observed link or contact path; don't prescribe unsupported messaging, ad, or cross-posting mechanics. Views and conversation describe native response; qualified interest and downstream outcomes require separate evidence.
 
+Use this compact launch-evidence inventory when relevant to the brief (directional):
+
+| Research need | Capture and boundary |
+|---|---|
+| Campaign context | Supplied audience, buying situation, promise, action, destination, stage, voice owner, disclosure requirements, and source/permission inventory; mark gaps rather than infer them from posts. |
+| Launch coverage | Map sourced launch-day announcements, demos/artifacts, bounded outcomes, founder updates, and objection answers to the brief. Record outcome windows and denominators; distinguish an author's claim from inspectable proof. |
+| Participation and affiliation | Record visible disclosures, community contributions, and founder or brand context with source links. Don't infer hidden coordination, permission to reuse material, or a reach advantage from account identity. |
+| Research handoff | Revisit unresolved objections and proof gaps within the agreed observation window; report what changed and what remains inaccessible. Keep publishing rhythm and drafting downstream. |
+
 ## Examples
 
 ### Artifact with useful replies
@@ -131,6 +140,26 @@ Illustrative conclusion:
 > The post attracted [visible reply count] replies about a design preference. In the inspected replies, no one asked about trial access or product fit. It is useful for audience language; buying intent remains unknown. The sample excludes replies hidden behind [access limitation].
 
 This preserves a useful observation without converting engagement into a sales claim. It doesn't infer a reach penalty from tone or link placement.
+
+### Local service: availability with a fit boundary
+
+Illustrative harvest record; bracketed evidence must be filled from observation:
+
+> Source: [post URL], published [date], captured [date, time and timezone]. Sample: [local search URL and query], [visible reply count] replies inspected; [access limit].
+>
+> Structure: a bicycle repair shop names an available appointment; a reader asks about collection outside its service area: [quoted question, reply URL]. The shop states its boundary: [quoted answer, reply URL]. Contrary or missing evidence: [unanswered availability objection]; bookings and private follow-up are unavailable.
+
+Limited conclusion: the exchange reveals a geographic fit question, not unmet demand throughout the area or a completed booking (directional).
+
+### Creator community: existing-owner sampling bias
+
+Illustrative harvest record; bracketed evidence must be filled from observation:
+
+> Source: [ceramics post URL], published [date], captured [date, time and timezone]. Sample: [community URL], [visible contributor count] contributors; [signed-in status and access limit].
+>
+> Structure: a maker asks how people use a mug; replies identify existing ownership: [quoted evidence, reply URLs]. A dissenting reader describes handle discomfort: [quoted evidence, reply URL]. Missing evidence: [ownership verification or inaccessible replies]; nonbuyer views were not sampled.
+
+Limited conclusion: retain usage language and the comfort objection for research; enthusiasm among self-identified owners doesn't establish new-buyer preference or community-wide consensus (directional).
 
 ## Checklist
 

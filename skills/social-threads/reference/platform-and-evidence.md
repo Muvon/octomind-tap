@@ -26,6 +26,7 @@ The supplied verified sources don't establish the mechanics below. The choices i
 
 | Requested feature | Check before drafting | Conditional use or fallback |
 |---|---|---|
+| Bio/profile editing | Actual bio field limit and available link fields in the target account before packaging the draft | Fit the verified profile constraints separately from the standard-post cap; include an optional verified destination only where supported. If access is unavailable, mark field constraints unverified. |
 | Threads DMs | Messaging access, recipient permissions, and the exact contact path | Offer private follow-up only with consent; otherwise use the verified destination. Don't promise that an Instagram DM case establishes native Threads DM behavior. |
 | Polls | Composer availability and displayed option limits | Ask a decision-relevant question with balanced options. Treat responses as self-selected feedback, not market-demand proof. |
 | GIFs | Availability and asset rights | Use a reaction only if it fits the author's humor; keep essential meaning in prose. |

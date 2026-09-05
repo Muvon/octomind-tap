@@ -45,10 +45,10 @@ Don't assume a sponsored-placement label, Billboard format, poll, video post, or
 | Practical local-AI how-tos repeatedly drew about five times the views of deep security posts (measured, Espitia, n=67 posts from a single author, 2026-07). | Lead through a common workflow problem, then explain the niche expertise it exposes. This doesn't justify unrelated trending tags (directional). |
 | Comments appeared after the author replaced generic closing prompts with specific answerable questions (measured, Espitia, n=67-post self-report, 2026-07). | Ask for a bounded experience only when the answer helps; omit the question when the article already finishes its job (directional). |
 | A continuing narrative produced 445 reactions and 251 comments across 15 posts over 20 days, with 7–86 reactions per entry (measured, Xu, n=15-post series, 2026-06). | Test recurring technical stakes and consistent packaging. Retain unresolved costs; topic, audience, and narrative changed together (directional). |
-| The same author planned to assemble the stories into a book and requested reader blurbs (measured, Xu, n=single author recap, 2026-06). | Consider a collected reference or downstream asset after readers show interest. A plan isn't a published asset or proof of sales (directional). |
+| The same author planned to assemble the stories into a book and requested reader blurbs (directional; Xu, author-reported plan, 2026-06). | Consider a collected reference or downstream asset after readers show interest. A plan isn't a published asset or proof of sales (directional). |
 | An author's first 16 posts averaged 1.6 reactions; the next 12 followed a switch to active participation, with increased reactions/followers reported but no later average (measured, ndcodes, n=28-post self-report, 2026-08). | Read and reply as part of publishing. Don't promise an engagement lift or rename the author's reported Trustee Member status (directional). |
 | A founder reported 7 reactions on a direct launch post, later weekly writing and challenge participation, and more than 20,000 followers after a year (measured, Javz, n=single founder recap, 2026-07). | Build a useful body of work before relying on an announcement. The account growth isn't a forecast, conversion result, or causal test of challenges (directional). |
-| A team described a failed cold launch followed by DEV articles, architecture documentation, and an external contribution (measured, Zwiserfit, n=single team recap, 2026-07). | Prepare technical proof around the announcement and assess whether people can use it. Don't import another platform's launch sequence or voting rules into DEV (directional). |
+| A team described a failed cold launch followed by DEV articles, architecture documentation, and an external contribution (directional; Zwiserfit, team-reported sequence, 2026-07). | Prepare technical proof around the announcement and assess whether people can use it. Don't import another platform's launch sequence or voting rules into DEV (directional). |
 
 These self-reports are selected accounts with limited controls. Treat publication dates as source dates, not proof that the described activity happened that month. None supplies a platform-wide median.
 
@@ -56,7 +56,7 @@ These self-reports are selected accounts with limited controls. Treat publicatio
 
 A Top Month snapshot included a 13-minute Git article at 254 reactions and 110 comments, and a 2-minute discussion at 121 reactions and 141 comments (measured, DEV Top Month, n=2 observed posts, 2026-09). The snapshot supports allowing different lengths for different jobs; it doesn't rank formats or define a success threshold.
 
-The same observed surface mixed AI and career subjects with Git, productivity, community, challenges, and engineering (measured, DEV Top Month, n=surface snapshot, 2026-09). Don't assume an emotional stance or topic dominates organic performance (directional).
+The observed Top Month surface included AI, career, Git, productivity, community, challenge, and engineering subjects; the topic scan's sample size was not retained (directional; DEV Top Month, snapshot 2026-09-05). Don't assume an emotional stance or topic dominates organic performance (directional).
 
 Loibner inspected a checked-in Forem experiment, explicitly not a live production trace. In that variant:
 
