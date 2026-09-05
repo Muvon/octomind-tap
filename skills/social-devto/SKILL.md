@@ -17,6 +17,8 @@ rules:
 
 Write something a developer can use or answer, in the voice of the person accountable for it. Apply supplied facts and proof first, the author's documented voice next, and platform register as the fallback; respect publication policy throughout. Use `content-voice` for generic editing and the rules here for DEV structure and publishing decisions.
 
+Check the requested surface first: DEV's current AI guidelines allow qualifying assisted articles but prohibit AI-generated comments, with exceptions for basic translation, grammar/syntax improvement, and assistive technology. For a new comment, provide factual notes for independent human authorship; do not output a polished reply to paste. For an allowed language edit, preserve the human's argument and don't add generated experience or advice (official, DEV AI Guidelines, checked 2026-09-05).
+
 ## Mechanics and evidence
 
 - Treat discovery as personalized: follows and reactions interact with semantic similarity, quality, and time decay. Don't promise reach from a tag recipe (official, DEV Feed, 2026-05).
@@ -41,7 +43,7 @@ Choose by the reader's job. These shapes and qualitative length bands are editor
 
 Series navigation appears after the second entry (official, DEV Writing, 2026-09). Don't split an explanation merely to multiply posts. A listicle earns its format when entries help readers choose or express the author's specific humor; remove interchangeable filler (directional).
 
-Front-load the technical situation or defensible claim in the title. Open on the problem itself; avoid rhetorical-question openers. A discussion's question belongs after enough context to make it answerable (directional).
+Front-load the technical situation or defensible claim in the title. A genuine question can be the title or opening when its scope is already clear; add context where readers need it. Replace a rhetorical question only when it delays or exaggerates the actual point (directional).
 
 ### Tags and editor package
 
@@ -64,9 +66,9 @@ Cross-post complete useful work with `canonical_url` pointing to the original; D
 
 ## Launch and proof posts
 
-Collect the audience and buying situation, promise, available proof with source, desired action, destination, campaign stage, and disclosure obligations. Include the author's notes and voice samples. Select teaser, launch day, proof, objection, or recap; deliberately choosing no CTA is valid. If source material is missing, return the specific evidence request instead of manufacturing experience (directional).
+For campaign planning, record audience, buying situation, promise, sourced proof, desired action/destination, stage, and disclosures. Use the author's notes and voice samples when available; missing samples alone don't block permitted work. No CTA is valid. Narrow unsupported claims or request essential missing evidence instead of manufacturing experience; the authorship gate below still applies (directional).
 
-Apply the policy gate before drafting promotional copy: the currently linked guidelines prohibit AI-assisted or generated articles that promote a business, program, or course (official, DEV AI Guidelines, 2024-04). AI-written launch copy from this workflow isn't cleared for DEV publication. Provide an evidence brief for independent human authorship or nonpromotional education; removing a CTA or selecting a label doesn't erase promotional purpose. Recheck for a superseding policy before publication.
+Apply the policy gate before drafting promotional copy: the currently linked guidelines prohibit AI-assisted or generated articles that promote a business, program, or course, or primarily build a personal brand or social presence. They also prohibit using generated educational information the author does not understand. AI-written launch copy from this workflow isn't cleared for DEV publication. Provide an evidence brief for independent human authorship, or qualifying nonpromotional education within the author's knowledge; removing a CTA or selecting a label doesn't erase promotional purpose. The August disclosure announcement still links these rules and says revision is forthcoming; it doesn't repeal them (official, DEV AI Guidelines and DEV AI Disclosure, checked 2026-09-05).
 
 For policy-eligible work, choose the following anatomy and qualitative length band (directional):
 
@@ -102,11 +104,11 @@ Use this illustrative launch-week plan only when the policy gate passes. T offse
 
 Use proofread, approachable technical prose as the fallback register. Preserve the author's normal contractions and terminology. First-person claims require their records or testimony. Keep reproducible code exact; never inject typos, fake edits, lowercase camouflage, or dropped articles (directional).
 
-Keep comments short and in prose, consistent with `content-voice`; use inline code when needed and link longer reproductions. Don't default to code blocks or mini-article headings in replies. Answer the specific claim, explain the relevant constraint, and leave room for correction (directional).
+For comment feedback within the permitted assistance scope, check that the author's reply answers the specific claim and names the relevant constraint. Keep a small reproducer or ordered procedure when it makes the answer verifiable; brevity is not a reason to hide necessary code behind a link. Novel comment wording remains the human's responsibility (directional).
 
-Apply the generic voice rules without duplicating a vocabulary blacklist. For DEV tutorials, remove empty Introduction/Conclusion scaffolding, automatic step ladders, equally sized sections, emoji headings, and obligatory “Happy coding” or follow-me endings. Keep prerequisites and numbered procedures when execution actually depends on them (directional).
+Apply the generic voice rules without a vocabulary blacklist. For DEV tutorials, replace generic section names with useful subjects when that improves navigation; remove repetitive scaffolding and obligatory follow-me endings. Keep prerequisites, summaries, and numbered procedures when they help readers execute or choose. Similar section lengths or a familiar sign-off are not defects by themselves (directional).
 
-Scan for repeated contrast pivots, padded triads, staccato stacks, empty dramatic openers, repetitive emphasis words, tidy moral closers, and dense em-dashes. These are editing heuristics from Aborn, Cox, and Gichigi, not authorship tests (directional). Use a dash only when it fits the author's register and helps the sentence; don't add punctuation to satisfy a quota. Strip miracle-fix stories that omit costs, “nobody talks about” framing, rhetorical-question hooks, hashtag stacks, and engagement-bait closers (directional). Keep documented disagreement and unresolved limitations.
+Inspect repeated contrasts, padded lists, dramatic openers, and redundant endings for a concrete readability problem. Revise the affected passage; don't mechanically vary rhythm or replace the author's vocabulary to satisfy an AI-tell checklist. Keep useful punctuation and documented disagreement. Remove unsupported novelty claims, erased costs, and requests for engagement that don't serve the article (directional; practitioner evidence in the reference).
 
 ## Cadence and engagement
 
@@ -167,17 +169,17 @@ The voice rule preserves the author's decision without inventing a transformatio
 >
 > I maintain [shop's booking page]. During [documented check], focus moved to [observed location] after a slot became unavailable. [Proposed approach] gives the user a route back, but we haven't checked [assistive setup]. If you've handled this state, where did you put focus, and what did your user test reveal?
 
-> Reply: Your example returns focus to the date field after the slot disappears. I'd check what the page announces at that point; focus alone doesn't show whether the changed availability is clear. I haven't tested your implementation.
+Private reply notes for the human: identify the reported focus destination; distinguish focus movement from the announcement of changed availability; state only tests actually performed. Do not convert these notes into a generated DEV comment.
 
 Why it works: the discussion question follows a concrete technical situation.  
-The reply stays in prose and distinguishes an inspection suggestion from a test result.
+The reply handoff distinguishes an inspection suggestion from a test result and respects the comment-authorship rule.
 
 ## Checklist
 
 - [ ] Hook names the situation; draft develops a focused idea and the chosen format's reader job.
 - [ ] Every personal claim and specific has supplied provenance; unresolved example brackets block publication.
-- [ ] Author voice matches; AI-tell pass covers body and ending, with no manufactured mistakes.
-- [ ] Policy gate passed; AI tier is accurate; affiliation, sponsorship, and media provenance reviewed.
+- [ ] Evidence, author voice, and substance reviewed; body and ending retain useful structure without invented experience or mistakes.
+- [ ] Article/comment assistance scope is permitted; the author understands educational claims; AI tier, affiliation, sponsorship, and media provenance are accurate.
 - [ ] Personal versus Organization byline chosen; contributor profile and CTA destination checked.
 - [ ] Tags exist and fit; audience-count check dated or marked unavailable; official tag limit respected.
 - [ ] Editor fields validated; draft preview checked; canonical, series, code, and embeds render correctly.

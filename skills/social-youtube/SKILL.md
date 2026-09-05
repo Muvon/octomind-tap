@@ -3,7 +3,7 @@ name: social-youtube
 title: "YouTube Publishing Playbook"
 description: "Write YouTube scripts and publishing packages in the author's documented voice. Activate for titles, thumbnails, descriptions, Shorts, channel posts, product launches, demonstrations, customer proof, or revisions using audience feedback. Covers format choice, honest packaging, spoken delivery, and qualified next steps."
 license: Apache-2.0
-compatibility: "Requires source material and author samples; network and YouTube Studio access for account-specific publishing checks."
+compatibility: "Text and media editing; network and YouTube Studio access for account-specific publishing checks."
 domains: content
 rules:
   - content(youtube)
@@ -14,7 +14,7 @@ rules:
 
 Write for a named viewer with a real reason to watch. Follow supplied facts and proof, then the author's documented voice, then platform conventions. Use `content-voice` for general editing; this skill adds spoken delivery and YouTube packaging.
 
-Produce a publishable package with an identifiable author and an honest next step. Keep source notes separate from spoken copy. Missing evidence makes a factual draft unpublishable; don't fill gaps with invented experience.
+Produce a package with an identifiable author and an honest next step. Drafting doesn't authorize publication, replies, or ad operations. Keep source notes separate from speech; don't fill missing evidence with invented experience.
 
 ## Mental model
 
@@ -37,7 +37,7 @@ Use these craft bands as editing choices; they are not platform limits or measur
 | Audience needs to participate | Live session or Premiere if available; session-length | Schedule around a concrete discussion and staff moderation; prepare the replay package |
 | Existing viewers need an update | Channel post or poll if available; compact prose | State the change or ask a decision-relevant question; attach useful proof |
 
-For Shorts, finish the promise at the shortest useful length and verify current upload classification in Studio. Don't prescribe a sub-minute sweet spot or an engineered loop advantage (directional). Studio's “How many chose to view” reports viewed versus swiped away (official, YouTube Shorts analytics, 2026-09). Compare it with your own similar Shorts; don't turn it into a universal pass/fail cutoff (directional).
+Square/vertical uploads up to three minutes classify as Shorts under the current date/channel rules; longer-than-one-minute Shorts with active copyright claims are blocked globally (official, Shorts classification, checked 2026-09). Check the delivery reference before scripting around music. Finish the promise at its useful length; compare viewed-versus-swiped-away analytics with similar Shorts, not a universal cutoff (official, YouTube Shorts analytics, 2026-09; editing choice is directional).
 
 The Shorts player update includes Clear Screen, accelerated playback and mute controls; hearts replace thumbs-up, with “Not Interested” and “Don't recommend this channel” replacing dislike (official, YouTube Shorts experience, 2026-06). Make the meaning legible in the footage and captions even with sound muted or interface overlays hidden; test accelerated playback for comprehension (directional).
 
@@ -76,7 +76,7 @@ Make the pinned comment useful on its own: clarify a limitation, answer the like
 
 ## Launch and proof posts
 
-Get the audience and buying situation, promise, available proof with source, desired action, destination link, campaign stage, and disclosure obligations before drafting. Include product availability, price conditions when supplied, author role, and who can answer questions. “No CTA” is a valid deliberate choice.
+For campaign planning, record audience, buying situation, promise, sourced proof, desired action/destination, stage, and disclosures. Verify availability and price conditions if claimed; name the speaker and reply owner. Use voice samples when available; missing samples or optional fields don't block supported copy. No CTA is valid, and unsupported outcomes stay out of the script.
 
 Use task-complete length bands, not invented minute targets (directional):
 
@@ -95,7 +95,7 @@ Route long-form CTAs through the description and an available pinned comment; fo
 
 For eligible U.S. creators, Amazon products can be tagged in Shorts, long-form and live streams through Shopping (official, YouTube Amazon affiliate announcement, 2026-08). Disclose the commercial relationship and check account eligibility before writing a native-shopping CTA (directional).
 
-Seed through relevant creator collaborations and voluntary, clearly affiliated employee participation. Give collaborators the outcome and proof constraints while preserving their voice; don't script fake customer comments or organize engagement exchanges (directional). Repetitive promotional comments and automated minimally changed uploads can trigger spam enforcement; genuine test variations are distinguished from flooding (official, YouTube Spam Policy, 2026-09).
+Collaborate with relevant creators and voluntary, openly affiliated employees; give them proof constraints without scripting fake reactions. YouTube permits ordinary like/comment/subscribe requests, but prohibits deceptive engagement manipulation, repetitive promotional spam, and synthetic mass-production that floods the platform (official, YouTube Spam Policy, 2026-09). Editorially, ask for an action only when it fits the viewer's next step.
 
 Use this illustrative launch-week schedule only as a planning example, adjusting to proof readiness and staffing (directional):
 
@@ -119,9 +119,9 @@ Write lines the speaker can say while doing the action. Read the script aloud, s
 
 Remove generic spoken scaffolding such as “In this video we'll,” “without further ado,” and “let's dive in” when it delays the subject. End on the result, limitation, or useful invitation; don't append a recap followed by a subscribe request by habit (directional).
 
-Apply the AI-tell pass to titles, narration, descriptions, and comments. Remove formulaic contrast frames, padded triads, staccato stacks, empty suspense pivots, needless emphasis words, and tidy moral endings (directional; Aborn, Cox, Gichigi). Also remove rhetorical-question openers, “nobody talks about” framing, miracle-fix stories, engagement-bait closers, hashtag stacks, and emoji bullets (directional). Review em-dash density for readability; retain useful punctuation consistent with the author without enforcing a quota (directional; Cox).
+Review meaning across title, thumbnail, speech, description, and excerpts. A question, contrast, triad, polished sentence, or em-dash is not evidence of AI authorship. Cut padding and unsupported drama, not the author's register. Retain technical terms, units, negation, and the condition that makes a result true. Don't replace them with vague synonyms to sound conversational (directional).
 
-These are editing judgments, not authorship detectors or measured YouTube penalties. Use a fluent reviewer for localized speech and idioms; conversational-context research motivates this check but does not establish a YouTube engagement gain (directional; MIDI).
+Recut a Short from the actual explanation, preserving any qualifier that changes its claim. Rebuild the introduction and next step for its viewer; don't just crop a long-form script or import another platform's CTA. Use a fluent reviewer for localized speech; language research motivates this check without establishing a YouTube engagement gain (directional; MIDI).
 
 ## Cadence and engagement
 
@@ -135,7 +135,7 @@ Separate removal, monetization eligibility, and editorial weakness. The egregiou
 
 Repetitive or mass-produced content was already ineligible for monetization when “inauthentic content” terminology was clarified; reused-content policy was unchanged (official, YouTube monetization policies, 2025-07). Avoid cosmetic remixes of others' work; add substantive original explanation and secure necessary rights (directional).
 
-Disclose realistic generated or meaningfully altered media. Routine assistance with scripts, titles or captions alone is exempt; disclosure alone does not limit audience or monetization eligibility (official, YouTube AI disclosure, 2026-09). Use the delivery reference for automatic labels and correction controls. Don't invent an AI-narration retention penalty or a blanket AI-persona monetization ban.
+Disclose realistic generated or meaningfully altered media as required. Script/title/caption assistance and cloning the creator's own voice for voiceovers/dubs are listed exceptions; fabricated realistic events and AI-generated music require disclosure. The label alone doesn't limit audience or monetization eligibility (official, YouTube AI disclosure, checked 2026-09). A label doesn't validate the claim. See the delivery reference for automatic labels; don't infer an AI-narration penalty.
 
 ## Examples
 
@@ -188,7 +188,7 @@ Why it works: the booking path preserves the condition instead of promising an u
 - [ ] Description, verified CTA/link path, pinned comment and chapter labels prepared where applicable.
 - [ ] Caption/subtitle copy checked; asset brief includes visual descriptions and alt text where supported; end-screen timing checked in the editor.
 - [ ] Every specific is supplied or placeholder-marked; unresolved factual placeholders block publication.
-- [ ] AI-tell pass completed on the whole package; script read aloud and matched to author samples.
+- [ ] Meaning and author-voice review covers the whole package; captions and excerpts preserve qualifications without style quotas.
 - [ ] Affiliation, sponsorship/paid-promotion controls and required synthetic-media labels checked.
 - [ ] Optional channel-post teaser and first-hours reply plan ready; moderation and later follow-up assigned.
 - [ ] Metric definitions and comparison cohorts recorded; test conclusions use the actual Studio result.
@@ -199,6 +199,7 @@ Dates on undated Help pages denote validation month. Benchmarks and case-study l
 
 - [YouTube A/B testing](https://support.google.com/youtube/answer/16391400?hl=en), undated; checked 2026-09.
 - [YouTube Shorts analytics](https://support.google.com/youtube/answer/12942217?co=YOUTUBE._YTVideoType%3Dshorts&hl=en), undated; checked 2026-09.
+- [Shorts classification](https://support.google.com/youtube/answer/15424877?hl=en), undated; checked 2026-09.
 - [Shorts experience update](https://blog.youtube/news-and-events/youtube-shorts-experience-updates-features/), 2026-06-25.
 - [AI disclosure](https://support.google.com/youtube/answer/14328491?hl=en), undated; checked 2026-09.
 - [Monetization policies](https://support.google.com/youtube/answer/1311392?hl=en), clarification 2025-07-15.

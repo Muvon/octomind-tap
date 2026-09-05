@@ -6,7 +6,9 @@ Open this reference before preparing assets, optional formats, commercial disclo
 
 Record the current upload dialog's accepted thumbnail dimensions, aspect ratio, file types and file-size limit. Verify the intended Shorts orientation, duration and classification. Confirm title limits and rendered truncation, chapter requirements and permitted end-screen window. Don't ship an asset brief that silently substitutes remembered specifications for these checks.
 
-The bounded evidence set does not establish current thumbnail upload specifications, Shorts duration limits, chapter timing rules, paid-promotion UI details, or mid-roll eligibility and placement rules. Treat those as delivery checks rather than fixed values in this playbook. Likewise, don't promise transcript indexing, tag ranking effects, or above-title hashtag placement.
+For standard channels, square/vertical uploads on or after October 15, 2024, up to three minutes classify as Shorts; Official Artist Channels use December 8, 2025. Any Short over one minute with an active copyright claim, including a manual claim, is blocked globally until resolved. Check a music track's permitted duration before editing around it (official, Shorts classification, checked 2026-09).
+
+Thumbnail specifications, chapter timing, and mid-roll placement remain delivery checks here. Don't promise transcript indexing, tag ranking effects, or above-title hashtag placement.
 
 | Format or surface, if available | Prepare | Verify before delivery |
 |---|---|---|
@@ -21,23 +23,23 @@ The bounded evidence set does not establish current thumbnail upload specificati
 | Multi-language audio or auto-dubbing | Approved source transcript, pronunciation notes, translated claims and disclosures | Language availability and review controls; listen to the full dub and check idiom with a fluent reviewer |
 | Playlist as series | Entry episode, explicit progression and next useful task | Order and working links; make every episode understandable to a newcomer |
 
-These format choices are craft guidance, with no claimed distribution bonus (directional). Capture accessibility needs in the asset brief: readable interface details, corrected captions and visual descriptions in narration or text. Supply alt text where the composer supports it; don't assume a universal alt-text control (directional).
+These format choices are craft guidance, with no claimed distribution bonus (directional). Capture readable interface details, captions, and visual descriptions in the brief. YouTube captions include speech and meaningful non-speech audio; review auto-generated text, timing, names, numbers, and negation (official, Captions Help; checked 2026-09). Describe a visual-only result in narration or accompanying text. Don't assume a universal alt-text control (directional).
 
 ## Commercial and synthetic-media checks
 
-State sponsorship, gifted products and affiliate relationships plainly where the viewer encounters the recommendation. Complete the account's applicable paid-promotion controls; don't substitute a hidden description note for a disclosure the viewer needs during the demonstration (directional).
+When content includes paid placement, endorsement, sponsorship, or another qualifying commercial relationship, YouTube requires declaring paid promotion in Studio (official, Paid Promotion Help, checked 2026-09). Keep the relationship clear where the viewer encounters the recommendation; a hidden description note is not adequate editorial context. The platform notice doesn't replace other applicable disclosure obligations.
 
 Creator-initiated brand linking is available through the API's `brandPartner` part (official, YouTube Data API revisions, 2026-07). Include the verified partner identity in an automated publishing handoff; linking is separate from the disclosure copy (directional).
 
 YouTube expanded automatic AI detection and prominent labels; labels for its own AI tools and verified fully generative C2PA content can be permanent (official, YouTube AI labels, 2026-05). Preserve provenance metadata and review the finished media's disclosure requirements; a label isn't a certificate of factual accuracy (directional).
 
-Check Studio's “Other notices” after publishing. For an incorrectly applied automatic label, the AI-use survey can be changed to “No” where the label is removable (official, YouTube AI-label thread, 2026-08). Correct it only when the media supports that answer. Don't use the correction path to conceal qualifying AI use.
+After authorized publication, inspect Studio's automatic-label notice. The current AI-use survey permits correcting some mistaken automatic labels, but labels from YouTube AI tools, C2PA metadata, or manual review cannot be changed through it (official, AI disclosure Help, checked 2026-09). Answer from the asset's actual provenance; don't use this path to conceal qualifying AI use.
 
 For monetized gaming footage, graphic content in the first seven seconds remains ineligible for ads; graphic content in seconds eight through fifteen can earn ads under the cited rubric (official, YouTube advertiser guidance, 2026-09). Review the full context and current rubric before using such footage as the hook.
 
 ## Views and monetization planning
 
-Public views are counted when playback starts; the cited Help page supplies no effective date for this definition (official, YouTube performance FAQ, 2026-09). Record metric definitions alongside campaign exports; establish any historical discontinuity from a dated source before comparing periods (directional).
+The performance Help page now dates playback-start view counting across Shorts, long-form, and live to August 24, 2026. It distinguishes these public views from engaged earnings metrics and qualified eligibility metrics (official, YouTube performance FAQ, checked 2026-09). Mark that definition change in historical comparisons rather than treating a larger counter as stronger writing or demand (directional).
 
 Qualified Shorts views are engaged public-Short views excluding loops. Private, unlisted, deleted, ad-served, long-form and Shorts-feed image-post views don't qualify (official, YouTube qualified metrics, 2026-08). Use the correct metric in earnings-related copy; don't equate a looping edit or public-start counter with eligibility progress (directional).
 
@@ -46,6 +48,7 @@ Separate announced future requirements from current eligibility. Beginning Febru
 ## References
 
 - [YouTube Data API revisions](https://developers.google.com/youtube/v3/revision_history), brand linking 2026-07-07.
+- [Shorts classification](https://support.google.com/youtube/answer/15424877?hl=en), [Captions Help](https://support.google.com/youtube/answer/2734796?hl=en), [Paid Promotion Help](https://support.google.com/youtube/answer/154235?hl=en), and [AI disclosure Help](https://support.google.com/youtube/answer/14328491?hl=en), checked 2026-09.
 - [AI label update](https://blog.youtube/news-and-events/improving-ai-labels-viewers-creators/), 2026-05-27.
 - [AI-label correction thread](https://support.google.com/youtube/thread/424874071?hl=en), update 2026-08-03.
 - [Advertiser guidance](https://support.google.com/youtube/answer/9725604?hl=en), 2026-09.

@@ -65,14 +65,14 @@ Title decisions (directional):
 |---|---|---|
 | Result | Supported outcome and the condition that bounds it | Unsupported magnitude or causal certainty |
 | Artifact | What readers can inspect | Brand slogan and empty launch excitement |
-| Question | Exact unresolved problem | Vague help request or rhetorical opener |
+| Question | Exact unresolved problem | Vague help request or a rhetorical opener that obscures the question |
 | Decision | Concrete choice and cost | Forced contrast or tidy life lesson |
 
 Check the actual composer and local title rules. Front-load useful information; don't impose an unsupported character cap. Name the product when relevant and permitted, and identify ownership early in promotional content.
 
 ## Launch and proof posts
 
-Obtain the audience and buying situation, promise, proof with sources, desired action, destination, campaign stage, and disclosure obligations before drafting. Stages include teaser, launch day, proof, objection, and recap. Record the author's role and voice samples. No CTA is a valid deliberate choice. If proof is missing, deliver a clearly nonpublishable draft with evidence placeholders inside the draft only.
+For campaign work, record audience, buying situation, promise, sourced proof, desired action/destination, stage, disclosures, and author role. Use voice samples when available; missing samples alone don't block a restrained factual draft. No CTA is valid. Narrow unsupported claims or mark essential gaps in a nonpublishable working draft; don't invent evidence to fill the brief.
 
 Post shapes and qualitative length bands are craft choices (directional):
 
@@ -125,9 +125,11 @@ Answer substantive questions throughout the announced window, including difficul
 
 Keep the author's natural conversational register. Use surrounding comments to calibrate depth and formality, without adopting hostile behavior or slang the author doesn't use. Don't add typos, fake edits, dropped articles, or lowercase camouflage. Open `reference/imperfections.md` when calibrating register, local idiom, or a sensitive reply; it contains register decisions rather than error injection.
 
-Answer the question asked. If the author lacks firsthand experience, attribute the source instead of inventing an anecdote. Name concrete tradeoffs when supported. Preserve material uncertainty without a hedge on every sentence (directional).
+Read the parent comment as well as the submission before answering. Identify which person's question, constraint, or evidence the reply addresses; don't attribute a reply's claim to the original poster. If the author lacks firsthand experience, attribute the source instead of inventing an anecdote. Preserve the difference between observed, reported, and inferred results, and qualify the affected claim rather than hedging every sentence (directional).
 
-Default to prose in comments. Use formatting when it carries actual evidence or an expressly requested enumeration; a factual list may contain as many items as needed. Remove padded triads, not legitimate lists. Detailed posts can use useful headings, code, and tables (directional).
+Default to prose in comments, but keep lists, headings, and copyable code when they make the answer easier to use. A factual list may contain as many items as needed; remove padding rather than a particular count. Don't force a detailed troubleshooting answer into a casual one-liner (directional).
+
+Match the composer: Reddit's Rich Text and Markdown editors are distinct, and their output is not generic GitHub Markdown. Preview quotes, code, links, and line breaks instead of pasting raw markup into the wrong mode. Accompany a screenshot with the relevant error text or explanation; preserve exact code/error strings while editing the surrounding prose (official, Reddit Formatting Guide, 2026-08; text-equivalent practice: directional).
 
 Open `reference/ai-tells.md` during the editorial pass for the scoped pattern checklist and evidence limits. Its purpose is better communication. No punctuation choice or prose cleanup proves authorship or promises avoidance of accusations.
 
@@ -214,11 +216,12 @@ The remaining issue prevents a misleading before/after promise.
 
 For every draft:
 
+- [ ] The reply addresses the right speaker and current context; quotes, paraphrases, and inferences remain distinguishable.
 - [ ] Hook/first line states the subject; the contribution has a single main idea.
 - [ ] Current rules, eligibility, format, and flair checked; unknown clearance blocks recommendation.
 - [ ] Link and CTA path fit the venue; no CTA is recorded when deliberate.
 - [ ] Every specific has supplied provenance or a draft-only placeholder; incomplete drafts aren't publishable.
-- [ ] AI-tell pass completed; author voice preserved; required affiliation and AI disclosures included.
+- [ ] Evidence, voice, and substance reviewed; useful structure preserved; no invented experience or mistakes; required affiliation and AI disclosures included.
 
 For posts:
 
@@ -240,6 +243,7 @@ Dates identify supplied source updates; “checked” identifies undated sources
 - [Reddit Spam Guidance](https://support.reddithelp.com/hc/en-us/articles/28012014962580-How-do-I-keep-spam-out-of-my-community), 2026-03-28.
 - [Reddit Reposting](https://support.reddithelp.com/hc/en-us/articles/4835584113684-What-is-reposting-fka-crossposting), 2026-07-13.
 - [Reddit Spam](https://support.reddithelp.com/hc/en-us/articles/360043504051-Spam), 2026-05-19.
+- [Reddit Formatting Guide](https://support.reddithelp.com/hc/en-us/articles/360043033952-Formatting-Guide), 2026-08-06; checked 2026-09-05.
 - [Reddit Manipulated Content](https://support.reddithelp.com/hc/en-us/articles/41180423371156-Manipulated-Content-and-Misleading-Behavior), 2026-05-19.
 - [Reddit Verified Profiles](https://redditinc.com/news/testing-verified-profiles-on-reddit), 2026-07-09.
 - [Product Hunt Sharing](https://www.producthunt.com/launch/sharing-your-launch), checked 2026-09.

@@ -6,6 +6,8 @@ Open this reference when preparing creator briefs, Shop/LIVE, Spark Ads, paid am
 
 Give the creator the buying situation, source-backed promise, approved evidence and limitations, desired action, destination, disclosure obligations, usage rights, and prohibited claims. Agree who reviews factual accuracy and who owns replies. Leave delivery and narrative choices to the creator within those boundaries (directional).
 
+Separate words that must remain accurate from suggested delivery. Preserve the creator's own reaction; don't supply “I use this every day” unless they do. An excerpt must retain the qualification that changes its meaning, even when a shorter cut would fit another platform. Give each creator room to choose a real observation rather than assigning identical hooks and comment scripts (directional).
+
 CreatorIQ reports tension between audience preferences and brand requests (measured, CreatorIQ, n=5,095 surveyed creators, 2026-08). Preserve the creator's documented voice instead of supplying an identical script to everyone (directional).
 
 Employee content featured in reported product discovery, and respondents supported extra compensation for employee influencers (measured, Sprout, n=over 2,000 social users in the US/UK/Australia, 2026-06). Invite willing employees to demonstrate work they know and agree compensation; the survey doesn't establish conversion lift (directional).

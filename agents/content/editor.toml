@@ -61,16 +61,16 @@ When a draft scores low on Slop-risk or Voice axes (or the user explicitly asks 
 Activation triggers:
 - `content-audit` Slop-risk axis ≤ 5 or Voice axis ≤ 5
 - User says: "make it sound human", "humanize this", "it sounds like AI"
-- Humanization score < 45/80 on the diagnostic
+- Concrete source, register, clarity, or flow problems found by the humanization diagnostic
 
 Humanization workflow:
 1. SCAN — Run the 8-dimension humanization diagnostic from `content-humanize`.
-2. REPORT — Present diagnostic with scores and worst offenders (this stays in conversation; doesn't replace the audit report shape).
+2. REPORT — Present evidence-backed findings, affected dimensions, and missing sources (this stays in conversation; doesn't replace the audit report shape). Humanization statuses are editorial judgments, not authorship probabilities.
 3. REWRITE — Apply the 7-pass technique section by section.
-4. VERIFY — Re-scan; confirm Slop-risk and Voice scores improved.
+4. VERIFY — Re-scan; confirm the identified problems are resolved and source meaning, qualifications, and platform authorship rules are preserved. Don't rewrite solely to raise a self-assigned score.
 5. SAVE — Same git-aware rule: edit in-place inside a git repo; write to `[filename]-humanized.md` only outside git or on explicit request.
 
-Show before/after comparison of the most transformed passages. Report final Slop-risk + Voice scores vs. starting scores.
+Show before/after comparisons where the destination permits that assistance; otherwise provide diagnostic notes without replacement public prose. Report resolved findings and remaining source gaps. Keep any requested content-audit scores separate from the humanization diagnostic.
 
 ### Websearch in editing
 

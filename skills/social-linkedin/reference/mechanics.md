@@ -30,6 +30,8 @@ Buffer reports carousel median engagement at 21.77%, versus video 7.35%, image 6
 
 For PDF documents, make the cover state the reader's task; arrange slides in the order the task requires. Use readable type and an actual diagram or evidence where useful; end with the next usable step, rather than a compulsory save/follow request. Supply accessible text, source captions, and a plain-text summary. Don't impose an optimal slide count (directional).
 
+LinkedIn may generate alt text for images without it; mobile uploaders may receive no alert. Open and review each description for the actual chart, screenshot labels, or comparison being discussed. Automatic descriptions don't establish factual accuracy or replace a document's accessible text (official, Alt Text Help, reviewed 2026-09-05; review procedure is editorial).
+
 ### Image and video production
 
 Portrait single images had 2.83% median engagement, square 2.54%, and landscape 2.14% (measured, AuthoredUp Formats, n=368,489 single-image posts, 2026-09). Test portrait layouts for mobile proof; retain wide layouts when cropping would hide material context (directional). A screenshot should show enough surrounding state to substantiate its claim, with private data redacted and comparisons labeled. Use multi-image posts when separate views add evidence, rather than slicing a single graphic mechanically (directional).
@@ -50,6 +52,8 @@ Profiles and Pages had similar impressions per post; profile engagement averaged
 
 Questions correlated with 77.39% more comments; explicit comment CTAs with 80.07% more (measured, Metricool, n=673,658 posts, 2026-04). Don't convert the association into compulsory bait. Ask only when the answer informs the discussion; provide requested resources without forcing public keyword replies (directional).
 
+LinkedIn's March feed update specifically identifies “comment to agree” prompts, repetitive low-substance posts, and video/text mismatches as targets for reduced distribution. This is platform guidance, not an inference from the CTA correlation. Ask for a concrete contribution the author will use; don't manufacture conversations through automation or engagement pods (official, Feed Update, 2026-03).
+
 Buffer's LinkedIn-specific analysis associated author replies with about 30% higher engagement (measured, Buffer Replies, n=72,000 LinkedIn posts from nearly 25,000 profiles, 2025-12). Its later synthesis also reports about 30%, using a broader reply-analysis scope (measured, Buffer State, n=nearly 2M posts from 220,000+ accounts across six platforms, 2026-03). These are different source scopes. Neither proves a reply-count threshold or minute deadline.
 
 Metricool found 50% of impressions arrived within 48 hours (measured, Metricool, n=673,658 posts, 2026-04). Keep answering relevant late comments; don't treat this as a hard lifetime or proof that early responses cannot matter (directional).
@@ -60,7 +64,9 @@ Buffer's strongest timing window was 3–8 PM, with Wednesday 4 PM and Friday 3�
 
 LinkedIn permits AI help that retains the member's voice and perspective, and reduces wider distribution for apparently AI-generated content without a clear perspective. It acts on scaled automated comments and restatement-only replies (official, LinkedIn Authenticity, 2026-06). Require author review and actual expertise; cosmetic editing alone doesn't solve an empty post (directional).
 
-Heavy, non-obvious AI reliance should be disclosed under LinkedIn's recommendation. “Seems like AI slop” feedback may produce a private analytics tip; the tip isn't a policy decision or takedown (official, LinkedIn AI Help, 2026-08). Review the draft for missing substance and facts before responding to feedback (directional).
+LinkedIn recommends disclosure of heavy, non-obvious AI reliance; it doesn't require labeling every AI-assisted edit. “Seems like AI slop” feedback may produce a private analytics tip; the tip isn't a policy decision or takedown. LinkedIn urges author review and holds the member responsible for posts (official, LinkedIn AI Help, reviewed 2026-09-05). Review missing substance and facts before cosmetic editing (directional).
+
+For posts exchanged for monetary or other value, LinkedIn requires the Brand Partnership label. The toggle is available only for Public posts and resets Off for each new post; verify the current post rather than relying on an earlier disclosure. Resolve incompatible audience/disclosure choices without hiding the relationship (official, Brand Partnership Help, reviewed 2026-09-05).
 
 Credentialed images and videos can display a Content Credentials icon through the gradual C2PA rollout. LinkedIn cannot identify every AI-generated or modified asset (official, LinkedIn Credentials Help, 2026-09 review, undated). Preserve provenance metadata and inspect what it asserts; a media icon isn't a universal text label. Keep affiliation or sponsorship explicit and use applicable publishing disclosure controls after checking them (directional).
 
@@ -69,7 +75,7 @@ Use these editing lenses without making authorship accusations:
 | Lens | Application and evidence boundary |
 |---|---|
 | Formulaic voice | Remove contrast slogans and repetitive “quietly,” “honestly,” or similar empty emphasis; don't add typos as camouflage (directional; Aborn, 2026-07). |
-| Artificial symmetry | Remove filler added to complete a triad; preserve useful punctuation and avoid dense em-dashes (directional; Cox, 2026-06). |
+| Artificial symmetry | Remove filler added to complete a triad; preserve a real three-part list and the author's meaningful punctuation without a quota (directional; Cox, 2026-06). |
 | Scripted rhythm | Remove repeated short-line stacks, suspense filler, and obligatory recap endings (directional; Gichigi, 2026-02). |
 | Unsupported personal stakes | Ground decisions and costs in interviews or records; never manufacture a failure for relatability (directional; Lees, 2026-08). |
 | Neat parables | Preserve confounders and unfinished outcomes. This is a social-writing inference from fiction research that found tidier AI plots (measured, StoryScope preprint, n=61,608 stories, 2026-08); the editing application is directional. |
@@ -81,6 +87,9 @@ Assign escalation and out-of-hours coverage according to audience activity; remo
 Make the subject understandable quickly without stripping necessary conditions (directional). Reported Android daily-use observations indicate limited LinkedIn session attention compared with entertainment platforms (measured, The Star/DataReportal, n=February Android app users, sample count unspecified, 2026-08); those observations don't establish a post-length optimum. Use external destinations when useful, but don't infer a LinkedIn publishing sequence from global audience totals (directional; DataReportal, 2026-04).
 
 ## References
+
+- [Feed Update](https://news.linkedin.com/2026/ImprovingTheFeed), 2026-03-12; [Alt Text Help](https://www.linkedin.com/help/linkedin/answer/a519856/adding-alternative-text-to-images-for-accessibility?lang=en), reviewed 2026-09-05.
+- [Brand Partnership Help](https://www.linkedin.com/help/linkedin/answer/a1627083), reviewed 2026-09-05.
 
 - [LinkedIn Feed Engineering](https://www.linkedin.com/blog/engineering/feed/engineering-the-next-generation-of-linkedins-feed), 2026-03-12.
 - [LinkedIn Post Help](https://www.linkedin.com/help/linkedin/answer/a528176), 2026-08.
@@ -98,7 +107,7 @@ Make the subject understandable quickly without stripping necessary conditions (
 - [Buffer State](https://buffer.com/resources/state-of-social-media-engagement-2026/), 2026-03-05.
 - [Buffer Replies](https://buffer.com/resources/linkedin-engagement-data/), 2025-12-04.
 - [Buffer Timing](https://buffer.com/resources/best-time-to-post-on-linkedin/), 2026-07-22.
-- [LinkedIn AI Help](https://www.linkedin.com/help/linkedin/answer/a1481496/best-practices-for-content-created-with-the-help-of-ai?lang=en), 2026-08.
+- [LinkedIn AI Help](https://www.linkedin.com/help/linkedin/answer/a1481496), 2026-08; refreshed 2026-09-05.
 - [LinkedIn Credentials Help](https://www.linkedin.com/help/linkedin/answer/a6282984?lang=en), undated, reviewed 2026-09.
 - [Aborn](https://emilyaborn.com/ai-writing-tells-what-they-cost-you/), 2026-07-10.
 - [Cox](https://huntingthemuse.net/library/how-to-tell-if-writing-is-ai), 2026-06.

@@ -9,7 +9,7 @@ Use these checks when the draft depends on a feature. Keep a recorded composer p
 | Text | 300 grapheme clusters (official, Post lexicon, 2026-09) | Check the final composer counter after handles and URLs are inserted. The reviewed claim doesn't establish URL shortening or destination-URI counting behavior. |
 | Photos | Up to 10; carousel from 5 photos (official, Photos release, 2026-06) | Put the identifying image first; confirm crop, sequence, and mobile legibility. Don't extrapolate a different layout below the carousel threshold. |
 | Video | Up to 10 minutes and 300 MB (official, Video release, 2026-08) | Record the real workflow, retain necessary setup conditions, and supply accurate captions. Don't lengthen a demonstration to fill the limit. |
-| Alt text | No current numeric cap established by the reviewed evidence | Write the visual information needed to understand the post. Inspect image and video description fields; check client acceptance. |
+| Alt text | No current numeric cap established by the reviewed evidence | Describe visible evidence and relevant image text. Don't put overflow prose, unrelated jokes, keywords, or sensitive metadata here. Inspect the field and preview. |
 | GIF and mixed embeds | No exhaustive combination matrix established by the reviewed evidence | Use a GIF only when a silent loop communicates the task. Preview quote/media/link combinations; don't promise simultaneous embeds or universal exclusivity. |
 | Thread numbering | Introduced as beta; the later release removes its gate (official, Thread numbering, 2026-08; App releases, 2026-09) | Inspect the native thread composer, numbering, and published order. Don't infer that numbering is enabled by default or repeat it manually. |
 | Scheduled thread | Buffer documents scheduling complete Bluesky threads in order and platform-specific customization (official, Buffer scheduling, 2026-07) | If using that tool, review the full thread and arrange human reply coverage. Scheduling doesn't supply the author's experience. |
@@ -42,6 +42,8 @@ The reviewed evidence doesn't establish current options or scopes for the contro
 
 Shareable search filters cover keywords, people, date range, and language (official, Search rollout, 2026-07). The app's search migration completed in the release (official, Search migration, 2026-07). Copy the share URL from the actual filtered result. Those announcements don't establish a replacement API endpoint or sort-mode contract.
 
+Official Search Tips document phrase matches in image alt text. Treat it as public searchable content; keep it useful for understanding the image, without inserting keywords for distribution or information absent from the redacted asset (official, Search Tips, 2024-05; editorial application).
+
 Find custom feeds through the navigation available in the current app and record their URLs and descriptions. Inspect whether a feed uses a topic, list, or another stated criterion; observed inclusion doesn't prove a causal ranking factor (directional). Don't hardcode a Discover generator route from an unsupported citation. Check whether Trending topics or Explore is present; record availability and the destination reached, without asserting a default roster (directional).
 
 ### Disclosure and moderation
@@ -51,6 +53,8 @@ Bluesky documents automated sensitive-media labels and hide/warn/show controls (
 Disclose commercial relationships and avoid disruptive repetition or manipulated social signals (official, Community Guidelines, 2025-09). Don't transfer another network's synthetic-media policy to Bluesky. Check the current applicable policy if the work depends on a specific disclosure requirement.
 
 ## References
+
+- [Search Tips](https://bsky.social/about/blog/05-31-2024-search), 2024-05-31; reviewed 2026-09-05.
 
 - [Post lexicon](https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/post.json), undated; reviewed 2026-09.
 - [Photos release](https://bsky.app/profile/bsky.app/post/3mnslrkd6ok2g), 2026-06-08.

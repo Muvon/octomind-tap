@@ -45,7 +45,7 @@ The reply addresses the actual objection without invented reassurance.
 
 ## Ask HN handoff: local repair service
 
-Illustrative question candidate: “Ask HN: How do repair shops schedule work with uncertain parts arrivals?”
+Illustrative question brief: use Ask HN for experience with repair-shop scheduling under uncertain parts arrivals. The human decides the final question wording.
 
 Private writing beats:
 - Supply [shop relationship] and [current scheduling approach].
@@ -80,7 +80,7 @@ The strip test leaves operational knowledge useful even without the product name
 - [ ] The human has source notes, not a polished generated comment to paste.
 - [ ] Missing personal history, customer permission, and measurement records block publication.
 - [ ] Title derivations preserve the original claim and identify only permitted changes.
-- [ ] Limitations remain visible; no miracle-fix ending, rhetorical cadence, or manufactured errors appear.
+- [ ] Limitations remain visible; feedback targets unsupported claims or obscured meaning without prescribing artificial rhythm or errors.
 
 ## References
 

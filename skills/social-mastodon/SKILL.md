@@ -16,9 +16,9 @@ rules:
 
 ## Overview
 
-Write something the named author can defend and the intended reader can use. Apply supplied facts and proof first, the author's documented voice next, then platform guidance. Use Mastodon register only as a fallback; don't assume every Fediverse service has Mastodon's controls.
+Write something the named author can defend and the intended reader can use. Apply supplied facts and proof first, the author's documented voice next, then platform guidance. Don't assume every Fediverse service has Mastodon's controls. Prepare copy and a publishing handoff; posting, scheduling, and outreach require a request for those actions.
 
-## Mechanics and mental model
+## Mental model
 
 | Surface or action | Writing consequence |
 |---|---|
@@ -53,12 +53,12 @@ Use qualitative length bands relative to the verified server cap; these are edit
 | Material | Format and length band |
 |---|---|
 | Complete observation or announcement | Compact standalone post; leave room for the useful link and disclosure. |
-| Necessary detail that won't fit | Substantive root with understandable self-reply installments, each below the cap. No numeric thread markers or thread-promotion intro. |
+| Necessary detail that won't fit | Substantive root with understandable self-reply installments, each below the cap. Add numbering only if it helps readers follow the sequence; omit empty thread-promotion intros. |
 | Methodology or durable documentation | Brief finding plus a blog/documentation link; keep evidence and conditions at the destination. |
 | Visual evidence | Short caption plus the artifact; use multi-image only when the sequence adds information. |
 | A decision readers can inform | Compact poll prompt with neutral, distinct options; verify option limits, duration, selection mode, and attachment compatibility. Don't call respondents representative buyers. |
 
-Put the destination in the root when readers need it. Strip tracking parameters while preserving functional query parameters, test the clean link, and record attribution uncertainty (directional). Open Graph supplies preview cards (official, PreviewCard, 2026-06). Equal observed link/text medians don't establish a universal absence of link penalties (measured, Buffer, n=Mastodon subsample undisclosed, 2026-03).
+Put the destination in the root when readers need it. Remove unnecessary tracking only when the brief permits; preserve functional, signed, and required attribution parameters and test the destination (directional). Mastodon counts HTTP(S) links as 23 characters in its documented composer, so shortening a URL doesn't save space (official, Posting, reviewed 2026-09-05). Open Graph supplies preview cards (official, PreviewCard, 2026-06). Equal observed link/text medians don't establish a universal absence of link penalties (measured, Buffer, n=Mastodon subsample undisclosed, 2026-03).
 
 ### Hashtags and content warnings
 
@@ -98,7 +98,7 @@ Editing for voice doesn't erase disclosure obligations. Don't claim an automatic
 
 ## Launch and proof posts
 
-Before drafting, obtain the audience and buying situation, promise, available proof with its source, desired action, destination, and disclosure obligations. Identify the stage: teaser, launch day, proof, objection, or recap. Collect author writing samples and source notes; record their role and reply availability. “No CTA” is a valid deliberate choice. If evidence is absent, narrow the claim or obtain it; don't invent a customer result (directional).
+For campaign work, record audience, buying situation, promise, sourced proof, desired action/destination, disclosures, and stage. Use writing samples when available; record the author's role and reply availability. Missing samples do not block a restrained factual draft. No CTA is valid. If essential evidence is absent, narrow or withhold that claim; don't invent a customer result (directional).
 
 Use these post shapes with the format bands above (directional):
 
@@ -132,9 +132,9 @@ Track qualified replies and independent participant/server diversity alongside o
 
 Use `content-voice` for generic editing. Preserve recognizable phrasing from the author's samples and the decisions in their notes. Keep technical names exact and explain limitations without ritual hedging. Read the target conversation for depth and formality; don't impose a FOSS persona on another community or insert slang, deliberate errors, fake edits, or lowercase camouflage (directional).
 
-Replies should address the actual point in connected prose, without a miniature report or recap ending. Threads use standalone prose with no numeric markers. Accessibility text should describe the supplied artifact, including relevant chart labels or screenshot text, without invented interpretation (directional). Media descriptions are optional in Mastodon but recommended; make them part of the publishing package (official, Posting, 2026-07).
+Replies should address the actual point; use a short list when it makes instructions easier to follow. Threads need enough context in each installment; numbering is an editorial choice, not a bot signal. Media descriptions should convey the supplied artifact, including relevant chart labels or screenshot text, without invented interpretation or overflow sales copy (directional). Descriptions are optional in Mastodon but recommended; include them in the publishing package (official, Posting, 2026-07).
 
-Review gratuitous contrast frames, padded triads, staccato stacks, suspense phrases, and tidy moral closers. Cut rhetorical-question openers, miracle-fix stories that erase trade-offs, engagement-bait endings, hashtag walls, and decorative emoji bullets. Review em-dash density against the author's usage; use punctuation for meaning without quotas. These are editing heuristics, not authorship tests (directional; Aborn, Cox, Gichigi). The evidence reference explains their limits.
+Remove filler, repetitive suspense, unsupported novelty claims, and endings that demand engagement. Keep real contrasts, meaningful lists, ordinary questions, and useful summaries. Preserve the author's punctuation without contraction, sentence-length, or dash quotas. Don't erase genuine tradeoffs to make a tidy story. These are editing heuristics, not authorship tests (directional; Aborn, Cox, Gichigi). The evidence reference explains their limits.
 
 ## Cadence and engagement
 
@@ -201,7 +201,7 @@ The provenance rule keeps uncertainty attached to the missing evidence.
 
 - [ ] First line carries the useful point; the post develops a focused idea.
 - [ ] Every specific is supplied or example-placeholder-marked; no unresolved placeholders in publishable copy.
-- [ ] Author voice and AI-tell pass complete; no manufactured errors or thread markers.
+- [ ] Voice and substance reviewed; useful structure preserved without manufactured errors or style quotas.
 - [ ] Server rules checked for commercial content and AI use; required disclosures present.
 - [ ] Visibility and quote permissions deliberate; reply recipients checked.
 - [ ] Live character, attachment, poll, and alt-text limits checked; post language set correctly.

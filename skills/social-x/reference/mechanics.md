@@ -50,7 +50,7 @@ X describes expanded EU “Made with AI” indicators separately from restricted
 
 ## Format and monetization boundaries
 
-The verified ordinary text limit is 280 characters, and the conservative attachment plan is up to 4 photos, a GIF, or a video (official, X posting help, 2026-09). Longer posts allow up to 25,000 characters for Premium subscribers (official, X Premium, 2026-09). A cap isn't a target length.
+The ordinary text limit is 280 characters. App help permits mixed photos, GIFs, and video up to 4 total media items; inspect the target client's combination and layout (official, X posting help, reviewed 2026-09-05). Premium help supports longer posts up to 25,000 characters, while posting-help mobile instructions still mention 4,000: verify the actual composer rather than assuming parity. A cap isn't a target length.
 
 The evidence supplied for this playbook doesn't settle the following. Resolve them in the intended account before making a publishing promise:
 
@@ -60,7 +60,7 @@ The evidence supplied for this playbook doesn't settle the following. Resolve th
 | Article tier, length, and publishing controls | Check the live editor; prepare an external-document fallback if unavailable |
 | Spaces hosting, recording, and access | Confirm host permissions and availability before announcing a live session |
 | Communities, polls, Lists, and DMs | Inspect the current surface and permission controls; follow the visible participation rules |
-| Multi-image rendering or mixed-media combinations | Preview the final attachments; don't assume a swipe carousel |
+| Target-client mixed-media support and rendering | App help documents mixed media; preview the selected combination and don't assume a swipe carousel |
 | Organic hashtags versus ad restrictions | Use a relevant tag only as an editorial choice; no universal organic ban is established |
 | Video-tab placement or Community Notes reach effect | Don't promise distribution or infer enforcement; review actual notices and evidence |
 | Premium reply-priority magnitude | Don't quote a lift or infer subscription from appearance alone |

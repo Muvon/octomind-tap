@@ -91,9 +91,9 @@ Illustrative brief: a scheduling-tool founder has documented a delayed calendar 
 Why it works: the decision shape names a real constraint and its buyer consequence.
 The author-voice rule allows a position without a moral closer or manufactured drama.
 
-## Apply the AI-tell review
+## Review voice and substance
 
-Use `content-voice` for generic editing. On X, inspect whether compression has created a formula: interchangeable contrast hooks, padded triads, staccato stacks, empty suspense, or a closing slogan. Review recurring emphasis words such as quietly, genuinely, honestly, truly, and actually, and inspect dash density in context. These are practitioner heuristics from Aborn, Cox, and Gichigi, not measured X reach penalties or proof of authorship (directional).
+Use `content-voice` for generic editing. On X, inspect whether compression has replaced meaning with filler, empty suspense, or a closing slogan. Review emphasis words and punctuation in context; retain real contrasts, useful lists, ordinary questions, and summaries that help the reader. These practitioner heuristics aren't word bans, measured X reach penalties, or proof of authorship (directional; Aborn, Cox, Gichigi).
 
 Aborn rejects deliberate typos as evidence of human authorship. Keep documented register, including distinctive punctuation, without injecting mistakes (directional), citing Aborn, 2026-07. Lees recommends a real defended decision and its cost; use actual source records for that specificity (directional), citing Lees, 2026-08.
 

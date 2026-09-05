@@ -21,7 +21,7 @@ rules:
 
 Prepare an HN publishing brief that makes the author's actual work understandable and worth examining. Use supplied proof and the author's documented voice before platform register; apply platform policy as the publication gate. Keep generic voice guidance in `content-voice`.
 
-HN prohibits generated or AI-edited text in its comments guidelines, and moderator guidance explicitly applies hand-writing to Show HN text (official, HN Guidelines and Show HN Tips, 2026-09). Deliver factual notes and editorial diagnostics for the human to write from independently. Don't offer humanization as permission to paste generated prose, or claim an exemption for derived titles.
+HN prohibits generated or AI-edited text in its comments guidelines, and moderator guidance explicitly applies hand-writing to Show HN text (official, HN Guidelines and Show HN Tips, rechecked 2026-09-05). Deliver factual notes and editorial diagnostics for the human to write from independently. Identify a missing fact, unclear referent, or unsupported conclusion without supplying replacement sentences. Don't offer humanization as permission to paste generated prose, or claim an exemption for generated titles.
 
 ## Mental model
 
@@ -87,7 +87,9 @@ Read the actual thread before preparing a reply brief. Note the technical depth,
 
 Use an affiliation opener when relevant and skip generic flattery (directional). Answer the substantive claim without addressing the commenter by username or cross-examining them (official, Launch HN Instructions and HN Guidelines, 2026-09). Keep real uncertainty and explain the scope of disagreement.
 
-Review formulaic contrasts, padded triads, staccato stacks, and empty dramatic pivots. Cut repetitive emphasis words such as “genuinely” or “actually” when they add nothing. Keep useful em-dashes sparingly without a punctuation quota; remove tidy moral closers (directional; Aborn, Cox, Gichigi). These are editing heuristics, not authorship tests. For HN, also remove rhetorical-question openers outside genuine Ask HN questions, engagement bait, hashtag stacks, and emoji decoration (directional).
+In editorial feedback, point to the actual problem: an unsupported contrast, redundant emphasis, ambiguous claim, or ending that repeats the answer. Don't prescribe sentence-length variation, remove every dash or three-item list, or treat polish as evidence of machine authorship. A real question can belong in a comment when it seeks missing information; avoid questions used to cross-examine or manufacture engagement (directional; HN Guidelines).
+
+When preparing a disagreement brief, identify the strongest plausible reading of the other person's claim, then the evidence or condition that changes the conclusion. Don't speculate about the commenter's motives or whether they read the source. Distinguish a defect report from a personal preference and make the technical consequence clear (official, HN Guidelines; briefing method: directional).
 
 Retain the costs and remaining failures in a build story; don't turn it into a miracle-fix parable (directional; extrapolation from StoryScope fiction research). Use source records to identify the author's actual decision and stakes (directional; Lees). Check provenance instead of treating an AI-detector score as proof; manuscript research doesn't validate detection of HN comments (directional; Editing Study).
 
@@ -131,7 +133,7 @@ These are illustrative editorial exercises, not real launch results or pasteable
 
 ### Developer tool: Show HN
 
-Title candidate: “Show HN: Inspect dependency changes before merging” (illustrative).
+Title brief: required Show HN prefix; artifact is a dependency-change inspector; human chooses the final wording (illustrative).
 
 Private writing beats:
 - Identify the dependency report and link its runnable example.
@@ -155,7 +157,7 @@ Missing evidence blocks publication; it doesn't invite an invented success story
 
 ### Consumer product: maker demonstration
 
-Title candidate: “Show HN: A knitting chart editor with printable row guides” (illustrative).
+Title brief: required Show HN prefix; artifact is a knitting-chart editor; distinctive capability is printable row guides (illustrative).
 
 Private writing beats:
 - Link the sample chart that strangers can edit and print.
@@ -188,7 +190,7 @@ The unresolved constraint keeps the outcome honest and the article useful beyond
 - [ ] Link and CTA path are intentional, including a deliberate no-CTA choice.
 - [ ] Every specific has supplied provenance or is marked only in an illustrative example; missing evidence blocks publication.
 - [ ] Affiliation, sponsorship, and synthetic evidence are disclosed as applicable; no unsupported labeling claim remains.
-- [ ] Author voice and thread register match; AI-tell review added no manufactured errors.
+- [ ] Evidence, author voice, and thread context reviewed; useful structure preserved without invented experience or errors.
 - [ ] Profile contact choice, maker availability, and follow-up reply ownership are settled; no coordinated participation is planned.
 - [ ] Package contains title/source record, destination, private context notes, and reply plan; any linked demo has an asset brief with captions or alternative text where needed.
 

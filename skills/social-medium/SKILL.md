@@ -29,6 +29,8 @@ Publication-editor Boost nominations closed on May 31, 2026; internal review con
 
 Publication acceptance and authentic recommendations matter: Medium attributes most average-feed stories to human actions. (official, Curation era, 2026-07) Publication stories receive more presentations, views and reads in Medium's aggregate data, especially for smaller followings; this isn't an individual guarantee. (measured, Reader tips, n=Medium platform data with sample undisclosed, 2026-03)
 
+Permission to publish is separate from distribution eligibility. Current guidelines exclude content marketing/PR and stories primarily collecting traffic, signups, or sales from General distribution. They also limit General/Boost review to English; don't promise those routes for a localized story or change its audience just to pursue them (official, Distribution Guidelines, checked 2026-09-05).
+
 Open [reference/mechanics.md](reference/mechanics.md) when advising on earnings, interpreting performance evidence, preparing newsletter or technical assets, or checking a publication's submission controls.
 
 ## Rules and format decisions
@@ -50,14 +52,17 @@ Record the author's actual position and supporting source for each factual asser
 
 ### AI disclosure and authorship
 
+Apply Medium's own categories, checked 2026-09-05: generated writing means predominantly AI-created prose with little human revision, improvement, or verification. Its FAQ exempts outlining, fact verification, and spelling/grammar assistance from disclosure; incorporating generated prose or images requires disclosure. Don't classify a spelling check as a generated story or claim that superficial rewording establishes independent authorship.
+
 | Actual contribution | Action |
 |---|---|
-| Human-authored material | Preserve its evidence and voice; don't add fictional disclosure or experience. |
-| AI-generated text, including incorporated assistance | Describe the actual assistance clearly near the opening. For generated text, place disclosure within the first two paragraphs. (official, AI policy, 2026-09) |
+| Human-authored material, including only the exempt assistance above | Preserve its evidence and voice; no invented disclosure or experience. |
+| Generated prose incorporated into the story | Describe the actual assistance within the first two paragraphs. (official, AI policy, 2026-09) |
 | AI-generated writing, even disclosed | Keep it off the paywall. It cannot receive General or Boost distribution. (official, AI policy, 2026-09; official, Distribution Guidelines, 2026-06) |
 | Undisclosed generated or assisted text | Resolve disclosure before publication; undisclosed text is restricted to Network. Paywall violations can remove paywall access or revoke enrollment. (official, AI policy, 2026-09) |
 | Author wants an original essay instead | Have the author develop the argument from their records and write it; reassess the finished contribution honestly. Surface rewording doesn't establish human authorship. (directional) |
-| Synthetic illustration or narration proposed | Document its origin; caption synthetic assets plainly and check current applicable controls before publishing. Don't invent a disclosure toggle or treat media as evidence of an event. (directional) |
+| AI-generated illustration | Identify its AI origin in the image caption; this is an explicit policy requirement, not an optional editor control. Don't present it as a photograph of an observed event. (official, AI policy, 2026-09) |
+| Synthetic narration proposed | Document its origin and verify the applicable audio requirements; do not infer them from the image-caption rule. (directional) |
 
 ### Story anatomy and assets
 
@@ -70,6 +75,8 @@ Use descriptive headings in long guides. Structured stories receive an automatic
 Prepare readable code blocks for short excerpts and a linked gist or repository for full examples; preview any embed and provide a text fallback. Give prerequisites and expected output from supplied evidence. Don't claim code was run unless a record proves it. These are packaging choices, not guarantees of editor support. (directional)
 
 Choose a cover that explains the subject. Supply an asset brief stating the image's purpose and source, with crop guidance. Write a factual caption, attribution, and useful alt text; verify rights and mobile readability. Don't manufacture screenshots or customer scenes. (directional)
+
+For private correspondence used as evidence, Medium requires explicit permission from all parties; removing names is not a substitute. Label paraphrases as paraphrases, and don't combine several people's statements into a direct quote (official, Medium Rules; quote handling: directional).
 
 Use all five topic slots when accurate fits exist; relevance beats broad popularity. Topic pills now appear at the story's top. (official, Reader tips, 2026-03; official, Writer newsletter, 2026-08)
 
@@ -125,9 +132,9 @@ Prefer the accountable founder or practitioner byline for personal decisions; us
 
 Use connected essay prose with informative subheads. Keep technical register precise; let personal essays retain the author's natural contractions or fragments. Don't import a feed-thread rhythm of isolated dramatic lines. Start inside the subject instead of announcing what the article will cover. (directional)
 
-Apply the general AI-tell pass from `content-voice`: remove padded contrast frames and decorative triads; inspect uniform short paragraphs, suspense pivots, and repetitive emphasis. Cut obligatory moral endings. These are practitioner editing heuristics, not authorship tests. (directional) Sources: Aborn, 2026-07; Cox, 2026-06; Gichigi, 2026-02.
+Apply `content-voice` to the reader's actual difficulty: unsupported claims, weak transitions, redundant passages, and unclear stakes. Preserve purposeful repetition and the author's sentence rhythm. Similar paragraphs, a three-part argument, or a dash are not defects by themselves; practitioner AI-tell lists supply prompts for review, not mandatory replacements. (directional)
 
-For Medium, replace generic section labels with the actual decision; avoid a Key Takeaways box that repeats the ending. Remove rhetorical-question openings, miracle-fix narratives, and claims that nobody discusses the subject. Drop engagement-bait closers and hashtag stacks. Use useful punctuation sparingly; don't add typo quotas, fake edits, or lowercase camouflage. Match the author without introducing errors. (directional)
+Use headings that help readers navigate the argument. Keep a recap when it aids a long reference piece; remove one that merely repeats a short ending. A question opening is valid when the essay genuinely investigates it. Correct miracle-fix narratives and unsupported claims of novelty rather than replacing them with another formula. Don't add typos, fake edits, or dramatic line breaks to manufacture a personal voice. (directional)
 
 Medium describes AI detection as unreliable and rejects phrase or punctuation tells as durable evidence. Treat provenance and disclosure as separate checks from prose quality. (official, Write for humans, 2026-08)
 
@@ -218,7 +225,7 @@ Why it works: the service claim stays bounded instead of inventing a success sta
 - [ ] Title and first line deliver a clear subject; subtitle adds scope.
 - [ ] Central idea holds; chosen length serves the evidence.
 - [ ] Every specific comes from supplied proof; no unresolved example placeholders.
-- [ ] Author voice matches; AI-tell pass checks structure and ending without manufactured mistakes.
+- [ ] Evidence, author voice, and substance reviewed; useful structure and ending preserved without invented experience or mistakes.
 - [ ] AI contribution reviewed; required disclosure placed; paywall choice complies.
 - [ ] Publication guide and live controls checked; rejection/solo path ready.
 - [ ] Accurate topics selected within the documented limit.

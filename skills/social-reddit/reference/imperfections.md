@@ -15,6 +15,8 @@ Use this reference to choose a register or handle a sensitive reply. The filenam
 
 Use abbreviations only if they belong to the author and readers can understand them. Don't add credentials or disclaimers as a costume. Refer to the original poster or a specific commenter only where attribution helps the answer; don't insert a username to claim authenticity (directional).
 
+For a language edit, preserve the speaker's certainty, politeness, humor, and relationship to the reader. Don't turn “this happened on my setup” into a general recommendation, or a cautious disagreement into a hostile correction. If local slang or irony is unclear, retain plain wording or mark the ambiguity for review instead of inventing a more “native” persona (directional).
+
 For media replies, check what the current composer and community permit. Use an image or clip when it answers the question, with explanatory text for the information readers need. Don't substitute a reaction image for a requested technical answer (directional).
 
 ## Assistance and disclosure

@@ -2,6 +2,8 @@
 
 Open this reference when preparing editor metadata, AMA or challenge material, or a measurement plan. Treat dated observations as evidence for a bounded hypothesis. Use the main skill's policy gate before preparing any promotional publication.
 
+An AMA or challenge entry's replies are still comments: current DEV guidelines prohibit AI-generated comments except basic translation, grammar/syntax improvement, and assistive tools. Keep response planning to factual notes for the human; disclosure tiers for articles do not create a comment-generation exception (official, DEV AI Guidelines, checked 2026-09-05).
+
 ## Editor and discovery checks
 
 The verified editor evidence establishes Markdown, Liquid embeds, and a maximum of four tags (official, DEV Editor, 2026-09). It doesn't establish the title-character ceiling, cover dimensions, or every front-matter field's current type. Don't insert remembered limits into a publishing package.
@@ -118,7 +120,7 @@ The proof rule names what the check cannot establish without fabricating a resul
 
 ## Voice evidence boundaries
 
-Use Aborn's repeated-contrast and emphasis-word watchlist, Cox's padded-triad and excessive-dash critique, and Gichigi's rhythm, dramatic-pivot, and redundant-ending checks as editorial heuristics (directional). Those practitioner sources don't establish DEV ranking penalties or prove machine authorship. Aborn also rejects deliberate typos as a solution; preserve register instead (directional).
+Use the practitioner watchlists only to locate a reader-facing problem such as repetition or an obscured claim. They don't establish DEV ranking penalties or prove machine authorship. Keep a useful question, three-part explanation, recap, or dash; don't replace a clear passage to reduce its pattern count. Aborn also rejects deliberate typos as a solution; preserve register instead (directional).
 
 For storytelling, retaining unresolved costs is an editorial inference from fiction research, not a validated social-post detector (directional). StoryScope reports AI fiction favoring explicit themes and tidy plots (measured, StoryScope, n=61,608 stories, 2026-08).
 
@@ -141,6 +143,7 @@ No DEV-specific format comparison comes from the cross-network vendor reports he
 Official sources with undated pages were verified in 2026-09; source dates below identify dated publications.
 
 - [DEV Editor](https://dev.to/p/editor_guide), undated; verified 2026-09.
+- [DEV AI Guidelines, including comment exceptions](https://dev.to/guidelines-for-ai-assisted-articles-on-dev/), updated 2024-04-08; checked 2026-09-05.
 - [DEV Writing](https://dev.to/help/writing-editing-scheduling), undated; verified 2026-09.
 - [DEV Engagement](https://dev.to/help/reacting-commenting-engaging), undated; verified 2026-09.
 - [DEV Organizations](https://dev.to/organizations) and [DEV Organization Guide](https://dev.to/help/organizations/maximizing-your-dev-organization), undated; verified 2026-09.

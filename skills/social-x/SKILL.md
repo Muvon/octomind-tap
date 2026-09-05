@@ -23,7 +23,7 @@ Write X copy that a particular person can stand behind and a relevant reader can
 
 Open `reference/mechanics.md` when checking ranking, labels, subscription claims, format availability, or a suspected penalty. Open `reference/launch.md` when planning launch execution, choosing benchmark tests, or reporting outcomes. Open `reference/examples.md` when drafting a thread, long post, bio, or casual-chain reply.
 
-## Mechanics and mental model
+## Mental model
 
 For You combines followed-account candidates from Thunder with Phoenix retrieval and SimClusters for out-of-network discovery. Ranking orders candidates; visibility filtering separately returns allow, interstitial, or drop. The documented candidate path filters out-of-network replies and reposts and posts older than 48 hours (official, X algorithm README, 2026-08). Don't extend this cutoff to every X surface.
 
@@ -55,7 +55,9 @@ Craft decisions in this table are directional; the labeled limits are platform c
 | A reaction fits the author's established register | Context-appropriate GIF; avoid using it to answer a serious objection |
 | Sustained explanation needs motion | Longer video; verify upload support before preparing the asset |
 
-Plan up to 4 photos, a GIF, or a video under the verified posting guidance (official, X posting help, 2026-09). Preview a multi-image layout; don't brief it as a swipe carousel. Mixed-media combinations and video duration/file-size caps by tier are not established in this evidence. Verify them in the publishing account before delivery. A vertical cut is a presentation choice, not a promised video-tab boost (directional).
+X's current app help permits up to 4 total media items, including mixed photos, GIFs, and video; verify the target client's accepted combination and preview its layout (official, X posting help, reviewed 2026-09-05). Don't brief a multi-image layout as a swipe carousel. Video duration/file-size caps still need tier/client verification. A vertical cut is a presentation choice, not a promised video-tab boost (directional).
+
+Write each image's alt text for the visible evidence, including relevant screenshot text; X allows 1,000 characters per image. Put a longer source document's link in the post, not only the description. X's image-description field doesn't cover video: supply captions and a textual explanation of essential visual action (official, X image-description help, reviewed 2026-09-05; video explanation is editorial guidance).
 
 Text narrowly led images in Buffer's X format sample; video wasn't the engagement leader (measured, Buffer, n=X subset of 52M+ cross-platform posts, 2026-03). Media must earn its place.
 
@@ -63,7 +65,7 @@ For optional surfaces, use these as conditional assignments, not availability pr
 
 ## Launch and proof posts
 
-Before drafting, obtain audience and buying situation, promise, sourced proof, desired action, destination, campaign stage, and disclosure obligations. Identify whether the stage is teaser, launch day, proof, objection, or recap. Obtain availability and pricing if mentioned. Deliberately choosing no CTA is valid. If required facts are absent, report the missing evidence and withhold publishable copy; don't invent specifics.
+For campaign planning, record audience, buying situation, promise, sourced proof, desired action/destination, stage, and disclosures. Verify availability and pricing if mentioned. No CTA is valid. Missing optional brief fields or voice samples don't block supported copy; narrow or withhold claims lacking essential evidence, and continue independent edits without inventing specifics.
 
 These shapes and length bands are craft choices (directional). “Single” uses the ordinary limit above; “long” uses the verified longer-post limit. No band predicts performance.
 
@@ -112,9 +114,9 @@ Use the author's approved posts to establish their register. Read a reply's surr
 
 Preserve natural contractions and fragments. Lowercase is appropriate only when documented in the author's voice; don't add errors, fake edits, missing apostrophes, or typo quotas. Use niche slang or a meme only when its meaning and the author's usage are clear. Have a fluent reviewer check uncertain local idiom (directional).
 
-Apply the generic `content-voice` edit to X's compressed forms: strip contrast-frame hooks, padded triads, rhythmic one-line stacks, empty reveals, moral closers, miracle-fix stories, and repeated emphasis words. Review dash density without replacing it with another formula. These are practitioner editing heuristics, not authorship tests or proven ranker triggers (directional), citing Aborn, 2026-07; Cox, 2026-06; Gichigi, 2026-02.
+Apply `content-voice` to X's compressed forms: revise filler, repeated suspense, and slogans that replace the actual finding. Retain useful contrasts, lists, summaries, and the author's punctuation when they carry meaning. These practitioner heuristics aren't authorship tests or proven ranker triggers; don't impose sentence-length, contraction, or punctuation quotas (directional), citing Aborn, 2026-07; Cox, 2026-06; Gichigi, 2026-02.
 
-Avoid rhetorical-question openers, “nobody talks about” claims, thread-promo markers, emoji bullets, hashtag stacks, and engagement-bait closers. Omit hashtags unless a relevant event or community convention justifies one; don't infer an organic hashtag ban from ad rules (directional). Use supplied proof for personal stakes; never convert research into a fabricated “I tested” story. Detector scores don't certify authorship; inspect provenance and voice instead (directional).
+Ask a question when the answer will inform the conversation, not to withhold the post's point or demand engagement. Remove unsupported “nobody talks about” claims and decorative tag stacks; use thread labels or emoji only when they aid navigation or match the author's register. Relevant event/community hashtags are valid; ad rules don't establish an organic hashtag ban (directional). Use supplied proof for personal stakes; never turn research into “I tested” testimony. Detector scores don't certify authorship.
 
 ## Cadence and engagement
 
@@ -160,11 +162,11 @@ The provenance rule makes the missing evidence visible; this draft cannot ship y
 
 ### Consumer creator: product availability
 
-Illustrative brief: ceramicist's warm, plain voice; pictured mug is a sample; glaze varies.
+Illustrative brief: ceramicist's warm, plain voice; sample photos show darker glaze around the handle; glaze varies. No personal preference has been supplied.
 
-> The blue glaze runs darker around the handle. I like that part, so I've left it in the shop photos. This is the sample mug; each fired piece will vary. Available pieces: [shop URL].
+> The blue glaze runs darker around the handle, as the sample photos show. Each fired piece will vary. Available pieces: [shop URL].
 
-Why it works: documented register permits a personal preference without an invented outcome.
+Why it works: the description uses supplied visual facts without inventing the maker's preference.
 The link rule puts the shopping path beside the product's real limitation.
 
 ### Local service: reply in a casual chain
@@ -187,7 +189,7 @@ The evidence rule preserves uncertainty without adding fake mobile typing errors
 - [ ] Every specific has supplied provenance or is marked as an example placeholder.
 - [ ] No unresolved placeholder remains in publishable copy.
 - [ ] Customer attribution and private material have permission.
-- [ ] The AI-tell edit covers rhythm and structure as well as words.
+- [ ] Voice and substance review preserves useful structure without style quotas or authorship claims.
 - [ ] The author recognizes their voice and approves personal claims.
 - [ ] Required partnership disclosure is set.
 - [ ] AI-media provenance and applicable labeling have been checked.
@@ -202,6 +204,7 @@ The evidence rule preserves uncertainty without adding fake mobile typing errors
 
 - X algorithm: [README](https://github.com/xai-org/x-algorithm/blob/main/README.md), [parameters](https://github.com/xai-org/x-algorithm/blob/main/home-mixer/params/param.rs), [cold-start](https://github.com/xai-org/x-algorithm/blob/main/home-mixer/scorers/author_cold_start.rs). Dated evidence snapshot: August 12–13, 2026; details in `reference/mechanics.md`.
 - X Help: [posting](https://help.x.com/en/using-x/how-to-post), [Premium](https://help.x.com/en/using-x/x-premium), [Paid Partnerships](https://help.x.com/en/rules-and-policies/paid-partnerships-policy), undated, reviewed September 2026; [Authenticity](https://help.x.com/en/rules-and-policies/authenticity), April 2025; [Media Literacy](https://help.x.com/en/rules-and-policies/media-literacy-plan), July 2026.
+- [Image-description controls](https://help.x.com/en/using-x/picture-descriptions) and [writing image descriptions](https://help.x.com/en/using-x/write-image-descriptions), reviewed 2026-09-05.
 - Buffer: [engagement report](https://buffer.com/resources/state-of-social-media-engagement-2026/), March 5, 2026; [timing](https://buffer.com/resources/best-time-to-post-on-twitter-x/), March 13, 2026. [NDSS link study](https://www.ndss-symposium.org/wp-content/uploads/2026-s718-paper.pdf), February 2026.
 - [Google campaign URLs](https://support.google.com/analytics/answer/10917952?hl=en), [Product Hunt launch sharing](https://www.producthunt.com/launch/sharing-your-launch), [Show HN](https://news.ycombinator.com/showhn.html): undated, reviewed September 2026. [Clickstrike](https://clickstrike.com/launch-playbook/), undated agency self-report.
 - Voice heuristics: [Aborn](https://emilyaborn.com/ai-writing-tells-what-they-cost-you/), July 10, 2026; [Cox](https://huntingthemuse.net/library/how-to-tell-if-writing-is-ai), June 2026; [Gichigi](https://tahigichigi.substack.com/p/12-red-flags-of-ai-writing-and-how), February 18, 2026. Scope and further sources in `reference/examples.md`.

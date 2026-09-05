@@ -13,13 +13,13 @@ rules:
 
 ## Overview
 
-Draft from supplied facts and proof, then the author's documented voice, then platform conventions. Use `content-voice` for generic editing; this playbook adds Instagram packaging and conversion decisions. Never invent experience or results to make a caption sound personal.
+Draft from supplied facts and proof, then the author's documented voice, then platform conventions. Use `content-voice` for generic editing; this playbook adds Instagram packaging and conversion decisions. Never invent experience or results to make a caption sound personal. Writing a package doesn't authorize publication, outreach, or DMs.
 
 Open reference/mechanics.md when choosing runtime, interpreting benchmarks, using audio or experimental features, or preparing AI disclosure. Open reference/launch.md when drafting any launch or proof package, planning creator participation, or measuring a conversion path.
 
 ## Mental model
 
-Monitor average watch time, likes per reach, and sends per reach. Mosseri named watch time, likes, and sends as leading signals, with likes more relevant to connected reach and sends to unconnected reach; average watch time isn't a per-reach ratio (official, Mosseri via Social Media Today, 2025-01). This dated statement isn't a complete current ranking formula.
+Monitor average watch time, likes per reach, and sends per reach. Mosseri named watch time, likes, and sends as leading signals, with likes more relevant to connected reach and sends to unconnected reach; average watch time isn't a per-reach ratio (reported platform guidance, Mosseri via Social Media Today, 2025-01). This dated statement isn't a complete current ranking formula.
 
 Treat Feed, Explore, Reels, and Stories separately. Don't infer distribution weights from a visible post. For Feed, design for time worth spending, substantive comments, and a clear reason to visit the profile; these are editorial objectives, not verified current signal weights (directional). Use Stories for relationship follow-up (directional).
 
@@ -34,7 +34,7 @@ Choose a format by its job. Reels led discovery in Metricool's sample; carousels
 | Maintain a conversation | Story: immediate context, demonstration, relevant reply or link invitation | Keep a short sequence and remove any frame whose loss changes nothing (directional). |
 | Let an asset speak | Single image: strong photograph or legible artifact with necessary context | Keep the caption brief unless interpretation needs space (directional). |
 
-Reels accept up to 20 minutes, but those over 3 minutes aren't recommended to non-followers through Explore or the Reels tab, according to the cited Help Center summary (official, Instagram Help via Socialinsider, 2026-07). Keep discovery explainers within that ceiling; don't pad a simple visual to the measured narrative band.
+Reels accept up to 20 minutes, but those over 3 minutes aren't recommended to non-followers through Explore or the Reels tab, according to the cited Help Center summary (reported platform guidance, Instagram Help via Socialinsider, 2026-07). Keep discovery explainers within that ceiling; don't pad a simple visual to the measured narrative band.
 
 Open with the action or evidence instead of a logo card. Script hook, on-screen text, voiceover, shot changes, and last frame separately. Make meaning understandable without hearing; check subtitle accuracy, contrast, and whether overlays obscure the demonstration. Choose original speech or licensed music for the idea; a trending track needs both relevance and suitable rights (directional).
 
@@ -56,7 +56,7 @@ Put the specific subject and reason to care in the first line. Preview the actua
 
 Use literal topic language early for clarity and search intent; don't call captions a confirmed Reels ranking factor. Write alt text describing the actual image and essential embedded text; don't stuff keywords into accessibility copy. Supply an accessible visual description alongside video captions when needed (directional).
 
-Posts and Reels have a five-hashtag cap in the verified feature report (official, Instagram via Metricool Trends, 2026-06). Use fewer when no additional descriptive tag helps. Preview cover crops in both feed and profile views; keep the central subject and title readable. Align bio wording, destination link, pinned posts, and Highlights with the visitor's buying question, and remove obsolete launch promises (directional).
+Posts and Reels have a five-hashtag cap in the verified feature report (reported platform guidance, Instagram via Metricool Trends, 2026-06). Use fewer when no additional descriptive tag helps. Preview cover crops in both feed and profile views; keep the central subject and title readable. Align bio wording, destination link, pinned posts, and Highlights with the visitor's buying question, and remove obsolete launch promises (directional).
 
 Live, Broadcast Channels, and Notes are optional support formats: propose Live for a staffed demonstration, Channels for opted-in updates, and Notes for a brief prompt only after checking account availability. Feature eligibility and limits aren't established here. Threads cross-posting requires a separate destination edit; don't assume the Instagram caption and CTA transfer unchanged (directional).
 
@@ -100,7 +100,9 @@ This is an illustrative schedule, not an algorithmic timing rule. T is launch da
 
 Use supplied captions or a speech transcript to match the author's register in each format. Without samples, use clear conversational prose and functional on-screen labels; don't borrow meme dialect to imply a personality. Preserve natural contractions and fragments without adding typos, fake edits, artificial lowercase, or manufactured anecdotes. Keep on-screen copy short enough to read during the shot; let the caption supply conditions the visual can't carry (directional).
 
-Apply the generic voice pass to cover text and every slide, too. Remove contrast-frame hooks, padded triads, staccato stacks, empty suspense such as “Here's the thing” or “Let that sink in,” repetitive emphasis words, tidy moral endings, rhetorical-question openers, and “nobody talks about” claims. Strip miracle-fix stories that erase tradeoffs. Avoid hashtag stacks and emoji bullets. Review em-dashes for density; keep useful punctuation without quotas or camouflage. These are editorial heuristics, not authorship tests (directional; Aborn, 2026-07; Cox, 2026-06; Gichigi, 2026-02).
+Review cover text and each slide for what the viewer can actually learn. Replace an empty suspense line with its subject; remove a grand transformation claim when the artifact shows only a smaller change. Keep a question, contrast, three-part list, fragment, or em-dash when it communicates the author's meaning. Neither these forms nor polished grammar identify authorship; don't add colloquialisms to a deliberately formal voice (directional).
+
+Give each surface a job: the visual shows, speech explains the relevant action, the caption supplies context, and alt text makes the visual's information available without sight. Don't duplicate the sales hook across all four. Keep a material qualifier beside its claim, including on a before/after slide; don't bury it only in the last frame. A genuine observation can end without a lesson, limitation, or CTA when none is needed (directional).
 
 Make replies sound like an answer to that person. Don't turn every answer into a pitch. Use a fluent local editor for localized idiom; don't manufacture regional speech (directional).
 
@@ -114,11 +116,11 @@ Assign reply coverage at publication and during the following days. Remove spam 
 
 ## What gets suppressed
 
-Accounts primarily reposting unoriginal Reels, photos, or carousels can lose recommendation distribution. Material additions matter; watermark changes, speed changes, and credited screenshots are insufficient. Followers may still see content; licensed publishers are exempt. This doesn't mean non-followers can never encounter it (official, Instagram via TechCrunch, 2026-04).
+Accounts primarily reposting unoriginal Reels, photos, or carousels can lose recommendation distribution. Material additions matter; watermark changes, speed changes, and credited screenshots are insufficient. Followers may still see content; the report describes an exception for licensed publishers. This doesn't mean non-followers can never encounter it (reported platform guidance, Instagram via TechCrunch, 2026-04). Meta's first-party originality announcement separately distinguishes recommendation treatment from intellectual-property rules: credit or permission alone doesn't establish every distribution claim (official, Meta Originality, 2024-04).
 
-Other-app logos can limit Reel recommendations; your own logo is allowed (official, Mosseri via Social Media Today, 2024-10). Export a clean master. Keep video legible and avoid borders or text that hides the subject as production craft; don't claim a verified current muted-video penalty (directional).
+Other-app logos can limit Reel recommendations; your own logo is allowed (reported platform guidance, Mosseri via Social Media Today, 2024-10). Export a clean master. Keep video legible and avoid borders or text that hides the subject as production craft; don't claim a verified current muted-video penalty (directional).
 
-Use the disclosure tool for digitally created or altered photorealistic video or realistic-sounding audio (official, Meta Midterms, 2026-06 update). Profiles centered on an AI-generated person must use the “AI-generated profile” disclosure; undisclosed profiles face reduced reach, while disclosure itself isn't a penalty for synthetic identity (official, Instagram via TechCrunch, 2026-08). Consult the mechanics reference for post labels and ads; don't infer a general AI-caption ranking penalty.
+Use the disclosure tool for digitally created or altered photorealistic video or realistic-sounding audio (official, Meta Midterms, 2026-06 update). Profiles centered on an AI-generated person must use the “AI-generated profile” disclosure; undisclosed profiles face reduced reach, while disclosure itself isn't a penalty for synthetic identity (reported platform guidance, Instagram via TechCrunch, 2026-08). Consult the mechanics reference for post labels and ads; don't infer a general AI-caption ranking penalty.
 
 ## Examples
 
@@ -188,7 +190,7 @@ The voice rule answers a buying concern without inventing a successful treatment
 - [ ] Audio fits the work and its rights; audio-page context is checked where relevant.
 - [ ] CTA and bio/sticker/DM path work in the account and in-app browser; “no CTA” is deliberate.
 - [ ] Collab acceptance, contributor permission, affiliation, sponsorship, and applicable AI disclosures are checked.
-- [ ] Every example-derived line passes the AI-tell and documented author-voice checks.
+- [ ] Every example-derived line preserves meaning and the documented author voice; no invented experience or mechanical style bans.
 - [ ] Approved owned-channel references to the Instagram handle are prepared where relevant.
 - [ ] Story follow-up and human reply coverage are assigned; measurement distinguishes interest from sales.
 
@@ -201,6 +203,7 @@ The voice rule answers a buying concern without inventing a successful treatment
 - [Buffer frequency](https://buffer.com/resources/how-often-to-post-on-instagram/), 2025-08; [timing](https://buffer.com/resources/when-is-the-best-time-to-post-on-instagram/), 2026-07.
 - [Originality](https://techcrunch.com/2026/04/30/instagram-restricts-reach-of-content-aggregators-in-new-crackdown/), 2026-04; [AI profiles](https://techcrunch.com/2026/08/31/instagram-puts-new-limits-on-undisclosed-ai-profiles/), 2026-08.
 - [Meta Midterms disclosure](https://about.fb.com/news/2026/02/meta-prepares-for-2026-us-midterms/), updated 2026-06.
+- [Meta Originality](https://about.fb.com/br/news/2024/04/ajudando-o-criador-de-conteudo-a-encontrar-novos-publicos/), 2024-04-30; [branded-content definition](https://www.facebook.com/help/instagram/616901995832907), Help Center indexed text checked 2026-09.
 - [Aborn](https://emilyaborn.com/ai-writing-tells-what-they-cost-you/), 2026-07; [Cox](https://huntingthemuse.net/library/how-to-tell-if-writing-is-ai), 2026-06; [Gichigi](https://tahigichigi.substack.com/p/12-red-flags-of-ai-writing-and-how), 2026-02.
 - Re-validate when: feature names or limits change; policy or ranking guidance changes; new vendor reports arrive; account eligibility or link controls differ.
 Validated: 2026-09

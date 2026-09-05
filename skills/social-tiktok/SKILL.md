@@ -3,7 +3,7 @@ name: social-tiktok
 title: "TikTok Publishing Playbook"
 description: "Draft and revise TikTok scripts, captions, and publishing packages in an identifiable author's voice. Activate for TikTok posts, product demos, launches, customer proof, and creator collaborations; choose formats by audience intent and separate verified platform guidance from editorial judgment."
 license: Apache-2.0
-compatibility: "Requires source assets and author samples; browser and TikTok account access for current publishing controls."
+compatibility: "Text and media editing; browser and TikTok account access for current publishing controls."
 domains: content
 rules:
   - content(tiktok)
@@ -15,7 +15,7 @@ rules:
 
 Write a post a particular person could stand behind, with a useful result for the intended viewer. Apply supplied facts and proof first, the author's documented voice next, then platform guidance. Use `content-voice` for generic editing; the rules here govern spoken delivery and TikTok packaging.
 
-Treat editorial prescriptions marked (directional) as craft choices. Evidence dates identify publication or, for undated documents, verification month. Open reference/evidence.md when citing benchmarks, explaining distribution or AI policy, or advising a monetizing creator.
+Treat prescriptions marked (directional) as craft choices. Drafting doesn't authorize uploading, messaging, or ad operations. Evidence dates identify publication or, for undated documents, verification month. Open reference/evidence.md when citing benchmarks, explaining distribution or AI policy, or advising a monetizing creator.
 
 ## Mental model
 
@@ -58,11 +58,11 @@ Use full-screen 9:16, at least 720p, and purposeful sound as the ad-playbook pro
 
 Front-load the subject in the caption using language the buyer uses. Keep it to a compact thought unless conditions need more space; omit script repetition. Place descriptive hashtags after the prose without a tag stack. Hashtag-bearing posts performed better observationally, but no optimal count was established (measured, Metricool, n=2,314,756 posts, 2026-05). Spoken keywords can clarify the topic; don't promise speech-indexing benefits (directional).
 
-Export clean source footage and recut imported assets for this opening and CTA. Choose a cover showing the evidence with a legible topic label; write alt text for photo assets where supported (directional). The Commercial Music Library supplies tracks cleared for paid ads; inspect the selected track's current use permissions before commercial publication (official, SMB Playbook, undated; verified 2026-09).
+Export clean source footage and recut it for this opening and CTA. Choose a cover showing the evidence; write alt text for photo assets (directional). TikTok recommends its Commercial Music Library for product/business promotion; other sounds require the necessary rights and its Music Usage Confirmation. A trending sound's availability isn't commercial clearance or permission to export it elsewhere (official, Commercial Music Help, indexed text checked 2026-09; rights-check application is directional).
 
 ## Launch and proof posts
 
-Before drafting, obtain audience and buying situation, promise, available proof with its source, desired action, destination, campaign stage, and disclosure obligations. Include author samples, account market/type, and whether this is owned, sponsored, affiliate, or paid-amplified content. “No CTA” is a valid choice. If proof is absent, draft a demonstration brief rather than a customer success claim.
+For campaign planning, record audience, buying situation, promise, sourced proof, desired action/destination, stage, disclosures, and account market/type. Use author samples when available; missing samples don't block a restrained factual script. Distinguish owned, sponsored, affiliate, and paid-amplified content. No CTA is valid. If outcome proof is absent, prepare a demonstration brief rather than inventing customer success.
 
 Use the short or extended bands above as testing options, never compulsory duration (directional):
 
@@ -77,7 +77,7 @@ Use the short or extended bands above as testing options, never compulsory durat
 
 Apply the strip-test: with the product name removed, the post should still show or teach something useful (directional).
 
-Confirm the destination in the account before writing the CTA. Prefer an available profile/bio link for a site visit, or verified Shop product controls for an in-app purchase. Don't promise that a URL in a caption, reply, description, or sticker is clickable. Test the complete path, including destination wording; request a DM only when that workflow is available and staffed. State affiliation in the post and select the applicable commercial-content/paid-partnership disclosure control after checking current regional requirements. These are publishing checks, not claims of universal interface access (directional).
+Confirm the destination before finalizing the CTA: an available profile link, verified Shop control, or staffed requested-DM path. Don't promise a typed URL is clickable; test the complete path. TikTok requires its content-disclosure setting for promotion of your own business as well as third-party branded content; identify that relationship in the writing and select the appropriate disclosure category (official, Commercial Guidelines, rechecked 2026-09). Verify account/market-specific controls before publication.
 
 Seed through relevant creator collaborations and useful participation in existing conversations. Give employees distinct observations and disclose their relationship; agree compensation for additional creator work. Don't script fake customer reactions or coordinate engagement trades. TikTok's rules restrict spam, fake engagement and deceptive incentives (official, Integrity and Authenticity, 2025-08).
 
@@ -102,7 +102,9 @@ Write spoken clauses the author can say comfortably. Preserve their contractions
 
 Match subtitle punctuation to speech and use overlay text for orientation. Don't manufacture hesitations, typos, fake corrections, or choppy jump-cut speech. Lo-fi means a workable production choice, not simulated carelessness (directional).
 
-Apply the `content-voice` pass to script, overlays, caption and replies. Strip gratuitous contrast frames, padded triads, staccato line stacks, empty suspense phrases, tidy moral endings, rhetorical-question openings, miracle-fix narratives and “nobody talks about” hooks. Remove engagement-bait closers, hashtag stacks and decorative emoji bullets. Inspect repeated emphasis words and dense em-dashes; keep punctuation only when it serves the author's phrasing. These are editing heuristics, not authorship detection or ranking rules (directional; Aborn, Cox and Gichigi).
+Review script, overlays, caption and replies for information rather than supposed AI markers. Replace an unsupported “this changed everything” with what changed in the footage. Keep genuine questions, contrasts, three-part explanations, and useful punctuation; remove them when they pad the message or distort the speaker's register. Don't prescribe slang, contractions, sentence-length variation, or rough production to simulate authenticity (directional).
+
+Time the explanation against the actual action. Cut a sentence that only repeats a visible movement, but retain a prerequisite or exception needed to understand the result. Edit subtitles for names, numbers, negation, and meaningful sounds; a word-for-word transcript still needs readable segmentation. Put necessary visual evidence into narration or accompanying text, and don't rewrite captions into a different claim just to shorten them (directional).
 
 Don't pair generic synthetic narration with unrelated stock footage as a substitute for the author's evidence. Use a trend's phrasing only when it fits the actual situation; captions and replies should sound like the same person speaking to that viewer (directional).
 
@@ -122,7 +124,7 @@ Review at day 10: the study observed 96% of reach and nearly 98% of interactions
 
 Reused material without creative edits, including another person's watermark/logo, and low-quality or minimally edited GIF-only clips can be For You-ineligible under guidelines effective September 13, 2025 (official, Integrity and Authenticity, 2025-08). Re-verify the regional policy before citing it. Don't invent universal QR-code, short-clip, or delete/repost penalties.
 
-Keep AI disclosure and media provenance intact. US TikTok Shop requires disclosure for fully generated or significantly AI-edited content, prohibits fabricated AI product effects, and says the label alone does not demote compliant content (official, US Shop AIGC Rules, 2026-07). Verify current regional rules before publishing; don't generalize this Shop-specific assurance into neutral reach across TikTok.
+Keep AI disclosure and provenance intact. TikTok's general guidelines require labeling realistic AI-generated or significantly edited people/scenes; generic TTS not imitating a recognizable person and minor aesthetic edits are listed exceptions (official, Integrity and Authenticity, 2025-08). A cloned testimonial or fabricated product result doesn't become legitimate through a label. US Shop separately requires disclosure for fully generated or significantly AI-edited content and prohibits fabricated product effects; its no-demotion assurance is Shop-scoped (official, US Shop AIGC Rules, 2026-07).
 
 TikTok reports layered AI labeling and AI-spam detection testing in sensitive topics (official, TikTok AI Update, 2026-07). Treat those as scoped announcements, not proof of a universal AI penalty or immunity. Open reference/evidence.md when an AI-assisted asset needs policy review.
 
@@ -178,7 +180,7 @@ The placeholders enforce provenance; the bounded result avoids a durability prom
 
 - [ ] Hook and first frame show the same idea; length and format fit the viewer's job.
 - [ ] Every specific is supplied or marked inside a nonpublishable example; no invented experience or results.
-- [ ] Author-voice match and AI-tell pass cover speech, overlays, caption and replies.
+- [ ] Meaning and author-voice review covers speech, overlays, caption and replies without fabricated roughness or style quotas.
 - [ ] Asset brief, cover, corrected subtitles, photo alt text where supported, and UI safe-zone preview are ready.
 - [ ] Sound permissions, customer permissions, commercial disclosures and applicable AI labels are checked for this market.
 - [ ] Caption and descriptive hashtags are ready; CTA destination is verified or no CTA is deliberate.
@@ -192,6 +194,7 @@ The placeholders enforce provenance; the bounded result avoids a durability prom
 - [Socialinsider lengths](https://www.socialinsider.io/blog/how-long-are-tiktok-videos/), 2026-07-10.
 - [TikTok recommendation explainer](https://newsroom.tiktok.com/how-tiktok-recommends-videos-for-you?lang=en), 2020-06-18; [SMB Playbook](https://ads.tiktok.com/business/library/Global_SMB_Creative_Playbook.pdf), undated, verified 2026-09.
 - [Integrity and Authenticity](https://www.tiktok.com/community-guidelines/en/integrity-authenticity), 2025-08-14; [US Shop AIGC Rules](https://seller-us.tiktok.com/university/essay?knowledge_id=491489038501663&lang=en), 2026-07-31; [TikTok AI Update](https://newsroom.tiktok.com/helping-people-spot-and-understand-ai-generated-content-on-tiktok-nz?lang=en-NZ), 2026-07-10.
+- [Commercial Guidelines](https://www.tiktok.com/community-guidelines/en/regulated-commercial-activities), rechecked 2026-09; [Commercial Music Help](https://support.tiktok.com/en/business-and-creator/creator-and-business-accounts/commercial-use-of-music-on-tiktok), indexed text checked 2026-09; [TikTok accessibility](https://newsroom.tiktok.com/creating-an-accessible-and-inclusive-tiktok?lang=en-150), checked 2026-09.
 - [Lux Laces](https://newsroom.tiktok.com/tiktokshoplivefashionandcollectables?lang=en-GB), 2026-08-04; [CreatorIQ](https://www.creatoriq.com/press/releases/creatoriq-state-of-creators-report-2026?hs_amp=true), 2026-08-11.
 - [Aborn](https://emilyaborn.com/ai-writing-tells-what-they-cost-you/), 2026-07-10; [Cox](https://huntingthemuse.net/library/how-to-tell-if-writing-is-ai), 2026-06; [Gichigi](https://tahigichigi.substack.com/p/12-red-flags-of-ai-writing-and-how), 2026-02-18; [MIDI](https://arxiv.org/abs/2606.02147), 2026-06-01.
 

@@ -17,7 +17,7 @@ rules:
 
 Write for Meta Threads when the brief names the app or says “post on Threads.” Interpret “write a thread” using the named destination; don't default ambiguous requests to another platform.
 
-Use supplied facts and proof first, the author's documented voice next, and platform register as fallback. Apply content-voice without copying its generic rules into the draft. Open [reference/platform-and-evidence.md](reference/platform-and-evidence.md) when planning regional timing, using newer surfaces, checking disclosure scope, or interpreting research.
+Use supplied facts and proof first, the author's documented voice next, and platform register as fallback. Apply content-voice without copying its generic rules into the draft. Drafting doesn't authorize posting, replies, or DMs. Open [reference/platform-and-evidence.md](reference/platform-and-evidence.md) when planning regional timing, using newer surfaces, checking disclosure scope, or interpreting research.
 
 ## Mental model and mechanics
 
@@ -38,7 +38,7 @@ Treat engagement benchmarks as observations. Video and images led Buffer's Threa
 
 Keep a source note for each factual claim and permission for customer material. Obtain missing proof before drafting factual copy; unresolved example placeholders make a draft unpublishable. Never invent experience to supply personality.
 
-Lead with the observation, decision, or visible result. Develop the central idea in connected prose, then stop or give the desired action. A question belongs after useful context and must invite an answer you need (directional).
+Lead with the observation, decision, visible result, or genuine question. Supply enough context for the intended reader to answer; don't hide the subject behind an empty curiosity hook. Develop the idea in connected prose, then stop or give the desired action (directional).
 
 Length bands below are qualitative drafting choices, not performance optima (directional). “Brief” means the observation plus necessary context; “developed” adds evidence and its limitation within the standard-post cap; “extended” needs an attachment or independently useful follow-up.
 
@@ -103,7 +103,9 @@ Read the author's posts and the target conversation for sentence shape, warmth, 
 
 A defensible counter-intuitive claim includes evidence and scope. Polarization built from contempt or unsupported generalization doesn't improve that claim. Omit canned “Hot take:” prefixes; don't call them algorithmically penalized (directional).
 
-Apply the AI-tell pass to short posts as well as replies: cut empty contrasts, padded triads, repeated staccato lines, dramatic pivots, emphasis filler, and tidy moral endings (directional; Aborn, Cox, Gichigi). Remove rhetorical-question openers, miracle-fix parables, “nobody talks about” framing, engagement-bait closers, hashtag stacks, and emoji bullets (directional). Keep useful em-dashes sparingly where the documented voice supports them; impose no punctuation quota. Use ordinary prose without thread counters. “Replies” is valid Threads vocabulary.
+Review the actual contribution instead of checking for an “AI sound.” Replace unsupported surprise or “nobody talks about” framing with the specific observation. Cut a contrast, three-part list, fragment, or closing question only when it adds no meaning or clashes with the author. These forms and em-dashes are not authorship evidence; formal prose can be natural for this speaker. Use prose for an ordinary reply and numbering when navigation genuinely needs it (directional).
+
+Don't paste an Instagram caption stripped of hashtags. A Threads root must identify its own subject; a reply must address its parent, and a quote post must separate the quoted claim from the author's interpretation. Reconstruct context from the source, not presumed shared knowledge. Keep “I tried” attached to the person who tried it; describe what the demo actually shows when that is all the evidence establishes (directional).
 
 Use supplied decisions and their costs for specificity (directional; Lees). Have a fluent editor review local idiom in context; this is an application of language research, not a measured Threads uplift (directional; MIDI). Neither these heuristics nor detector scores establish authorship; manuscript detector findings don't validate short-post detection (directional; Detector Study).
 
@@ -174,7 +176,7 @@ The inspection boundary prevents a remote-diagnosis promise.
 - [ ] First line carries the point; the post develops a central idea in the author's voice.
 - [ ] Format and finished character count fit the verified constraints, including the actual URL.
 - [ ] Every specific has provenance; customer permissions are recorded; no example placeholders remain.
-- [ ] AI-tell pass completed; no manufactured errors; useful punctuation and natural register retained.
+- [ ] Meaning and author-voice review completed; no invented experience, manufactured errors, or punctuation quotas.
 - [ ] Reply reads as prose, answers its parent, and matches the conversation's emotional register.
 - [ ] CTA or deliberate no-CTA choice matches the goal; destination works; any required link reply is included in the publishing package.
 - [ ] Topic choice fits; any newer feature was checked in the target account.

@@ -18,7 +18,7 @@ rules:
 
 Write something the intended reader can use, in language the actual author would choose. Apply this precedence: supplied facts and proof, then documented author voice, then platform constraints. Use platform register only as a fallback; publication is a downstream step.
 
-## Mechanics and mental model
+## Mental model
 
 | Surface | Supported behavior | Writing decision |
 |---|---|---|
@@ -48,7 +48,7 @@ Start on the useful detail. Keep a single idea per post, provide enough context 
 | Resolve the original author's point | Reply | Read the chain; answer the actual question without restating the post. |
 | Add context for your own readers | Quote post | Add a specific contribution that stands alone. Use a plain repost when you have nothing to add. |
 
-Write concise alt descriptions for visual meaning; prepare captions for speech and an asset brief identifying the source, crop, and intended evidence (directional). Check available accessibility fields and preview captions; don't assert an unsupported alt-text cap.
+Write alt descriptions for visible meaning and relevant screenshot text; don't use the field as an overflow post, hidden joke, or keyword list. Bluesky documents search matches in image alt text, so it is public searchable content, not a private metadata field (official, Search Tips, 2024-05; writing advice is directional). Prepare captions for speech and an asset brief identifying source and crop. Preview accessibility fields and captions; don't assert an unsupported alt-text cap.
 
 Use only relevant hashtags supported by the topic or a verified feed criterion. Preserve readable capitalization; don't impose lowercase or a numeric tag quota (directional).
 
@@ -96,7 +96,7 @@ Keep content-voice as the generic baseline. For Bluesky, read the surrounding co
 
 Preserve the author's contractions, fragments, and punctuation. Introduce no typos, fake edits, dropped articles, or lowercase camouflage. Retain an effective em dash, but revise repeated dash pivots or dash-heavy short posts; don't impose a quota or remove useful punctuation merely to look human (directional, Aborn and Cox).
 
-Apply the verified practitioner heuristics as an editing pass, never an authorship detector: remove padded triads, repeated contrast frames, dramatic empty pivots, staccato stacks, and tidy restatement endings. Audit repetitive emphasis words in context (directional, Aborn, Cox, Gichigi). Also remove rhetorical-question openers, miracle-fix stories that erase tradeoffs, "nobody talks about" framing, engagement-bait closers, and decorative hashtag or emoji stacks (directional).
+Apply practitioner heuristics as editorial judgment, never authorship detection: remove filler, empty suspense, unsupported novelty claims, and endings that merely solicit engagement. Keep useful contrasts, lists, questions, and summaries; don't replace the author's style with punctuation, contraction, or sentence-length quotas (directional, Aborn, Cox, Gichigi). Retain real tradeoffs and uncertainty. An ordinary sincere acknowledgment can be a complete reply; it needs no invented anecdote or forced follow-up question (directional).
 
 Carry supplied facts into cross-posts, then rebuild the Bluesky framing and CTA for the actual reader. Don't anchor adaptation on another network's character limit (directional).
 
@@ -188,11 +188,13 @@ The limited test supports an observation about appearance, with no safety promis
 - [ ] Photo count and video limits above pass; embed combinations and the rendered link card are checked.
 - [ ] CTA or deliberate no-CTA is clear; destination works and attribution parameters are consistent.
 - [ ] Alt text, captions, asset brief, and follow-up reply plan accompany relevant formats.
-- [ ] AI-tell pass covers structure and excessive punctuation without manufacturing errors.
+- [ ] Voice and substance review preserves useful structure without manufacturing errors or imposing style quotas.
 - [ ] Affiliation, sponsorship, media disclosure, and applicable picker warnings are checked.
 - [ ] Launch stage and proof match; reply/quote controls and recommendation visibility reflect the account owner's intent.
 
 ## References
+
+- [Search Tips: alt text is searchable](https://bsky.social/about/blog/05-31-2024-search), 2024-05-31; reviewed 2026-09-05.
 
 - [Post lexicon](https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/post.json), undated; reviewed 2026-09.
 - [Visibility declaration](https://bsky.network/blog/content-visibility-declaration/), 2026-09-01.

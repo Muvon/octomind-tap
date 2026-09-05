@@ -83,11 +83,15 @@ Don't invent personal history, timelines, measurements, or shipped results. When
 
 ## Voice ownership
 
-Have the named speaker review their actual position and register. Preserve natural contractions or fragments; introduce no errors. Use platform register only when documented voice is absent. Keep a technical objection precise without forcing every author into the same tone (directional).
+Have the named speaker review their actual position and register. Preserve natural contractions or fragments; introduce no errors. With no documented voice, use restrained plain language suited to the reader, not an invented founder persona or borrowed platform slang. Keep a technical objection precise without forcing every author into the same tone (directional).
 
-Remove formulaic contrast frames, padded triads, staccato paragraph stacks, dramatic pivots, and tidy moral closers; check excessive em dashes without banning useful punctuation. Treat these as practitioner editing heuristics, not AI detectors or measured ranking factors (directional; Aborn, Cox, Gichigi). Also remove rhetorical-question openers, “nobody talks about” framing, “let that sink in,” engagement-bait endings, hashtag stacks, emoji bullets, and miracle-fix narratives as editorial rules (directional).
+Review repeated contrast slogans, padded adjective lists, choppy paragraph stacks, empty suspense, and compulsory morals for a concrete reading problem. Keep real comparisons, useful summaries, meaningful questions, and audience-appropriate punctuation. Remove unsupported universal claims, false urgency, and requests for empty agreement; don't confuse every legitimate CTA with engagement manipulation. These are contextual editorial judgments, not AI detectors, banned-word lists, or measured ranking factors (directional; Aborn, Cox, Gichigi).
 
 Require real decisions and supporting receipts before adding personal stakes (directional; Lees). Don't manufacture imperfections to imply human authorship (directional; Aborn). Keep affiliation and media-label obligations in the final handoff.
+
+Adapt the same claim and proof to each audience and medium: narration, visual evidence, captions, replies, and long-form explanations have different jobs. Don't cross-post a lightly reworded script everywhere. Keep source labels, confidence notes, and research instructions in the internal handoff; retain public attribution, material limitations, and disclosures in the actual copy. A factual draft is not evidence that the speaker experienced its claims (directional).
+
+For US-facing endorsements, disclose material connections clearly with the endorsement and preserve truthful personal experience. A platform's partnership toggle may not sufficiently explain the relationship; verify both the applicable disclosure requirements and the platform's rules (official, FTC Disclosures 101, checked 2026-09). Disclosure does not make prohibited promotion permissible.
 
 ## Cadence, engagement, and measurement
 
@@ -124,7 +128,7 @@ Apply community rules before scheduling; don't presume disclosure makes prohibit
 |---|---|
 | Reddit | Repetitive mass promotion and unsolicited mass messages are spam (official, Reddit Spam, 2026-05). Read each subreddit's rules; r/mcp requires disclosed self-promotion and Showcase tagging, and bans fake unaffiliated promotion and promotional AI slop (official, r/mcp Rules, 2026-09). Don't generalize that permission to other subreddits. |
 | HN | Supply factual notes for independent human authorship; generated or AI-edited text is prohibited. Exclude booster comments (official, HN Guidelines and Show HN Tips, 2026-09). |
-| dev.to | AI-assisted promotional articles are prohibited by the currently linked guidance; removing the CTA doesn't change promotional purpose (official, DEV AI Guidelines, 2024-04). |
+| dev.to | AI-assisted promotional articles are prohibited; removing the CTA doesn't change promotional purpose. Generated comments are also prohibited apart from the stated basic translation, grammar/syntax, and assistive-technology exceptions. Educational assistance must stay within the author's own understanding (official, DEV AI Guidelines, 2024-04; checked 2026-09). |
 | Medium | Third-party ads and sponsorships are prohibited; first-party links don't authorize traffic-first spam (official, Medium Rules, 2026-09). |
 | Product Hunt | Feedback invitations are allowed; direct upvote requests and vote rewards are prohibited (official, Product Hunt Sharing, 2026-09). |
 | Other communities | Check local rules and moderator permission for the planned activity. Don't use sockpuppets, scripted employee applause, voting rings, or disguised commercial participation (directional). |
@@ -163,7 +167,7 @@ The provenance and attribution rules preserve an honest outcome boundary.
 - [ ] Customer proof is bounded, sourced, and permissioned; incomplete examples remain unpublishable.
 - [ ] First lines express supported points; each assignment has a coherent idea.
 - [ ] Downstream handoff covers format constraints, link path, author voice, disclosures, relevant assets and alt text, and follow-up replies.
-- [ ] AI-tell pass removes manufactured rhetoric and errors without flattening voice.
+- [ ] Voice review fixes specific reading problems without inventing experience, flattening register, or enforcing detector/punctuation quotas.
 - [ ] Community permission and authorship gates pass; DM follow-up has consent.
 - [ ] Readout separates qualified interest, activation, and pipeline attribution; experiments have decision dates.
 
@@ -175,6 +179,7 @@ Undated official pages below use their verification month in inline labels.
 - [Show HN Guidelines](https://news.ycombinator.com/showhn.html), [HN Guidelines](https://news.ycombinator.com/newsguidelines.html), [Show HN Tips](https://news.ycombinator.com/item?id=22336638), [Launch HN Instructions](https://news.ycombinator.com/yli.html), checked 2026-09.
 - [DEV Organization Guide](https://dev.to/help/organizations/maximizing-your-dev-organization), checked 2026-09; [DEV AI Guidelines](https://dev.to/guidelines-for-ai-assisted-articles-on-dev/), 2024-04-08.
 - [Medium Rules](https://help.medium.com/hc/en-us/articles/213477928-Medium-Rules), checked 2026-09.
+- [FTC endorsement disclosures](https://www.ftc.gov/business-guidance/resources/disclosures-101-social-media-influencers), checked 2026-09; US-facing commercial endorsements.
 - [Sprout Social Search](https://sproutsocial.com/insights/?p=173051), 2026-06-22; [Platform Preferences](https://sproutsocial.com/insights/?p=193529), 2026-03-16; [Statistics](https://sproutsocial.com/insights/social-media-statistics/), 2026-02-09.
 - [Product Hunt Sharing](https://www.producthunt.com/launch/sharing-your-launch), checked 2026-09.
 - [Serge Bulaev](https://www.linkedin.com/pulse/company-page-personal-profile-where-should-b2b-content-serge-bulaev-micve), 2026-08-17; [Dreamdata Benchmarks](https://dreamdata.io/blog/announcing-linkedin-ads-benchmarks-report-2026), 2026-03-10.

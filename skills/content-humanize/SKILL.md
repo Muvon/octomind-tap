@@ -1,9 +1,9 @@
 ---
 name: content-humanize
 title: "Content Humanization"
-description: "Science of AI text detection, 8-dimension humanization diagnostic, and 7-pass rewrite technique for transforming AI-generated content into genuinely human writing."
+description: "Review and revise stiff or formulaic writing with an evidence-based eight-dimension editorial diagnostic and seven-pass edit. Preserve facts, author voice, and platform authorship rules; no detector-evasion promises."
 license: Apache-2.0
-compatibility: "Octomind content agents."
+compatibility: "A draft and its intended audience/platform; source records and author samples when available."
 domains: content
 rules:
   - content(humanize)
@@ -23,148 +23,79 @@ rules:
 
 ## Overview
 
-AI-generated text has measurable signatures that readers and search engines detect. This skill encodes the science behind those signals, a scoring diagnostic across 8 dimensions, and a 7-pass rewrite technique for eliminating them. The goal isn't evasion — it's quality. Human-written articles get 5.44x more traffic and hold reader attention 41% longer.
+Use when a draft feels generic, inflated, repetitive, or unlike its intended author. Diagnose concrete reading problems and revise only what helps. Keep the eight-dimension diagnostic and seven-pass workflow below as editorial tools; they do not measure human authorship.
 
-## Instructions
+## Mental model
 
-### Why AI Text Is Detectable
+The goal is trustworthy, readable work, not text that fools a classifier. Facts and permitted authorship come before fluency. Use [content-voice](../content-voice/SKILL.md) for everyday writing choices and [content-grounding](../content-grounding/SKILL.md) for verification.
 
-| Signal | AI pattern | Human pattern |
-|---|---|---|
-| Perplexity | ~21 (predictable word choices) | ~36 (unexpected, domain-specific vocabulary) |
-| Burstiness | Uniform sentence lengths (15–25 words) | Dramatic variation — fragments to 40-word sentences |
-| Vocabulary | 50+ dead words/phrases at 5–10× frequency | Natural, specific, domain-appropriate |
-| Contractions | Absent or sparse | Constant — "don't", "it's", "won't" |
-| Grammar | Perfect throughout | Natural breaks — "And", "But", fragments, asides |
-| Voice | Detached, encyclopedic | First-person, opinionated, emotionally varied |
-| Structure | Parallel sections, equal lengths, formulaic | Deliberately unequal, unpredictable |
-| Transitions | "Furthermore", "Moreover", "Additionally" | Absent, or "But.", "So.", "The catch?" |
+## Evidence and scope
 
-Google's March 2026 update amplified "Experience" — content demonstrating genuine first-hand experience outranks comprehensive but impersonal content. 96% of AI Overview citations come from sources with strong E-E-A-T signals.
+- Research checked 2026-09-05. Detector findings depend on language, genre, model, sample, and evaluation setup. A 2026 Czech-language study found no systematic non-native bias in its tested detectors, unlike claims derived from earlier English studies. Neither result gives a universal social-post detector or a safe punctuation formula.
+- Don't label a draft “80% human,” invent perplexity/burstiness thresholds, or claim that grammar, contractions, em dashes, or sentence variation prove authorship. Don't promise detector avoidance.
+- Google's guidance emphasizes accuracy, quality, relevance, and value. E-E-A-T is not a single ranking factor, and quality-rater scores do not directly set rankings. Don't attach unsourced traffic multipliers, attention percentages, or search-update claims to this editing process.
+- Check the destination's actual authorship policy before rewriting publishable prose. Some communities restrict AI-generated or AI-edited posts/comments; a stylistic rewrite or disclosure does not automatically make them eligible. Where necessary, provide factual research notes and leave prohibited public prose to the human author.
+- Keep the requested scope. Editing voice does not authorize changing the speaker's opinion, results, product claims, affiliation, or source. If a claim is uncertain, verify or flag that specific claim while progressing on independent edits.
 
-### 8-Dimension Diagnostic
+## Eight-dimension diagnostic
 
-Score each dimension 1–10 (10 = fully human). Sum = X/80.
+For each dimension, record “clear,” “needs revision,” or “evidence missing,” with a short excerpt and a reason. Prioritize factual/authorship problems over stylistic preferences. Do not sum these statuses into a detection or publication score.
 
-Risk levels: Pass (65+) / Borderline (45–64) / Flagged (30–44) / Critical (<30)
+| Dimension | Check |
+|---|---|
+| Source fidelity | Does every change preserve numbers, qualifiers, chronology, technical terms, and attribution? |
+| Speaker and experience | Does the actual author own each first-person claim, decision, quote, or emotional reaction? |
+| Substance | Can the reader identify the point, evidence, and useful consequence without generic filler? |
+| Precision | Are claims concrete and bounded? Are necessary uncertainty and limitations retained? |
+| Register | Does the wording suit the author, audience, topic, and language without invented slang or forced informality? |
+| Rhythm | Do sentence and paragraph boundaries follow the argument, without choppiness or artificial variation? |
+| Format and context | Does the piece fit its medium and conversation, with accessible text and enough standalone context? |
+| Ending and action | Does it stop cleanly or offer a relevant next step, without empty morals, bait, or false urgency? |
 
-#### 1. Perplexity (Word-Level Unpredictability)
-- Flag every statistically obvious word choice
-- Count AI vocabulary hits (dead words, transitions, phrases)
-- Check for domain-specific or unexpected vocabulary
-- Score: high unique/surprising vocabulary = high, generic/predictable = low
+A word or construction alone is not a defect. Explain its effect in this passage. A clear formal statement can pass; a casual unsupported testimonial cannot.
 
-#### 2. Burstiness (Sentence-Level Variation)
-- Measure sentence length range (shortest vs longest)
-- Flag 3+ consecutive sentences within ±5 words of each other
-- Check for fragments (<5 words for emphasis)
-- Check for long momentum sentences (>30 words)
-- Check paragraph length variation across the piece
-- Score: dramatic variation with intentional rhythm = high, uniform = low
+## Seven-pass rewrite
 
-#### 3. Vocabulary Hygiene
-Count every instance of dead vocabulary (see content-voice skill for full lists). Scoring: 0 hits = 10, 1–3 = 7, 4–8 = 4, 9+ = 1.
+1. Preserve the factual contract. Mark claims and source gaps; lock quotations, measurements, disclaimers, and conditions that cannot change without evidence.
+2. Find the point. Move the answer, observation, or supported claim forward. Remove repetitive setup, inflated significance, and material unrelated to the reader's task.
+3. Make language precise. Replace vague modifiers with supplied facts, use direct verbs, and keep consistent terminology. Don't add numbers, anecdotes, or causal claims to make the prose vivid.
+4. Restore the author's register. Follow real samples where available; otherwise use restrained plain language. Keep necessary formality and technical vocabulary. First person and contractions are options, not quotas.
+5. Repair flow. Read aloud where useful; split overloaded sentences, join choppy ones, and trim empty transitions. Keep punctuation, comparisons, headings, or lists when they clarify meaning.
+6. Adapt the medium. Rework spoken text for delivery, replies for their actual parent, and posts for the destination's format and audience. Review alt text, captions, link context, and disclosures separately.
+7. Compare against the source. Check for invented experience, stronger certainty, omitted limitations, changed dates, or inaccurate CTA destinations. Resolve substantive findings before polishing again; don't keep rewriting solely to improve a self-assigned score.
 
-Also flag formal overreach: "utilize" (use), "facilitate" (help), "demonstrate" (show), "commence" (start), "culminate" (end), "subsequent" (next), "prior to" (before), "in order to" (to), "serves as" (is).
-
-#### 4. Contraction Density
-- Count uncontracted forms: "do not", "it is", "will not", "can not", "they are", "we have", "does not", "is not", "was not", "would not", "should not", "could not"
-- Target: <2 uncontracted forms per 500 words (unless deliberate emphasis)
-- Score: natural contractions throughout = 10, formal throughout = 1
-
-#### 5. Grammatical Humanity
-- Sentences starting with "And", "But", "So", "Or" — present? (humans do this constantly)
-- Sentence fragments for emphasis — present?
-- Parenthetical asides — present?
-- Trailing participles: sentences ending with "...highlighting", "...ensuring that", "...contributing to", "...underscoring", "...reflecting" — count each
-- "Not just X, but also Y" constructions — count
-- Semicolons connecting simple phrases — count (AI overuses these)
-- Triads: groups of three adjectives, phrases, or examples used for rhythm ("bold, innovative, and transformative") — count each; 2+ in a piece is a tell
-- Em-dash density — count em-dashes per 100 words. AI default is 3+ per paragraph; humans average <1 per 100 words. Total absence is also a tell (over-corrected humanization). One per ~100 words used naturally is the human shape
-- Perfect grammar throughout with zero breaks = AI signal
-- Score: natural grammar breaks present = high, perfect throughout = low
-
-#### 6. Voice & Personality (carries the E-E-A-T "Experience" load in 2026)
-- First-person markers: "I've found", "In my experience", "What I've seen", "We tested" — present?
-- Opinions: "I'd argue", "Honestly", "This is overrated", "This matters more than people think" — present?
-- Emotional variance: enthusiasm, skepticism, frustration, curiosity, humor — any present?
-- Conversational asides: parenthetical thoughts, self-corrections, rhetorical questions?
-- Vulnerability or uncertainty: "I'm not sure about this", "The data is mixed", "We got this wrong"?
-- Hedging or false balance where a real position exists: "on one hand... on the other", "it depends", "there are pros and cons to both" — count each; genuine uncertainty is fine, avoiding a real answer is not
-- Specific references: named tools, named versions, exact settings, exact error messages, people, events, publications, dates?
-- Time-boxed case study language: "I tried this for 30 days", "We ran this for one quarter", "Here's the dashboard at week 6" — present where the content type allows?
-- "From the field" proof: screenshot callouts, captioned photo references, dashboard descriptions — present?
-- Score: rich personality + first-hand experience signals throughout = 10, detached encyclopedic = 1
-
-#### 7. Structural Unpredictability
-- Section lengths: all roughly equal? (AI) or deliberately varied? (human)
-- Paragraph openers: all topic sentences? Or varied (question, example, continuation)?
-- Same paragraph template repeated (topic sentence → explanation → example → summary, again and again)? — flag every repetition after the first
-- Conclusion: recap of main points? (AI) Or forward-looking/question/callback? (human)
-- Opening: broad definitional? (AI) Or specific scene/claim/stat with commentary? (human)
-- Subheadings: generic labels ("Benefits", "Challenges")? Or personality ("Why This Actually Matters")?
-- Synonym rotation: same concept called different names each paragraph? (AI tell)
-- Format matches the venue: a short reply or comment with `## Headers`, 3+ bullet points, or bold mid-sentence reads as AI regardless of word choice. Long articles can use structure when it serves reading; replies, comments, and short posts must be prose unless the surrounding chain uses markdown. Score down hard for short-form content with templated structure
-- Score: unpredictable, varied structure = high, formulaic = low
-
-#### 8. Transition Quality
-- Count formulaic transitions: "Furthermore", "Moreover", "Additionally", "Moving on", "As we discussed", "It's worth noting"
-- Check for conversational alternatives: "But here's the thing", "So.", "The catch?", "And yet."
-- Check for zero-transition jumps (just starting the next idea — humans do this often)
-- Score: organic or absent transitions = high, formulaic = low
-
-### Diagnostic Report Format
-
-```
-## 🧬 HUMANIZATION DIAGNOSTIC: [filename or "Draft"]
-**Word count**: X words
-**Overall humanization score**: X/80
-**Risk level**: Pass (65+) / Borderline (45–64) / Flagged (30–44) / Critical (<30)
-
-| Dimension          | Score | Key Findings              |
-|--------------------|-------|--------------------------|
-| Perplexity         | X/10  | [summary]                |
-| Burstiness         | X/10  | [summary]                |
-| Vocabulary         | X/10  | [X dead words found]     |
-| Contractions       | X/10  | [X uncontracted forms]   |
-| Grammar humanity   | X/10  | [summary]                |
-| Voice & personality| X/10  | [summary]                |
-| Structure          | X/10  | [summary]                |
-| Transitions        | X/10  | [X formulaic found]      |
-
-### Worst Offenders (fix these first)
-1. [Most impactful issue — specific location — fix]
-2. [Second — specific location — fix]
-3. [Third — specific location — fix]
-
-### Dead Word Inventory
-[List every flagged word/phrase with location]
-```
-
-### 7-Pass Rewrite Technique
-
-Apply section by section, in order. Preserve every fact, citation, and data point — rewrite the voice, not the content.
-
-Pass 1: Vocabulary — Replace every dead word, dead transition, dead phrase, and formal overreach. Use the simplest natural word. Don't replace with another AI-sounding synonym — use what a human expert in this field would actually say.
-
-Pass 2: Contractions — Convert every uncontracted form unless it's deliberate emphasis. "Do not touch this" (emphasis) is fine. "It does not appear to be the case" → "It doesn't look like it."
-
-Pass 3: Rhythm — Rebuild sentence lengths for burstiness. Find runs of 3+ similar-length sentences: break one into a fragment, merge two into a long flowing one. After any sentence >25 words, follow with one <8 words. Insert a one-sentence paragraph between dense ones.
-
-Pass 4: Transitions — Kill every formulaic transition. Replace with nothing (just start the next idea), or: "But.", "So here's the thing.", "The catch?", "And yet —", "Which brings up something interesting."
-
-Pass 5: Grammar humanity — Start 2–3 sentences per section with "And" or "But". Add 1–2 parenthetical asides per major section. Use at least one fragment per section. Remove all trailing participle phrases — rewrite as separate sentences. Remove all "not just X, but also Y" constructions. Remove semicolons connecting simple phrases.
-
-Pass 6: Voice injection — At least one first-person observation per major section (if content type allows). At least one opinion or position taken. At least one moment of specificity: a named tool, person, date, or publication. At least one emotional beat: enthusiasm, skepticism, surprise, frustration.
-
-Pass 7: Structure — Make section lengths deliberately unequal. Vary paragraph openers (question, example, continuation — not always topic sentence). If the conclusion recaps, rewrite to end with a question, prediction, or callback. If subheadings are generic, inject personality. Kill synonym rotation — pick the best word and stick with it.
+For a short post, these are quick checks, not seven mandatory full rewrites. Stop when the identified problems are resolved. If evidence or intent remains missing, report it instead of manufacturing a smoother answer.
 
 ## Examples
 
-AI writes:
-> "Digital marketing has evolved significantly over the past decade. Companies now utilize multiple channels to reach their audiences. Social media platforms offer unique opportunities for engagement. Content marketing remains a powerful strategy for building trust."
+Illustrative source: the team changed a retry setting after one failed import. It has not measured a general success rate.
 
-Human writes:
-> "Digital marketing looks nothing like it did ten years ago. Nothing. The channels alone — social, search, email, video, podcasts, influencer partnerships — would've seemed absurd in 2014. And most companies are still figuring it out, throwing budget at whatever platform had a good case study last quarter."
+Before:
+> We learned the hard way that reliability isn't about tools. It's about mindset. One simple change fixed everything.
 
-What changed: Specific over abstract. Fragments for punch. Contractions throughout. First-person energy. Unexpected vocabulary. Dramatic rhythm shifts. No dead words.
+After:
+> After an import failed, we changed the retry setting. We haven't measured whether that change improves the overall success rate.
+
+The revision preserves the actual action and uncertainty without manufacturing a transformation.
+
+Illustrative formal notice:
+> Do not share the recovery code.
+
+Keep it. Forcing a contraction, aside, or fragment would not improve this instruction.
+
+## Checklist
+
+When a diagnostic is requested, report the affected dimensions, excerpts, fixes, and unresolved evidence. Keep this review separate from public copy. Use another audit's editorial rubric only when requested; label its scores as judgments, not detector probabilities.
+
+- [ ] Source facts, qualifiers, and disclosures survive the revision.
+- [ ] No invented experience, mistakes, emotions, or persona signals were added.
+- [ ] Each change fixes a stated reading problem rather than chasing a quota.
+- [ ] The destination permits the proposed level of writing assistance.
+- [ ] Before/after examples preserve meaning; unresolved facts are identified.
+- [ ] Final prose and internal review notes are clearly separated.
+
+## References
+
+- [Al Ali et al., EACL 2026](https://aclanthology.org/2026.eacl-srw.20/) — language-specific detector evaluation; do not generalize its Czech findings to every language or platform.
+- [Google AI-content guidance](https://developers.google.com/search/docs/fundamentals/using-gen-ai-content) and [people-first content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content).
+- [GOV.UK clear-language guidance](https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/writing-guidelines/clear-language/) — an example of professional plain language.

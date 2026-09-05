@@ -8,7 +8,7 @@ These are live verification procedures, not claims that every server exposes the
 
 | Item | Check before marking ready |
 |---|---|
-| Post length | Inspect the connected server's instance response, starting with `/api/v1/instance`; look for `configuration.statuses.max_characters`. If unavailable, use its current documentation or composer counter. Validate final copy with URLs, tags, CW, and disclosure included. |
+| Post length | Inspect `/api/v2/instance` on Mastodon 4.0+ for `configuration.statuses.max_characters` and `characters_reserved_per_url`; v1 is deprecated. For older servers use their documented endpoint or composer. Validate final copy with tags, CW, and disclosure included. |
 | Multi-image post | Read the accepted image count, formats, and per-file size limits. Confirm ordering and crops in preview; describe each image separately. |
 | Video or audio | Read accepted formats and file-size limits before commissioning the asset. Check playback, supply captions or a transcript, and inspect attachment compatibility. |
 | Alt text | Check the actual description-field character cap. Describe visible evidence and relevant embedded text; link an accessible table or transcript when the complete content won't fit. Check any client reminder independently from server enforcement. |
@@ -20,6 +20,8 @@ These are live verification procedures, not claims that every server exposes the
 | Followers or specific recipients | Read the audience explanation and recipient list. Don't describe a mentioned-only exchange as a secure customer-support channel. |
 
 Exact character, media, poll, and description caps are intentionally runtime checks. A universal number without server evidence would give false precision. Obtain that evidence before sizing an asset or promising publication readiness.
+
+Use descriptions for the actual media, not an overflow post or hidden promotion. Include necessary text visible in a screenshot and match the published redaction; don't reveal removed information in its description (directional). Mastodon's posting documentation counts HTTP(S) URLs as 23 characters and discourages shorteners; inspect the connected composer's counter rather than manually counting a long URL (official, Posting, reviewed 2026-09-05).
 
 ### Profile as a useful destination
 
@@ -58,6 +60,8 @@ Quote display arrived in Mastodon 4.4; authoring and approval controls arrived i
 Messages separation and changes to followed-hashtag navigation are part of the Mastodon 5.0 development preview. Enabled local and federated feeds are retained in that preview (official, Foundation preview, 2026-08). Don't treat it as a shipped UI contract. Recheck search aggregation and recommendation features when they ship; don't invent current FASP, Fediscovery, or For you behavior from announcements alone.
 
 ## References
+
+- [Instance API and version history](https://docs.joinmastodon.org/methods/instance/), reviewed 2026-09-05.
 
 - [Posting](https://docs.joinmastodon.org/user/posting/), 2026-07, verified media-description and Quiet public behavior; live-check guide for optional formats, no additional fixed caps asserted here.
 - [Profile](https://docs.joinmastodon.org/user/profile/), 2026-04.

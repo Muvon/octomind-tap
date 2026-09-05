@@ -1,6 +1,6 @@
 ## Overview
 
-Use this reference during the editorial pass on a Reddit draft. Apply `content-voice` for generic vocabulary; use the table below to resolve formulaic structure in the context of an actual reply chain. These are editorial judgments, not Reddit classifier features or proof of authorship (directional).
+Use this reference during the editorial pass on a Reddit draft. Apply `content-voice` for generic vocabulary; use the table below to inspect structure in the actual reply chain. Name the reader-facing problem before editing: redundancy, unclear meaning, unsupported emphasis, or an inappropriate register. If a construction serves the author and reader, keep it. These are editorial judgments, not Reddit classifier features or proof of authorship (directional).
 
 ## Pattern review
 
@@ -11,13 +11,15 @@ Use this reference during the editorial pass on a Reddit draft. Apply `content-v
 | Repeated emphasis words such as “quietly,” “honestly,” or “actually” | Delete empty emphasis; preserve a literal, necessary use | Aborn, practitioner, 2026-07 |
 | Staccato sentence stacks or mechanically equal paragraphs | Let the explanation determine paragraph breaks; don't impose artificial unevenness | Gichigi, practitioner, 2026-02 |
 | Dramatic pivots, “here's the thing,” or “let that sink in” | Connect the substantive sentences directly | Gichigi, practitioner, 2026-02; broader phrase review is directional |
-| Repeated em-dashes | Use ordinary punctuation; retain a useful dash in the author's established register without a quota | Cox, practitioner, 2026-06 |
+| Repeated em-dashes | Check whether interruptions obscure the sentence; retain useful dashes and do not count them against a quota | Cox, practitioner, 2026-06 |
 | A concluding recap or tidy moral that adds nothing | Stop where the answer ends; retain an actionable recommendation when it answers the question | Gichigi, practitioner, 2026-02 |
 | Miracle-fix story that erases costs or ongoing problems | Restore documented conditions, unresolved outcomes, and other changes | StoryScope extrapolation, directional |
-| Rhetorical-question opener, “nobody talks about” claim, engagement-bait closer | Lead with the supplied observation; ask only a question whose answer is needed | House editorial judgment, directional |
+| Rhetorical-question opener, “nobody talks about” claim, engagement-bait closer | Remove unsupported novelty or a question that delays the point; retain a clear question that frames a real discussion | House editorial judgment, directional |
 | Hashtag stacks, emoji bullets, unnecessary bold or slide-like comment headers | Strip decoration; retain meaningful formatting for evidence or requested enumeration | Reddit register judgment, directional |
 
 The prose advice is directional even when its source is dated. None of these sources establishes a punctuation-based removal rule.
+
+Don't turn the table into an AI-likelihood score or a fixed rewrite sequence. A rule that removes every contrast, triad, summary, or polished sentence creates another uniform style and can damage a clear explanation. Evaluate the revised meaning and usefulness, not how many patterns disappeared (directional).
 
 ## Venue and provenance tests
 

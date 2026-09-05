@@ -40,7 +40,7 @@ CreatorIQ respondents reported tension between brand requests and audience prefe
 
 ## Spoken-register editing rationale
 
-The Aborn, Cox and Gichigi checklists identify perceived writing patterns, not reliable authorship tests. Apply their guidance to formulaic contrasts, padded lists, repetitive emphasis words, empty pivots and over-neat conclusions. Read these edits aloud in the speaker's voice and keep useful punctuation; manufactured errors do not establish human authorship (directional).
+The Aborn, Cox and Gichigi checklists are practitioner preferences, not authorship tests or YouTube policy. Use them to notice possible padding; decide from the speaker's meaning and register, not a banned-pattern list. Keep useful contrasts, questions, structured explanations, and punctuation. Read revisions with the footage: removing a qualification or technical term to improve cadence can make an otherwise fluent script false (directional).
 
 Keep the author's real decision and its cost when supported by source notes (directional; Lees). Inspect miracle-fix stories for erased tradeoffs: StoryScope's long-fiction findings motivate that editorial question, but don't establish a YouTube script detector (directional; StoryScope extrapolation).
 

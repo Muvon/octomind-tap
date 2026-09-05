@@ -15,7 +15,7 @@ rules:
 
 ## Overview
 
-Write LinkedIn content that expresses the author's actual judgment and helps a specific reader act. Apply supplied facts and proof first, then documented author voice, then platform conventions. Use `content-voice` for generic editing; this skill adds LinkedIn execution.
+Write LinkedIn content that expresses the author's actual judgment and helps a specific reader act. Apply supplied facts and proof first, then documented author voice, then platform conventions. Use `content-voice` for generic editing. Prepare copy and a publishing handoff; posting, scheduling, and outreach require a request for those actions.
 
 ## Mental model
 
@@ -46,11 +46,11 @@ Put the concrete subject and stake in the opening. Follow with the evidence and 
 
 Documents and multi-image posts are strong testing candidates, while video has no universal advantage (measured, Metricool, n=673,658 posts, 2026-04; AuthoredUp Formats, n=3M+ personal-profile posts, 2026-09). Don't discard polls: Socialinsider reports 4.50% engagement for its Q2 table, but its collection dates conflict with that table's period (measured, Socialinsider, n=1.3M business posts, 2026-03; see reference caveat).
 
-Package image descriptions and alt text wherever supported. For documents, include accessible text and a text summary if the uploader lacks per-slide descriptions. Supply corrected captions, an asset brief, and source permissions; protect readable evidence before visual decoration (directional).
+Package image descriptions and alt text wherever supported. LinkedIn may supply automatic alt text, with no assignment alert on mobile; review each image's description rather than assuming missing warnings mean it is ready (official, LinkedIn Alt Text Help, reviewed 2026-09-05). For documents, include accessible text and a text summary if the uploader lacks per-slide descriptions. Supply corrected captions, an asset brief, and source permissions (directional).
 
 ## Launch and proof posts
 
-Before drafting, obtain the audience and buying situation; promise; available proof and source; desired action and destination; campaign stage (teaser, launch day, proof, objection, or recap); disclosure obligations; author voice samples; and who will answer replies. Deliberately choosing no CTA is valid. If proof is missing, narrow the claim or obtain it before calling the draft publishable.
+For launch or proof planning, record the audience, buying situation, promise, available proof, desired action/destination, campaign stage, disclosures, and reply owner. Use author voice samples when available; their absence does not block a restrained, fact-bounded draft or routine edit. No CTA is valid. If essential proof is missing, narrow or withhold that claim while continuing supported work.
 
 Use problem framing before announcement and follow with deeper evaluation material. This follows LinkedIn's ramp, launch, and nurture guidance (official, LinkedIn Launch Guide, 2026-05). Bundle minor changes when they don't justify a distinct buyer story (directional; Oakley, 2026-03).
 
@@ -69,7 +69,7 @@ For announcement and proof posts, remove the product name temporarily: the remai
 
 Use a root-post link when the reader needs immediate access. If testing a first-comment link, prepare a descriptive resource sentence and publish it immediately with the post; state where it is and check visibility. This is publishing discipline, with no proven ranking protection (directional). Link effects differed by account type: profile link posts had fewer impressions, Page link posts more (measured, Metricool, n=673,658 posts, 2026-04). Test qualified visits, not reach alone.
 
-Disclose employment, ownership, sponsorship, or another material relationship plainly; obtain customer/partner consent for names, quotes, screenshots, tags, and reuse (directional). LinkedIn recommends disclosing heavy AI reliance when non-obvious, and retains author responsibility (official, LinkedIn AI Help, 2026-08). Preserve C2PA Content Credentials; credentialed media can display a provenance icon, but missing icons don't establish human origin (official, LinkedIn Credentials Help, 2026-09 review, undated).
+Disclose material relationships and obtain consent for customer/partner attribution and reuse (directional). Content shared for money, free products/services, or other value requires LinkedIn's Brand Partnership label; its toggle works only on Public posts and resets Off for each new post. Don't bypass it through audience settings (official, Brand Partnership Help, reviewed 2026-09-05). LinkedIn recommends disclosing heavy AI reliance when non-obvious; this isn't a blanket AI-assistance labeling mandate (official, AI Help, reviewed 2026-09-05). Preserve C2PA Content Credentials; a missing provenance icon doesn't establish human origin (official, Credentials Help, reviewed 2026-09).
 
 Use genuine Collaborative Posts for joint work; members and Pages can invite up to five collaborators (official, LinkedIn Collaborative Posts, 2026-07). Give voluntary employee contributors their own experience angle. Don't organize reciprocal engagement rings, copy-paste praise, automated replies, or concealed endorsements (directional application of LinkedIn Authenticity, 2026-06). Open the launch reference for destination-specific voting rules and paid permissions.
 
@@ -100,7 +100,7 @@ Read supplied LinkedIn samples for formality and how the author explains a decis
 | Profile headline / About | Name the work and whom it helps. Support credentials with evidence; make the next step clear. Avoid an invented founder persona (directional). |
 | Connection note / DM / InMail | Refer to an observed buyer problem or actual conversation. Explain relevance and ask permission before sending a resource; don't treat a reaction as purchase intent (directional; Venetz, 2026-07). |
 
-Use the AI-tell pass as editing judgment, never authorship detection. Remove padded triads, repetitive emphasis words, contrast slogans, suspense filler, staccato stacks, and obligatory moral endings (directional; Aborn, 2026-07; Cox, 2026-06; Gichigi, 2026-02). Cut rhetorical-question openers, “nobody talks about” framing, “Let that sink in,” engagement-bait closers, hashtag stacks, and emoji bullets (directional). Preserve necessary uncertainty; don't turn a complex result into a miracle-fix parable (directional inference from StoryScope, 2026-08).
+Review voice and substance, not supposed proof of authorship. Remove filler, repetitive suspense, unsupported “nobody talks about” claims, and generic conclusions. Keep meaningful contrasts, useful lists, ordinary questions, and summaries when they serve the professional reader; don't turn an editing heuristic into a word or punctuation ban (directional; Aborn, 2026-07; Cox, 2026-06; Gichigi, 2026-02). Preserve necessary uncertainty and actual tradeoffs (directional inference from StoryScope, 2026-08).
 
 Retain useful punctuation in the author's register; avoid dense em-dashes without imposing an artificial quota (directional; Cox, 2026-06). Add no errors. Use genuine records for personal stakes; request missing detail or remove the claim (directional; Lees, 2026-08). Open the mechanics reference for localization and detector limitations.
 
@@ -120,7 +120,9 @@ Omit hashtags unless they clarify a topic or campaign; if useful, place them uno
 
 LinkedIn reduces wider distribution of apparently AI-generated content without perspective and acts on scaled automated comments or replies that merely restate a post (official, LinkedIn Authenticity, 2026-06). No cited policy establishes word-specific suppression or fabricated-story detection.
 
-Treat “Seems like AI slop” analytics feedback as a revision cue; the feedback itself isn't a takedown or policy decision (official, LinkedIn AI Help, 2026-08). Diagnose weak substance before cosmetic edits. Don't describe legitimate stories, announcements, or promotional links as automatically prohibited (directional).
+LinkedIn explicitly targets “comment to agree” bait, repetitive low-substance posts, and videos unrelated to their accompanying text (official, Feed Update, 2026-03). A specific question with a useful answer is different from a demand for comments. Add the author's supported perspective; cosmetic rewording of an empty post does not address the published concern (directional).
+
+Treat a “Seems like AI slop” analytics tip as a revision cue, not a takedown or policy decision (official, AI Help, reviewed 2026-09-05). Diagnose weak substance before cosmetic edits. Don't describe legitimate stories, announcements, or promotional links as automatically prohibited (directional).
 
 ## Examples
 
@@ -150,6 +152,8 @@ Every missing specific is marked; the copy avoids a miracle-fix claim.
 
 ### Consumer product maker: design decision
 
+Illustrative source brief: the maker's test notes report corner wear before the pages were used up; the maker chose a replaceable cover despite extra hinge bulk, documented in a side-view photo.
+
 > I kept the notebook cover replaceable after the pocket test.
 >
 > The corners wore before the pages were used up. A replaceable cover adds bulk at the hinge, which you can see in the side-view photo. I'm keeping that tradeoff in this version; it won't suit someone who wants the thinnest notebook.
@@ -177,14 +181,17 @@ The service boundary replaces generic excitement and avoids promising every repa
 - [ ] Opening names the subject and stake; preview the real mobile fold.
 - [ ] Keep a single main idea; choose the format for its evidence and check current constraints.
 - [ ] Every specific is supplied or placeholder-marked; verify cited numbers, denominators, dates, and sources. Unfilled drafts aren't publishable.
-- [ ] Preserve documented author voice; complete the AI-tell pass without manufactured mistakes.
+- [ ] Preserve documented author voice and useful structure; review substance without manufactured mistakes or style quotas.
 - [ ] Choose CTA or deliberate no-CTA; verify destination, campaign tags, and first-comment timing if used.
 - [ ] Check customer/partner consent, relevant mentions, and restrained hashtags.
-- [ ] Review affiliation/sponsorship disclosure, heavy AI-use disclosure, and Content Credentials.
+- [ ] Review affiliation, the current post's required Brand Partnership toggle, recommended heavy-AI disclosure, and Content Credentials.
 - [ ] Supply asset brief, readable assets, alt text/accessibility fallback, corrected captions, and source rights.
 - [ ] Assign reply and moderation coverage in audience timezones; include late follow-up and qualified-interest measures.
 
 ## References
+
+- [Feed Update](https://news.linkedin.com/2026/ImprovingTheFeed), 2026-03-12; [Alt Text Help](https://www.linkedin.com/help/linkedin/answer/a519856/adding-alternative-text-to-images-for-accessibility?lang=en), reviewed 2026-09-05.
+- [Brand Partnership Help](https://www.linkedin.com/help/linkedin/answer/a1627083) and [AI Help](https://www.linkedin.com/help/linkedin/answer/a1481496), reviewed 2026-09-05.
 
 Dates identify publication/update unless marked review. Detailed sources and cohort caveats: [mechanics](reference/mechanics.md) and [launch execution](reference/launch.md).
 

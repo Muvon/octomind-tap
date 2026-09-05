@@ -43,6 +43,8 @@ Use buyer vocabulary in speech and captions for clarity (directional). The evide
 
 ## AI and regional scope
 
+TikTok's general guidelines distinguish realistic synthetic people/scenes and meaning-changing edits from minor aesthetic edits or generic TTS that does not imitate a known person's voice. They require disclosure for the former, while some harmful fabrications remain prohibited even with disclosure (official, Integrity and Authenticity, 2025-08; rechecked 2026-09). Use the finished asset's actual construction, not a detector score or a claim that every synthetic voice is forbidden. A source-backed script read by TTS and a fabricated first-person testimonial are different cases.
+
 TikTok reported over 3 billion AIGC-labeled videos, creator labels, Content Credentials and invisible watermarking; it also reported joining the C2PA Steering Committee (official, TikTok AI Update, 2026-07). Retain provenance metadata and don't infer a launch date for watermarking from this announcement.
 
 The same announcement describes Manage Topics AIGC controls and testing detection of accounts dedicated to AI spam in political/current-event, financial-advice and medical content (official, TikTok AI Update, 2026-07). Separate the test announcement from deployed global enforcement. Review factual claims and original contribution in sensitive-topic assets (directional). Re-verify availability and regional policy before citing these mechanisms.
@@ -60,6 +62,7 @@ Don't generalize US Shop, UK case studies or the New Zealand newsroom announceme
 - [Socialinsider](https://www.socialinsider.io/blog/how-long-are-tiktok-videos/), 2026-07-10; [Metricool Instagram](https://metricool.com/press-release-instagram-study-2026/), 2026-06-16; [The Star usage report](https://www.the-star.co.ke/news/infographics/2026-08-19-how-much-time-people-spend-on-social-media-apps), 2026-08-19.
 - [Recommendation explainer](https://newsroom.tiktok.com/how-tiktok-recommends-videos-for-you?lang=en), 2020-06-18; [SMB Playbook](https://ads.tiktok.com/business/library/Global_SMB_Creative_Playbook.pdf), undated, verified 2026-09; [Creator format announcement](https://newsroom.tiktok.com/for-creators-future-format-summit?lang=en), 2024-03-05.
 - [TikTok AI Update](https://newsroom.tiktok.com/helping-people-spot-and-understand-ai-generated-content-on-tiktok-nz?lang=en-NZ), 2026-07-10; [US Shop AIGC Rules](https://seller-us.tiktok.com/university/essay?knowledge_id=491489038501663&lang=en), 2026-07-31; [Symphony announcement](https://ads.tiktok.com/business/en/blog/tiktok-symphony-ai-creative-suite/), 2026-06-22.
+- [Integrity and Authenticity](https://www.tiktok.com/community-guidelines/en/integrity-authenticity), 2025-08-14, effective 2025-09-13; rechecked 2026-09.
 
 Re-validate when: new benchmark editions appear; recommendation documentation changes; program or regional terms change; AI labeling or music rights change.
 Validated: 2026-09
