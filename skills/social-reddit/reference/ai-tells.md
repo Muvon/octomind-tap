@@ -16,6 +16,8 @@ Use this reference during the editorial pass on a Reddit draft. Apply `content-v
 | Miracle-fix story that erases costs or ongoing problems | Restore documented conditions, unresolved outcomes, and other changes | StoryScope extrapolation, directional |
 | Rhetorical-question opener, “nobody talks about” claim, engagement-bait closer | Remove unsupported novelty or a question that delays the point; retain a clear question that frames a real discussion | House editorial judgment, directional |
 | Hashtag stacks, emoji bullets, unnecessary bold or slide-like comment headers | Strip decoration; retain meaningful formatting for evidence or requested enumeration | Reddit register judgment, directional |
+| Uniform confidence sustained across a long technical answer | Answer fewer sub-questions instead of compressing the same content; density is what gets reviewed, not length | Operator observation, directional |
+| Every paragraph opening with a clean topic sentence | Let some paragraphs start mid-thought where the explanation actually continues | Operator observation, directional |
 
 The prose advice is directional even when its source is dated. None of these sources establishes a punctuation-based removal rule.
 
@@ -30,6 +32,32 @@ Keep a genuinely enumerable list when it helps a detailed post or requested answ
 Don't invent personal anchors, usernames, effort estimates, or a token drawback. Don't add disagreement solely to look independent. Keep consistent, accurate disclosure language when needed; varying it for concealment adds no value (directional).
 
 Treat samples of the author's actual writing as evidence of register. Aborn explicitly rejects deliberate typos as a solution to perceived AI style; her list also acknowledges that these devices occur in human writing (directional, Aborn, 2026-07).
+
+## Accusation clusters
+
+Correct content still draws authorship accusations, and correctness does not protect against it. In one observed case the person who asked the question thanked the author for the same answer another reader called generated (operator observation, directional).
+
+Treat a second accusation in a short window differently from the first. One accusation is one reader. Two in quick succession, on consecutive contributions in different communities, indicates the register itself is visible rather than a single hostile reader. Stop opening new threads for a cycle and continue only conversations already underway, written short (operator observation, directional).
+
+Do not post again anywhere in a thread where an accusation has just landed, including a reply to a friendly third party or the original poster. A second long contribution sitting beside the accusation reads as confirmation. This sometimes costs a genuine reply; take the cost (operator observation, directional).
+
+Expect the score to keep falling after the accusations stop. Vote decay and the conversation run on different clocks: in one observed case a flagged comment kept sliding for hours while the reply count under it stayed fixed at two. Continued decay is not evidence of new hostility and is not a reason to act, delete, or explain yourself. Read the number of participants, not the number (operator observation, directional).
+
+Check whether an accusation spread before deciding anything. Read the whole thread rather than the notification: a single unsupported remark that nobody echoes needs no response and no change of plan. Separate it from unrelated causes in the same window, such as a moderator removing the submission for its own reasons (operator observation, directional).
+
+Accusations track the writing, not its reception. In one observed day, the same author drew authorship accusations on a well-received contribution that was still gaining votes and on a heavily downvoted one, in four different communities. A high score is not cover, and a low score is not the cause. Do not infer from an accusation that the contribution was poor, and do not infer safety from a good one (operator observation, directional).
+
+Recognition builds over repeated exposure to the same account, not within a single contribution. In one observed case the accusation that named a specific model family came from someone who had already traded several rounds of detailed technical replies with the author and who continued arguing the substance in the same comment. Earlier turns in that same exchange drew nothing. Treat per-interlocutor exposure as its own budget: a long back-and-forth with one person is more identifying than the same number of contributions spread across strangers (operator observation, directional).
+
+An accusation embedded in an otherwise good-faith reply is the case most likely to tempt an exception to leaving it alone. It should not. Answering the substance while ignoring the accusation still reads as a response to the accusation, and the relationship is usually already spent (operator observation, directional).
+
+Once several accusations arrive across different communities in a short period, no per-contribution edit addresses it. Shortening, adding real uncertainty, removing product mentions and preferring concrete help are all worth doing on their own merits, and none of them prevented later accusations in the observed case. At that point the remaining lever is volume: publish less, in fewer places, for a while. A high daily contribution count from a single account is itself the exposure (operator observation, directional).
+
+Stated uncertainty helps only where it is true. Naming what you did not read, what you would verify before relying on the answer, or a real open question is useful because it is accurate and invites correction. Manufacturing a token doubt to look human is the invented-drawback failure this reference already prohibits, and it usually produces the least specific sentence in the draft (operator observation, directional).
+
+Repeating an argument across communities within a short period is more identifying than repeating a subject. Keep a record of which arguments have been used and when, and skip an otherwise suitable thread whose argument is already spent (operator observation, directional).
+
+Skip a thread where another participant has already made the contribution you planned. Restating it adds nothing to the discussion and increases the repetition signature (operator observation, directional).
 
 ## What the research can establish
 
@@ -57,6 +85,7 @@ The MIDI benchmark finds that conversational context helps idiom understanding w
 - [StoryScope](https://arxiv.org/abs/2604.03136), revision 2026-08-10, preprint.
 - [MIDI](https://arxiv.org/abs/2606.02147), 2026-06-01, preprint.
 - [Human editing and detector scores](https://arxiv.org/abs/2608.26710), 2026-08-27, preprint.
+- Operator observation: unpublished single-operator notes from sustained commenting; directional only, no measured effect size.
 
 Re-validate when model habits or author samples change, or when reproducible research tests short social writing directly.
 

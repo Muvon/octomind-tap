@@ -115,7 +115,9 @@ Illustrative planning offsets, not measured timing optima; skip slots that lack 
 
 Use Reddit Pro post views, upvote ratio, comments and shares, plus available comment views/replies and account reach/followers. Hourly post views cover the first 48 hours and remain available for 45 days (official, Reddit Pro Performance, 2026-04). Export supported fields; don't assume every visible metric is in CSV. Awards are contextual: Reddit announced expanded free-award availability, so award changes alone don't establish stronger demand (official, Reddit Changelog, 2026-08).
 
-Keep Reddit-native engagement separate from destination visits, activation, retention, and revenue. Record attribution uncertainty (directional). Open `reference/examples.md` when building a launch measurement package, evaluating commerce or paid follow-through, or adapting proof to a new niche.
+Keep Reddit-native engagement separate from destination visits, activation, retention, and revenue. Record attribution uncertainty (directional).
+
+Treat a single score reading as noise. Scores move in both directions within an hour of posting, and an early negative reading can recover fully. Require a value to hold across two separated observations before drawing any conclusion about a venue, a format, or whether naming a product cost you the thread. Record contributions that mention a product separately from those that don't, and compare them inside the same community rather than across communities (operator observation, directional). Open `reference/examples.md` when building a launch measurement package, evaluating commerce or paid follow-through, or adapting proof to a new niche.
 
 ### AMAs
 
@@ -156,6 +158,7 @@ For an AI accusation, choose by substance rather than escalation order (directio
 | Factual error identified | Correct it and provide the source |
 | Genuine authorship or automation question | State the actual assistance used and correct missing disclosure |
 | Unsupported insult with no question | Leave it unanswered; don't debate detector scores |
+| Second accusation in a short window, different communities | Read it as register rather than one reader; pause new threads for a cycle, continue only warm conversations, and post nothing further in the flagged threads |
 | Rule violation or abusive exchange | Stop; resolve the moderation issue without evasive reposting |
 
 Open `reference/imperfections.md` for worked response choices.
@@ -167,6 +170,8 @@ Check eligibility messages: communities can gate on account age, total/subreddit
 AutoModerator can enforce configured domain, keyword, pattern, and affiliate-link checks (official, Reddit AutoModerator, 2026-08). Rules Hub uses LLMs to interpret rule intent under moderator control and remains in rollout (official, Reddit Infrastructure, 2026-08). Follow the meaning of rules; don't claim ubiquitous AI-text classifiers or universal phrase penalties.
 
 Repeated mass posting, rapid old-content reposting for karma, and continuously promotional bots are prohibited (official, Reddit Spam, 2026-05). If a post disappears, inspect its state and moderation messages; record the reason as unknown unless explicitly supplied. Don't diagnose removal from a logged-out view or low score alone (directional).
+
+A failed write can mean lost permission rather than a transient outage, and the surface error may not say so. Where a write fails twice for the same destination, check the account's standing in that community before a third attempt, and check whether an earlier attempt already published before resending; a response failure can still leave a duplicate. When standing has been lost, drop the destination and redistribute the work instead of appealing by reflex (operator observation, directional).
 
 ## Examples
 
