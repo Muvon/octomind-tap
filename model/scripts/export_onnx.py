@@ -1,22 +1,116 @@
-"""Export the fine-tuned sentence-transformer to ONNX.
+"""Export the fine-tuned sentence-transformer to ONNX (fp32 + static int8).
 
-Optional second artifact alongside safetensors. Octomind currently loads
-safetensors directly via candle, but we publish ONNX too so the model can
-be consumed by ORT-based runtimes (fastembed user-defined path, edge
-deployments, browser via onnxruntime-web, etc).
+Octomind's runtime can load this checkpoint two ways:
 
-Output goes under `<run>/onnx/`. The push step uploads the entire
-checkpoint root, so both formats end up on HF.
+  - `hf:muvon/octomind-embed`   → candle reads `model.safetensors` (fp32)
+  - `onnx:muvon/octomind-embed` → ORT reads `onnx/*.onnx` (this script)
+
+The ONNX path is the fast one: ORT's fused int8 kernels are typically 2-4x
+quicker on CPU than candle fp32, at roughly a quarter of the on-disk size.
+octolib's provider probes `onnx/model_quantized.onnx` BEFORE `onnx/model.onnx`,
+so publishing both means every consumer gets int8 by default while the fp32
+graph stays available for anyone who pins it explicitly.
+
+Quantization is WEIGHT-ONLY int8, never activation-dynamic. Dynamic activation
+quantization recalculates ranges per batch, which makes a vector depend on what
+else was in its batch; fastembed refuses to batch such graphs at all. Weight-only
+quantization keeps activations fp32, so embeddings stay batch-invariant.
+
+Output layout under `<run>/onnx/`:
+
+    model.onnx              fp32 graph
+    model_quantized.onnx    int8 graph (preferred by the runtime)
+    tokenizer.json, config.json, special_tokens_map.json,
+    tokenizer_config.json, 1_Pooling/ …
+
+`1_Pooling/config.json` is copied deliberately: the ONNX provider reads it to
+decide mean vs CLS pooling. Without it the provider assumes mean — correct for
+this model today, but silently wrong for any future CLS-pooled checkpoint.
+
+Verify a quantized export before publishing:
+
+    uv run python scripts/eval_gate.py --model <run>/onnx --onnx-file model_quantized.onnx
 """
 
 from __future__ import annotations
 
 import argparse
+import json
 import shutil
 from pathlib import Path
 
 from optimum.onnxruntime import ORTModelForFeatureExtraction
 from transformers import AutoTokenizer
+
+# Files the ONNX provider (and sentence-transformers) look for beside the graph.
+SIDECAR_FILES = (
+    "modules.json",
+    "sentence_bert_config.json",
+    "config_sentence_transformers.json",
+    "1_Pooling",
+)
+
+
+def quantize_int8(out: Path, src_name: str = "model.onnx") -> Path | None:
+    """Produce `model_quantized.onnx` next to the fp32 graph.
+
+    Returns the path on success, or None if the quantization extras aren't
+    installed — the fp32 export stays valid either way.
+    """
+    try:
+        from onnxruntime.quantization import QuantType, quantize_dynamic
+    except ImportError as exc:  # pragma: no cover - environment dependent
+        print(f"  int8 skipped — onnxruntime.quantization unavailable ({exc})")
+        print("  install with: uv add 'optimum[onnxruntime]'")
+        return None
+
+    src = out / src_name
+    if not src.exists():
+        print(f"  int8 skipped — {src_name} not found")
+        return None
+
+    dst = out / "model_quantized.onnx"
+    print("  quantizing → int8 weights (per-channel, activations left fp32)")
+
+    # Despite the name, `quantize_dynamic` with weight_type=QInt8 and
+    # per_channel=True quantizes WEIGHTS only; activations are computed in fp32
+    # and re-quantized per operator, so the output does not depend on batch
+    # composition. That is what keeps this graph safe to batch.
+    quantize_dynamic(
+        model_input=str(src),
+        model_output=str(dst),
+        weight_type=QuantType.QInt8,
+        per_channel=True,
+        reduce_range=False,
+        extra_options={"MatMulConstBOnly": True},
+    )
+    return dst
+
+
+def copy_sidecars(run: Path, out: Path) -> None:
+    for fname in SIDECAR_FILES:
+        src = run / fname
+        if not src.exists():
+            continue
+        dst = out / fname
+        if src.is_dir():
+            shutil.copytree(src, dst, dirs_exist_ok=True)
+        else:
+            shutil.copy2(src, dst)
+
+
+def warn_if_pooling_missing(out: Path) -> None:
+    """The provider's pooling default is mean; make a mismatch loud, not silent."""
+    pooling_cfg = out / "1_Pooling" / "config.json"
+    if not pooling_cfg.exists():
+        print("  WARNING: no 1_Pooling/config.json — ONNX consumers will assume MEAN pooling")
+        return
+    try:
+        mode = json.loads(pooling_cfg.read_text()).get("pooling_mode")
+    except (OSError, json.JSONDecodeError):
+        return
+    if mode and mode.lower() != "mean":
+        print(f"  NOTE: checkpoint pools with '{mode}' — octolib reads this from 1_Pooling")
 
 
 def main() -> int:
@@ -24,6 +118,11 @@ def main() -> int:
     ap.add_argument("--run", type=Path, required=True, help="sentence-transformer checkpoint dir")
     ap.add_argument("--out", type=Path, default=None, help="output dir (default: <run>/onnx)")
     ap.add_argument("--opset", type=int, default=14)
+    ap.add_argument(
+        "--no-quantize",
+        action="store_true",
+        help="export fp32 only (skip the int8 graph the runtime prefers)",
+    )
     args = ap.parse_args()
 
     out = args.out or (args.run / "onnx")
@@ -36,18 +135,22 @@ def main() -> int:
     tok = AutoTokenizer.from_pretrained(args.run)
     tok.save_pretrained(out)
 
-    for fname in ("modules.json", "sentence_bert_config.json", "config_sentence_transformers.json", "1_Pooling"):
-        src = args.run / fname
-        if src.exists():
-            dst = out / fname
-            if src.is_dir():
-                shutil.copytree(src, dst, dirs_exist_ok=True)
-            else:
-                shutil.copy2(src, dst)
+    copy_sidecars(args.run, out)
+    warn_if_pooling_missing(out)
+
+    if not args.no_quantize:
+        quantize_int8(out)
 
     print("done. files:")
     for f in sorted(out.iterdir()):
-        print(f"  {f.name}")
+        if f.is_file():
+            print(f"  {f.name}  ({f.stat().st_size / (1024 * 1024):.1f} MB)")
+        else:
+            print(f"  {f.name}/")
+
+    print()
+    print("Runtime picks onnx/model_quantized.onnx first. Verify before publishing:")
+    print(f"  uv run python scripts/eval_gate.py --model {out} --onnx-file model_quantized.onnx")
     return 0
 
 

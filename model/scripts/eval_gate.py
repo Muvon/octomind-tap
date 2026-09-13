@@ -45,6 +45,95 @@ from sentence_transformers import SentenceTransformer
 
 
 # ---------------------------------------------------------------------------
+# Encoders
+# ---------------------------------------------------------------------------
+#
+# Two backends, one interface (`.encode(texts, ...) -> np.ndarray`):
+#
+#   SentenceTransformer   the fp32 safetensors checkpoint (candle's path)
+#   OnnxEncoder           an `onnx/*.onnx` graph via onnxruntime (ORT's path)
+#
+# The ONNX branch exists so the quantized graph that ships to users is gated on
+# the SAME eval as the fp32 weights. int8 shifts cosine values slightly, so a
+# graph that was never scored here can silently degrade auto-activation.
+
+
+class OnnxEncoder:
+    """Mirror of octolib's ONNX provider: ORT forward, then pooling + L2 norm.
+
+    Pooling is read from `1_Pooling/config.json` exactly as the Rust provider
+    reads it, so a mismatch shows up here rather than in production.
+    """
+
+    def __init__(self, model_dir: Path, onnx_file: str = "model_quantized.onnx"):
+        import onnxruntime as ort
+        from tokenizers import Tokenizer
+
+        model_dir = Path(model_dir)
+        graph = model_dir / onnx_file
+        if not graph.exists():
+            raise SystemExit(
+                f"missing ONNX graph: {graph}\n"
+                f"run: uv run python scripts/export_onnx.py --run <checkpoint>"
+            )
+
+        self.name = f"{model_dir}/{onnx_file}"
+        self.session = ort.InferenceSession(str(graph), providers=["CPUExecutionProvider"])
+        self.input_names = {i.name for i in self.session.get_inputs()}
+
+        self.tokenizer = Tokenizer.from_file(str(model_dir / "tokenizer.json"))
+        self.tokenizer.enable_padding()
+        self.tokenizer.enable_truncation(max_length=512)
+
+        self.pooling = "mean"
+        pooling_cfg = model_dir / "1_Pooling" / "config.json"
+        if pooling_cfg.exists():
+            mode = json.loads(pooling_cfg.read_text()).get("pooling_mode", "mean")
+            self.pooling = str(mode).lower()
+        print(f"onnx encoder: {onnx_file}  pooling={self.pooling}")
+
+    def encode(self, texts, normalize_embeddings=True, convert_to_numpy=True, batch_size=32):
+        if isinstance(texts, str):
+            texts = [texts]
+        out = []
+        for start in range(0, len(texts), batch_size):
+            out.append(self._encode_batch(list(texts[start : start + batch_size])))
+        stacked = np.vstack(out) if out else np.zeros((0, 0), dtype=np.float32)
+        if normalize_embeddings:
+            norms = np.linalg.norm(stacked, axis=1, keepdims=True)
+            stacked = stacked / np.clip(norms, 1e-12, None)
+        return stacked
+
+    def _encode_batch(self, batch: list[str]) -> np.ndarray:
+        encodings = self.tokenizer.encode_batch(batch)
+        ids = np.array([e.ids for e in encodings], dtype=np.int64)
+        mask = np.array([e.attention_mask for e in encodings], dtype=np.int64)
+
+        feed = {"input_ids": ids, "attention_mask": mask}
+        if "token_type_ids" in self.input_names:
+            feed["token_type_ids"] = np.zeros_like(ids)
+
+        hidden = self.session.run(None, feed)[0]
+        if hidden.ndim == 2:
+            # Graph pools internally.
+            return hidden.astype(np.float32)
+        if self.pooling == "cls":
+            return hidden[:, 0, :].astype(np.float32)
+
+        mask_f = mask[:, :, None].astype(np.float32)
+        summed = (hidden * mask_f).sum(axis=1)
+        counts = np.clip(mask_f.sum(axis=1), 1e-9, None)
+        return (summed / counts).astype(np.float32)
+
+
+def load_encoder(model_path: str, onnx_file: str | None):
+    if onnx_file:
+        return OnnxEncoder(Path(model_path), onnx_file)
+    print(f"loading model: {model_path}")
+    return SentenceTransformer(model_path)
+
+
+# ---------------------------------------------------------------------------
 # Runtime-mirror scoring (must stay aligned with
 # octomind/src/mcp/core/capability.rs::score_capability + select_with_margin)
 # ---------------------------------------------------------------------------
@@ -109,9 +198,9 @@ def evaluate(
     top_k: int,
     threshold: float,
     margin: float,
+    encoder=None,
 ) -> dict:
-    print(f"loading model: {model_path}")
-    model = SentenceTransformer(model_path)
+    model = encoder if encoder is not None else load_encoder(model_path, None)
 
     labels = sorted(triggers_by_cap.keys())
     label_trigger_vecs: dict[str, np.ndarray] = {}
@@ -204,6 +293,10 @@ def evaluate(
             "top_k": top_k,
             "threshold": threshold,
             "margin": margin,
+            # Which graph produced these numbers. A baseline recorded from the
+            # fp32 weights is not directly comparable to an int8 run, so the
+            # backend is recorded alongside the metrics.
+            "backend": "onnx" if isinstance(encoder, OnnxEncoder) else "safetensors",
         },
     }
     return out
@@ -302,6 +395,10 @@ def main() -> int:
     ap.add_argument("--per-label-tol", type=float, default=0.05)
     ap.add_argument("--json-out", type=Path, default=None,
                     help="dump the full report as JSON (in addition to printing)")
+    ap.add_argument("--onnx-file", type=str, default=None,
+                    help="score an ONNX graph instead of safetensors; --model is then "
+                         "the dir holding it, e.g. --model <run>/onnx "
+                         "--onnx-file model_quantized.onnx")
     args = ap.parse_args()
 
     cfg = yaml.safe_load(args.config.read_text())
@@ -324,7 +421,8 @@ def main() -> int:
     threshold = float(eval_cfg.get("runtime_threshold", 0.55))
     margin = float(eval_cfg.get("runtime_margin", 0.08))
 
-    rep = evaluate(args.model, eval_rows, triggers_by_cap, top_k, threshold, margin)
+    encoder = load_encoder(args.model, args.onnx_file)
+    rep = evaluate(args.model, eval_rows, triggers_by_cap, top_k, threshold, margin, encoder)
     print_report(rep)
 
     if args.json_out:

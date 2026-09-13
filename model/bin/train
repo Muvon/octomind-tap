@@ -174,11 +174,25 @@ fi
 
 if [ $SKIP_EXPORT -eq 0 ]; then
   echo
-  echo "==> export_onnx.py"
+  echo "==> export_onnx.py (fp32 + int8)"
   $PY scripts/export_onnx.py --run "$LAST_RUN"
+
+  # The runtime prefers onnx/model_quantized.onnx, so the quantized graph is
+  # what users actually run. Score it on the same eval as the fp32 weights —
+  # int8 shifts cosines, and an unscored graph can quietly lose recall.
+  if [ -f "$LAST_RUN/onnx/model_quantized.onnx" ] && [ -f data/eval_real.jsonl ]; then
+    echo
+    echo "==> eval_gate.py — int8 ONNX graph (what the runtime will load)"
+    $PY scripts/eval_gate.py --model "$LAST_RUN/onnx" \
+      --onnx-file model_quantized.onnx || true
+  fi
 fi
 
 echo
 echo "Done."
 echo "  Upload:        HF_TOKEN=... bin/publish --embed-only"
 echo "  Calibrate τ/δ: $PY scripts/calibrate_thresholds.py --model $LAST_RUN"
+echo
+echo "NOTE: octomind loads onnx:muvon/octomind-embed (int8). If the int8 gate"
+echo "      numbers above differ from fp32, recalibrate against the int8 graph"
+echo "      and update AUTO_ACTIVATE_THRESHOLD / SEMANTIC_DEFAULT_THRESHOLD."

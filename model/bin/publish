@@ -84,6 +84,16 @@ fi
 HAS_ONNX=""
 [ -d "$RUN/onnx" ] && HAS_ONNX="(includes ONNX)"
 
+# octomind loads `onnx:muvon/octomind-embed`, and octolib probes
+# onnx/model_quantized.onnx first — so a publish without that file silently
+# downgrades every user to the fp32 graph (or fails if no ONNX at all).
+if [ ! -f "$RUN/onnx/model_quantized.onnx" ]; then
+  echo "WARNING: no onnx/model_quantized.onnx in $RUN" >&2
+  echo "         the runtime prefers the int8 graph; export it with:" >&2
+  echo "           $PY scripts/export_onnx.py --run $RUN" >&2
+  echo >&2
+fi
+
 # ---------------------------------------------------------------------------
 # Publish gate
 # ---------------------------------------------------------------------------
@@ -114,6 +124,18 @@ else
       echo "Publish blocked by eval_gate."
       echo "Re-run with --force to override (and document why)."
       exit 1
+    fi
+
+    # Gate the int8 graph too: it is the artifact the runtime actually loads.
+    if [ -f "$RUN/onnx/model_quantized.onnx" ]; then
+      echo "==> publish gate: scoring int8 ONNX graph"
+      if ! $PY scripts/eval_gate.py --model "$RUN/onnx" \
+        --onnx-file model_quantized.onnx --baseline "${BASELINE_PATH:-eval_baselines.json}"; then
+        echo
+        echo "Publish blocked: the int8 graph regressed against the baseline."
+        echo "Re-export, or publish fp32-only with --no-quantize, or --force."
+        exit 1
+      fi
     fi
   else
     echo "==> publish gate: data/eval_real.jsonl missing — gate cannot run"
