@@ -2,7 +2,7 @@
 # Capability: captions
 # Provider: OpenAI Whisper — fast transcription, no diarization
 # Title: Captions / Transcripts
-# Description: Plain transcription / SRT generation via the Whisper MCP server.
+# Description: Fast audio transcription and conversion via the Whisper MCP server.
 # Provides tools: transcribe_audio, list_audio_files, convert_audio, compress_audio
 
 [deps]

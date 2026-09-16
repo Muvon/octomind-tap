@@ -2,7 +2,7 @@
 # Capability: legal-th
 # Provider: @ansvar/thailand-law-mcp — Thai legislation from Royal Gazette
 # Title: Thai Law
-# Description: Thai legislation from Royal Gazette via Ansvar MCP.
+# Description: Thai legislation from the Royal Gazette via the Ansvar Thailand law MCP server.
 
 [deps]
 require = ["ansvar/thailand-law-mcp"]

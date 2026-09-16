@@ -2,7 +2,7 @@
 # Capability: browser
 # Provider: Puppeteer — official MCP reference server
 # Title: Browser (Puppeteer)
-# Description: Browser automation, screenshots, and page interaction via Puppeteer.
+# Description: Browser automation via the official Puppeteer MCP reference server.
 # Alternative to Playwright — swap with: ln -sf puppeteer.toml capabilities/browser/default.toml
 
 [deps]

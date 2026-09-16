@@ -2,7 +2,7 @@
 # Capability: device-mobile
 # Provider: Mobile MCP — iOS & Android device automation (real + simulator)
 # Title: Mobile Device Automation
-# Description: Drive iOS & Android devices and simulators — apps, taps, swipes, type, screenshots.
+# Description: iOS and Android device and simulator automation via the Mobile MCP server.
 # https://github.com/mobile-next/mobile-mcp
 
 [deps]

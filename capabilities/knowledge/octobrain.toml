@@ -2,7 +2,7 @@
 # Capability: knowledge
 # Provider: octobrain knowledge tool
 # Title: Project Knowledge (octobrain)
-# Description: Semantic search over the project's persistent knowledge base — local .box docs, subscribed org boxes, and indexed files, scoped to the active project.
+# Description: Semantic search over the project's persistent knowledge base: local .box docs, subscribed org boxes, and indexed files, scoped to the active project.
 
 [deps]
 require = ["muvon/octobrain"]

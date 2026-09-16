@@ -2,7 +2,7 @@
 # Capability: avatar
 # Provider: HeyGen — AI avatar UGC video generation
 # Title: AI Avatar
-# Description: Talking-head AI avatar videos for ads, UGC and translation via HeyGen.
+# Description: AI avatar UGC video generation via the HeyGen MCP server.
 # Provides tools: generate_avatar_video, get_avatar_video_status, get_avatar_groups, get_avatars_in_avatar_group, get_voices, get_remaining_credits
 
 [deps]

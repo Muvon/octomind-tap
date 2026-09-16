@@ -2,7 +2,7 @@
 # Capability: error-tracking
 # Provider: Sentry — official error tracking MCP server
 # Title: Error Tracking (Sentry)
-# Description: Query error issues, events, and releases via Sentry MCP.
+# Description: Error tracking - issues, events, and releases - via the Sentry MCP server.
 
 [deps]
 require = ["sentry/sentry"]

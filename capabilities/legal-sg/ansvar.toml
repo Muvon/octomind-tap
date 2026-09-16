@@ -2,7 +2,7 @@
 # Capability: legal-sg
 # Provider: @ansvar/singapore-law-mcp — Singapore legislation from SSO (pinned 2.0.0)
 # Title: Singapore Law
-# Description: Singapore legislation from Statutes Online with full-text search via Ansvar MCP.
+# Description: Singapore legislation from Statutes Online with full-text search via the Ansvar Singapore law MCP server.
 # Provides tools: search_legislation, get_provision, validate_citation, build_legal_stance, format_citation, check_currency, get_eu_basis, get_singapore_implementations, search_eu_implementations, get_provision_eu_basis, validate_eu_compliance, list_sources, about
 #
 # Launch wrapper: every published version ships a broken bin entry (compiled
