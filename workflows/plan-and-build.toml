@@ -15,15 +15,17 @@ name    = "plan"
 role    = "developer:spec"
 session = "fresh"
 prompt  = """
-Produce a concise, actionable implementation spec for the request below.
-This is an AUTONOMOUS, non-interactive run — no human can answer questions, so
-resolve ambiguity with documented defaults (record them in Assumptions) rather
-than asking.
+Produce a concise behavioral spec for the request below, in the standard spec shape.
+This is an AUTONOMOUS, non-interactive run — no human can answer questions, so resolve
+ambiguity with documented defaults (record each under Assumptions) rather than asking.
 
-Focus on the concrete changes needed: the exact files and functions to touch,
-edge cases, what is explicitly out of scope, and — critically — the project's
-real verification command (tests / build / lint) that proves the change works.
-Do not write the implementation.
+Scope it to the change actually requested. Cover: EARS requirements with stable IDs
+(FR-001…), each with at least one scenario or acceptance criterion; the error, boundary,
+and dependency-unavailable cases; the Guardrails the implementer must respect; what is
+explicitly out of scope; and the project's real verification command (tests / build /
+lint) mapped to the criteria it proves. Ground every cited path with tools.
+
+Describe behavior, not implementation. Do not write the implementation.
 
 <request>
 {{input}}
@@ -45,7 +47,7 @@ on_no_match = ["blocked"]
   prompt  = """
 Implement the following spec end to end in the current project. Make the changes
 precisely — touch only what the spec requires. Respect its Guardrails section as
-hard constraints.
+hard constraints, and cover every requirement and acceptance criterion it states.
 
 When the implementation is done, run the spec's verification command (tests /
 build / lint). Iterate until it passes. Then report the exact command you ran

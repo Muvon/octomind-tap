@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# Output validator for the spec-authoring skill.
+# Runs at end of turn when [skills] auto_validation = true.
+# Only inspects output that looks like a behavioral spec; anything else exits 0.
+# exit 0 = valid, non-zero = invalid (stderr is fed back to the model).
+set -euo pipefail
+
+input="$(cat)"
+
+# Not a spec — nothing to validate.
+if ! printf '%s' "$input" | grep -qE '^## Requirements|^SPEC STATUS:'; then
+  exit 0
+fi
+
+fail=0
+
+# 1. The status sentinel is mandatory and orchestration branches on it.
+if ! printf '%s' "$input" | grep -qE '^SPEC STATUS: (READY|NEEDS CLARIFICATION)[[:space:]]*$'; then
+  echo "Spec output is missing the closing status line. End with exactly one line: 'SPEC STATUS: READY' or 'SPEC STATUS: NEEDS CLARIFICATION'." >&2
+  fail=1
+fi
+
+# 2. READY is only valid when no clarification marker remains.
+if printf '%s' "$input" | grep -qE '^SPEC STATUS: READY[[:space:]]*$' \
+   && printf '%s' "$input" | grep -q '\[NEEDS CLARIFICATION'; then
+  echo "The spec says SPEC STATUS: READY but still contains [NEEDS CLARIFICATION] markers. Either resolve them or change the status line to NEEDS CLARIFICATION." >&2
+  fail=1
+fi
+
+# 3. Vague terms inside requirement lines. Only lines carrying 'shall' or an FR id
+#    are inspected, so ordinary prose elsewhere is not flagged.
+vague='robust|gracefully|user-friendly|properly|appropriately|as needed|efficiently|quickly|reasonable|etc\.|and so on|various|several|some'
+bad="$(printf '%s' "$input" \
+  | grep -E '(shall|FR-[0-9]+)' \
+  | grep -inE "(^|[^a-zA-Z-])($vague)([^a-zA-Z-]|$)" \
+  || true)"
+
+if [[ -n $bad ]]; then
+  echo "Vague terms in requirement statements — each must become a number, threshold, or enumerated list:" >&2
+  printf '%s\n' "$bad" | head -5 >&2
+  fail=1
+fi
+
+# 4. Requirements must be single statements, not compounds.
+compound="$(printf '%s' "$input" \
+  | grep -E '(shall|FR-[0-9]+)' \
+  | grep -inE '\b(and|or)\b\s+(the system|it)\b' \
+  || true)"
+
+if [[ -n $compound ]]; then
+  echo "Compound requirement detected — split on 'and'/'or' so each statement maps 1:1 to a test:" >&2
+  printf '%s\n' "$compound" | head -5 >&2
+  fail=1
+fi
+
+exit "$fail"
