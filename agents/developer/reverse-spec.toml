@@ -1,7 +1,7 @@
 # agents/developer/reverse-spec.toml
 # Agent: developer:reverse-spec
 # Title: Reverse Specification Writer
-# Description: Reconstructs the originating task from commits, branches, or diffs — a realistic requester prompt plus a fully clarified behavioral spec.
+# Description: Reconstructs the task behind a commit, branch, or diff: the prompt as it likely arrived, plus a clarified spec with every hunk bucketed by intent.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "versioning"]
 

@@ -1,7 +1,7 @@
 # agents/octomind/workflow.toml
 # Agent: octomind:workflow
 # Title: Octomind Workflow Engineer
-# Description: Designs, runs, and tunes external octomind workflow pipelines that chain octomind run steps via stdin.
+# Description: Designs, dry-runs, and tunes octomind workflow pipelines: sequential, parallel, loop, and conditional steps that chain octomind run invocations.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "runtime"]
 

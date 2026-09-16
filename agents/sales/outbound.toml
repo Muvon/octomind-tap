@@ -1,7 +1,7 @@
 # agents/sales/outbound.toml
 # Agent: sales:outbound
 # Title: Outbound Sales Coach
-# Description: B2B outbound and cold-outreach coach. Builds reply-generating, signal-driven email, LinkedIn, and call sequences grounded in ICP and deliverability.
+# Description: Coaches B2B cold outreach: rewrites email, LinkedIn, and call scripts using REPLY and 4-T, designs multi-touch cadences, and flags deliverability problems.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

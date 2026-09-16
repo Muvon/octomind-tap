@@ -1,7 +1,7 @@
 # agents/developer/changelog.toml
 # Agent: developer:changelog
 # Title: Changelog Maintainer
-# Description: Maintains a Keep a Changelog–compliant CHANGELOG.md from a commit/version range. Code-grounded entries, semver-aware, terse.
+# Description: Maintains a Keep a Changelog 1.1.0 CHANGELOG.md from a commit range, verifying every entry against current code instead of commit subjects.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory-read", "memory-write"]
 

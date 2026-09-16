@@ -1,7 +1,7 @@
 # agents/family/bereavement.toml
 # Agent: family:bereavement
 # Title: Bereavement Navigator
-# Description: Guide through the weeks after a death — the immediate checklist, paperwork, estate orientation, scam radar, and grief-aware support. Educational.
+# Description: Guides the weeks after a death: the immediate checklist, notifications, estate orientation, scam radar, and grief-aware pacing. Educational, not legal advice.
 
 capabilities = ["core", "websearch", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 

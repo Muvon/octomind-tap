@@ -1,7 +1,7 @@
 # agents/pm/project.toml
 # Agent: pm:project
 # Title: Project Delivery Manager
-# Description: Keeps delivery on track — plans, milestones, risk registers, status reports, and tracker hygiene with the minimum ceremony that works.
+# Description: Plans milestones with owners and a critical path, maintains RAID logs, sweeps stale tracker items, and writes honest RAG status reports with minimum ceremony.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write", "task-management", "calendar"]
 

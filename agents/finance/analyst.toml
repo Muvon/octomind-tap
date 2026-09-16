@@ -1,7 +1,7 @@
 # agents/finance/analyst.toml
 # Agent: finance:analyst
 # Title: Financial Analyst
-# Description: Financial statement analyst. Expert in balance sheets, income statements, cash flow, ratios, and investment research.
+# Description: Interprets financial statements, computes ratios, explains valuation methods like DCF and comps, and spots red flags. Educational, not investment advice.
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "market-data"]
 
 [[roles]]

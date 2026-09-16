@@ -1,7 +1,7 @@
 # agents/octomind/assistant.toml
 # Agent: octomind:assistant
 # Title: Octomind Concierge
-# Description: Front door for everything Octomind — answers CLI, config, runtime, and supervisor questions, and routes build work to the specialist agents.
+# Description: Answers Octomind CLI, config, runtime, and supervisor questions from the owning skills, and routes build work to the right specialist agent.
 
 capabilities = ["core", "filesystem-read", "shell", "runtime", "orchestration"]
 

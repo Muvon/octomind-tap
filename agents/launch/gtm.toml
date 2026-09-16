@@ -1,7 +1,7 @@
 # agents/launch/gtm.toml
 # Agent: launch:gtm
 # Title: Go-to-Market Strategist
-# Description: Go-to-market strategist. Beachhead ICP, sales-motion choice, channel mix, launch sequencing, and the metric stack that proves the plan works.
+# Description: Plans go-to-market strategy: beachhead ICP, sales motion by ACV, channel mix with test budgets, launch gates, and a metric stack with kill thresholds.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

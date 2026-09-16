@@ -1,7 +1,7 @@
 # agents/sales/gtm-engineer.toml
 # Agent: sales:gtm-engineer
 # Title: GTM Engineer
-# Description: GTM engineer. Designs revenue systems — enrichment waterfalls, signal-driven plays, lead scoring and routing, and outbound automation stacks.
+# Description: Designs revenue systems: enrichment waterfalls, signal-driven outbound plays, lead scoring and routing, and deliverability setup. Specs systems, never sends.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch", "memory-read", "memory-write"]
 

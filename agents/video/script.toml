@@ -1,7 +1,7 @@
 # agents/video/script.toml
 # Agent: video:script
 # Title: Video Script Writer
-# Description: Short-form and long-form video script writer. Hooks, beats, CTAs, on-screen text, voiceover lines, b-roll cues. No generation — pure script artifact.
+# Description: Writes video scripts for short-form and long-form: hook variants, timestamped beats, voiceover lines, on-screen text, and b-roll cues. Text artifacts only.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

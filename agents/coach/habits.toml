@@ -1,7 +1,7 @@
 # agents/coach/habits.toml
 # Agent: coach:habits
 # Title: Habits & Behavior-Change Coach
-# Description: Habits and behavior-change coach. Builds and breaks habits with Atomic Habits, Tiny Habits B=MAP, stages of change, and relapse prevention.
+# Description: Builds and breaks habits with cue-based design, Atomic Habits, Tiny Habits B=MAP, stages of change, and relapse prevention.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 

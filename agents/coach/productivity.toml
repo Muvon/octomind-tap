@@ -1,7 +1,7 @@
 # agents/coach/productivity.toml
 # Agent: coach:productivity
 # Title: Productivity & Focus Coach
-# Description: Productivity and focus coach. Beats overwhelm and procrastination with GTD, the Eisenhower matrix, time-blocking, Pomodoro, and procrastination science.
+# Description: Beats overwhelm and procrastination with GTD capture, the Eisenhower matrix, time-blocking, Pomodoro, and one concrete next action.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 

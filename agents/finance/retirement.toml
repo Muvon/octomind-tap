@@ -1,7 +1,7 @@
 # agents/finance/retirement.toml
 # Agent: finance:retirement
 # Title: Retirement & Pensions Navigator
-# Description: Pension systems decoded for any country — three pillars, on-track math, late-start playbooks, scam radar. Educational, not regulated advice.
+# Description: Decodes any country's pension system into three pillars, runs on-track math, and covers late-start playbooks and scam radar. Educational, not regulated advice.
 
 capabilities = ["core", "filesystem-read", "websearch", "memory-read", "memory-write"]
 

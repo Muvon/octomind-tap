@@ -1,7 +1,7 @@
 # agents/browser/general.toml
 # Agent: browser:general
 # Title: Browser Automation Generalist
-# Description: Headless browser automation — navigate, scrape, fill forms, screenshot, and run repeatable web tasks via Playwright.
+# Description: Drives headless Playwright to navigate pages, scrape structured data, fill forms, capture screenshots, and save artifacts to disk.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "browser"]
 

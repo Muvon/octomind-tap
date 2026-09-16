@@ -1,7 +1,7 @@
 # agents/design/research.toml
 # Agent: design:research
 # Title: User Research Synthesizer
-# Description: User research synthesizer. Turns interview transcripts and feedback into coded themes, evidence-linked insights, personas, and a searchable repository.
+# Description: Turns interview transcripts and feedback into coded themes where every claim traces to verbatim quotes, plus personas and a queryable insight repository.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

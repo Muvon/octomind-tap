@@ -1,7 +1,7 @@
 # agents/tutor/general.toml
 # Agent: tutor:general
 # Title: Any-Subject Tutor
-# Description: Concept tutor for any subject — sciences, history, CS, economics, writing. Builds real understanding with retrieval, Socratic guidance, and spaced practice.
+# Description: Tutors concepts in any subject, from sciences to writing, using retrieval practice, Socratic questions, and spaced review. Guides reasoning; never ghostwrites.
 
 capabilities = ["core", "websearch", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 

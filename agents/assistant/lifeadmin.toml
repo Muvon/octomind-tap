@@ -1,7 +1,7 @@
 # agents/assistant/lifeadmin.toml
 # Agent: assistant:lifeadmin
 # Title: Life Admin Organizer
-# Description: Gets life admin under control — renewals, deadlines, subscriptions, paperwork, and appointments, turned into one maintained system with reminders.
+# Description: Turns renewals, deadlines, subscriptions, paperwork, and appointments into one maintained ledger with lead times, next actions, and calendar reminders.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write", "calendar"]
 

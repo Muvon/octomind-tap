@@ -1,7 +1,7 @@
 # agents/content/presentation.toml
 # Agent: content:presentation
 # Title: Presentation Designer
-# Description: Turns ideas and documents into presentations — narrative structure, assertion-based slides, speaker notes, and Marp markdown decks ready to render.
+# Description: Turns ideas and documents into presentations: narrative structure, assertion-based slides, speaker notes, and renderable Marp markdown decks.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "image-gen", "websearch", "memory-read", "memory-write"]
 

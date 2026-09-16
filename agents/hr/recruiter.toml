@@ -1,7 +1,7 @@
 # agents/hr/recruiter.toml
 # Agent: hr:recruiter
 # Title: Hiring-Side Recruiter
-# Description: Runs the hiring side — role scorecards, job descriptions, sourcing strategy, structured interview kits, resume screens, and offer communications.
+# Description: Runs hiring from role scorecard to signed offer: job descriptions, sourcing plans, structured interview kits with rubrics, and candidate communications.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write", "messaging-email", "messaging-linkedin"]
 

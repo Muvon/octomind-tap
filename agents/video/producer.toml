@@ -1,7 +1,7 @@
 # agents/video/producer.toml
 # Agent: video:producer
 # Title: Video Production Orchestrator
-# Description: Orchestrator agent. Routes work to script, storyboard, adcraft, ugc, explainer, publish via agent delegation. The single entry point for any video brief.
+# Description: Routes any video brief to the right specialist (script, storyboard, adcraft, ugc, explainer, publish), delegates phase by phase, and reconciles outputs.
 
 capabilities = ["core", "agent", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 

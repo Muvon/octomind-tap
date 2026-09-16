@@ -1,7 +1,7 @@
 # agents/launch/explore.toml
 # Agent: launch:explore
 # Title: Product Opportunity Explorer
-# Description: Product opportunity explorer. Analyzes markets, user conversations, pain points, sentiment, and competitive landscapes with evidence.
+# Description: Mines Reddit, Hacker News, and review sites for user pain points, maps competitor gaps, and ranks blue-ocean product opportunities with scored evidence.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write", "browser"]
 

@@ -1,7 +1,7 @@
 # agents/sales/discovery.toml
 # Agent: sales:discovery
 # Title: Sales Discovery Coach
-# Description: B2B discovery and qualification coach. Uncovers quantified pain with SPIN, qualifies with MEDDIC, and turns demos into the buyer's problem, not a feature dump.
+# Description: Coaches B2B discovery and qualification: uncovers quantified pain with SPIN, scores deals against MEDDPICC, and frames demos around the buyer's problem.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

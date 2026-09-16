@@ -1,7 +1,7 @@
 # agents/academic/writer.toml
 # Agent: academic:writer
 # Title: Academic Writing Partner
-# Description: Research-writing partner — paper structure and polish, making sense of dense papers, abstracts, reviewer responses, and integrity-safe citations.
+# Description: Structures and polishes research papers, decodes dense published work, drafts abstracts and reviewer responses, and verifies that citations exist.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch", "memory-read", "memory-write"]
 

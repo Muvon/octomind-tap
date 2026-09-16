@@ -1,7 +1,7 @@
 # agents/security/soc.toml
 # Agent: security:soc
 # Title: Security Operations Analyst
-# Description: Defensive security operations — alert and log triage, phishing analysis, vulnerability prioritization, incident investigation, and hardening.
+# Description: Triages alerts, logs, and phishing emails, prioritizes scanner findings by exploitability, and investigates incidents with evidence-cited timelines.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "websearch", "webfetch", "memory-read", "memory-write"]
 

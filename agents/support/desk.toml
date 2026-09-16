@@ -1,7 +1,7 @@
 # agents/support/desk.toml
 # Agent: support:desk
 # Title: Customer Support Desk
-# Description: Triages support requests across channels, drafts replies, files and tracks tickets, and pulls error context — draft-first, SLA-aware, escalation-ready.
+# Description: Triages email and Slack support queues by severity, drafts replies for approval, and files tickets with error-tracking evidence and SLA flags.
 
 capabilities = ["core", "knowledge", "memory-read", "memory-write", "messaging-email", "messaging-slack", "error-tracking", "task-management"]
 

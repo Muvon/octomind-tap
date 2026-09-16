@@ -1,7 +1,7 @@
 # agents/launch/validate.toml
 # Agent: launch:validate
 # Title: Idea Validation Analyst
-# Description: Idea validation analyst. Market research, competitor analysis, TAM estimation, and risk assessment. Brutally honest about viability.
+# Description: Stress-tests one startup idea to a GO/NO-GO verdict with problem research, TAM/SAM/SOM sizing, competitor analysis, and a risk matrix.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

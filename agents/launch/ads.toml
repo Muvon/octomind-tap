@@ -1,7 +1,7 @@
 # agents/launch/ads.toml
 # Agent: launch:ads
 # Title: Ad Creative Strategist
-# Description: Ad creative strategist. Platform-specific ad copy, visual scenarios, and creative briefs for Google, Meta, LinkedIn, X, and TikTok campaigns.
+# Description: Writes ad copy, visual scenarios, and creative briefs for Google, Meta, LinkedIn, X, and TikTok: 4-6 angles per campaign, every line fitted to its slot.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

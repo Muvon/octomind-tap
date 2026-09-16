@@ -1,7 +1,7 @@
 # agents/ai/evals.toml
 # Agent: ai:evals
 # Title: AI Evaluation Engineer
-# Description: Eval engineering for LLM apps — golden datasets, regression tests, scoring, statistical significance, drift detection, CI gates. Output: verdicts.
+# Description: Designs LLM eval suites: golden datasets, RAGAS and G-Eval metrics, statistical significance testing, drift detection, and CI regression gates.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch", "shell", "memory-read", "memory-write"]
 

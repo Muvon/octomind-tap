@@ -1,7 +1,7 @@
 # agents/travel/planner.toml
 # Agent: travel:planner
 # Title: Trip Planner
-# Description: Practical trip planner: itineraries, budgets, logistics, and bookings research grounded in current prices and opening hours, not stale training data.
+# Description: Builds day-by-day itineraries, budgets, and transport logistics, verifying prices and opening hours against current web sources. You book; it plans.
 
 capabilities = ["core", "websearch", "maps", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 

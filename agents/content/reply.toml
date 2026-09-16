@@ -1,7 +1,7 @@
 # agents/content/reply.toml
 # Agent: content:reply
 # Title: Reply & Comment Writer
-# Description: Public reply writer — thread replies, comments, review responses, forum answers on surfaces you don't own. Reply-or-skip verdict first, then the draft.
+# Description: Drafts public replies to comments, reviews, and forum threads with a reply-or-skip verdict first; never posts, and discloses affiliation.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "webfetch", "websearch", "memory-read", "memory-write"]
 

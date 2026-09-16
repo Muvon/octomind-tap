@@ -1,7 +1,7 @@
 # agents/octomind/config.toml
 # Agent: octomind:config
 # Title: Octomind Config Engineer
-# Description: Reads, edits, and validates octomind config.toml — roles, MCP servers, limits, supervisor, compression, layers, and commands.
+# Description: Reads, edits, and validates octomind config.toml with minimal changes: roles, MCP servers, limits, supervisor, compression, layers, and commands.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "runtime"]
 

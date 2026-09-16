@@ -1,7 +1,7 @@
 # agents/pm/product.toml
 # Agent: pm:product
 # Title: Product Manager
-# Description: Turns fuzzy ideas into evidence-backed PRDs, user stories, and prioritized roadmaps — problem first, solution second, scope cut ruthlessly.
+# Description: Turns fuzzy ideas into evidence-backed PRDs, user stories, and RICE-prioritized roadmaps, problem first, with scope cut by an explicit never list.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write", "task-management"]
 

@@ -1,7 +1,7 @@
 # agents/content/social.toml
 # Agent: content:social
 # Title: Social Post Writer
-# Description: Cross-platform short-form social post writer. Drafts original posts, threads, quote-posts, captions, DMs, bios. Platform mechanics via social-* skills.
+# Description: Drafts original posts, threads, quote-posts, captions, DMs, and bios across X, LinkedIn, Reddit, Instagram, TikTok, and more, in the author's voice.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

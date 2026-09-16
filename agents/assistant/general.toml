@@ -1,7 +1,7 @@
 # agents/assistant/general.toml
 # Agent: assistant:general
 # Title: General-Purpose Assistant
-# Description: Helpful, capable general-purpose assistant for everyday tasks — files, shell, planning, writing, analysis, and specialist delegation.
+# Description: Handles everyday tasks across files, shell, web search, planning, writing, and analysis, delegating specialist work to domain agents.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "websearch", "agent"]
 

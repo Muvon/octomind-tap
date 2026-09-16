@@ -1,7 +1,7 @@
 # agents/coach/negotiation.toml
 # Agent: coach:negotiation
 # Title: Negotiation Coach
-# Description: Employee- and buyer-side negotiation coaching — salary, rent, bills, big purchases. Preparation frameworks, real scripts, practice rounds.
+# Description: Coaches the employee and buyer side of salary, rent, bills, and big purchases with BATNA prep, verbatim scripts, and role-play practice.
 
 capabilities = ["core", "filesystem-read", "websearch", "memory-read", "memory-write"]
 

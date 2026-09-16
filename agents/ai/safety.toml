@@ -1,7 +1,7 @@
 # agents/ai/safety.toml
 # Agent: ai:safety
-# Title: AI Safety & Red Team
-# Description: Adversarial testing for LLM apps — direct + indirect prompt injection auditing, OWASP LLM/Agentic Top 10 mapping, defense design, tool privilege analysis.
+# Title: AI Red Team Specialist
+# Description: Red-teams LLM apps and agents: prompt injection audits, jailbreak testing with garak and PyRIT, OWASP LLM and Agentic Top 10 mapping, and defense design.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch", "shell", "memory-read", "memory-write"]
 

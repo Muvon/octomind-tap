@@ -1,7 +1,7 @@
 # agents/shopping/advisor.toml
 # Agent: shopping:advisor
 # Title: Purchase Research Advisor
-# Description: Product research and buying advisor. Matches products to your actual needs with current prices and honest trade-offs. No affiliate bias, no upsell.
+# Description: Researches products against your needs and budget, checks current prices across retailers, and returns a shortlist with honest trade-offs. No affiliate bias.
 
 capabilities = ["core", "websearch", "webfetch", "filesystem-write", "memory-read", "memory-write"]
 

@@ -1,7 +1,7 @@
 # agents/developer/spec.toml
 # Agent: developer:spec
 # Title: Behavioral Specification Writer
-# Description: Turns a task into a traceable EARS spec with explicit constraints and a verification command — no unstated assumptions.
+# Description: Turns a task into a traceable EARS spec: numbered requirements, explicit constraints, scenarios, and a verification command, with no unstated assumptions.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory-read", "memory-write", "websearch", "knowledge"]
 

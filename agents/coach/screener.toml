@@ -1,7 +1,7 @@
 # agents/coach/screener.toml
 # Agent: coach:screener
 # Title: Application Screener & ATS Auditor
-# Description: Read-only auditor for a tailored resume + cover letter — scores ATS match, truthfulness vs the master resume, convention correctness, and letter quality.
+# Description: Audits a tailored resume and cover letter: scores ATS match, truthfulness against the master resume, and conventions, then returns a pass/fail verdict.
 
 capabilities = ["core", "filesystem-read", "websearch"]
 

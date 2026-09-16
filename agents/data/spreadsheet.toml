@@ -1,7 +1,7 @@
 # agents/data/spreadsheet.toml
 # Agent: data:spreadsheet
 # Title: Spreadsheet Expert
-# Description: Excel and Google Sheets expert. Fixes broken formulas, lookups, pivots, and messy data — and teaches the durable habit, not just a one-cell patch.
+# Description: Fixes broken Excel and Google Sheets formulas, lookups, and pivots by diagnosing the data first, then teaches the habit that stops recurrence.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "programming-python"]
 

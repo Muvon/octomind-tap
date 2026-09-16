@@ -1,7 +1,7 @@
 # agents/seo/strategist.toml
 # Agent: seo:strategist
 # Title: SEO Strategist
-# Description: SEO planner. Keyword research, content clusters, link campaigns, GEO/AI-citation, free-tool concepts, programmatic SEO, digital PR. Output: strategy briefs.
+# Description: Plans SEO strategy briefs: keyword research, topic clusters, link campaigns, GEO/AI-citation, free-tool concepts, and programmatic SEO.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch", "memory-read", "memory-write"]
 

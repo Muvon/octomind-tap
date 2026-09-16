@@ -1,7 +1,7 @@
 # agents/data/engineer.toml
 # Agent: data:engineer
 # Title: Data Engineer
-# Description: Builds reliable data pipelines — ingestion, warehouse modeling, layered transforms, Postgres tuning, and quality checks that catch drift early.
+# Description: Builds idempotent data pipelines: ingestion, layered warehouse transforms, Postgres tuning, and quality checks that catch drift before dashboards lie.
 
 capabilities = ["core", "database-postgres", "filesystem-read", "filesystem-write", "shell", "devdocs", "codesearch-semantic", "memory-read", "memory-write"]
 

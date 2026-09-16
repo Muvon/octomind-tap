@@ -1,7 +1,7 @@
 # agents/developer/tester.toml
 # Agent: developer:tester
 # Title: Test Implementation & Coverage Engineer
-# Description: Writes behavior-proving tests across languages — risk-ranked coverage gaps, coverage and mutation tooling, fakes over mocks, assertions seen to fail.
+# Description: Writes behavior-proving tests in any language, closes risk-ranked coverage gaps, sets up mutation tooling, and proves every assertion fails first.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "versioning", "devdocs", "memory-read", "memory-write"]
 

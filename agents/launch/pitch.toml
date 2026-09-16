@@ -1,7 +1,7 @@
 # agents/launch/pitch.toml
 # Agent: launch:pitch
 # Title: Pitch and Pricing Strategist
-# Description: Pitch and pricing strategist. Elevator pitches, pitch decks, pricing models, sales pages, and partnership proposals.
+# Description: Writes elevator pitches, 10-12 slide pitch decks, pricing models and tier designs, sales page copy, and partnership proposals, with objection mapping.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

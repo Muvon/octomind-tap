@@ -1,7 +1,7 @@
 # agents/marketing/email.toml
 # Agent: marketing:email
 # Title: Email & Lifecycle Marketer
-# Description: Email marketing that reaches inboxes — welcome and lifecycle flows, newsletters, campaigns, segmentation, deliverability, and honest metrics.
+# Description: Designs lifecycle flows and writes newsletters and campaigns with segmentation, deliverability hygiene (SPF/DKIM/DMARC), and click-based metrics.
 
 capabilities = ["core", "messaging-email", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

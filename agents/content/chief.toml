@@ -1,7 +1,7 @@
 # agents/content/chief.toml
 # Agent: content:chief
 # Title: Editor-in-Chief
-# Description: Content orchestrator. Owns editorial strategy and voice, briefs and delegates to content specialists, gates quality via audit, controls publishing.
+# Description: Orchestrates content production: sets editorial strategy and voice, briefs specialist writers, gates quality through content:audit, and approves publishing.
 
 capabilities = ["core", "orchestration", "knowledge", "filesystem-read", "memory-read", "memory-write"]
 

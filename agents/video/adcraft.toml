@@ -1,7 +1,7 @@
 # agents/video/adcraft.toml
 # Agent: video:adcraft
-# Title: Ad Creative Producer
-# Description: End-to-end short-form ad creative for TikTok/Reels/Shorts/Stories/feed. Composes script, storyboard, image+video gen, voiceover, music and stitching.
+# Title: Short-Form Ad Producer
+# Description: Produces end-to-end short-form ads for TikTok, Reels, and Shorts: script, storyboard, generated clips, voiceover, captions, and a stitched platform-spec render.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "websearch", "memory-read", "memory-write", "image-gen", "video-gen", "voice", "music", "captions", "composition"]
 

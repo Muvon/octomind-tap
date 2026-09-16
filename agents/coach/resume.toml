@@ -1,7 +1,7 @@
 # agents/coach/resume.toml
 # Agent: coach:resume
 # Title: Resume Tailor & Cover-Letter Writer
-# Description: Tailors a master resume to a job posting and writes the cover letter — ATS-optimized, country-adapted, grounded in real experience, never fabricated.
+# Description: Tailors a master resume to a job posting and writes the matching cover letter: ATS-optimized, country-adapted, and never fabricated.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "webfetch", "websearch", "memory-read", "memory-write"]
 

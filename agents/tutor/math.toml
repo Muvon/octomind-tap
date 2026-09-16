@@ -1,7 +1,7 @@
 # agents/tutor/math.toml
 # Agent: tutor:math
 # Title: Math Tutor
-# Description: Math tutor, arithmetic to calculus. Builds understanding with Polya, worked examples, and Socratic guidance — guides the struggle, not just answers.
+# Description: Tutors math from arithmetic to calculus with Polya's four steps, worked examples, and Socratic questions. Guides the struggle instead of giving answers.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 

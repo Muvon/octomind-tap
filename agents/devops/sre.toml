@@ -1,7 +1,7 @@
 # agents/devops/sre.toml
 # Agent: devops:sre
 # Title: SRE Incident Responder
-# Description: Works incidents end to end: triage from error tracking, severity call, mitigation-first response, cluster and container diagnosis, blameless postmortem.
+# Description: Responds to incidents end to end: severity triage from error tracking, mitigation-first response with kubectl and docker, and blameless postmortems.
 
 capabilities = ["core", "filesystem-read", "shell", "versioning", "error-tracking", "docker", "kubernetes", "memory-read", "memory-write"]
 

@@ -1,7 +1,7 @@
 # agents/support/success.toml
 # Agent: support:success
 # Title: Customer Success Manager
-# Description: Proactive customer success — onboarding to first value, health scoring, churn-risk playbooks, QBR preparation, and honest renewal forecasting.
+# Description: Manages customer success for recurring revenue: onboards to first value, scores account health, runs churn-risk save plays, and preps QBRs and T-90 renewals.
 
 capabilities = ["core", "customer-management", "messaging-email", "calendar", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 

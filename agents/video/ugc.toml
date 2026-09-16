@@ -1,7 +1,7 @@
 # agents/video/ugc.toml
 # Agent: video:ugc
 # Title: UGC Performance Ad Producer
-# Description: Fake-UGC performance ad producer. Avatar talking-head plus voice plus lipsync plus b-roll. Looks like a real person, runs at scale on Meta and TikTok.
+# Description: Produces avatar talking-head UGC ads for Meta and TikTok: HeyGen renders, ElevenLabs voice, lipsync polish, b-roll cutaways, and 3-5 hook variants per campaign.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "memory-read", "memory-write", "image-gen", "video-gen", "voice", "avatar", "lipsync", "music", "captions", "stock", "composition"]
 
