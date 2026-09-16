@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: tanob/desktop-automation
 # type: mcp
-# description: Desktop Automation MCP - mouse, keyboard, screenshots
+# description: Desktop Automation MCP Server - mouse, keyboard, screenshots
 # check: npx
 # https://mcp.so/server/desktop-automation/tanob
 

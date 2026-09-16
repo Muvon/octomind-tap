@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: redis/redis
 # type: mcp
-# description: Redis MCP Server - official Redis key-value store operations
+# description: Redis MCP Server - key-value store operations via the reference MCP server
 # check: npx
 # https://www.npmjs.com/package/@modelcontextprotocol/server-redis
 

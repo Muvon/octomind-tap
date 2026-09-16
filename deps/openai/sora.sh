@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: openai/sora
 # type: mcp
-# description: OpenAI Sora 2 video generation - long coherent shots via the OpenAI Video API
+# description: OpenAI Sora MCP Server - video generation via the OpenAI Video API
 # check: npx
 # https://platform.openai.com/docs/guides/video
 

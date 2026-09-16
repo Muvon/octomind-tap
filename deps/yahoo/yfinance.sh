@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: yahoo/yfinance
 # type: mcp
-# description: Yahoo Finance MCP Server - stock prices, historical data, charts
+# description: Yahoo Finance MCP Server - stock prices and historical market data
 # check: npx
 # https://www.npmjs.com/package/@szemeng76/yfinance-mcp-server
 

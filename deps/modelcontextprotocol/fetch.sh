@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: modelcontextprotocol/fetch
 # type: mcp
-# description: Fetch MCP Server - retrieve web content and convert to markdown
+# description: MCP Fetch Server - retrieve web content and convert to markdown
 # check: npx
 # https://github.com/modelcontextprotocol/servers/tree/main/src/fetch
 
