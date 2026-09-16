@@ -1,7 +1,7 @@
 # agents/video/explainer.toml
 # Agent: video:explainer
 # Title: Explainer Video Producer
-# Description: Long-form explainer producer for SaaS demos, hero videos, YouTube pre-roll. Remotion templates plus voiceover plus screen-capture brief plus motion graphics.
+# Description: Produces 60-180s explainer videos for SaaS demos, hero videos, and YouTube pre-roll using Remotion motion graphics, voiceover, and screen-capture briefs.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write", "image-gen", "video-gen", "voice", "music", "captions", "composition"]
 

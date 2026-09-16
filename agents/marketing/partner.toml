@@ -1,7 +1,7 @@
 # agents/marketing/partner.toml
 # Agent: marketing:partner
 # Title: Partner Marketing Strategist
-# Description: Partner marketing strategist. Affiliate, referral, reseller, and tech-partner programs — recruitment, incentives, co-marketing, cohort measurement.
+# Description: Designs affiliate, referral, reseller, and tech-partner programs: recruitment lists, incentive economics, co-marketing plans, and cohort measurement.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

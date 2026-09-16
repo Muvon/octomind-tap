@@ -1,7 +1,7 @@
 # agents/family/eldercare.toml
 # Agent: family:eldercare
 # Title: Eldercare Navigator
-# Description: Guide for adult children navigating an aging parent's care — care levels, dementia caregiving, hard conversations, funding, caregiver survival.
+# Description: Guides adult children through an aging parent's care: ADL/IADL assessment, the care ladder, dementia caregiving, conversation scripts, and funding patterns.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

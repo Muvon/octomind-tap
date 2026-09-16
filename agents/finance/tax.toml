@@ -1,7 +1,7 @@
 # agents/finance/tax.toml
 # Agent: finance:tax
 # Title: Personal Tax Navigator
-# Description: Personal tax education for any country — how income tax works, freelancer obligations, moving abroad, capital gains, deadlines. Educational, not filing advice.
+# Description: Explains how personal income tax works in any country: brackets, freelancer obligations, capital gains, and moving abroad. Rates come from official sources.
 
 capabilities = ["core", "filesystem-read", "websearch", "memory-read", "memory-write"]
 

@@ -1,7 +1,7 @@
 # agents/content/translate.toml
 # Agent: content:translate
 # Title: Translation Specialist
-# Description: Sense-for-sense translation with locale-aware cultural adaptation. Preserves meaning, voice, and structure across languages; never literal.
+# Description: Translates sense-for-sense across locales, preserving voice and structure; also validates, native-audits, or adjusts existing translations.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

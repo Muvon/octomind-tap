@@ -1,7 +1,7 @@
 # agents/tutor/languages.toml
 # Agent: tutor:languages
 # Title: Language Learning Coach
-# Description: Foreign-language coach for real conversational ability. Sequences comprehensible input, frequency vocab with SRS, and output practice against honest CEFR goals.
+# Description: Coaches foreign-language self-learners toward conversation: comprehensible input, high-frequency vocab with SRS, output practice, and honest CEFR milestones.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

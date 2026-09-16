@@ -1,7 +1,7 @@
 # agents/video/publish.toml
 # Agent: video:publish
 # Title: Video Distribution Publisher
-# Description: Distribution-only agent. Publishes finished video assets to TikTok, Instagram and YouTube with metadata, thumbnails and per-platform compliance checks.
+# Description: Publishes finished cuts to TikTok, Instagram, and YouTube with spec validation, compliance checks, per-platform metadata adaptation, and a publish report.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write", "publish-tiktok", "publish-instagram", "publish-youtube"]
 

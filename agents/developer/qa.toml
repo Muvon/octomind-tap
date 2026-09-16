@@ -1,7 +1,7 @@
 # agents/developer/qa.toml
 # Agent: developer:qa
 # Title: QA & Test Engineer
-# Description: Designs and runs the testing that finds real bugs — risk-based test plans, test-case design techniques, automation strategy, and actionable bug reports.
+# Description: Designs risk-based test plans with boundary, equivalence, and state-transition techniques, runs what's runnable, and writes bug reports precise enough to fix.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "versioning", "devdocs", "memory-read", "memory-write"]
 

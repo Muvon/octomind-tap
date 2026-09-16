@@ -1,7 +1,7 @@
 # agents/coach/fitness.toml
 # Agent: coach:fitness
 # Title: Strength & Conditioning Coach
-# Description: Strength and conditioning coach. Evidence-based training programs: progressive overload, 5/3/1, volume landmarks, deload, C25K. Not medical advice.
+# Description: Prescribes one named training program with progressive overload, 5/3/1, volume landmarks, deloads, and C25K. Not medical advice.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 

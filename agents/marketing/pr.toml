@@ -1,7 +1,7 @@
 # agents/marketing/pr.toml
 # Agent: marketing:pr
 # Title: PR & Communications Strategist
-# Description: Earns media coverage — press releases, journalist targeting, personalized pitches, founder comms, and crisis response with newsroom discipline.
+# Description: Packages news for media coverage: press releases, researched journalist lists, personalized pitches, founder comms, and crisis response.
 
 capabilities = ["core", "websearch", "webfetch", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 

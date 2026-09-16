@@ -1,7 +1,7 @@
 # agents/device/operator.toml
 # Agent: device:operator
 # Title: Device UI Operator
-# Description: Drive a device's UI through reproducible flows — mobile or desktop. Skills supply the device-specific tooling.
+# Description: Drives mobile and desktop UIs through reproducible flows, capturing checkpoint screenshots and a run.json step log as evidence.
 
 capabilities = ["core", "filesystem-read", "filesystem-write"]
 

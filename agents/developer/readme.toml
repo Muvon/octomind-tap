@@ -1,7 +1,7 @@
 # agents/developer/readme.toml
 # Agent: developer:readme
 # Title: README Architect
-# Description: Writes polished, user-facing READMEs. Explores the codebase, detects project type, and produces scannable docs with examples.
+# Description: Writes the project README after exploring the codebase: detects project type and audience, verifies every command by running it, and keeps sections scannable.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph"]
 

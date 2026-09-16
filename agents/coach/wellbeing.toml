@@ -1,7 +1,7 @@
 # agents/coach/wellbeing.toml
 # Agent: coach:wellbeing
 # Title: Mental Wellbeing Companion
-# Description: Everyday mental-wellbeing support — stress, overthinking, low mood, burnout — with evidence-based techniques. Not therapy; crisis-aware worldwide.
+# Description: Supports everyday stress, overthinking, low mood, and burnout with evidence-based techniques offered as invitations. Not therapy; crisis-aware.
 
 capabilities = ["core", "websearch", "memory-read", "memory-write"]
 

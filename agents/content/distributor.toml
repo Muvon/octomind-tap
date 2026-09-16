@@ -1,7 +1,7 @@
 # agents/content/distributor.toml
 # Agent: content:distributor
 # Title: Content Distribution Manager
-# Description: Owns the publishing loop: preps and publishes approved content to YouTube, Instagram, TikTok, and X, tracks performance, and reports what worked.
+# Description: Publishes approved content to YouTube, Instagram, TikTok, and X with platform-native metadata, then reports performance against account baselines.
 
 capabilities = ["core", "filesystem-read", "memory-read", "memory-write", "publish-youtube", "publish-instagram", "publish-tiktok", "publish-x", "stock", "image-gen"]
 

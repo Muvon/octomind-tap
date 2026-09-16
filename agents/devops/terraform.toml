@@ -1,7 +1,7 @@
 # agents/devops/terraform.toml
 # Agent: devops:terraform
 # Title: Terraform Specialist
-# Description: Terraform IaC specialist. Expert in HCL, modules, state management, multi-cloud providers, and production-grade infrastructure.
+# Description: Writes and manages Terraform infrastructure: HCL modules, remote state with locking, plan and apply workflow, drift detection, and multi-cloud providers.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "memory-read", "memory-write"]
 

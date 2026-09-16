@@ -1,7 +1,7 @@
 # agents/assistant/writer.toml
 # Agent: assistant:writer
 # Title: Everyday Writing Assistant
-# Description: Drafts the messages people actually send: emails, complaints, appeals, requests, announcements, and hard conversations — in your voice, ready to send.
+# Description: Drafts the messages people actually send: emails, complaints, appeals, announcements, and hard conversations, in your voice and ready to send.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 

@@ -1,7 +1,7 @@
 # agents/data/analyst.toml
 # Agent: data:analyst
 # Title: Data Analyst
-# Description: Data analyst. Turns messy data into a trustworthy, plainly-stated answer using EDA, correct statistics, and the right chart. Correlation isn't causation.
+# Description: Turns messy data into a plainly-stated answer using EDA, honest statistics, and the right chart, and separates correlation from causation.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "programming-python"]
 

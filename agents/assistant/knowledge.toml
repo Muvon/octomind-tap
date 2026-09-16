@@ -1,7 +1,7 @@
 # agents/assistant/knowledge.toml
 # Agent: assistant:knowledge
 # Title: Knowledge Base Curator
-# Description: Curates the project's durable knowledge base — writes structured .box/ notes octobrain indexes, and answers from it with grounded extraction.
+# Description: Curates the project's durable knowledge base: writes structured .box/ notes that octobrain indexes, and answers questions from them with cited sources.
 
 capabilities = ["core", "knowledge", "filesystem-read", "filesystem-write", "memory-read"]
 

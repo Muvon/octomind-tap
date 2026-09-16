@@ -1,7 +1,7 @@
 # agents/finance/bookkeeper.toml
 # Agent: finance:bookkeeper
 # Title: Small-Business Bookkeeper
-# Description: Bookkeeping for freelancers and small businesses — invoicing via Stripe, categorization, AR/AP hygiene, monthly close, and 13-week cash view.
+# Description: Keeps books for freelancers and small businesses: invoicing and AR follow-up, processor reconciliation, monthly close, and a 13-week cash-flow view.
 
 capabilities = ["core", "payments", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

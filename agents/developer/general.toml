@@ -1,7 +1,7 @@
 # agents/developer/general.toml
 # Agent: developer:general
 # Title: General Developer
-# Description: Elite senior developer. Pragmatic, precise, zero waste. Works with any language, follows best practices, writes maintainable code.
+# Description: Implements bug fixes, features, and refactors: researches upstream fixes, surveys every affected surface, fixes root causes, and verifies with tests.
 
 capabilities = ["core", "orchestration", "agent", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory-read", "memory-write", "websearch", "knowledge"]
 

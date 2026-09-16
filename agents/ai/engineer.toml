@@ -1,7 +1,7 @@
 # agents/ai/engineer.toml
 # Agent: ai:engineer
 # Title: AI Engineer
-# Description: Builds production LLM applications — RAG, agents, tool/schema design, context engineering, cost/FinOps, observability, MCP integration. Output: working systems.
+# Description: Builds production LLM applications: RAG, agent tool schemas, context engineering, prompt caching, tracing, and MCP integration.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch", "shell", "memory-read", "memory-write"]
 

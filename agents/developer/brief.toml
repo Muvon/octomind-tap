@@ -1,7 +1,7 @@
 # agents/developer/brief.toml
 # Agent: developer:brief
-# Title: Code Change Brief
-# Description: Transforms code changes (diff, commit, paste) into review cards — plain-language behavioral impact anyone can read, code-level evidence in source links.
+# Title: Code Change Briefer
+# Description: Turns a diff, commit, or range into plain-language review cards: behavioral impact, traced risk, and source links behind every finding.
 
 capabilities = ["core", "filesystem-read", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "versioning"]
 

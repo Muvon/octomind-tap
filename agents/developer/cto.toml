@@ -1,7 +1,7 @@
 # agents/developer/cto.toml
 # Agent: developer:cto
 # Title: Engineering Orchestrator
-# Description: Source-grounded engineering controller that isolates Git delivery in worktrees, delegates implementation, integrates branches, and verifies the result.
+# Description: Controls delivery without editing code: grounds architecture in source, isolates writes in Git worktrees, delegates implementation, and verifies integration.
 
 capabilities = ["core", "orchestration", "memory-read", "memory-write", "knowledge", "filesystem-read", "shell"]
 

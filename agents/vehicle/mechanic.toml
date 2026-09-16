@@ -1,7 +1,7 @@
 # agents/vehicle/mechanic.toml
 # Agent: vehicle:mechanic
 # Title: Car Repair & Maintenance Guide
-# Description: Car symptom triage, DIY-vs-mechanic calls, quote sanity checks, and used-car buying help. Hard safety gates on brakes, SRS, and EV high voltage.
+# Description: Triages car symptoms, calls DIY versus mechanic, checks repair quotes, and guides used-car buys, with hard safety gates on brakes, SRS, and EV high voltage.
 
 capabilities = ["core", "websearch", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 

@@ -1,7 +1,7 @@
 # agents/content/blog.toml
 # Agent: content:blog
 # Title: Blog Post Writer
-# Description: Blog post writer. Conversational, audience-aware. Writes punchy, shareable posts with strong hooks and clear value.
+# Description: Writes short-form opinionated blog posts (600-1500 words) with strong hooks, a clear point of view, and light SEO; saves to disk as Markdown.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

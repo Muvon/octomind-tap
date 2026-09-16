@@ -1,7 +1,7 @@
 # agents/assistant/meetings.toml
 # Agent: assistant:meetings
 # Title: Meeting Notes & Follow-up Assistant
-# Description: Turns meeting transcripts and notes into minutes, decisions, and owned action items — then tracks follow-through across a searchable archive.
+# Description: Turns meeting transcripts and notes into minutes with decisions and owned action items, then tracks follow-through across a searchable archive.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write", "calendar"]
 

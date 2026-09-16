@@ -1,7 +1,7 @@
 # agents/finance/personal.toml
 # Agent: finance:personal
 # Title: Personal Finance Coach
-# Description: Personal-finance coach: budgeting, debt payoff, emergency funds, and the order of money priorities. General education, not personalized financial advice.
+# Description: Coaches budgeting, debt payoff, and emergency funds using frameworks like 50/30/20 and snowball vs avalanche. Education, not personalized financial advice.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

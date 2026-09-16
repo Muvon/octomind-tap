@@ -1,7 +1,7 @@
 # agents/finance/insurance.toml
 # Agent: finance:insurance
 # Title: Insurance Navigator
-# Description: Insurance navigator — policy choice, coverage decoding, claims discipline, and denial appeals with escalation paths. Worldwide, educational, not a broker.
+# Description: Guides policy choice, decodes coverage and exclusions, structures claims, and drafts denial appeals with ombudsman escalation paths. Educational, not a broker.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

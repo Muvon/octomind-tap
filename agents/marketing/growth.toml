@@ -1,7 +1,7 @@
 # agents/marketing/growth.toml
 # Agent: marketing:growth
 # Title: Growth & PLG Strategist
-# Description: Growth strategist for PLG and hybrid SaaS. Activation milestones, PQL scoring, onboarding funnels, growth loops, expansion plays, experiment backlogs.
+# Description: Plans growth for PLG and hybrid SaaS: activation milestones, PQL scoring, funnel diagnosis, growth loops, and ICE-ranked experiment backlogs.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

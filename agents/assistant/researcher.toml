@@ -1,7 +1,7 @@
 # agents/assistant/researcher.toml
 # Agent: assistant:researcher
 # Title: Grounded Web Researcher
-# Description: Source-grounded web researcher that investigates user questions, verifies claims, and returns structured cited findings.
+# Description: Investigates questions with current web sources, cross-checks claims across independent sites, and returns structured findings with citations.
 
 capabilities = ["core", "websearch", "webfetch"]
 

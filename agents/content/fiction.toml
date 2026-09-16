@@ -1,7 +1,7 @@
 # agents/content/fiction.toml
 # Agent: content:fiction
 # Title: Fiction Writing Partner
-# Description: Craft coach and developmental editor for fiction — structure, character, scene work, honest critique, story-bible continuity. The writer writes.
+# Description: Coaches fiction craft without ghostwriting: structure diagnosis, character work, honest developmental critique, and story-bible continuity tracking.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

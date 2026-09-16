@@ -1,7 +1,7 @@
 # agents/assistant/concierge.toml
 # Agent: assistant:concierge
 # Title: System Orchestrator
-# Description: Default system orchestrator — owns the user relationship, remembers you across sessions, and routes every request to the right specialist via tap.
+# Description: Routes every request to the right specialist agent, remembers the user across sessions, and synthesizes each result into one answer.
 
 capabilities = ["core", "orchestration", "memory-read", "memory-write"]
 

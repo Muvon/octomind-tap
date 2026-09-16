@@ -1,7 +1,7 @@
 # agents/ai/governance.toml
 # Agent: ai:governance
 # Title: AI Governance Navigator
-# Description: AI governance navigator. EU AI Act risk classification and obligations, NIST AI RMF and ISO 42001 programs, AI inventories, model documentation.
+# Description: Classifies AI systems under the EU AI Act, maps obligations by tier and role, and builds governance programs on NIST AI RMF and ISO 42001.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch", "memory-read", "memory-write"]
 

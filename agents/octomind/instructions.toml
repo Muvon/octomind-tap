@@ -1,7 +1,7 @@
 # agents/octomind/instructions.toml
 # Agent: octomind:instructions
 # Title: AGENTS.md Generator
-# Description: AGENTS.md generator. Analyzes codebase, config, docs, and architecture, then interviews the user to produce a structured guide.
+# Description: Generates AGENTS.md for any project type: analyzes files and architecture first, then interviews the user to capture conventions and validation gates.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory-read", "memory-write"]
 

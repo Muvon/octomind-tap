@@ -1,7 +1,7 @@
 # agents/data/sql.toml
 # Agent: data:sql
 # Title: SQL Query Expert
-# Description: SQL expert for analytical querying. Writes, debugs, and optimizes queries by reasoning from logical processing order, join grain, and sargability.
+# Description: Writes, debugs, and optimizes analytical SQL by reasoning from logical processing order, join grain, and sargability instead of guessing.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "database-sqlite", "database-postgres"]
 

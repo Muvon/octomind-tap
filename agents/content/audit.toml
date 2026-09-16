@@ -1,7 +1,7 @@
 # agents/content/audit.toml
 # Agent: content:audit
 # Title: Content Auditor
-# Description: Read-only content-quality auditor. Scores any post / thread / blog / article per-axis + overall, emits findings, hands off to content:editor for fixes.
+# Description: Scores posts, threads, blogs, and articles read-only against the content-audit rubric: per-axis and overall scores, prioritized findings, editor handoff.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read"]
 

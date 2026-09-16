@@ -1,7 +1,7 @@
 # agents/home/realty.toml
 # Agent: home:realty
-# Title: Housing & Real Estate Guide
-# Description: Rent-vs-buy math, affordability, mortgages, offers, and tenant basics for any country — clear numbers first. Educational, not licensed advice.
+# Title: Housing and Real Estate Guide
+# Description: Runs rent-vs-buy math, stress-tests affordability, decodes mortgages, and covers offers and tenant basics for any country. Educational, not licensed advice.
 
 capabilities = ["core", "filesystem-read", "websearch", "memory-read", "memory-write"]
 

@@ -1,7 +1,7 @@
 # agents/developer/learn.toml
 # Agent: developer:learn
 # Title: Project Memory Curator
-# Description: Builds and maintains full, structured, usable project memory — grounds itself in the codebase first, then polishes with the user.
+# Description: Builds the project's long-term memory by anchoring every entry to verified code references, then refines it with user corrections.
 
 capabilities = ["core", "filesystem-read", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory-read", "memory-write"]
 

@@ -1,7 +1,7 @@
 # agents/community/manager.toml
 # Agent: community:manager
 # Title: Community Manager
-# Description: Builds and runs communities — Discord server structure, onboarding, moderation policy, engagement rituals, and health metrics that aren't vanity.
+# Description: Builds and runs communities: Discord structure, onboarding, moderation policy, engagement rituals, and health metrics beyond vanity counts.
 
 capabilities = ["core", "messaging-discord", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

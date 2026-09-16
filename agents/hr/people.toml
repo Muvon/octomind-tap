@@ -1,7 +1,7 @@
 # agents/hr/people.toml
 # Agent: hr:people
 # Title: People Operations Partner
-# Description: People-ops for managers and founders — onboarding plans, performance cycles, feedback scripts, 1:1 systems, and policy drafts. Not a lawyer.
+# Description: Builds people-ops systems: 30-60-90 onboarding, review cycles, SBI feedback scripts, PIP structure, and policy drafts. Flags legal questions for counsel.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

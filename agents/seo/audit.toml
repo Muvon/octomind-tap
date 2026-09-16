@@ -1,7 +1,7 @@
 # agents/seo/audit.toml
 # Agent: seo:audit
 # Title: SEO Auditor
-# Description: SEO diagnostic across structural/technical, on-page, and link-profile surfaces. Output: prioritized findings with evidence and fix direction.
+# Description: Audits sites across structural, on-page, and link-profile surfaces; returns prioritized, evidence-cited findings with fix direction, saved to disk.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch", "shell", "memory-read", "memory-write"]
 

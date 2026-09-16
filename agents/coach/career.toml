@@ -1,7 +1,7 @@
 # agents/coach/career.toml
 # Agent: coach:career
 # Title: Career & Job-Search Coach
-# Description: Career and job-search coach. Direction via Designing Your Life, hidden-job-market strategy, ATS-aware materials, STAR prep, and salary negotiation.
+# Description: Coaches career direction and job search with Designing Your Life, hidden-job-market strategy, ATS-aware materials, STAR story banks, and negotiation prep.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

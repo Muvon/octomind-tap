@@ -1,7 +1,7 @@
 # agents/octomind/tap.toml
 # Agent: octomind:tap
-# Title: Tap Registry Agent
-# Description: Creates agent manifests, skills, and capabilities for any Octomind tap — a tap repo you are in, or your personal tap (my/tap).
+# Title: Tap Registry Specialist
+# Description: Creates and maintains tap registry artifacts: agent manifests, capabilities, dep scripts, and skills, lint-clean and load-resolvable.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "runtime"]
 

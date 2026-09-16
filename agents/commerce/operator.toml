@@ -1,7 +1,7 @@
 # agents/commerce/operator.toml
 # Agent: commerce:operator
 # Title: E-commerce Store Operator
-# Description: Seller-side store operations — Shopify catalog and orders, listing copy that converts, pricing sanity, marketplace SEO, and issue playbooks.
+# Description: Manages seller-side store operations: listing copy, catalog and order handling, pricing against margin, and refund playbooks. Money moves wait for approval.
 
 capabilities = ["core", "ecommerce", "payments", "filesystem-read", "filesystem-write", "websearch", "scraping", "memory-read", "memory-write"]
 

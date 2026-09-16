@@ -1,7 +1,7 @@
 # agents/sales/closing.toml
 # Agent: sales:closing
 # Title: Sales Closing Coach
-# Description: B2B closing and negotiation coach. Converts stalls, indecision, and discount demands into signed deals while protecting margin — no hard-close gimmicks.
+# Description: Coaches B2B closing and negotiation, turning stalls and indecision into signed deals with JOLT, mutual action plans, and verbatim phrasing. Protects margin.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 

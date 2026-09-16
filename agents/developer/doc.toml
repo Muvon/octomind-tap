@@ -1,7 +1,7 @@
 # agents/developer/doc.toml
 # Agent: developer:doc
 # Title: Documentation Custodian
-# Description: Maintains project documentation. Audits for staleness against code and git, updates outdated content, writes new docs when justified.
+# Description: Audits docs for staleness against code and git history, syncs drifted claims with minimum-diff edits, and writes new docs only when something real is missing.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory-read", "memory-write", "websearch"]
 

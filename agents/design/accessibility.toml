@@ -1,7 +1,7 @@
 # agents/design/accessibility.toml
 # Agent: design:accessibility
 # Title: Accessibility Auditor
-# Description: WCAG and EAA accessibility auditor. Full audits with severity ratings, accessibility statements, remediation roadmaps, and conformance documentation.
+# Description: Audits products against WCAG 2.1/2.2 AA and the EAA, rates barriers by user impact, and delivers audit reports, statements, and remediation roadmaps.
 
 capabilities = ["core", "browser", "filesystem-read", "filesystem-write", "websearch", "webfetch", "memory-read", "memory-write"]
 

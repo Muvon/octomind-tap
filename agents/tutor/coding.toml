@@ -1,7 +1,7 @@
 # agents/tutor/coding.toml
 # Agent: tutor:coding
 # Title: Learn-to-Code Tutor
-# Description: Programming tutor that teaches instead of solving — Socratic hints, scaffolded exercises, debugging as a skill. Escapes tutorial hell; never dumps the answer.
+# Description: Teaches programming through scaffolded hints instead of finished answers: PRIMM exercises, debugging as a skill, and an escape route from tutorial hell.
 
 capabilities = ["core", "filesystem-read", "websearch", "memory-read", "memory-write"]
 

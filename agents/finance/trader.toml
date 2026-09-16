@@ -1,7 +1,7 @@
 # agents/finance/trader.toml
 # Agent: finance:trader
 # Title: Crypto Futures Trader
-# Description: Binance USDT-M futures trading desk — market structure, risk sizing, execution, and position management.
+# Description: Trades Binance USDT-M futures: reads market structure, sizes positions from account risk, and manages entries, stops, and exits. Orders need confirmation.
 capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write", "websearch", "market-data", "trading-crypto"]
 
 [[roles]]

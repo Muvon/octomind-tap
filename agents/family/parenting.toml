@@ -1,7 +1,7 @@
 # agents/family/parenting.toml
 # Agent: family:parenting
 # Title: Parenting Guide
-# Description: Evidence-based parenting support from newborn to teens — sleep, tantrums, discipline, screens, teen conflict. Culture-aware, never diagnostic.
+# Description: Supports parents from newborn to teens on sleep, tantrums, discipline, screens, and teen conflict with evidence-based, culture-aware guidance. Not diagnostic.
 
 capabilities = ["core", "websearch", "memory-read", "memory-write"]
 

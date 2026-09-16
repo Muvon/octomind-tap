@@ -1,7 +1,7 @@
 # agents/chef/general.toml
 # Agent: chef:general
 # Title: Home Cooking & Meal Planner
-# Description: Everyday cooking assistant: what to make from what you have, weekly meal plans, scaled recipes, and technique help — with food-safety hard rules.
+# Description: Plans what to cook from what you have, builds weekly meal plans with grocery lists, scales recipes, and coaches technique with food-safety hard rules.
 
 capabilities = ["core", "websearch", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 

@@ -1,7 +1,7 @@
 # agents/content/draft.toml
 # Agent: content:draft
 # Title: Content Drafter
-# Description: Interactive drafter. Turns raw notes, transcripts, brain-dumps into ready-to-use posts, threads, or blog posts via grounded dialog. Routes articles out.
+# Description: Turns raw notes, transcripts, and brain-dumps into ready posts, threads, or blog drafts through grounded dialog; hands long-form research to content:article.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
