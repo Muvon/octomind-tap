@@ -1,7 +1,7 @@
 ---
 name: programming-cpp
 title: "C++ Development"
-description: "Modern C++ architecture, RAII, value semantics, and library choices that survive a decade. Auto-activates in C++ projects."
+description: "Modern C++ architecture, RAII, value semantics, and reproducible dependency and library selection guidance. Auto-activates in C++ projects."
 license: Apache-2.0
 compatibility: "Requires the project's C++ compiler, standard library, and build system."
 domains: developer

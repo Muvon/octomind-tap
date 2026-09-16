@@ -6,7 +6,7 @@
 # real repository. Operates on the current directory. Public roles only.
 
 name        = "learn"
-description = "Grounds project memory from the codebase, promotes durable knowledge into the .box/ knowledge base, then audits and fixes the notes until every claim verifies against the repo."
+description = "Grounds project memory from the codebase, promotes durable knowledge into the .box/ knowledge base, then audits and fixes the notes until they pass an independent audit against the repo."
 
 # ── 1. Ground — codebase → memory ────────────────────────────────────────────
 [[steps]]

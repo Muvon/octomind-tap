@@ -1,7 +1,7 @@
 ---
 name: ad-reddit
 title: "Reddit Ads Production Spec"
-description: "Specifies what to produce for a Reddit ad: Promoted Posts (image, video, link, text), Free-form Ads (the rich-content 2024+ flagship), Carousel Ads, Conversation Placement Ads, Promoted User Posts (boost an existing organic), Product Catalog Ads, and AMA Ads, with the exact slots, char limits, asset ratios, CTA enum, and the Reddit-specific creative rules (native voice, per-subreddit variants, real-artifact imagery, comment engagement plan) that decide whether the ad performs or gets downvoted into oblivion. Use whenever the task is producing Reddit ad copy or assets; strictly platform-specific, so it does not cover subreddit targeting strategy or Reddit Pixel setup."
+description: "Specifies what to produce for a Reddit ad: Promoted Posts (image, video, link, text), Free-form Ads (the rich-content 2023+ flagship), Carousel Ads, Conversation Placement Ads, Promoted User Posts (boost an existing organic), Product Catalog Ads, and AMA Ads, with the exact slots, char limits, asset ratios, CTA enum, and the Reddit-specific creative rules (native voice, per-subreddit variants, real-artifact imagery, comment engagement plan) that decide whether the ad performs or gets downvoted into oblivion. Use whenever the task is producing Reddit ad copy or assets; strictly platform-specific, so it does not cover subreddit targeting strategy or Reddit Pixel setup."
 license: Apache-2.0
 compatibility: "Octomind launch agents. Platform-specific to Reddit Ads."
 domains: launch

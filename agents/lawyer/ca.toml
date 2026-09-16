@@ -1,7 +1,7 @@
 # agents/lawyer/ca.toml
 # Agent: lawyer:ca
 # Title: Canadian Law Specialist
-# Description: Canadian law specialist. Federal legislation with bilingual (EN/FR) support covering common law, Quebec civil law, and Charter rights.
+# Description: Explains Canadian federal law in English or French, including Charter rights; Quebec civil law routes to a specialist. Information, not legal advice.
 
 capabilities = ["core", "filesystem-read", "websearch", "legal-ca"]
 

@@ -1,7 +1,7 @@
 # agents/lawyer/de.toml
 # Agent: lawyer:de
 # Title: German Law Specialist
-# Description: German law specialist. Federal statutes live from gesetze-im-internet.de (BGB, HGB, StGB, DSGVO and more); case law and EU basis via web search.
+# Description: Explains German federal law with statutes fetched live from gesetze-im-internet.de (BGB, HGB, StGB, BDSG); case law and DSGVO/EU basis via web search.
 
 capabilities = ["core", "filesystem-read", "websearch", "legal-de"]
 

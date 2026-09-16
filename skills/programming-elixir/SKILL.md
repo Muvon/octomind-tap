@@ -1,7 +1,7 @@
 ---
 name: programming-elixir
 title: "Elixir Development"
-description: "OTP-first architecture, pattern matching, supervision design, and Phoenix conventions. Auto-activates in Elixir projects."
+description: "Pattern matching, supervision, process-lifecycle, and concurrency design, and Phoenix conventions. Auto-activates in Elixir projects."
 license: Apache-2.0
 compatibility: "Requires Elixir and Erlang/OTP."
 domains: developer

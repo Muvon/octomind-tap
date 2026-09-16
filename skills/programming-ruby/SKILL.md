@@ -1,7 +1,7 @@
 ---
 name: programming-ruby
 title: "Ruby Development"
-description: "Idiomatic Ruby and Rails architecture: objects, services, ActiveRecord boundaries, and modern Hotwire patterns. Auto-activates in Ruby projects."
+description: "Idiomatic Ruby and Rails architecture: objects, services, ActiveRecord persistence, transactions, and Active Job boundaries. Auto-activates in Ruby projects."
 license: Apache-2.0
 compatibility: "Requires a supported Ruby and Bundler; Rails guidance applies only to Rails projects."
 domains: developer

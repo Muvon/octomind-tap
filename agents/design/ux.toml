@@ -1,6 +1,6 @@
 # agents/design/ux.toml
 # Agent: design:ux
-# Title: UX Reviewer and Writer
+# Title: UX Reviewer & Writer
 # Description: Audits pages and flows against Nielsen's heuristics and WCAG 2.2 AA, rates findings by severity, and rewrites failing microcopy in place.
 
 capabilities = ["core", "browser", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
