@@ -1,7 +1,7 @@
 ---
 name: spec-authoring
 title: "Behavioral Spec Authoring"
-description: "How to write a behavioral spec an autonomous agent can implement with zero unstated assumptions: EARS requirement patterns, the requirements/constraints/verification triple, wording discipline, the clarification protocol for interactive and autonomous runs, and the thin-spec file split. Activate when writing, revising, or reviewing a feature spec or acceptance criteria."
+description: "How to write a behavioral spec an autonomous agent can implement with zero unstated assumptions: EARS requirement patterns, the requirements/constraints/verification triple, wording discipline, spec layering and split rules (repo/feature/task, parent-child), the clarification protocol for interactive and autonomous runs, and the scratchpad rewrite discipline. Activate when writing, revising, or reviewing a feature spec or acceptance criteria."
 license: Apache-2.0
 compatibility: "Language-agnostic. Needs a codebase to ground the spec in and filesystem/search access to verify every cited path."
 domains: developer
@@ -33,7 +33,7 @@ Requirements without constraints let the implementer widen scope. Constraints wi
 Two properties govern everything else.
 
 - Depth scales with unfamiliarity. A variant of something already built needs three EARS lines and a command; a new subsystem needs a short design section first. Padding a familiar change with ceremony costs as much as under-specifying a novel one.
-- The spec is thin and dies at merge. It is not a design document, a task list, or a store of decisions. Standing repo knowledge belongs elsewhere.
+- The spec is thin and dies at merge — one spec is one mergeable outcome: the thing you would review and ship as a whole. It is not a design document, a task list, or a store of decisions; standing repo knowledge belongs in AGENTS.md.
 
 ## Rules
 
@@ -99,23 +99,48 @@ Autonomous (no human can answer):
 
 An assumption is acceptable only when recorded and verifiable. A silent default is a defect.
 
-### The file split
+### Layers: one spec, one reviewable outcome
 
-| Artifact | Scope | Lifetime |
-|---|---|---|
-| spec.md | One feature or change | Dies when merged |
-| AGENTS.md | The repo: commands, conventions, env quirks | Standing, kept thin |
-| tasks.md | Independently verifiable steps | While the work spans sittings |
-| scratchpad.md | The agent's live working state | Rewritten, never appended |
+Three layers, three scopes. A spec never lives at the repo layer, and a task never becomes its own spec.
 
-The scratchpad is working memory held outside the context window: current state, what was learned, what remains. Rewrite it frequently instead of appending — an appended file becomes a log whose current state is buried under stale history. The test for any line in any of these files: would removing it cause a mistake? If not, cut it.
+| Layer | Artifact | Holds | Lifetime |
+|---|---|---|---|
+| Repo | AGENTS.md | Only what is true for every task: build and test commands, conventions, migration rules, env quirks | Written once, pruned rarely |
+| Feature | `specs/<NNN>-<slug>/spec.md` | One mergeable outcome — requirements, constraints, Done command | Dies at merge |
+| Feature, risky only | `specs/<NNN>-<slug>/design.md` | Interfaces, data flow, key decisions — short | Dies at merge |
+| Execution | `specs/<NNN>-<slug>/tasks.md` | Independently verifiable steps, dependencies marked | Rewritten as the agent learns |
+| Working memory | `scratchpad.md` | The agent's live state: current position, what was learned, what remains | Rewritten, never appended |
+
+Per-feature content never goes in AGENTS.md: it rots and inflates context for every unrelated task. And tasks.md is not a spec — a spec per task over-splits, each task-agent optimises locally, and seams appear between them.
+
+The scratchpad is working memory held outside the context window. Rewrite it frequently instead of appending — an appended file becomes a log whose current state is buried under stale history. The test for any line in any of these files: would removing it cause a mistake? If not, cut it.
+
+### Split or keep one spec
+
+The boundary is one review sitting = one spec = one verified outcome. Review capacity is the scarcest resource in the loop, so aim the spec at the shape that spends it best.
+
+Split when any of these fires:
+
+- Different Done commands. The verification boundary is the spec boundary — a slice proven by tests and a slice needing a migration dry-run cannot share one converge loop.
+- Independently shippable. If slice A could merge without B, A is its own outcome.
+- Different risk profiles. Split so the risky slice gets the gated treatment (design.md, adversarial review) while routine slices stay thin. Depth follows risk and unfamiliarity, not size.
+- tasks.md past ~10–15 items, or a spec you would dread rereading in a week. It will go stale before it converges.
+
+Don't split when the parts only make sense merged (one coherent behavior), share one test suite, or nobody would ever review them apart. That is one spec with a longer tasks.md.
+
+For a genuinely big change, use parent/child instead of one monolith:
+
+- Parent, thin (~30 lines): goal, non-goals, architecture decisions, and the interface contracts between slices. No EARS — the children own behavior.
+- Children, one folder each: their own EARS, constraints, and Done command.
+
+Write the parent first and pin the interfaces. Only then can the children run in parallel without silently drifting on shared assumptions. Both failure modes are symmetrical: a monolithic spec goes stale and has nothing stable to converge against, while spec-per-task fragments intent until every agent is locally optimal and globally wrong.
 
 ### Adapt by task type
 
 - Bug — lead with Problem Statement (what breaks, who is affected), Reproduction Steps (numbered, expected vs actual), Root Cause (verified file:line); scenarios describe the fixed behavior plus regression invariants; omit user stories.
 - Refactor / performance — add Current State and Target State grounded in file:line; scenarios become behavior invariants (what must not change); add risks and rollback.
 - Brownfield behavior change — state the verified current truth, then tag each requirement ADDED / MODIFIED / REMOVED.
-- Beyond ~30 requirements — split into independently verifiable milestones, each with its own acceptance criteria. One oversized spec degrades implementer recall.
+- Beyond ~30 requirements, or a tasks.md past ~10–15 items — apply the split rules above instead of growing one file.
 
 ## Examples
 
@@ -141,6 +166,9 @@ Constraint, instruction → boundary:
 
 ## Checklist
 
+- [ ] One review sitting = one spec = one verified outcome? Split rules applied (Done commands, shippability, risk, tasks.md size) — or deliberately not, because the parts share one behavior and one test suite?
+- [ ] Is this a parent with thin children (interfaces pinned first) rather than one monolith?
+- [ ] Per-feature content kept out of AGENTS.md; tasks.md lives inside the spec folder; scratchpad rewritten, not appended?
 - [ ] Every requirement is one EARS statement, singular, with `shall` and no vague term?
 - [ ] Happy path, error path, boundary, concurrency, and dependency-unavailable cases each covered?
 - [ ] Every requirement has an ID and at least one scenario or acceptance criterion; every criterion is binary?
