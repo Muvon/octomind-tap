@@ -2,7 +2,7 @@
 # Capability: messaging-instagram
 # Provider: @mcpware/instagram-mcp — Instagram Graph API integration
 # Title: Instagram Messaging
-# Description: Instagram integration — posts, comments, DMs, stories, reels.
+# Description: Instagram messaging - posts, comments, DMs, stories, and reels - via the @mcpware/instagram-mcp server.
 # Requires: Instagram Business or Creator account linked to a Facebook Page.
 
 [deps]

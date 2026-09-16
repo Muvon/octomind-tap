@@ -1,7 +1,7 @@
 ---
 name: seo-backlink-prospecting
-title: "Backlink Prospecting & Qualification — Find Safe Free Places"
-description: "Operational funnel for finding and qualifying SAFE free places to place backlinks. Encodes the prospect categories (reclamation, resource pages, broken links, journalist requests, communities, aggregators, niche directories), the per-target qualification rubric (topical fit, real traffic, outbound profile, page context, anchor naturalness, reachability), Google's link-spam guardrails (penalty triggers, rel attribution rules), and the 2026 AI-search citation overlay (Reddit/community as Perplexity/ChatGPT citation sources). Use AFTER niche/audience are clear and BEFORE any outreach. Stays in the SEO lane: produces a prospect brief — outreach copy and on-page wrappers are downstream concerns owned elsewhere."
+title: "Backlink Prospecting & Qualification: Find Safe Free Places"
+description: "Operational funnel for finding and qualifying SAFE free places to place backlinks. Encodes the prospect categories (reclamation, resource pages, broken links, journalist requests, communities, aggregators, niche directories), the per-target qualification rubric (topical fit, real traffic, outbound profile, page context, anchor naturalness, reachability), Google's link-spam guardrails (penalty triggers, rel attribution rules), and the 2026 AI-search citation overlay (Reddit/community as Perplexity/ChatGPT citation sources). Use AFTER niche/audience are clear and BEFORE any outreach. Stays in the SEO lane: produces a prospect brief; outreach copy and on-page wrappers are downstream concerns owned elsewhere."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Requires websearch and webfetch for prospect discovery and qualification."
 domains: seo

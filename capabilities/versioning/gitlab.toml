@@ -1,8 +1,8 @@
 # capabilities/versioning/gitlab.toml
 # Capability: versioning
 # Provider: GitLab — official MCP reference server
-# Title: GitLab
-# Description: GitLab projects, merge requests, issues, and pipelines via MCP.
+# Title: Version Control (GitLab)
+# Description: GitLab projects, merge requests, issues, and pipelines via the official GitLab MCP server.
 
 [deps]
 require = ["gitlab/gitlab"]

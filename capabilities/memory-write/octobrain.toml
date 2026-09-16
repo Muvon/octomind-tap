@@ -2,7 +2,7 @@
 # Capability: memory-write
 # Provider: octobrain — write subset (mutations)
 # Title: Memory (Write)
-# Description: Create and delete memories via octobrain (memorize — with inline related_to links — and forget). Pair with memory-read.
+# Description: Memory creation and deletion via the octobrain MCP server (memorize and forget tools).
 
 [deps]
 require = ["muvon/octobrain"]

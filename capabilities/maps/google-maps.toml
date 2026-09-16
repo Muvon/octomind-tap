@@ -2,7 +2,7 @@
 # Capability: maps
 # Provider: Google Maps — official MCP reference server
 # Title: Maps & Geolocation
-# Description: Geocoding, directions, places, and elevation via Google Maps API.
+# Description: Geocoding, directions, places, and elevation via the Google Maps API (mcp-google-map server).
 
 [deps]
 require = ["google-maps/maps"]

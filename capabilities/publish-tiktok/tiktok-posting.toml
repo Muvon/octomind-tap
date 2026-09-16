@@ -2,7 +2,7 @@
 # Capability: publish-tiktok
 # Provider: upload-post.com gateway — TikTok video publishing (no direct TikTok MCP exists)
 # Title: TikTok Publishing
-# Description: Direct Post / Inbox upload of finished video creative via the TikTok Content Posting API.
+# Description: TikTok video and photo uploads (direct post or inbox), scheduling, and status tracking via the @upload-post/mcp gateway (TikTok Content Posting API).
 # Provides tools: upload_video, upload_photos, get_status, get_job_status, list_scheduled, cancel_scheduled, edit_scheduled, retry_post, unpublish_post
 
 [deps]

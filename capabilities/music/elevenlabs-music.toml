@@ -2,7 +2,7 @@
 # Capability: music
 # Provider: ElevenLabs Music — same SDK as elevenlabs voice, music endpoints
 # Title: Music Generation
-# Description: ElevenLabs Music for higher-fidelity bespoke ad tracks via the elevenlabs MCP.
+# Description: Music composition, video-to-music, and sound effects via the ElevenLabs MCP server (elevenlabs-mcp).
 # Provides tools: compose_music, create_composition_plan, video_to_music, upload_music_for_inpainting, text_to_sound_effects, play_audio
 
 [deps]

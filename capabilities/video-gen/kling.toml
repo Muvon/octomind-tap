@@ -2,7 +2,7 @@
 # Capability: video-gen
 # Provider: Kling AI — text-to-video with strong motion physics
 # Title: Video Generation
-# Description: Text-to-video and image-to-video via Kling AI 2.x with strong motion physics.
+# Description: Text-to-video and image-to-video via Kling AI 2.x (strong motion physics, lipsync, and video effects).
 # Provides tools: generate_video, generate_image_to_video, check_video_status, extend_video, create_lipsync, apply_video_effect, list_tasks, get_account_balance
 
 [deps]

@@ -1,8 +1,8 @@
 # capabilities/webfetch/fetch.toml
 # Capability: webfetch
 # Provider: Fetch — official MCP reference server
-# Title: Web Fetch
-# Description: Fetch any URL and convert to markdown for LLM consumption.
+# Title: Web Fetch (Fetch)
+# Description: URL fetching with markdown conversion for LLM consumption, via the fetch MCP reference server.
 
 [deps]
 require = ["modelcontextprotocol/fetch"]

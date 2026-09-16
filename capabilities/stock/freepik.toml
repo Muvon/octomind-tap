@@ -2,7 +2,7 @@
 # Capability: stock
 # Provider: Freepik — AI generation + stock images, vectors, video templates
 # Title: Stock Media
-# Description: Stock and AI image / video generation via the Freepik API.
+# Description: Stock images, vectors, and videos - search, download, and AI image generation - via the Freepik API.
 # Provides tools: search_resources, get_resource, download_resource, generate_image, check_status
 
 [deps]

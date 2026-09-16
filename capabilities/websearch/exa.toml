@@ -2,7 +2,7 @@
 # Capability: websearch
 # Provider: Exa — AI-powered semantic web search
 # Title: Web Search (Exa)
-# Description: AI-powered semantic web search via Exa API with 1,000 free queries/month.
+# Description: Semantic web search via the Exa API (web_search_exa tool).
 # Provides tools: web_search_exa, research_exa
 
 [deps]

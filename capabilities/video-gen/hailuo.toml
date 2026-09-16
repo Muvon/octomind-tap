@@ -2,7 +2,7 @@
 # Capability: video-gen
 # Provider: MiniMax Hailuo 02 — cheapest viable T2V/I2V for volume tests
 # Title: Video Generation
-# Description: Text-to-video and image-to-video via MiniMax Hailuo 02 (low-cost variant testing).
+# Description: Text-to-video and image-to-video via MiniMax Hailuo 02 (low-cost option for volume testing).
 # Provides tools: generate_video, query_video_generation
 
 [deps]

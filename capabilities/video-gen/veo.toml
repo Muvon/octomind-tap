@@ -2,7 +2,7 @@
 # Capability: video-gen
 # Provider: Google Veo 3 — text-to-video and image-to-video with native audio
 # Title: Video Generation
-# Description: Text-to-video and image-to-video with native dialogue / SFX via Google Veo 3.
+# Description: Text-to-video and image-to-video via Google Veo 3, with native dialogue and sound effects.
 # Provides tools: generate_video, extend_video, interpolate_frames, get_video_status
 
 [deps]

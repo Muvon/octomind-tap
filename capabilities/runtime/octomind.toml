@@ -2,7 +2,7 @@
 # Capability: runtime
 # Provider: octomind
 # Title: Octomind Runtime Control
-# Description: High-trust Octomind runtime controls — MCP server management, dynamic agents, and skill/capability activation (tool-surface reconfiguration).
+# Description: High-trust Octomind runtime controls: MCP server management, dynamic agents, and skill/capability activation.
 
 [roles.mcp]
 server_refs = ["runtime"]

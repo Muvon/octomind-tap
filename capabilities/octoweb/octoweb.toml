@@ -2,7 +2,7 @@
 # Capability: octoweb
 # Provider: Octoweb — browser-based personal assistant
 # Title: Octoweb
-# Description: Browser-based personal assistant via Octoweb HTTP server.
+# Description: Browser-based personal assistant via the Octoweb HTTP MCP server.
 
 [roles.mcp]
 server_refs = ["octoweb"]

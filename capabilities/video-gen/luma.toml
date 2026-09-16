@@ -2,7 +2,7 @@
 # Capability: video-gen
 # Provider: Luma Dream Machine via RunAPI gateway — text/image-to-video
 # Title: Video Generation
-# Description: Text-to-video and image-to-video generation via Luma Dream Machine.
+# Description: Text-to-video and image-to-video via Luma Dream Machine (RunAPI gateway).
 # Provides tools: modify_video, get_task, check_pricing, login
 
 [deps]

@@ -2,7 +2,7 @@
 # Capability: payments
 # Provider: Stripe — official agent toolkit MCP server
 # Title: Payments (Stripe)
-# Description: Manage Stripe customers, charges, subscriptions, and invoices via MCP.
+# Description: Stripe customer, charge, subscription, and invoice management via the official @stripe/mcp server.
 
 [deps]
 require = ["stripe/stripe"]
