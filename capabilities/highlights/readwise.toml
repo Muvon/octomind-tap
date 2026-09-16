@@ -2,7 +2,7 @@
 # Capability: highlights
 # Provider: Readwise — reading highlights and annotations via MCP
 # Title: Highlights (Readwise)
-# Description: Search and retrieve reading highlights, book annotations, and saved articles from Readwise.
+# Description: Reading highlights, book annotations, and saved articles via the Readwise MCP server.
 
 [deps]
 require = ["readwise/readwise"]

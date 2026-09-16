@@ -2,7 +2,7 @@
 # Capability: composition
 # Provider: Remotion — code-driven (React) video composition + Lambda render
 # Title: Video Composition
-# Description: Programmatic React-based video composition for templated ad variants and explainer videos.
+# Description: Code-driven React video composition and rendering via the Remotion MCP server.
 # Provides tools: init_remotion_project, create_composition_scaffold, add_component, update_composition, get_composition_code, list_compositions, list_project_files, render_video, render_still, render_gif, get_render_status, query_remotion_docs
 
 [deps]

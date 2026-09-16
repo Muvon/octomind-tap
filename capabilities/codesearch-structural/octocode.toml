@@ -2,7 +2,7 @@
 # Capability: codesearch-structural
 # Provider: octocode — structural (AST/symbol) code search
 # Title: Code Search (Structural)
-# Description: Symbol/AST code search and file layout inspection via octocode: structural_search, view_signatures.
+# Description: Symbol and AST code search via octocode: structural_search, view_signatures.
 
 [deps]
 require = ["muvon/octocode"]

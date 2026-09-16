@@ -2,7 +2,7 @@
 # Capability: legal-au
 # Provider: @ansvar/australian-law-mcp — Australian federal legislation (pinned 1.1.0)
 # Title: Australian Law
-# Description: Australian federal legislation with full-text search via the Ansvar law MCP.
+# Description: Australian federal legislation with full-text search via the Ansvar Australian law MCP server.
 # Provides tools: search_legislation, get_provision, validate_citation, build_legal_stance, format_citation, check_currency, get_eu_basis, get_australian_implementations, search_eu_implementations, get_provision_eu_basis, validate_eu_compliance, list_sources, about
 #
 # Launch wrapper: every published version ships a broken bin entry (compiled

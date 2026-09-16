@@ -2,7 +2,7 @@
 # Capability: composition
 # Provider: ffmpeg — installs ffmpeg locally; agent uses it via the filesystem `shell` tool
 # Title: Video Composition
-# Description: Lightweight composition fallback. Installs ffmpeg; agents stitch clips via shell.
+# Description: Video composition via ffmpeg, installed locally and invoked through the shell tool.
 # Provides tools: (none — invoked via filesystem:shell)
 
 [deps]

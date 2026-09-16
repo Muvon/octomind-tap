@@ -2,7 +2,7 @@
 # Capability: avatar
 # Provider: Hedra Character-3 — image-to-talking-character video
 # Title: AI Avatar
-# Description: Image-to-talking-character video via Hedra Character-3 (stylized / illustrated avatars).
+# Description: Image-to-talking-character video, text-to-speech, and image generation via Hedra Character-3.
 # Provides tools: generate_video, generate_video_with_tts, generate_text_to_speech, generate_image, list_assets, create_asset, upload_asset, list_generations, get_generation_status, list_models, get_credits
 
 [deps]

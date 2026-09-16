@@ -2,7 +2,7 @@
 # Capability: captions
 # Provider: AssemblyAI — diarized captions, chapters, sentiment
 # Title: Captions / Transcripts
-# Description: Diarized captions, auto-chapters, speaker labels and SRT/VTT output via AssemblyAI.
+# Description: Diarized captions, chapters, and sentiment analysis via AssemblyAI.
 # Provides tools: transcribe_url, transcribe_file, submit_transcription, get_transcript
 
 [deps]

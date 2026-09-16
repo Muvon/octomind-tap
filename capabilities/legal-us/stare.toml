@@ -2,7 +2,7 @@
 # Capability: legal-us
 # Provider: stare-mcp — US case law via the CourtListener API (free.law)
 # Title: US Law
-# Description: US case law search and opinions via CourtListener (free.law) API.
+# Description: US case law search and opinions via the CourtListener (free.law) MCP server.
 # Provides tools: search_cases, verify_citations, how_cited, list_courts, fetch_passages
 #
 # Replaces the former Ansvar provider: the @ansvar/*-law-mcp npm packages are

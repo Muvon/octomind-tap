@@ -2,7 +2,7 @@
 # Capability: legal-in
 # Provider: @ansvar/india-law-mcp — Indian central legislation from India Code
 # Title: Indian Law
-# Description: Indian central legislation from India Code via Ansvar MCP.
+# Description: Indian central legislation from India Code via the Ansvar India law MCP server.
 
 [deps]
 require = ["ansvar/india-law-mcp"]

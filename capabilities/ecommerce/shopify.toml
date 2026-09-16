@@ -2,7 +2,7 @@
 # Capability: ecommerce
 # Provider: Shopify — official Dev MCP server
 # Title: E-Commerce (Shopify)
-# Description: Shopify store management — products, orders, customers, inventory, storefront.
+# Description: Shopify store management via the Shopify Dev MCP server: products, orders, customers, inventory, and storefront.
 
 [deps]
 require = ["shopify/shopify"]

@@ -2,7 +2,7 @@
 # Capability: customer-management
 # Provider: HubSpot — official MCP server
 # Title: Customer Management (HubSpot)
-# Description: Manage contacts, deals, tickets, campaigns, and email templates via HubSpot.
+# Description: Customer management - contacts, deals, and campaigns - via the official HubSpot MCP server.
 
 [deps]
 require = ["hubspot/hubspot"]

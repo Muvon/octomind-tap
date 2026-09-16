@@ -2,7 +2,7 @@
 # Capability: database-sqlite
 # Provider: SQLite — official MCP reference server
 # Title: SQLite Database
-# Description: Query and manage local SQLite databases via MCP.
+# Description: Local SQLite database querying and management via the official MCP reference server.
 
 [deps]
 require = ["modelcontextprotocol/sqlite"]
