@@ -1,7 +1,7 @@
 # agents/lawyer/fr.toml
 # Agent: lawyer:fr
 # Title: French Law Specialist
-# Description: French law specialist. Complete French legislation from Légifrance/DILA, covering Code civil, Code du travail, Code pénal, droit des sociétés, RGPD, and more.
+# Description: Explains French law with complete legislation from Legifrance/DILA, covering the civil, labor, and criminal codes, company law, and RGPD.
 
 capabilities = ["core", "filesystem-read", "websearch", "legal-fr"]
 

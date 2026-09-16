@@ -1,7 +1,7 @@
 # agents/lawyer/consumer.toml
 # Agent: lawyer:consumer
 # Title: Consumer Rights Navigator
-# Description: Consumer rights navigator. Refund and chargeback prep, demand letters, debt-collection responses, credit-report disputes, small-claims preparation.
+# Description: Guides consumer disputes: refunds, chargebacks, demand letters, debt-collection responses, credit-report disputes, and small-claims prep.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

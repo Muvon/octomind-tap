@@ -1,7 +1,7 @@
 ---
 name: video-spec-sheet
 title: "Video Spec Sheet: Platform Specs and Safe Zones"
-description: "Canonical reference for platform-by-platform video output specs: aspect ratio, length cap, codec, bitrate, frame rate, color, caption style and safe-zone bands. Covers TikTok, Reels, Shorts, IG/FB feed, Stories, X, and LinkedIn across all four format families: short-form vertical, square/feed, long-form 16:9, story 9:16. Use when picking output settings, validating an export, or spec-checking before publishing."
+description: "Canonical reference for platform-by-platform video output specs: aspect ratio, length cap, codec, bitrate, frame rate, color, caption style and safe-zone bands. Per-platform spec table covers TikTok, Reels, Shorts, IG/FB feed, Stories, Snapchat, YouTube long-form, X, LinkedIn, and Pinterest, plus safe-zone reserves, caption rules, and copy-paste ffmpeg presets. Use when picking output settings, validating an export, or spec-checking before publishing."
 license: Apache-2.0
 compatibility: "Stack-agnostic."
 domains: video

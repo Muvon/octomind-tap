@@ -1,7 +1,7 @@
 ---
 name: ad-x
 title: "X (Twitter) Ads Production Spec"
-description: "Specifies what to produce for an X (Twitter) ad: Promoted Posts, Website Cards, App Cards, and Video Ads, with the exact slots (post text, card title, card description, CTA enum), character limits (280 post, 70 card title, 200 card description), asset ratios, and the native-feel rules that decide whether the algorithm classes it as quality content or scroll-past. Use whenever the task is producing X ad copy or card assets; strictly platform-specific, so it does not cover audience targeting, conversion tracking, or organic posting strategy."
+description: "Specifies what to produce for an X (Twitter) ad: Promoted Posts, Website Cards, App Cards, and Video Ads, with the exact slots (post text, card title, CTA enum), character limits (280 post, 70 card title), asset ratios, and the native-feel rules that decide whether the algorithm classes it as quality content or scroll-past. Use whenever the task is producing X ad copy or card assets; strictly platform-specific, so it does not cover audience targeting, conversion tracking, or organic posting strategy."
 license: Apache-2.0
 compatibility: "Octomind launch agents. Platform-specific to X/Twitter Ads."
 domains: launch

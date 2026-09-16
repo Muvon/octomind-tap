@@ -1,7 +1,7 @@
 ---
 name: octomind-supervisor
 title: "Octomind Supervisor & Learning"
-description: "Reference for octomind's out-of-band control plane: the self-report token, deterministic loop/no-progress/recovery detectors, the verify-gate and its free pre-gates, adaptive external planning, condense, steer, recite, and cross-session lessons plus orientation memory, together with the strict [supervisor] config sections. Activate when a user asks why a turn was re-run or gated, what the sup status line is, how lessons or orientation are stored and recalled, why tool output was condensed, or how to tune [supervisor.gate], [supervisor.learning], [supervisor.plan], or [supervisor.condense]."
+description: "Reference for octomind's out-of-band control plane: the self-report token, deterministic loop/no-progress/recovery detectors, the verify-gate and its free pre-gates, the plan mechanic with plan-complete gating and reassess on broken assumptions, condense, steer, recite, and cross-session lessons plus orientation memory, together with the strict [supervisor] config sections. Activate when a user asks why a turn was re-run or gated, how the verify-gate or the loop and no-progress detectors work, how lessons or orientation are stored and recalled, why tool output was condensed, or how to tune [supervisor.gate], [supervisor.learning], [supervisor.plan], or [supervisor.condense]."
 license: Apache-2.0
 compatibility: "Requires: octomind binary. macOS/Linux/Windows."
 domains: octomind

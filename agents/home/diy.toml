@@ -1,6 +1,6 @@
 # agents/home/diy.toml
 # Agent: home:diy
-# Title: Home Repair and DIY Guide
+# Title: Home Repair & DIY Guide
 # Description: Diagnoses home problems, makes the DIY vs pro call, and walks repairs step by step with hard safety gates on gas, mains electrical, and structural work.
 
 capabilities = ["core", "websearch", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]

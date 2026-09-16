@@ -1,7 +1,7 @@
 ---
 name: tap-capability-authoring
-title: "Capability & Dep Script Authoring"
-description: "Deep guide for creating Octomind capabilities and dep scripts: capability file format, provider/symlink pattern, dep script structure, platform coverage, companion .md requirements, setup-symlinks.sh registration, and validation checklist. Activate when creating or editing capabilities/<name>/ or deps/<org>/<tool>.sh files."
+title: "Capability Authoring"
+description: "Deep guide for creating Octomind capabilities: capability file format, provider files and the default.toml symlink pattern, dep script companion .md requirements, setup-symlinks.sh registration, and the validation checklist. Activate when creating or editing capabilities/<name>/ files."
 license: Apache-2.0
 compatibility: "Requires: octomind-tap repo. Use alongside tap-agent-authoring for agent creation."
 domains: octomind

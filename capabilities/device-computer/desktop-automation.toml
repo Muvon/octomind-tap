@@ -2,7 +2,7 @@
 # Capability: device-computer
 # Provider: Desktop Automation (RobotJS) — local computer mouse / keyboard / screen
 # Title: Desktop UI Automation
-# Description: Local desktop UI control - mouse, keyboard, and screenshots - via RobotJS on macOS, Linux, and Windows.
+# Description: Drive the local computer UI — mouse, keyboard, screenshots — via RobotJS (macOS / Linux / Windows).
 # https://github.com/tanob/mcp-desktop-automation
 
 [deps]

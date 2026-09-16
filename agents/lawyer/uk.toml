@@ -1,7 +1,7 @@
 # agents/lawyer/uk.toml
 # Agent: lawyer:uk
 # Title: UK Law Specialist
-# Description: UK law specialist. English, Welsh, Scottish, and Northern Irish legislation with EU cross-references. Contracts, employment, and more.
+# Description: Covers English, Welsh, Scottish, and Northern Irish law from legislation.gov.uk with EU cross-references: contracts, employment. Information, not legal advice.
 
 capabilities = ["core", "filesystem-read", "websearch", "legal-uk"]
 

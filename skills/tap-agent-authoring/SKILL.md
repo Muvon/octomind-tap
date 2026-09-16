@@ -1,7 +1,7 @@
 ---
 name: tap-agent-authoring
 title: "Agent Manifest Authoring"
-description: "Deep guide for writing Octomind agent manifests: TOML format, required fields, system prompt structure, temperature guidelines, workflow/layer patterns, and the pre-write checklist. Activate when creating or editing agents/<domain>/<spec>.toml files."
+description: "Deep guide for writing Octomind agent manifests: TOML format, required fields, system prompt structure, temperature guidelines, external workflow/layer pointers, and the pre-write checklist. Activate when creating or editing agents/<domain>/<spec>.toml files."
 license: Apache-2.0
 compatibility: "Requires: octomind-tap repo. Use alongside tap-capability-authoring for capability creation."
 domains: octomind
