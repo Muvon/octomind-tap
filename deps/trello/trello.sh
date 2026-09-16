@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: trello/trello
 # type: mcp
-# description: Trello MCP Server — boards, cards, lists
+# description: Trello MCP Server - boards, cards, lists
 # check: npx
 # https://www.npmjs.com/package/@iflow-mcp/trello-mcp-server
 

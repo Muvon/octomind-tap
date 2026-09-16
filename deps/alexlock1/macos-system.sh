@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: alexlock1/macos-system
 # type: mcp
-# description: macOS System MCP — file dialogs, clipboard, notifications
+# description: macOS System MCP - file dialogs, clipboard, notifications
 # check: npx
 # https://github.com/alexlock1/macos-mcp
 

@@ -1,7 +1,7 @@
 ---
 name: octomind-workflow
 title: "Octomind Workflow Design & Syntax"
-description: "Complete guide for octomind workflow files — pipeline design (pattern selection, step decomposition, sentinel handoff contracts, loop convergence, context economics) plus the exact TOML syntax for the external orchestrator that chains octomind run subprocesses. Covers sequential/parallel/loop/conditional steps, variable substitution, session modes, pre-flight validation, and the CLI. Activate when designing, authoring, validating, or debugging a workflow .toml file."
+description: "Complete guide for octomind workflow files: pipeline design (pattern selection, step decomposition, sentinel handoff contracts, loop convergence, context economics) plus the exact TOML syntax for the external orchestrator that chains octomind run subprocesses. Covers sequential, parallel, loop, and conditional steps, variable substitution, session modes, pre-flight validation, and the CLI. Activate when designing, authoring, validating, or debugging a workflow .toml file."
 license: Apache-2.0
 compatibility: "Requires: octomind CLI with the `workflow` subcommand. Workflows are stdin-driven; every referenced role must be an installed role or tap-agent tag."
 domains: octomind

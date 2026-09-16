@@ -1,4 +1,4 @@
-# Title: Content — Brief to Published Piece
+# Title: Content: Brief to Published Piece
 #
 # Public workflow: turn a brief into a researched draft, then refine it through
 # an audit ⇄ edit quality loop until it passes. Operates on the current
@@ -13,7 +13,7 @@
 # Note: chains several specialist runs — token/time-heavy by design.
 
 name        = "content"
-description = "Turn a brief into a researched, audited, publish-ready article in the current directory, refined by an edit/audit loop until it passes. For social adaptation of the finished piece, chain the promote workflow."
+description = "Turns a brief into a researched, publish-ready article in the current directory, refined by an edit/audit loop until it passes. Chain the promote workflow for social adaptation."
 
 # ── 1. Draft ─────────────────────────────────────────────────────────────────
 [[steps]]

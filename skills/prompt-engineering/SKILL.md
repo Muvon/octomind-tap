@@ -1,6 +1,6 @@
 ---
 name: prompt-engineering
-title: "Prompt Engineering — SOTA 2026 Toolkit"
+title: "Prompt Engineering: SOTA 2026 Toolkit"
 description: "Generate, improve, analyze, and debug LLM prompts. Activate only when the user explicitly asks to write, rewrite, optimize, diagnose, or design a prompt/system prompt, or names a prompt-engineering technique."
 license: Apache-2.0
 compatibility: "Works with any LLM. Anthropic-specific notes flagged inline (Claude 4.7 behavior, XML tags, effort levels, structured outputs)."

@@ -1,7 +1,7 @@
 ---
 name: social-mastodon
 title: "Mastodon Publishing Playbook"
-description: "Write and revise Mastodon posts, replies, launches, and proof updates in the author's documented voice. Activate for Mastodon or Fediverse publishing briefs; check the actual server before applying Mastodon mechanics elsewhere. Covers discovery, visibility, accessible publishing, disclosure, and qualified follow-up."
+description: "Write and revise Mastodon posts, replies, launches, and proof updates in the author's documented voice, covering discovery, visibility, accessible publishing, disclosure, and qualified follow-up. Activate for Mastodon or Fediverse publishing briefs; check the actual server before applying Mastodon mechanics elsewhere."
 license: Apache-2.0
 compatibility: "Browser or HTTP access for current server rules, composer limits, and source verification."
 domains: content

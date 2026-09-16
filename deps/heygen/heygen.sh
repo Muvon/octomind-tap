@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: heygen/heygen
 # type: mcp
-# description: HeyGen MCP Server — AI avatar UGC video generation
+# description: HeyGen MCP Server - AI avatar UGC video generation
 # check: uvx
 # https://docs.heygen.com/
 

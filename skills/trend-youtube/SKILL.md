@@ -1,7 +1,7 @@
 ---
 name: trend-youtube
 title: "YouTube Trend Harvester Playbook"
-description: "Harvest YouTube topic demand, channel-relative outliers, buyer questions, and reusable format ideas. Activate for YouTube trend scans, competitor or launch monitoring, and evidence-backed content briefs. Separate observed public data from private analytics and turn findings into original angles with explicit limitations."
+description: "Harvest YouTube topic demand, channel-relative outliers, buyer questions, and reusable format ideas. Activate for YouTube trend scans, competitor or launch monitoring, and evidence-backed content briefs; separate observed public data from private analytics and turn findings into original angles with explicit limitations."
 license: Apache-2.0
 compatibility: "Requires browser and network access. Account-specific Studio research requires an authorized signed-in session."
 capabilities: browser memory-read memory-write

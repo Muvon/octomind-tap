@@ -1,4 +1,4 @@
-# Title: Review — Diff to Verified Verdict
+# Title: Review: Diff to Verified Verdict
 #
 # Public workflow: review the current unstaged changes against the request in one
 # structured pass, independently verify each finding to prune false positives,
@@ -6,7 +6,7 @@
 # fix list. Public roles only.
 
 name        = "review"
-description = "Review the current unstaged changes against the request, independently verify each finding, then branch on a deterministic verdict to an approval note or a prioritized fix list."
+description = "Reviews the current unstaged changes against the request, independently verifies each finding, then branches on a deterministic verdict to an approval note or a prioritized fix list."
 
 # ── 1. Review ────────────────────────────────────────────────────────────────
 [[steps]]

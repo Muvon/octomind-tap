@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: german-law/german-law
 # type: mcp
-# description: German Law MCP Server — federal statutes live from gesetze-im-internet.de
+# description: German Law MCP Server - federal statutes live from gesetze-im-internet.de
 # check: npx
 # https://www.npmjs.com/package/german-law-mcp
 

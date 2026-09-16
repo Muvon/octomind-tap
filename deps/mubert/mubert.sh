@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: mubert/mubert
 # type: mcp
-# description: Mubert MCP Server — royalty-safe AI music generation for ad soundtracks
+# description: Mubert MCP Server - royalty-safe AI music generation for ad soundtracks
 # check: npx
 # https://docs.mubert.com/
 

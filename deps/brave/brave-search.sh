@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: brave/brave-search
 # type: mcp
-# description: Brave Search MCP Server — web search via Brave Search API
+# description: Brave Search MCP Server - web search via Brave Search API
 # check: npx
 # https://github.com/brave/brave-search-mcp-server
 

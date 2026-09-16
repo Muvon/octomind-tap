@@ -1,7 +1,7 @@
 ---
 name: issue-diagnosis
 title: "Issue Diagnosis"
-description: "Method for resolving reported issues (bug reports, feature requests) the way a project maintainer would: understand the reported behavior, find the upstream resolution when one exists, survey the full surface the change belongs to, implement in the project's own pattern, and verify against the report. Activate when the task is a reported issue against a codebase."
+description: "Resolve reported issues (bug reports, feature requests) the way a project maintainer would: understand the reported behavior, find the upstream resolution when one exists, survey the full surface the change belongs to, implement in the project's own pattern, and verify against the report. Activate when the task is a reported issue against a codebase."
 license: Apache-2.0
 compatibility: "Language-agnostic. Applies to any codebase; upstream research applies when the project has a public home."
 domains: developer

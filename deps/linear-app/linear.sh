@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: linear-app/linear
 # type: mcp
-# description: Linear MCP Server — project management (issues, projects, teams)
+# description: Linear MCP Server - project management (issues, projects, teams)
 # check: npx
 # https://linear.app/changelog/2025-05-01-mcp
 

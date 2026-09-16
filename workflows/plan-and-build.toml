@@ -1,4 +1,4 @@
-# Title: Plan and Build — Spec-then-Implement Chain
+# Title: Plan and Build: Spec-then-Implement Chain
 #
 # Public workflow: turn a well-scoped request into a concise implementation
 # spec, then implement that spec and prove it with the project's own check.
@@ -7,7 +7,7 @@
 # develop loop when conformance is uncertain. Public roles only.
 
 name        = "plan-and-build"
-description = "Draft a concise implementation spec from the request, then implement it and verify with the project's check."
+description = "Drafts a concise implementation spec from the request, then implements it and verifies with the project's own check."
 
 # ── 1. Plan: request → implementation spec ───────────────────────────────────
 [[steps]]

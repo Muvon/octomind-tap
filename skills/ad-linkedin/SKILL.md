@@ -1,7 +1,7 @@
 ---
 name: ad-linkedin
 title: "LinkedIn Ads Production Spec"
-description: "What to produce for a LinkedIn ad — Sponsored Content (single image, video, carousel, document), Message Ads, and Text Ads. Encodes the exact slots (intro text, headline, description), character limits, asset ratios, the CTA enum per format, and the professional-context rules that decide whether B2B audiences engage or scroll past. Use whenever the task is producing LinkedIn ad copy or asset briefs. Strictly platform-specific — does not cover audience filters, matched audiences, or LinkedIn Insight Tag setup."
+description: "Specifies what to produce for a LinkedIn ad: Sponsored Content (single image, video, carousel, document), Message Ads, and Text Ads, with the exact slots (intro text, headline, description), character limits, asset ratios, the CTA enum per format, and the professional-context rules that decide whether B2B audiences engage or scroll past. Use whenever the task is producing LinkedIn ad copy or asset briefs; strictly platform-specific, so it does not cover audience filters, matched audiences, or LinkedIn Insight Tag setup."
 license: Apache-2.0
 compatibility: "Octomind launch agents. Platform-specific to LinkedIn Ads."
 domains: launch

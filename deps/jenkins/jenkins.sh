@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: jenkins/jenkins
 # type: mcp
-# description: Jenkins MCP Server — CI/CD pipeline management
+# description: Jenkins MCP Server - CI/CD pipeline management
 # check: npx
 # https://github.com/LokiMCPUniverse/jenkins-mcp-server
 

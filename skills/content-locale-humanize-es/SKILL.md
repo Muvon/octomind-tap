@@ -1,7 +1,7 @@
 ---
 name: content-locale-humanize-es
 title: "Spanish Native-Fluency Calibration"
-description: "Per-language calibration anchors for detecting AI-slop and translationese in Spanish (es) target text — auto-loads alongside content-locale-humanize when the target language is Spanish."
+description: "Per-language calibration anchors for detecting AI-slop and translationese in Spanish (es) target text; auto-loads alongside content-locale-humanize when the target language is Spanish."
 license: Apache-2.0
 compatibility: "Extends content-locale-humanize's AI-Slop & Translationese dimension. Load both together — this file has no rubric of its own."
 domains: content

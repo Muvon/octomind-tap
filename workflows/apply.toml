@@ -1,4 +1,4 @@
-# Title: Apply — Master Resume + Job Posting to a Tailored Application Package
+# Title: Apply: Resume and Posting to Application Package
 #
 # Public workflow: turn a master resume plus a specific job posting into a
 # ready-to-submit application PACKAGE — an ATS-optimized, country-correct
@@ -40,7 +40,7 @@
 # Public roles only.
 
 name        = "apply"
-description = "Turn a master resume plus a job posting (file, URL, or text) into a ready-to-submit application package — an ATS-optimized, country-correct tailored resume, a matching cover letter, and an honest match+gap report — grounded only in real experience, refined by a screen/fix loop until it passes. Produces documents, never auto-submits."
+description = "Turns a master resume and a job posting into a tailored, ATS-optimized resume, a cover letter, and an honest match-gap report, refined by a screen/fix loop. Produces documents; never auto-submits."
 
 # ── 1. Intake — read resume + posting, capture both, detect target market ───
 [[steps]]

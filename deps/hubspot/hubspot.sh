@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: hubspot/hubspot
 # type: mcp
-# description: HubSpot MCP Server — CRM contacts, deals, companies
+# description: HubSpot MCP Server - CRM contacts, deals, companies
 # check: npx
 # https://www.npmjs.com/package/@hubspot/mcp-server
 

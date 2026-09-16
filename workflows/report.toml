@@ -1,4 +1,4 @@
-# Title: Report — Raw Data to a Human-Readable, Printable Report
+# Title: Report: Raw Data to Decision-Ready Report
 #
 # Public workflow: turn a data source (CSV, spreadsheet, SQL/database, metrics,
 # logs, or a question over that data) into a decision-ready report a human
@@ -42,7 +42,7 @@
 # Public roles only.
 
 name        = "report"
-description = "Turn a data source (CSV, spreadsheet, SQL, metrics, logs) into a decision-ready report a human reads — answer-first structure, every number computed from the data (never fabricated), inline-SVG charts, delivered as a self-contained HTML that prints to clean PDF (or Markdown/PDF on request), built on disk and refined by an accuracy+readability loop until it passes."
+description = "Turns a data source into a decision-ready report with every number computed from the data and inline-SVG charts, refined by an accuracy loop, delivered as self-contained HTML that prints to PDF."
 
 # ── 1. Analyze — load the data, compute the real numbers, extract findings ──
 [[steps]]

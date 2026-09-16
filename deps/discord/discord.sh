@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: discord/discord
 # type: mcp
-# description: Discord MCP Server — Discord bot integration, messaging, moderation
+# description: Discord MCP Server - Discord bot integration, messaging, moderation
 # check: npx
 # https://www.npmjs.com/package/mcp-discord
 

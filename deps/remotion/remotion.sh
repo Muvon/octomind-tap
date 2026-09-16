@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: remotion/remotion
 # type: mcp
-# description: Remotion MCP Server — code-driven (React) video composition + Lambda render
+# description: Remotion MCP Server - code-driven (React) video composition + Lambda render
 # check: npx
 # https://www.remotion.dev/docs/
 

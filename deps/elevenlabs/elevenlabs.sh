@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: elevenlabs/elevenlabs
 # type: mcp
-# description: ElevenLabs MCP Server — text-to-speech, voice cloning
+# description: ElevenLabs MCP Server - text-to-speech, voice cloning
 # check: npx
 # https://github.com/elevenlabs/elevenlabs-mcp
 

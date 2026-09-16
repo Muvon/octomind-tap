@@ -1,4 +1,4 @@
-# Title: Research — Question to Verified Cited Report
+# Title: Research: Question to Verified Cited Report
 #
 # Public workflow: investigate a question from three independent angles in
 # parallel, synthesize one grounded report, then run a SEPARATE groundedness
@@ -6,7 +6,7 @@
 # the synthesizer revises once on failure. Public roles only.
 
 name        = "research"
-description = "Investigate a question from background, evidence, and counter-argument angles in parallel, synthesize one cited report, then loop a separate groundedness judge (claims checked against their sources) until GROUNDED, capped at 2 iterations."
+description = "Investigates a question from background, evidence, and counter-argument angles in parallel, synthesizes a cited report, then loops a groundedness judge until every claim verifies against its sources."
 
 # ── 1. Parallel angle research ───────────────────────────────────────────────
 [[steps]]

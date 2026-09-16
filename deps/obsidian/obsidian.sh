@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: obsidian/obsidian
 # type: mcp
-# description: Obsidian MCP Server — read, create, search notes in Obsidian vault
+# description: Obsidian MCP Server - read, create, search notes in Obsidian vault
 # check: npx
 # https://www.npmjs.com/package/@huangyihe/obsidian-mcp
 

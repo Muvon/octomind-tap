@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: asana/asana
 # type: mcp
-# description: Asana MCP Server — projects, tasks, workspaces
+# description: Asana MCP Server - projects, tasks, workspaces
 # check: npx
 # https://www.npmjs.com/package/mcp-server-asana
 

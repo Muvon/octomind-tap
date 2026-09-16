@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: grafana/grafana
 # type: mcp
-# description: Grafana MCP Server — dashboards, visualization
+# description: Grafana MCP Server - dashboards, visualization
 # check: npx
 # https://www.npmjs.com/package/@leval/mcp-grafana
 

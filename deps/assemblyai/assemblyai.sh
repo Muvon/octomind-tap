@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: assemblyai/assemblyai
 # type: mcp
-# description: AssemblyAI MCP Server — diarized captions, chapters, speaker labels, sentiment
+# description: AssemblyAI MCP Server - diarized captions, chapters, speaker labels, sentiment
 # check: npx
 # https://www.assemblyai.com/docs
 

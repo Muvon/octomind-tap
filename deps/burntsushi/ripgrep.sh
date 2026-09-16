@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: burntsushi/ripgrep
 # type: dep
-# description: ripgrep (rg) — fast recursive search tool
+# description: ripgrep (rg) - fast recursive search tool
 # check: rg
 # https://github.com/BurntSushi/ripgrep
 

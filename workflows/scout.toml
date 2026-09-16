@@ -1,4 +1,4 @@
-# Title: Scout — Field to Proven Opportunities
+# Title: Scout: Field to Proven Opportunities
 #
 # Public workflow: the phase BEFORE anyone has an idea. Take a field/market,
 # mine it for real evidenced pain through three blind parallel sweeps
@@ -10,7 +10,7 @@
 # Note: chains several research-heavy runs — token/time-heavy by design.
 
 name        = "scout"
-description = "Mine a field for real, evidenced pain: parallel community/review/demand sweeps, a job-story pain map, then adversarial vetting — ranked opportunity briefs or an honest no-signal verdict."
+description = "Mines a field for evidenced pain via parallel community, review, and demand sweeps, vets candidates adversarially into ranked briefs or an honest no-signal verdict. Chain the winner into launch."
 
 # ── 1. Parallel evidence sweep — three blind lenses ──────────────────────────
 [[steps]]

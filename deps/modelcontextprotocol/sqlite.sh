@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: modelcontextprotocol/sqlite
 # type: mcp
-# description: MCP SQLite Server — query SQLite databases
+# description: MCP SQLite Server - query SQLite databases
 # check: uvx
 # https://github.com/modelcontextprotocol/servers/tree/main/src/sqlite
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: tavily-ai/tavily
 # type: mcp
-# description: Tavily MCP Server — AI search API for real-time web information and extraction
+# description: Tavily MCP Server - AI search API for real-time web information and extraction
 # check: npx
 # https://github.com/tavily-ai/tavily-mcp
 

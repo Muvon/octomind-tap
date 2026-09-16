@@ -1,7 +1,7 @@
 ---
 name: social-medium
 title: "Medium Publishing Playbook"
-description: "Draft and revise Medium stories in the author's documented voice, with sourced proof and a deliberate business purpose. Covers publication submissions, native launches, canonical syndication, disclosure, reader access, and measurement. Activate for writing for Medium, publishing on Medium, a Medium draft or piece, or revising a Medium publishing plan."
+description: "Draft and revise Medium stories in the author's documented voice, with sourced proof and a deliberate business purpose, covering publication submissions, native launches, canonical syndication, disclosure, reader access, and measurement. Activate for writing for Medium, publishing on Medium, a Medium draft or piece, or revising a Medium publishing plan."
 license: Apache-2.0
 compatibility: "Requires a text editor; network access and a Medium account for publishing and story statistics."
 domains: content

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: shopify/shopify
 # type: mcp
-# description: Shopify MCP Server — products, orders, customers, inventory
+# description: Shopify MCP Server - products, orders, customers, inventory
 # check: npx
 # https://www.npmjs.com/package/@ajackus/shopify-mcp-server
 

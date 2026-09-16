@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: astral-sh/uv
 # type: dep
-# description: Installs uv — fast Python package and project manager (used by uvx-based MCP servers)
+# description: Installs uv - fast Python package and project manager (used by uvx-based MCP servers)
 # check: uv
 # https://github.com/astral-sh/uv
 

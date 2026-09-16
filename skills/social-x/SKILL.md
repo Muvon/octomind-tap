@@ -1,7 +1,7 @@
 ---
 name: social-x
 title: "X (Twitter) Publishing Playbook"
-description: "Write and revise X posts, replies, threads, profiles, and launch proof in the author's documented voice. Activate for X or Twitter publishing copy, product announcements, demos, customer outcomes, and post-publication reply plans. Choose formats and conversion paths using dated evidence without inventing experience or promising reach."
+description: "Write and revise X posts, replies, threads, profiles, and launch proof in the author's documented voice. Activate for X or Twitter publishing copy, product announcements, demos, customer outcomes, and post-publication reply plans, choosing formats and conversion paths using dated evidence without inventing experience or promising reach."
 license: Apache-2.0
 compatibility: "Text editing; network access for source checks and a signed-in X session for account-specific format validation."
 domains: content

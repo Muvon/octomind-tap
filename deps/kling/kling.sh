@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: kling/kling
 # type: mcp
-# description: Kling AI MCP Server — text-to-video and image-to-video with strong motion physics
+# description: Kling AI MCP Server - text-to-video and image-to-video with strong motion physics
 # check: npx
 # https://app.klingai.com/global/dev/document-api/
 

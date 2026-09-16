@@ -1,7 +1,7 @@
 ---
 name: trend-hackernews
 title: "Hacker News Trend Harvester Playbook"
-description: "Harvest Hacker News discussions and inspectable artifacts into a dated, source-linked brief. Activate when researching HN trends, prior submissions, launch examples, or audience objections. Separate observed attention from ranking hypotheses and product demand."
+description: "Harvest Hacker News discussions and inspectable artifacts into a dated, source-linked brief. Activate when researching HN trends, prior submissions, launch examples, or audience objections; separate observed attention from ranking hypotheses and product demand."
 license: Apache-2.0
 compatibility: "Requires browser access to Hacker News and Algolia. Inspect removed items with a logged-in profile configured for showdead."
 capabilities: octoweb memory-read memory-write

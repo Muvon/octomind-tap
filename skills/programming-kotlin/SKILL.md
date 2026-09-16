@@ -1,7 +1,7 @@
 ---
 name: programming-kotlin
 title: "Kotlin Development"
-description: "Idiomatic Kotlin — null-safety, coroutine ownership, Flow delivery, and Android/Multiplatform boundaries. Auto-activates in Kotlin projects."
+description: "Idiomatic Kotlin: null-safety, coroutine ownership, Flow delivery, and Android/Multiplatform boundaries. Auto-activates in Kotlin projects."
 license: Apache-2.0
 compatibility: "Requires the project's Kotlin toolchain; JDK for JVM targets, Android SDK for Android, platform tools for Native targets."
 domains: developer

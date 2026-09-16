@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: modelcontextprotocol/sequential-thinking
 # type: mcp
-# description: MCP Sequential Thinking Server — structured AI reasoning and problem-solving
+# description: MCP Sequential Thinking Server - structured AI reasoning and problem-solving
 # check: npx
 # https://github.com/modelcontextprotocol/servers/tree/main/src/sequential-thinking
 

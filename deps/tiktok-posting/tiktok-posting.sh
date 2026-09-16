@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: tiktok-posting/tiktok-posting
 # type: mcp
-# description: TikTok Content Posting API MCP Server — direct upload of videos and photos
+# description: TikTok Content Posting API MCP Server - direct upload of videos and photos
 # check: npx
 # https://developers.tiktok.com/doc/content-posting-api-get-started/
 

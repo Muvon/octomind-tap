@@ -15,29 +15,29 @@ Build / repo (operate on the current directory):
 
 | Name | What it does | Showcases |
 |------|--------------|-----------|
-| [`develop`](./develop.toml) | Spec-driven feature dev: context → developer/evaluator loop with a build/test gate (exit on `VERDICT: APPROVED`) → honest outcome branch (summary, or an explicit DID-NOT-CONVERGE report) | `loop` + `conditional` |
-| [`debug`](./debug.toml) | Reproduce + pin root cause → fix/verify loop until a test proves it fixed → honest outcome branch (summary or DID-NOT-CONVERGE) | `loop` + `conditional` |
-| [`upgrade`](./upgrade.toml) | Plan a dependency upgrade (named packages, or safe patch/minor) → bump/verify loop until the project's checks are green (`VERIFY: GREEN`) → upgrade notes, or DID-NOT-CONVERGE | `loop` + `conditional` |
-| [`harden`](./harden.toml) | OWASP-lens security audit → fix/re-audit loop (refute-first verification, checks stay green, exit `HARDEN: PASS`) → closure summary, or DID-NOT-CONVERGE | `loop` + `conditional` |
-| [`learn`](./learn.toml) | Ground project memory from the codebase → promote durable knowledge into the `.box/` knowledge base → audit/fix loop until every claim verifies against the repo (`KB-AUDIT: PASS`) | `loop` + `conditional` |
-| [`review`](./review.toml) | Review changes → independently verify each finding → branch on a deterministic verdict to an approval note or a fix list | `conditional` |
-| [`deep-review`](./deep-review.toml) | Scope a change → sweep it in parallel across 5 independent lenses (correctness/security/concurrency/performance/design) → adversarially verify every finding against the real code (refute-first) → synthesize one severity-ordered review + verdict | `parallel` |
-| [`document`](./document.toml) | Classify the diff (SemVer + change buckets) → README/changelog/release-notes drafts in parallel → reconcile/validate loop | `parallel` + `loop` |
-| [`plan-and-build`](./plan-and-build.toml) | Minimal starter: draft a spec, then — gated on `SPEC STATUS: READY` — implement it and verify with the project's own check, else surface the open questions | `conditional` |
+| [`develop`](./develop.toml) | Gathers context for a feature spec, then iterates a developer/evaluator loop with a real build/test gate until the evaluator approves, then summarizes the change. | `loop` + `conditional` |
+| [`debug`](./debug.toml) | Reproduces a bug and locates its root cause in the current repo, iterates a fix/verify loop until a test proves it fixed, then summarizes the change. | `loop` + `conditional` |
+| [`upgrade`](./upgrade.toml) | Upgrades dependencies (named packages, or safe patch/minor by default), fixes breakages in a bump/verify loop until the project's checks pass, then writes upgrade notes. | `loop` + `conditional` |
+| [`harden`](./harden.toml) | Security-audits the current repo across OWASP lenses, then fixes and independently re-audits in a loop until findings are resolved and checks stay green. | `loop` + `conditional` |
+| [`learn`](./learn.toml) | Grounds project memory from the codebase, promotes durable knowledge into the .box/ knowledge base, then audits and fixes the notes until every claim verifies against the repo. | `loop` + `conditional` |
+| [`review`](./review.toml) | Reviews the current unstaged changes against the request, independently verifies each finding, then branches on a deterministic verdict to an approval note or a prioritized fix list. | `conditional` |
+| [`deep-review`](./deep-review.toml) | Reviews a change from five independent lenses in parallel, adversarially verifies every finding against the real code, then synthesizes one severity-ordered review with a verdict. | `parallel` |
+| [`document`](./document.toml) | Classifies the current changes into a SemVer bump and change buckets, drafts README, changelog, and release notes in parallel, then reconciles them into one consistent plan via a validating gate. | `parallel` + `loop` |
+| [`plan-and-build`](./plan-and-build.toml) | Drafts a concise implementation spec from the request, then implements it and verifies with the project's own check. | `conditional` |
 
 Build / market / write / research (driven by a single stdin goal):
 
 | Name | What it does | Showcases |
 |------|--------------|-----------|
-| [`scout`](./scout.toml) | Field → three blind parallel evidence sweeps (communities / incumbent reviews / demand+disconfirmation) → triangulated job-story pain map → adversarial vetting loop (`SCOUT: SOLID`) → ranked opportunity briefs with kill criteria, or an honest no-signal verdict. Chain the winner into `launch` | `parallel` + `loop` + `conditional` |
-| [`launch`](./launch.toml) | Idea → market explore → honest validate behind a pre-committed kill-gate → (greenlight?) gtm + brand + pitch + ads + bootstrap, else pivots | `conditional` |
-| [`content`](./content.toml) | Brief → researched draft → audit/edit loop until it passes (`AUDIT-PASS`) — long-form finalization; chain `promote` for social | `loop` |
-| [`promote`](./promote.toml) | Existing article (file/URL/text) → live trend-pulse per network → grounded platform-native drafts → fix/audit loop against the platform rulebooks until every draft passes (`ALL-PASS`) | `loop` |
-| [`research`](./research.toml) | Background + evidence + counter-views in parallel → synthesize → groundedness judge loop (claims checked vs sources) → cited report | `parallel` + `loop` |
-| [`localize`](./localize.toml) | Transcreate every language requested in the input (no hardcoded list), then loop fix/audit until every language passes native-fluency review (`ALL-PASS`), then deliver — writes to disk in-place if a path was given | `loop` |
-| [`apply`](./apply.toml) | Master resume + job posting (file/URL/text) → intake → tailored, ATS-optimized, country-correct resume + cover letter + honest gap report → screen/fix loop until it passes (`SCREEN-PASS`). Grounded in real experience, never fabricates, never auto-submits | `loop` |
-| [`report`](./report.toml) | Data source (CSV/spreadsheet/SQL/metrics/logs) → analyze (real numbers, not estimates) → answer-first human report with inline-SVG charts → accuracy+readability loop (`REPORT-PASS`) → self-contained HTML that prints to clean PDF (or Markdown/PDF on request) | `loop` |
-| [`seo`](./seo.toml) | Audit a site/page across technical/on-page/off-page/GEO lenses, then a tiered, finding-traceable strategy brief | sequential |
+| [`scout`](./scout.toml) | Mines a field for evidenced pain via parallel community, review, and demand sweeps, vets candidates adversarially into ranked briefs or an honest no-signal verdict. Chain the winner into launch. | `parallel` + `loop` + `conditional` |
+| [`launch`](./launch.toml) | Takes a product idea from market exploration to an honest go/no-go, then, only if viable, produces a GTM strategy, brand, pitch, ads, and a zero-budget launch plan. | `conditional` |
+| [`content`](./content.toml) | Turns a brief into a researched, publish-ready article in the current directory, refined by an edit/audit loop until it passes. Chain the promote workflow for social adaptation. | `loop` |
+| [`promote`](./promote.toml) | Turns an existing article into grounded, platform-native social drafts for each network requested, polished by a fix/audit loop until all pass, then delivered to files or inline. Chain after content. | `loop` |
+| [`research`](./research.toml) | Investigates a question from background, evidence, and counter-argument angles in parallel, synthesizes a cited report, then loops a groundedness judge until every claim verifies against its sources. | `parallel` + `loop` |
+| [`localize`](./localize.toml) | Transcreates content into every requested language, loops fix and audit until each passes native-fluency review, then delivers to disk in-place or inline with a per-language summary. | `loop` |
+| [`apply`](./apply.toml) | Turns a master resume and a job posting into a tailored, ATS-optimized resume, a cover letter, and an honest match-gap report, refined by a screen/fix loop. Produces documents; never auto-submits. | `loop` |
+| [`report`](./report.toml) | Turns a data source into a decision-ready report with every number computed from the data and inline-SVG charts, refined by an accuracy loop, delivered as self-contained HTML that prints to PDF. | `loop` |
+| [`seo`](./seo.toml) | Audits a site or page across technical, on-page, off-page, and GEO lenses, then turns the evidence-bound findings into a tiered, finding-traceable, KPI-tagged SEO strategy brief. | sequential |
 
 ## How resolution works
 

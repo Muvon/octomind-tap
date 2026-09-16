@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: sync/sync
 # type: mcp
-# description: Sync.so MCP Server — drop-in lipsync postprocess for any video
+# description: Sync.so MCP Server - drop-in lipsync postprocess for any video
 # check: npx
 # https://docs.sync.so/
 

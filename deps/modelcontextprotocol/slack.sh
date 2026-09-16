@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: modelcontextprotocol/slack
 # type: mcp
-# description: MCP Slack Server — interact with Slack workspaces (channels, messages, users)
+# description: MCP Slack Server - interact with Slack workspaces (channels, messages, users)
 # check: npx
 # https://github.com/modelcontextprotocol/servers/tree/main/src/slack
 

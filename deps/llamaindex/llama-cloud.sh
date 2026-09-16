@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: llamaindex/llama-cloud
 # type: mcp
-# description: LlamaCloud MCP Server — LlamaIndex managed indexes
+# description: LlamaCloud MCP Server - LlamaIndex managed indexes
 # check: npx
 # https://www.npmjs.com/package/@llamaindex/llama-cloud-mcp
 

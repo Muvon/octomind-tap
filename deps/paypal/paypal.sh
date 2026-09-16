@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: paypal/paypal
 # type: mcp
-# description: PayPal MCP Server — payments, transactions
+# description: PayPal MCP Server - payments, transactions
 # check: npx
 # https://github.com/paypal/paypal-mcp-server
 
