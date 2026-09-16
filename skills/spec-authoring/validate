@@ -53,4 +53,17 @@ if [[ -n $compound ]]; then
   fail=1
 fi
 
+# 5. A saved spec is a folder: specs/<NNN>-<slug>/spec.md, not a bare file.
+#    Only inspects lines that announce the save target, so a Context reference to an
+#    existing flat spec path in the repo is not flagged.
+flat="$(printf '%s' "$input" \
+  | grep -iE '(sav(e|ed|ing)|wrote|written|output to)[^ ]* .*specs/[0-9]+-[a-z0-9-]+\.md' \
+  || true)"
+
+if [[ -n $flat ]]; then
+  echo "Spec path is missing its folder — save to specs/<NNN>-<slug>/spec.md so tasks.md (and design.md when risky) can sit alongside it:" >&2
+  printf '%s\n' "$flat" | head -3 >&2
+  fail=1
+fi
+
 exit "$fail"

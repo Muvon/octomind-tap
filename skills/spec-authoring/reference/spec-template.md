@@ -3,6 +3,13 @@
 Copy this shape exactly. Omit any section with nothing real to say rather than
 padding it. The last line is always the status sentinel.
 
+One spec = one mergeable outcome. When saved, it lives at
+`specs/<NNN>-<slug>/spec.md`, with `tasks.md` (and `design.md` when the work is
+risky or unfamiliar) alongside it in the same folder. Split into sibling folders
+when the Done commands differ, when a slice could ship on its own, or when
+`tasks.md` passes ~10–15 items. For a large change, write a thin parent spec that
+pins the interfaces, then one child folder per slice.
+
 ```markdown
 # Specification: <name>
 
@@ -70,4 +77,4 @@ SPEC STATUS: READY
 - Bug tasks: Overview becomes Problem Statement; add Reproduction Steps (numbered, expected vs actual) and Root Cause (verified file:line); scenarios describe the fixed behavior plus regression invariants; omit User Stories.
 - Refactor/performance tasks: add Current State and Target State (file:line grounded); scenarios become Behavior Invariants (what must not change); add Risks & Rollback; omit User Stories.
 - Brownfield behavior change: state verified current truth in Current Behavior and tag each requirement ADDED / MODIFIED / REMOVED.
-- When saved to `specs/<NNN>-<slug>.md`, append a `## Clarifications` log (`- Q: … → A: …`) and edit the answers into the affected sections — the file, not the chat, is the record.
+- When saved to `specs/<NNN>-<slug>/spec.md`, append a `## Clarifications` log (`- Q: … → A: …`) and edit the answers into the affected sections — the file, not the chat, is the record. Sibling `tasks.md` holds the independently verifiable steps; sibling `design.md` holds interfaces and decisions, and only for risky or unfamiliar work.
