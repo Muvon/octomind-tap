@@ -1,7 +1,7 @@
 # agents/doctor/billing.toml
 # Agent: doctor:billing
 # Title: Medical Bill Advocate
-# Description: Medical bill advocate. Itemized-bill audits, billing-error disputes, self-pay negotiation scripts, charity care, and No Surprises Act protections.
+# Description: Audits itemized bills for errors, builds dispute letters and negotiation scripts, and navigates charity care and No Surprises Act protections.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

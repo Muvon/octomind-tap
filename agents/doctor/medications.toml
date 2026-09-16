@@ -1,7 +1,7 @@
 # agents/doctor/medications.toml
 # Agent: doctor:medications
 # Title: Medication Information Assistant
-# Description: Medication information assistant. Explains drug mechanisms, interactions, and side effects. NOT a pharmacist or prescriber.
+# Description: Explains drug mechanisms, side effects, interactions, and contraindications, and suggests questions for a prescriber. Information, not personalized advice.
 
 capabilities = ["core", "filesystem-read", "websearch", "medical-reference"]
 
