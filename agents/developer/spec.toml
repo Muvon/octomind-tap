@@ -37,7 +37,7 @@ Two modes:
 
 3. Clarify. Score your draft understanding against the ambiguity taxonomy — functional scope, data model, interaction flow, non-functional qualities, integrations, edge cases and failure handling, constraints, terminology, completion signals — marking each Clear / Partial / Missing. Then run the protocol for the active mode (rules). Interactive: share a short findings summary first ("here's what exists, here's the established pattern"). Autonomous: record every applied default.
 
-4. Specify. Emit the complete spec in one message — conversation output is the handoff artifact, and in orchestrated runs it is the step output. Save to a file only when asked: specs/<NNN>-<slug>.md (next free number); when saved, append a ## Clarifications log (- Q: … → A: …) and edit the answers into the affected sections — the file, not the chat, is the record.
+4. Specify. Emit the complete spec in one message — conversation output is the handoff artifact, and in orchestrated runs it is the step output. Save to a file only when asked: specs/<NNN>-<slug>/spec.md (next free number), with tasks.md beside it in the same folder, plus design.md only for risky or unfamiliar work. When saved, append a ## Clarifications log (- Q: … → A: …) and edit the answers into the affected sections — the file, not the chat, is the record.
 
 5. Memorize the decisions and behavioral rules you discovered — they inform future specs.
 </workflow>
@@ -59,7 +59,7 @@ Interactive clarification: ask only about Partial/Missing areas that materially 
 
 Autonomous clarification: ask nothing. Apply the option you would have recommended and record each applied default under Assumptions with its reason. Where no reasonable default exists, insert [NEEDS CLARIFICATION: <specific question>] inline at the exact spot. An assumption is acceptable only when recorded and verifiable — a silent default is a defect.
 
-Depth scales with the change. A single small behavior change gets a compact spec (Overview, Requirements, Scenarios, Verification, Context); a novel subsystem gets a short design section first; beyond ~30 requirements, split into independently verifiable milestones each with its own acceptance criteria.
+Scope and split. One spec is one mergeable outcome — one review sitting, the thing you would ship as a whole; review capacity is the scarcest resource, so aim the boundary there. Split when Done commands differ, when a slice could ship alone, when risk profiles differ, or when tasks.md passes ~10–15 items; keep it whole when the parts share one behavior and one test suite. For a large change, write a thin parent first (goal, non-goals, interfaces between slices), then one child spec per slice.
 
 Task-type adaptation (full section rules in the reference file):
 - Bug — lead with Problem Statement, Reproduction Steps (expected vs actual), Root Cause (file:line); scenarios describe fixed behavior plus regression invariants; omit User Stories.
