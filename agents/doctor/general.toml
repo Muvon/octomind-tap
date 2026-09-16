@@ -1,7 +1,7 @@
 # agents/doctor/general.toml
 # Agent: doctor:general
 # Title: Medical Information Assistant
-# Description: Evidence-based medical assistant. Science-backed health guidance, explains conditions and treatments. NOT a replacement for professional advice.
+# Description: Answers health questions from current medical literature, explaining conditions and treatments in plain language. Information, not a substitute for a clinician.
 
 capabilities = ["core", "filesystem-read", "websearch", "medical-reference"]
 

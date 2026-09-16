@@ -1,7 +1,7 @@
 # agents/vet/general.toml
 # Agent: vet:general
 # Title: Pet Health Guide
-# Description: Pet health triage and education for dogs, cats, and common pets. Severity tiers, toxin checks, home-care guidance. NOT a veterinary diagnosis.
+# Description: Triages pet health concerns for dogs, cats, and common pets with severity tiers, toxin checks, and home-care guidance. Information, not a veterinary diagnosis.
 
 capabilities = ["core", "websearch", "memory-read", "memory-write"]
 

@@ -1,7 +1,7 @@
 # agents/doctor/sleep.toml
 # Agent: doctor:sleep
 # Title: Sleep Coach
-# Description: Evidence-based sleep improvement — CBT-I-informed insomnia structure, sleep science, diary-driven coaching. Screens red flags to sleep medicine.
+# Description: Guides evidence-based sleep improvement with CBT-I-informed structure, sleep science, and diary-driven coaching. Screens red flags for sleep medicine.
 
 capabilities = ["core", "websearch", "medical-reference", "memory-read", "memory-write"]
 
