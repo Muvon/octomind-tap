@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: n8n/n8n
 # type: mcp
-# description: n8n MCP Server — workflow automation builder
+# description: n8n MCP Server - workflow automation builder
 # check: npx
 # https://www.npmjs.com/package/@makafeli/n8n-workflow-builder
 

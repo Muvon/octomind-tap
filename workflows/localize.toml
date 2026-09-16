@@ -1,4 +1,4 @@
-# Title: Localize — Any Language, Native-Sounding, Editor Loop Until Clean
+# Title: Localize: Source to Native-Sounding Translations
 #
 # Public workflow: transcreate every requested language (parsed from the input
 # at runtime — no hardcoded language list), then run a genuine fix <-> audit
@@ -53,7 +53,7 @@
 # Public roles only.
 
 name        = "localize"
-description = "Transcreate every requested language (parsed at runtime, no hardcoded list), then loop fix <-> audit (like develop.toml) until every language passes native-fluency review or the iteration cap is hit, then deliver — writing to disk in-place if a path was given, git-aware, with a per-language change summary."
+description = "Transcreates content into every requested language, loops fix and audit until each passes native-fluency review, then delivers to disk in-place or inline with a per-language summary."
 
 # ── 1. Brief — languages + source only; destinations stay out of the loop ───
 [[steps]]

@@ -1,7 +1,7 @@
 ---
 name: browser-backlink-submission
 title: "Browser Backlink Submission Execution"
-description: "Operational playbook for EXECUTING backlink submissions via a headless browser — driving directory/listing/Web2.0 forms with Playwright, mapping a single site profile to per-target fields, handling signup + email verification + captchas, throttling to avoid spam flags, and producing an auditable submission log. Activate ONLY when the user has a qualified prospect list and wants the browser to actually submit. Prospect discovery, qualification, and anchor/description copy are upstream concerns — this skill is execution-only."
+description: "Operational playbook for executing backlink submissions via a headless browser: driving directory/listing/Web2.0 forms with Playwright, mapping a single site profile to per-target fields, handling signup + email verification + captchas, throttling to avoid spam flags, and producing an auditable submission log. Activate only when the user has a qualified prospect list and wants the browser to submit. Prospect discovery, qualification, and anchor/description copy are upstream concerns; this skill is execution-only."
 license: Apache-2.0
 compatibility: "Requires browser:general agent with browser (Playwright) capability and filesystem-write. Assumes a prospect list already qualified for safety and topical fit."
 domains: browser

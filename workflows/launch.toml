@@ -1,4 +1,4 @@
-# Title: Launch — Idea to Go-to-Market Kit
+# Title: Launch: Idea to Go-to-Market Kit
 #
 # Public workflow: take a raw product idea, research the market, validate it
 # honestly, and — only if it greenlights — produce a full launch kit. Built-in
@@ -7,7 +7,7 @@
 # Note: chains several specialist runs — token/time-heavy by design.
 
 name        = "launch"
-description = "Take a product idea from market exploration to an honest go/no-go, then — only if viable — produce a GTM strategy, brand, pitch, ads, and a zero-budget launch plan."
+description = "Takes a product idea from market exploration to an honest go/no-go, then, only if viable, produces a GTM strategy, brand, pitch, ads, and a zero-budget launch plan."
 
 # ── 1. Explore the market ────────────────────────────────────────────────────
 [[steps]]

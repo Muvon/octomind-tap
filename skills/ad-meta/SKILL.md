@@ -1,7 +1,7 @@
 ---
 name: ad-meta
 title: "Meta Ads Production Spec (Facebook + Instagram)"
-description: "What to produce for a Meta ad — Facebook Feed, Instagram Feed, Stories, Reels, and the CTA enum. Encodes the exact slots (primary text, headline, description, CTA button), character limits, asset ratios (1:1, 4:5, 9:16), policy filters, and the truncation behavior that decides whether anyone reads past the fold. Use whenever the task is producing Meta ad copy or asset briefs. Strictly platform-specific — does not cover audience setup, pixel events, or campaign objectives."
+description: "Specifies what to produce for a Meta ad: Facebook Feed, Instagram Feed, Stories, Reels, and the CTA enum, with the exact slots (primary text, headline, description, CTA button), character limits, asset ratios (1:1, 4:5, 9:16), policy filters, and the truncation behavior that decides whether anyone reads past the fold. Use whenever the task is producing Meta ad copy or asset briefs; strictly platform-specific, so it does not cover audience setup, pixel events, or campaign objectives."
 license: Apache-2.0
 compatibility: "Octomind launch agents. Platform-specific to Meta (Facebook + Instagram)."
 domains: launch

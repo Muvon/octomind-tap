@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: oven-sh/bun
 # type: dep
-# description: Installs Bun — fast all-in-one JS/TS runtime, package manager, bundler, and test runner
+# description: Installs Bun - fast all-in-one JS/TS runtime, package manager, bundler, and test runner
 # check: bun
 # https://bun.sh
 

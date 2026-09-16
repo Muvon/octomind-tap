@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: mobile-next/mobile-mcp
 # type: mcp
-# description: Mobile MCP Server — iOS & Android device automation (real devices + simulators/emulators)
+# description: Mobile MCP Server - iOS & Android device automation (real devices + simulators/emulators)
 # check: npx
 # https://github.com/mobile-next/mobile-mcp
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: aas-ee/open-websearch
 # type: mcp
-# description: Open-WebSearch MCP Server — keyless multi-engine web search (DuckDuckGo, Bing, Startpage, Brave)
+# description: Open-WebSearch MCP Server - keyless multi-engine web search (DuckDuckGo, Bing, Startpage, Brave)
 # check: npx
 # https://github.com/Aas-ee/open-webSearch
 

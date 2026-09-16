@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: joshrutkowski/applescript
 # type: mcp
-# description: AppleScript MCP — 45 tools for macOS control
+# description: AppleScript MCP - 45 tools for macOS control
 # check: npx
 # https://github.com/joshrutkowski/applescript-mcp
 

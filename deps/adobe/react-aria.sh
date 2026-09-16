@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: adobe/react-aria
 # type: mcp
-# description: React Aria MCP Server — Adobe's official React Aria documentation
+# description: React Aria MCP Server - Adobe's official React Aria documentation
 # check: npx
 # https://www.npmjs.com/package/@react-aria/mcp
 

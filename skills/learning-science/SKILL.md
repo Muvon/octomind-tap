@@ -1,7 +1,7 @@
 ---
 name: learning-science
 title: "Learning Science: Make Studying Actually Stick"
-description: "The small set of evidence-based study techniques that actually work — retrieval practice, spacing, interleaving, the Feynman technique, and worked examples — and the popular habits (rereading, highlighting, cramming, learning styles) that only feel productive. Activate when helping someone study, memorize, prepare for a test, or learn a skill, or when they ask how to learn something faster."
+description: "The small set of evidence-based study techniques that actually work: retrieval practice, spacing, interleaving, the Feynman technique, and worked examples, plus the popular habits (rereading, highlighting, cramming, learning styles) that only feel productive. Activate when helping someone study, memorize, prepare for a test, or learn a skill, or when they ask how to learn something faster."
 license: Apache-2.0
 compatibility: "Any Octomind session. No external tools required; pairs well with an SRS app (Anki) for spaced repetition."
 domains: tutor

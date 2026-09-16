@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: ansible/ansible
 # type: mcp
-# description: Ansible MCP Server — automation, playbooks
+# description: Ansible MCP Server - automation, playbooks
 # check: npx
 # https://www.npmjs.com/package/@scarlet-mesh/mcp-ansible-info
 

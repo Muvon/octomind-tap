@@ -1,7 +1,7 @@
 ---
 name: ad-youtube
 title: "YouTube Ads Production Spec"
-description: "What to produce for a YouTube ad — Skippable In-Stream (TrueView), Non-Skippable, Bumper, In-Feed (Discovery), Masthead, and YouTube Shorts. Encodes the exact slots (headline, description, companion banner, CTA), duration limits, asset ratios (16:9, 9:16, 1:1), the first-5-seconds hook rule that decides whether anyone watches past skip, and the policy constraints. Use whenever the task is producing YouTube ad copy or video briefs. Strictly platform-specific — does not cover audience targeting, conversion linkage, or Google Ads campaign setup."
+description: "Specifies what to produce for a YouTube ad: Skippable In-Stream (TrueView), Non-Skippable, Bumper, In-Feed (Discovery), Masthead, and YouTube Shorts, with the exact slots (headline, description, companion banner, CTA), duration limits, asset ratios (16:9, 9:16, 1:1), the first-5-seconds hook rule that decides whether anyone watches past skip, and the policy constraints. Use whenever the task is producing YouTube ad copy or video briefs; strictly platform-specific, so it does not cover audience targeting, conversion linkage, or Google Ads campaign setup."
 license: Apache-2.0
 compatibility: "Octomind launch agents. Platform-specific to YouTube Ads."
 domains: launch

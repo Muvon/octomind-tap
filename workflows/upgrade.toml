@@ -1,4 +1,4 @@
-# Title: Upgrade — Dependency Bump to Green Build
+# Title: Upgrade: Dependency Bump to Green Build
 #
 # Public workflow: plan a dependency upgrade (named packages, or safe
 # patch/minor by default), apply it and fix the breakage in a bump ⇄ verify
@@ -6,7 +6,7 @@
 # Operates on the current directory. Public roles only.
 
 name        = "upgrade"
-description = "Upgrade dependencies (named packages, or safe patch/minor by default), fix breakages in a bump/verify loop until the project's checks pass, then produce upgrade notes."
+description = "Upgrades dependencies (named packages, or safe patch/minor by default), fixes breakages in a bump/verify loop until the project's checks pass, then writes upgrade notes."
 
 # ── 1. Inventory & plan ──────────────────────────────────────────────────────
 [[steps]]

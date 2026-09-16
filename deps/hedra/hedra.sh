@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: hedra/hedra
 # type: mcp
-# description: Hedra Character-3 MCP Server — image-to-talking-character video
+# description: Hedra Character-3 MCP Server - image-to-talking-character video
 # check: npx
 # https://www.hedra.com/docs
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: meta-instagram/meta-instagram
 # type: mcp
-# description: Meta Instagram Graph API MCP Server — Reels and feed video publishing
+# description: Meta Instagram Graph API MCP Server - Reels and feed video publishing
 # check: npx
 # https://developers.facebook.com/docs/instagram-api/
 

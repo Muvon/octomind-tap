@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: pika/pika
 # type: mcp
-# description: Pika Labs MCP Server — text-to-video, image-to-video, Pikaffects
+# description: Pika Labs MCP Server - text-to-video, image-to-video, Pikaffects
 # check: npx
 # https://pika.art/docs
 

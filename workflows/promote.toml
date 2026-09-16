@@ -1,4 +1,4 @@
-# Title: Promote — Source to Platform-Native Social Drafts
+# Title: Promote: Source to Platform-Native Social Drafts
 #
 # Public workflow: turn an existing, trusted piece of content (a file path, a
 # URL, or pasted text) into grounded, platform-native social drafts for every
@@ -45,7 +45,7 @@
 # Public roles only.
 
 name        = "promote"
-description = "Turn an existing article (file, URL, or pasted text) into grounded, platform-native social drafts for every network requested — a researcher resolves the source and live trends, a writer drafts per the platform rulebooks, a fix/audit loop polishes until every draft passes, then delivers to files or inline."
+description = "Turns an existing article into grounded, platform-native social drafts for each network requested, polished by a fix/audit loop until all pass, then delivered to files or inline. Chain after content."
 
 # ── 1. Brief — resolve the source (read file / use pasted text) once ────────
 # Role note: content:draft carries filesystem-read + websearch, so it reads a

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: supabase/supabase
 # type: mcp
-# description: Supabase MCP Server — Postgres database, auth, and storage
+# description: Supabase MCP Server - Postgres database, auth, and storage
 # check: npx
 # https://www.npmjs.com/package/@supabase/mcp-server-supabase
 

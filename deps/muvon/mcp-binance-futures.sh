@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: muvon/mcp-binance-futures
 # type: mcp
-# description: Binance USDT-M Futures MCP Server — market data, orders, positions, margin (requires uvx)
+# description: Binance USDT-M Futures MCP Server - market data, orders, positions, margin (requires uvx)
 # check: uvx
 # https://github.com/muvon/mcp-binance-futures
 

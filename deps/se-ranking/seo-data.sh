@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: se-ranking/seo-data
 # type: mcp
-# description: SE Ranking MCP — SEO data, keyword research, site audits
+# description: SE Ranking MCP - SEO data, keyword research, site audits
 # check: docker
 # https://github.com/seranking/seo-data-api-mcp-server
 

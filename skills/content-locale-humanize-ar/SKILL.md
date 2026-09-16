@@ -1,7 +1,7 @@
 ---
 name: content-locale-humanize-ar
 title: "Arabic Native-Fluency Calibration"
-description: "Per-language calibration anchors for detecting AI-slop and translationese in Arabic (ar) target text — auto-loads alongside content-locale-humanize when the target language is Arabic."
+description: "Per-language calibration anchors for detecting AI-slop and translationese in Arabic (ar) target text; auto-loads alongside content-locale-humanize when the target language is Arabic."
 license: Apache-2.0
 compatibility: "Extends content-locale-humanize's AI-Slop & Translationese dimension. Load both together — this file has no rubric of its own."
 domains: content

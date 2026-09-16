@@ -1,4 +1,4 @@
-# Title: Deep Review — Parallel Multi-Lens Code Review with Adversarial Verify
+# Title: Deep Review: Multi-Lens Review with Adversarial Verify
 #
 # Public workflow: review a change (a branch diff, the current changes, or a
 # path) from several independent angles AT ONCE — correctness, security,
@@ -47,7 +47,7 @@
 # Public roles only.
 
 name        = "deep-review"
-description = "Review a change (branch diff, current changes, or a path) from independent angles in parallel — correctness, security, concurrency, performance, design/tests — then adversarially verify every finding against the real code (refute-first, because consensus is not correctness), dedup, and synthesize one severity-ordered review with a verdict."
+description = "Reviews a change from five independent lenses in parallel, adversarially verifies every finding against the real code, then synthesizes one severity-ordered review with a verdict."
 
 # ── 1. Scope — resolve the target and build shared context ──────────────────
 [[steps]]

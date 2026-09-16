@@ -1,7 +1,7 @@
 ---
 name: ad-frameworks
-title: "Ad Frameworks — AIDA, PAS, BAB, 4Us"
-description: "Compact playbook of ad copy frameworks (AIDA, PAS, problem-agitation-solution, before-after-bridge, 4Us, FAB) and when to apply each. Use when structuring the body of an ad — script, body copy, landing-page sections, or any persuasive piece. Includes a decision guide that matches framework to audience awareness level (Schwartz)."
+title: "Ad Frameworks: AIDA, PAS, BAB, 4Us"
+description: "Compact playbook of ad copy frameworks (AIDA, PAS, problem-agitation-solution, before-after-bridge, 4Us, FAB) and when to apply each, including a decision guide that matches framework to audience awareness level (Schwartz). Use when structuring the body of an ad: script, body copy, landing-page sections, or any persuasive piece."
 license: Apache-2.0
 compatibility: "Stack-agnostic."
 domains: video

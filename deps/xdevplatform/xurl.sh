@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: xdevplatform/xurl
 # type: mcp
-# description: xurl MCP bridge — official X API MCP (api.x.com/mcp) with OAuth handled locally
+# description: xurl MCP bridge - official X API MCP (api.x.com/mcp) with OAuth handled locally
 # check: npx
 # https://github.com/xdevplatform/xurl
 

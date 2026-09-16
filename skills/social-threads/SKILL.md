@@ -1,7 +1,7 @@
 ---
 name: social-threads
 title: "Threads (Meta) Publishing Playbook"
-description: "Write and revise Meta Threads posts, replies, and launch copy in the author's documented voice. Use for posting on Threads, a Threads campaign, or a threads.com brief; covers format choice, honest proof, conversation, and conversion paths. Excludes multi-post threads on other platforms."
+description: "Write and revise Meta Threads posts, replies, and launch copy in the author's documented voice, covering format choice, honest proof, conversation, and conversion paths. Use for posting on Threads, a Threads campaign, or a threads.com brief; excludes multi-post threads on other platforms."
 license: Apache-2.0
 compatibility: "Network access for source checks; a Threads account for composer and publishing checks."
 domains: content

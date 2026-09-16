@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: google/veo
 # type: mcp
-# description: Google Veo MCP Server — text-to-video and image-to-video via Vertex AI / Gemini API
+# description: Google Veo MCP Server - text-to-video and image-to-video via Vertex AI / Gemini API
 # check: npx
 # https://ai.google.dev/gemini-api/docs/video
 

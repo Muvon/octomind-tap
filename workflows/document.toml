@@ -1,4 +1,4 @@
-# Title: Document — Generate Docs From Changes
+# Title: Document: Generate Docs from Changes
 #
 # Public workflow: classify the current changes into a SemVer bump and
 # Keep-a-Changelog buckets once, draft README/changelog/release-notes from that
@@ -6,7 +6,7 @@
 # Public roles only.
 
 name        = "document"
-description = "Classify the current changes into a SemVer bump and change buckets, draft README/changelog/release-notes in parallel from that contract, then reconcile them into one consistent doc plan via a validating gate."
+description = "Classifies the current changes into a SemVer bump and change buckets, drafts README, changelog, and release notes in parallel, then reconciles them into one consistent plan via a validating gate."
 
 # -- 1. Classify the diff (shared contract) ---------------------------------
 [[steps]]

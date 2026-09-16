@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: qdrant/qdrant
 # type: mcp
-# description: Qdrant MCP Server — vector search engine
+# description: Qdrant MCP Server - vector search engine
 # check: npx
 # https://github.com/punkpeye/awesome-mcp-servers
 

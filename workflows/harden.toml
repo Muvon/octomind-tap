@@ -1,4 +1,4 @@
-# Title: Harden — Security Audit to Verified Fixes
+# Title: Harden: Security Audit to Verified Fixes
 #
 # Public workflow: OWASP-lens security audit of the current repository, then a
 # fix ⇄ re-audit loop until the findings are resolved and the project's checks
@@ -6,7 +6,7 @@
 # Public roles only.
 
 name        = "harden"
-description = "Security-audit the current repo across OWASP lenses, then fix and independently re-audit in a loop until findings are resolved and checks stay green."
+description = "Security-audits the current repo across OWASP lenses, then fixes and independently re-audits in a loop until findings are resolved and checks stay green."
 
 # ── 1. Audit ─────────────────────────────────────────────────────────────────
 [[steps]]

@@ -1,7 +1,7 @@
 ---
 name: octomind-cli
 title: "Octomind CLI & Session Commands"
-description: "Reference for driving the octomind binary: run/server/acp/config/tap/vars/send/workflow/completion commands and their flags, the 25 interactive slash commands, provider API-key environment variables, .env precedence, and OCTOMIND_* overrides. Activate when a user asks how to invoke octomind, which flag or slash command does what, how to resume or daemonize a session, or which environment variable a provider reads."
+description: "Reference for driving the octomind binary: the run, server, acp, config, tap, vars, send, workflow, and completion commands and their flags, the 25 interactive slash commands, provider API-key environment variables, .env precedence, and OCTOMIND_* overrides. Activate when a user asks how to invoke octomind, which flag or slash command does what, how to resume or daemonize a session, or which environment variable a provider reads."
 license: Apache-2.0
 compatibility: "Requires: octomind binary on PATH. macOS/Linux/Windows."
 domains: octomind

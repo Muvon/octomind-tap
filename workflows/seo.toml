@@ -1,11 +1,11 @@
-# Title: SEO — Audit to Strategy Brief
+# Title: SEO: Audit to Strategy Brief
 #
 # Public workflow: diagnose a site or page across technical, on-page, off-page,
 # and GEO/AI-citation lenses in one pass, then turn the evidence-bound findings
 # into a tiered, traceable, KPI-tagged strategy brief. Public roles only.
 
 name        = "seo"
-description = "Audit a site or page across technical, on-page, off-page, and GEO lenses, then turn the evidence-bound findings into a tiered, finding-traceable, KPI-tagged SEO strategy brief."
+description = "Audits a site or page across technical, on-page, off-page, and GEO lenses, then turns the evidence-bound findings into a tiered, finding-traceable, KPI-tagged SEO strategy brief."
 
 # ── 1. Audit ─────────────────────────────────────────────────────────────────
 [[steps]]

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: modelcontextprotocol/filesystem
 # type: mcp
-# description: MCP Filesystem Server — secure file operations (read, write, search)
+# description: MCP Filesystem Server - secure file operations (read, write, search)
 # check: npx
 # https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem
 

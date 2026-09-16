@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: swiftlang/swift
 # type: dep
-# description: Ensures the Swift toolchain (swift, swiftc) is available — Xcode CLT on macOS, swiftly on Linux, winget on Windows
+# description: Ensures the Swift toolchain (swift, swiftc) is available - Xcode CLT on macOS, swiftly on Linux, winget on Windows
 # check: swift
 # https://www.swift.org
 

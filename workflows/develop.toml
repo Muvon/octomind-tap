@@ -1,11 +1,11 @@
-# Title: Develop — Spec-Driven Feature Loop
+# Title: Develop: Spec-Driven Feature Loop
 #
 # Public workflow: turn a feature spec into a finished, verified change through a
 # developer/evaluator refine loop with a real build/test gate inside the loop.
 # Showcases the loop pattern. Public roles only.
 
 name        = "develop"
-description = "Spec-driven feature development: gather context, then iterate a developer/evaluator loop (developer runs the project check; evaluator grades the diff against the spec) until APPROVED, then summarize."
+description = "Gathers context for a feature spec, then iterates a developer/evaluator loop with a real build/test gate until the evaluator approves, then summarizes the change."
 
 # ── 1. Spec → context ────────────────────────────────────────────────────────
 [[steps]]

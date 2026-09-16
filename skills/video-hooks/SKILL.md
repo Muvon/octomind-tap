@@ -1,7 +1,7 @@
 ---
 name: video-hooks
-title: "Video Hooks — First-1.5s Retention Patterns"
-description: "Catalog of proven first-1.5-second hook patterns for short-form video (TikTok, Reels, Shorts). Use whenever drafting an ad or social-video script — the hook is what decides whether the rest of the clip ever gets watched. Encodes pattern types (pattern-interrupt, problem-aware, curiosity-gap, contrarian, on-screen-text, motion-cut, voice-led), the rules for each, and what to NEVER open with."
+title: "Video Hooks: First-1.5s Retention Patterns"
+description: "Catalog of proven first-1.5-second hook patterns for short-form video (TikTok, Reels, Shorts), encoding pattern types (pattern-interrupt, problem-aware, curiosity-gap, contrarian, on-screen-text, motion-cut, voice-led), the rules for each, and what to never open with. Use whenever drafting an ad or social-video script; the hook is what decides whether the rest of the clip ever gets watched."
 license: Apache-2.0
 compatibility: "Stack-agnostic."
 domains: video

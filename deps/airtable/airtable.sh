@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: airtable/airtable
 # type: mcp
-# description: Airtable MCP Server — database, CRUD, schema
+# description: Airtable MCP Server - database, CRUD, schema
 # check: npx
 # https://www.npmjs.com/package/@rashidazarang/airtable-mcp
 

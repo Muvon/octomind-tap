@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: serpstat/serpstat
 # type: mcp
-# description: Serpstat MCP Server — SERP tracking, backlinks, domain authority
+# description: Serpstat MCP Server - SERP tracking, backlinks, domain authority
 # check: npx
 # https://www.npmjs.com/package/@serpstat/serpstat-mcp-server
 

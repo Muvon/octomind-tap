@@ -1,7 +1,7 @@
 ---
 name: ad-tiktok
 title: "TikTok Ads Production Spec"
-description: "What to produce for a TikTok ad — In-Feed Ads, Spark Ads, TopView, Branded Effect, and Branded Mission. Encodes the exact slots (caption, display name, CTA), character limits, the 9:16 vertical asset spec, sound-on requirements, the safe-zone map that decides what's visible on phones, and the native-feeling creative rules that decide whether the algorithm pushes or buries. Use whenever the task is producing TikTok ad copy or video briefs. Strictly platform-specific — does not cover audience setup or pixel events."
+description: "Specifies what to produce for a TikTok ad: In-Feed Ads, Spark Ads, TopView, Branded Effect, and Branded Mission, with the exact slots (caption, display name, CTA), character limits, the 9:16 vertical asset spec, sound-on requirements, the safe-zone map that decides what is visible on phones, and the native-feeling creative rules that decide whether the algorithm pushes or buries. Use whenever the task is producing TikTok ad copy or video briefs; strictly platform-specific, so it does not cover audience setup or pixel events."
 license: Apache-2.0
 compatibility: "Octomind launch agents. Platform-specific to TikTok Ads."
 domains: launch

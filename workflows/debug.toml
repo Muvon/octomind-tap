@@ -1,11 +1,11 @@
-# Title: Debug — Bug Report to Verified Fix
+# Title: Debug: Bug Report to Verified Fix
 #
 # Public workflow: reproduce a bug and pin its root cause, then iterate a
 # fix ⇄ verify loop in the current repository until a test proves it fixed, and
 # summarize. Operates on the current directory. Public roles only.
 
 name        = "debug"
-description = "Reproduce a bug and locate its root cause in the current repo, iterate a fix/verify loop until a test proves it fixed, then summarize the change."
+description = "Reproduces a bug and locates its root cause in the current repo, iterates a fix/verify loop until a test proves it fixed, then summarizes the change."
 
 # ── 1. Reproduce & locate root cause ─────────────────────────────────────────
 [[steps]]

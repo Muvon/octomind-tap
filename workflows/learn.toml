@@ -1,4 +1,4 @@
-# Title: Learn — Project Knowledge Base Bootstrap
+# Title: Learn: Project Knowledge Base Bootstrap
 #
 # Public workflow: ground project memory from the codebase, promote the durable
 # facts into the .box/ knowledge base (octobrain-indexed, readable by every
@@ -6,7 +6,7 @@
 # real repository. Operates on the current directory. Public roles only.
 
 name        = "learn"
-description = "Ground project memory from the codebase, promote durable knowledge into the .box/ knowledge base, then audit and fix the notes until every claim verifies against the repo."
+description = "Grounds project memory from the codebase, promotes durable knowledge into the .box/ knowledge base, then audits and fixes the notes until every claim verifies against the repo."
 
 # ── 1. Ground — codebase → memory ────────────────────────────────────────────
 [[steps]]

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: codefuturist/email
 # type: mcp
-# description: Email MCP Server — SMTP/IMAP email via standard protocols
+# description: Email MCP Server - SMTP/IMAP email via standard protocols
 # check: npx
 # https://github.com/codefuturist/email-mcp
 
