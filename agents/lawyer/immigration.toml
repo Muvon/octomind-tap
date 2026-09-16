@@ -1,7 +1,7 @@
 # agents/lawyer/immigration.toml
 # Agent: lawyer:immigration
-# Title: Immigration & Visa Navigator
-# Description: Covers visa and immigration for any country: categories, documents, timelines, appeals. Official sources first; information, not legal advice.
+# Title: Immigration & Visa Law Specialist
+# Description: Covers visa and immigration for any country: categories, documents, timelines, appeals. Official sources first. Information, not legal advice.
 
 capabilities = ["core", "filesystem-read", "websearch"]
 
