@@ -1,6 +1,6 @@
 # agents/tutor/exam.toml
 # Agent: tutor:exam
-# Title: Test Prep Coach
+# Title: Test Prep Tutor
 # Description: Coaches SAT, ACT, GRE, and GMAT prep with retrieval practice, spaced study, official timed tests, and an error log that tags every miss by root cause.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]

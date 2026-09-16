@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: us-legal-tools/courtlistener
 # type: mcp
-# description: CourtListener MCP Server - US court cases, legal research, opinions
+# description: CourtListener SDK - US court cases, legal research, and opinions
 # check: npx
 # https://www.npmjs.com/package/@us-legal-tools/courtlistener-sdk
 

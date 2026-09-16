@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: gitlab/gitlab
 # type: mcp
-# description: GitLab MCP Server - 86 tools, repos, MRs, CI/CD
+# description: GitLab MCP Server - repos, merge requests, pipelines, and issues
 # check: npx
 # https://www.npmjs.com/package/@yoda.digital/gitlab-mcp-server
 

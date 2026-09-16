@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: vitest/vitest
 # type: mcp
-# description: Vitest MCP Server - AI-optimized testing interface
+# description: Vitest MCP Server - run and inspect Vitest tests
 # check: npx
 # https://www.npmjs.com/package/@djankies/vitest-mcp
 
