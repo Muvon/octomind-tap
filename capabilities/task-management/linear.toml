@@ -2,7 +2,7 @@
 # Capability: task-management
 # Provider: Linear — issue tracking and project management via MCP
 # Title: Task Management (Linear)
-# Description: Manage Linear issues, projects, teams, cycles, and workflows.
+# Description: Issue tracking and project management via the Linear MCP server.
 
 [deps]
 require = ["linear-app/linear"]

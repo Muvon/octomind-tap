@@ -1,8 +1,8 @@
 # capabilities/versioning/github.toml
 # Capability: versioning
 # Provider: GitHub — official MCP reference server
-# Title: GitHub
-# Description: GitHub repositories, issues, pull requests, and branches via MCP.
+# Title: Version Control (GitHub)
+# Description: GitHub repositories, issues, pull requests, and branches via the official GitHub MCP server.
 
 [deps]
 require = ["github/github-mcp"]

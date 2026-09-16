@@ -2,7 +2,7 @@
 # Capability: messaging-slack
 # Provider: Slack — official MCP Slack server
 # Title: Slack Messaging
-# Description: Interact with Slack workspaces — channels, messages, threads, users.
+# Description: Slack messaging - channels, messages, threads, and users - via the official Slack MCP server.
 
 [deps]
 require = ["modelcontextprotocol/slack"]

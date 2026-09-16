@@ -2,7 +2,7 @@
 # Capability: websearch
 # Provider: Brave Search — web search via Brave Search API
 # Title: Web Search (Brave)
-# Description: Web search via Brave Search API with local and web results.
+# Description: Web search via the Brave Search API (brave_web_search tool).
 # Provides tools: brave_web_search, brave_local_search
 
 [deps]

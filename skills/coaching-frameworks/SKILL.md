@@ -1,7 +1,7 @@
 ---
 name: coaching-frameworks
 title: "Coaching Frameworks: GROW, Questions, Accountability"
-description: "The universal coaching method any coach agent runs: GROW, ICF active listening, powerful (non-leading) questions, goal-setting with WOOP and if-then plans, and accountability design. Activate when coaching someone toward a goal, running a 1:1, or designing follow-through — and when you catch yourself dispensing advice instead of drawing the answer out."
+description: "The universal coaching method any coach agent runs: GROW, ICF active listening, open non-leading questions, goal-setting with WOOP and if-then plans, and accountability design. Activate when coaching someone toward a goal, running a 1:1, or designing follow-through, and when you catch yourself dispensing advice instead of drawing the answer out."
 license: Apache-2.0
 compatibility: "Any Octomind session. No external tools required; pairs well with memory to carry commitments between sessions."
 domains: coach

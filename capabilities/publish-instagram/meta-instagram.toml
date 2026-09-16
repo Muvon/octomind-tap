@@ -2,7 +2,7 @@
 # Capability: publish-instagram
 # Provider: Meta Instagram Graph API — Reels and feed video publishing
 # Title: Instagram Publishing
-# Description: Publish Reels, feed video, Stories and carousels via the Meta Instagram Graph API.
+# Description: Instagram Reels, feed video, and carousel publishing with media insights via the Meta Instagram Graph API (@mcpware/instagram-mcp).
 # Provides tools: publish_media, publish_carousel, publish_reel, get_content_publishing_limit, get_media_posts, get_media_insights, validate_access_token
 
 [deps]

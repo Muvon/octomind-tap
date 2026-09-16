@@ -2,7 +2,7 @@
 # Capability: webfetch
 # Provider: octobrain knowledge tool
 # Title: Web Fetch (octobrain)
-# Description: Fetch URLs and local files (.html .txt .md .pdf .docx) via octobrain — semantic chunking for big sources, full-read fallback.
+# Description: URL and local file fetching (.html, .txt, .md, .pdf, .docx) via octobrain, with semantic chunking for large sources.
 
 [deps]
 require = ["muvon/octobrain"]

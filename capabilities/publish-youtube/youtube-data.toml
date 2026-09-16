@@ -2,7 +2,7 @@
 # Capability: publish-youtube
 # Provider: YouTube Studio — channel management via YouTube Data + Analytics API
 # Title: YouTube Publishing
-# Description: Manage published YouTube videos — metadata and SEO updates, channel analytics — via OAuth2.
+# Description: YouTube video metadata, SEO, and channel analytics after upload, via the YouTube Studio MCP server (OAuth2).
 # Provides tools: get_video_details, search_my_videos, update_video_seo, get_channel_overview, get_all_videos, get_analytics_over_time, get_top_videos_analytics, get_audience_demographics, get_traffic_sources, analyze_and_suggest_topics
 #
 # No MCP server currently exposes raw video upload (resumable-upload flow);

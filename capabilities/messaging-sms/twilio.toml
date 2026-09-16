@@ -1,8 +1,8 @@
 # capabilities/messaging-sms/twilio.toml
 # Capability: messaging-sms
 # Provider: Twilio — SMS and voice messaging
-# Title: SMS (Twilio)
-# Description: SMS and voice messaging via Twilio API.
+# Title: SMS Messaging
+# Description: SMS and voice messaging via the Twilio MCP server (@twilio-alpha/mcp, twilio_api_v2010 service).
 
 [deps]
 require = ["twilio/twilio"]

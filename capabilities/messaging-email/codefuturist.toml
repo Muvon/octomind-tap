@@ -1,8 +1,8 @@
 # capabilities/messaging-email/codefuturist.toml
 # Capability: messaging-email
 # Provider: @codefuturist/email-mcp — SMTP/IMAP email via standard protocols
-# Title: Email
-# Description: Email via standard SMTP/IMAP protocols — works with any mail server.
+# Title: Email Messaging
+# Description: Email messaging over standard SMTP and IMAP protocols via the @codefuturist/email-mcp server (works with any mail server).
 
 [deps]
 require = ["codefuturist/email"]

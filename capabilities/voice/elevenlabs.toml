@@ -2,7 +2,7 @@
 # Capability: voice
 # Provider: ElevenLabs — text-to-speech, voice cloning, voice design, soundscapes
 # Title: Voice Synthesis
-# Description: Text-to-speech, voice cloning, voice design, soundscapes via ElevenLabs.
+# Description: Text-to-speech, voice cloning, voice design, and sound effects via the ElevenLabs MCP server.
 # Provides tools: text_to_speech, speech_to_text, speech_to_speech, text_to_voice, text_to_sound_effects, voice_clone, isolate_audio, search_voices, get_voice, play_audio
 
 [deps]

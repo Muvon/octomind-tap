@@ -1,7 +1,7 @@
 ---
 name: content-audit
 title: "Content Audit Rubric & Scoring Harness"
-description: "Read-only audit harness for content quality. Detects the content type (X post / X thread / LinkedIn / Threads / Bluesky / Mastodon / Hacker News / Reddit post, or blog / article), routes to the matching social-* skill plus the cross-cutting voice/humanize/grounding/geo checks, scores per-axis 0–10 + overall 0–100, emits a canonical findings report with severity tiers, evidence, and suggested rewrites. For X surfaces also emits a Phoenix-style verdict (Pass / Borderline / Likely-Suppressed / Kill-Switch-Risk). Single source of truth for the diagnostic shape — used by content:audit (read-only) and content:editor (diagnose-then-edit)."
+description: "Read-only audit harness for content quality: detects the content type (X post / X thread / LinkedIn / Threads / Bluesky / Mastodon / Hacker News / Reddit post, or blog / article), routes to the matching social-* skill plus the cross-cutting voice/humanize/grounding/geo checks, scores per-axis 0-10 + overall 0-100, and emits a canonical findings report with severity tiers, evidence, and suggested rewrites. For X surfaces also emits a Phoenix-style verdict (Pass / Borderline / Likely-Suppressed / Kill-Switch-Risk); single source of truth for the diagnostic shape, used by content:audit (read-only) and content:editor (diagnose-then-edit)."
 license: Apache-2.0
 compatibility: "Composes with content-domain skills only: social-*, content-voice, content-humanize, content-grounding, content-geo. Read-only — never mutates source files. Requires filesystem-read for file inputs."
 domains: content

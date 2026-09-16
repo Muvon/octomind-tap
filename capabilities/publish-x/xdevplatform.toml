@@ -2,7 +2,7 @@
 # Capability: publish-x
 # Provider: xurl bridge — official X MCP (api.x.com/mcp) via @xdevplatform/xurl
 # Title: X Publishing
-# Description: Post, delete, and analyze posts on X through the official hosted X MCP, with media upload and recent search.
+# Description: X post creation, deletion, and analytics via the official hosted X MCP (@xdevplatform/xurl bridge), with media upload and recent search.
 # Provides tools: createPosts, deletePosts, getPostsById, getUsersPosts, getUsersMentions, searchPostsRecent, getPostsAnalytics, getMediaAnalytics, initializeMediaUpload, appendMediaUpload, finalizeMediaUpload, getMediaUploadStatus, createMediaMetadata, getUsersMe
 #
 # Launch wrapper: xurl reads generic env names (CLIENT_ID, CLIENT_SECRET) that

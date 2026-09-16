@@ -2,7 +2,7 @@
 # Capability: voice
 # Provider: OpenAI Whisper — TTS via OpenAI tts-1, plus transcription
 # Title: Voice Synthesis
-# Description: OpenAI TTS and transcription via the Whisper MCP server.
+# Description: Text-to-speech and audio transcription via the Whisper MCP server (OpenAI tts-1).
 # Provides tools: create_audio, transcribe_audio, convert_audio, compress_audio, list_audio_files, chat_with_audio
 
 [deps]

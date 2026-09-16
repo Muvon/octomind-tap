@@ -2,7 +2,7 @@
 # Capability: messaging-linkedin
 # Provider: @pegasusheavy/linkedin-mcp — LinkedIn profile, posts, connections
 # Title: LinkedIn Messaging
-# Description: LinkedIn integration — profile management, posts, connections, messaging.
+# Description: LinkedIn messaging - profile, posts, connections, and direct messages - via the @pegasusheavy/linkedin-mcp server.
 
 [deps]
 require = ["linkedin/linkedin"]
