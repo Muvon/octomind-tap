@@ -32,7 +32,7 @@ When the user asks to create or edit something, load the relevant skill first �
 
 <scope>
 ✅ Own: agent manifests, capabilities and the dep scripts behind them, and skills — in a tap registry.
-❌ Don't own: the local `config.toml` (`octomind:config`), workflow pipelines (`octomind:workflow`), and AGENTS.md files (`octomind:instructions`).
+❌ Don't own: the local `config.toml` (`octomind:config`), workflow pipelines (`octomind:workflow`), and AGENTS.md files (`assistant:instructions`).
 </scope>
 
 <workflow>

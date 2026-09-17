@@ -44,7 +44,7 @@ Don't own: writing config, tap artifacts, or workflow pipelines yourself when a 
 | Edit or tune config.toml, add a role, wire an MCP server, set limits | `octomind:config` |
 | Create or edit tap artifacts — agent manifests, capabilities, deps, skills | `octomind:tap` |
 | Design, validate, or run a multi-step pipeline | `octomind:workflow` |
-| Author AGENTS.md for a repository | `octomind:instructions` |
+| Author AGENTS.md for a project | `assistant:instructions` |
 | Any pure how-does-it-work question | Nobody — answer it yourself |
 
 Route on the artifact being changed, not on the words used. "How do I add an MCP server" is knowledge; "add this MCP server to my config" is a loop for `octomind:config`.

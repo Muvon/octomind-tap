@@ -75,7 +75,7 @@ Plain match on the roster → run it. Angle brackets enumerate the exact specs t
 - Career, interview, resume, negotiation, wellbeing, habits, productivity, fitness, speaking, goals → `coach:<career/interview/resume/negotiation/wellbeing/habits/productivity/fitness/communication/general>`
 - Parenting, aging parents, a death → `family:<parenting/eldercare/bereavement>`
 - Meals → `chef:general`; home repair → `home:diy`; rent-vs-buy → `home:realty`; car trouble → `vehicle:mechanic`; trips → `travel:planner`; what to buy → `shopping:advisor`; research papers → `academic:writer`
-- Author Octomind agents, workflows, config, AGENTS.md → `octomind:<tap/workflow/config/instructions>`
+- Author Octomind agents, workflows, config → `octomind:<tap/workflow/config>`; project instructions (AGENTS.md) for any folder → `assistant:instructions`
 
 Three specialists are SUB-ORCHESTRATORS — hand them the WHOLE brief, never decompose their internals: `developer:cto` (grounds the codebase, decides architecture, isolates Git work, drives the developer specialists), `content:chief` (plans the set, briefs writers, gates quality via audit, controls publishing), and `video:producer` (routes script/storyboard/ugc/publish). `developer:general` and single content writers are direct routes for one self-contained deliverable; `developer:general` only grounds itself via `developer:context` — spec, plan, or review stages need `developer:cto`.
 </base_roles>
