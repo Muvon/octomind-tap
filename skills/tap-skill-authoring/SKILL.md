@@ -140,7 +140,7 @@ Full reference (verbatim Anthropic guidance, parallel-tool-calls block, message-
 Bloat prevention (the three patterns that cause skills to outgrow the cap):
 
 1. Default to skip — for every paragraph longer than 2 sentences, ask: "what specifically does this tell the model that it doesn't already know?" If the answer is general industry context, history, or motivation that Claude already has, cut it. Skills are checklists for the model that already knows the domain, not textbooks. Anthropic's stance: "Default assumption: Claude is already very smart. Only add context Claude doesn't already have."
-2. Examples cap — keep 2–3 best examples in SKILL.md (bad → good with one-line caption per pair). The rest go in `reference/examples.md` and load on demand. An Examples section over ~800 words is almost always duplicating rules.
+2. Examples cap — keep 2–3 best examples in SKILL.md (bad → good with one-line caption per pair). The rest go in `reference/<topic>.md` and load on demand. An Examples section over ~800 words is almost always duplicating rules.
 3. Reference content goes in `reference/*.md`, not in SKILL.md — long tables of values, exhaustive option lists, full schema dumps, and platform-history detail belong in `reference/*.md` files that are loaded only when the model needs them. SKILL.md is the navigator: rules + decision guide + 2–3 examples + pointers.
 
 When a skill exceeds the soft 3000-word warning, audit before adding more. The fix is almost always trimming teach-mode paragraphs in Instructions, not extracting structure into more references.

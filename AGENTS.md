@@ -153,6 +153,8 @@ Reserve all-caps for one or two genuine safety hard-stops (e.g. `Never force-pus
 - No `##` or `#` markdown headers — XML tags replace them (only `### Subsection` allowed inside an XML block when there are 2+ subsections)
 - No `{{CWD}}` or `{{DATE}}` anywhere in `system` — they break prompt caching (system must be stable run-to-run); place them in `welcome` only
 - Target: 200–1000 words total. Beyond ~1500 words, context rot degrades recall.
+- No tap-relative paths (`skills/…`, `capabilities/…`, `deps/…`) in `system` or `welcome` — agents run in the project workdir, not the tap checkout; name the skill instead (`octomind` domain exempt)
+- Every `` `name` skill `` mentioned must exist at `skills/<name>/SKILL.md`
 
 See `skills/tap-agent-authoring/SKILL.md` for the full authoring spec, rationale, and anti-patterns. For prompt-engineering theory across all surfaces (agents, skills, layer prompts) see `skills/prompt-engineering/SKILL.md`.
 
