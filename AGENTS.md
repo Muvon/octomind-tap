@@ -1,58 +1,74 @@
 # octomind-tap — Agent Registry Guide
 
-Community-maintained registry of agent manifests, capability definitions, dependency scripts, and skill packs for the [Octomind](https://github.com/muvon/octomind) AI assistant. Agents declare **capabilities** (not MCP servers directly) — the `bin/load` resolver merges them at runtime. Contributions are global and public; the `octomind/` domain contains meta-agents that operate on the tap itself.
+Community-maintained registry of agent manifests, capability definitions, dependency scripts, skill packs, and public workflows for the [Octomind](https://github.com/muvon/octomind) AI assistant. Agents declare **capabilities** (never MCP servers directly) — the `bin/load` resolver merges provider wiring at runtime. Contributions are global and public; the `octomind/` domain holds meta-agents that operate on the tap itself. No build step — correctness is defined by the lint scripts.
 
 ## Project Structure
 
 ```
 agents/<domain>/<spec>.toml     # Agent manifests — the primary contribution type
-capabilities/<name>/            # Capability definitions
-  default.toml                  # Symlink → active provider (e.g. octofs.toml)
-  <provider>.toml               # Actual capability file with [deps], [roles.mcp], [[mcp.servers]]
+capabilities/<name>/
+  config.toml                   # Capability metadata: triggers (+ optional domains gate)
+  default.toml                  # Symlink → active provider (e.g. duckduckgo.toml)
+  <provider>.toml               # Provider wiring: [deps], [roles.mcp], [[mcp.servers]]
 deps/<org>/<tool>.sh            # Dependency install scripts (auto-run before sessions)
-deps/lib/platform.sh            # Shared platform detection helpers (source in all dep scripts)
+deps/<org>/<tool>.md            # Required companion doc for every dep script
+deps/lib/platform.sh            # Shared platform detection (source in all dep scripts)
 skills/<name>/SKILL.md          # Reusable instruction packs (AgentSkills spec)
-skills/<name>/activate          # Optional: auto-activation script (exit 0 = activate)
-skills/<name>/validate          # Optional: validation script (exit 0 = valid, stderr = error)
-workflows/<name>.toml           # Public multi-step workflows — run via `octomind workflow <name>`
-model/                          # Embedding model fine-tune powering capability auto-activation
-bin/load                        # Python resolver: merges capabilities → final manifest (stdout)
-scripts/
-  lint-manifests.sh             # Validate all agent TOML files
-  lint-capabilities.sh          # Validate all capability TOML files
-  lint-skills.sh                # Validate all SKILL.md files
-  lint-deps.sh                  # Validate dep scripts (headers + companion docs)
-  validate-capabilities.sh      # Check capability resolution for all agents
-  setup-symlinks.sh             # Create/refresh default.toml symlinks for all capabilities
-templates/
-  agent.toml                    # Canonical agent template (copy to start a new agent)
-  skill.md                      # Canonical skill template (copy to start a new skill)
-  dep.sh                        # Canonical dep script template (copy to start a new dep)
-scaffolds/tap/                  # `octomind tap init` source: scaffold.toml contract + root/ tree
-                                # (templates/ and deps/lib/platform.sh are symlinks into it)
-ARCHITECTURE.md                 # Canonical design doc — read before making any changes
-CONTRIBUTING.md                 # Contribution guidelines
+skills/<name>/activate|validate # Optional scripts (exit 0 = activate / valid)
+workflows/<name>.toml           # Public multi-step workflows — `octomind workflow <name>`
+model/                          # Embedding fine-tune powering capability auto-activation
+bin/load                        # Python resolver: merges capabilities → manifest on stdout
+scripts/                        # lint-manifests / lint-capabilities / lint-skills /
+                                # lint-deps / validate-capabilities / setup-symlinks /
+                                # mcp-versions (MCP version pin management)
+templates/                      # Canonical templates — symlink into scaffolds/tap/root/
+scaffolds/tap/                  # `octomind tap init` source: scaffold.toml + root/ tree
+ARCHITECTURE.md                 # Canonical design doc — read before any change
+CONTRIBUTING.md                 # Human contribution guide (partially pre-capability; this file wins)
 ```
+
+## Commands
+
+```bash
+bash scripts/lint-manifests.sh [agents/<domain>/<spec>.toml ...]   # lint agents
+bash scripts/lint-capabilities.sh [capabilities/<name> ...]        # lint capabilities
+bash scripts/lint-skills.sh [skills/<name>]                        # lint skills
+bash scripts/lint-deps.sh [deps/<org>/<tool>.sh]                   # lint dep scripts + docs
+bash scripts/validate-capabilities.sh                              # resolution check, all agents
+bash scripts/setup-symlinks.sh                                     # create/refresh default.toml links
+bin/load <domain>:<spec>                                           # debug: print resolved manifest
+
+scripts/mcp-versions.sh check [--strict]     # pin drift vs npm/PyPI latest (strict → exit 1)
+scripts/mcp-versions.sh update [--all | <capability> ...]   # rewrite pins; leaves changes uncommitted
+scripts/mcp-versions.sh test [<capability> ...]             # spawn servers, MCP handshake, tools/list
+
+pre-commit run --all-files                   # local hooks: shfmt, whitespace, check-toml, 3 lints
+octomind run <domain>:<spec>                 # smoke-test an agent from repo root
+octomind workflow <name> --dry-run           # validate a workflow, run nothing
+
+cd model && uv sync && bin/train             # embedding model full pipeline (--skip-export to skip ONNX)
+```
+
+- All lint scripts and `mcp-versions.sh` need Python 3.11+ (or `pip install tomli`).
+- `pre-commit` runs `shfmt -w -s -i 2 -ci` on shell scripts — run it before committing dep scripts; `lint-deps.sh` is **not** in pre-commit, run it manually.
+- `[UNCONFIRMED]` ARCHITECTURE.md says the five lint scripts run in `.github/workflows/lint.yml` on every push/PR; no `.github/` exists in this checkout.
 
 ## Where to Look
 
 | Task | Start here |
 |------|------------|
-| Add a new agent | Copy `templates/agent.toml` → `agents/<domain>/<spec>.toml` |
-| Understand capability system | `ARCHITECTURE.md` — full design + capability table |
-| See all available capabilities | `ARCHITECTURE.md` capability table + `capabilities/` directory |
-| Add a new capability | `capabilities/<name>/<provider>.toml` + update `scripts/setup-symlinks.sh` |
-| Add a new dep script | Copy `templates/dep.sh` → `deps/<org>/<tool>.sh` + `templates/dep-mcp.md` or `templates/dep-tool.md` → `deps/<org>/<tool>.md` |
-| Lint dep scripts | `scripts/lint-deps.sh` |
-| Add a new skill | Copy `templates/skill.md` → `skills/<name>/SKILL.md` |
-| Lint agents | `scripts/lint-manifests.sh` |
-| Lint skills | `scripts/lint-skills.sh` |
-| Resolve a manifest (debug) | `bin/load <domain>:<spec>` — prints merged TOML to stdout |
-| Refresh capability symlinks | `scripts/setup-symlinks.sh` |
-| Platform detection in dep scripts | `deps/lib/platform.sh` — source this, never re-implement |
-| Build a multi-step pipeline | `workflows/<name>.toml` — run via `octomind workflow <name>`; author with the `octomind-workflow` skill / `octomind:workflow` agent |
-| Meta-agents (tap/skill/instructions) | `agents/octomind/` — these operate on the tap itself |
-| Change what `octomind tap init` generates | `scaffolds/tap/` — edit `root/`, keep `scaffold.toml` in sync |
+| Add a new agent | Copy `templates/agent.toml` → `agents/<domain>/<spec>.toml`; spec: `skills/tap-agent-authoring/SKILL.md` |
+| Add a new capability | Copy `templates/capability.toml` + `templates/capability-config.toml` → `capabilities/<name>/`; spec: `skills/tap-capability-authoring/SKILL.md` |
+| Add a new skill | Copy `templates/skill.md` → `skills/<name>/SKILL.md`; spec: `skills/tap-skill-authoring/SKILL.md` |
+| Add a new dep script | Copy `templates/dep.sh` + `templates/dep-mcp.md` or `templates/dep-tool.md` → `deps/<org>/`; spec: `skills/tap-deps-authoring/SKILL.md` |
+| Add a new workflow | Copy `templates/workflow.toml` → `workflows/<name>.toml`; spec: `skills/octomind-workflow/SKILL.md` + `workflows/README.md` |
+| Understand the capability system | `ARCHITECTURE.md` — design, capability table, access tiers |
+| Prompt engineering theory | `skills/prompt-engineering/SKILL.md` (+ `reference/claude-4-emphasis-and-tools.md`) |
+| Train the embedding model | `model/README.md`; spec: `skills/tap-model-training/SKILL.md` |
+| Resolve a manifest (debug) | `bin/load <domain>:<spec>` — merged TOML on stdout |
+| Platform helpers in dep scripts | `deps/lib/platform.sh` — source it, never re-implement |
+| Meta-agents (tap/workflow/config) | `agents/octomind/` — they operate on the tap itself |
+| Change what `octomind tap init` generates | `scaffolds/tap/` — edit `root/`, keep `scaffold.toml` and `scaffolds/tap/README.md` in sync |
 
 ## How Things Work
 
@@ -85,13 +101,13 @@ allowed_tools = [...]
 name = "..."
 ```
 
-`bin/load <domain>:<spec>` resolves each capability → reads `capabilities/<name>/default.toml` → merges `[deps]`, `[roles.mcp]`, and `[[mcp.servers]]` into the final manifest at runtime.
+`bin/load <domain>:<spec>` resolves each capability → reads `capabilities/<name>/default.toml` (or `<name>:<provider>` for an explicit provider) → merges `[deps]`, `[roles.mcp]`, and `[[mcp.servers]]` into the final manifest at runtime.
 
-### Capability File Format
+### Capability Files (two kinds per capability)
+
+`capabilities/<name>/<provider>.toml` — provider wiring, with `# Capability:`, `# Provider:`, `# Title:` (5–60 chars), `# Description:` (20–160 chars) header comments:
 
 ```toml
-# capabilities/<name>/<provider>.toml
-
 [deps]
 require = ["muvon/octofs"]          # dep scripts to run before session
 
@@ -106,26 +122,31 @@ command = "octofs"
 args = ["mcp"]
 timeout_seconds = 300
 tools = []
+# env = { API_KEY = "{{ENV:API_KEY}}" }   # exact env var names read by the child
 ```
 
-**Built-in servers** (`core`, `octofs`, `agent`, `octocode`) do NOT need `[[mcp.servers]]` blocks. Every other server ref MUST have a matching `[[mcp.servers]]` block in its capability file.
+`capabilities/<name>/config.toml` — routing metadata: non-empty `triggers = [...]` (user phrasings for deterministic auto-activation; also training data for the `model/` embedding) and an optional `domains = ["developer"]` hard gate. No Title/Description required.
+
+**Built-in server refs** (`core`, `octofs`, `agent`, `octocode`) do NOT need `[[mcp.servers]]` blocks. Every other server ref MUST have a matching `[[mcp.servers]]` block in its capability file.
+
+**Version pins** — every registry-launched server (npx/uvx, including inside `sh -c`) must pin an exact package version (`pkg@X.Y.Z` / `pkg==X.Y.Z`) so a registry publish can never change what users run. `lint-capabilities.sh` enforces pin presence offline; `scripts/mcp-versions.sh` handles drift, updates, and live smoke-tests.
 
 ### Agent Manifest Rules
 
 | Field | Rule |
 |-------|------|
+| Header comments | `# Agent: <domain>:<spec>`, `# Title:` (5–60 chars), `# Description:` (20–160 chars) — required, linted |
 | `capabilities = [...]` | Required at top level; drives everything |
 | `[[roles]]` | Exactly one entry |
 | `name` | Must NOT be set — injected at runtime from the tag |
-| `system` | Required; XML-tagged blocks in canonical order (see below). Stable run-to-run for prompt caching. |
-| `welcome` | Required; use `{{CWD}}` and `{{DATE}}` here only — these break caching if used in `system` |
-| `temperature` | Required; 0.1–0.3 for technical, 0.4–0.6 for general |
-| `top_p` | Required; 0.9 for most cases |
-| `top_k` | Required; 0 to disable, 10–40 for more deterministic output |
+| `system` | Required; XML-tagged blocks in canonical order (below); stable run-to-run for prompt caching |
+| `welcome` | Required; `{{CWD}}` and `{{DATE}}` allowed here only — they break caching if used in `system` |
+| `temperature` / `top_p` / `top_k` | Required; 0.1–0.3 technical / 0.4–0.6 general; `top_p` 0.9; `top_k` 0 to disable, 10–40 for determinism |
+| `model` | Optional override, e.g. `"openrouter:anthropic/claude-sonnet-4"` |
 
 ### System Prompt Structure (2026 standard — XML-tagged blocks)
 
-System prompts must use XML-tagged blocks in a fixed U-shape order. Identity goes first (primacy), critical rules go last (recency); the middle relies on tag anchors to survive "lost in the middle."
+Fixed U-shape order. Identity first (primacy), critical rules last (recency); the middle relies on tag anchors to survive "lost in the middle":
 
 ```
 <identity>          who/what (3–5 lines)
@@ -135,72 +156,84 @@ System prompts must use XML-tagged blocks in a fixed U-shape order. Identity goe
 <rules>             tables, decision matrices, domain knowledge
 <examples>          good/bad pairs (omit if N/A)
 <output_format>     artifact shape, file paths, schemas
-<interaction>      trigger → response patterns
-<critical>          brief Don't/Do list in plain language; reserve all-caps for one or two genuine safety hard-stops
+<interaction>       trigger → response patterns
+<critical>          brief Don't/Do list in plain language
 ```
 
-**Tone calibration (Claude 4.5+ over-emphasis):** Claude 4.5/4.6/4.7 are far more responsive to the system prompt than 3.x. Aggressive language written to defeat under-triggering on older models now over-triggers. Substance stays; theatre goes.
+**Tone calibration (Claude 4.5+ over-emphasis):** aggressive language written for 3.x now over-triggers. Substance stays; theatre goes.
 
 - `CRITICAL: YOU MUST use tool X when …` → `Use tool X when …`
-- `🚨 HARD RULES` + stacked `NEVER`/`ALWAYS` bullets → plain `Don't …` / `Do …` lines
+- `🚨 HARD RULES` + stacked `NEVER`/`ALWAYS` → plain `Don't …` / `Do …`
 - `MANDATORY: Run validation` → `Run validation after edits.`
-- `DEFAULT TO using web search` → `Use web search when it would enhance your understanding.`
 
-Reserve all-caps for one or two genuine safety hard-stops (e.g. `Never force-push to main`). Stacking ten of them dilutes the signal. Full recipe + verbatim Anthropic guidance + parallel-tool-calls block: `skills/prompt-engineering/reference/claude-4-emphasis-and-tools.md`.
+Reserve all-caps for one or two genuine safety hard-stops (e.g. `Never force-push to main`). Full recipe + parallel-tool-calls block: `skills/prompt-engineering/reference/claude-4-emphasis-and-tools.md`.
 
 **Hard rules enforced by `lint-manifests.sh`:**
 - No `**bold**` outside code — XML tags provide structure
-- No `##` or `#` markdown headers — XML tags replace them (only `### Subsection` allowed inside an XML block when there are 2+ subsections)
-- No `{{CWD}}` or `{{DATE}}` anywhere in `system` — they break prompt caching (system must be stable run-to-run); place them in `welcome` only
-- Target: 200–1000 words total. Beyond ~1500 words, context rot degrades recall.
+- No `##`/`#` markdown headers — XML tags replace them (only `### Subsection` allowed inside a block with 2+ subsections)
+- No `{{CWD}}` or `{{DATE}}` in `system` — place in `welcome` only (caching)
+- Target 200–1000 words; beyond ~1500, context rot degrades recall
 - No tap-relative paths (`skills/…`, `capabilities/…`, `deps/…`) in `system` or `welcome` — agents run in the project workdir, not the tap checkout; name the skill instead (`octomind` domain exempt)
 - Every `` `name` skill `` mentioned must exist at `skills/<name>/SKILL.md`
 
-See `skills/tap-agent-authoring/SKILL.md` for the full authoring spec, rationale, and anti-patterns. For prompt-engineering theory across all surfaces (agents, skills, layer prompts) see `skills/prompt-engineering/SKILL.md`.
+Full authoring spec, rationale, anti-patterns: `skills/tap-agent-authoring/SKILL.md`.
+
+### Capability Access Tiers (least privilege)
+
+| Tier | Capability | Tools | Who declares it |
+|------|-----------|-------|-----------------|
+| self-management | `core` | `plan` | **every** agent |
+| do the work | domain caps | `shell`, `filesystem-*`, `codesearch-*`, `legal-*`, … | per agent |
+| intra-domain team | `agent` | `agent_*` | sub-orchestrators |
+| orchestration | `orchestration` | `tap`, `schedule` | orchestrators only (e.g. `assistant:concierge`, `developer:general`) |
+| runtime config | `runtime` | `mcp`, `agent`-register, `skill`, `capability` | high-trust only |
+
+A narrow specialist declares `core` + domain capabilities and never `orchestration`/`runtime` — enforced structurally: the unwanted server never enters the tool surface. `orchestration`/`runtime` may still auto-activate on intent via their `config.toml` triggers; that is temporary, never a standing grant.
 
 ### Multi-Step Pipelines (external)
 
-Agents are `capabilities` + one `[[roles]]` — they do **not** define multi-step pipelines. The old in-manifest `workflow = "..."` field and `[[workflows]]` block were removed from Octomind.
+Agents are `capabilities` + one `[[roles]]` — they do **not** define pipelines. The old in-manifest `workflow = "..."` field and `[[workflows]]` block were removed from Octomind.
 
-Multi-step AI orchestration is now an external CLI: `octomind workflow <file.toml>` — a portable TOML that chains `octomind run` invocations (sequential / parallel / loop / conditional steps), piping output between them by name. It references installed roles and tap-agent tags; no manifest edits needed. The tap ships ready-made workflows in `workflows/<name>.toml` (see `workflows/README.md`) — run them by name: `octomind workflow <name>`. Author one with the `octomind-workflow` skill, or use the `octomind:workflow` agent.
+Orchestration is an external CLI: `octomind workflow <file.toml|name>` — portable TOML chaining `octomind run` invocations (sequential / parallel / loop / conditional steps, plus graph routing via `entry`, `max_transitions`, `[[edges]]`), piping output between steps by name (`{{input}}`, `{{<step-name>}}`). Rules that bite:
 
-`[[layers]]` still exist in Octomind config (not in tap manifests): they back the `[[commands]]` slash-command system (`/run <name>`) and delegate to a role via `command = "octomind acp <role>"`.
+- Workflows fetched from a tap may use **public tap roles only** (`category:variant` tags) — no local config roles; this keeps them portable.
+- Driving input arrives on stdin; validate with `--dry-run` before running.
+- Author with `templates/workflow.toml`, the `octomind-workflow` skill, or the `octomind:workflow` agent; catalogue: `workflows/README.md`.
+
+`[[layers]]` still exist in Octomind config (not tap manifests): they back `[[commands]]` slash commands (`/run <name>`) and delegate via `command = "octomind acp <role>"`.
 
 ### Naming Conventions
 
-- **Agent files**: `agents/<domain>/<spec>.toml` — domain groups related agents (e.g. `developer`, `lawyer`, `devops`)
-- **Capabilities**: lowercase with hyphens; use prefix grouping for related variants: `programming-rust`, `programming-python`, `legal-us`, `legal-uk`
+- **Agent files**: `agents/<domain>/<spec>.toml` — exactly two path components; domain groups related agents
+- **Capabilities**: lowercase-hyphens; prefix grouping for variants: `programming-rust`, `legal-us`, `messaging-slack`
 - **Dep scripts**: `deps/<org>/<tool>.sh` — matches `require = ["<org>/<tool>"]` in capability files
-- **Skills**: `skills/<name>/SKILL.md` — directory name must match `name:` field in frontmatter; lowercase, hyphens only
+- **Skills**: `skills/<name>/SKILL.md` — exactly one directory level; directory name must match frontmatter `name`; lowercase-hyphens only
 
 ### Dep Script Pattern
 
 Every dep script must:
-1. Source `deps/lib/platform.sh` — all helpers and variables come from here, never re-implement them
-2. Exit 0 immediately if the tool is already installed (`pkg_check <command>`)
-3. Install for every supported platform: macOS (brew or official installer) + Linux (apt/dnf/pacman/zypper/apk + universal fallback)
+1. Source `deps/lib/platform.sh` — all helpers and variables come from here, never re-implement
+2. Exit 0 immediately if already installed (`pkg_check <command>`)
+3. Install on every supported platform: macOS (brew, official-installer fallback) + Linux (apt/dnf/pacman/zypper/apk + universal curl/wget fallback)
 4. Verify the tool is in PATH after install; add `~/.local/bin` or `~/.cargo/bin` if needed
 
 **Required header comments** (parsed by tooling):
+
 ```bash
 # dep: <org>/<tool>
-# type: mcp|dep
+# type: mcp|dep        # mcp = makes an MCP server runnable; dep = standalone CLI/runtime
 # description: Brief description of what this installs
 # check: <command-to-verify-installation>
 # https://homepage-url
 ```
 
-**Type classification:**
-- `mcp` — script exists to make an MCP server runnable (ensures npx/uvx/docker)
-- `dep` — script installs a standalone CLI tool or runtime used directly
-
-**Companion documentation** — every dep script must have a matching `.md` file:
-- `deps/<org>/<tool>.md` alongside `deps/<org>/<tool>.sh`
-- MCP servers (`type: mcp`): must include `## MCP Server`, `## Authentication`, `## Available Tools`, `## Configuration Example`
-- Plain deps (`type: dep`): must include `## Key Commands`, `## Common Usage`
-- Templates: `templates/dep-mcp.md` and `templates/dep-tool.md`
+**Companion documentation** — every dep script needs `deps/<org>/<tool>.md`:
+- `type: mcp` → sections `## MCP Server`, `## Authentication`, `## Available Tools`, `## Configuration Example`
+- `type: dep` → sections `## Key Commands`, `## Common Usage`
+- Templates: `templates/dep-mcp.md`, `templates/dep-tool.md`
 
 **Boilerplate** (copy from `templates/dep.sh`):
+
 ```bash
 DEPS_LIB="$(cd "$(dirname "${BASH_SOURCE[0]}")/../lib" && pwd)"
 source "$DEPS_LIB/platform.sh"
@@ -208,195 +241,138 @@ source "$DEPS_LIB/platform.sh"
 if pkg_check "<command>"; then exit 0; fi
 ```
 
-**Variables available after sourcing `platform.sh`:**
+**Variables after sourcing `platform.sh`:** `$OS` (`macos`|`linux`) · `$ARCH` (`x86_64`|`arm64`) · `$PKG_MANAGER` (`brew`|`apt`|`dnf`|`pacman`|`zypper`|`apk`|`unknown`) · `$IS_MACOS` / `$IS_LINUX` / `$IS_ARM64` / `$IS_X86_64` (1 or 0)
 
-| Variable | Values |
-|----------|--------|
-| `$OS` | `macos` \| `linux` |
-| `$ARCH` | `x86_64` \| `arm64` |
-| `$PKG_MANAGER` | `brew` \| `apt` \| `dnf` \| `pacman` \| `zypper` \| `apk` \| `unknown` |
-| `$IS_MACOS` | `1` or `0` |
-| `$IS_LINUX` | `1` or `0` |
-| `$IS_ARM64` | `1` or `0` |
-| `$IS_X86_64` | `1` or `0` |
-
-**Functions available after sourcing `platform.sh`:**
+**Functions after sourcing `platform.sh`:**
 
 | Function | Purpose |
 |----------|---------|
-| `pkg_check <cmd>` | Returns 0 if command exists — use for fast-path exit and post-install verify |
+| `pkg_check <cmd>` | 0 if command exists — fast-path exit and post-install verify |
 | `pkg_install <pkg>` | Install via detected package manager (same name on all PMs) |
-| `brew_install <formula>` | macOS only, no-op on Linux |
-| `apt_install <pkg>` | Debian/Ubuntu only, no-op elsewhere |
-| `dnf_install <pkg>` | Fedora/RHEL only, no-op elsewhere |
-| `install_dep <org/tool>` | Run another dep script as a prerequisite; sources PATH env after |
-| `info <msg>` | Print informational message to stderr |
-| `warn <msg>` | Print warning to stderr |
-| `die <msg>` | Print error to stderr and exit 1 |
-
-**Platform coverage requirement** — every dep script must handle:
-```bash
-case "$OS" in
-  macos)
-    # brew preferred; fall back to official installer if brew absent
-    ;;
-  linux)
-    case "$PKG_MANAGER" in
-      apt)    ... ;;
-      dnf)    ... ;;
-      pacman) ... ;;
-      zypper) ... ;;
-      apk)    ... ;;
-      *)      # universal fallback: curl/wget official installer ;;
-    esac
-    ;;
-esac
-```
+| `brew_install` / `apt_install` / `dnf_install` | Platform-scoped, no-op elsewhere |
+| `install_dep <org/tool>` | Run another dep script as prerequisite; sources PATH env after |
+| `info` / `warn` / `die` | stderr messaging; `die` exits 1 |
 
 ### Skill Format (AgentSkills spec)
 
 ```markdown
 ---
-name: skill-name
-title: "Skill Title (5–60 chars)"
-description: "What this skill does and when to use it."
+name: skill-name            # required; matches directory name; ≤64 chars, lowercase-hyphens
+title: "Skill Title"        # required; 5–60 chars
+description: "What and when."  # required; 20–1024 chars
 license: Apache-2.0
-compatibility: "Requires: tool1, tool2. macOS/Linux."
-capabilities: versioning memory-read
-domains: developer devops
+compatibility: "Requires: tool1. macOS/Linux."   # ≤500 chars; environment only — never skill pairings
+capabilities: versioning memory-read    # auto-load capabilities on activation
+domains: developer devops   # auto-activation scoping; omit for manual-only
+rules:                      # auto-activation expressions; omit for manual-only
+  - file(Cargo.toml)
+  - content(rust) content(async)
 ---
-
-# Skill Title
-
-## Overview
-...
-
-## Mental model       (optional but recommended for skills with >3 rules)
-...
-
-## Rules / Instructions
-...
-
-## Examples
-...
-
-## Checklist
-...
-
-## Composition / References
-...
 ```
 
-Required frontmatter: `name`, `title`, `description`. Directory name must match `name`.
+Optional dirs alongside SKILL.md: `scripts/`, `references/`, `assets/`, plus `activate` and `validate` executables.
 
-Optional fields:
-- `capabilities` — capabilities to auto-load when skill activates (space-delimited or array)
-- `domains` — agent categories for auto-activation scoping (omit for manual-only)
-- `allowed-tools` — space-delimited pre-approved tools
+**Activation — three methods:**
 
-**Section order matters (U-shape):** Overview at top (primacy), Checklist near the end (recency — final gate before action). The middle holds bulk knowledge with `## H2` anchors that survive lost-in-the-middle.
+- Env preload: `OCTOMIND_SKILLS=programming-rust,git-workflow octomind run developer:general` (permanent, no rules evaluated)
+- Auto-activation: skills whose `domains` match the agent's domain get their `rules` evaluated on conversation events; already-active skills are skipped
+- Manual: `skill(action="use"|"forget"|"list", name=...)` or `/skill <use|forget|list>`
 
-**Hard rules enforced by `lint-skills.sh`:**
-- No `**bold**` in body outside code — markdown headers and lists provide structure
-- Target: under ~2000 words. Beyond that, context rot hits skill recall.
+**Rule expressions** — list items are OR branches; multiple expressions on one line are AND:
 
-See `skills/tap-skill-authoring/SKILL.md` for the full authoring spec.
+| Expression | Matches when |
+|------------|-------------|
+| `file(<glob>)` | File matching glob exists in workdir (`*`, `**`) |
+| `content(<word>)` | User message contains the word (whole-word, case-insensitive) |
+| `match(<regex>)` | User message matches the pattern |
+| `grep(<pattern>, <glob>)` | A file matching the glob contains a matching line |
+| `env(<VAR>)` / `env(<VAR>=<value>)` | Env var set / equals value |
+| `bin(<command>)` | Command available in `$PATH` |
+| `workdir(<pattern>)` | CWD path contains the pattern (substring) |
+| `session(<word>)` | Session name contains the word (e.g. `developer:rust`) |
 
-### Skill Scripts (Optional)
+**Scripts:** `activate` receives event type (`user`|`assistant`|`turn`) as argv[1], content on stdin, runs in project workdir; exit 0 = activate. `validate` same interface at end of assistant turn; non-zero = invalid, stderr is fed back to the LLM (retries capped by `[skills] max_retries`). Both must be executable.
 
-Skills can include `activate` and `validate` scripts alongside SKILL.md:
+**Body — U-shape section order:** Overview (top) → Mental model → Rules → Examples → Checklist (near the end — final gate) → Composition / References. Under ~2000 words; beyond that, context rot hits skill recall.
 
-- **`activate`** — executable script that decides if the skill should be active. Receives event type (`user`|`assistant`|`turn`) as argv[1], content on stdin. Runs in project workdir. exit 0 = activate, non-zero = don't. Already-active skills are skipped.
-- **`validate`** — executable script that validates LLM output. Runs at end of assistant turn. exit 0 = valid, non-zero = invalid (stderr fed back to LLM). Retries capped by `[skills] max_retries`.
+**Hard rules enforced by `lint-skills.sh`:** valid frontmatter; required fields and length limits; `name` matches directory; non-empty body; every `reference/<file>` cited exists; `validate` executable; no `**bold**` in body outside code.
 
-Both must be executable (`chmod +x`). The lint script checks this.
-
-### Environment Variable
-
-Preload skills at session start without activate scripts:
-```bash
-OCTOMIND_SKILLS=programming-rust,git-workflow octomind run developer:general
-```
+**Domain isolation:** `domains:` single-valued where possible; body does NOT reference agents from other domains (`content:article`, `developer:typescript`, …); `compatibility:` describes environment only. Cross-domain composition is the orchestrating agent's job.
 
 ### Adding a New Capability (full checklist)
 
-1. Create `capabilities/<name>/<provider>.toml` with `[deps]`, `[roles.mcp]`, `[[mcp.servers]]`
-2. Add `link "<name>" "<provider>.toml"` line to `scripts/setup-symlinks.sh`
-3. Add `"<name>"` to the `DECLARED` array in `scripts/setup-symlinks.sh`
-4. Run `bash scripts/setup-symlinks.sh` to create the symlink
-5. Reference `"<name>"` in agent `capabilities = [...]`
+1. Create `capabilities/<name>/config.toml` — `triggers = [...]` (required), optional `domains` gate
+2. Create `capabilities/<name>/<provider>.toml` — header comments + `[deps]`, `[roles.mcp]`, `[[mcp.servers]]`; pin exact versions for npx/uvx servers
+3. Add `link "<name>" "<provider>.toml"` **and** `"<name>"` to the `DECLARED` array in `scripts/setup-symlinks.sh`
+4. Run `bash scripts/setup-symlinks.sh` (exits 1 on MISSING, warns on undeclared dirs)
+5. Create any `deps/<org>/<tool>.sh` + `.md` referenced in `[deps] require`
+6. Reference `"<name>"` (default provider) or `"<name>:<provider>"` in agent `capabilities = [...]`
+7. Adding capability triggers changes `model/` training data — see `skills/tap-model-training/SKILL.md` for retraining
 
-## Validation & Quality
+### Placeholders
 
-### Checks to Run
+| Placeholder | Scope | Use |
+|-------------|-------|-----|
+| `{{CWD}}` | Session | Current working directory — `welcome` only in agents (breaks caching in `system`) |
+| `{{DATE}}` | Session | Current date — same caching rule |
+| `{{ENV:KEY}}` | Project env | Injects environment variable (e.g. API keys) in capability files; document required vars in the capability header comment |
+| `{{INPUT:KEY}}` | User-global secret | API tokens, credentials (e.g. in `[[mcp.servers]] env`) |
+
+## Done
+
+Run the commands that touch what you changed — all must exit 0:
 
 ```bash
-# Lint all agent manifests
-bash scripts/lint-manifests.sh
-
-# Lint a specific agent
-bash scripts/lint-manifests.sh agents/<domain>/<spec>.toml
-
-# Lint all capability files
-bash scripts/lint-capabilities.sh
-
-# Validate capability resolution for all agents
-bash scripts/validate-capabilities.sh
-
-# Lint all skills
-bash scripts/lint-skills.sh
-
-# Lint a specific skill
-bash scripts/lint-skills.sh skills/<name>
-
-# Lint all dep scripts (headers + companion docs)
-bash scripts/lint-deps.sh
-
-# Lint a specific dep script
-bash scripts/lint-deps.sh deps/<org>/<tool>.sh
-
-# Verify capability symlinks are intact
-bash scripts/setup-symlinks.sh
-
-# Debug: inspect the resolved manifest for an agent
-bin/load <domain>:<spec>
+bash scripts/lint-manifests.sh        # touched agents/…toml
+bash scripts/lint-capabilities.sh     # touched capabilities/…
+bash scripts/lint-skills.sh           # touched skills/…
+bash scripts/lint-deps.sh             # touched deps/…
+bash scripts/validate-capabilities.sh # any capability change
+bash scripts/setup-symlinks.sh        # any capability add/remove (symlink integrity)
+bin/load <domain>:<spec>              # touched agent — resolves without errors
+scripts/mcp-versions.sh test <capability>  # touched npx/uvx server wiring
+octomind workflow <name> --dry-run    # touched workflow
 ```
 
-### Quality Criteria — Agent is "Done" When
+**Agent done** — lints pass (incl. markdown/cache guardrails); XML blocks in canonical order; every capability has `capabilities/<name>/default.toml`; all `require` entries exist under `deps/`; `welcome` is descriptive and includes `{{CWD}}`; `octomind run <domain>:<spec>` starts clean.
 
-- [ ] All lints pass (`lint-manifests.sh`) — including the markdown/cache guardrails
-- [ ] System prompt uses XML-tagged blocks in canonical order (`<identity>` → … → `<critical>`)
-- [ ] No `**bold**` or `##` headers inside `system` (XML tags are the structure)
-- [ ] No `{{CWD}}` or `{{DATE}}` inside `system` — those go in `welcome` only (caching)
-- [ ] Every capability in `capabilities = [...]` has a `capabilities/<name>/default.toml`
-- [ ] `bin/load <domain>:<spec>` resolves without errors
-- [ ] All required dep scripts exist under `deps/` for every `require` entry in used capabilities
-- [ ] All dep scripts pass linting (`lint-deps.sh`) — includes `# type:` header and companion `.md`
-- [ ] System prompt is domain-focused and covers what the agent does, what it won't do, and key decision rules
-- [ ] `welcome` message is descriptive and includes `{{CWD}}`
+**Skill done** — lints pass; `name` matches directory; canonical section order with Checklist near the end; instructions actionable (what to DO); domain-isolated.
 
-### Quality Criteria — Skill is "Done" When
+**Capability done** — lints pass; `default.toml` symlink resolves; pins present; `mcp-versions.sh test` speaks MCP.
 
-- [ ] `lint-skills.sh` passes — including `**bold**` markdown guardrail
-- [ ] `name` in frontmatter matches directory name exactly
-- [ ] Body follows the canonical section order (Overview → Mental model → Rules → Examples → Checklist → Composition / References)
-- [ ] Checklist sits near the end (recency position) — not buried mid-body
-- [ ] Instructions are actionable (tell the AI what to DO, not just describe the domain)
-- [ ] **Domain-isolated** — `domains:` is a single value where possible; body does NOT reference agents from other domains (`content:article`, `developer:typescript`, `marketing:seo`, etc.); `compatibility:` describes environment only, not skill pairings. Cross-domain composition is the orchestrating agent's job.
+**Dep done** — `lint-deps.sh` passes (headers, `# type:`, companion `.md`, platform coverage); `bash deps/<org>/<tool>.sh` exits 0 on an already-installed machine and installs on a clean one.
+
+**Full-repo done** — all five lint scripts + `pre-commit run --all-files` exit 0.
 
 ## Gotchas
 
-- `bin/load` uses a regex-based TOML parser (no external deps) — it handles the subset needed but does not parse full TOML. Keep capability files simple; don't use multi-line arrays or complex TOML features.
-- `setup-symlinks.sh` uses `ln -sf` (force) — safe to re-run, but the `DECLARED` array must be updated manually when adding capabilities or the script will emit a `WARN` for undeclared dirs.
-- `capabilities/core/default.toml` and `capabilities/agent/default.toml` are real files, not symlinks — they have no provider variants. Do not add `link` entries for them in `setup-symlinks.sh`.
-- `{{ENV:VAR_NAME}}` in capability files injects environment variables at runtime (e.g. `TAVILY_API_KEY`). Document required env vars in the capability file header comment.
-- The `octomind/` agent domain is special — these agents operate on the tap itself. Run `octomind run octomind:tap` in this repo root to use the tap-creation assistant.
+- `bin/load` uses a regex-based TOML-subset parser (no external deps) — keep capability files simple: no multi-line arrays or complex TOML features.
+- `setup-symlinks.sh` uses `ln -sf` (force) — safe to re-run; the `DECLARED` array must be updated manually or the script emits `WARN` for undeclared dirs.
+- `capabilities/core/`, `capabilities/agent/`, and `capabilities/orchestration/` have **real** `default.toml` files — no provider variants, no `link` entries for them.
+- Default providers live in `setup-symlinks.sh` — e.g. `websearch` currently defaults to `duckduckgo.toml` (not tavily; ARCHITECTURE.md's example is stale). Switch a provider with `ln -sf <provider>.toml capabilities/<name>/default.toml`; reset all with `setup-symlinks.sh`.
+- `templates/` and `deps/lib/platform.sh` are symlinks into `scaffolds/tap/root/` — single source of truth so generated taps never drift; edit at the scaffold source.
+- The `octomind/` agent domain is special — its agents operate on the tap itself. Run `octomind run octomind:tap` in this repo root for the tap-authoring assistant (`octomind:workflow`, `octomind:config`, `octomind:assistant` alongside).
+- `mcp-versions.sh test` may report missing-key errors for servers needing credentials — judge by whether the process starts and speaks MCP at all.
+- CONTRIBUTING.md quick-start examples still write `[roles.mcp]`/`[deps]` directly (pre-capability style) — this file and ARCHITECTURE.md are authoritative when they conflict.
 
 ## Never
 
-- Write `[deps]`, `[roles.mcp]`, or `[[mcp.servers]]` in an agent manifest — these belong exclusively in capability files
-- Set `name = "..."` inside `[[roles]]` — it is injected at runtime from the file path tag
-- Add a `server_ref` in a capability file without a matching `[[mcp.servers]]` block (unless it's a built-in: `core`, `octofs`, `agent`, `octocode`)
+- Write `[deps]`, `[roles.mcp]`, or `[[mcp.servers]]` in an agent manifest — they belong exclusively in capability files
+- Set `name = "..."` inside `[[roles]]` — injected at runtime from the file path tag
+- Add a `server_ref` without a matching `[[mcp.servers]]` block (built-ins exempt: `core`, `octofs`, `agent`, `octocode`)
+- Launch an npx/uvx server without an exact version pin
+- Add `orchestration` or `runtime` to a leaf/domain-specialist agent — orchestrator- and high-trust-tier only
 - Create a capability directory without adding it to both the `link` calls and the `DECLARED` array in `setup-symlinks.sh`
-- Nest agents deeper than `agents/<domain>/<spec>.toml` — exactly two path components required
-- Nest skills deeper than `skills/<name>/SKILL.md` — exactly one directory level required
+- Nest agents deeper than `agents/<domain>/<spec>.toml` or skills deeper than `skills/<name>/SKILL.md`
+- Reference tap-relative paths or cross-domain agent tags in `system`/`welcome`/skill bodies — agents run in the user's project, not the tap checkout
+
+## References
+
+- `ARCHITECTURE.md` — canonical design; read before any structural change
+- `CONTRIBUTING.md` — human-facing contribution guide (partially stale; this file wins)
+- `workflows/README.md` — workflow catalogue, resolution rules, TOML structure
+- `model/README.md` — embedding fine-tune pipeline (dataset → train → eval gates → ONNX → HuggingFace)
+- `scaffolds/tap/README.md` — `octomind tap init` token table and renderer rules
+- `skills/tap-agent-authoring/SKILL.md` · `tap-capability-authoring` · `tap-skill-authoring` · `tap-deps-authoring` · `tap-model-training` — per-type authoring specs
+- `skills/prompt-engineering/SKILL.md` — prompt theory across agents, skills, layer prompts
+- `skills/octomind-workflow/SKILL.md` — workflow authoring spec
