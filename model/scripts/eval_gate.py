@@ -88,7 +88,10 @@ class OnnxEncoder:
         self.pooling = "mean"
         pooling_cfg = model_dir / "1_Pooling" / "config.json"
         if pooling_cfg.exists():
-            mode = json.loads(pooling_cfg.read_text()).get("pooling_mode", "mean")
+            cfg = json.loads(pooling_cfg.read_text())
+            # sentence-transformers writes either a `pooling_mode` string or
+            # `pooling_mode_*` booleans (octolib reads both; mirror it).
+            mode = cfg.get("pooling_mode") or ("cls" if cfg.get("pooling_mode_cls_token") else "mean")
             self.pooling = str(mode).lower()
         print(f"onnx encoder: {onnx_file}  pooling={self.pooling}")
 
@@ -385,7 +388,7 @@ def main() -> int:
     ap.add_argument("--eval-set", type=Path, default=None,
                     help="override eval.real_set_path from the config")
     ap.add_argument("--pairs", type=Path, default=None,
-                    help="trigger source (defaults to model/data/pairs.jsonl)")
+                    help="trigger source (defaults to eval.triggers_path from the config)")
     ap.add_argument("--baseline", type=Path, default=None,
                     help="path to baseline JSON for regression comparison")
     ap.add_argument("--write-baseline", type=Path, default=None,
@@ -410,9 +413,9 @@ def main() -> int:
         raise SystemExit(f"missing eval set: {eval_path}\n"
                          f"run: uv run python scripts/build_eval_seed.py")
 
-    pairs_path = args.pairs or (root / cfg["data"]["pairs_path"])
+    pairs_path = args.pairs or (root / eval_cfg.get("triggers_path", cfg["data"]["pairs_path"]))
     if not pairs_path.exists():
-        raise SystemExit(f"missing pairs.jsonl: {pairs_path} — run build_dataset.py first")
+        raise SystemExit(f"missing trigger corpus: {pairs_path} — run build_dataset.py first")
 
     eval_rows = [json.loads(line) for line in eval_path.read_text().splitlines() if line.strip()]
     triggers_by_cap = load_triggers_from_pairs(pairs_path)

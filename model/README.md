@@ -3,10 +3,19 @@
 Fine-tune one small ONNX bi-encoder that powers octomind's capability
 auto-activation:
 
-- **`muvon/octomind-embed`** — BGE-small-en-v1.5 fine-tune (33M params,
-  384-dim). The runtime in `octomind/src/mcp/core/capability.rs` uses
-  it to decide which capability to auto-activate from a single user
-  message via a mean-of-top-3 cosine score + threshold + margin gate.
+- **`muvon/octomind-embed`** — granite-embedding-30m-english (30M
+  params, 6 layers, 384-dim, CLS-pooled, prefix-free) fine-tuned and
+  blended back into the base as a WiSE-FT soup. The runtime in
+  `octomind/src/mcp/runtime/capability.rs` uses it to decide which
+  capability to auto-activate from a single user message via a
+  mean-of-top-3 cosine score + threshold + margin gate, loading the int8
+  ONNX graph (~1.7 ms per intent on CPU).
+- Before 2026-09 the same repo held a BGE-small-en-v1.5 fine-tune. The
+  base bake-off (`scripts/compare_bases.py` on the raw trigger corpus)
+  put granite at gate 0.846 zero-shot vs 0.708 for bge-small and 0.690
+  for that fine-tune, at half the layers. New weights under the same
+  name reach fresh installs only (hf_hub never re-checks a cached repo),
+  and the runtime thresholds must ship with them — see calibration below.
 
 The cross-encoder reranker is intentionally NOT trained / shipped here.
 We tested it; with the current capability count it doesn't materially
@@ -16,14 +25,20 @@ gets harder, revisit.
 
 ## Why fine-tune
 
-Off-the-shelf BGE scores generic verbs ("run", "execute") high across
-unrelated capabilities, so capabilities with shared vocabulary (shell vs
-programming-rust) cluster too close to clear the runtime margin gate.
+Off-the-shelf encoders score generic verbs ("run", "execute") high
+across unrelated capabilities, so capabilities with shared vocabulary
+(shell vs programming-rust) cluster too close to clear the runtime
+margin gate.
 
 With trigger-phrase supervision plus hard-negative mining, we sharpen
 the embedding on the actual decision the runtime makes:
 
     intent (user phrase)  →  capability (one of N installed) or abstain
+
+A raw fine-tune also *forgets* some of the base's generalization (top-1
+and gate drop on real prompts while the margin rises). Interpolating the
+fine-tuned weights with the base (WiSE-FT soup, alpha 0.4-0.6) beats
+both parents, so that is what ships.
 
 ## Pipeline
 
@@ -34,29 +49,35 @@ the embedding on the actual decision the runtime makes:
                        │
                        ▼
     scripts/build_dataset.py   →  data/pairs.jsonl, triplets.jsonl, holdout.jsonl
+                       │          raw_triggers.jsonl (what the runtime embeds)
                        │       (+ _oos sink label, multi-turn surfaces,
                        │          positive-aware hard-negative mining)
                        ▼
-    scripts/train.py           →  checkpoints/embed-<ts>/
-                       │       (CachedMNRL + GISTEmbed + Matryoshka)
+    scripts/train.py           →  checkpoints/embed-<run>-<ts>/
+                       │       (CachedMNRL scale=10 + Matryoshka, 1 epoch)
+                       ▼
+    scripts/model_soup.py      →  checkpoints/embed-<run>-<ts>-soup-a<α>/
+    scripts/compare_bases.py      (best gate on raw_triggers.jsonl wins)
                        ▼
     scripts/eval.py            →  holdout-distribution metrics
     scripts/eval_gate.py       →  real-user-distribution metrics  ← publish gate
-    scripts/calibrate_thresholds.py  →  recommended runtime τ, δ
                        │
                        ▼
-    scripts/export_onnx.py     →  onnx/
+    scripts/export_onnx.py     →  onnx/  (fp32 + int8, reduce_range from config)
+    scripts/calibrate_thresholds.py --onnx-file  →  runtime τ, δ for the int8 graph
                        │
                        ▼
     scripts/push_hf.py         →  hf.co/muvon/octomind-embed
 
 The HF repo holds BOTH formats:
-- `model.safetensors` + config + tokenizer → consumed by octomind via
-  octolib's candle-based HuggingFace provider.
-- `onnx/` subdir → available for ORT-based consumers (fastembed
-  user-defined, edge runtimes, browser onnxruntime-web).
+- `onnx/model_quantized.onnx` (+ `model.onnx`) → what octomind loads via
+  octolib's ONNX provider; it honours `1_Pooling/config.json` (CLS).
+- `model.safetensors` + config + tokenizer → sentence-transformers layout
+  for eval scripts and the candle fallback (`EMBED_BACKEND`), which always
+  mean-pools and is therefore not the production path for this model.
 
-`bin/train` runs the full pipeline. Use `--skip-export` to skip ONNX.
+`bin/train` runs the full pipeline. Use `--skip-export` to skip ONNX,
+`--ft checkpoints/<dir>` to redo soup + eval + export on an existing run.
 
 ## Setup
 
@@ -68,19 +89,22 @@ The HF repo holds BOTH formats:
     # 1) Bootstrap a real-user eval set (one-time, then hand-edit as needed).
     uv run python scripts/build_eval_seed.py
 
-    # 2) Record the baseline from the currently-shipped model.
+    # 2) Record the baseline from the currently-shipped model (raw trigger
+    #    corpus — the same thing the runtime scores).
     uv run python scripts/eval_gate.py \
         --model muvon/octomind-embed \
         --write-baseline eval_baselines.json
 
-    # 3) Full training run with 2 rounds of iterative hard-negative mining.
-    ANTHROPIC_API_KEY=... bin/train --llm --iterations 2
+    # 3) Full training run (build + train + soup + eval + export + calibrate).
+    ANTHROPIC_API_KEY=... bin/train --llm
 
-    # 4) Calibrate runtime thresholds against eval_real.jsonl.
+    # 4) Copy the calibrated τ/δ printed at the end into
+    #    configs/default.yaml eval.runtime_* and octomind capability.rs /
+    #    skill.rs. To re-run calibration by hand:
     uv run python scripts/calibrate_thresholds.py \
-        --model checkpoints/embed-<ts> --target-fpr 0.02
+        --model checkpoints/embed-<ts>-soup-a<α>/onnx --onnx-file model_quantized.onnx
 
-    # 5) Publish (the gate runs automatically).
+    # 5) Publish (the gate runs automatically on fp32 and int8).
     HF_TOKEN=hf_... bin/publish
 
     # 6) After production rollout, record the new baseline.
@@ -97,12 +121,12 @@ production recipe.
    in-batch negatives = harder contrast = wider runtime margins.
    ([sbert docs](https://huggingface.co/blog/train-sentence-transformers))
 
-2. **GISTEmbedLoss** *(optional)* — A frozen guide model
+2. **GISTEmbedLoss** *(optional, off by default)* — A frozen guide model
    (BGE-small-en-v1.5) decides which in-batch candidates are *true*
    negatives. Anything the guide rates above the anchor/positive
-   similarity is excluded from the contrastive loss. Removes
-   false-negative noise from semantically-near labels (legal-*,
-   programming-*, codesearch-*, messaging-*).
+   similarity is excluded from the contrastive loss. Off because without
+   an explicit `scale` it trains at temperature 0.01, which collapses the
+   runtime margin, and it costs ~5x per step on CPU.
    ([arxiv 2402.16829](https://arxiv.org/abs/2402.16829))
 
 3. **MatryoshkaLoss** *(optional, wraps either of the above)* —
@@ -127,6 +151,10 @@ production recipe.
   ([arxiv 2407.15831](https://arxiv.org/pdf/2407.15831))
 - **holdout.jsonl** `{intent, label}` — held-out trigger paraphrases
   per capability for in-distribution eval.
+- **raw_triggers.jsonl** `{anchor, positive, label}` — the un-augmented
+  `config.toml` triggers + skill `semantic()` phrases. This is what the
+  runtime embeds, so `eval_gate.py`, `compare_bases.py` and
+  `calibrate_thresholds.py` score against it (`eval.triggers_path`).
 
 ### `_oos` sink label
 
@@ -192,23 +220,26 @@ why in the commit message).
 ## Runtime threshold calibration
 
 The runtime uses two constants in
-`octomind/src/mcp/core/capability.rs`:
+`octomind/src/mcp/runtime/capability.rs` (mirrored by
+`SEMANTIC_DEFAULT_THRESHOLD` / `SEMANTIC_MARGIN` in `skill.rs`):
 
-    const AUTO_ACTIVATE_THRESHOLD: f32 = 0.55;
-    const AUTO_ACTIVATE_MARGIN: f32    = 0.08;
+    const AUTO_ACTIVATE_THRESHOLD: f32 = ...;
+    const AUTO_ACTIVATE_MARGIN: f32    = ...;
 
-Those were hand-picked for the base BGE-small. After fine-tuning the
-operating point usually shifts — typically you can tighten the margin
-to kill more false positives without sacrificing recall.
+Every base has its own cosine scale, so the operating point moves with
+each retrain. Calibrate against the int8 graph — that is what the
+runtime loads, and quantization shifts cosines:
 
     uv run python scripts/calibrate_thresholds.py \
-        --model checkpoints/embed-<ts> \
-        --target-fpr 0.02
+        --model checkpoints/<run>/onnx --onnx-file model_quantized.onnx \
+        --target-fpr 0.03
 
 Prints the Pareto front of (gate_acc, null_fpr) over a τ × δ grid and
 suggests the operating point with highest gate_acc whose
-`null_fpr ≤ target`. Copy-paste the recommended constants into
-`capability.rs:772/781` and the matching pair in `skill.rs:66/78`.
+`null_fpr ≤ target`. Copy the recommended constants into
+`capability.rs` / `skill.rs` and into `configs/default.yaml`
+`eval.runtime_threshold` / `runtime_margin` (the publish gate scores at
+those values). `bin/train` runs this step automatically.
 
 ## When to retrain
 
@@ -278,9 +309,7 @@ then manually continue iter 2:
 
     # 4. eval + export
     ITER2=$(ls -td checkpoints/embed-*/ | head -1 | sed 's:/$::')
-    uv run python scripts/eval.py        --run "$ITER2"
-    uv run python scripts/eval_gate.py   --model "$ITER2"
-    uv run python scripts/export_onnx.py --run "$ITER2"
+    bin/train --ft "$ITER2"            # soup + eval + export + calibrate
 
 **Always run training in tmux/nohup** so disconnects don't kill the
 foreground process:
@@ -296,15 +325,18 @@ foreground process:
     uv run python scripts/build_dataset.py
     uv run python scripts/build_dataset.py --neg-embed-model checkpoints/embed-<ts>  # iter 2
     uv run python scripts/train.py
-    uv run python scripts/eval.py        --run checkpoints/embed-<ts>
-    uv run python scripts/eval_gate.py   --model checkpoints/embed-<ts>
-    uv run python scripts/calibrate_thresholds.py --model checkpoints/embed-<ts>
-    uv run python scripts/export_onnx.py --run checkpoints/embed-<ts>
-    HF_TOKEN=... uv run python scripts/push_hf.py --run checkpoints/embed-<ts> \
+    uv run python scripts/model_soup.py --base ibm-granite/granite-embedding-30m-english \
+        --ft checkpoints/embed-<ts> --alphas 0.4,0.5,0.6 --out-dir checkpoints/embed-<ts>/soup
+    uv run python scripts/compare_bases.py --models checkpoints/embed-<ts>,checkpoints/embed-<ts>/soup/soup-a0.6
+    uv run python scripts/eval.py        --run <winner>
+    uv run python scripts/eval_gate.py   --model <winner>
+    uv run python scripts/export_onnx.py --run <winner>
+    uv run python scripts/calibrate_thresholds.py --model <winner>/onnx --onnx-file model_quantized.onnx
+    HF_TOKEN=... uv run python scripts/push_hf.py --run <winner> \
         --repo muvon/octomind-embed --type embed
 
 ## Runtime integration
 
 Embedding model path: `octomind/src/embeddings/mod.rs` → `MODEL_NAME`.
 The two-stage activation lives in
-`octomind/src/mcp/core/capability.rs::auto_activate_capabilities_for_intent`.
+`octomind/src/mcp/runtime/capability.rs::auto_activate_capabilities_for_intent`.

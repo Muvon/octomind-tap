@@ -11,7 +11,9 @@
 # count. If that changes, restore the previous --rerank-only path.
 #
 # Usage:
-#   HF_TOKEN=hf_... bin/publish                          # bi-encoder, with gate
+#   HF_TOKEN=hf_... bin/publish                          # latest embed-* run, with gate
+#   HF_TOKEN=hf_... bin/publish --run checkpoints/<dir>  # explicit checkpoint
+#   HF_TOKEN=hf_... bin/publish --repo muvon/other-repo  # override target repo
 #   HF_TOKEN=hf_... bin/publish --org muvon              # override namespace
 #   HF_TOKEN=hf_... bin/publish --private                # private repo
 #   HF_TOKEN=hf_... bin/publish --dry-run                # print, don't upload
@@ -27,6 +29,8 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 ORG="muvon"
+REPO=""
+RUN=""
 PRIVATE=""
 DRY_RUN=0
 FORCE=0
@@ -37,6 +41,14 @@ while [ $# -gt 0 ]; do
     --embed-only) shift ;; # accepted for compat, embed is the only mode now
     --org)
       ORG="$2"
+      shift 2
+      ;;
+    --repo)
+      REPO="$2"
+      shift 2
+      ;;
+    --run)
+      RUN="${2%/}"
       shift 2
       ;;
     --private)
@@ -69,8 +81,10 @@ fi
 
 PY=${PY:-uv run python}
 
-RUN=$(ls -td checkpoints/embed-*/ 2>/dev/null | head -1)
-RUN=${RUN%/}
+if [ -z "$RUN" ]; then
+  RUN=$(ls -td checkpoints/embed-*/ 2>/dev/null | head -1)
+  RUN=${RUN%/}
+fi
 if [ -z "$RUN" ]; then
   echo "no embed-* checkpoint found in checkpoints/" >&2
   exit 1
@@ -149,7 +163,7 @@ fi
 # Upload
 # ---------------------------------------------------------------------------
 
-REPO="$ORG/octomind-embed"
+REPO="${REPO:-$ORG/octomind-embed}"
 echo
 echo "==> upload: $RUN  →  hf.co/$REPO  $HAS_ONNX"
 

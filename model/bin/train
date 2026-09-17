@@ -11,7 +11,13 @@
 #   bin/train --iterations N           # iterative hard-negative re-mining (N rounds)
 #   bin/train --skip-build             # reuse existing data/, just train + eval
 #   bin/train --skip-export            # skip the ONNX export step
+#   bin/train --ft checkpoints/<dir>   # reuse a trained checkpoint: soup + eval + export only
 #   bin/train --legacy                 # plain model.fit() loop with MNRL (diagnostic)
+#
+# After training, `soup.alphas` in configs/default.yaml drives a WiSE-FT
+# sweep against the base model; the alpha with the best gate on the raw
+# trigger corpus is copied to checkpoints/embed-<run>-soup-a<alpha>/ and is
+# what gets evaluated, exported and (via bin/publish) shipped.
 #
 # Iterative re-mining (recommended for the production run):
 #
@@ -35,6 +41,7 @@ SKIP_EXPORT=0
 RESUME=""
 ITERATIONS=1
 LEGACY_FLAG=""
+FT=""
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -62,6 +69,11 @@ while [ $# -gt 0 ]; do
       LEGACY_FLAG="--legacy"
       shift
       ;;
+    --ft)
+      FT="${2%/}"
+      SKIP_BUILD=1
+      shift 2
+      ;;
     *)
       echo "unknown arg: $1" >&2
       exit 2
@@ -75,6 +87,9 @@ if ! [[ $ITERATIONS =~ ^[0-9]+$ ]] || [ "$ITERATIONS" -lt 1 ]; then
 fi
 
 PY=${PY:-uv run python}
+CONFIG=configs/default.yaml
+BASE_MODEL=$($PY -c "import yaml; print(yaml.safe_load(open('$CONFIG'))['base_model'])")
+SOUP_ALPHAS=$($PY -c "import yaml; print(','.join(str(a) for a in yaml.safe_load(open('$CONFIG')).get('soup', {}).get('alphas', [])))")
 
 # ---------------------------------------------------------------------------
 # Phase 0a: bootstrap the real-user eval set (once, idempotent)
@@ -115,7 +130,8 @@ fi
 # sweet spot; 3+ shows diminishing returns and risks overfitting on
 # the specific holdout.
 
-LAST_RUN=""
+LAST_RUN="$FT"
+[ -n "$FT" ] && ITERATIONS=0
 for ((i = 1; i <= ITERATIONS; i++)); do
   echo
   echo "================================================================"
@@ -144,11 +160,40 @@ for ((i = 1; i <= ITERATIONS; i++)); do
 done
 
 # ---------------------------------------------------------------------------
+# Phase 2b: WiSE-FT soup sweep — pick the alpha with the best runtime gate
+# ---------------------------------------------------------------------------
+
+if [ -n "$SOUP_ALPHAS" ]; then
+  echo
+  echo "==> model_soup.py (alphas $SOUP_ALPHAS, base $BASE_MODEL)"
+  $PY scripts/model_soup.py --base "$BASE_MODEL" --ft "$LAST_RUN" \
+    --alphas "$SOUP_ALPHAS" --out-dir "$LAST_RUN/soup"
+  MODELS="$LAST_RUN"
+  for a in ${SOUP_ALPHAS//,/ }; do
+    MODELS="$MODELS,$LAST_RUN/soup/soup-a$a"
+  done
+  echo "==> compare_bases.py — ft vs soups on the raw trigger corpus"
+  $PY scripts/compare_bases.py --models "$MODELS" --json-out "$LAST_RUN/soup/compare.json"
+  WINNER=$($PY -c "
+import json
+r = json.load(open('$LAST_RUN/soup/compare.json'))
+r.sort(key=lambda x: (x['best_gate']['gate_acc'], x['top1_acc']), reverse=True)
+print(r[0]['model'])")
+  echo "==> winner: $WINNER"
+  if [ "$WINNER" != "$LAST_RUN" ]; then
+    FINAL="${LAST_RUN}-$(basename "$WINNER")"
+    rm -rf "$FINAL"
+    cp -r "$WINNER" "$FINAL"
+    LAST_RUN="$FINAL"
+  fi
+fi
+
+# ---------------------------------------------------------------------------
 # Phase 3: evaluate
 # ---------------------------------------------------------------------------
 
 echo
-echo "==> eval base (BAAI/bge-small-en-v1.5) — for comparison"
+echo "==> eval base ($BASE_MODEL) — for comparison"
 $PY scripts/eval.py --run "$LAST_RUN" --base
 
 echo
@@ -185,14 +230,18 @@ if [ $SKIP_EXPORT -eq 0 ]; then
     echo "==> eval_gate.py — int8 ONNX graph (what the runtime will load)"
     $PY scripts/eval_gate.py --model "$LAST_RUN/onnx" \
       --onnx-file model_quantized.onnx || true
+    echo
+    echo "==> calibrate_thresholds.py — int8 ONNX graph"
+    $PY scripts/calibrate_thresholds.py --model "$LAST_RUN/onnx" \
+      --onnx-file model_quantized.onnx --target-fpr 0.03 \
+      --json-out "$LAST_RUN/onnx/calibration.json" || true
   fi
 fi
 
 echo
-echo "Done."
-echo "  Upload:        HF_TOKEN=... bin/publish --embed-only"
-echo "  Calibrate τ/δ: $PY scripts/calibrate_thresholds.py --model $LAST_RUN"
+echo "Done. Final checkpoint: $LAST_RUN"
+echo "  Upload:  HF_TOKEN=... bin/publish --run $LAST_RUN"
 echo
-echo "NOTE: octomind loads onnx:muvon/octomind-embed (int8). If the int8 gate"
-echo "      numbers above differ from fp32, recalibrate against the int8 graph"
-echo "      and update AUTO_ACTIVATE_THRESHOLD / SEMANTIC_DEFAULT_THRESHOLD."
+echo "NOTE: octomind loads the int8 graph. Copy the calibrated τ/δ above into"
+echo "      configs/default.yaml eval.runtime_* (publish gate) and into octomind"
+echo "      capability.rs AUTO_ACTIVATE_* / skill.rs SEMANTIC_* before rollout."
