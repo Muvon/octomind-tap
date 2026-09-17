@@ -28,12 +28,16 @@ case "$OS" in
     pkg_install ripgrep
     ;;
   windows)
-    # Download pre-built binary from GitHub
-    VERSION=$(curl -fsSL "https://api.github.com/repos/BurntSushi/ripgrep/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+    # Download pre-built binary from GitHub.
+    # Resolve the version via the releases/latest redirect instead of the REST API:
+    # the unauthenticated API is rate-limited per IP and returns 403 on shared CI runners.
+    VERSION=$(curl -fsSL -o /dev/null -w '%{url_effective}' "https://github.com/BurntSushi/ripgrep/releases/latest")
+    VERSION="${VERSION##*/}"
+    [[ -n "$VERSION" ]] || die "Failed to resolve latest ripgrep version"
     TMP_DIR=$(mktemp -d)
     trap "rm -rf '$TMP_DIR'" EXIT
     FILENAME="ripgrep-${VERSION}-x86_64-pc-windows-msvc.zip"
-    curl -fsSL "https://github.com/BurntSushi/ripgrep/releases/download/${VERSION}/${FILENAME}" -o "$TMP_DIR/$FILENAME"
+    curl -fsSL --retry 3 "https://github.com/BurntSushi/ripgrep/releases/download/${VERSION}/${FILENAME}" -o "$TMP_DIR/$FILENAME"
     unzip -qo "$TMP_DIR/$FILENAME" -d "$TMP_DIR"
     mkdir -p "${HOME}/.local/bin"
     cp "$TMP_DIR/ripgrep-${VERSION}-x86_64-pc-windows-msvc/rg.exe" "${HOME}/.local/bin/rg.exe"

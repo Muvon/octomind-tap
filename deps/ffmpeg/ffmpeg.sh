@@ -54,7 +54,7 @@ case "$OS" in
     # Download pre-built ffmpeg from gyan.dev (essentials zip — no 7z needed)
     TMP_DIR=$(mktemp -d)
     trap 'rm -rf "$TMP_DIR"' EXIT
-    curl -fsSL "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip" -o "$TMP_DIR/ffmpeg.zip"
+    curl -fsSL --retry 3 "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip" -o "$TMP_DIR/ffmpeg.zip"
     unzip -qo "$TMP_DIR/ffmpeg.zip" -d "$TMP_DIR"
     # Archive contains a single directory like ffmpeg-8.0-essentials_build/
     BIN_DIR=$(dirname "$(find "$TMP_DIR" -name "ffmpeg.exe" | head -1)")
