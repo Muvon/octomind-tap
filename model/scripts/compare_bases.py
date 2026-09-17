@@ -43,17 +43,27 @@ from eval_gate import cap_score, select_with_margin, load_triggers_from_pairs  #
 # Default roster. `q`/`d` are optional query/doc prefixes for asymmetric
 # models — when present the model needs a runtime change to deploy
 # (the production encode path is prefix-free), so `prefix` is flagged.
+_ARCTIC_Q = "Represent this sentence for searching relevant passages: "
 DEFAULT_ROSTER: list[dict] = [
-    {"id": "BAAI/bge-small-en-v1.5", "tag": "base (current), 33M/384d"},
-    {"id": "sentence-transformers/all-MiniLM-L6-v2", "tag": "22M/384d"},
-    {"id": "thenlper/gte-small", "tag": "33M/384d, symmetric-ok"},
-    {"id": "BAAI/bge-base-en-v1.5", "tag": "109M/768d (dim change!)"},
-    {"id": "intfloat/e5-small-v2", "q": "query: ", "d": "passage: ",
-     "tag": "33M/384d, NEEDS prefix"},
-    {"id": "Snowflake/snowflake-arctic-embed-s",
-     "q": "Represent this sentence for searching relevant passages: ", "d": "",
-     "tag": "33M/384d, NEEDS query prefix"},
-    {"id": "muvon/octomind-embed", "tag": "current FT (reference upper bound)"},
+    {"id": "BAAI/bge-small-en-v1.5", "tag": "base (current), 33M/12L/384d"},
+    {"id": "muvon/octomind-embed", "tag": "shipped FT of bge-small"},
+    {"id": "muvon/octomind-embed-minilm", "tag": "published MiniLM soup a=0.3"},
+    {"id": "sentence-transformers/all-MiniLM-L6-v2", "tag": "22M/6L/384d"},
+    {"id": "MongoDB/mdbr-leaf-ir", "tag": "23M/6L/384d, prefix-free"},
+    {"id": "MongoDB/mdbr-leaf-ir", "q": _ARCTIC_Q, "d": "", "tag": "23M/6L/384d, query prefix"},
+    {"id": "MongoDB/mdbr-leaf-mt", "tag": "23M/6L/384d, prefix-free"},
+    {"id": "MongoDB/mdbr-leaf-mt", "q": _ARCTIC_Q, "d": "", "tag": "23M/6L/384d, query prefix"},
+    {"id": "Snowflake/snowflake-arctic-embed-xs", "tag": "22M/6L/384d, prefix-free"},
+    {"id": "Snowflake/snowflake-arctic-embed-xs", "q": _ARCTIC_Q, "d": "", "tag": "22M/6L/384d, query prefix"},
+    {"id": "ibm-granite/granite-embedding-30m-english", "tag": "30M/6L/384d RoBERTa CLS"},
+    {"id": "sentence-transformers/all-MiniLM-L12-v2", "tag": "33M/12L/384d"},
+    {"id": "sentence-transformers/paraphrase-MiniLM-L3-v2", "tag": "17M/3L/384d"},
+    {"id": "TaylorAI/bge-micro-v2", "tag": "17M/3L/384d"},
+    {"id": "sentence-transformers/static-retrieval-mrl-en-v1", "tag": "static, 1024d (dim change!)"},
+    {"id": "thenlper/gte-small", "tag": "33M/12L/384d, symmetric-ok"},
+    {"id": "intfloat/e5-small-v2", "q": "query: ", "d": "passage: ", "tag": "33M/12L/384d, NEEDS prefix"},
+    {"id": "Snowflake/snowflake-arctic-embed-s", "q": _ARCTIC_Q, "d": "", "tag": "33M/12L/384d, NEEDS query prefix"},
+    {"id": "BAAI/bge-base-en-v1.5", "tag": "109M/12L/768d (dim change!)"},
 ]
 
 
@@ -114,6 +124,11 @@ def eval_model(spec: dict, eval_rows: list[dict], triggers_by_cap: dict,
                                convert_to_numpy=True, batch_size=batch_size,
                                show_progress_bar=False)
     enc_s = time.time() - t0
+    lat_ms: list[float] = []
+    for text in intents[:40]:
+        t1 = time.perf_counter()
+        model.encode(text, normalize_embeddings=True, convert_to_numpy=True, show_progress_bar=False)
+        lat_ms.append((time.perf_counter() - t1) * 1000)
 
     scored_per_row: list[list[tuple[float, str]]] = []
     pos_total = pos_top1 = pos_top3 = 0
@@ -143,6 +158,7 @@ def eval_model(spec: dict, eval_rows: list[dict], triggers_by_cap: dict,
         "mean_top1_margin": float(np.mean(margins_top1)) if margins_top1 else 0.0,
         "best_gate": gate,
         "enc_intents_per_s": len(intents) / enc_s if enc_s else 0.0,
+        "lat1_ms": float(np.median(lat_ms)) if lat_ms else 0.0,
     }
 
 
@@ -167,7 +183,7 @@ def main() -> int:
     eval_cfg = cfg.get("eval", {})
     root = Path(__file__).resolve().parents[1]
     eval_path = args.eval_set or (root / eval_cfg.get("real_set_path", "data/eval_real.jsonl"))
-    pairs_path = args.pairs or (root / cfg["data"]["pairs_path"])
+    pairs_path = args.pairs or (root / eval_cfg.get("triggers_path", cfg["data"]["pairs_path"]))
     eval_rows = [json.loads(l) for l in eval_path.read_text().splitlines() if l.strip()]
     triggers_by_cap = load_triggers_from_pairs(pairs_path)
     top_k = int(eval_cfg.get("runtime_top_k", 3))
@@ -187,17 +203,17 @@ def main() -> int:
             print(f"  FAILED {spec['id']}: {e}", flush=True)
 
     results.sort(key=lambda r: r["top1_acc"], reverse=True)
-    print("\n" + "=" * 110)
+    print("\n" + "=" * 118)
     print(f"{'model':<42}{'dim':>4}{'pfx':>4}{'top1':>7}{'top3':>7}"
-          f"{'margin':>8}{'gate':>7}{'fpr':>6}{'τ':>6}{'δ':>6}{'enc/s':>8}")
-    print("-" * 110)
+          f"{'margin':>8}{'gate':>7}{'fpr':>6}{'τ':>6}{'δ':>6}{'enc/s':>8}{'lat1ms':>8}")
+    print("-" * 118)
     for r in results:
         g = r["best_gate"]
         print(f"{r['model']:<42}{r['dim']:>4}{('Y' if r['prefix'] else '-'):>4}"
               f"{r['top1_acc']:>7.3f}{r['top3_acc']:>7.3f}{r['mean_top1_margin']:>8.3f}"
               f"{g['gate_acc']:>7.3f}{g['null_fpr']:>6.3f}{g['threshold']:>6.2f}"
-              f"{g['margin']:>6.2f}{r['enc_intents_per_s']:>8.1f}")
-    print("=" * 110)
+              f"{g['margin']:>6.2f}{r['enc_intents_per_s']:>8.1f}{r['lat1_ms']:>8.1f}")
+    print("=" * 118)
     print("top1/top3 = threshold-free ranking ceiling (fair base comparison).")
     print("gate/fpr/τ/δ = each model's OWN best operating point (max gate_acc, fpr<=%.2f)." % args.target_fpr)
     print("pfx=Y means the model needs query/doc prefixes → runtime change to deploy.")

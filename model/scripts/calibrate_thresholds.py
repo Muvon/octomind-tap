@@ -1,25 +1,25 @@
 """Sweep runtime (threshold, margin) on a checkpoint + eval_real.jsonl
 and report the Pareto front of (gate_acc, null_fpr).
 
-The runtime in octomind/src/mcp/core/capability.rs uses two constants
+The runtime in octomind/src/mcp/runtime/capability.rs uses two constants
 that determine whether a capability auto-activates:
 
-  AUTO_ACTIVATE_THRESHOLD = 0.55   (top-1 cosine floor)
-  AUTO_ACTIVATE_MARGIN    = 0.08   (top-1 minus top-2)
+  AUTO_ACTIVATE_THRESHOLD   (top-1 cosine floor)
+  AUTO_ACTIVATE_MARGIN      (top-1 minus top-2)
 
-Those numbers were hand-picked for the base BGE-small. After fine-
-tuning the operating point shifts — usually the FT model lets us
-TIGHTEN the margin (kill more false positives) without sacrificing
-recall. This script measures it.
+Every base has its own cosine scale, so the operating point moves with
+each retrain. This script measures it on the runtime trigger corpus.
+Calibrate against the int8 ONNX graph — that is what the runtime loads,
+and quantization shifts cosines:
 
-Usage:
-
-  uv run python scripts/calibrate_thresholds.py --model checkpoints/embed-<ts>
+  uv run python scripts/calibrate_thresholds.py \
+      --model checkpoints/embed-<ts>/onnx --onnx-file model_quantized.onnx
   # → prints Pareto frontier + recommended (threshold, margin) for
   #   a target FPR (default 0.02).
 
-The output is a copy-paste-ready snippet for capability.rs:772/781 if
-the new operating point beats the current one.
+Copy the recommendation into capability.rs AUTO_ACTIVATE_* and skill.rs
+SEMANTIC_DEFAULT_THRESHOLD / SEMANTIC_MARGIN, and into configs/default.yaml
+eval.runtime_threshold / runtime_margin (the publish gate uses them).
 """
 
 from __future__ import annotations
@@ -30,12 +30,10 @@ from pathlib import Path
 
 import numpy as np
 import yaml
-from sentence_transformers import SentenceTransformer
-
 # Re-use the runtime-mirror scoring from eval_gate.py.
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from eval_gate import cap_score, select_with_margin, load_triggers_from_pairs  # noqa: E402
+from eval_gate import cap_score, select_with_margin, load_triggers_from_pairs, load_encoder  # noqa: E402
 
 
 def evaluate_at(scored_per_row: list[list[tuple[float, str]]],
@@ -71,9 +69,9 @@ def evaluate_at(scored_per_row: list[list[tuple[float, str]]],
 def precompute_scored(model_path: str,
                       rows: list[dict],
                       triggers_by_cap: dict,
-                      top_k: int) -> list[list[tuple[float, str]]]:
-    print(f"loading model: {model_path}")
-    model = SentenceTransformer(model_path)
+                      top_k: int,
+                      onnx_file: str | None = None) -> list[list[tuple[float, str]]]:
+    model = load_encoder(model_path, onnx_file)
 
     labels = sorted(triggers_by_cap.keys())
     label_trigger_vecs: dict[str, np.ndarray] = {}
@@ -122,7 +120,7 @@ def main() -> int:
     ap.add_argument(
         "--threshold-grid",
         type=str,
-        default="0.45,0.48,0.50,0.52,0.55,0.58,0.60,0.62,0.65,0.68,0.70",
+        default="0.45,0.48,0.50,0.52,0.55,0.58,0.60,0.62,0.65,0.68,0.70,0.72,0.75,0.78,0.80",
     )
     ap.add_argument(
         "--margin-grid",
@@ -136,6 +134,9 @@ def main() -> int:
         help="recommend the operating point with highest gate_acc whose null_fpr <= target",
     )
     ap.add_argument("--json-out", type=Path, default=None)
+    ap.add_argument("--onnx-file", type=str, default=None,
+                    help="score an ONNX graph instead of safetensors; --model is then the "
+                         "dir holding it, e.g. --model <run>/onnx --onnx-file model_quantized.onnx")
     args = ap.parse_args()
 
     cfg = yaml.safe_load(args.config.read_text())
@@ -146,15 +147,15 @@ def main() -> int:
     if not eval_path.exists():
         raise SystemExit(f"missing eval set: {eval_path}; run build_eval_seed.py first")
 
-    pairs_path = args.pairs or (root / cfg["data"]["pairs_path"])
+    pairs_path = args.pairs or (root / eval_cfg.get("triggers_path", cfg["data"]["pairs_path"]))
     if not pairs_path.exists():
-        raise SystemExit(f"missing pairs.jsonl: {pairs_path}; run build_dataset.py first")
+        raise SystemExit(f"missing trigger corpus: {pairs_path}; run build_dataset.py first")
 
     rows = [json.loads(line) for line in eval_path.read_text().splitlines() if line.strip()]
     triggers_by_cap = load_triggers_from_pairs(pairs_path)
     top_k = int(eval_cfg.get("runtime_top_k", 3))
 
-    scored = precompute_scored(args.model, rows, triggers_by_cap, top_k)
+    scored = precompute_scored(args.model, rows, triggers_by_cap, top_k, args.onnx_file)
 
     thresholds = [float(x) for x in args.threshold_grid.split(",")]
     margins = [float(x) for x in args.margin_grid.split(",")]
@@ -188,11 +189,11 @@ def main() -> int:
         print(f"  gate_acc  = {acc:.3f}")
         print(f"  null_fpr  = {fpr:.3f}")
         print()
-        print("Update octomind/src/mcp/core/capability.rs:")
+        print("Update octomind/src/mcp/runtime/capability.rs:")
         print(f"  const AUTO_ACTIVATE_THRESHOLD: f32 = {t:.2f};")
         print(f"  const AUTO_ACTIVATE_MARGIN: f32 = {m:.2f};")
         print()
-        print("And octomind/src/mcp/core/skill.rs SEMANTIC_DEFAULT_THRESHOLD / SEMANTIC_MARGIN")
+        print("And octomind/src/mcp/runtime/skill.rs SEMANTIC_DEFAULT_THRESHOLD / SEMANTIC_MARGIN")
         print("to match (they share the same embedding).")
     else:
         print()

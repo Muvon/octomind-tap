@@ -23,34 +23,44 @@ from huggingface_hub import HfApi
 
 EMBED_CARD = """---
 license: apache-2.0
-base_model: BAAI/bge-small-en-v1.5
+base_model: ibm-granite/granite-embedding-30m-english
 library_name: sentence-transformers
 tags:
 - sentence-transformers
 - octomind
 - embeddings
-- bert
+- roberta
+- onnx
 ---
 
 # {repo}
 
-Fine-tuned BGE-small-en-v1.5 (33M params, 384-dim) for octomind capability
-auto-activation.
+Embedding model for octomind capability / skill auto-activation:
+`ibm-granite/granite-embedding-30m-english` (30M params, 6 layers, 384-dim,
+CLS-pooled, prefix-free, English) fine-tuned on trigger phrases from the
+octomind-tap capabilities + skills catalog and blended back into the base
+as a WiSE-FT model soup, which beats both the base and the raw fine-tune on
+the runtime gate (mean-of-top-3 cosine + threshold + margin).
 
-Trained on trigger phrases from the octomind-tap capabilities + skills
-catalog with rule-based + LLM paraphrase augmentation, using
-`MultipleNegativesRankingLoss` on both in-class pairs and hard-negative
-triplets mined from confusable neighboring labels.
+Training: rule-based + LLM paraphrase augmentation, one epoch of
+`CachedMultipleNegativesRankingLoss` (scale 10) on in-class pairs and
+positive-aware hard-negative triplets, `MatryoshkaLoss` over
+[384, 256, 192, 128, 96], then weight interpolation with the base.
+
+## Files
+
+- `model.safetensors` + `1_Pooling/` — sentence-transformers layout (fp32).
+- `onnx/model.onnx` — fp32 graph.
+- `onnx/model_quantized.onnx` — int8 (weight-only, `reduce_range=True`);
+  this is what the octomind runtime loads. Pool with CLS as declared in
+  `1_Pooling/config.json`.
 
 ## Use
 
-Wired into octomind via octolib's HuggingFace embedding provider (candle
-backend). Set `MODEL_NAME` in `octomind/src/embeddings/mod.rs` to `{repo}`.
-
-## Paired reranker
-
-`muvon/octomind-rerank` is the second-stage cross-encoder trained on the
-same hard-negative data.
+octomind loads `onnx:{repo}` via octolib's ONNX provider (`MODEL_NAME` in
+`octomind/src/embeddings/mod.rs`). Runtime thresholds are model-specific and
+calibrated against the int8 graph (`AUTO_ACTIVATE_THRESHOLD` / `_MARGIN` in
+`capability.rs`, `SEMANTIC_*` in `skill.rs`).
 """
 
 RERANK_CARD = """---

@@ -881,6 +881,8 @@ def main() -> int:
     ap.add_argument("--pairs-out", type=Path, default=root / "data" / "pairs.jsonl")
     ap.add_argument("--triplets-out", type=Path, default=root / "data" / "triplets.jsonl")
     ap.add_argument("--holdout-out", type=Path, default=root / "data" / "holdout.jsonl")
+    ap.add_argument("--raw-triggers-out", type=Path, default=root / "data" / "raw_triggers.jsonl",
+                    help="the un-augmented corpus the runtime embeds (eval.triggers_path)")
     ap.add_argument("--holdout-ratio", type=float, default=0.2)
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--base-model", type=str, default="BAAI/bge-small-en-v1.5")
@@ -950,6 +952,19 @@ def main() -> int:
     if not triggers_by_cap:
         print("No capabilities with triggers found.", file=sys.stderr)
         return 1
+
+    # The runtime scores intents against exactly these phrases (capability.rs
+    # flattens `cap.triggers`; skills use their semantic() rules), so the
+    # publish gate and threshold calibration must use them, not the
+    # augmented pairs. Same {anchor, positive, label} shape as pairs.jsonl.
+    args.raw_triggers_out.parent.mkdir(parents=True, exist_ok=True)
+    n_raw = 0
+    with args.raw_triggers_out.open("w") as fp_raw:
+        for label, triggers in sorted(triggers_by_cap.items()):
+            for t in triggers:
+                fp_raw.write(json.dumps({"anchor": t, "positive": t, "label": label}) + "\n")
+                n_raw += 1
+    print(f"wrote {n_raw} raw runtime triggers ({len(triggers_by_cap)} labels) to {args.raw_triggers_out}")
 
     llm_by_cap = load_llm_intents(args.intents)
     if llm_by_cap:

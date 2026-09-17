@@ -39,6 +39,8 @@ import json
 import shutil
 from pathlib import Path
 
+import yaml
+
 from optimum.onnxruntime import ORTModelForFeatureExtraction
 from transformers import AutoTokenizer
 
@@ -51,7 +53,7 @@ SIDECAR_FILES = (
 )
 
 
-def quantize_int8(out: Path, src_name: str = "model.onnx") -> Path | None:
+def quantize_int8(out: Path, src_name: str = "model.onnx", reduce_range: bool = False) -> Path | None:
     """Produce `model_quantized.onnx` next to the fp32 graph.
 
     Returns the path on success, or None if the quantization extras aren't
@@ -81,7 +83,7 @@ def quantize_int8(out: Path, src_name: str = "model.onnx") -> Path | None:
         model_output=str(dst),
         weight_type=QuantType.QInt8,
         per_channel=True,
-        reduce_range=False,
+        reduce_range=reduce_range,
         extra_options={"MatMulConstBOnly": True},
     )
     return dst
@@ -106,7 +108,8 @@ def warn_if_pooling_missing(out: Path) -> None:
         print("  WARNING: no 1_Pooling/config.json — ONNX consumers will assume MEAN pooling")
         return
     try:
-        mode = json.loads(pooling_cfg.read_text()).get("pooling_mode")
+        cfg = json.loads(pooling_cfg.read_text())
+        mode = cfg.get("pooling_mode") or ("cls" if cfg.get("pooling_mode_cls_token") else None)
     except (OSError, json.JSONDecodeError):
         return
     if mode and mode.lower() != "mean":
@@ -119,11 +122,27 @@ def main() -> int:
     ap.add_argument("--out", type=Path, default=None, help="output dir (default: <run>/onnx)")
     ap.add_argument("--opset", type=int, default=14)
     ap.add_argument(
+        "--config", type=Path,
+        default=Path(__file__).resolve().parents[1] / "configs" / "default.yaml",
+        help="read export.reduce_range from here unless --reduce-range is given",
+    )
+    ap.add_argument(
+        "--reduce-range",
+        action="store_true",
+        help="int8 with 7-bit weight range. Model-specific: on the 2026-09 raw-corpus "
+             "gate it keeps granite-30m at 0.837 (vs 0.747 default) but drops bge-small "
+             "to 0.651 (vs 0.717) — always re-score the int8 graph before publishing.",
+    )
+    ap.add_argument(
         "--no-quantize",
         action="store_true",
         help="export fp32 only (skip the int8 graph the runtime prefers)",
     )
     args = ap.parse_args()
+    reduce_range = args.reduce_range
+    if not reduce_range and args.config.exists():
+        reduce_range = bool(yaml.safe_load(args.config.read_text()).get("export", {}).get("reduce_range", False))
+    print(f"int8 reduce_range={reduce_range}")
 
     out = args.out or (args.run / "onnx")
     out.mkdir(parents=True, exist_ok=True)
@@ -139,7 +158,7 @@ def main() -> int:
     warn_if_pooling_missing(out)
 
     if not args.no_quantize:
-        quantize_int8(out)
+        quantize_int8(out, reduce_range=reduce_range)
 
     print("done. files:")
     for f in sorted(out.iterdir()):
