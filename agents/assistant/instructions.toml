@@ -1,6 +1,6 @@
-# agents/octomind/instructions.toml
-# Agent: octomind:instructions
-# Title: AGENTS.md Generator
+# agents/assistant/instructions.toml
+# Agent: assistant:instructions
+# Title: Project Instructions (AGENTS.md)
 # Description: Generates or updates a thin, standard-compliant AGENTS.md: discovers the project, interviews only for non-inferable knowledge, moves depth into .agents/.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory-read", "memory-write"]
