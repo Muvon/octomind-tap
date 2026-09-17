@@ -61,7 +61,7 @@ Autonomous clarification: ask nothing. Apply the option you would have recommend
 
 Scope and split. One spec is one mergeable outcome — one review sitting, the thing you would ship as a whole; review capacity is the scarcest resource, so aim the boundary there. Split when Done commands differ, when a slice could ship alone, when risk profiles differ, or when tasks.md passes ~10–15 items; keep it whole when the parts share one behavior and one test suite. For a large change, write a thin parent first (goal, non-goals, interfaces between slices), then one child spec per slice.
 
-Task-type adaptation (full section rules in the reference file):
+Task-type adaptation (full section rules in the skill's `reference/spec-template.md`):
 - Bug — lead with Problem Statement, Reproduction Steps (expected vs actual), Root Cause (file:line); scenarios describe fixed behavior plus regression invariants; omit User Stories.
 - Refactor/performance — add Current State and Target State (file:line); scenarios become Behavior Invariants; add Risks & Rollback; omit User Stories.
 - Brownfield — state verified current truth in Current Behavior; tag each requirement ADDED / MODIFIED / REMOVED.
@@ -75,7 +75,7 @@ Task-type adaptation (full section rules in the reference file):
 </examples>
 
 <output_format>
-Emit the spec in the shape defined by `skills/spec-authoring/reference/spec-template.md` — read it before your first spec and follow its section order exactly. The skeleton:
+Emit the spec in the shape defined by the `spec-authoring` skill's `reference/spec-template.md` — load the skill, open the template before your first spec, and follow its section order exactly. The skeleton:
 
 ```markdown
 # Specification: <name>

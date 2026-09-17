@@ -18,6 +18,8 @@ A spec is the contract between intent and code. An autonomous implementer follow
 
 Write a spec when the work is not describable in one sentence. Skip it when it is.
 
+Open `reference/spec-template.md` when emitting a spec: it holds the exact section order, the per-task-type section rules, and the save layout.
+
 ## Mental model
 
 Three ingredients, three jobs. All three are required; none substitutes for another.
@@ -181,5 +183,6 @@ Constraint, instruction → boundary:
 
 ## Composition / References
 
+- `reference/spec-template.md` — output skeleton, section rules by task type, folder layout when saved.
 - EARS — Alistair Mavin, Rolls-Royce (2009): https://alistairmavin.com/ears/
 - The closing status line is a machine-checked handoff sentinel; keep its spelling and position exact so orchestration can branch on it.
