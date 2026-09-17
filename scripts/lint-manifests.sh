@@ -9,6 +9,8 @@
 #   6. Capability-driven agents must NOT have [deps], [roles.mcp], or [[mcp.servers]]
 #   7. Every capability reference must have a matching capabilities/<name>/default.toml
 #   8. Comment metadata: # Title: (5–60 chars) and # Description: (20–160 chars) required
+#   9. Prompts must not cite tap-relative paths (skills/…, capabilities/…, deps/…) — octomind domain exempt
+#  10. Every `name` skill mentioned in prompts must exist at skills/<name>/SKILL.md
 #
 # Usage:
 #   scripts/lint-manifests.sh                  # lint all manifests
@@ -149,6 +151,26 @@ if system_content:
     elif sys_word_count > SOFT_LIMIT:
         # Soft warning — surfaces but doesn't fail
         print(f"SYSTEM_LENGTH_WARN ({path}): system is {sys_word_count} words (soft target {SOFT_LIMIT}). Consider extracting reference content into skills.", file=sys.stderr)
+
+# ── Cross-reference integrity: tap paths and skill names cited in prompts ────
+# Agents run in the user's project directory, not the tap checkout, so a
+# tap-relative path (skills/x/…, capabilities/x/…, deps/x/…) can never be read
+# at runtime. Only the octomind domain works on the tap repo itself.
+prompt_text = f"{system_content}\n{role.get('welcome', '')}"
+domain = path.parent.name
+if domain != "octomind":
+    tap_paths = re.findall(r'(?<![\w/.~-])(?:skills|capabilities|deps)/[^\s`\'")]+/[^\s`\'")]+', prompt_text)
+    if tap_paths:
+        errors.append(f"TAP_PATH_REF: '{tap_paths[0]}' is a tap-relative path — unreadable from the project workdir at runtime. Reference the skill by name instead.")
+
+# Every `name` skill mention must resolve — a phantom name silently fails to load.
+# Placeholders such as `social-<platform>` are skipped.
+for m in re.finditer(r'((?:`[a-z0-9<>-]+`(?:,\s*|\s+(?:and|or)\s+|\s+))+)skills?\b', prompt_text):
+    for skill_name in re.findall(r'`([^`]+)`', m.group(1)):
+        if '<' in skill_name:
+            continue
+        if not (repo_root / "skills" / skill_name / "SKILL.md").is_file():
+            errors.append(f"SKILL_REF_UNKNOWN: '{skill_name}' skill has no skills/{skill_name}/SKILL.md")
 
 # Check for capabilities declaration
 has_capabilities = bool(re.search(r'^capabilities\s*=\s*\[', raw_text, re.MULTILINE))

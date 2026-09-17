@@ -327,6 +327,7 @@ The lint script validates:
 - `title` length (5–60 chars)
 - `description` length (20–1024 chars) and `compatibility` length limits
 - Non-empty body after frontmatter
+- Every `reference/<file>` cited in the body exists
 - `validate` script is executable if it exists
 
 ### Skill vs Agent

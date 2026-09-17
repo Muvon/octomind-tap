@@ -9,6 +9,7 @@
 #   6. description: non-empty, 20–1024 chars
 #   7. Optional fields validated if present: license, compatibility (max 500 chars), allowed-tools
 #   8. Directory name matches the `name` field in frontmatter
+#   9. Every reference/<file> cited in the body exists (skill-local, or skills/<other>/reference/)
 #
 # Usage:
 #   scripts/lint-skills.sh                        # lint all skills
@@ -159,6 +160,19 @@ body = after_open[body_start:].strip()
 if not body:
     print("EMPTY_BODY: SKILL.md body (after frontmatter) must not be empty", file=sys.stderr)
     sys.exit(1)
+
+# ── reference/ files cited in the body must exist ─────────────────────────────
+# `reference/x.md` resolves inside this skill; `skills/<other>/reference/x.md`
+# resolves from the repo root. Placeholders (<topic>, *.md) and paths under
+# another directory (doc/reference/…) are skipped.
+for m in re.finditer(r'(?<![\w/.-])(?:skills/([a-z0-9-]+)/)?reference/([A-Za-z0-9_./<>*-]+)', body):
+    other_skill, ref_file = m.group(1), m.group(2).rstrip('.,;:)')
+    if '<' in ref_file or '*' in ref_file:
+        continue
+    base = (repo_root / "skills" / other_skill) if other_skill else skill_dir
+    if not (base / "reference" / ref_file).is_file():
+        print(f"REFERENCE_MISSING: body cites '{m.group(0)}' but {base.relative_to(repo_root)}/reference/{ref_file} does not exist", file=sys.stderr)
+        sys.exit(1)
 
 # ── Markdown noise guardrails (hard rules) ────────────────────────────────────
 # Strip code (fenced, inline, and 4-space indented blocks) before checking
