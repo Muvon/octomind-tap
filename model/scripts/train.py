@@ -400,6 +400,8 @@ def train_modern(
     targs = SentenceTransformerTrainingArguments(
         output_dir=str(out_dir),
         num_train_epochs=train_cfg["epochs"],
+        # >0 caps the optimizer steps (overrides epochs). See configs/default.yaml.
+        max_steps=int(train_cfg.get("max_steps", -1)),
         per_device_train_batch_size=per_device_batch,
         per_device_eval_batch_size=per_device_batch,
         learning_rate=train_cfg["learning_rate"],

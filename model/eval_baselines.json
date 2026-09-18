@@ -3,12 +3,12 @@
   "n_eval": 904,
   "n_positives": 814,
   "n_nulls": 90,
-  "top1_acc": 0.9545454545454546,
-  "top3_acc": 0.9852579852579852,
-  "gate_acc": 0.7972972972972973,
-  "abstain_on_pos": 0.15724815724815724,
+  "top1_acc": 0.9422604422604423,
+  "top3_acc": 0.972972972972973,
+  "gate_acc": 0.7776412776412777,
+  "abstain_on_pos": 0.16461916461916462,
   "null_fpr": 0.03333333333333333,
-  "mean_top1_margin": 0.13615570273945538,
+  "mean_top1_margin": 0.2913977943234525,
   "per_kind": {
     "ambiguous": {
       "n": 8,
@@ -27,23 +27,23 @@
     },
     "cross_domain_shell": {
       "n": 7,
-      "correct": 6,
-      "rate": 0.8571428571428571
+      "correct": 0,
+      "rate": 0.0
     },
     "follow_up": {
       "n": 241,
-      "correct": 193,
-      "rate": 0.8008298755186722
+      "correct": 194,
+      "rate": 0.8049792531120332
     },
     "multi_turn": {
       "n": 25,
-      "correct": 9,
-      "rate": 0.36
+      "correct": 13,
+      "rate": 0.52
     },
     "off_topic": {
       "n": 10,
-      "correct": 8,
-      "rate": 0.8
+      "correct": 9,
+      "rate": 0.9
     },
     "paste_dump": {
       "n": 9,
@@ -52,18 +52,18 @@
     },
     "positive": {
       "n": 462,
-      "correct": 394,
-      "rate": 0.8528138528138528
+      "correct": 381,
+      "rate": 0.8246753246753247
     },
     "sarcastic_feedback": {
       "n": 14,
-      "correct": 14,
-      "rate": 1.0
+      "correct": 13,
+      "rate": 0.9285714285714286
     },
     "typo_casual": {
       "n": 77,
-      "correct": 47,
-      "rate": 0.6103896103896104
+      "correct": 45,
+      "rate": 0.5844155844155844
     },
     "vague": {
       "n": 21,
@@ -74,8 +74,8 @@
   "per_label_recall": {
     "ad-frameworks": {
       "n": 10,
-      "correct": 10,
-      "rate": 1.0
+      "correct": 9,
+      "rate": 0.9
     },
     "agent": {
       "n": 10,
@@ -84,33 +84,33 @@
     },
     "ai-agent-design": {
       "n": 10,
-      "correct": 8,
-      "rate": 0.8
+      "correct": 9,
+      "rate": 0.9
     },
     "ai-cost-finops": {
       "n": 10,
-      "correct": 8,
-      "rate": 0.8
+      "correct": 2,
+      "rate": 0.2
     },
     "ai-evals-design": {
       "n": 10,
-      "correct": 8,
-      "rate": 0.8
+      "correct": 0,
+      "rate": 0.0
     },
     "ai-prompt-injection-defense": {
       "n": 10,
-      "correct": 10,
-      "rate": 1.0
+      "correct": 0,
+      "rate": 0.0
     },
     "ai-rag-patterns": {
       "n": 10,
-      "correct": 7,
-      "rate": 0.7
+      "correct": 6,
+      "rate": 0.6
     },
     "browser": {
       "n": 12,
-      "correct": 6,
-      "rate": 0.5
+      "correct": 8,
+      "rate": 0.6666666666666666
     },
     "browser-backlink-submission": {
       "n": 10,
@@ -134,8 +134,8 @@
     },
     "codesearch-semantic": {
       "n": 13,
-      "correct": 9,
-      "rate": 0.6923076923076923
+      "correct": 6,
+      "rate": 0.46153846153846156
     },
     "codesearch-structural": {
       "n": 10,
@@ -144,23 +144,23 @@
     },
     "content-audit": {
       "n": 10,
-      "correct": 7,
-      "rate": 0.7
+      "correct": 0,
+      "rate": 0.0
     },
     "content-grounding": {
-      "n": 10,
-      "correct": 9,
-      "rate": 0.9
-    },
-    "content-humanize": {
       "n": 10,
       "correct": 5,
       "rate": 0.5
     },
+    "content-humanize": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
     "content-voice": {
       "n": 10,
-      "correct": 1,
-      "rate": 0.1
+      "correct": 9,
+      "rate": 0.9
     },
     "core": {
       "n": 10,
@@ -169,8 +169,8 @@
     },
     "customer-management": {
       "n": 10,
-      "correct": 8,
-      "rate": 0.8
+      "correct": 6,
+      "rate": 0.6
     },
     "database-postgres": {
       "n": 14,
@@ -184,13 +184,13 @@
     },
     "devdocs": {
       "n": 10,
-      "correct": 8,
-      "rate": 0.8
+      "correct": 9,
+      "rate": 0.9
     },
     "device-computer": {
       "n": 10,
-      "correct": 4,
-      "rate": 0.4
+      "correct": 10,
+      "rate": 1.0
     },
     "device-mobile": {
       "n": 10,
@@ -199,28 +199,28 @@
     },
     "docker": {
       "n": 13,
-      "correct": 11,
-      "rate": 0.8461538461538461
+      "correct": 13,
+      "rate": 1.0
     },
     "ecommerce": {
       "n": 10,
-      "correct": 8,
-      "rate": 0.8
+      "correct": 9,
+      "rate": 0.9
     },
     "edge-hosting": {
+      "n": 11,
+      "correct": 8,
+      "rate": 0.7272727272727273
+    },
+    "error-tracking": {
       "n": 11,
       "correct": 11,
       "rate": 1.0
     },
-    "error-tracking": {
-      "n": 11,
-      "correct": 6,
-      "rate": 0.5454545454545454
-    },
     "filesystem-read": {
       "n": 10,
-      "correct": 7,
-      "rate": 0.7
+      "correct": 10,
+      "rate": 1.0
     },
     "filesystem-write": {
       "n": 10,
@@ -234,13 +234,13 @@
     },
     "kubernetes": {
       "n": 11,
-      "correct": 8,
-      "rate": 0.7272727272727273
+      "correct": 10,
+      "rate": 0.9090909090909091
     },
     "legal-au": {
       "n": 10,
-      "correct": 7,
-      "rate": 0.7
+      "correct": 9,
+      "rate": 0.9
     },
     "legal-ca": {
       "n": 10,
@@ -254,8 +254,8 @@
     },
     "legal-fr": {
       "n": 10,
-      "correct": 8,
-      "rate": 0.8
+      "correct": 9,
+      "rate": 0.9
     },
     "legal-in": {
       "n": 10,
@@ -274,13 +274,13 @@
     },
     "legal-uk": {
       "n": 10,
-      "correct": 9,
-      "rate": 0.9
+      "correct": 10,
+      "rate": 1.0
     },
     "legal-us": {
       "n": 10,
-      "correct": 8,
-      "rate": 0.8
+      "correct": 10,
+      "rate": 1.0
     },
     "maps": {
       "n": 10,
@@ -289,43 +289,43 @@
     },
     "market-data": {
       "n": 10,
-      "correct": 8,
-      "rate": 0.8
+      "correct": 10,
+      "rate": 1.0
     },
     "medical-reference": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "memory-read": {
+      "n": 11,
+      "correct": 7,
+      "rate": 0.6363636363636364
+    },
+    "memory-write": {
+      "n": 12,
+      "correct": 10,
+      "rate": 0.8333333333333334
+    },
+    "messaging-discord": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "messaging-email": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "messaging-instagram": {
       "n": 10,
       "correct": 10,
       "rate": 1.0
     },
-    "memory-read": {
-      "n": 11,
-      "correct": 8,
-      "rate": 0.7272727272727273
-    },
-    "memory-write": {
-      "n": 12,
-      "correct": 7,
-      "rate": 0.5833333333333334
-    },
-    "messaging-discord": {
-      "n": 10,
-      "correct": 8,
-      "rate": 0.8
-    },
-    "messaging-email": {
-      "n": 10,
-      "correct": 8,
-      "rate": 0.8
-    },
-    "messaging-instagram": {
-      "n": 10,
-      "correct": 8,
-      "rate": 0.8
-    },
     "messaging-linkedin": {
       "n": 10,
-      "correct": 9,
-      "rate": 0.9
+      "correct": 10,
+      "rate": 1.0
     },
     "messaging-slack": {
       "n": 10,
@@ -334,8 +334,8 @@
     },
     "messaging-sms": {
       "n": 10,
-      "correct": 9,
-      "rate": 0.9
+      "correct": 10,
+      "rate": 1.0
     },
     "messaging-telegram": {
       "n": 10,
@@ -354,8 +354,8 @@
     },
     "programming-nodejs": {
       "n": 10,
-      "correct": 8,
-      "rate": 0.8
+      "correct": 10,
+      "rate": 1.0
     },
     "programming-python": {
       "n": 10,
@@ -364,33 +364,33 @@
     },
     "programming-rust": {
       "n": 10,
-      "correct": 9,
-      "rate": 0.9
+      "correct": 6,
+      "rate": 0.6
     },
     "scraping": {
       "n": 12,
-      "correct": 7,
-      "rate": 0.5833333333333334
+      "correct": 9,
+      "rate": 0.75
     },
     "seo-backlink-prospecting": {
       "n": 10,
-      "correct": 8,
-      "rate": 0.8
+      "correct": 10,
+      "rate": 1.0
     },
     "seo-content-audit": {
       "n": 10,
-      "correct": 8,
-      "rate": 0.8
+      "correct": 7,
+      "rate": 0.7
     },
     "seo-guest-posting": {
       "n": 10,
-      "correct": 9,
-      "rate": 0.9
+      "correct": 7,
+      "rate": 0.7
     },
     "seo-keyword-research": {
       "n": 10,
-      "correct": 10,
-      "rate": 1.0
+      "correct": 9,
+      "rate": 0.9
     },
     "seo-link-audit": {
       "n": 10,
@@ -399,18 +399,18 @@
     },
     "seo-structural-audit": {
       "n": 10,
-      "correct": 8,
-      "rate": 0.8
+      "correct": 5,
+      "rate": 0.5
     },
     "seo-tool-discovery": {
       "n": 10,
-      "correct": 7,
-      "rate": 0.7
+      "correct": 1,
+      "rate": 0.1
     },
     "shell": {
       "n": 26,
-      "correct": 15,
-      "rate": 0.5769230769230769
+      "correct": 9,
+      "rate": 0.34615384615384615
     },
     "svelte": {
       "n": 10,
@@ -419,8 +419,8 @@
     },
     "tap-model-training": {
       "n": 10,
-      "correct": 7,
-      "rate": 0.7
+      "correct": 5,
+      "rate": 0.5
     },
     "task-management": {
       "n": 10,
@@ -429,8 +429,8 @@
     },
     "translation": {
       "n": 10,
-      "correct": 7,
-      "rate": 0.7
+      "correct": 0,
+      "rate": 0.0
     },
     "versioning": {
       "n": 10,
@@ -439,28 +439,29 @@
     },
     "video-hooks": {
       "n": 10,
-      "correct": 8,
-      "rate": 0.8
+      "correct": 7,
+      "rate": 0.7
     },
     "video-spec-sheet": {
       "n": 10,
-      "correct": 9,
-      "rate": 0.9
+      "correct": 8,
+      "rate": 0.8
     },
     "webfetch": {
       "n": 13,
-      "correct": 4,
-      "rate": 0.3076923076923077
+      "correct": 12,
+      "rate": 0.9230769230769231
     },
     "websearch": {
       "n": 11,
-      "correct": 7,
-      "rate": 0.6363636363636364
+      "correct": 6,
+      "rate": 0.5454545454545454
     }
   },
   "settings": {
     "top_k": 3,
-    "threshold": 0.55,
-    "margin": 0.08
+    "threshold": 0.65,
+    "margin": 0.06,
+    "backend": "safetensors"
   }
 }
