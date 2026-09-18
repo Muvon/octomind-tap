@@ -6,11 +6,13 @@
 # list.
 #
 # Role split (a writer should receive a prepared brief, not do research):
-# - `assistant:researcher` RESOLVES the source and RESEARCHES trends — it
-#   fetches/reads the source once and captures it in the brief (so no later
-#   step re-fetches), verifies it's real, and finds what's genuinely live on
-#   each platform for the posting date. Grounded and citation-minded by
-#   identity; it won't fabricate a source it couldn't read.
+# - `content:draft` RESOLVES the source into a brief: a file source is
+#   verified readable and referenced by path (every later step reads it from
+#   disk — the article never round-trips through the conversation); pasted or
+#   fetched text is captured verbatim once. It won't fabricate a source it
+#   couldn't read.
+# - `assistant:researcher` RESEARCHES trends — what's genuinely live on each
+#   platform for the posting date, citation-minded by identity.
 # - `content:social` WRITES the drafts from that brief, one per platform,
 #   following the platform rulebooks.
 # - `content:editor` fixes per audit findings; `content:audit` scores against
@@ -18,7 +20,8 @@
 # - `content:social` DELIVERS — writes files or returns inline, verbatim.
 #
 # Grounding contract: every fact, number, and claim in a draft must trace to
-# the captured source text; every trend angle must trace to something the
+# the source (the file on disk, or the captured pasted/fetched text); every
+# trend angle must trace to something the
 # pulse step actually found. If the source can't be read, the run HALTS
 # (SOURCE-UNREACHABLE) rather than inventing grounding from the wider web.
 #
@@ -30,9 +33,9 @@
 # Note: `max_iterations = 3` is a ceiling, not a target. `retries = 4` guards
 # transient provider/network errors.
 #
-# Source paths: a file path or pasted text is the reliable source — the
-# researcher reads those directly. A URL works only when the runtime gives the
-# researcher a web-fetch tool; with search-only web access it may not resolve a
+# Source paths: a file path or pasted text is the reliable source — the brief
+# step reads those directly. A URL works only when the runtime gives the brief
+# step a web-fetch tool; with search-only web access it may not resolve a
 # specific URL and the run halts SOURCE-UNREACHABLE rather than guessing. The
 # natural chain is `content` (writes the article to a file) -> `promote` (reads
 # that file), so file-path is the common, dependable input.
@@ -62,11 +65,10 @@ prompt  = """
 Prepare a work brief for a social-post writer from the request below. You
 resolve the source; the writer only writes.
 
-FIRST, get the full source text and put it IN this brief so no later step
-re-reads it: if the request gives a file path, read it now; pasted text, use
-it as-is; a URL, read it if you have a fetch tool. Reproduce the complete
-source content verbatim inside a <source_text>...</source_text> block — this
-is the ground truth every later step reads.
+FIRST, resolve the source: if the request gives a file path, read it now to
+confirm it's readable and on-topic — later steps read that file themselves,
+so do NOT reproduce its content here; pasted text, use it as-is; a URL, read
+it if you have a fetch tool.
 
 HARD STOP: if the source can't be read — missing/unreadable file, or a URL you
 have no tool to fetch — do NOT substitute web-search results, the site's other
@@ -80,7 +82,9 @@ If the source read cleanly, output the brief with ONLY:
    `<x-thread></x-thread>`, `<linkedin></linkedin>`, `<reddit></reddit>`,
    `<hackernews></hackernews>`, `<threads></threads>`, `<bluesky></bluesky>`,
    `<mastodon></mastodon>`. Exactly what the request asks for, nothing assumed.
-2. `<source_text>` — the full source content, verbatim.
+2. `<source>` — the file path verbatim when the source is a file (the ground
+   truth every later step reads from disk); otherwise the full pasted or
+   fetched source content, verbatim, inside `<source_text>`.
 3. The source's key extractable specifics — concrete numbers, named tools,
    direct quotes, dated facts — listed so the writer reaches for them (these
    are what make a post land; a vague post wastes a strong source).
@@ -141,11 +145,12 @@ and conventions — a post is not a thread is not a comment; match the exact
 requested format. Reach for the brief's listed specifics (real numbers, named
 tools, quotes) — a concrete post beats a generic one.
 
-Grounding: every fact, number, name, and claim comes from the brief's
-<source_text>. Pick each platform's angle from the pulse findings when a
-verified signal exists, otherwise the evergreen angle — never invent a trend,
-a stat, or a detail the source doesn't contain. Write like a person posting,
-not a brand broadcasting (the content-voice rules apply).
+Grounding: every fact, number, name, and claim comes from the source — read
+the file the brief's <source> names, or use its <source_text>. Pick each
+platform's angle from the pulse findings when a verified signal exists,
+otherwise the evergreen angle — never invent a trend, a stat, or a detail the
+source doesn't contain. Write like a person posting, not a brand broadcasting
+(the content-voice rules apply).
 
 Completeness contract: output exactly one block for EVERY platform tagged in
 the brief — before ending, count your blocks against the brief's platform
@@ -199,8 +204,9 @@ LATER rounds: you receive the auditor's findings directly — resolve every one,
 criticals first, without reintroducing anything already fixed. A platform the
 auditor reported no findings against gets output unchanged.
 
-Grounding: never add a fact, number, or claim absent from the brief's
-<source_text>; never keep one it doesn't support. A repeated product or brand
+Grounding: read the source (the file the brief's <source> names, or its
+<source_text>); never add a fact, number, or claim absent from it, and never
+keep one it doesn't support. A repeated product or brand
 name stays verbatim every time — only style words get varied.
 
 Completeness contract: your final output MUST contain exactly one block for
@@ -239,8 +245,8 @@ absent draft.
 For each platform present: audit its block against the `content-audit` rubric
 with that platform's weights and rulebook (`social-<platform>` skills) —
 include the Phoenix-style verdict for X surfaces. Verify grounding against the
-brief's <source_text>: any fact, number, or claim the source doesn't support
-is a Critical finding. List findings severity-ordered with quotes and fix
+source — read the file the brief's <source> names, or use its <source_text>:
+any fact, number, or claim the source doesn't support is a Critical finding. List findings severity-ordered with quotes and fix
 direction, then close each platform's section with exactly one line —
 `<code>: PASS` or `<code>: FAIL`. PASS requires zero Critical or Moderate
 findings — a platform with a Moderate finding still listed is a FAIL, because

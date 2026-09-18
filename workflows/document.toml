@@ -46,9 +46,11 @@ parallel = true
   role    = "developer:readme"
   session = "fresh"
   prompt  = """
-Update the README to reflect the current unstaged changes and this intent. Edit
-IN-PLACE only the sections the changes actually invalidated (install, usage, API,
-config, examples) — touch nothing else.
+Draft the README updates that the current unstaged changes and this intent
+require: rewrite only the sections the changes actually invalidated (install,
+usage, API, config, examples) — touch nothing else. Do not edit the README
+file itself; the reconcile step below produces the final plan, and an early
+in-place edit would drift from it.
 
 <intent>
 {{input}}

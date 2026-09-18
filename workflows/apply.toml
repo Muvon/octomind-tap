@@ -9,9 +9,15 @@
 # and the human hits submit.
 #
 # Shape (same evaluator-optimizer pattern as localize / promote):
-# intake (read resume + posting, capture both, detect target market) ->
+# intake (resolve resume + posting + destinations, detect target market) ->
 # tailor (grounded, ATS-optimized, market-adapted resume + cover letter) ->
 # screen loop (fix <-> audit until the screener passes) -> deliver.
+#
+# File-first: intake resolves a destination per document (the path the request
+# names, else `inline`). A document with a destination is written by tailor,
+# edited in-place by fix, and read back by the screener — it never round-trips
+# through the conversation. Inline documents are carried in the conversation
+# and returned by deliver.
 #
 # Grounding contract: every keyword, metric, title, date, and skill must
 # trace to the master resume — no invented experience. Keyword coverage is
@@ -50,16 +56,21 @@ session = "fresh"
 retries = 4
 prompt  = """
 Prepare an intake brief from the request below. Read the master resume (file
-path) and the job posting (file path, fetched URL, or pasted text). Capture
-BOTH in the brief so no later step re-reads them:
-- <master_resume> — the candidate's full resume, verbatim. This is the ONLY
-  ground truth for what's true about the candidate.
-- <job_posting> — the posting, verbatim, plus the extracted signals: exact job
-  title, 15–20 priority keywords/skills, and required-vs-preferred
-  qualifications.
+path or pasted text) and the job posting (file path, fetched URL, or pasted
+text). The brief carries:
+- <master_resume> — the file path verbatim when the resume is a file (later
+  steps read it from disk — do NOT reproduce its content); the full text
+  verbatim when it was pasted. This is the ONLY ground truth for what's true
+  about the candidate.
+- <job_posting> — the posting, verbatim (it may have come from a URL that
+  later steps cannot fetch), plus the extracted signals: exact job title,
+  15–20 priority keywords/skills, and required-vs-preferred qualifications.
 - Target market: detect it from the posting's location/company (e.g. US, UK,
   Germany, EU) so later steps apply the right resume convention; if genuinely
   ambiguous, note your best inference and why.
+- <destinations> — one line per document (resume, cover letter, report): the
+  path the request names for it, otherwise the word `inline`. Never invent a
+  path — an unstated destination is `inline`, not a guess.
 
 HARD STOP: if the master resume or the job posting can't be read — missing or
 unreadable file, or a URL you have no tool to fetch — do NOT invent a
@@ -83,10 +94,11 @@ prompt  = """
 If the intake below is a single `INTAKE-BLOCKED:` line, output that exact line
 and nothing else.
 
-Otherwise produce, from the intake brief:
+Otherwise produce, from the intake brief (read the master resume from the
+file <master_resume> names, or use its pasted text):
 1. A tailored resume — mirror the posting's language and priorities per
    `ats-optimization`, but ONLY using experience, skills, titles, dates, and
-   numbers present in <master_resume>. Quantified achievement bullets, target
+   numbers present in the master resume. Quantified achievement bullets, target
    job title in the summary, skills reordered to the posting. Adapt document
    name / length / photo / GDPR / dates to the target market per
    `resume-conventions`.
@@ -96,18 +108,24 @@ Otherwise produce, from the intake brief:
    the requirements the candidate genuinely doesn't meet (honest options, no
    fabricated lines).
 
-Truthfulness gate: nothing on the resume or letter that <master_resume> or the
-candidate's input doesn't support. No invented experience, no keyword
+Truthfulness gate: nothing on the resume or letter that the master resume or
+the candidate's input doesn't support. No invented experience, no keyword
 stuffing, no auto-submitting.
 
-This step produces conversation output only — do not write or modify any file.
+Delivery, per document: if the intake's <destinations> lists a path, write
+the document there now — the file's new content IS the document, whole
+(in-place, git-aware; no `.new`, `.bak`, or suffixed copies). If it is
+`inline`, output the document in the conversation instead.
 
 <intake>
 {{intake}}
 </intake>
 
-Output three clearly delimited blocks: `<resume>`…`</resume>`,
-`<cover_letter>`…`</cover_letter>`, `<report>`…`</report>`. No meta-commentary.
+Output three delimited blocks — `<resume>`…`</resume>`,
+`<cover_letter>`…`</cover_letter>`, `<report>`…`</report>` — where a written
+document's block holds only `written: <path>` and an inline document's block
+holds the full text. Never paste a written file's content into the output. No
+meta-commentary.
 """
 
 # ── 3. Screen loop — fix <-> audit until the screener passes ─────────────────
@@ -129,11 +147,13 @@ and nothing else.
 Otherwise apply the screener's findings to the resume, cover letter, and
 report — criticals first, without reintroducing anything already fixed and
 without ever breaking the truthfulness gate (never add a keyword or claim the
-<master_resume> doesn't support to raise the match score — report it as a gap
-instead). On the first round, before any findings exist, self-review against
+master resume doesn't support to raise the match score — report it as a gap
+instead). A document with a destination path in the intake lives in that
+file: read it, edit it in-place (git-aware, no suffixed copies), and report
+what changed. An `inline` document is edited in the conversation and output in
+full. On the first round, before any findings exist, self-review against
 `ats-optimization`, `resume-conventions`, and `cover-letter` and fix what they
-flag. This step always outputs the edited documents, never a report-only
-response, and never writes to disk.
+flag.
 
 <intake>
 {{intake}}
@@ -143,8 +163,11 @@ response, and never writes to disk.
 {{tailor}}
 </draft>
 
-Output the three blocks again: `<resume>`…`</resume>`,
-`<cover_letter>`…`</cover_letter>`, `<report>`…`</report>`. No meta-commentary.
+Output the three blocks again — `<resume>`…`</resume>`,
+`<cover_letter>`…`</cover_letter>`, `<report>`…`</report>` — where a file
+document's block holds `edited: <path>` (or `unchanged: <path>`) plus a short
+list of what changed, and an inline document's block holds the full edited
+text. Never paste a file's content into the output. No meta-commentary.
 """
 
   [[steps.run]]
@@ -157,12 +180,16 @@ If the documents below are a single `INTAKE-BLOCKED:` line, end your whole
 response with exactly `SCREEN-PASS` (nothing to audit; let the run finish and
 report the block). Nothing else.
 
-Otherwise audit the tailored resume + cover letter against the intake's
-<master_resume>, <job_posting>, and target market, per your role and the
-ats-optimization / resume-conventions / cover-letter skills. Run the
-truthfulness gate FIRST: any claim, metric, title, date, employer, degree, or
-skill not supported by <master_resume> is a CRITICAL fabrication finding.
-Then ATS match, convention correctness, and cover-letter quality.
+Otherwise audit the tailored resume + cover letter against the master resume
+(read the file the intake's <master_resume> names, or use its pasted text),
+the intake's <job_posting>, and target market, per your role and the
+ats-optimization / resume-conventions / cover-letter skills. Read each
+document from its destination file listed in the intake — that file is the
+draft under audit; the fix report below only says what changed. An `inline`
+document's text is the block in the fix report. Run the truthfulness gate
+FIRST: any claim, metric, title, date, employer, degree, or skill not
+supported by the master resume is a CRITICAL fabrication finding. Then ATS
+match, convention correctness, and cover-letter quality.
 
 <intake>
 {{intake}}
@@ -180,7 +207,7 @@ single fabrication finding forces SCREEN-FAIL regardless of match score.
 Nothing after that line. Read-only — never edit files.
 """
 
-# ── 4. Deliver — write the package to files if paths given, else inline ─────
+# ── 4. Deliver — inline documents + summary; file documents are done ────────
 [[steps]]
 name    = "deliver"
 role    = "coach:resume"
@@ -191,12 +218,16 @@ If the final documents below are a single `INTAKE-BLOCKED:` line, write nothing
 to disk — tell the user what couldn't be read (quote the line) and that no
 package was produced. Stop there.
 
-Otherwise you are placing finished work, not editing it: the blocks below are
-the screened, final package. For each of the resume, cover letter, and report:
-if the original request named a destination file for it, write that content
-there verbatim, in-place (git-aware if inside a repo); otherwise deliver it
-inline. No staging/backup/suffixed copies unless asked. Never submit or post
-the application anywhere — the human submits.
+Otherwise the loop is finished. Every document with a destination path in
+the intake is already on disk — tailor wrote it and each fix round edited it
+in-place — so write nothing, re-edit nothing, and make no editorial decisions
+of your own. For each `inline` document, output its final block from
+`<final>` verbatim, whole. Never submit or post the application anywhere —
+the human submits.
+
+<intake>
+{{intake}}
+</intake>
 
 <final>
 {{fix}}
@@ -205,10 +236,6 @@ the application anywhere — the human submits.
 <final_audit>
 {{audit}}
 </final_audit>
-
-<original_request>
-{{input}}
-</original_request>
 
 After delivering, give a brief summary: the ATS match coverage, the top
 honest gaps the candidate should be aware of, the final screen verdict, and
