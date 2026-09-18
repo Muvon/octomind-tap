@@ -2,7 +2,7 @@
 # contrastive fine-tune + WiSE-FT soup. Chosen by the base bake-off on the
 # runtime-faithful raw trigger corpus (scripts/compare_bases.py): zero-shot
 # gate 0.846 vs 0.708 for bge-small, 6 layers / 384-dim / CLS-pooled /
-# prefix-free, int8 ONNX ≈ 1.7 ms per intent on CPU.
+# prefix-free, int8 ONNX ≈ 2 ms per intent on CPU.
 base_model: ibm-granite/granite-embedding-30m-english
 output_dir: checkpoints
 run_name: embed-granite-v2

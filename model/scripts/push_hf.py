@@ -51,8 +51,8 @@ positive-aware hard-negative triplets, `MatryoshkaLoss` over
 
 - `model.safetensors` + `1_Pooling/` — sentence-transformers layout (fp32).
 - `onnx/model.onnx` — fp32 graph.
-- `onnx/model_quantized.onnx` — int8 (weight-only, `reduce_range=True`);
-  this is what the octomind runtime loads. Pool with CLS as declared in
+- `onnx/model_quantized.onnx` — int8 (weight-only, per-channel, plain 8-bit
+  range); this is what the octomind runtime loads. Pool with CLS as declared in
   `1_Pooling/config.json`.
 
 ## Use

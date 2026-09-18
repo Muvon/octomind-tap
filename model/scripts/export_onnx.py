@@ -129,9 +129,10 @@ def main() -> int:
     ap.add_argument(
         "--reduce-range",
         action="store_true",
-        help="int8 with 7-bit weight range. Model-specific: on the 2026-09 raw-corpus "
-             "gate it keeps granite-30m at 0.837 (vs 0.747 default) but drops bge-small "
-             "to 0.651 (vs 0.717) — always re-score the int8 graph before publishing.",
+        help="int8 with 7-bit weight range. Artifact-specific: on the 2026-09 raw-corpus "
+             "gate it rescued the untrained granite base (0.747 → 0.837) but hurt the "
+             "shipped granite soup (0.848 → 0.785) and bge-small (0.717 → 0.651) — "
+             "always re-score the int8 graph before publishing.",
     )
     ap.add_argument(
         "--no-quantize",

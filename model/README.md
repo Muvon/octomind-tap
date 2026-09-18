@@ -9,13 +9,18 @@ auto-activation:
   `octomind/src/mcp/runtime/capability.rs` uses it to decide which
   capability to auto-activate from a single user message via a
   mean-of-top-3 cosine score + threshold + margin gate, loading the int8
-  ONNX graph (~1.7 ms per intent on CPU).
+  ONNX graph (~2 ms per intent on CPU).
 - Before 2026-09 the same repo held a BGE-small-en-v1.5 fine-tune. The
-  base bake-off (`scripts/compare_bases.py` on the raw trigger corpus)
-  put granite at gate 0.846 zero-shot vs 0.708 for bge-small and 0.690
-  for that fine-tune, at half the layers. New weights under the same
-  name reach fresh installs only (hf_hub never re-checks a cached repo),
-  and the runtime thresholds must ship with them — see calibration below.
+  base bake-off (`scripts/compare_bases.py` on the raw trigger corpus,
+  each model at its own best operating point) put granite at gate 0.846
+  zero-shot vs 0.708 for bge-small and 0.690 for that fine-tune, at half
+  the layers. At the shipped operating point (0.65 / 0.06) the published
+  soup scores gate 0.848 / fpr 0.022 on the int8 graph vs 0.778 / 0.033
+  for the old fine-tune — that old-model score is what
+  `eval_baselines.json` holds until the post-rollout baseline is recorded.
+  New weights under the same name reach fresh installs only (hf_hub never
+  re-checks a cached repo), and the runtime thresholds must ship with
+  them — see calibration below.
 
 The cross-encoder reranker is intentionally NOT trained / shipped here.
 We tested it; with the current capability count it doesn't materially
