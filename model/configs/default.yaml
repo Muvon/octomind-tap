@@ -11,6 +11,12 @@ train:
   # One epoch. On the previous recipe epochs 2-3 cost 2/3 of the wall
   # clock and moved holdout accuracy@1 by <0.003.
   epochs: 1
+  # Cap on optimizer steps (-1 = full epoch). The fine-tune is a nudge the
+  # soup then blends back: 419 steps (full epoch, 2026-09-17) drifted so far
+  # that no alpha beat the untrained base by more than 0.005 gate, while
+  # ~105 steps (the shipped run: a 25% random subset, seed 42, one epoch)
+  # gave the soup 0.870 vs 0.846. Same LR, same data order otherwise.
+  max_steps: 105
   # Effective batch for in-batch negatives (GradCache chunks it into
   # `mini_batch_size` pieces, so this is not the memory load).
   batch_size: 256
@@ -53,13 +59,15 @@ loss:
   matryoshka_weights: [1.0, 0.6, 0.4, 0.2, 0.1]
 
 # WiSE-FT / model soup: theta = (1-alpha)*base + alpha*ft. The raw
-# fine-tune forgets a little of the base's generalization (top1 and gate
+# fine-tune forgets some of the base's generalization (top1 and gate
 # drop, margin rises); interpolating with the base beats BOTH parents.
-# bin/train sweeps these alphas and ships the one with the best gate on
-# the raw trigger corpus.
+# The best alpha depends on how far the fine-tune moved: a 25%-data run
+# peaked at 0.6, the full-data run needs 0.4 or less. bin/train sweeps
+# all of these and ships the one with the best gate on the raw trigger
+# corpus, so keep the grid wide.
 #   https://arxiv.org/abs/2109.01903  https://arxiv.org/abs/2203.05482
 soup:
-  alphas: [0.4, 0.5, 0.6]
+  alphas: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6]
 
 export:
   # int8 with a 7-bit weight range. Artifact-specific, not model-specific:

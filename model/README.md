@@ -37,8 +37,9 @@ the embedding on the actual decision the runtime makes:
 
 A raw fine-tune also *forgets* some of the base's generalization (top-1
 and gate drop on real prompts while the margin rises). Interpolating the
-fine-tuned weights with the base (WiSE-FT soup, alpha 0.4-0.6) beats
-both parents, so that is what ships.
+fine-tuned weights with the base (WiSE-FT soup; `bin/train` sweeps
+alpha 0.1-0.6 and keeps the best gate) beats both parents, so that is
+what ships.
 
 ## Pipeline
 
