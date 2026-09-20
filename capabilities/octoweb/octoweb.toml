@@ -2,15 +2,25 @@
 # Capability: octoweb
 # Provider: Octoweb — browser-based personal assistant
 # Title: Octoweb
-# Description: Browser-based personal assistant via the Octoweb HTTP MCP server.
+# Description: Drive the Octoweb browser (tabs, navigation, snapshots, clicks,
+# forms, page content) and draw A2UI surfaces in its AI sidebar via
+# Octoweb's HTTP MCP server on the default port.
+#
+# This is the generic, workspace-agnostic binding: requests carry no workspace
+# token, so octoweb routes them to its first workspace. Agents Octoweb launches
+# itself use the copy bundled with the app, which binds to the spawning
+# workspace and sidebar session.
 
 [roles.mcp]
 server_refs = ["octoweb"]
 allowed_tools = ["octoweb:*"]
 
+# `render_ui` blocks on a human clicking a button, so the client must outwait
+# octoweb's own 30-minute cap on that — otherwise the transport gives up first
+# and the agent never learns what the user chose.
 [[mcp.servers]]
 name = "octoweb"
 type = "http"
 url = "http://localhost:3434/mcp"
-timeout_seconds = 120
+timeout_seconds = 2000
 tools = []
