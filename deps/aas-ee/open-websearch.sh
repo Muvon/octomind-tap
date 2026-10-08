@@ -11,13 +11,6 @@ set -euo pipefail
 DEPS_LIB="$(cd "$(dirname "${BASH_SOURCE[0]}")/../lib" && pwd)"
 source "$DEPS_LIB/platform.sh"
 
-# Ensure node is available
-if ! pkg_check node; then
-  install_dep nodejs/node
-fi
-
-# open-websearch requires Node.js >= 20 (crashes on 18: missing File global in undici)
-NODE_MAJOR="$(node -p 'process.versions.node.split(".")[0]')"
-if ((NODE_MAJOR < 20)); then
-  die "open-websearch requires Node.js >= 20 (found $(node -v)). Upgrade Node.js and re-run."
-fi
+# open-websearch needs Node.js >= 20 (crashes on 18: missing File global in
+# undici); nodejs/node replaces an older or npx-less one.
+install_dep nodejs/node
