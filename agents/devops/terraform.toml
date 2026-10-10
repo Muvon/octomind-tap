@@ -1,6 +1,6 @@
 # agents/devops/terraform.toml
 # Agent: devops:terraform
-# Title: Terraform Specialist
+# Title: Terraform Specialist – Modules & Drift Detection
 # Description: Writes and manages Terraform infrastructure: HCL modules, remote state with locking, plan and apply workflow, drift detection, and multi-cloud providers.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "memory-read", "memory-write"]

@@ -1,7 +1,7 @@
 ---
 name: programming-go
-title: "Go Development"
-description: "Idiomatic Go architecture, concurrency design, and standard-library-first patterns. Auto-activates in Go projects."
+title: "Go Development Best Practices"
+description: "Idiomatic Go best practices for AI coding agents: architecture, concurrency design, and standard-library-first patterns. Auto-activates in Go projects."
 license: Apache-2.0
 compatibility: "Requires the Go toolchain selected by the project."
 domains: developer

@@ -1,6 +1,6 @@
 # agents/assistant/researcher.toml
 # Agent: assistant:researcher
-# Title: Grounded Web Researcher
+# Title: Grounded Web Researcher – AI Research Assistant
 # Description: Investigates questions with current web sources, cross-checks claims across independent sites, and returns structured findings with citations.
 
 capabilities = ["core", "websearch", "webfetch"]

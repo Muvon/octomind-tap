@@ -1,6 +1,6 @@
 # agents/content/article.toml
 # Agent: content:article
-# Title: Article Writer
+# Title: Article Writer – Long-Form With Citations
 # Description: Researches, outlines, and drafts long-form articles (1500-3000 words) with inline citations, SEO structure, and a grounding report; saves Markdown to disk.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]

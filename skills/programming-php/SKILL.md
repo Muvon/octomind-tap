@@ -1,7 +1,7 @@
 ---
 name: programming-php
-title: "PHP Development"
-description: "Write and review concise, typed PHP 8.x code with version-aware features through PHP 8.5, explicit validation, and practical quality checks. Auto-activates in PHP projects."
+title: "PHP Development Best Practices"
+description: "PHP 8 best practices for AI coding agents: write and review concise, typed PHP 8.x code with version-aware features through PHP 8.5, explicit validation, and practical quality checks. Auto-activates in PHP projects."
 license: Apache-2.0
 compatibility: "PHP 8.2+ and Composer. Newer features require the corresponding PHP version and compatible tooling."
 domains: developer

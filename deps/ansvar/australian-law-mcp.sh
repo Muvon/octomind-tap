@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: ansvar/australian-law-mcp
 # type: mcp
-# description: Australian Law MCP Server
+# description: Australian Law MCP Server - access Australian legislation, statutes, and legal references
 # check: npx
 # https://github.com/muvon/ansvar
 set -euo pipefail

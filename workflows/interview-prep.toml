@@ -1,4 +1,4 @@
-# Title: Interview Prep: Resume and Posting to Prep Pack
+# Title: Interview Prep: Questions and STAR Answers from Your Resume
 #
 # Public workflow: turn a master resume plus a specific job posting into a
 # grounded interview PREP PACK — likely questions with the reason each will be
@@ -39,7 +39,7 @@
 # that search or read the web. Public roles only.
 
 name        = "interview-prep"
-description = "Turns a master resume and a job posting into a grounded interview prep pack — likely questions, STAR stories from real experience, honest gap answers, and questions to ask — refined by a screen/fix loop. Never contacts anyone."
+description = "Turns a master resume and a job posting into a grounded interview prep pack — likely interview questions, STAR answers from real experience, honest gap answers, and questions to ask — refined by a screen/fix loop. Never contacts anyone."
 max_cost    = 3.0 # ceiling for the whole run; checked after each step
 
 # ── 1. Intake — read resume + posting, capture both, resolve stage + destination

@@ -1,7 +1,7 @@
 # capabilities/messaging-discord/discord.toml
 # Capability: messaging-discord
 # Provider: mcp-discord — Discord bot integration
-# Title: Discord Messaging
+# Title: Discord Messaging MCP Server
 # Description: Discord messaging - channels, messages, moderation, and voice - via the mcp-discord server.
 
 [deps]

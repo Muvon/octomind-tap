@@ -1,4 +1,4 @@
-# Title: Meeting: Transcript to Traceable Minutes
+# Title: Meeting: Transcript to Traceable Minutes and Action Items
 #
 # Public workflow: turn a meeting transcript or rough notes into minutes people
 # read — a TL;DR, decisions with their one-line why, action items in a table
@@ -32,7 +32,7 @@
 # Public roles only.
 
 name        = "meeting"
-description = "Turns a meeting transcript or notes into minutes, decisions, owner-and-date action items, and follow-up drafts, each traced to a verbatim quote by an independent verifier loop that flags missing owners and dates instead of inventing them."
+description = "Turns a meeting transcript or notes into meeting minutes, decisions, owner-and-date action items, and follow-up drafts, each traced to a verbatim quote by an independent verifier loop that flags missing owners and dates instead of inventing them."
 # Ceiling for the whole run in USD; checked after each step.
 max_cost    = 2.0
 

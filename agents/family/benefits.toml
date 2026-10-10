@@ -1,6 +1,6 @@
 # agents/family/benefits.toml
 # Agent: family:benefits
-# Title: Public Benefits Navigator
+# Title: Public Benefits Navigator – Eligibility Checker
 # Description: US benefits and job-loss navigator: screens eligibility via official tools, builds document checklists, tracks deadlines, and preps renewals and appeals.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch", "memory-read", "memory-write"]

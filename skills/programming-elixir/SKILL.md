@@ -1,7 +1,7 @@
 ---
 name: programming-elixir
-title: "Elixir Development"
-description: "Pattern matching, supervision, process-lifecycle, and concurrency design, and Phoenix conventions. Auto-activates in Elixir projects."
+title: "Elixir Development Best Practices"
+description: "Elixir best practices for AI coding agents: pattern matching, supervision, process-lifecycle, and concurrency design, and Phoenix conventions. Auto-activates in Elixir projects."
 license: Apache-2.0
 compatibility: "Requires Elixir and Erlang/OTP."
 domains: developer

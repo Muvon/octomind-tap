@@ -1,7 +1,7 @@
 ---
 name: programming-rust
-title: "Rust Development"
-description: "Idiomatic Rust architecture, ownership patterns, and ecosystem choices that survive long-term maintenance. Auto-activates in Rust projects."
+title: "Rust Development Best Practices"
+description: "Idiomatic Rust best practices for AI coding agents: architecture, ownership patterns, and ecosystem choices that survive long-term maintenance. Auto-activates in Rust projects."
 license: Apache-2.0
 compatibility: "Requires cargo and rustc toolchain."
 capabilities: programming-rust

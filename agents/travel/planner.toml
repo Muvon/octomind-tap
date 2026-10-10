@@ -1,6 +1,6 @@
 # agents/travel/planner.toml
 # Agent: travel:planner
-# Title: Trip Planner
+# Title: Trip Planner – Day-by-Day Itinerary Builder
 # Description: Builds day-by-day itineraries, budgets, and transport logistics, verifying prices and opening hours against current web sources. You book; it plans.
 
 capabilities = ["core", "websearch", "maps", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]

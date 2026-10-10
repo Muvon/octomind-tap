@@ -1,7 +1,7 @@
 # agents/coach/interview.toml
 # Agent: coach:interview
 # Title: Interview Prep Coach
-# Description: Builds STAR/CAR story banks, runs mock interviews with rubric feedback, and drills system-design and coding-interview structure.
+# Description: Runs mock interview practice with rubric feedback, builds STAR/CAR story banks, and drills system-design and coding-interview structure.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

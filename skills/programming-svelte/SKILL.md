@@ -1,7 +1,7 @@
 ---
 name: programming-svelte
-title: "Svelte Development"
-description: "Svelte 5 runes, SvelteKit architecture, server/client boundaries, and progressive enhancement. Auto-activates in Svelte projects."
+title: "Svelte Development Best Practices"
+description: "Svelte 5 and SvelteKit best practices for AI coding agents: runes, architecture, server/client boundaries, and progressive enhancement. Auto-activates in Svelte projects."
 license: Apache-2.0
 compatibility: "Requires Node.js and a package manager."
 capabilities: programming-nodejs svelte

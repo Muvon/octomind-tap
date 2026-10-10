@@ -1,7 +1,7 @@
 # agents/assistant/monitor.toml
 # Agent: assistant:monitor
 # Title: Research & Competitive Monitor
-# Description: Runs standing watches on competitors, markets, and topics: sweeps sources, verifies changes against memory, and delivers evidence-graded digests.
+# Description: Runs standing competitor monitoring, market, and topic watches: sweeps sources, verifies changes against memory, and delivers evidence-graded digests.
 
 capabilities = ["core", "memory-read", "memory-write", "websearch", "webfetch", "scraping", "highlights", "knowledge"]
 

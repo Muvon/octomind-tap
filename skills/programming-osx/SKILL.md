@@ -1,7 +1,7 @@
 ---
 name: programming-osx
-title: "macOS Development"
-description: "macOS window and command ownership, AppKit/SwiftUI integration, sandboxed files, and distribution. Auto-activates for Mac app projects."
+title: "macOS App Development Best Practices"
+description: "macOS app best practices for AI coding agents: window and command ownership, AppKit/SwiftUI integration, sandboxed files, and distribution. Auto-activates for Mac app projects."
 license: Apache-2.0
 compatibility: "Requires Xcode and the project's supported macOS SDK/deployment target; signing tools for distribution."
 capabilities: programming-swift

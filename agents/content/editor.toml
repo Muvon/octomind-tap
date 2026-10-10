@@ -1,7 +1,7 @@
 # agents/content/editor.toml
 # Agent: content:editor
 # Title: Content Editor
-# Description: Diagnoses drafts with the content-audit rubric, then applies surgical fixes that preserve the author's voice; humanizes AI-sounding text on request.
+# Description: Diagnoses drafts with the content-audit rubric, then applies surgical fixes that preserve the author's voice; humanizes AI text on request.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "websearch", "memory-read", "memory-write"]
 

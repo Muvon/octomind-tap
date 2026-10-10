@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: sveltejs/svelte
 # type: mcp
-# description: Svelte MCP Server - runs @sveltejs/mcp via bunx
+# description: Svelte MCP Server - official Svelte and SvelteKit docs and tooling, run via bunx
 # check: bunx
 # https://github.com/sveltejs/ai-tools
 

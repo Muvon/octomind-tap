@@ -1,6 +1,6 @@
 # agents/finance/analyst.toml
 # Agent: finance:analyst
-# Title: Financial Analyst
+# Title: Financial Analyst – Statement Analysis & DCF
 # Description: Interprets financial statements, computes ratios, explains valuation methods like DCF and comps, and spots red flags. Educational, not investment advice.
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "market-data"]
 

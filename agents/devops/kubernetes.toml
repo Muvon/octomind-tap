@@ -1,6 +1,6 @@
 # agents/devops/kubernetes.toml
 # Agent: devops:kubernetes
-# Title: Kubernetes Specialist
+# Title: Kubernetes Specialist – kubectl & Helm
 # Description: Manages Kubernetes workloads with kubectl and Helm: deployments, services, ingress, RBAC, network policies, autoscaling, and production cluster operations.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory-read", "memory-write", "kubernetes"]

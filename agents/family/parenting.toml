@@ -1,6 +1,6 @@
 # agents/family/parenting.toml
 # Agent: family:parenting
-# Title: Parenting Guide
+# Title: Parenting Guide – Newborn to Teen Advice
 # Description: Supports parents from newborn to teens on sleep, tantrums, discipline, screens, and teen conflict with evidence-based, culture-aware guidance. Not diagnostic.
 
 capabilities = ["core", "websearch", "memory-read", "memory-write"]

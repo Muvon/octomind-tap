@@ -47,7 +47,7 @@
 # Public roles only.
 
 name        = "deep-review"
-description = "Reviews a change from five independent lenses in parallel, adversarially verifies every finding against the real code, then synthesizes one severity-ordered review with a verdict."
+description = "Runs a code review of a change from five independent lenses in parallel, adversarially verifies every finding against the real code, then synthesizes one severity-ordered review with a verdict."
 
 # ── 1. Scope — resolve the target and build shared context ──────────────────
 [[steps]]

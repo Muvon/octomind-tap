@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: ansvar/uk-law-mcp
 # type: mcp
-# description: UK Law MCP Server
+# description: UK Law MCP Server - access UK legislation, statutes, and legal references
 # check: npx
 # https://github.com/muvon/ansvar
 set -euo pipefail

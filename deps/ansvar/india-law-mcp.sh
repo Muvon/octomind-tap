@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: ansvar/india-law-mcp
 # type: mcp
-# description: India Law MCP Server
+# description: India Law MCP Server - access Indian legislation, statutes, and legal references
 # check: npx
 # https://github.com/muvon/ansvar
 set -euo pipefail

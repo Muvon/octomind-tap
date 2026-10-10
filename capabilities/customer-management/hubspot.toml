@@ -1,8 +1,8 @@
 # capabilities/customer-management/hubspot.toml
 # Capability: customer-management
 # Provider: HubSpot — official MCP server
-# Title: Customer Management (HubSpot)
-# Description: Customer management - contacts, deals, and campaigns - via the official HubSpot MCP server.
+# Title: HubSpot CRM Customer Management
+# Description: HubSpot CRM customer management - contacts, deals, and campaigns - via the official HubSpot MCP server.
 
 [deps]
 require = ["hubspot/hubspot"]

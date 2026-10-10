@@ -1,6 +1,6 @@
 # agents/developer/brief.toml
 # Agent: developer:brief
-# Title: Code Change Briefer
+# Title: Code Change Briefer – Git Diff Summary
 # Description: Turns a diff, commit, or range into plain-language review cards: behavioral impact, traced risk, and source links behind every finding.
 
 capabilities = ["core", "filesystem-read", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "versioning"]

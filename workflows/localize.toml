@@ -1,4 +1,4 @@
-# Title: Localize: Source to Native-Sounding Translations
+# Title: Localize: Source Content to Native-Sounding Translations
 #
 # Public workflow: transcreate every requested language (parsed from the input
 # at runtime — no hardcoded language list), then run a genuine fix <-> audit

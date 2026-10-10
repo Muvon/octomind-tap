@@ -1,4 +1,4 @@
-# Title: Trip: Request to Feasibility-Checked Itinerary
+# Title: Trip: Feasibility-Checked Day-by-Day Itinerary Planner
 #
 # Public workflow: turn a trip request (destination, dates, travelers, budget,
 # interests) into a day-by-day itinerary with a budget table. Logistics, lodging,
@@ -15,7 +15,7 @@
 # Note: `max_cost` bounds the whole run; web-research steps dominate the spend.
 
 name        = "trip"
-description = "Turns a trip request into a day-by-day itinerary and budget table via parallel logistics, lodging, and activities research, then loops an independent feasibility audit on pacing, transit, opening hours, and budget, ending with a verify-before-you-book list."
+description = "Turns a trip request into a day-by-day travel itinerary and budget table via parallel logistics, lodging, and activities research, then loops an independent feasibility audit on pacing, transit, opening hours, and budget, ending with a verify-before-you-book list."
 max_cost    = 3.0
 
 # ── 1. Intake — one shared frame so the parallel slices agree ────────────────

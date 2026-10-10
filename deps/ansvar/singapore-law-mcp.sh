@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: ansvar/singapore-law-mcp
 # type: mcp
-# description: Singapore Law MCP Server
+# description: Singapore Law MCP Server - access Singapore legislation, statutes, and legal references
 # check: npx
 # https://github.com/muvon/ansvar
 set -euo pipefail

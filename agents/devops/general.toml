@@ -1,6 +1,6 @@
 # agents/devops/general.toml
 # Agent: devops:general
-# Title: General DevOps Engineer
+# Title: General DevOps Engineer – Server Troubleshooting
 # Description: Diagnoses and fixes server issues from logs and metrics: shell scripting, Docker, CI/CD pipelines, DNS and TLS, systemd, and monitoring setup.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell"]

@@ -21,7 +21,7 @@
 #   Cover src/billing/invoice.py, focusing on rounding and refunds.
 
 name        = "test"
-description = "Writes behavior tests for the changed code or a named module, then proves they catch bugs by passing on current code, touching only test files, and failing under deliberate mutations that are reverted exactly."
+description = "Writes behavior tests for the changed code or a named module, then proves they catch bugs with mutation testing: passing on current code, touching only test files, and failing under deliberate mutations that are reverted exactly."
 
 # Hard ceiling for the whole run (USD); checked after each step.
 max_cost = 4.0

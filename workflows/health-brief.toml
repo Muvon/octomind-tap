@@ -1,4 +1,4 @@
-# Title: Health Brief: Labs and Symptoms to Visit-Prep Brief
+# Title: Health Brief: Lab Results and Symptoms to Doctor Visit Prep
 #
 # Public workflow: turn lab results, symptoms, and medications into a visit-prep
 # brief for a clinician — what stands out, medication flags, ranked questions to
@@ -15,7 +15,7 @@
 #   mIU/L (0.4-4.0), ferritin 9 ng/mL (15-150). Meds: sertraline 50 mg daily.
 
 name        = "health-brief"
-description = "Extracts structured health facts and gates on red flags first, then analyzes labs, medications, and symptom context in parallel and delivers a judge-checked, non-diagnostic visit-prep brief with ranked questions for your clinician."
+description = "Extracts structured health facts and gates on red flags first, then analyzes lab results, medications, and symptom context in parallel and delivers a judge-checked, non-diagnostic doctor visit prep brief with ranked questions for your clinician."
 
 # Ceiling for the whole run in USD, checked after each step.
 max_cost = 2.5

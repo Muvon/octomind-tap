@@ -1,4 +1,4 @@
-# Title: Meal Plan: Household Constraints to Checked Week and Grocery List
+# Title: Meal Plan: Checked Weekly Plan and Grocery List
 #
 # Public workflow: turn a household's constraints (who eats, allergies, budget,
 # time per day, equipment, pantry) into a 7-day meal plan with recipes, an
@@ -18,7 +18,7 @@
 # Note: `max_cost` bounds the whole run; the audit loop is the main spend.
 
 name        = "meal-plan"
-description = "Turns household constraints into a 7-day meal plan with recipes, aisle-grouped grocery list, and prep schedule, then loops an independent auditor on allergens, list coverage, daily time, and budget until it passes."
+description = "Builds a weekly meal plan and grocery list from household constraints: a 7-day meal plan with recipes, aisle-grouped grocery list, and prep schedule, then loops an independent auditor on allergens, list coverage, daily time, and budget until it passes."
 max_cost    = 2.0
 
 # ── 1. Intake — normalize constraints, stop only on unsafe gaps ──────────────

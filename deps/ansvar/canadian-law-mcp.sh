@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: ansvar/canadian-law-mcp
 # type: mcp
-# description: Canadian Law MCP Server
+# description: Canadian Law MCP Server - access Canadian legislation, statutes, and legal references
 # check: npx
 # https://github.com/muvon/ansvar
 set -euo pipefail

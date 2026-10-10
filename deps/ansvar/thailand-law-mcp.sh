@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: ansvar/thailand-law-mcp
 # type: mcp
-# description: Thailand Law MCP Server
+# description: Thailand Law MCP Server - access Thai legislation, statutes, and legal references
 # check: npx
 # https://github.com/muvon/ansvar
 set -euo pipefail

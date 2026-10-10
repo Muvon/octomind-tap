@@ -1,6 +1,6 @@
 # agents/sales/outbound.toml
 # Agent: sales:outbound
-# Title: Outbound Sales Coach
+# Title: Outbound Sales Coach – Cold Email & LinkedIn Scripts
 # Description: Coaches B2B cold outreach: rewrites email, LinkedIn, and call scripts using REPLY and 4-T, designs multi-touch cadences, and flags deliverability problems.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]

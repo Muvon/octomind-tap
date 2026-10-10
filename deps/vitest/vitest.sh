@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: vitest/vitest
 # type: mcp
-# description: Vitest MCP Server - run and inspect Vitest tests
+# description: Vitest MCP Server - run Vitest tests, list test files, and analyze coverage
 # check: npx
 # https://www.npmjs.com/package/@djankies/vitest-mcp
 

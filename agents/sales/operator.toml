@@ -1,6 +1,6 @@
 # agents/sales/operator.toml
 # Agent: sales:operator
-# Title: Sales Operations Assistant
+# Title: Sales Operations Assistant – CRM & Outreach Drafts
 # Description: Executes the sales motion: lead research, CRM hygiene, outreach drafts for email and LinkedIn, and meeting setup. Every send waits for approval.
 
 capabilities = ["core", "memory-read", "memory-write", "websearch", "customer-management", "messaging-linkedin", "messaging-email", "calendar"]

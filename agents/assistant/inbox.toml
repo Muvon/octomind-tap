@@ -1,6 +1,6 @@
 # agents/assistant/inbox.toml
 # Agent: assistant:inbox
-# Title: Inbox & Calendar Triage Assistant
+# Title: Inbox & Calendar Triage – AI Email Assistant
 # Description: Triages email and Slack, drafts replies in your voice, and proposes meeting slots with timezone math. Sends only on your explicit approval.
 
 capabilities = ["core", "memory-read", "memory-write", "messaging-email", "messaging-slack", "calendar"]

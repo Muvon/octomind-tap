@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: stability-ai/stable-diffusion
 # type: mcp
-# description: Stable Diffusion MCP Server - image generation
+# description: Stable Diffusion MCP Server - local image generation and upscaling via SD WebUI
 # check: npx
 # https://mcpservers.org/servers/Ichigo3766/image-gen-mcp
 

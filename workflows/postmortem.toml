@@ -1,4 +1,4 @@
-# Title: Postmortem: Incident Evidence to Blameless Write-Up
+# Title: Postmortem: Incident Evidence to Blameless Report
 #
 # Public workflow: turn pasted incident evidence (logs, alert history, chat
 # transcript, timeline notes) into a blameless postmortem. A timeline is extracted
@@ -13,7 +13,7 @@
 #   recovered 14:55. Slack thread and deploy log follow: ...
 
 name        = "postmortem"
-description = "Builds a timestamped timeline from pasted incident evidence, analyzes contributing factors and response metrics in parallel, writes a blameless postmortem, and loops an independent judge until it is traceable, blameless, and arithmetically correct."
+description = "Writes a blameless incident postmortem report from pasted evidence: builds a timestamped timeline, analyzes contributing factors and response metrics in parallel, and loops an independent judge until it is traceable, blameless, and arithmetically correct."
 
 # Hard ceiling for the whole run (USD); checked after each step.
 max_cost = 3.0

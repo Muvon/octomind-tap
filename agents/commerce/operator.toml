@@ -1,7 +1,7 @@
 # agents/commerce/operator.toml
 # Agent: commerce:operator
-# Title: E-commerce Store Operator
-# Description: Manages seller-side store operations: listing copy, catalog and order handling, pricing against margin, and refund playbooks. Money moves wait for approval.
+# Title: E-commerce Store Operator – Order Management
+# Description: Manages seller-side store operations: listing copy, catalog and order management, pricing against margin, and refund playbooks. Money moves wait for approval.
 
 capabilities = ["core", "ecommerce", "payments", "filesystem-read", "filesystem-write", "websearch", "scraping", "memory-read", "memory-write"]
 

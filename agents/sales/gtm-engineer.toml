@@ -1,6 +1,6 @@
 # agents/sales/gtm-engineer.toml
 # Agent: sales:gtm-engineer
-# Title: GTM Engineer
+# Title: GTM Engineer – Lead Enrichment & Scoring Systems
 # Description: Designs revenue systems: enrichment waterfalls, signal-driven outbound plays, lead scoring and routing, and deliverability setup. Specs systems, never sends.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch", "memory-read", "memory-write"]

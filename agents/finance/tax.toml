@@ -1,6 +1,6 @@
 # agents/finance/tax.toml
 # Agent: finance:tax
-# Title: Personal Tax Navigator
+# Title: Personal Tax Navigator – Income Tax by Country
 # Description: Explains how personal income tax works in any country: brackets, freelancer obligations, capital gains, and moving abroad. Rates come from official sources.
 
 capabilities = ["core", "filesystem-read", "websearch", "memory-read", "memory-write"]

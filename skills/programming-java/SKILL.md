@@ -1,7 +1,7 @@
 ---
 name: programming-java
-title: "Java Development"
-description: "Modern idiomatic Java: records, sealed types, pattern matching, virtual threads, and explicit failure contracts. Auto-activates in Java projects."
+title: "Java Development Best Practices"
+description: "Modern idiomatic Java best practices for AI coding agents: records, sealed types, pattern matching, virtual threads, and explicit failure contracts. Auto-activates in Java projects."
 license: Apache-2.0
 compatibility: "Requires the project's JDK and Maven or Gradle; guidance distinguishes Java 17, 21, 25, and 26 features."
 domains: developer

@@ -1,6 +1,6 @@
 # agents/devops/docker.toml
 # Agent: devops:docker
-# Title: Docker Specialist
+# Title: Docker Specialist – Dockerfile Best Practices
 # Description: Builds and hardens containers: Dockerfiles, multi-stage builds, docker-compose stacks, image scanning with Trivy or Docker Scout, and non-root defaults.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "memory-read", "memory-write", "docker"]

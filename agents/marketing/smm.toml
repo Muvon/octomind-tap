@@ -1,7 +1,7 @@
 # agents/marketing/smm.toml
 # Agent: marketing:smm
 # Title: Social Media Manager
-# Description: Owns social channel strategy, content pillars, cadence, and the engagement loop; delegates writing and publishing to specialists and reports outcomes.
+# Description: Owns social media channel strategy, content pillars, cadence, and the engagement loop; delegates writing and publishing to specialists and reports outcomes.
 
 capabilities = ["core", "orchestration", "websearch", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 

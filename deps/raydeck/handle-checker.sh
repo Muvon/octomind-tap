@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: raydeck/handle-checker
 # type: mcp
-# description: Social Media Handle Checker - username availability
+# description: Social Media Handle Checker MCP Server - username availability on YouTube, TikTok, Instagram, Threads, X
 # check: npx
 # https://www.npmjs.com/package/@raydeck/social-media-handle-checker-mcp
 

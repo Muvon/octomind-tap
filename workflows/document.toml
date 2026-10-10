@@ -1,4 +1,4 @@
-# Title: Document: Generate Docs from Changes
+# Title: Document: README, Changelog and Release Notes from Changes
 #
 # Public workflow: classify the current changes into a SemVer bump and
 # Keep-a-Changelog buckets once, draft README/changelog/release-notes from that

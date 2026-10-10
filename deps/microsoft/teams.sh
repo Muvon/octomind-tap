@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: microsoft/teams
 # type: mcp
-# description: Microsoft Teams MCP Server - Teams integration
+# description: Microsoft Teams MCP Server - send messages, manage chats, and search Teams channels
 # check: npx
 # https://www.npmjs.com/package/teams-mcp
 

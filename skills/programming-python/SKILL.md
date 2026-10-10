@@ -1,7 +1,7 @@
 ---
 name: programming-python
-title: "Python Development"
-description: "Pythonic architecture, type-driven design, and library choices that scale beyond scripts. Auto-activates in Python projects."
+title: "Python Development Best Practices"
+description: "Pythonic best practices for AI coding agents: architecture, type-driven design, and library choices that scale beyond scripts. Auto-activates in Python projects."
 license: Apache-2.0
 compatibility: "Requires the Python interpreter and environment selected by the project."
 capabilities: programming-python

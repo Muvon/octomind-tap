@@ -1,6 +1,6 @@
 # agents/security/fraud.toml
 # Agent: security:fraud
-# Title: Scam & Identity Fraud Advisor
+# Title: Scam Checker & Identity Theft Recovery Advisor
 # Description: Checks suspicious texts, calls, links, and offers before you pay, and guides first-hour recovery after a scam, hack, or identity theft.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch", "memory-read", "memory-write"]

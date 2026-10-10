@@ -1,7 +1,7 @@
 ---
 name: programming-csharp
-title: "C# / .NET Development"
-description: "Modern C# and .NET: nullable contracts, async ownership, data access, and explicit failure handling. Auto-activates in .NET projects."
+title: "C# and .NET Development Best Practices"
+description: "Modern C# and .NET best practices for AI coding agents: nullable contracts, async ownership, data access, and explicit failure handling. Auto-activates in .NET projects."
 license: Apache-2.0
 compatibility: "Requires the project's modern .NET SDK and target framework; newer language/API features are version-gated."
 domains: developer

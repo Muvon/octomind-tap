@@ -1,6 +1,6 @@
 # agents/pm/project.toml
 # Agent: pm:project
-# Title: Project Delivery Manager
+# Title: Project Delivery Manager – RAID Log & Status Reports
 # Description: Plans milestones with owners and a critical path, maintains RAID logs, sweeps stale tracker items, and writes honest RAG status reports with minimum ceremony.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write", "task-management", "calendar"]

@@ -1,6 +1,6 @@
 # agents/security/compliance.toml
 # Agent: security:compliance
-# Title: Privacy & Compliance Navigator
+# Title: Privacy & Compliance Navigator – GDPR, CCPA, SOC 2
 # Description: Maps GDPR, CCPA, and SOC 2 obligations to what a team must do: data maps, lawful bases, DPIAs, policy drafts, and questionnaire answers. Not legal advice.
 
 capabilities = ["core", "websearch", "webfetch", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]

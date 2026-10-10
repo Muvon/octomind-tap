@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: openai/chatgpt
 # type: mcp
-# description: ChatGPT MCP Server - ChatGPT conversations over MCP
+# description: ChatGPT MCP Server - send queries to ChatGPT from other AI tools
 # check: npx
 # https://www.npmjs.com/package/@chinchillaenterprises/mcp-chatgpt
 

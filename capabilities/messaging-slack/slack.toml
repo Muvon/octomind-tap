@@ -1,7 +1,7 @@
 # capabilities/messaging-slack/slack.toml
 # Capability: messaging-slack
 # Provider: Slack — official MCP Slack server
-# Title: Slack Messaging
+# Title: Slack Messaging MCP Server
 # Description: Slack messaging - channels, messages, threads, and users - via the official Slack MCP server.
 
 [deps]
