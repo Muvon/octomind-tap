@@ -1,0 +1,213 @@
+# Title: Test: Changed Code to Tests That Catch Bugs
+#
+# Public workflow: baseline the changed code (or a named module) and its test
+# command, write behavior tests, then prove they have teeth in an independent
+# verify loop: the suite must pass on the current code, only test files may
+# differ from the baseline, and small deliberate mutations of the source must
+# make at least one test fail. Operates on the current directory. Public roles
+# only.
+#
+# Revert contract: the verifier mutates source files in place, so it never uses
+# git checkout/restore/stash (the files hold uncommitted work under test). It
+# copies each file to a scratch directory first, restores from that copy, and
+# compares sha256 hashes against the baseline after every mutant. A hash that
+# will not match ends the run with VERDICT: BLOCKED. The verify step has no
+# timeout and no retries on purpose: killing or re-running it mid-mutation would
+# leave a mutated file behind. If a run is interrupted, compare `git status`
+# against the baseline before trusting the tree.
+#
+# Input shape: name the target, or say "changed code". Examples:
+#   Write tests for the uncommitted changes in this repo.
+#   Cover src/billing/invoice.py, focusing on rounding and refunds.
+
+name        = "test"
+description = "Writes behavior tests for the changed code or a named module, then proves they catch bugs by passing on current code, touching only test files, and failing under deliberate mutations that are reverted exactly."
+
+# Hard ceiling for the whole run (USD); checked after each step.
+max_cost = 4.0
+
+# ── 1. Baseline — target, test command, source hashes, starting git state ────
+[[steps]]
+name    = "baseline"
+role    = "developer:tester"
+session = "fresh"
+retries = 1
+prompt  = """
+<request>
+{{input}}
+</request>
+
+Establish the baseline for writing tests. Change nothing.
+
+1. TARGET — the source files under test: the module or paths the request names;
+   if it says changed code (or names nothing), the non-test files in the current
+   uncommitted diff plus untracked source files (`git status --porcelain`).
+2. FRAMEWORK — the project's existing test framework, test directory, file naming
+   convention, and the exact command that runs the suite. These are the law; no
+   new frameworks.
+3. SOURCES — one line per target source file: `<path> <sha256>` (use `shasum -a 256`
+   or `sha256sum`). These hashes are the integrity reference for later steps.
+4. GIT STATE — the verbatim `git status --porcelain` output right now.
+5. BASELINE RUN — run the suite on the current code. Report pass, fail, and skip
+   counts. Pre-existing failures are listed by name; they are not yours to fix.
+6. RISKS — the behaviors in the target most costly to get wrong (money, auth, data
+   loss, boundaries), ranked, so tests go where bugs would hurt.
+
+Stop with BLOCKED if there is no testable source in the target, or the suite
+cannot run at all. Do not guess a test command.
+
+End with exactly one line: `BASELINE: READY` or `BASELINE: BLOCKED — <reason>`.
+Nothing after it.
+"""
+
+# ── 2. Write ⇄ prove loop ────────────────────────────────────────────────────
+[[steps]]
+name           = "prove"
+loop           = true
+max_iterations = 3
+exit_when      = { output = "verify", matches = '(?m)^VERDICT: (TESTS-EFFECTIVE|BLOCKED)' }
+
+  [[steps.run]]
+  name    = "write"
+  role    = "developer:tester"
+  session = "continue"
+  retries = 1
+  prompt  = """
+<request>
+{{input}}
+</request>
+
+<baseline>
+{{baseline}}
+</baseline>
+
+If the baseline ends with `BASELINE: BLOCKED`, write nothing and restate the
+blocker. Otherwise write tests for the target, highest RISKS first.
+
+- Create or edit only test files, in the project's existing framework, directory,
+  and naming. Never edit a file listed under SOURCES — if the code is hard to test,
+  say so in your report instead of changing it. If you did edit a source by
+  mistake, restore it by reversing your exact edit (never git checkout/restore, the
+  file holds uncommitted work).
+- Test observable behavior through the public API: one behavior per test, boundaries
+  (0, 1, max, max+1, empty) and negative cases for risky logic.
+- Mock only what the project does not own. Never skip, mute, or weaken a test or
+  assertion to get green.
+- Run the suite. Every new test must pass on the current code.
+
+(On later rounds your input is the verifier's findings: survived mutants name the
+missing assertions — strengthen the tests that should have caught them, and fix
+every other issue listed.)
+
+Output the list of test files written or changed, the exact command run, and its
+output tail as evidence. No preamble.
+"""
+
+  [[steps.run]]
+  name    = "verify"
+  role    = "developer:general"
+  session = "fresh"
+  prompt  = """
+You are an independent verifier in a fresh session. You did not write these tests.
+Establish by execution, not by reading the author's report.
+
+<baseline>
+{{baseline}}
+</baseline>
+
+<author_report>
+{{write}}
+</author_report>
+
+If the baseline ends with `BASELINE: BLOCKED`, end with `VERDICT: BLOCKED`.
+
+Checks, in order. Stop at the first failing check A–C and report it.
+
+A. GREEN — run the baseline's test command. The new tests must run and pass, with
+   no new skips; failures that were pre-existing in the baseline are ignored.
+B. SOURCES UNTOUCHED — recompute the sha256 of every path under SOURCES. Any
+   difference means the author edited a source: REVISE and name the file.
+C. ONLY TEST FILES CHANGED — compare `git status --porcelain` to the baseline's GIT
+   STATE. Every new or changed path must be a test file by the project's convention.
+   Anything else: REVISE and name the path.
+D. TEETH — apply up to 3 mutants, one at a time, each to a different behavior-bearing
+   line the new tests claim to cover (flip a comparison or boundary, negate a
+   condition, drop a return value or side effect). For each mutant:
+   1. Copy the file to a scratch directory (`mktemp -d`) and note its sha256.
+   2. Apply the single small edit and run the test command.
+   3. KILLED = at least one assertion fails because of the mutant. A compile or
+      syntax error is not a kill — discard it and pick a valid mutant. SURVIVED =
+      the suite stayed green. A mutant provably equivalent in behavior is excluded
+      with a one-line reason.
+   4. Restore by copying the scratch copy back over the file. Never use git
+      checkout, restore, or stash. Recompute the sha256 and confirm it equals the
+      value from step 1 and the SOURCES hash. If it does not, restore again; if it
+      still does not match, stop and report `MUTATION-REVERT-FAILED: <path>`.
+E. FINAL STATE — after the last mutant, recompute all SOURCES hashes and re-run
+   `git status --porcelain`; both must equal their pre-mutation values.
+
+Output the results of A–E as a short table, each mutant as `file:line — change —
+KILLED|SURVIVED`, and for every survivor the assertion that is missing. That text
+goes straight to the author.
+
+Verdict: TESTS-EFFECTIVE only if A–C pass, at least one valid mutant was applied,
+every valid mutant was KILLED, and E confirms the tree is back to its baseline. Any
+revert failure or hash mismatch after restoring is BLOCKED, never REVISE. Otherwise
+REVISE. Do not invent new criteria once these pass.
+
+End with exactly one line: `VERDICT: TESTS-EFFECTIVE`, `VERDICT: REVISE`, or
+`VERDICT: BLOCKED`. Nothing after it.
+"""
+
+# ── 3. Outcome — honest branch on the loop's final verdict ───────────────────
+[[steps]]
+name        = "outcome"
+conditional = true
+condition   = { output = "verify", matches = '(?m)^VERDICT: TESTS-EFFECTIVE' }
+on_match    = ["summary"]
+on_no_match = ["stalled"]
+
+  [[steps.run]]
+  name    = "summary"
+  role    = "developer:brief"
+  session = "fresh"
+  prompt  = """
+Summarize the new tests for a human reviewer: read only the test files that are
+new or changed compared with the baseline's GIT STATE (not the source changes under
+test), and say what behavior each group of tests protects.
+
+<baseline>
+{{baseline}}
+</baseline>
+
+<verification>
+{{verify}}
+</verification>
+
+Include the command to run them and the mutant results (killed, with file:line)
+from the verification. State that the source files were restored and match the
+baseline hashes. Output only the briefing.
+"""
+
+  [[steps.run]]
+  name    = "stalled"
+  role    = "developer:brief"
+  session = "fresh"
+  prompt  = """
+The test loop ended WITHOUT a TESTS-EFFECTIVE verdict — do not present this as
+success. Report for a human decision.
+
+<baseline>
+{{baseline}}
+</baseline>
+
+<last_verification>
+{{verify}}
+</last_verification>
+
+If the last verification ends with `VERDICT: BLOCKED`, lead with why. For a revert
+failure or hash mismatch, say first that source files may still be mutated and the
+user must compare `git status` and the SOURCES hashes against the baseline before
+doing anything else. Otherwise start with exactly: `DID NOT CONVERGE — human review
+required.` Then list the tests written so far and every gap the verifier still flags.
+"""

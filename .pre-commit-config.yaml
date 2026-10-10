@@ -34,3 +34,10 @@ repos:
         entry: scripts/lint-skills.sh
         files: ^skills/.*/SKILL\.md$
         pass_filenames: false
+
+      - id: lint-workflows
+        name: Lint workflows
+        language: script
+        entry: scripts/lint-workflows.sh
+        files: ^(workflows/.*\.toml|README\.md)$
+        pass_filenames: false

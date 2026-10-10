@@ -1,8 +1,10 @@
 # Title: SEO: Audit to Strategy Brief
 #
 # Public workflow: diagnose a site or page across technical, on-page, off-page,
-# and GEO/AI-citation lenses in one pass, then turn the evidence-bound findings
-# into a tiered, traceable, KPI-tagged strategy brief. Public roles only.
+# and GEO/AI-citation lenses in one pass, turn the evidence-bound findings into
+# a tiered, traceable, KPI-tagged strategy brief, then have a SEPARATE auditor
+# check every recommendation against the finding IDs it claims to address and
+# send the strategist back once if any is orphaned or KPI-less. Public roles only.
 
 name        = "seo"
 description = "Audits a site or page across technical, on-page, off-page, and GEO lenses, then turns the evidence-bound findings into a tiered, finding-traceable, KPI-tagged SEO strategy brief."
@@ -35,10 +37,16 @@ Output only the audit report with its tagged, ID'd findings — no strategy.
 
 # ── 2. Strategy brief ────────────────────────────────────────────────────────
 [[steps]]
-name    = "strategy"
-role    = "seo:strategist"
-session = "fresh"
-prompt  = """
+name           = "strategy"
+loop           = true
+max_iterations = 2
+exit_when      = { output = "trace", matches = '(?m)^VERDICT: TRACEABLE' }
+
+  [[steps.run]]
+  name    = "strategist"
+  role    = "seo:strategist"
+  session = "continue"
+  prompt  = """
 Turn the audit findings below into a prioritized SEO strategy brief.
 
 Sequence the work by tier and keep that order: Tier 1 = crawl/index/critical
@@ -62,9 +70,66 @@ Rules:
 Close with the final roadmap: a sequenced action list (Tier 1 → 2 → 3, quick
 wins surfaced) with the validation KPI attached to each item.
 
+On a later iteration you will receive the auditor's findings: fix exactly the
+flagged recommendations — re-map to a real finding ID, attach the missing KPI,
+or drop the item. Do not invent findings to justify work.
+
 <audit>
 {{audit}}
 </audit>
 
 Output only the strategy brief — no preamble, no commentary.
+"""
+
+  [[steps.run]]
+  name    = "trace"
+  role    = "seo:audit"
+  session = "fresh"
+  prompt  = """
+You are an independent traceability auditor in a fresh session. You did not write
+this brief. Check it against the audit findings — never from memory.
+
+<audit>
+{{audit}}
+</audit>
+
+<brief>
+{{strategist}}
+</brief>
+
+Checks, in order:
+1. Every recommendation cites at least one finding ID that exists in the audit
+   and actually addresses it. Orphaned or mismatched IDs are failures.
+2. Every action carries a validation KPI.
+3. Tier order holds (Tier 1 technical before Tier 2 content before Tier 3
+   off-page/GEO) and no recommendation duplicates another.
+
+List each failing recommendation with the fix needed — this goes straight to the
+strategist. If every check passes, approve; do not invent new criteria.
+
+Critique first, then end with exactly one line: VERDICT: TRACEABLE or VERDICT: REVISE. Nothing after it.
+"""
+
+# ── 3. Deliver — final brief with its audit status ───────────────────────────
+# The loop's last output is the auditor's critique, so the brief is re-emitted
+# as the final step's result.
+[[steps]]
+name    = "deliver"
+role    = "seo:strategist"
+session = "fresh"
+prompt  = """
+The traceability loop is finished. Output the strategy brief below verbatim,
+whole, with no edits of your own. If the final audit does not end in
+`VERDICT: TRACEABLE`, put one line above it — `Unverified: the traceability
+audit still flagged recommendations; recheck these before acting:` — followed
+by the auditor's remaining findings as a short list. If it does, add nothing
+above the brief.
+
+<brief>
+{{strategist}}
+</brief>
+
+<final_audit>
+{{trace}}
+</final_audit>
 """

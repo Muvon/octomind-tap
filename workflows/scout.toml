@@ -11,6 +11,7 @@
 
 name        = "scout"
 description = "Mines a field for evidenced pain via parallel community, review, and demand sweeps, vets candidates adversarially into ranked briefs or an honest no-signal verdict. Chain the winner into launch."
+max_cost    = 10.0   # runaway guard, not a target: checked after each step
 
 # ── 1. Parallel evidence sweep — three blind lenses ──────────────────────────
 [[steps]]

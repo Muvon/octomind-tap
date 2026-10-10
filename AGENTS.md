@@ -19,7 +19,7 @@ workflows/<name>.toml           # Public multi-step workflows — `octomind work
 model/                          # Embedding fine-tune powering capability auto-activation
 bin/load                        # Python resolver: merges capabilities → manifest on stdout
 scripts/                        # lint-manifests / lint-capabilities / lint-skills /
-                                # lint-deps / validate-capabilities / setup-symlinks /
+                                # lint-deps / lint-workflows / validate-capabilities / setup-symlinks /
                                 # mcp-versions (MCP version pin management)
 templates/                      # Canonical templates — symlink into scaffolds/tap/root/
 scaffolds/tap/                  # `octomind tap init` source: scaffold.toml + root/ tree
@@ -34,6 +34,7 @@ bash scripts/lint-manifests.sh [agents/<domain>/<spec>.toml ...]   # lint agents
 bash scripts/lint-capabilities.sh [capabilities/<name> ...]        # lint capabilities
 bash scripts/lint-skills.sh [skills/<name>]                        # lint skills
 bash scripts/lint-deps.sh [deps/<org>/<tool>.sh]                   # lint dep scripts + docs
+bash scripts/lint-workflows.sh [workflows/<name>.toml]             # lint workflows (+ octomind --dry-run)
 bash scripts/validate-capabilities.sh                              # resolution check, all agents
 bash scripts/setup-symlinks.sh                                     # create/refresh default.toml links
 bin/load <domain>:<spec>                                           # debug: print resolved manifest
@@ -42,7 +43,7 @@ scripts/mcp-versions.sh check [--strict]     # pin drift vs npm/PyPI latest (str
 scripts/mcp-versions.sh update [--all | <capability> ...]   # rewrite pins; leaves changes uncommitted
 scripts/mcp-versions.sh test [<capability> ...]             # spawn servers, MCP handshake, tools/list
 
-pre-commit run --all-files                   # local hooks: shfmt, whitespace, check-toml, 3 lints
+pre-commit run --all-files                   # local hooks: shfmt, whitespace, check-toml, 4 lints
 octomind run <domain>:<spec>                 # smoke-test an agent from repo root
 octomind workflow <name> --dry-run           # validate a workflow, run nothing
 
@@ -327,6 +328,7 @@ bash scripts/lint-manifests.sh        # touched agents/…toml
 bash scripts/lint-capabilities.sh     # touched capabilities/…
 bash scripts/lint-skills.sh           # touched skills/…
 bash scripts/lint-deps.sh             # touched deps/…
+bash scripts/lint-workflows.sh        # touched workflows/… or the README workflow count
 bash scripts/validate-capabilities.sh # any capability change
 bash scripts/setup-symlinks.sh        # any capability add/remove (symlink integrity)
 bin/load <domain>:<spec>              # touched agent — resolves without errors
@@ -342,7 +344,7 @@ octomind workflow <name> --dry-run    # touched workflow
 
 **Dep done** — `lint-deps.sh` passes (headers, `# type:`, companion `.md`, platform coverage); `bash deps/<org>/<tool>.sh` exits 0 on an already-installed machine and installs on a clean one.
 
-**Full-repo done** — all five lint scripts + `pre-commit run --all-files` exit 0.
+**Full-repo done** — all six lint scripts + `pre-commit run --all-files` exit 0.
 
 ## Gotchas
 

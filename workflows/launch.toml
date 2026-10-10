@@ -8,6 +8,7 @@
 
 name        = "launch"
 description = "Takes a product idea from market exploration to an honest go/no-go, then, only if viable, produces a GTM strategy, brand, pitch, ads, and a zero-budget launch plan."
+max_cost    = 10.0   # runaway guard, not a target: checked after each step
 
 # ── 1. Explore the market ────────────────────────────────────────────────────
 [[steps]]

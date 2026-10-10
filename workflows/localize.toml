@@ -56,6 +56,7 @@
 
 name        = "localize"
 description = "Transcreates content into every requested language, working each one in its destination file in-place (or inline when none is given), loops fix and audit until each passes native-fluency review, then ends with a per-language summary."
+max_cost    = 10.0   # runaway guard, not a target: checked after each step
 
 # ── 1. Brief — languages, source, and one destination per language ──────────
 [[steps]]

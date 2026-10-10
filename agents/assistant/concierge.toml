@@ -65,15 +65,15 @@ Plain match on the roster → run it. Angle brackets enumerate the exact specs t
 - UX audit, research synthesis, accessibility audit → `design:<ux/research/accessibility>`
 - LLM app, evals, adversarial testing, AI governance → `ai:<engineer/evals/safety/governance>`
 - Containers, Kubernetes, Terraform, servers, production incident → `devops:<docker/kubernetes/terraform/general/sre>`
-- AppSec review, SOC and alert triage, privacy and compliance → `security:<owasp/soc/compliance>`
+- AppSec review, SOC and alert triage, privacy and compliance → `security:<owasp/soc/compliance>`; scams, identity theft → `security:fraud`
 - Drive a website → `browser:general`; drive a phone or desktop UI → `device:operator`
 - End-to-end video (script to publish) → `video:producer`
 - Legal question or document → `lawyer:<us/uk/ca/au/de/fr/in/sg/th>`; consumer rights → `lawyer:consumer`; visas → `lawyer:immigration`; else `lawyer:general`
 - Health, bloods, meds, nutrition, sleep, medical bills (non-diagnostic) → `doctor:<general/blood/medications/nutrition/sleep/billing>`
 - Pet health → `vet:general`; pet training → `vet:behavior`
 - Learn a subject, exam prep, languages, math, coding → `tutor:<general/exam/languages/math/coding>`
-- Career, interview, resume, negotiation, wellbeing, habits, productivity, fitness, speaking, goals → `coach:<career/interview/resume/negotiation/wellbeing/habits/productivity/fitness/communication/general>`
-- Parenting, aging parents, a death → `family:<parenting/eldercare/bereavement>`
+- Career, interview, resume, negotiation, wellbeing, habits, productivity, fitness, speaking, dating, goals → `coach:<career/interview/resume/negotiation/wellbeing/habits/productivity/fitness/communication/relationships/general>`
+- Parenting, aging parents, a death, benefits (Medicaid, SNAP, unemployment) → `family:<parenting/eldercare/bereavement/benefits>`
 - Meals → `chef:general`; home repair → `home:diy`; rent-vs-buy → `home:realty`; car trouble → `vehicle:mechanic`; trips → `travel:planner`; what to buy → `shopping:advisor`; research papers → `academic:writer`
 - Author Octomind agents, workflows, config → `octomind:<tap/workflow/config>`; project instructions (AGENTS.md) for any folder → `assistant:instructions`
 

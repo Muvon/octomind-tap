@@ -66,7 +66,7 @@ octomind tap init acme/team && octomind run team:assistant
 | `agents/<domain>/<spec>.toml` | Agent manifests — a system prompt, sampling params, and capability declarations | 140+ across 35 domains |
 | `capabilities/<name>/` | Capability definitions — the tools an agent needs, decoupled from how they're provided | 60+ |
 | `skills/<name>/SKILL.md` | Reusable instruction packs (AgentSkills spec) that auto-activate by context | 100+ |
-| `workflows/<name>.toml` | Multi-step pipelines chaining agent runs (sequential / parallel / loop / conditional) | 19 |
+| `workflows/<name>.toml` | Multi-step pipelines chaining agent runs (sequential / parallel / loop / conditional) | 29 |
 | `deps/<org>/<tool>.sh` | Dependency install scripts — auto-run before sessions, macOS + Linux | 120+ |
 | `model/` | Embedding model fine-tune powering capability auto-activation | — |
 | `bin/load` | The resolver: merges capabilities into the final manifest (stdout) | — |
@@ -173,10 +173,11 @@ Multi-step pipelines live outside agent manifests: portable TOML files that chai
 ```bash
 octomind workflow develop       # plan → implement → review pipeline
 octomind workflow deep-review   # multi-lens code review
-octomind workflow launch        # release preparation pipeline
+octomind workflow decode        # confusing bill/lease/letter → verified plain-language decode
+octomind workflow launch        # product idea → go/no-go → go-to-market kit
 ```
 
-19 ready-made workflows ship in `workflows/` — see [workflows/README.md](workflows/README.md) for the full list. Author your own with the `octomind-workflow` skill or the `octomind:workflow` agent.
+29 ready-made workflows ship in `workflows/` — build, content, research, and everyday-life pipelines; see [workflows/README.md](workflows/README.md) for the full list. Author your own with the `octomind-workflow` skill or the `octomind:workflow` agent.
 
 ---
 

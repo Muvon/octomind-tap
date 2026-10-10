@@ -24,6 +24,9 @@ Build / repo (operate on the current directory):
 | [`deep-review`](./deep-review.toml) | Reviews a change from five independent lenses in parallel, adversarially verifies every finding against the real code, then synthesizes one severity-ordered review with a verdict. | `parallel` |
 | [`document`](./document.toml) | Classifies the current changes into a SemVer bump and change buckets, drafts README, changelog, and release notes in parallel, then reconciles them into one consistent plan via a validating gate. | `parallel` + `loop` |
 | [`plan-and-build`](./plan-and-build.toml) | Drafts a concise implementation spec from the request, then implements it and verifies with the project's own check. | `conditional` |
+| [`triage`](./triage.toml) | Checks an issue report against the current repo, verifies every code anchor, then produces a CONFIRMED / NEEDS_INFO / NOT_A_BUG verdict with labels, priority, and a maintainer reply draft; never posts. | `conditional` |
+| [`test`](./test.toml) | Writes behavior tests for the changed code or a named module, then proves they catch bugs by passing on current code, touching only test files, and failing under deliberate mutations that are reverted exactly. | `loop` |
+| [`postmortem`](./postmortem.toml) | Builds a timestamped timeline from pasted incident evidence, analyzes contributing factors and response metrics in parallel, writes a blameless postmortem, and loops an independent judge until it is traceable, blameless, and arithmetically correct. | `parallel` + `loop` |
 
 Build / market / write / research (driven by a single stdin goal):
 
@@ -38,6 +41,19 @@ Build / market / write / research (driven by a single stdin goal):
 | [`apply`](./apply.toml) | Turns a master resume and a job posting into a tailored, ATS-optimized resume, a cover letter, and an honest match-gap report, refined by a screen/fix loop. Produces documents; never auto-submits. | `loop` |
 | [`report`](./report.toml) | Turns a data source into a decision-ready report with every number computed from the data and inline-SVG charts, refined by an accuracy loop, delivered as self-contained HTML that prints to PDF. | `loop` |
 | [`seo`](./seo.toml) | Audits a site or page across technical, on-page, off-page, and GEO lenses, then turns the evidence-bound findings into a tiered, finding-traceable, KPI-tagged SEO strategy brief. | sequential |
+
+Everyday life (paste or point at the thing; get a checked document back — you act, nothing is sent or submitted for you):
+
+| Name | What it does | Showcases |
+|------|--------------|-----------|
+| [`decode`](./decode.toml) | Routes a confusing letter, bill, contract, lease, or notice to the right specialist, composes a plain-language decode with red flags, deadlines, next steps, and a draft reply when warranted, and verifies every figure and date against the source. | `conditional` + `loop` |
+| [`health-brief`](./health-brief.toml) | Extracts structured health facts and gates on red flags first, then analyzes labs, medications, and symptom context in parallel and delivers a judge-checked, non-diagnostic visit-prep brief with ranked questions for your clinician. | graph + `parallel` + `loop` |
+| [`money-checkup`](./money-checkup.toml) | Turns a bank or card statement export into a subscription and fee audit with every figure computed from the transactions, independently recomputed by an auditor loop, and ranked by annualized savings. | `loop` |
+| [`meeting`](./meeting.toml) | Turns a meeting transcript or notes into minutes, decisions, owner-and-date action items, and follow-up drafts, each traced to a verbatim quote by an independent verifier loop. | `parallel` + `loop` |
+| [`meal-plan`](./meal-plan.toml) | Turns household constraints into a 7-day meal plan with recipes, aisle-grouped grocery list, and prep schedule, then loops an independent auditor on allergens, list coverage, daily time, and budget until it passes. | `loop` |
+| [`trip`](./trip.toml) | Turns a trip request into a day-by-day itinerary and budget table via parallel logistics, lodging, and activities research, then loops a feasibility audit on pacing, transit, opening hours, and budget. | `parallel` + `loop` |
+| [`fixit`](./fixit.toml) | Triages a broken thing at home, in the car, or with a pet; stops immediately on danger signs, otherwise routes to a specialist for a ranked diagnosis, DIY-vs-pro call, and fix plan checked by a safety auditor. | graph + `loop` |
+| [`interview-prep`](./interview-prep.toml) | Turns a master resume and a job posting into a grounded interview prep pack — likely questions, STAR stories from real experience, honest gap answers — refined by a screen/fix loop. Chain after apply. | `loop` |
 
 ## How resolution works
 
@@ -106,6 +122,13 @@ graph node; `$end` is the reserved terminal target.
   `when = { contains = "..." }` or `when = { matches = "regex" }` for a
   conditional route; each node needs exactly one unconditional default edge,
   declared last.
+
+In graph mode an output is readable only if its producer ran on the selected
+route. Octomind fails the step at runtime (not in `--dry-run`) when a prompt reads
+`{{x}}` and `x` was skipped, so a node reached by several routes must not read a
+route-specific output — give each route its own tail node, or use ordered
+`conditional` blocks (skipped sub-steps resolve to empty text). `lint-workflows.sh`
+checks this.
 
 ### Variable substitution
 
