@@ -35,7 +35,7 @@ Two modes:
 
 2. Classify. Feature (default) / bug / refactor-performance / other. An ambiguous type becomes a question or a recorded default.
 
-3. Clarify. Score your draft understanding against the ambiguity taxonomy — functional scope, data model, interaction flow, non-functional qualities, integrations, edge cases and failure handling, constraints, terminology, completion signals — marking each Clear / Partial / Missing. Then run the protocol for the active mode (rules). Interactive: share a short findings summary first ("here's what exists, here's the established pattern"). Autonomous: record every applied default.
+3. Clarify. Find ambiguity by divergence, not self-rating — agents overrate how well-specified a task is. For each area of the ambiguity taxonomy (functional scope, data model, interaction flow, non-functional qualities, integrations, edge cases and failure handling, constraints, terminology, completion signals), sketch the two most plausible readings a competent implementer could take: same observable behavior is Clear; different observable behavior is a divergence. Rank divergences by impact — scope, then security/privacy/data integrity, then user-visible behavior, then technical detail — and run the protocol for the active mode (rules). Interactive: share a short findings summary first ("here's what exists, here's the established pattern"). Autonomous: record every applied default.
 
 4. Specify — into files, always. Write specs/<NNN>-<slug>/spec.md (next free number; reuse the repo's existing spec folder and numbering if it has one), with tasks.md beside it, plus design.md only for risky or unfamiliar work. Append a ## Clarifications log (- Q: … → A: …) and edit the answers into the affected sections — the file, not the chat, is the record. Revisions edit the file in place.
 
@@ -51,21 +51,23 @@ Load the `spec-authoring` skill for the full EARS grammar, pattern table, and ra
 
 Wording: one requirement, one thought — split on "and"/"or". No pronouns; repeat the noun. No vague terms (fast, robust, properly, gracefully, appropriate, some, several) — each becomes a number, threshold, or enumerated list. Give numeric ranges, never "many". One canonical term per concept.
 
-Coverage: give every requirement a stable ID (FR-001…) and ensure each is covered by at least one scenario or acceptance criterion — an uncovered FR is a defect. Scenarios carry literal values, never placeholders, so a tester can lift them verbatim. Acceptance criteria are binary pass/fail. Every happy path needs an error path; every input an empty/invalid/boundary case; every multi-actor flow a concurrent case; every external dependency an unavailable case.
+Acceptance: give every requirement a stable ID (FR-001…) and prove each at least once in Acceptance, by the lightest form that pins it — Scenario (one concrete flow, literal values, never placeholders), Property ("For any <input class>, <relation>" — a rule over a whole input space: validation, transforms, ordering, idempotency, round-trips, permissions, refactor equivalence; prefer it over a list of examples), or Check (binary; budgets and non-functional qualities only). An unproven FR is a defect. Every proof must reject a plausible wrong implementation — if a stub or a hard-coded happy path would pass, sharpen it. Error behavior lives in If/then requirements carrying the exact user-facing response. For the inputs, flows, and dependencies the change touches: every happy path an error path, every input an empty/invalid/boundary case, every multi-actor flow a concurrent case, every external dependency an unavailable case. Don't invent corner cases the change can't reach.
+
+Say each behavior once: the requirement states it, one proof pins it, nothing restates it. A small change (≤3 FRs) is Overview, Requirements, Acceptance, Guardrails, and Verification in about 300 words. Every extra line costs human review and dilutes what the implementer must hold.
 
 Constraints, not instructions. Guardrails carry what may not be done: protected surfaces (public API, shipped migrations, generated code), forbidden moves (no new dependencies, no refactors beyond the diff), measurable budgets, and invariants that must survive the change. A forbidden move that seems necessary is a stop-and-report. Never dictate process to a competent implementer — specify outcomes and boundaries.
 
 Code appears only as behavioral evidence — an input→output pair, a payload shape, an error body, each ≤10 lines and tied to the requirement it illustrates. Function bodies, algorithms, class design, and solution pseudocode stay out.
 
-Interactive clarification: ask only about Partial/Missing areas that materially change the spec — max 5 per round, numbered. Each question is multiple-choice with 2–4 lettered options and the recommended one marked, or answerable in ≤5 words, so "1a, 2c, 3: admins only" is a valid reply. Ground options in findings ("the repo does A here and B there — which?"). Never ask what exploration already answered; ask WHICH errors and HOW, not "handle errors?".
+Interactive clarification: ask only about divergences that materially change the spec, highest impact first — max 5 per round, numbered. Each question is multiple-choice with 2–4 lettered options and the recommended one marked, or answerable in ≤5 words, so "1a, 2c, 3: admins only" is a valid reply. Ground options in findings ("the repo does A here and B there — which?"). Never ask what exploration already answered; ask WHICH errors and HOW, not "handle errors?".
 
-Autonomous clarification: ask nothing. Apply the option you would have recommended and record each applied default under Assumptions with its reason. Where no reasonable default exists, insert [NEEDS CLARIFICATION: <specific question>] inline at the exact spot. An assumption is acceptable only when recorded and verifiable — a silent default is a defect.
+Autonomous clarification: ask nothing. Apply the option you would have recommended and record each applied default under Assumptions with its reason. Where no default is safe, insert [NEEDS CLARIFICATION: <specific question>] inline at the exact spot — reserve markers for scope, security, privacy, and data-integrity divergences; lower-impact ones always get a recorded default. An assumption is acceptable only when recorded and verifiable — a silent default is a defect.
 
 Scope and split. One spec is one mergeable outcome — one review sitting, the thing you would ship as a whole; review capacity is the scarcest resource, so aim the boundary there. Split when Done commands differ, when a slice could ship alone, when risk profiles differ, or when tasks.md passes ~10–15 items; keep it whole when the parts share one behavior and one test suite. For a large change, write a thin parent first (goal, non-goals, interfaces between slices), then one child spec per slice.
 
 Task-type adaptation (full section rules in the skill's `reference/spec-template.md`):
-- Bug — lead with Problem Statement, Reproduction Steps (expected vs actual), Root Cause (file:line); scenarios describe fixed behavior plus regression invariants; omit User Stories.
-- Refactor/performance — add Current State and Target State (file:line); scenarios become Behavior Invariants; add Risks & Rollback; omit User Stories.
+- Bug — lead with Problem Statement, Reproduction Steps (expected vs actual), Root Cause (file:line); Acceptance proves the fixed behavior plus regression invariants; omit User Stories.
+- Refactor/performance — add Current State and Target State (file:line); Acceptance holds Behavior Invariants, usually as Properties; add Risks & Rollback; omit User Stories.
 - Brownfield — state verified current truth in Current Behavior; tag each requirement ADDED / MODIFIED / REMOVED.
 </rules>
 
@@ -73,6 +75,7 @@ Task-type adaptation (full section rules in the skill's `reference/spec-template
 - ❌ "Validate the form with a Validator struct returning Vec<ValidationError>" → ✅ "FR-003: If a required field is empty, then the system shall reject the submission listing every missing field."
 - ❌ "The system should be fast" → ✅ "FR-007: The system shall respond within 200ms at 1000 concurrent users."
 - ❌ "Handle permissions properly" → ✅ "Scenario (FR-004): Given a user with role editor, When they delete a published article, Then the system rejects with 'Editors cannot delete published articles'."
+- ❌ Three scenarios for "", "Ann", and an 81-character name → ✅ "Property (FR-002): For any string s, the system accepts s as a display name iff 1 ≤ length(s) ≤ 80."
 - ❌ Guardrails: "remember to keep the API stable" → ✅ Guardrails: "Protected surface: the public JSON contract — additive changes only. Invariant: clients sending only `name` continue to succeed."
 - ❌ Summary line: "FR-004 [ADDED]: If the invite token is older than 7 days, then the system shall return 410." → ✅ Summary line: "An invite link older than 7 days shows 'This invite has expired', and the admin can resend it (mine)."
 </examples>
@@ -86,15 +89,13 @@ Write spec.md in the shape defined by the `spec-authoring` skill's `reference/sp
 ## Current Behavior      *(changes to existing behavior only)*
 ## User Stories         *(features only)*
 ## Requirements         *(FR-001 [ADDED|MODIFIED|REMOVED]: <EARS statement>)*
-## Behavior Scenarios   *(Scenario: <name> (FR-001) → Given / When / Then)*
-## Error Handling       *(| Condition | System behavior | User-facing response | FR |)*
-## Acceptance Criteria  *(AC-1 (FR-001): <binary condition>)*
+## Acceptance           *(Scenario | Property | Check (FR-001): … — every FR proven, none twice)*
 ## Assumptions          *(autonomous mode or "you decide" answers)*
 ## Guardrails           *(protected surfaces, forbidden moves, budgets, invariants)*
 ## Out of Scope
 ## Open Questions       *(only if [NEEDS CLARIFICATION] markers remain)*
 ## Context              *(bullet list, then <context> with verified path:range lines)*
-## Verification         *(the exact command, mapped to the ACs it proves)*
+## Verification         *(the exact command, mapped to the FRs it proves)*
 SPEC STATUS: READY
 ```
 
@@ -135,6 +136,7 @@ SPEC STATUS: READY
 - Don't cite a path you haven't verified with tools.
 - Don't assume silently: interactive → ask; autonomous → record the default or mark [NEEDS CLARIFICATION].
 - Don't ship a vague term — every quality claim becomes a number, threshold, or enumerated list.
+- Don't state a behavior twice — one requirement, one proof; no separate error table.
 - Don't emit SPEC STATUS: READY while any [NEEDS CLARIFICATION] marker remains.
 - Don't exceed 5 questions per round; give options so answers stay short.
 - Don't paste the spec into an interactive reply — summarize only what users see; requirement IDs, tests, commands, and code paths stay in spec.md.

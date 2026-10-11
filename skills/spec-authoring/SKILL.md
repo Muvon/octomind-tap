@@ -1,7 +1,7 @@
 ---
 name: spec-authoring
 title: "Behavioral Spec Authoring"
-description: "How to write a behavioral spec an autonomous agent can implement with zero unstated assumptions: EARS requirement patterns, the requirements/constraints/verification triple, wording discipline, spec layering and split rules (repo/feature/task, parent-child), the clarification protocol for interactive and autonomous runs, and the scratchpad rewrite discipline. Activate when writing, revising, or reviewing a feature spec or acceptance criteria."
+description: "How to write a behavioral spec an autonomous agent can implement with zero unstated assumptions: EARS requirement patterns, the requirements/constraints/verification triple, proof forms (scenario, property, check), wording discipline, spec layering and split rules (repo/feature/task, parent-child), divergence-based clarification for interactive and autonomous runs, and the scratchpad rewrite discipline. Activate when writing, revising, or reviewing a feature spec or acceptance criteria."
 license: Apache-2.0
 compatibility: "Language-agnostic. Needs a codebase to ground the spec in and filesystem/search access to verify every cited path."
 domains: developer
@@ -35,6 +35,7 @@ Requirements without constraints let the implementer widen scope. Constraints wi
 Two properties govern everything else.
 
 - Depth scales with unfamiliarity. A variant of something already built needs three EARS lines and a command; a new subsystem needs a short design section first. Padding a familiar change with ceremony costs as much as under-specifying a novel one.
+- Say each behavior once. A requirement states it, one proof pins it, and nothing restates it. A small change (≤3 requirements) fits in about 300 words; every extra line costs human review and dilutes what the implementer must hold.
 - The spec is thin and dies at merge — one spec is one mergeable outcome: the thing you would review and ship as a whole. It is not a design document, a task list, or a store of decisions; standing repo knowledge belongs in AGENTS.md.
 
 ## Rules
@@ -52,7 +53,7 @@ Fixed clause order, `shall` as the only normative verb, one requirement per stat
 | Optional | Where <feature enabled>, the <system> shall <response> | Flags, optional components, per-tenant config |
 | Complex | While <state>, when <trigger>, the <system> shall <response> | Precondition plus trigger |
 
-`If/then` is reserved for unwanted behavior. Cover every happy path with an error path, every input with an empty/invalid/boundary case, every multi-actor flow with a concurrent case, every external dependency with an unavailable case.
+`If/then` is reserved for unwanted behavior, and its response carries the exact user-facing message or status — that is where error handling lives. For the inputs, flows, and dependencies the change touches, cover the happy path with an error path, each input with an empty/invalid/boundary case, each multi-actor flow with a concurrent case, each external dependency with an unavailable case. Don't invent corner cases the change can't reach.
 
 ### Wording discipline
 
@@ -62,12 +63,21 @@ Fixed clause order, `shall` as the only normative verb, one requirement per stat
 - One canonical term per concept. Never synonym-swap.
 - Requirements state what the system shall do, never how. Code appears only as behavioral evidence: an input→output pair, a payload shape, an error body, a command with expected output.
 
-### Traceability and verification
+### Acceptance and verification
 
-- Give every requirement a stable ID (FR-001…). Scenarios and acceptance criteria reference the FRs they cover; every FR is covered by at least one — an uncovered FR is a defect.
-- Scenarios use literal values ("editor", "Enter a valid email"), never placeholders, so a tester can lift them into a test verbatim.
-- Acceptance criteria are binary pass/fail, never "looks correct".
-- Name the exact project command that proves the work: the test/build/lint invocation, mapped to the requirements it proves. A spec whose verification section says "test it" is not a spec.
+Every requirement is proven at least once in Acceptance, by the lightest form that pins it, and stated nowhere else. Restating one behavior as a scenario, an error-table row, and a criterion triples review cost and tells the implementer nothing new.
+
+| Form | Shape | Use for |
+|---|---|---|
+| Scenario | Scenario (FR-001): Given <literal state>, when <action>, then <observable outcome>. | One concrete flow, with literal values a tester lifts verbatim |
+| Property | Property (FR-002): For any <input class>, <relation that holds>. | A rule over a whole input space: validation, transforms, ordering, idempotency, round-trips, permissions, refactor equivalence |
+| Check | Check (FR-003): <binary condition> | Budgets and non-functional qualities the forms above can't express |
+
+- Prefer a property wherever a rule covers many inputs: one line replaces a list of examples, and the implementer can generate tests from it.
+- Give every requirement a stable ID (FR-001…). An FR with no proof is a defect; the validator rejects it.
+- Scenarios use literal values ("editor", "Enter a valid email"), never placeholders.
+- Every proof is binary pass/fail and rejects a plausible wrong implementation. If a stub, a hard-coded happy path, or an off-by-one build would pass it, sharpen it.
+- Name the exact project command that proves the work, mapped to the FRs it proves. A spec whose verification section says "test it" is not a spec.
 
 ### Constraints, not instructions
 
@@ -83,11 +93,11 @@ Never dictate process to a competent implementer. Specify outcomes and boundarie
 
 ### Clarification — interactive and autonomous
 
-Scan the draft against the ambiguity taxonomy and mark each area Clear / Partial / Missing: functional scope · data model · interaction flow · non-functional qualities · integrations · edge cases and failure handling · constraints and tradeoffs · terminology · completion signals.
+Find ambiguity by divergence, not self-rating — agents reliably overrate how well-specified a task is. For each area of the ambiguity taxonomy (functional scope · data model · interaction flow · non-functional qualities · integrations · edge cases and failure handling · constraints and tradeoffs · terminology · completion signals), sketch the two most plausible readings a competent implementer could take. Same observable behavior: Clear. Different observable behavior: a divergence to resolve. Rank divergences by impact — scope, then security, privacy, and data integrity, then user-visible behavior, then technical detail.
 
 Interactive (a human is present):
 
-- Ask only about Partial/Missing areas that materially change the spec — max 5 per round, numbered.
+- Ask only about divergences that materially change the spec, highest impact first — max 5 per round, numbered.
 - Every question is multiple-choice with 2–4 lettered options and the recommended one marked, or answerable in ≤5 words. "1a, 2c, 3: admins only" must be a valid reply.
 - Ground options in findings: "I see two patterns in the codebase: A or B?"
 - Never ask what exploration already answered. Ask WHICH errors and HOW, not "handle errors?".
@@ -96,7 +106,7 @@ Interactive (a human is present):
 Autonomous (no human can answer):
 
 - Ask nothing. Apply the option you would have recommended and record every applied default under Assumptions — one line each, with the reason.
-- Where no reasonable default exists, insert `[NEEDS CLARIFICATION: <specific question>]` inline at the exact spot. Never guess silently.
+- Where no default is safe, insert `[NEEDS CLARIFICATION: <specific question>]` inline at the exact spot. Reserve markers for scope, security, privacy, and data-integrity divergences; lower-impact ones always get a recorded default. Never guess silently.
 - Any remaining marker forces `SPEC STATUS: NEEDS CLARIFICATION`; orchestration routes those to the human.
 
 An assumption is acceptable only when recorded and verifiable. A silent default is a defect.
@@ -139,8 +149,8 @@ Write the parent first and pin the interfaces. Only then can the children run in
 
 ### Adapt by task type
 
-- Bug — lead with Problem Statement (what breaks, who is affected), Reproduction Steps (numbered, expected vs actual), Root Cause (verified file:line); scenarios describe the fixed behavior plus regression invariants; omit user stories.
-- Refactor / performance — add Current State and Target State grounded in file:line; scenarios become behavior invariants (what must not change); add risks and rollback.
+- Bug — lead with Problem Statement (what breaks, who is affected), Reproduction Steps (numbered, expected vs actual), Root Cause (verified file:line); Acceptance proves the fixed behavior plus regression invariants; omit user stories.
+- Refactor / performance — add Current State and Target State grounded in file:line; Acceptance holds behavior invariants (what must not change), usually as properties ("for any input, the output equals the pre-change output"); add risks and rollback.
 - Brownfield behavior change — state the verified current truth, then tag each requirement ADDED / MODIFIED / REMOVED.
 - Beyond ~30 requirements, or a tasks.md past ~10–15 items — apply the split rules above instead of growing one file.
 
@@ -154,6 +164,16 @@ Requirement, vague → testable:
    reject the request with status 413 and body {"error":"file_too_large"}.
 ✅ FR-005: The system shall complete a 10 MB upload within 5 seconds at
    100 concurrent uploads.
+```
+
+Many examples → one property:
+
+```text
+❌ Scenario: "Ann" is accepted. Scenario: "" is rejected. Scenario: an 81-char name is rejected.
+✅ FR-002: If a display name is outside 1–80 characters, then the system shall
+   reject it with "Name must be 1–80 characters".
+   Property (FR-002): For any string s, the system accepts s as a display name
+   iff 1 ≤ length(s) ≤ 80.
 ```
 
 Constraint, instruction → boundary:
@@ -172,11 +192,12 @@ Constraint, instruction → boundary:
 - [ ] Is this a parent with thin children (interfaces pinned first) rather than one monolith?
 - [ ] Per-feature content kept out of AGENTS.md; tasks.md lives inside the spec folder; scratchpad rewritten, not appended?
 - [ ] Every requirement is one EARS statement, singular, with `shall` and no vague term?
-- [ ] Happy path, error path, boundary, concurrency, and dependency-unavailable cases each covered?
-- [ ] Every requirement has an ID and at least one scenario or acceptance criterion; every criterion is binary?
+- [ ] Happy, error, boundary, concurrency, and dependency-unavailable cases covered where the change touches them — and no invented ones?
+- [ ] Every requirement has an ID and the one proof it needs (scenario, property, or check), with no behavior stated twice? Every proof binary and able to reject a plausible wrong implementation?
 - [ ] Constraints are imperative boundaries (protected surfaces, forbidden moves, budgets, invariants) — not process instructions?
 - [ ] The verification section names the exact command that must exit 0 and maps it to the requirements it proves?
 - [ ] Every cited path was verified with tools?
+- [ ] Ambiguity found by divergence (two plausible readings with different observable behavior) and ranked by impact, not by self-rating?
 - [ ] Interactive: ≤5 grounded, multiple-choice questions per round? Autonomous: every default recorded, no silent assumption?
 - [ ] No `[NEEDS CLARIFICATION]` marker remains while the spec claims to be ready?
 - [ ] Does every line change what gets built or how it is verified? Delete the lines that change neither.
@@ -185,4 +206,7 @@ Constraint, instruction → boundary:
 
 - `reference/spec-template.md` — output skeleton, section rules by task type, folder layout when saved.
 - EARS — Alistair Mavin, Rolls-Royce (2009): https://alistairmavin.com/ears/
+- ClarifyGPT — ask only where plausible readings diverge: https://arxiv.org/abs/2310.10996
+- Ambig-SWE — agents miss underspecification unless they probe for it: https://arxiv.org/abs/2502.13069
+- nl2postcond — postconditions written from intent catch real bugs: https://arxiv.org/abs/2310.01831
 - The closing status line is a machine-checked handoff sentinel; keep its spelling and position exact so orchestration can branch on it.

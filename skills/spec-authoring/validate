@@ -66,4 +66,18 @@ if [[ -n $flat ]]; then
   fail=1
 fi
 
+# 6. Every requirement is proven in the Acceptance section — an unproven FR is a defect.
+acceptance="$(printf '%s\n' "$input" | awk '/^## /{acc = ($0 ~ /^## Acceptance/)} acc')"
+uncovered=""
+for id in $(printf '%s\n' "$input" | grep -oE '^- FR-[0-9]+' | cut -c3- | sort -u || true); do
+  if ! printf '%s\n' "$acceptance" | grep -qE "$id([^0-9]|$)"; then
+    uncovered+="$id "
+  fi
+done
+
+if [[ -n $uncovered ]]; then
+  echo "Requirements with no proof in ## Acceptance (add a Scenario, Property, or Check referencing each): $uncovered" >&2
+  fail=1
+fi
+
 exit "$fail"
