@@ -2,7 +2,7 @@
 
 > Run a fully-configured AI specialist with one command — no setup, no config files, no API plumbing.
 
-The community registry for [Octomind](https://github.com/muvon/octomind), the CLI-first AI agent runtime. **140+ agents across 35 domains**, 100+ skill packs, 19 ready-made workflows, 120+ dependency scripts — each one a single TOML file that Octomind resolves and merges into your session at runtime.
+The community registry for [Octomind](https://github.com/muvon/octomind), the CLI-first AI agent runtime. **140+ agents across 35 domains**, 100+ skill packs, 29 ready-made workflows, 120+ dependency scripts — each one a single TOML file that Octomind resolves and merges into your session at runtime.
 
 ```bash
 octomind run doctor:blood        # interpret blood test results
