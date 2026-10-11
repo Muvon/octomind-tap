@@ -57,11 +57,11 @@ Fixed clause order, `shall` as the only normative verb, one requirement per stat
 
 ### Wording discipline
 
-- One requirement, one thought. Split on "and"/"or" — a compound statement is two untestable requirements.
+- One requirement, one trigger, one response — a single `shall`. Split on "and"/"or" and on lists of effects; a compound statement is several untestable requirements.
 - No pronouns. Repeat the noun so each statement stands alone.
 - No vague terms: fast, robust, properly, gracefully, user-friendly, appropriate, some, several, many. Replace each with a number, threshold, or enumerated list. Give numeric ranges, never "many".
 - One canonical term per concept. Never synonym-swap.
-- Requirements state what the system shall do, never how. Code appears only as behavioral evidence: an input→output pair, a payload shape, an error body, a command with expected output.
+- Requirements state what the system shall do, never how. Requirements and proofs name only what an observer outside the code can see: inputs, outputs, messages, stored results, timings. A line checkable only by reading the code — a constant's name, a file location, a module, a lock or batch mechanism, which client gets called — is implementation: cut it, or move it to Guardrails when the repo forces it. file:line belongs in Current Behavior and Context only. Code appears only as behavioral evidence: an input→output pair, a payload shape, an error body, a command with expected output.
 
 ### Acceptance and verification
 
@@ -78,6 +78,7 @@ Every requirement is proven at least once in Acceptance, by the lightest form th
 - Scenarios use literal values ("editor", "Enter a valid email"), never placeholders.
 - Every proof is binary pass/fail and rejects a plausible wrong implementation. If a stub, a hard-coded happy path, or an off-by-one build would pass it, sharpen it.
 - Name the exact project command that proves the work, mapped to the FRs it proves. A spec whose verification section says "test it" is not a spec.
+- Behavior that must not change is not an FR. State it once: as `Property (invariant): …` in Acceptance when a test can prove it, otherwise as an Invariant in Guardrails.
 
 ### Constraints, not instructions
 
@@ -100,13 +101,14 @@ Interactive (a human is present):
 - Ask only about divergences that materially change the spec, highest impact first — max 5 per round, numbered.
 - Every question is multiple-choice with 2–4 lettered options and the recommended one marked, or answerable in ≤5 words. "1a, 2c, 3: admins only" must be a valid reply.
 - Ground options in findings: "I see two patterns in the codebase: A or B?"
+- Never ask about mechanism (storage, scheduling, libraries, which component does it) — that is the implementer's call.
 - Never ask what exploration already answered. Ask WHICH errors and HOW, not "handle errors?".
 - Iterate rounds until no high-impact ambiguity remains.
 
 Autonomous (no human can answer):
 
 - Ask nothing. Apply the option you would have recommended and record every applied default under Assumptions — one line each, with the reason.
-- Where no default is safe, insert `[NEEDS CLARIFICATION: <specific question>]` inline at the exact spot. Reserve markers for scope, security, privacy, and data-integrity divergences; lower-impact ones always get a recorded default. Never guess silently.
+- Where no default is safe, insert `[NEEDS CLARIFICATION: <specific question>]` inline at the exact spot. Reserve markers for scope, security, privacy, and data-integrity divergences; lower-impact ones always get a recorded default. For a security, privacy, or data-loss divergence, a default is safe only when it is the more restrictive reading; otherwise mark it. Never guess silently.
 - Any remaining marker forces `SPEC STATUS: NEEDS CLARIFICATION`; orchestration routes those to the human.
 
 An assumption is acceptable only when recorded and verifiable. A silent default is a defect.

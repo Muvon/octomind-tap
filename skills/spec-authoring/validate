@@ -69,7 +69,7 @@ fi
 # 6. Every requirement is proven in the Acceptance section — an unproven FR is a defect.
 acceptance="$(printf '%s\n' "$input" | awk '/^## /{acc = ($0 ~ /^## Acceptance/)} acc')"
 uncovered=""
-for id in $(printf '%s\n' "$input" | grep -oE '^- FR-[0-9]+' | cut -c3- | sort -u || true); do
+for id in $(printf '%s\n' "$input" | grep -oE '^- (\*\*)?FR-[0-9]+' | grep -oE 'FR-[0-9]+' | sort -u || true); do
   if ! printf '%s\n' "$acceptance" | grep -qE "$id([^0-9]|$)"; then
     uncovered+="$id "
   fi
@@ -77,6 +77,18 @@ done
 
 if [[ -n $uncovered ]]; then
   echo "Requirements with no proof in ## Acceptance (add a Scenario, Property, or Check referencing each): $uncovered" >&2
+  fail=1
+fi
+
+# 7. One requirement, one response — a requirement bullet (including wrapped lines) carries a single 'shall'.
+multi="$(printf '%s\n' "$input" | awk '
+  /^- (\*\*)?FR-[0-9]+/ { if (n > 1) print id; match($0, /FR-[0-9]+/); id = substr($0, RSTART, RLENGTH); n = 0; inreq = 1 }
+  /^(- |## |$)/ && !/^- (\*\*)?FR-[0-9]+/ { if (inreq && n > 1) print id; inreq = 0; n = 0 }
+  inreq { n += gsub(/(^|[^a-zA-Z])shall([^a-zA-Z]|$)/, "&") }
+  END { if (inreq && n > 1) print id }')"
+
+if [[ -n $multi ]]; then
+  echo "Requirements with more than one 'shall' — split each into one trigger and one response:" $multi >&2
   fail=1
 fi
 
