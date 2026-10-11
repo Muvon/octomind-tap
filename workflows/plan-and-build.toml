@@ -1,75 +1,199 @@
-# Title: Plan and Build: Spec-then-Implement Chain
+# Title: Plan and Build: Feature Request to EARS Spec and Tested Code
 #
-# Public workflow: turn a well-scoped request into a concise implementation
-# spec, then implement that spec and prove it with the project's own check.
-# The minimal two-step prompt chain with a deterministic gate at the end —
-# use this when the diff is roughly describable up front; reach for the
-# develop loop when conformance is uncertain. Public roles only.
+# Public workflow: turn a request into a behavioral spec, then implement that
+# spec through a developer/evaluator loop that proves every requirement with a
+# named, passing test. Graph routing: a spec that still needs clarification
+# never reaches the build.
+#
+# Shape:
+# spec (developer:spec, autonomous, spec-authoring skill preloaded — its
+#   validator gates the spec when [skills] auto_validation is on) ->
+#   SPEC STATUS: NEEDS CLARIFICATION -> blocked (questions for the human) -> end
+#   SPEC STATUS: READY -> build loop (developer -> brief -> evaluator, max 3) ->
+#     VERDICT: APPROVED -> summary -> end
+#     cap reached       -> stalled (gaps for a human decision) -> end
+#
+# Requirement contract: the spec gives every requirement a stable ID (FR-001…)
+# and proves each in its Acceptance section. The developer maps each FR to the
+# test that proves it; the evaluator approves only when every FR is met by the
+# diff and its test passes in the evidence. Public roles only.
 
-name        = "plan-and-build"
-description = "Drafts a concise implementation spec from the request, then implements it and verifies with the project's own check."
+name            = "plan-and-build"
+description     = "Turns a feature request into an EARS behavioral spec with testable requirements, stops with clarifying questions when anything is unresolved, then implements it in a developer/evaluator loop that proves every requirement with a named passing test before summarizing the change."
+entry           = "spec"
+max_transitions = 4
 
-# ── 1. Plan: request → implementation spec ───────────────────────────────────
+# ── 1. Spec: request → behavioral spec ───────────────────────────────────────
 [[steps]]
-name    = "plan"
+name    = "spec"
 role    = "developer:spec"
 session = "fresh"
+skills  = ["spec-authoring"]
 prompt  = """
-Produce a concise behavioral spec for the request below, in the standard spec shape.
-This is an AUTONOMOUS, non-interactive run — no human can answer questions, so resolve
-ambiguity with documented defaults (record each under Assumptions) rather than asking.
-
-Scope it to the change actually requested. Cover: EARS requirements with stable IDs
-(FR-001…), each with at least one scenario or acceptance criterion; the error, boundary,
-and dependency-unavailable cases; the Guardrails the implementer must respect; what is
-explicitly out of scope; and the project's real verification command (tests / build /
-lint) mapped to the criteria it proves. Ground every cited path with tools.
-
-Describe behavior, not implementation. Do not write the implementation.
-
 <request>
 {{input}}
 </request>
+
+This is an AUTONOMOUS, non-interactive run — no human can answer questions.
+Write the spec for the request above, scoped to the change actually requested,
+then output the complete spec.md content, ending with its SPEC STATUS line.
 """
 
-# ── 2. Gate on the spec status, then build ───────────────────────────────────
+# ── 2a. Blocked: the spec still needs a human ────────────────────────────────
 [[steps]]
-name        = "gate"
-conditional = true
-condition   = { output = "plan", matches = '(?m)^SPEC STATUS: READY' }
-on_match    = ["build"]
-on_no_match = ["blocked"]
+name    = "blocked"
+role    = "developer:brief"
+session = "fresh"
+prompt  = """
+<spec>
+{{spec}}
+</spec>
+
+The spec above ended NEEDS CLARIFICATION — no implementation was attempted.
+Extract its open questions into a short numbered list the user can answer to
+unblock the build, then stop.
+
+Start with exactly: `BLOCKED ON CLARIFICATION — no changes made.`
+"""
+
+# ── 2b. Build loop: developer ↔ evaluator ────────────────────────────────────
+[[steps]]
+name           = "build"
+loop           = true
+max_iterations = 3
+exit_when      = { output = "evaluator", matches = '(?m)^VERDICT: APPROVED' }
 
   [[steps.run]]
-  name    = "build"
+  name    = "developer"
   role    = "developer:general"
-  session = "fresh"
+  session = "continue"
   prompt  = """
-Implement the following spec end to end in the current project. Make the changes
-precisely — touch only what the spec requires. Respect its Guardrails section as
-hard constraints, and cover every requirement and acceptance criterion it states.
-
-When the implementation is done, run the spec's verification command (tests /
-build / lint). Iterate until it passes. Then report the exact command you ran
-and its output as evidence — do not assert success without it.
-
 <spec>
-{{plan}}
+{{spec}}
 </spec>
+
+Implement the spec above end to end in the current project. Touch only what it
+requires, treat its Guardrails as hard constraints, and stop and report if a
+Guardrail would have to break. Prove every requirement with a test: each FR and
+each Acceptance item maps to a test that exercises it.
+
+Run the spec's verification command and iterate until it passes. End with:
+- a requirement map, one line per FR: `FR-001 → <test name>` (or `manual: <check>`
+  only where the spec's Verification says no command can prove it);
+- the exact command you ran and its output as evidence.
+
+Output only the work summary, the map, and the evidence — no preamble.
 """
 
   [[steps.run]]
-  name    = "blocked"
+  name    = "brief"
   role    = "developer:brief"
   session = "fresh"
   prompt  = """
-The spec ended NEEDS CLARIFICATION — no implementation was attempted. Extract
-the open questions from the spec below into a short numbered list the user can
-answer to unblock the build, then stop.
-
-Start with exactly: `BLOCKED ON CLARIFICATION — no changes made.`
-
 <spec>
-{{plan}}
+{{spec}}
 </spec>
+
+Read the spec above and the current unstaged git changes, then brief what the
+diff actually does versus what each FR asks for. Output only the brief.
 """
+
+  [[steps.run]]
+  name    = "evaluator"
+  role    = "developer:general"
+  session = "fresh"
+  prompt  = """
+<spec>
+{{spec}}
+</spec>
+
+<evidence>
+{{developer}}
+</evidence>
+
+<brief>
+{{brief}}
+</brief>
+
+You are grading an implementation in a fresh session: you see the spec, the
+developer's requirement map and verification evidence, and an independent brief
+of the diff — not the developer's reasoning. Check, by ID:
+1. Every FR is met by the diff and mapped to a test that passes in the evidence.
+2. Every Acceptance item (Scenario, Property, Check) is exercised by a test.
+3. No Guardrail is broken.
+4. The verification command ran and passed.
+
+List each failing item with specifics; this goes straight to the developer. If
+every item passes, approve — do not invent criteria the spec never stated.
+
+End with exactly one line: VERDICT: APPROVED or VERDICT: REVISE. Nothing after it.
+"""
+
+# ── 3a. Summary: approved ────────────────────────────────────────────────────
+[[steps]]
+name    = "summary"
+role    = "developer:brief"
+session = "fresh"
+prompt  = """
+<spec>
+{{spec}}
+</spec>
+
+Read the spec above and the implementation in the current unstaged git changes,
+then produce a concise spec-versus-diff briefing for the human reviewer.
+Output only the briefing.
+"""
+
+# ── 3b. Stalled: loop hit its cap without approval ───────────────────────────
+[[steps]]
+name    = "stalled"
+role    = "developer:brief"
+session = "fresh"
+prompt  = """
+<spec>
+{{spec}}
+</spec>
+
+<last_evaluation>
+{{evaluator}}
+</last_evaluation>
+
+The build loop hit its iteration cap WITHOUT evaluator approval — do not present
+this as success. Read the spec and the current unstaged changes, then report for
+a human decision: what was implemented and verified, and every gap the evaluator
+still flags.
+
+Start with exactly: `DID NOT CONVERGE — human review required.`
+"""
+
+# ── Graph routes ─────────────────────────────────────────────────────────────
+# Anything other than an explicit READY falls through to `blocked` — fail safe.
+[[edges]]
+from = "spec"
+to   = "build"
+when = { matches = '(?m)^SPEC STATUS: READY' }
+
+[[edges]]
+from = "spec"
+to   = "blocked"
+
+[[edges]]
+from = "blocked"
+to   = "$end"
+
+[[edges]]
+from = "build"
+to   = "summary"
+when = { output = "evaluator", matches = '(?m)^VERDICT: APPROVED' }
+
+[[edges]]
+from = "build"
+to   = "stalled"
+
+[[edges]]
+from = "summary"
+to   = "$end"
+
+[[edges]]
+from = "stalled"
+to   = "$end"
