@@ -11,15 +11,27 @@
 #   SPEC STATUS: NEEDS CLARIFICATION -> blocked (questions for the human) -> end
 #   SPEC STATUS: READY -> build loop (developer -> brief -> evaluator, max 3) ->
 #     VERDICT: APPROVED -> summary -> end
-#     cap reached       -> stalled (gaps for a human decision) -> end
+#     cap reached or VERDICT: BLOCKED -> stalled (report for a human) -> end
 #
 # Requirement contract: the spec gives every requirement a stable ID (FR-001…)
 # and proves each in its Acceptance section. The developer maps each FR to the
-# test that proves it; the evaluator approves only when every FR is met by the
-# diff and its test passes in the evidence. Public roles only.
+# test that proves it. The evaluator trusts nothing it did not run: it re-runs
+# the verification itself, runs the mapped tests against the pre-change code
+# (each must fail there — fail-to-pass), scans the test diff for tampering, and
+# checks the Guardrails mechanically against the diff.
+#
+# Revert contract: the fail-to-pass check swaps changed source files back to
+# HEAD in place, so the evaluator never uses git checkout/restore/reset/stash
+# (the tree holds uncommitted work). It copies each file to a scratch directory
+# first, restores from that copy, and compares sha256 hashes; a mismatch ends the
+# loop with VERDICT: BLOCKED. The evaluator has no timeout and no retries on
+# purpose: killing or re-running it mid-swap could leave old code behind.
+#
+# Tip: set `model` on the evaluator to a different provider than the developer
+# — LLM judges favor output from their own model. Public roles only.
 
 name            = "plan-and-build"
-description     = "Turns a feature request into an EARS behavioral spec with testable requirements, stops with clarifying questions when anything is unresolved, then implements it in a developer/evaluator loop that proves every requirement with a named passing test before summarizing the change."
+description     = "Turns a feature request into an EARS behavioral spec with testable requirements, stops with clarifying questions when anything is unresolved, then implements it in a developer/evaluator loop whose independent evaluator re-runs the checks, proves every requirement's test fails on the old code and passes on the new, and rejects tampered tests before summarizing the change."
 entry           = "spec"
 max_transitions = 4
 
@@ -61,7 +73,7 @@ Start with exactly: `BLOCKED ON CLARIFICATION — no changes made.`
 name           = "build"
 loop           = true
 max_iterations = 3
-exit_when      = { output = "evaluator", matches = '(?m)^VERDICT: APPROVED' }
+exit_when      = { output = "evaluator", matches = '(?m)^VERDICT: (APPROVED|BLOCKED)' }
 
   [[steps.run]]
   name    = "developer"
@@ -75,7 +87,10 @@ exit_when      = { output = "evaluator", matches = '(?m)^VERDICT: APPROVED' }
 Implement the spec above end to end in the current project. Touch only what it
 requires, treat its Guardrails as hard constraints, and stop and report if a
 Guardrail would have to break. Prove every requirement with a test: each FR and
-each Acceptance item maps to a test that exercises it.
+each Acceptance item maps to a test that exercises it. An independent evaluator
+will run every mapped test against the pre-change code, where each test for new
+or changed behavior must fail — so assert the behavior itself, never the
+implementation's own output. Never skip, delete, or loosen a test to get green.
 
 Run the spec's verification command and iterate until it passes. End with:
 - a requirement map, one line per FR: `FR-001 → <test name>` (or `manual: <check>`
@@ -115,18 +130,45 @@ diff actually does versus what each FR asks for. Output only the brief.
 {{brief}}
 </brief>
 
-You are grading an implementation in a fresh session: you see the spec, the
-developer's requirement map and verification evidence, and an independent brief
-of the diff — not the developer's reasoning. Check, by ID:
-1. Every FR is met by the diff and mapped to a test that passes in the evidence.
-2. Every Acceptance item (Scenario, Property, Check) is exercised by a test.
-3. No Guardrail is broken.
-4. The verification command ran and passed.
+You are the independent evaluator, in a fresh session. Trust nothing you did not
+run yourself: the developer's evidence and the brief are leads, not proof. Run
+these checks in order, by requirement ID.
 
-List each failing item with specifics; this goes straight to the developer. If
-every item passes, approve — do not invent criteria the spec never stated.
+A. VERIFY — run the spec's verification command yourself, in full. It must pass
+   with no newly skipped or ignored tests. If it fails, report it and skip C.
+B. MAP — every FR and every Acceptance item (Scenario, Property, Check) maps to a
+   test in the developer's map, and that test exists and exercises the stated
+   behavior. `manual:` is acceptable only where the spec's Verification says no
+   command can prove it.
+C. FAIL-TO-PASS — prove the mapped tests have teeth against the pre-change code:
+   1. Record `git status --porcelain` and the sha256 of every modified or added
+      non-test file; copy each one to a scratch directory (`mktemp -d`).
+   2. Swap in the pre-change code, leaving test files alone: overwrite each
+      modified file with `git show HEAD:<path>`, and move each added non-test
+      file into the scratch directory. Never use git checkout, restore, reset, or
+      stash.
+   3. Run only the mapped tests. Each test for an ADDED or MODIFIED requirement
+      must fail — an assertion failure, or a compile error because the behavior
+      is missing. Each invariant test must still pass. Name every test that
+      passes on the old code: it proves nothing.
+   4. Restore every file from the scratch copy, then confirm the sha256 values
+      and `git status --porcelain` equal step 1. If they do not, restore again;
+      if they still do not, stop with `REVERT-FAILED: <path>` and VERDICT: BLOCKED.
+D. TAMPERING — read the test-file diff. Fail on deleted or renamed-away tests;
+   new skip, ignore, or only markers; assertions removed or loosened; the unit
+   under test mocked out; expected values copied from the implementation's own
+   output; and any source branch that recognizes a test environment or specific
+   test inputs.
+E. GUARDRAILS — compare `git status --porcelain` and `git diff --stat` against
+   the spec: no file outside its scope, no new dependency in a manifest or
+   lockfile when the spec forbids one, no protected surface changed.
 
-End with exactly one line: VERDICT: APPROVED or VERDICT: REVISE. Nothing after it.
+List every failing check with specifics; this goes straight to the developer. If
+A–E all pass, approve — do not invent criteria the spec never stated. A revert
+failure is BLOCKED, never REVISE.
+
+End with exactly one line: `VERDICT: APPROVED`, `VERDICT: REVISE`, or
+`VERDICT: BLOCKED`. Nothing after it.
 """
 
 # ── 3a. Summary: approved ────────────────────────────────────────────────────
@@ -158,12 +200,13 @@ prompt  = """
 {{evaluator}}
 </last_evaluation>
 
-The build loop hit its iteration cap WITHOUT evaluator approval — do not present
-this as success. Read the spec and the current unstaged changes, then report for
-a human decision: what was implemented and verified, and every gap the evaluator
-still flags.
+The build loop ended WITHOUT evaluator approval — do not present this as success.
+Read the spec and the current unstaged changes, then report for a human decision:
+what was implemented and verified, and every gap the evaluator still flags.
 
-Start with exactly: `DID NOT CONVERGE — human review required.`
+If the last evaluation ends with `VERDICT: BLOCKED`, start with exactly:
+`BLOCKED — source files may not match the developer's last state; check git status before anything else.`
+Otherwise start with exactly: `DID NOT CONVERGE — human review required.`
 """
 
 # ── Graph routes ─────────────────────────────────────────────────────────────
