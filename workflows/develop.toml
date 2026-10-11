@@ -5,7 +5,7 @@
 # Showcases the loop pattern. Public roles only.
 
 name        = "develop"
-description = "Spec-driven development loop: gathers context for a feature spec, then iterates a developer/evaluator loop with a real build/test gate until the evaluator approves, then summarizes the change."
+description = "Spec-driven development loop for an existing feature spec: gathers context, then iterates a developer/evaluator loop that maps every requirement to a passing test behind the project's real build/test gate until the evaluator approves, then summarizes the change."
 
 # ── 1. Spec → context ────────────────────────────────────────────────────────
 [[steps]]
@@ -78,11 +78,18 @@ call conventions, owning layer, every touched surface):
 
 Implement the change fully autonomously. Fix causes, not symptoms — no
 workarounds, suppressed errors, or skipped tests unless the spec explicitly
-sanctions one. Then run the project's verification command (tests / build /
-lint / typecheck) and iterate until it passes.
+sanctions one. Treat any Guardrails in the spec as hard constraints. Prove every
+requirement with a test: when the spec numbers its requirements (FR-001…), each
+FR and each Acceptance item maps to a test that exercises it. Then run the
+project's verification command (tests / build / lint / typecheck) and iterate
+until it passes.
 
-End your response with the exact command you ran and its output as evidence the
-check passes. Output only the work and that evidence — no preamble.
+End your response with:
+- a requirement map, one line per stated requirement: `FR-001 → <test name>`
+  (or `manual: <check>` only where no command can prove it);
+- the exact command you ran and its output as evidence the check passes.
+
+Output only the work, the map, and that evidence — no preamble.
 """
 
   [[steps.run]]
@@ -130,13 +137,16 @@ Independent brief of the diff:
 {{brief}}
 </brief>
 
-Check each stated spec requirement: is it met by the diff, and does the
-verification command actually pass in the evidence? Flag ONLY gaps that affect
-correctness or a stated spec requirement, or a missing/failing check. Do not
-request style changes, speculative robustness, or criteria the spec never stated.
+Check each stated spec requirement, by its ID when it has one:
+1. It is met by the diff and mapped to a test that passes in the evidence.
+2. Every Acceptance item (Scenario, Property, Check) is exercised by a test.
+3. No Guardrail in the spec is broken.
+4. The verification command ran and passed.
 
-If a requirement is unmet or the check did not pass, list the concrete gaps —
-this goes directly to the developer with all original context.
+Flag ONLY gaps against these items. Do not request style changes, speculative
+robustness, or criteria the spec never stated. List each failing item with
+specifics — this goes directly to the developer with all original context. If
+every item passes, approve.
 
 End with exactly one line: VERDICT: APPROVED or VERDICT: REVISE. Nothing after it.
 """

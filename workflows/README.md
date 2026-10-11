@@ -15,7 +15,7 @@ Build / repo (operate on the current directory):
 
 | Name | What it does | Showcases |
 |------|--------------|-----------|
-| [`develop`](./develop.toml) | Gathers context for a feature spec, then iterates a developer/evaluator loop with a real build/test gate until the evaluator approves, then summarizes the change. | `loop` + `conditional` |
+| [`develop`](./develop.toml) | Implements an existing feature spec: gathers context, then iterates a developer/evaluator loop that maps every requirement to a passing test behind the project's real build/test gate until the evaluator approves, then summarizes the change. | `loop` + `conditional` |
 | [`debug`](./debug.toml) | Reproduces a bug and locates its root cause in the current repo, iterates a fix/verify loop until a test proves it fixed, then summarizes the change. | `loop` + `conditional` |
 | [`upgrade`](./upgrade.toml) | Upgrades dependencies (named packages, or safe patch/minor by default), fixes breakages in a bump/verify loop until the project's checks pass, then writes upgrade notes. | `loop` + `conditional` |
 | [`harden`](./harden.toml) | Security-audits the current repo across OWASP lenses, then fixes and independently re-audits in a loop until findings are resolved and checks stay green. | `loop` + `conditional` |
