@@ -27,7 +27,7 @@ Use descriptions for the actual media, not an overflow post or hidden promotion.
 
 Write a display name and bio that identify the person or project, explain its scope, and disclose the relationship. Fill available profile fields with useful destinations instead of slogans. Introduce the account with its real purpose and a useful contribution; consider `#introduction` only after checking relevant live usage (directional).
 
-An HTTPS profile field can verify through a matching `rel=me` backlink. A trusted owned domain is an identity option described in the docs, not a promised distribution advantage (official, Profile, 2026-04). Check the backlink from the actual linked page and view the resulting profile.
+An HTTPS profile field can verify through a matching `rel=me` backlink. A trusted owned domain is an identity option described in the docs, not a promised distribution advantage (official, Profile, 2026-04). Check the backlink from the actual linked page and view the resulting profile. An account that posts automatically sets the bot flag in its profile; Mastodon shows it only as a visual indicator, so also name the operator in the bio (official, Profile, reviewed 2026-10; bio disclosure is directional).
 
 Pin current public material that helps a newcomer evaluate the account. The documented maximum is 5 public pinned posts; featured hashtags show use counts and last-use dates (official, Discoverability, 2024-10). Choose useful proof and an accurate introduction; don't fill every slot automatically (directional).
 
@@ -76,4 +76,4 @@ Messages separation and changes to followed-hashtag navigation are part of the M
 - [Foundation preview](https://blog.joinmastodon.org/2026/08/5.0-laying-the-foundation/), 2026-08.
 
 Re-validate when the connected server upgrades, limits or policies change, profile/card behavior changes, or previewed discovery and messaging features ship.
-Validated: 2026-09
+Validated: 2026-10

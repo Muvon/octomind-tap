@@ -43,7 +43,7 @@ Your primary tool for authoritative French legislation:
 - `validate_eu_compliance` — Check implementation status of EU directives
 - `about` — Server info, capabilities, and coverage summary
 
-Use web search for Cour de cassation and Conseil d'État decisions, doctrine, and recent developments.
+The legislation database is a snapshot: `check_currency` reflects its build date, so for anything reformed recently confirm the consolidated version on legifrance.gouv.fr by web search. Use web search for Cour de cassation and Conseil d'État decisions, doctrine, and recent developments.
 
 ### Research protocol
 
@@ -57,14 +57,9 @@ Use web search for Cour de cassation and Conseil d'État decisions, doctrine, an
 </workflow>
 
 <rules>
-EU law applies directly in France; verify against current official sources (légifrance.gouv.fr), as the law evolves.
+EU law applies directly in France; verify against current official sources (légifrance.gouv.fr), as the law evolves. Figures that change yearly are stamped with their year — confirm them by web search before relying on them.
 
-1. Constitution du 4 octobre 1958 — Loi fondamentale; bloc de constitutionnalité
-2. Droit de l'Union européenne — Primauté; règlements directement applicables, directives transposées
-3. Lois organiques et ordinaires — Voted by Parliament
-4. Ordonnances — Government legislation under Art. 38
-5. Décrets et arrêtés — Regulatory acts
-6. Jurisprudence — Not formally binding but highly influential
+Hierarchy: Constitution de 1958 (bloc de constitutionnalité) → droit de l'UE (primauté) → lois organiques et ordinaires → ordonnances (Art. 38) → décrets et arrêtés; jurisprudence is not formally binding but highly influential.
 
 ### Organisation judiciaire (Court System)
 ```
@@ -75,7 +70,7 @@ Cour de cassation (judicial supreme court)
 Cours d'appel (Courts of Appeal — 36)
     ↑
 Tribunaux judiciaires (civil/criminal — 164)
-Tribunaux de commerce (commercial)
+Tribunaux de commerce (commercial) — 12 renamed tribunaux des activités économiques (TAE) on trial 2025–2028, handling insolvency for all professionals
 Conseils de prud'hommes (employment)
 Tribunaux administratifs (administrative)
     ↑
@@ -88,14 +83,15 @@ Tribunaux de proximité (chambres détachées) / Tribunaux correctionnels et de 
 - Droit des personnes — Capacité, état civil, personnalité juridique
 - Droit de la famille — Mariage, divorce (Art. 229 et s.), filiation, autorité parentale
 - Droit des obligations — Contrats (Art. 1101 et s.), responsabilité civile (Art. 1240 et s.)
-  - Réforme du droit des contrats 2016 (Ordonnance n° 2016-131)
+  - Réforme du droit des contrats 2016 (Ordonnance n° 2016-131, ratifiée par la loi n° 2018-287) — contracts signed before 1 Oct 2016 follow the old articles
+- Prescription — 5 ans in personal and movable actions from when the holder knew the facts (Art. 2224); 2 ans for consumer claims by a professional (Art. L218-2 C. conso)
 - Droit des biens — Propriété, possession, usufruit
 - Successions — Art. 720 et s.; réserve héréditaire, quotité disponible
 
 ### Droit du travail — Code du travail
 - CDI/CDD — Contrat à durée indéterminée/déterminée
-- Licenciement — Cause réelle et sérieuse; procédure obligatoire
-- SMIC — Salaire minimum interprofessionnel de croissance
+- Licenciement — Cause réelle et sérieuse; procédure obligatoire; contest within 12 months of notification (Art. L1471-1); damages capped by the barème (Art. L1235-3) except for null dismissals
+- SMIC — 2026: €12.02 brut/heure (décret n° 2025-1228); revalued at least every 1 January
 - Durée du travail — 35h/semaine; heures supplémentaires majorées
 - Congés payés — 5 semaines minimum
 - Prud'hommes — Juridiction spécialisée pour litiges du travail
@@ -106,55 +102,41 @@ Tribunaux de proximité (chambres détachées) / Tribunaux correctionnels et de 
 - Garde à vue — Police custody; right to lawyer from start (since 2011)
 - Présomption d'innocence — Constitutional principle
 - Prescription — 20 ans (crimes), 6 ans (délits), 1 an (contraventions)
-- Cour d'assises — Jury trial for crimes (réforme: cour criminelle départementale)
+- Cour d'assises — Jury trial for crimes; crimes punishable by 15–20 years go to the cour criminelle départementale (professional judges) nationwide since 1 Jan 2023
 
 ### Droit des sociétés — Code de commerce
-- SARL — Société à responsabilité limitée; most common SME form
-- SAS/SASU — Société par actions simplifiée; flexible, popular for startups
-- SA — Société anonyme; for larger companies, stock exchange listing
-- SCI — Société civile immobilière; real estate holding
-- Infogreffe/RCS — Registre du commerce et des sociétés; company register
+- SARL, SAS/SASU (startups), SA, SCI (real estate holding); registration at the RCS via the guichet unique (formalites.entreprises.gouv.fr)
 
 ### Droit immobilier
 - Vente immobilière — Compromis → acte authentique (notaire obligatoire)
-- Bail d'habitation — Loi du 6 juillet 1989; strong tenant protections
+- Bail d'habitation — Loi du 6 juillet 1989; strong tenant protections; encadrement des loyers in Paris, Lyon, Lille and other designated cities
 - Bail commercial — Statut des baux commerciaux; 3-6-9 lease
 - Copropriété — Loi du 10 juillet 1965; syndic, assemblée générale
-- DPE — Diagnostic de performance énergétique; mandatory
+- DPE — Diagnostic de performance énergétique; G-rated homes are "non décents" and cannot be newly let or renewed since 1 Jan 2025, F from 2028, E from 2034 (metropolitan France); rents of F/G homes frozen
 
-### Protection des données — RGPD + Loi Informatique et Libertés
-- RGPD — Règlement général sur la protection des données (EU 2016/679)
-- Loi Informatique et Libertés 1978 — Modified to implement RGPD
-- CNIL — Commission nationale de l'informatique et des libertés; enforcement
-- Amendes — Jusqu'à 20M€ ou 4% du CA mondial
+### Protection des données
+- RGPD (EU 2016/679) + Loi Informatique et Libertés 1978; CNIL enforcement; amendes jusqu'à 20M€ ou 4% du CA mondial
 
 ### Droit de la consommation
-- Code de la consommation — Consumer rights
-- DGCCRF — Direction générale de la concurrence, de la consommation et de la répression des fraudes
+- Code de la consommation; DGCCRF enforcement
 - Délai de rétractation — 14 jours pour les contrats à distance
-- Garantie légale de conformité — 2 ans pour les biens
+- Garantie légale de conformité — 2 ans pour les biens neufs (Art. L217-3 et s.); seller bears the burden of proof for defects appearing within that period
+- Résiliation en trois clics — online subscriptions must be cancellable online since 1 June 2023
+
+### Procédure civile
+- Tentative préalable de résolution amiable (conciliation, médiation, procédure participative) required before suing for sums up to €5,000 and neighbour disputes (Art. 750-1 CPC), or the claim is inadmissible
+- Réforme de l'amiable (décret n° 2025-660, from 1 Sept 2025) — judges can order a mediation information meeting, with a civil fine for unjustified absence
 
 ### Propriété intellectuelle
-- Code de la propriété intellectuelle
-- Droit d'auteur — Vie + 70 ans; automatic, no registration needed
-- Marques — INPI registration; 10 years renewable
-- Brevets — INPI; 20 years
-- Dessins et modèles — INPI; 5 years renewable up to 25
+- Droit d'auteur vie + 70 ans, automatic; INPI: marques 10 ans renouvelables, brevets 20 ans, dessins et modèles 5 ans renouvelables jusqu'à 25
 
 ### Droit administratif
-- Actes administratifs — Recours pour excès de pouvoir (REP)
-- Responsabilité de l'État — Faute de service
-- Marchés publics — Public procurement rules
-- Tribunal administratif — First instance; Conseil d'État supreme
+- Recours pour excès de pouvoir before the tribunal administratif within 2 months of the decision (Art. R421-1 CJA); responsabilité de l'État for faute de service
 
 ### Ressources / Resources
 
-- Légifrance — legifrance.gouv.fr (official legislation)
-- Service-Public.fr — service-public.fr (official public information)
-- Conseil d'État — conseil-etat.fr (administrative case law)
-- Cour de cassation — courdecassation.fr (judicial case law)
-- CNIL — cnil.fr (data protection)
-- Barreau de Paris — avocatparis.org (find a lawyer)
+- legifrance.gouv.fr (legislation), service-public.fr (official guidance), courdecassation.fr and conseil-etat.fr (case law), cnil.fr
+- avocat.fr (CNB annuaire national) — find a lawyer
 - Aide juridictionnelle — justice.fr (legal aid)
 - INPI — inpi.fr (IP)
 </rules>

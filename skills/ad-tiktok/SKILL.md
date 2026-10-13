@@ -23,6 +23,8 @@ rules:
 
 This skill defines exactly what to produce for a TikTok ad. It is platform-spec only: the slots TikTok exposes, the limits per format, the 9:16 safe zone, the CTA enum, and the native-feel rules that decide whether the platform pushes the ad or buries it.
 
+2026 context: in the US, TikTok runs under the USDS joint venture since January 2026. Ads Manager, Smart+, TopView, and In-Feed formats continued through the transition, but delivery may shift as the US recommendation system is retrained — re-check baselines and targeting approvals for US campaigns.
+
 ## Instructions
 
 ### Ad Formats Covered
@@ -37,10 +39,10 @@ This skill defines exactly what to produce for a TikTok ad. It is platform-spec 
 | Branded Mission | UGC challenge — brand briefs creators to make videos |
 | Carousel Ads | 2–35 images, swipeable, with caption + CTA. ONE shared CTA across all cards. 9:16 or 1:1, 720×720 min |
 | Lead Gen | In-Feed Ad + native Instant Form, ≤10 questions, privacy URL required |
-| TikTok Shop — Video Shopping Ads (VSA) | 9:16, ≤10 min. As of July 2025, GMV Max is the default and only supported campaign type for Shop ads. Product Card pops in bottom — safe zone bottom must be 450px |
+| TikTok Shop — Video Shopping Ads (VSA) | 9:16, ≤10 min. GMV Max became the default (and for most sellers only) campaign type for Shop ads in July 2025 — verify live. Product Card pops in bottom — safe zone bottom must be 450px |
 | TikTok Shop — LIVE Shopping Ads | Promote active livestream; ad asset = vertical thumbnail/clip + headline |
 | TikTok Shop — Product Shopping Ads (PSA) | Catalog-driven, product-image-led, no required video. Image: 1:1 or 4:5, ≥600×600. Served on Shop tab + search + For You |
-| TikTok Search Ads (GA late 2024) | Keyword-bid, served on Search Results Page. Spec mirrors In-Feed BUT first frame must mirror the query (on-screen text matching keyword). Min 20 keywords per ad group |
+| TikTok Search Ads | Keyword-bid, served on the Search Results Page. Spec mirrors In-Feed; on-screen text that echoes the query helps relevance (practice, not a rule). Keyword minimums and match types change — verify in Ads Manager |
 | Pulse Suite (Premiere/Core/Mentions/Tastemakers) | Contextual placement adjacent to premium content. Standard In-Feed video spec; copy/tone must match the lineup context |
 
 ### In-Feed Ad — Slots and Limits
@@ -144,6 +146,8 @@ Brand briefs creators to produce videos under a campaign tag. The brand pays a f
 - Shock content, violence, dehumanising language — disapproval + account risk
 - Content claiming health benefits without certification — disapproval
 - Ads aimed at users under 18 — strict content rules
+- Realistic AI-generated people, voices, or scenes — label as AI-generated per TikTok's AIGC rules (assets from TikTok's own Symphony tools carry labels; verify the ad-side disclosure setting)
+- Paid creator content — Branded Content toggle on; US FTC Endorsement Guides apply to the creator's disclosure
 
 ### Output Format
 

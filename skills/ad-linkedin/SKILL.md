@@ -46,9 +46,9 @@ LinkedIn ads play to a different audience norm than Meta or TikTok: the viewer i
 
 | Slot | Limit | Notes |
 |------|-------|-------|
-| Intro text | 150 chars before "see more" truncation; 600 char hard cap | First 150 chars decide engagement |
-| Headline | 70 chars hard cap | Below image — always visible |
-| Description | 70 chars hard cap | Renders on LinkedIn Audience Network only — NOT in main feed |
+| Intro text | ~150 chars before "see more"; 600 char cap | First 150 chars decide engagement |
+| Headline | ~70 chars shown before truncation (longer accepted — 2026: verify cap in Campaign Manager) | Below image — always visible |
+| Description | ~100 chars recommended | Renders on LinkedIn Audience Network only — NOT in main feed |
 | Destination URL | URL | Landing page |
 | CTA button | Enum | See CTA section |
 | Image | 1200×627 (1.91:1) recommended; 1:1 (1200×1200) and 1:1.91 vertical (628×1200) also accepted | Max 5MB |
@@ -67,7 +67,7 @@ LinkedIn ads play to a different audience norm than Meta or TikTok: the viewer i
 | Banner image | 300×250 (desktop only) | Same | Optional — if absent, another advertiser's banner may display in your slot |
 | Sender | Must be a personal LinkedIn account | Same | Must be a 1st-degree connection of the campaign manager who explicitly approves; cannot be company page |
 
-⚠️ EU TARGETING BLOCK (CRITICAL): Sponsored Messaging (both Message Ads and Conversation Ads) cannot target EU members since Jan 2022. Mixed EU + non-EU campaigns deliver only to non-EU.
+EU targeting (2026 — verify live): since mid-October 2024, Sponsored Messaging (Message Ads and Conversation Ads) can target EU members only if they opted in to receive these ads in their inbox; members can withdraw consent. Expect much smaller EU reach than audience estimates for feed ads.
 
 ### Text Ads — Slots
 
@@ -112,25 +112,25 @@ Sponsored Content CTAs (campaign-objective driven):
 
 CTAs cannot be custom — pick from the enum. Match the verb to the landing action.
 
-### Thought Leader Ads (Launched 2023, mature 2026)
+### Thought Leader Ads
 
 Promote a personal LinkedIn post from any member (employee or external) with their explicit permission.
 
 - No editable headline / intro / description / CTA / URL in Campaign Manager — the post itself IS the creative
 - Author edits the post organically; advertiser sponsors as-is
 - Author must publish the post BEFORE it can be promoted; cannot retroactively change content
-- Author approval is required per campaign in Campaign Manager
-- Objectives supported: Brand Awareness, Engagement, Video Views, Website Visits
-- Highest CTR format in B2B per 2026 benchmarks (metadata.io, Dreamdata)
+- Author approval is required in Campaign Manager
+- Supported objectives and formats keep expanding — 2026: check Campaign Manager before planning
+- Practitioner benchmarks often show higher engagement than company-page ads; treat vendor CTR claims as directional
 - Best fit: CEO/founder personal POV posts, contrarian operator takes, customer-success narratives
 
-### Connected TV (CTV) Ads (Launched 2024, expanded 2026)
+### Connected TV (CTV) Ads
 
-Programmatic CTV buying via The Trade Desk, Amazon DSP, or direct via LinkedIn CTV Select (Paramount/NBCUniversal).
+LinkedIn has sold CTV since 2024, using LinkedIn targeting on streaming inventory through partners (2026: verify current publishers and buying path in Campaign Manager).
 
-- Spec: 15s or 30s creative, 1920×1080 16:9, MP4/MOV, ≤200MB
-- No clickable URL or CTA in-stream — audience-buy mechanic, not direct response
-- Use for high-value account-based awareness only; pair with retargeting Sponsored Content for response
+- Spec: 15s or 30s creative, 1920×1080 16:9, MP4/MOV (verify size limit)
+- No clickable URL or CTA in-stream — awareness, not direct response
+- Use for high-value account-based awareness; pair with retargeting Sponsored Content for response
 
 ### Copy Rules — What Wins on LinkedIn
 
@@ -175,10 +175,10 @@ Programmatic CTV buying via The Trade Desk, Amazon DSP, or direct via LinkedIn C
 
 Preview slice (first 150 chars): "[show what's visible before see more]"
 
-## Headline (≤70 char)
+## Headline (~70 char visible)
 > [Headline] — [chars]
 
-## Description (≤100 char, if format supports)
+## Description (~100 char, Audience Network only)
 > [Description] — [chars]
 
 ## CTA Button (from enum)

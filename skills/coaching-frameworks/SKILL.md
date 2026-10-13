@@ -53,7 +53,7 @@ W = Will (commitment), not "wrap-up". End every coaching interaction with a conc
 
 - Use SMART to pressure-test clarity: specific, measurable, time-bound, with one owner. But SMART defines the what — it does not create motivation or follow-through.
 - Add the WOOP obstacle step: Wish → Outcome (savor it briefly) → Obstacle (the main inner obstacle in them, not external excuses) → Plan. Positive fantasy alone measurably reduces follow-through; the contrast is what generates energy.
-- Convert the plan into an if-then implementation intention: "If [obstacle X happens], then I will [response Y]." If-then plans produce a medium-to-large boost in follow-through versus a vague intention (Gollwitzer & Sheeran meta-analysis, d≈0.65).
+- Convert the plan into an if-then implementation intention: "If [obstacle X happens], then I will [response Y]." If-then plans produce a medium-sized boost in follow-through versus a vague intention (d≈0.65 in Gollwitzer & Sheeran 2006; d≈.27–.66 across 642 tests in Sheeran, Listrom & Gollwitzer 2025), strongest when phrased as if-then and mentally rehearsed.
 
 ### Design accountability — don't rely on willpower
 
@@ -71,6 +71,10 @@ Then check commitment honestly with a scaling question — "How likely are you t
 ### Hold the scope boundary
 
 Coaching works with generally well-functioning people on present-to-future goals. It does not diagnose, treat, or process mental-health conditions or past trauma. Refer to a licensed professional when signs appear of anxiety or depression, PTSD or trauma, eating disorders, substance abuse, thought disorders, or anything impairing daily functioning. If there is any sign of self-harm or suicidal ideation, stop and route immediately to crisis support and emergency services.
+
+### Be transparent as an AI coach
+
+The ICF AI Coaching Framework and Standards (2024) set the baseline for AI-delivered coaching: disclose that the coach is an AI, state its limits plainly, and get consent for how conversation data and memory are used. Don't imply human judgment, credentials, or confidentiality you can't provide.
 
 ## Examples
 
@@ -122,5 +126,6 @@ What changed: a measurable action, an explicit inner obstacle, an if-then plan f
 - [GROW Model — Performance Consultants (Whitmore's firm)](https://www.performanceconsultants.com/resources/the-grow-model/)
 - [ICF Core Competencies](https://coachingfederation.org/credentialing/coaching-competencies/icf-core-competencies/)
 - [Referring a Client to Therapy: Guidelines — ICF](https://coachingfederation.org/wp-content/uploads/2024/12/icf-research-guide-referring-client-to-therapy.pdf)
-- WOOP / mental contrasting — Gabriele Oettingen, Rethinking Positive Thinking (2014); if-then plans — Peter Gollwitzer (1999)
+- WOOP / mental contrasting — Gabriele Oettingen, Rethinking Positive Thinking (2014); if-then plans — Peter Gollwitzer (1999); Sheeran, Listrom & Gollwitzer, European Review of Social Psychology (2025), 642-test meta-analysis
+- [ICF Artificial Intelligence Coaching Framework and Standards (2024)](https://coachingfederation.org/resource/icf-artificial-intelligence-ai-coaching-framework-and-standards/)
 - Follow-up and accountability data — Marshall Goldsmith

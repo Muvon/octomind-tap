@@ -1,7 +1,7 @@
 ---
 name: octomind-workflow
 title: "Octomind Workflow Design & Syntax"
-description: "Complete guide for octomind workflow files: pipeline design (pattern selection, step decomposition, sentinel handoff contracts, loop convergence, context economics) plus the exact TOML syntax for the external orchestrator that chains octomind run subprocesses. Covers sequential, parallel, loop, and conditional steps, variable substitution, session modes, pre-flight validation, and the CLI. Activate when designing, authoring, validating, or debugging a workflow .toml file."
+description: "Guide for octomind workflow files: pipeline design (pattern selection, step decomposition, sentinel handoff contracts, loop convergence, context economics) plus the exact TOML syntax for the external orchestrator that chains octomind run subprocesses. Covers sequential, parallel (static, count, dynamic fan-out), loop, conditional, and graph-routed steps, variable substitution, session modes, pre-flight validation, tap workflows, and the CLI. Activate when designing, authoring, validating, or debugging a workflow .toml file."
 license: Apache-2.0
 compatibility: "Requires: octomind CLI with the `workflow` subcommand. Workflows are stdin-driven; every referenced role must be an installed role or tap-agent tag."
 domains: octomind
@@ -13,212 +13,141 @@ rules:
 
 ## Overview
 
-`octomind workflow <file.toml>` is an external orchestrator: it chains multiple `octomind run` invocations into a multi-step pipeline. Each step is an independent subprocess running `octomind run --format jsonl`; outputs flow between steps by name; the final step's output goes to stdout, so workflows compose with shell pipes. This skill covers both halves of authoring one: how to design the pipeline so it does an efficient, reliable job, and the exact TOML syntax. It applies to any task domain — content, research, review, code, operations.
+`octomind workflow <file.toml|name>` is an external orchestrator: it chains `octomind run --format jsonl` subprocesses into a multi-step pipeline, passing outputs between steps by name. This skill covers how to design a pipeline that is efficient and reliable, and the exact TOML syntax. It applies to any domain.
 
 ## Mental model
 
-A workflow is a predefined code path: you decide the steps in advance, the orchestrator executes them deterministically. This is the opposite of an agent dynamically directing its own process — if you cannot enumerate the steps at authoring time, a workflow is the wrong tool; use a single agent run instead.
+A workflow is a predefined code path: you fix the steps at authoring time and the orchestrator executes them deterministically. If you cannot enumerate the steps in advance, use a single agent run instead.
 
-A workflow file is a list of named steps executed top to bottom. A step either runs a role once (sequential), or groups sub-steps that run concurrently (parallel), repeatedly (loop), or by a branch test (conditional). Every step name becomes a `{{name}}` variable holding that step's full text output, available to any later step. `{{input}}` holds the raw stdin. Forward references are rejected before anything runs.
-
-Each step starts with a fresh context. That is the architecture's strength — no accumulated drift, the critic never sees the generator's reasoning — and its obligation: a step knows only what its prompt template passes in. Orchestration lives entirely in this external file, not in any role or config (the former in-session `[[workflows]]` block and `/workflow` command were removed).
-
-The runtime data flow:
+Each step starts with a fresh context and knows only what its prompt template passes in — no drift, but also no implicit memory. Every step name becomes a `{{name}}` variable holding that step's full output; `{{input}}` is stdin.
 
 ```
-stdin ─► octomind workflow file.toml ─► stdout (final step output)
-            │  per-step → octomind run --format jsonl (subprocess)
-            └─ stderr: per-step progress, cost, tokens, totals
+stdin ─► octomind workflow file.toml
+            ├─ per step → octomind run --format jsonl (subprocess)
+            ├─ stderr: each step's reply, progress, cost, tokens, totals
+            └─ stdout: empty, or JSONL events with --format jsonl
 ```
 
 ## Designing the workflow
 
 ### Pattern selection
 
-Start from the task shape, not from the syntax. Use the fewest steps that work — a one-step workflow is legitimate, and a single `octomind run` with a good role is often enough. Success probability decays with step count (every handoff is lossy), so the burden of proof is on adding a step, never on omitting it.
+Use the fewest steps that work. Every handoff is lossy, so the burden of proof is on adding a step.
 
 | Task shape | Pattern | Primitive |
 |------------|---------|-----------|
-| Cleanly decomposes into fixed subtasks, each easier than the whole | Prompt chaining | Sequential steps |
-| Distinct input categories handled better separately, and classification is accurate | Routing | Conditional |
-| Independent subtasks, knowable upfront, no shared output | Parallelization: sectioning | Parallel |
-| Same task needs diverse perspectives or higher confidence | Parallelization: voting | Parallel + aggregator step |
-| Output improves measurably against clear criteria via iteration | Evaluator-optimizer | Loop |
-| Subtasks cannot be predicted before runtime | Orchestrator-workers | Not supported — use a single agent run |
-
-Routing has a precondition: it only pays off when the classifier step is reliably accurate. A router that misclassifies a meaningful share of inputs is worse than one general prompt.
+| Fixed subtasks, each easier than the whole | Prompt chaining | Sequential |
+| Distinct input categories, accurate classifier | Routing | Conditional or graph edges |
+| Independent subtasks known upfront | Sectioning | Parallel |
+| Same task, diverse perspectives | Voting | Parallel + aggregator |
+| N similar items produced by an earlier step | Fan-out | Dynamic parallel (`source` + `match`) |
+| Output improves against clear criteria | Evaluator-optimizer | Loop |
+| Cycles or multi-way routing | State machine | Graph mode |
+| Subtasks unknowable before runtime | Orchestrator-workers | Not a workflow — single agent run |
 
 ### When to split a step
 
-Split work into a separate step only when at least one gate holds:
-
-1. A different persona genuinely changes behavior (critic vs author, domain expert vs formatter) — not just a different paragraph of the same instructions.
-2. A different model is warranted (cheap extraction vs expensive reasoning).
-3. You need a gate there — a conditional or loop exit must inspect this intermediate output.
-4. The output is independently verifiable (against a rubric, a pattern, source material) in a way the merged output wouldn't be.
-5. The parts are independent and fan-out saves wall-clock time.
-
-The handoff-artifact test: for every boundary, name the artifact that crosses it in one sentence ("an outline", "a list of extracted claims", "a verdict + critique"). If the honest answer is "the same content, slightly transformed", merge the steps. Steps that only reformat the previous output belong inside the producing step's prompt.
+Split only when a different persona, a different model, a gate on the intermediate output, independent verifiability, or parallel speedup demands it. For every boundary, name the artifact that crosses it in one sentence; if it is "the same content, slightly transformed", merge the steps.
 
 ### Handoff contracts
 
-Step stdout is an API, not a chat. Every step's prompt ends by stating that the output IS the artifact: "Output only the report — no preamble, no commentary." A step that explains its choices pollutes `{{step}}` for everything downstream.
+Step output is an API. End every prompt with "Output only the <artifact> — no preamble." Gates match substrings or regexes, so the emitting step must produce a machine-checkable sentinel:
 
-Gates (`exit_when`, `condition`) match substrings or regexes, so the emitting step must produce a machine-checkable sentinel:
-
-- Use a key:value token, never a bare word: `VERDICT: APPROVED`, not `APPROVED` (bare words false-positive on prose like "cannot be approved").
-- Make both outcomes distinct positive tokens — `VERDICT: APPROVED` / `VERDICT: REVISE` — and match the gate on the positive one. Never define an outcome as absence or negation ("NOT APPROVED" contains "APPROVED").
-- Demand the exact line in the emitting prompt, last line, stated explicitly: "End with exactly one line: `VERDICT: APPROVED` or `VERDICT: REVISE`. Nothing after it."
-- Routers emit one token from a closed set enumerated verbatim in their prompt: "Output exactly one line: `CATEGORY: BILLING` or `CATEGORY: TECHNICAL`."
-- When precision matters, anchor with a regex: `matches = '(?m)^VERDICT: APPROVED'` instead of `contains`.
-- Test the contract both ways: run the gate's regex against a captured known-bad output (must not match) and a known-good one (must match). A sentinel tested only on the happy path is untested.
+- Key:value tokens, never bare words: `VERDICT: APPROVED`, not `APPROVED`.
+- Both outcomes as distinct positive tokens (`VERDICT: APPROVED` / `VERDICT: REVISE`); never define one as the absence of the other.
+- Demand the exact last line in the emitting prompt and anchor with `matches = '(?m)^VERDICT: APPROVED'` when precision matters.
+- Test the gate against a known-good output (must match) and a known-bad one (must not).
 
 ### Loops that converge
 
-The evaluator-optimizer loop (generator ↔ critic) needs explicit convergence design or it runs to `max_iterations` every time:
-
-- Keep `max_iterations` at 2–3. Iterations beyond that rarely improve output and double cost; worst-case loop cost = iterations × calls-per-iteration.
-- The critic gets a finite rubric and a binary verdict — critique first (specific, referencing concrete failures), verdict as the last line. No 1–5 scores: they are uncalibrated and unmatchable by a substring gate.
-- Tell the critic to approve: "If every rubric item passes, emit VERDICT: APPROVED — do not invent new criteria." Without this, the critic always finds something and the loop never exits.
-- The generator must receive the critique, not just "try again". With `session = "continue"`, iteration 2+ replaces the templated prompt with the most recent prior step's raw output — the critique flows in automatically while the session retains the original instructions. Put rubric and format instructions in the templated prompt (sent on iteration 1); later iterations rely on session memory.
-- A loop that hits `max_iterations` exits with the last iteration's outputs and a warning — the workflow continues. Design downstream steps to tolerate an unapproved artifact, or gate on the verdict with a conditional after the loop.
-
-### Parallel: sectioning vs voting
-
-Sectioning runs independent subtasks concurrently (per-aspect analysis, per-source research). Sections must be knowable at authoring time and must not need each other's output — if branch B would benefit from branch A's result, it's a chain, not a fan-out.
-
-Voting runs the same input through diverse roles for confidence. Use an odd branch count and a mechanical aggregator step: "Output the verdict that appears in at least 2 of the 3 reviews." The aggregator's prompt deserves as much care as the branches — a sloppy synthesizer throws away the fan-out's value.
+- `max_iterations` 2–3; worst-case cost is iterations × calls per iteration.
+- The critic gets a finite rubric and a binary verdict on the last line, and is told to approve when every rubric item passes.
+- With `session = "continue"`, iteration 2+ replaces the templated prompt with the most recent prior step's raw output, so the critique reaches the reviser while the session keeps its original instructions.
+- Hitting `max_iterations` exits with the last outputs and a warning; the workflow continues. Gate on the verdict afterwards if an unapproved artifact must not ship.
 
 ### Context and cost
 
-- Pass only the variables a step needs. Default: the immediate predecessor's output. Interpolating `{{step1}} {{step2}} {{step3}}` everywhere "just in case" recreates context rot manually — model accuracy degrades as input grows, long before the window fills.
-- Summarize evidence, never artifacts. A distillation step before a long input crosses into a reasoning step is high-signal compression; summarizing an artifact downstream steps must reproduce verbatim loses critical detail. Never chain two summarizations of the same content.
-- In long step prompts, put data first, instructions last: `<input>{{prev}}</input>` then the task.
-- Use per-step `model` overrides deliberately: a smaller, cheaper model for extraction, classification/routing, formatting, and summarization; the strong model for generation, synthesis, and evaluation.
-
-### Anti-patterns
-
-| Anti-pattern | Why it fails | Fix |
-|--------------|--------------|-----|
-| Step that only reformats the previous output | Extra call, extra drift | Fold formatting into the producing step |
-| Habitual "polish" step at the end | Lossy compounding, no measurable gain | Add only with a rubric and a gate |
-| Artifact + commentary in one output | Pollutes every downstream `{{var}}` | "Output only the artifact" |
-| Bare-word or prose exit condition | False positives, loop never exits or exits early | Key:value sentinel, last line |
-| Routing on shaky classification | Misroutes compound the error downstream | Route only with a reliable closed-set classifier |
-| Validation only at the end | Garbage from step 2 gets elaborated, not fixed | Gate early steps; failures must trace to a step |
+- Pass only the variables a step needs — usually the immediate predecessor.
+- Summarize evidence, never artifacts that must be reproduced verbatim.
+- In long prompts put data first, instructions last: `<input>{{prev}}</input>` then the task.
+- Per-step `model`: cheap models for extraction, routing, formatting; strong ones for generation and evaluation. Set `max_cost` to bound runaway spend.
 
 ## File format
 
 ```toml
 name        = "my-workflow"        # required
-description = "Optional human description"
-# max_cost  = 2.5                  # optional USD ceiling for the whole run; checked after each step
+description = "Optional description"
+# max_cost  = 2.5                  # USD cap, checked between steps
 
-[[steps]]                          # sequential (the default kind)
-name    = "outline"                # required, unique across the whole file
-role    = "demo:writer"            # required: installed role or tap-agent tag (placeholder shown)
+[[steps]]                          # sequential (default kind)
+name    = "outline"                # unique across the file
+role    = "demo:writer"            # installed role or tap tag (placeholder shown)
 prompt  = """
 {{input}}
 
 Produce a structured outline. Output only the outline.
-"""                                # required
+"""
 session = "fresh"                  # "fresh" (default) | "continue"
-timeout = 0                        # seconds; 0 = no timeout (default)
-retries = 0                        # extra attempts on failure (default 0)
-# model = "<provider>:<model>"     # optional per-step model override
-# workdir = "path/to/dir"          # optional working directory; default = orchestrator cwd
-# skills = ["skill-name"]          # optional skills injected into the step's session
-# capabilities = ["websearch"]     # optional extra capabilities for the step's role
+timeout = 0                        # seconds, 0 = none
+retries = 0                        # extra attempts on failure
+# model = "<provider>:<model>"     # forwarded as --model
+# workdir = "path"                 # resolved against the orchestrator cwd at run time
+# skills = ["skill-name"]          # forwarded as OCTOMIND_SKILLS
+# capabilities = ["websearch"]     # forwarded as OCTOMIND_CAPABILITIES
 ```
 
-Unknown TOML keys are silently ignored (no strict field checking) — a misspelled field name will not error, so double-check spelling against this reference.
-
-Role tags in this skill are placeholders — substitute roles actually installed in your setup.
+Unknown keys are ignored silently, so check spelling against this reference.
 
 ## Step types
 
-A `[[steps]]` table is sequential unless it sets exactly one of `parallel`, `loop`, or `conditional` to `true`. Setting more than one is a hard error.
+A `[[steps]]` table is sequential unless it sets exactly one of `parallel`, `loop`, or `conditional` to `true`.
 
-| Kind | Flag | Required fields | Behaviour |
-|------|------|-----------------|-----------|
-| Sequential | (none) | `name`, `role`, `prompt` | Runs `octomind run` once with the resolved prompt. |
-| Parallel | `parallel = true` | `name`, ≥2 `[[steps.run]]` (or 1 template + `source`) | Sub-steps run concurrently; next top-level step waits for all. |
-| Loop | `loop = true` | `name`, ≥1 `[[steps.run]]`, `exit_when` | Sub-steps run sequentially each iteration until `exit_when` matches or `max_iterations` hit (default 10). |
-| Conditional | `conditional = true` | `name`, `condition`, ≥1 `[[steps.run]]`, `on_match`/`on_no_match` | Branch: run the sub-step names listed by the matching branch. |
+| Kind | Required | Behaviour |
+|------|----------|-----------|
+| Sequential | `name`, `role`, `prompt` | One `octomind run` |
+| Parallel | `name`, ≥2 `[[steps.run]]` | Sub-steps run concurrently; the next step waits for all |
+| Loop | `name`, ≥1 `[[steps.run]]`, `exit_when` | Sub-steps repeat until `exit_when` matches or `max_iterations` (default 10) |
+| Conditional | `name`, `condition`, ≥1 `[[steps.run]]`, `on_match` and/or `on_no_match` | Runs the listed sub-steps; skipped ones resolve to empty strings |
 
-Sub-steps inside `[[steps.run]]` are sequential steps and accept the same optional fields (`session`, `timeout`, `retries`, `model`, `workdir`). Parallel sub-steps cannot reference each other — only outer scope. Conditional `on_match` / `on_no_match` list sub-step names to run; skipped sub-steps resolve to empty strings in later substitutions. A loop that reaches `max_iterations` without matching exits with the last iteration's outputs and a stderr warning — the workflow does not fail.
+Sub-steps accept the same optional fields as sequential steps. Parallel sub-steps cannot reference each other.
 
-Parallel extras: `count = N` on a sub-step replicates it N times (N ≥ 2); `max_parallel` caps concurrency; `min_success` (1..=total replicas) sets how many branches must succeed for the block to pass. Dynamic fan-out: give the block exactly one template sub-step plus `source = "<step>"` and `match = "<regex>"` — each regex match in the source step's output spawns one instance with the match text bound in.
+Parallel extras: `count = N` (N ≥ 2) on a sub-step replicates it; `max_parallel` caps concurrency; `min_success` (1..total replicas) relaxes the all-must-succeed default. Dynamic fan-out: exactly one template sub-step plus `source = "<earlier step>"` and `match = "<regex with one capture group>"`. Each match spawns a branch; inside it `{{<block name>}}` is that branch's captured item, and the accumulated output lands under the sub-step's name.
 
 ### Graph mode
 
-Setting top-level `entry = "<step>"` or any `[[edges]]` switches from top-to-bottom order to an explicit graph: `[[edges]]` entries have `from`, `to`, and optional `when` (same condition table shape); `max_transitions` (required in graph mode) bounds total hops; routing ends at the reserved node `$end`. Every node needs exactly one unconditional edge, declared after its conditional ones, and every node must be reachable with a route to `$end` — pre-flight enforces all of this. In graph mode a loop's or conditional's own name stays referenceable per normal rules; prefer ordered mode unless you genuinely need cycles or multi-way routing.
+Setting `entry = "<step>"` or any `[[edges]]` switches to explicit routing. Edges have `from`, `to`, and optional `when` (condition shape); the first matching conditional edge wins, and each node needs exactly one unconditional edge declared last. `max_transitions` (required) bounds total hops, and routing ends at `$end`. Every node must be reachable with a route to `$end`. Referencing an output that the current route never produced fails at run time.
 
-## Condition shape
+### Condition shape
 
-`exit_when` and `condition` share one table shape:
+`exit_when`, `condition`, and edge `when` take `output` (step name, default the previous step), plus exactly one of `contains` (substring) or `matches` (Rust regex).
 
-| Key | Meaning |
-|-----|---------|
-| `output` | Step name whose output to test. Omit → most recent step's output. |
-| `contains` | Substring match. |
-| `matches` | Rust regex match. |
+## Variables
 
-Exactly one of `contains` or `matches` must be set. Regex patterns must compile or pre-flight fails.
-
-## Variable substitution
-
-| Variable | Value |
-|----------|-------|
-| `{{input}}` | The raw stdin content. |
-| `{{step_name}}` | Full text output of a previously completed step. |
-
-Variable names match `[A-Za-z_][A-Za-z0-9_-]*`. A `{{var}}` referencing a step that has not completed before this prompt is a pre-flight error. `input` is reserved and cannot be a step name.
-
-## Session modes
-
-| Mode | Behaviour |
-|------|-----------|
-| `fresh` (default) | Brand-new session every invocation; no state persists. |
-| `continue` | First run sends the templated prompt and remembers the session ID. After a successful run, later invocations (loop iter 2+) resume that session — `/done` compresses prior context first, and the templated prompt is replaced with the most recent prior step's raw output. A retry after a failed attempt still sends the full templated prompt. |
-
-The continue-session prompt-replacement rule is what makes the generator↔critic loop work without re-feeding instructions each iteration. Each step owns its own session ID; in a loop, sub-steps accumulate independent histories. The session is ephemeral to a single `octomind workflow` invocation.
-
-## Working directory
-
-Each step optionally sets `workdir` — the directory its subprocess runs in. Omitted → the orchestrator's cwd. Relative paths resolve against the orchestrator's cwd; resolution happens at execution time, so a directory created by an earlier step is legal, but a missing directory fails the step hard. The workdir determines the subprocess's project context (config, roles, `{{CWD}}`/`{{GIT_*}}` placeholders inside the role — note: workflow prompt placeholders still expand in the orchestrator's cwd). For `continue` sessions the `/done` compression runs in the same workdir as the step. Use it to point steps at different repos/projects from one workflow.
+- `{{input}}` — stdin; `{{step_name}}` — output of an earlier step. Names match `[A-Za-z_][A-Za-z0-9_-]*`; `input` and `$end` are reserved.
+- Built-in placeholders also expand: `{{DATE}}`, `{{CWD}}`, `{{SHELL}}`, `{{OS}}`, `{{BINARIES}}`, `{{ROLE}}`, `{{SYSTEM}}`, `{{CONTEXT}}`, `{{GIT_STATUS}}`, `{{GIT_TREE}}`, `{{README}}`.
+- A `<context>path</context>` or `<context>path:start:end</context>` block in a prompt is replaced with that file's contents.
 
 ## Validation rules
 
-All checked before any step runs (hard-fail):
+Checked before any step runs: valid TOML with at least one step; unique, non-empty step names; every `{{var}}` is a builtin, `input`, or an earlier step; parallel ≥2 sub-steps (or one template with `source`+`match`); loop has `exit_when`; conditional branches name existing sub-steps; regexes compile; `model`/`workdir` non-empty when set; `count` only on parallel sub-steps; `max_cost` positive; graph constraints above. Not checked: role existence for local files (a bad role fails when its subprocess spawns) and workdir existence.
 
-- File exists and is valid TOML; workflow has at least one step.
-- Step names are unique across the whole file, including all sub-steps; non-empty; none named `input`.
-- Every `{{var}}` references `input` or a step that completes before the referencing step.
-- Parallel: ≥2 sub-steps. Loop: ≥1 sub-step and an `exit_when` with `contains` or `matches`. Conditional: a `condition` with `contains` or `matches`, plus `on_match` and/or `on_no_match` whose names all exist among the block's sub-steps.
-- `matches` regexes compile; `exit_when.output` / `condition.output` reference known steps.
-- `model` and `workdir`, when set on any step, are non-empty. Workdir existence is checked at execution time, not pre-flight.
-- `max_cost`, when set, is positive and finite. Graph mode: `entry` exists, `max_transitions` ≥ 1, every node has exactly one unconditional edge (declared after its conditional ones), no unreachable nodes, and a route to `$end` exists.
-
-Role existence is not checked at pre-flight — an unknown role fails when its subprocess spawns. Verify roles exist, and test each step's prompt standalone via `octomind run`, before composing.
+Workflows fetched from a tap are additionally restricted to public `domain:spec` tap roles, so they stay portable.
 
 ## CLI
 
 ```bash
-echo "quarterly sales summary from the attached notes" | octomind workflow myflow.toml   # run a file
-octomind workflow myflow.toml --dry-run                # validate + print plan, no spawn, no stdin
-octomind workflow                                      # list available named workflows
-echo "..." | octomind workflow <name>                  # run a named workflow (shipped or tap-provided)
-echo "..." | octomind workflow myflow.toml --format jsonl   # stream step events as JSONL
+octomind workflow                                  # list tap workflows
+octomind workflow myflow.toml --dry-run            # validate + print plan, no spawn, no stdin
+echo "notes..." | octomind workflow myflow.toml    # run a local file
+echo "..." | octomind workflow <name>              # run a tap workflow
+echo "..." | octomind workflow myflow.toml --format jsonl   # assistant event per step + final cost event on stdout
 ```
 
-The positional accepts either a file path or a bare workflow name (shipped templates and tap-provided workflows); `octomind workflow` with no argument lists the available names. stdin is required unless `--dry-run`; empty stdin is a hard error. stderr carries each step's assistant message, progress lines, per-step cost/token stats, and the final total. `--dry-run` validates the file, resolves the execution graph, and prints the plan without spawning subprocesses or reading stdin. Note: workflows loaded from a tap additionally validate role tags at pre-flight; local files do not.
+An argument containing `/` or ending in `.toml` is a file; anything else is looked up in taps' `workflows/`. stdin is required and must be non-empty unless `--dry-run`. Without `--format jsonl` stdout is empty: each step's reply, progress, and the totals go to stderr. To consume the final result programmatically, use `--format jsonl` and take the last `assistant` event.
 
-Retries rerun the same step. Pure text-in/text-out steps are naturally safe to retry; steps whose role touches the outside world (writes files, calls APIs) are not — keep `retries = 0` there or make the role idempotent.
+Inside a session: `/workflow <name> <input>` runs a tap workflow; agents with the `orchestration` capability can use `tap(action="workflow")`.
 
-## Out of scope
-
-Not supported — use shell composition or call `octomind run` directly: `--var key=value` injection (stdin is the only input), workflow definitions inside `default.toml`, cross-invocation `continue`-session persistence, and step artifacts on disk.
+Retries rerun the whole step — keep `retries = 0` on steps whose role writes files or calls external APIs unless they are idempotent.
 
 ## Examples
 
@@ -230,13 +159,7 @@ name = "report-with-review"
 [[steps]]
 name   = "draft"
 role   = "demo:writer"
-prompt = """
-<input>
-{{input}}
-</input>
-
-Write the report. Output only the report — no preamble, no commentary.
-"""
+prompt = "<input>\n{{input}}\n</input>\n\nWrite the report. Output only the report."
 
 [[steps]]
 name           = "refine"
@@ -255,91 +178,63 @@ exit_when      = { output = "critic", matches = '(?m)^VERDICT: APPROVED' }
   role    = "demo:critic"
   session = "continue"
   prompt  = """
-Review the report against this rubric only: factual claims sourced; structure follows brief; no filler.
-Critique each failing item with specifics. If every rubric item passes, emit the approval — do not invent new criteria.
+Review against this rubric only: claims sourced; structure follows brief; no filler.
+Critique failing items specifically. If every item passes, approve — do not invent criteria.
 
 <report>
 {{reviser}}
 </report>
 
-End with exactly one line: VERDICT: APPROVED or VERDICT: REVISE. Nothing after it.
+End with exactly one line: VERDICT: APPROVED or VERDICT: REVISE.
 """
-
-[[steps]]
-name   = "final"
-role   = "demo:writer"
-prompt = "Format this report for publication. Output only the formatted report:\n{{reviser}}"
 ```
 
-Iteration 1 sends both templated prompts; from iteration 2 the `continue` rule feeds the critic's raw output (critique + verdict) to the reviser, and the revised report to the critic, while both sessions retain their original instructions.
+Iteration 1 sends both templated prompts; from iteration 2 the `continue` rule feeds the critique to the reviser and the revision to the critic.
 
-### Closed-set routing
+### Dynamic fan-out
 
 ```toml
-name = "triage"
+name = "fan-out"
 
 [[steps]]
-name   = "classify"
-role   = "demo:triage"
-prompt = "Classify this request. Output exactly one line: CATEGORY: BILLING or CATEGORY: TECHNICAL.\n\n{{input}}"
+name   = "plan"
+role   = "demo:planner"
+prompt = "List the sub-questions for: {{input}}\nOne per line as: Q: <question>"
 
 [[steps]]
-name        = "route"
-conditional = true
-condition   = { output = "classify", contains = "CATEGORY: BILLING" }
-on_match    = ["billing"]
-on_no_match = ["technical"]
+name         = "q"
+parallel     = true
+source       = "plan"
+match        = '(?m)^Q: (.+)$'
+max_parallel = 4
 
   [[steps.run]]
-  name   = "billing"
-  role   = "demo:billing"
-  prompt = "Resolve this billing request:\n{{input}}"
-
-  [[steps.run]]
-  name   = "technical"
-  role   = "demo:support"
-  prompt = "Resolve this technical request:\n{{input}}"
+  name   = "answers"
+  role   = "demo:researcher"
+  prompt = "Answer concisely: {{q}}"
 ```
 
 ### Common mistake — forward reference
 
 ```toml
-# WRONG: outline references {{review}}, which runs later → pre-flight error
 [[steps]]
 name   = "outline"
 role   = "demo:writer"
-prompt = "Refine using {{review}}"   # {{review}} not yet available
-
-[[steps]]
-name   = "review"
-role   = "demo:critic"
-prompt = "Review {{outline}}"
+prompt = "Refine using {{review}}"   # review runs later → pre-flight error
 ```
 
 ## Checklist
 
-Design:
-
-- [ ] Could a single `octomind run` do this job? Every step justified by a splitting gate (persona, model, gate, verifiability, parallelism)?
-- [ ] Can you name the handoff artifact for every step boundary in one sentence?
-- [ ] Every step prompt ends with "output only the artifact" and passes only the variables it needs?
-- [ ] Every gate matches a key:value sentinel that the emitting prompt demands on its last line, with both outcomes as positive tokens?
-- [ ] Loops: `max_iterations` 2–3, binary verdict, finite rubric, critic instructed to approve when the rubric passes?
-- [ ] Parallel branches independent of each other; voting uses an odd count plus a mechanical aggregator?
-- [ ] Cheap vs strong `model` considered per step?
-
-Syntax and testing:
-
-- [ ] `name` set at top level; every step `name` unique; none named `input`; each sequential step has `role` and `prompt`?
-- [ ] Each `{{var}}` is `input` or an earlier step (no forward refs)?
-- [ ] `contains` or `matches` on every `exit_when`/`condition`; regexes compile; loops bounded; long-running steps have a `timeout`?
-- [ ] Every referenced role is installed (pre-flight does not check this)?
-- [ ] Steps with `workdir`: the directory exists by the time the step runs (pre-flight does not check this)?
-- [ ] Each step tested standalone via `octomind run`; gate patterns tested against a known-bad output (no match) and a known-good one (match)?
-- [ ] `octomind workflow file.toml --dry-run` prints the expected plan; one golden end-to-end run done, including the forced `max_iterations` path?
+- [ ] Could a single `octomind run` do this? Every step justified by a splitting gate?
+- [ ] Handoff artifact nameable for every boundary; prompts end with "output only the artifact"?
+- [ ] Every gate matches a key:value sentinel the emitting prompt demands on its last line?
+- [ ] Loops bounded at 2–3 with a binary verdict and an approve-when-passing critic?
+- [ ] Cheap vs strong `model` chosen per step; `max_cost` set for open-ended runs?
+- [ ] Every role installed (`octomind complete run`) and each step tested standalone?
+- [ ] `--dry-run` clean; result consumed via `--format jsonl` when scripted?
 
 ## References
 
 - `octomind workflow <file.toml> --dry-run` — validate and inspect the resolved plan
-- Octomind docs: workflows usage guide (`doc/usage/09-workflows.md` in the octomind source)
-- [Anthropic — Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents) — the workflow patterns this skill's design layer is grounded in
+- Octomind docs: `doc/usage/09-workflows.md`; `config-templates/workflow*.toml` in the octomind source
+- [Anthropic — Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents) — the patterns behind the design layer

@@ -17,7 +17,7 @@ rules:
 
 ## Overview
 
-Write modern C++ with value semantics, deterministic resource cleanup, and explicit lifetime contracts. Research baseline: C++23 is the published ISO standard; C++26 remains in progress, checked 2026-09-05. Read build presets, compiler versions, selected language standard, standard-library implementation, and CI targets first. A compiler accepting `-std=c++23` does not prove every C++23 library facility is available. Recheck vendor support tables when adopting features.
+Write modern C++ with value semantics, deterministic resource cleanup, and explicit lifetime contracts. As of 2026-10: C++23 is the published ISO standard; C++26 was technically completed by WG21 in March 2026 and awaits ISO publication, with compiler and library support still partial. Read build presets, compiler versions, selected language standard, standard-library implementation, and CI targets first. A compiler accepting `-std=c++23` or `-std=c++26` does not prove every facility of that standard is available. Recheck vendor support tables when adopting features.
 
 ## Mental model
 
@@ -30,7 +30,9 @@ Every resource has an owner; every view has a lifetime. Prefer values and standa
 | C++20 | Concepts, ranges, `std::span`, `std::format`, `std::jthread`/stop tokens, `consteval`, `constinit`. |
 | C++23 | `std::expected`, `std::print`, `std::ranges::to`, explicit object parameters, `std::mdspan`. |
 
-Use concepts to express template requirements and ranges when the resulting pipeline is clearer than a loop. `std::format` is C++20; `std::print` is C++23. Neither guarantees a performance win for your workload. Modules and newer library features need compiler, library, and build-system support; don't introduce a migration or compatibility wrapper merely to use newer syntax. Treat C++26 reflection, contracts, and execution facilities as evolving until the project's implementation and intended standard explicitly support them.
+Use concepts to express template requirements and ranges when the resulting pipeline is clearer than a loop. `std::format` is C++20; `std::print` is C++23. Neither guarantees a performance win for your workload. Modules and newer library features need compiler, library, and build-system support; don't introduce a migration or compatibility wrapper merely to use newer syntax. C++26 adds static reflection, contracts (`pre`, `post`, `contract_assert`), `std::execution` senders/receivers, standard-library hardening, and erroneous behavior for uninitialized reads; use them only where the project selects C++26 and every supported compiler implements the specific paper.
+
+For safety on current toolchains, enable the implementation's library hardening in debug and CI builds where the project allows it (`_GLIBCXX_ASSERTIONS` for libstdc++, `_LIBCPP_HARDENING_MODE` for libc++), and run AddressSanitizer/UndefinedBehaviorSanitizer in tests; hardening converts some undefined behavior into traps, not into recoverable errors.
 
 ## Ownership and lifetime
 
@@ -83,6 +85,7 @@ enum class WorkerError { non_positive };
 ## References
 
 - [Published standard](https://isocpp.org/std/the-standard), [GCC support](https://gcc.gnu.org/projects/cxx-status.html), and [Clang support](https://clang.llvm.org/cxx_status.html).
+- [C++26 completion trip report (March 2026)](https://herbsutter.com/2026/03/).
 - [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines).
 - Working-draft contracts: [expected](https://eel.is/c++draft/expected), [moved-from library objects](https://eel.is/c++draft/lib.types.movedfrom), [format](https://eel.is/c++draft/format), and [jthread](https://eel.is/c++draft/thread.jthread.class). Check the selected standard before using draft additions.
 - [CMake target model](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html).

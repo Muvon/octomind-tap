@@ -1,21 +1,23 @@
 ---
 name: tap-agent-authoring
 title: "Agent Manifest Authoring"
-description: "Deep guide for writing Octomind agent manifests: TOML format, required fields, system prompt structure, temperature guidelines, external workflow/layer pointers, and the pre-write checklist. Activate when creating or editing agents/<domain>/<spec>.toml files."
+description: "Guide for writing Octomind agent manifests: TOML format, required and forbidden fields, capability tiers, system prompt structure and tone for current models, sampling and model settings, placeholders, lint rules, and the pre-write checklist. Activate when creating or editing agents/<domain>/<spec>.toml files."
 license: Apache-2.0
-compatibility: "Requires: octomind-tap repo. Use alongside tap-capability-authoring for capability creation."
+compatibility: "Requires: an Octomind tap checkout with scripts/lint-manifests.sh and bin/load."
 domains: octomind
 ---
 
 ## Overview
 
-This skill encodes everything needed to write a correct, high-quality `agents/<domain>/<spec>.toml` file for the octomind-tap registry. It covers the exact TOML format, required and forbidden fields, how to write effective system prompts, temperature/top_p guidelines by domain, workflow and layer patterns for multi-step pipelines, and the pre-write checklist.
+This skill encodes what a correct, high-quality `agents/<domain>/<spec>.toml` needs: the exact TOML shape, which fields are required or forbidden, how to structure and phrase the system prompt for current models, how sampling settings actually reach the model, and the checks that must pass before the manifest ships. Use it whenever you create or edit an agent manifest.
 
-Use this skill whenever you are creating or editing an agent manifest.
+## Mental model
 
-## Instructions
+A manifest is `capabilities` plus exactly one `[[roles]]`. Capabilities decide the tool surface (`bin/load` and the runtime merge each capability's provider file into `[deps]`, `[roles.mcp]`, and `[[mcp.servers]]`); the role decides behaviour. The system prompt is sent on every request and cached, so it must be stable, short, and structural: identity and rules live in `system`, reference material lives in skills loaded on demand.
 
-### Agent Manifest Format
+## Rules
+
+### Manifest format
 
 ```toml
 # agents/<domain>/<spec>.toml
@@ -27,209 +29,123 @@ capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesea
 
 [[roles]]
 system = """
-<XML-tagged system prompt — see "System Prompt Structure" below>
+<XML-tagged system prompt — see below>
 """
 welcome = "<Emoji> <Short greeting>. Working in {{CWD}}"
 temperature = 0.3
 top_p = 0.9
 top_k = 0
-
-# Optional model override:
-# model = "openrouter:anthropic/claude-sonnet-4"
+# model = "<provider>:<model>"   # optional override
 ```
 
-### Required Fields
+| Field | Rule |
+|-------|------|
+| `# Agent:`, `# Title:`, `# Description:` | Required header comments; title 5–60 chars, description 20–160 |
+| `capabilities` | Required at top level; the only way to wire tools. Bare name = default provider, `name:provider` = explicit |
+| `system` | Required; XML blocks in canonical order |
+| `welcome` | Required; first message shown; emoji plus `{{CWD}}` |
+| `temperature`, `top_p`, `top_k` | Required by lint; see Sampling below |
+| `model` | Optional `provider:model` override for this agent |
+| `name`, `[deps]`, `[roles.mcp]`, `[[mcp.servers]]` | Forbidden — injected from the tag and from capability files |
 
-| Field | Notes |
-|-------|-------|
-| `# Title:` | Comment. Short human-readable label. 5–60 chars. |
-| `# Description:` | Comment. What the agent does. 20–160 chars. |
-| `capabilities` | Top-level, always first. The ONLY way to wire tools. |
-| `system` | The system prompt — agent's identity, rules, domain knowledge. |
-| `welcome` | First message shown to user. Include emoji + `{{CWD}}`. |
-| `temperature` | 0.1–0.2 for precise tasks, 0.3–0.5 for balanced, 0.6–0.8 for creative. |
-| `top_p` | Typically 0.2 (precise) to 0.9 (creative). |
-| `top_k` | 0 or 10 for most agents. |
+File path matches the tag (`developer:rust` → `agents/developer/rust.toml`), exactly one `[[roles]]`, sub-specs use hyphens (`developer:rust-nightly`).
 
-### Optional Fields
+### Capability tiers
 
-| Field | Notes |
-|-------|-------|
-| `model` | Override model for this agent (e.g. `"openrouter:anthropic/claude-sonnet-4"`). |
+- `core` — every agent.
+- Domain capabilities (`shell`, `filesystem-*`, `codesearch-*`, `websearch`, ...) — what the role actually needs, nothing speculative.
+- `agent` — sub-orchestrators delegating to their own configured agents.
+- `orchestration` (`tap`, `schedule`, `monitor`) — only agents that genuinely route across domains.
+- `runtime` (`mcp`, `agent`, `skill`, `capability`) — high-trust agents that reconfigure the tool surface.
 
-### Forbidden in Agents
+A narrow specialist never declares `orchestration` or `runtime`; the unwanted server is then physically absent from its context. Domain capabilities beyond the manifest can still auto-activate on intent at runtime.
 
-| Field | Why |
-|-------|-----|
-| `name` | Injected from tag at runtime. |
-| `[deps]` | Deps belong in capability files. |
-| `[roles.mcp]` | Injected from capabilities at runtime. |
-| `[[mcp.servers]]` | MCP servers belong in capability files. |
+### System prompt structure
 
-### System Prompt Structure (mandatory — 2026 standard)
-
-System prompts must use XML-tagged blocks in a fixed order. This is grounded in three findings: (1) the U-shape attention curve — beginning and end of the prompt get the most attention, the middle gets "lost"; (2) Anthropic's published guidance that XML tags are the preferred structuring method for Claude; (3) Claude Opus 4.7 follows instructions more literally than 4.6 — implicit gaps don't get bridged anymore, so structure has to be explicit.
-
-The eight-block order, top to bottom:
+XML-tagged blocks in a fixed U-shape order. Anthropic recommends XML tags to separate instructions, context, examples, and inputs; the start and end of a long prompt get the most attention, so identity goes first and the tight rule list last.
 
 ```
-<identity>          ← primacy: who/what (3–5 lines, role + expertise + style)
-<voice>             ← tone, register, formality (omit if technical agent)
-<scope>             ← what's owned / what routes elsewhere
-<workflow>          ← numbered steps for the main pipeline
-<rules>             ← decision rules, tables, domain knowledge
-<examples>          ← good/bad pairs (omit if not applicable)
-<output_format>     ← exact artifact shape, file location, schema
-<interaction>       ← trigger → response patterns
-<critical>          ← recency: brief Don't/Do list in plain language; reserve all-caps for one or two genuine safety hard-stops
+<identity>          who/what, expertise, style (3–5 lines)
+<voice>             tone and register (omit for technical agents)
+<scope>             what is owned / what is out of scope
+<workflow>          numbered steps
+<rules>             tables, decision matrices, domain knowledge
+<examples>          bad → good pairs (omit if N/A)
+<output_format>     artifact shape, file paths, schemas
+<interaction>       trigger → response patterns
+<critical>          brief Don't/Do list in plain language
 ```
 
-Why this order:
-- `<identity>` first because primacy: the model commits to role early
-- `<critical>` last because recency: the tail is load-bearing — it's the last thing the model sees before the user message and gets disproportionate attention
-- `<workflow>` and `<rules>` in the middle have to do their work via clear tagging, since middle-of-prompt content is the "lost" zone — the XML tags act as retrieval anchors
+Block rules:
 
-Where {{CWD}}, {{DATE}}, and other dynamic placeholders go (and where they don't):
+- `<identity>` — one paragraph, nothing before it.
+- `<scope>` — required when siblings exist. Describe out-of-scope work by what it is, not by naming agents from other domains.
+- `<workflow>` — numbered steps, one sentence each plus optional sub-bullets.
+- `<rules>` — tables and bullets; prose only when the why is non-obvious.
+- `<output_format>` — exact artifact shape; name file path patterns if the agent writes files.
+- `<critical>` — short Don't/Do bullets, no explanations, no theatre.
 
-The system prompt must be STABLE run-to-run. Anything that changes between runs breaks prompt caching, which costs real money and latency on every call.
+### Tone for current models
 
-- `{{CWD}}` and `{{DATE}}` change every run — they belong in the `welcome` field ONLY.
-- The harness pipes working directory and current date as separate runtime context. Putting them in `system` duplicates that state AND breaks the cache.
-- The rule: if a placeholder's value changes from one session to the next, it does not belong in `system`. System is identity + rules + structure — all stable. Welcome handles "where am I, when am I" dynamics.
-- Static placeholders like `{{INPUT:KEY}}` and `{{ENV:KEY}}` typically don't appear in system anyway — they live in MCP server config.
-
-The lint enforces this: `{{CWD}}` or `{{DATE}}` anywhere inside `system = """..."""` is a hard error.
-
-Block-by-block authoring rules:
-
-- `<identity>` — One paragraph. Role, expertise, style. Don't bury this; the model uses it to pick its register.
-- `<voice>` — Only include if voice/tone matters (content, marketing, video, creative agents). Omit for pure technical agents (developer, devops, security) where voice is uniform.
-- `<scope>` — Two lists: ✅ Own / ❌ Don't own. Required for any agent that sits next to siblings (e.g. `seo:audit` vs `seo:strategist`, or `content:article` vs `content:blog`). Describe out-of-scope work by what it is, not by routing to a specific other-domain agent — domain isolation applies to agent bodies too.
-- `<workflow>` — Numbered steps (1, 2, 3…). Each step is one sentence + optional sub-bullets. Don't write paragraphs.
-- `<rules>` — Tables and bullet lists win here. Decision matrices, parameter ranges, vocabulary lists. This is the agent's domain knowledge.
-- `<examples>` — Bad → Good pairs are the strongest format. Skip this block if the agent's output is freeform.
-- `<output_format>` — Exact structure of the artifact. If the agent saves files, name the path pattern (`./video-out/<slug>/script.md`). If the agent returns markdown blocks, show the schema.
-- `<interaction>` — Trigger patterns. "When user says X → do Y". Especially "Ambiguous → ask ONE clarifying question."
-- `<critical>` — Brief Don't/Do list in plain language: things the model could plausibly get wrong if not warned, and the corresponding correct action. Reserve all-caps `NEVER`/`ALWAYS` for one or two genuine safety hard-stops (e.g. `Never force-push to main`); stacking more dilutes attention on Claude 4.6+ (see "Tone calibration"). No CWD/DATE placeholders, no preamble, no `🚨 HARD RULES` theatre.
-
-Token discipline (Claude 4.7 / 2026):
-- Target: 200–1000 words for the full system prompt is the production sweet spot
-- Soft warning at 1500 words (`SYSTEM_LENGTH_WARN`) — context rot risk
-- Hard cap: 3000 words. Above this, `lint-manifests.sh` fails with `SYSTEM_TOO_LONG` — extract documentation/reference content into skills.
-- Be explicit — Claude 4.7 doesn't bridge implicit gaps the way 4.6 did
-- Static content first for prompt caching (saves up to 90% cost on repeat sessions)
-- No decorative prose — every line must do work; if you can cut it without losing meaning, cut it
-
-Authoring patterns that work:
-- Specific over generic — "Use `uv run pytest` for testing" beats "Run the tests"
-- Tool commands inline — actual CLI commands for the domain (cargo, kubectl, npm, etc.)
-- Set boundaries explicitly — "Fix X" means fix X only, not refactor the neighborhood
-- Reference example agents — study `developer:general` for execution protocol; `agents/content/article.toml` for content-style structure
-
-Anti-patterns that break the structure:
-- Free-form markdown sections without `<tag>` wrappers — defeats the U-shape strategy
-- `IDENTITY` / `WORKFLOW` as plain `##` headers — Claude treats them as content, not structural anchors
-- Long preambles before `<identity>` (e.g. "Welcome to this agent...") — wastes the primacy slot
-- Critical rules buried in the middle — they get "lost"
-- `<critical>` block with paragraphs of explanation — keep it tight: brief Don't/Do bullets, that's it
-- Stacked theatrical emphasis — `🚨 HARD RULES`, `CRITICAL: YOU MUST`, ten bullets all starting `NEVER` or `ALWAYS`. On Claude 4.5+ this over-triggers and dilutes signal. See "Tone calibration" below.
-- Embedding reference documentation (CLI commands, config schema, API listings) inside the system prompt — this ships to the model on every activation, even for unrelated questions. Reference content belongs in skills loaded on demand, not in `system`. The agent's system prompt is identity + behaviour + scope; everything that's "the user might ask about" goes in skills.
-
-Tone calibration (Claude 4.6+ over-emphasis, mandatory awareness):
-
-Claude 4.5+ is far more responsive to the system prompt than 3.x. Aggressive language written to defeat under-triggering on older models now over-triggers. Substance stays; theatre goes.
+Current Claude models are trained for precise instruction following and are more responsive to the system prompt than older generations. Anthropic's guidance: language written to stop under-triggering now over-triggers, so dial it back; and say explicitly what you want, because a vague request gets a literal reading.
 
 - `CRITICAL: YOU MUST use tool X when …` → `Use tool X when …`
-- `🚨 HARD RULES` + 10 stacked `NEVER` bullets → `<critical>` with plain `Don't …` / `Do …` lines
-- `MANDATORY: Run validation` → `Run validation after edits.`
-- `NEVER assert X you haven't verified` → `Don't assert X you haven't verified.`
-- `DEFAULT TO using web search` → `Use web search when it would enhance your understanding.`
-- `After every 3 tool calls, summarize progress` → drop on 4.7 (internalised)
+- `🚨 HARD RULES` + stacked `NEVER` bullets → `<critical>` with plain `Don't …` / `Do …`
+- `If in doubt, use X` → state when X applies
+- "Suggest changes" when you mean edits → "Make the changes"
 
-Reserve all-caps and "must" for one or two genuine safety hard-stops (e.g. `Never force-push to main`). The substance test: delete the `NEVER`/`ALWAYS`/`MUST` and lowercase the line. Does the rule still make sense? Soften it. Does it read as filler once softened? Cut it.
+Reserve all-caps for one or two genuine safety hard-stops (`Never force-push to main`). The substance test: drop the emphasis and lowercase the line — if it still makes sense, keep it soft; if it reads as filler, cut it. More detail: `skills/prompt-engineering/reference/claude-4-emphasis-and-tools.md`.
 
-Full reference (verbatim Anthropic guidance, parallel-tool-calls block, message-history rules): `skills/prompt-engineering/reference/claude-4-emphasis-and-tools.md`.
+### Token and markdown discipline
 
-Markdown discipline inside XML blocks (token economy — mandatory):
+- Target 200–1000 words. `lint-manifests.sh` warns above 1500 (`SYSTEM_LENGTH_WARN`) and fails above 3000 (`SYSTEM_TOO_LONG`).
+- No reference documentation (CLI listings, config schemas, API tables) in `system` — move it to a skill and name the skill.
+- The XML tag is the structure: no `#`/`##` headers (lint fails), `###` only when a block has two or more genuine sub-areas, no bold (lint fails), no `---` separators.
+- Keep tables, code fences, and numbered lists — they carry structure.
 
-The XML tag IS the structural anchor. Markdown decoration that duplicates that role is pure token waste — every `**` and `###` ships to the model on every call. Strip the noise:
+### Placeholders
 
-- No `### subsection` heading at the top of an XML block. The opening tag already names the section. `<voice>` followed immediately by `### Voice & Tone` is redundant — drop the H3.
-- `### subsection` is fine only when an XML block has 2+ genuinely distinct sub-areas (e.g. `<workflow>` containing `### Research protocol` + `### Memory protocol` + numbered steps). Single-subsection blocks should flow as plain prose under the tag.
-- No `bold` on bullet leads. `- Active voice — "Studies show X"` becomes `- Active voice — "Studies show X"`. The em-dash already separates lead from explanation. Bold adds tokens, not meaning.
-- No `bold` on inline emphasis unless the emphasis is genuinely load-bearing (a hard rule, a critical warning). Default: drop it.
-- Keep tables. `|---|---|` markdown tables are real structure — they carry decision matrices and stay.
-- Keep code fences. Triple-backtick blocks are essential for output schemas, command examples.
-- Keep numbered lists. `1. Step` becomes `1. Step` — but the numbering stays.
-- No `---` separators between content inside an XML block. Use blank lines.
+The system prompt must be identical run to run so the provider can cache it (cache reads bill at roughly a tenth of the input price).
 
-The test: would removing this markdown change the model's understanding of the rule? If no, drop it.
+| Placeholder | Where |
+|-------------|-------|
+| `{{CWD}}`, `{{DATE}}`, `{{SYSTEM}}` | `welcome` only — lint fails if they appear in `system` |
+| `{{ROLE}}`, `{{SHELL}}`, `{{OS}}`, `{{GIT_STATUS}}`, `{{README}}`, ... | Expand in both, but anything that changes per session or project breaks caching in `system` |
+| `{{INPUT:KEY}}`, `{{ENV:KEY}}` | Capability files, not prompts — credentials and env vars |
 
-### Temperature Guidelines by Domain
+### Sampling and model settings
 
-| Domain | Temperature | top_p | Why |
-|--------|-------------|-------|-----|
-| Developer | 0.1 | 0.9 | Precision, deterministic code |
-| DevOps | 0.15 | 0.9 | Reliable infrastructure |
-| Security | 0.15 | 0.9 | Conservative, no guessing |
-| Medical/Legal | 0.15–0.2 | 0.9 | Evidence-based, cautious |
-| Content/Creative | 0.4–0.8 | 0.9 | Voice, creativity, variation |
-| General assistant | 0.3 | 0.9 | Balanced |
+The runtime folds `temperature`, `top_p`, and `top_k` into the role's model override and the provider layer sends only what the target model accepts. On the `anthropic:` provider, Claude Opus 4.7 and later, the Claude 5 family, and any request with thinking on (the default `reasoning_effort` is `medium`) get no sampling parameters at all — the API rejects non-default values, so octolib omits them. Several Claude 4.x models reject `top_p`; it is dropped there. OpenAI reasoning models (o-series, GPT-5 and later) reject `temperature`/`top_p` as well, and octolib drops them there too.
 
-### Required Disclaimers
+So the fields are required, but on current Claude models behaviour comes from the prompt, not the sampler. Set conservative values for the models that still honour them:
 
-Medical, legal, and financial agents MUST include prominent disclaimers in the system prompt:
-- Medical: "NOT a doctor, CANNOT diagnose or prescribe"
-- Legal: "NOT a licensed attorney, legal information only"
-- Financial: "NOT financial advice"
+| Domain | temperature | top_p | top_k |
+|--------|-------------|-------|-------|
+| Developer, DevOps, security | 0.1–0.2 | 0.9 | 0 |
+| Medical, legal, finance | 0.15–0.2 | 0.9 | 0 |
+| General assistant | 0.3 | 0.9 | 0 |
+| Content, creative | 0.4–0.7 | 0.9 | 0 |
 
-### Placeholder Variables
+`top_k = 0` disables it. Use `model` only when the agent genuinely needs a specific model; otherwise let the user's config and `[taps]` decide.
 
-| Placeholder | Use for |
-|-------------|---------|
-| `{{CWD}}` | Current working directory — always include in `welcome` and `system` |
-| `{{DATE}}` | Current date |
-| `{{INPUT:KEY}}` | Secret, user-global (e.g. API keys) |
-| `{{ENV:KEY}}` | Non-secret or project-scoped env var |
+### Lint rules that bite
 
-### Naming and Metadata Rules
+- No `{{CWD}}`, `{{DATE}}`, or `{{SYSTEM}}` in `system`.
+- No tap-relative paths (`skills/…`, `capabilities/…`, `deps/…`) in `system` or `welcome` — agents run in the user's project, not the tap checkout. The `octomind` domain is exempt.
+- Every `` `name` skill `` mention must exist at `skills/<name>/SKILL.md`.
+- Every capability needs `capabilities/<name>/default.toml`.
 
-- File path matches tag: `developer:rust` → `agents/developer/rust.toml`
-- Sub-specs use hyphens: `developer:rust-nightly`
-- One `[[roles]]` per file
-- `# Title:` — 5–60 chars. Example: "Rust Developer", "Blood Test Interpreter"
-- `# Description:` — 20–160 chars. Concise and scannable, like an SEO meta description
+### Required disclaimers
 
-### Multi-Step Pipelines (external)
+Medical, legal, and financial agents state their limits plainly in `<critical>` or `<identity>`: not a doctor and cannot diagnose or prescribe; not a licensed attorney, legal information only; not financial advice.
 
-Agents are `capabilities` + one `[[roles]]`. They do not define multi-step pipelines — the old `workflow = "..."` field and `[[workflows]]` block were removed from Octomind. Multi-step orchestration is now the external `octomind workflow <file.toml>` CLI: a portable TOML that chains `octomind run` steps (sequential / parallel / loop / conditional) and references installed role tags. Load the `octomind-workflow` skill for that syntax.
+### Multi-step pipelines
 
-`[[layers]]` still exist in Octomind config (not in tap manifests): they back the `[[commands]]` slash-command system (`/run <name>`) and delegate to a role via `command = "octomind acp <role>"`. Model, system prompt, and MCP config live in the referenced `[[roles]]` entry, not in the layer.
-
-### Pre-Write Checklist
-
-Before writing any agent manifest, verify:
-
-- [ ] `# Title:` comment present? (5–60 chars)
-- [ ] `# Description:` comment present? (20–160 chars)
-- [ ] Is there a similar agent to reference for prompt structure?
-- [ ] Do all needed capabilities exist? If not, use `tap-capability-authoring` skill first.
-- [ ] System prompt uses XML-tagged blocks in the canonical order? (`<identity>` → `<voice>` → `<scope>` → `<workflow>` → `<rules>` → `<examples>` → `<output_format>` → `<interaction>` → `<critical>`)
-- [ ] `<identity>` is the first thing the model sees? (no preamble before it)
-- [ ] `<critical>` is last and contains a brief Don't/Do list in plain language? (no `🚨 HARD RULES` theatre, no CWD/DATE placeholders, no stacked all-caps `NEVER`/`ALWAYS` — reserve those for one or two genuine safety hard-stops)
-- [ ] Tone calibrated for Claude 4.6+: `Use X when ...` rather than `Default to X` / `CRITICAL: YOU MUST X`?
-- [ ] `{{CWD}}` and `{{DATE}}` appear in the `welcome` field, NOT in `system`?
-- [ ] Total system prompt under ~1500 words? (context rot threshold)
-- [ ] Is the system prompt specific enough? (domain knowledge, tools, patterns)
-- [ ] Are temperature/top_p appropriate for the domain?
-- [ ] Does the welcome message include an emoji + `{{CWD}}`?
-- [ ] No `[deps]`, `[roles.mcp]`, or `[[mcp.servers]]` in the agent file?
-- [ ] Run `bash scripts/lint-manifests.sh agents/<domain>/<spec>.toml` — passes clean?
-- [ ] Run `bin/load <domain>:<spec>` — resolves without errors?
+Manifests do not define pipelines. Multi-step orchestration is the external `octomind workflow <file.toml>` CLI (sequential, parallel, loop, conditional, graph); load the `octomind-workflow` skill for its syntax. `[[layers]]` and `[[commands]]` exist only in a user's local config, delegating to a role via `command = "octomind acp <role>"`.
 
 ## Examples
 
-### Example 1: Minimal correct agent (2026 XML structure)
+### Example 1: minimal correct agent
 
 ```toml
 # agents/developer/rust.toml
@@ -242,43 +158,34 @@ capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesea
 [[roles]]
 system = """
 <identity>
-Expert Rust developer. You write idiomatic, safe, performant Rust — borrow checker–friendly, zero-cost abstractions, no unsafe unless justified in a comment.
+Expert Rust developer. You write idiomatic, safe, performant Rust — borrow-checker friendly, no unsafe unless justified in a comment.
 </identity>
 
 <scope>
-✅ Own: Rust code, Cargo workflows, async with tokio, error handling with thiserror/anyhow, no_std embedded, FFI bindings.
-❌ Don't own: cross-language glue beyond FFI signatures (route to language-specific agent), infra/deployment (route to devops:*).
+Own: Rust code, Cargo workflows, async with tokio, error handling, FFI signatures.
+Don't own: infrastructure and deployment.
 </scope>
 
 <workflow>
-1. Read context — `cargo metadata`, `Cargo.toml`, surrounding modules.
-2. Plan — for non-trivial changes, present an outline before writing.
-3. Write — idiomatic Rust, prefer iterators over loops, `Result` over panic.
-4. Verify — `cargo check`, `cargo clippy`, `cargo test`.
+1. Read context — `Cargo.toml`, surrounding modules.
+2. Outline non-trivial changes before writing.
+3. Write — iterators over index loops, `Result` over panic.
+4. Verify — `cargo check`, `cargo clippy -- -D warnings`, `cargo test`.
 </workflow>
 
 <rules>
-- Errors: `thiserror` for libraries, `anyhow` for binaries. Never `unwrap()` outside tests/examples.
-- Async: tokio is the default runtime. Don't mix runtimes.
-- Lints: `cargo clippy -- -D warnings` must pass clean.
-- No `unsafe` blocks without a SAFETY comment naming the invariant.
+- Errors: `thiserror` for libraries, `anyhow` for binaries.
+- Async: tokio; don't mix runtimes.
 </rules>
 
-<output_format>
-Code edits via Edit/Write tools. After non-trivial changes, run `cargo check` and report the result.
-</output_format>
-
 <interaction>
-- New task → confirm the scope before editing if files >3 will change.
-- Ambiguous spec → ask ONE clarifying question, then proceed.
+- Ambiguous spec → ask one clarifying question, then proceed.
 </interaction>
 
 <critical>
 - Don't add `unsafe` without a SAFETY comment naming the invariant.
-- Don't use `unwrap()` in production code paths.
-- Don't disable clippy lints to silence warnings — fix the underlying issue.
-- Run `cargo check` after edits.
-- Use the simplest type that fits — reach for `Box<dyn>` only when a generic doesn't work.
+- Don't use `unwrap()` in production paths.
+- Don't silence clippy — fix the cause.
 </critical>
 """
 welcome = "🦀 Rust developer ready. Working in {{CWD}}"
@@ -287,37 +194,40 @@ top_p = 0.9
 top_k = 0
 ```
 
-### Example 2: Agent with model override
+### Example 2: forbidden fields
 
 ```toml
-capabilities = ["core", "filesystem-read", "filesystem-write", "websearch"]
-
-[[roles]]
-system = """..."""
-welcome = "🔍 Research agent ready. Working in {{CWD}}"
-temperature = 0.3
-top_p = 0.9
-top_k = 0
-model = "openrouter:anthropic/claude-sonnet-4"
-```
-
-### Example 3: Common mistake — forbidden fields
-
-```toml
-# ❌ WRONG — never put these in an agent manifest
+# ❌ WRONG — these belong in capability files
 [deps]
 require = ["muvon/octofs"]
 
 [roles.mcp]
 server_refs = ["octofs"]
-
-[[mcp.servers]]
-name = "octofs"
 ```
+
+### Example 3: dynamic context in system
+
+❌ `system = """<identity>Assistant working in {{CWD}} on {{DATE}}.</identity>"""`
+
+✅ `welcome = "👋 Ready. Working in {{CWD}}"` and a stable `system`.
+
+What changed: the system prompt is cacheable again and lint passes.
+
+## Checklist
+
+- [ ] Header comments present with valid lengths; path matches tag?
+- [ ] Every needed capability exists; tiers respected (no `orchestration`/`runtime` on a specialist)?
+- [ ] XML blocks in canonical order, `<identity>` first, `<critical>` last and short?
+- [ ] Tone calibrated: plain `Use X when …`, explicit asks, all-caps only for real hard-stops?
+- [ ] No `{{CWD}}`/`{{DATE}}`/`{{SYSTEM}}`, headers, or bold in `system`; under ~1500 words?
+- [ ] Reference material moved to skills; every named skill exists?
+- [ ] Sampling fields set conservatively, behaviour driven by the prompt?
+- [ ] `bash scripts/lint-manifests.sh agents/<domain>/<spec>.toml` passes and `bin/load <domain>:<spec>` resolves?
 
 ## References
 
 - `templates/agent.toml` — canonical agent template
-- `agents/developer/general.toml` — reference for execution protocol pattern
-- `bin/load` — resolves capabilities → merged manifest (run to debug)
-- `bash scripts/lint-manifests.sh` — validates agent TOML files
+- `agents/developer/general.toml` — execution-protocol reference
+- `bin/load <domain>:<spec>` — print the merged manifest
+- `skills/prompt-engineering/SKILL.md` — prompt theory across agents and skills
+- [Anthropic prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)

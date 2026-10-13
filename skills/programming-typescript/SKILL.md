@@ -13,7 +13,7 @@ rules:
 
 ## Overview
 
-Write code whose types describe real runtime guarantees, with small APIs and explicit failure behavior. Research baseline: 2026-09-05, TypeScript 7.0 stable. Read the repository's compiler version, inherited configuration, package exports, runtime targets, and toolchain constraints before applying newer features. A language update does not authorize a dependency or framework migration.
+Write code whose types describe real runtime guarantees, with small APIs and explicit failure behavior. As of 2026-10: TypeScript 7.0 (native compiler, released 2026-07-08) is the current stable release; 6.0 remains the line for tools that need the JavaScript compiler API. Read the repository's compiler version, inherited configuration, package exports, runtime targets, and toolchain constraints before applying newer features. A language update does not authorize a dependency or framework migration.
 
 ## Mental model
 
@@ -21,9 +21,10 @@ TypeScript checks JavaScript before execution; it does not validate JSON, freeze
 
 ## Version and configuration
 
-- TypeScript 7 is the native compiler, available through the regular `typescript` package. It does not expose the old compiler API. Check framework checkers, language plugins, and type-aware linters before upgrades; tooling that embeds the compiler may still require TypeScript 6. The official release documents side-by-side compatibility; do not invent a fallback compiler on failure.
-- In 6/7, `strict` defaults to true, `types` to `[]`, and `rootDir` to the configuration directory. Declare intended global types and source root explicitly when needed; inspect emitted paths during migration.
-- TypeScript 7 rejects options deprecated in 6, including `baseUrl`, `moduleResolution: node10`, and ES5 targets. Fix the underlying configuration; suppressing deprecations is not a durable migration.
+- TypeScript 7 is the native compiler, installed through the regular `typescript` package (`tsc`). It ships no programmatic compiler API (a new API is expected in 7.1). Tools that embed the compiler or language service (typescript-eslint type-aware rules, Vue, Svelte, Astro, MDX, Angular templates) stay on 6.0; run them side by side via `@typescript/typescript6` (`tsc6`) as the release notes describe. Do not invent a fallback compiler on failure.
+- In 6/7, `strict` defaults to true, `types` to `[]`, and `rootDir` to the configuration directory; 7 also defaults `module` to `esnext` and enables `noUncheckedSideEffectImports`. Declare intended global types and source root explicitly when needed; inspect emitted paths during migration.
+- TypeScript 7 rejects options deprecated in 6, including `baseUrl`, `moduleResolution: node10`/`classic`, AMD/UMD/System module output, ES5 targets, and `esModuleInterop: false`; `import ... assert` must become `with`. Fix the underlying configuration; suppressing deprecations is not a durable migration.
+- When code runs directly under Node's built-in type stripping (no build step), enable `erasableSyntaxOnly` and `verbatimModuleSyntax`: stripping cannot handle `enum`, `namespace` with values, or parameter properties, and it does not type-check.
 - Keep `strict` enabled. Consider `noUncheckedIndexedAccess` for potentially missing indexed values and `exactOptionalPropertyTypes` when absence differs from explicit `undefined`; neither follows automatically from `strict`. Introduce them within the authorized configuration scope.
 - Match `module` and `moduleResolution` to execution: Node-aware modes for Node resolution, `bundler` for a bundler. `paths` changes type resolution, not emitted imports. Prefer package exports/imports or the existing resolver over new aliases.
 - Pin `target`/`lib` to supported environments. New declarations do not supply polyfills. Use `import type` for erased dependencies, preserving any intentionally required side-effect import.
@@ -80,6 +81,7 @@ The boolean check preserves valid `false`; it does not replace malformed input w
 
 - [TypeScript 7.0 release and compiler API compatibility](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/)
 - [TypeScript 6.0 migration details](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-6-0.html)
+- [Node.js type stripping limits](https://nodejs.org/api/typescript.html)
 - [Module resolution reference](https://www.typescriptlang.org/docs/handbook/modules/reference.html)
 - [Narrowing and exhaustiveness](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
 - [Object types and readonly limits](https://www.typescriptlang.org/docs/handbook/2/objects.html)

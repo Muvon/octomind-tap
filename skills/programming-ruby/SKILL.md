@@ -12,7 +12,7 @@ rules:
 
 ## Overview
 
-Write idiomatic Ruby with explicit data contracts and predictable persistence. Research baseline: 2026-09-05, Ruby 4.0 stable; Rails guidance below targets supported Rails 8 APIs. Check `.ruby-version`, the Gemfile/lockfile, Ruby implementation, and Rails version before using newer features. Preserve existing application conventions and dependencies; a small change does not need a new service layer or gem extraction.
+Write idiomatic Ruby with explicit data contracts and predictable persistence. As of 2026-10: Ruby 4.0 is the current stable line and Rails 8.1 (8.1.4) the latest Rails; Rails 7.2 has shipped its final release, so treat 7.2 apps as upgrade candidates. Rails guidance below targets Rails 8.x APIs. Check `.ruby-version`, the Gemfile/lockfile, Ruby implementation, and Rails version before using newer features. Preserve existing application conventions and dependencies; a small change does not need a new service layer or gem extraction.
 
 ## Mental model
 
@@ -51,6 +51,8 @@ Ruby's flexibility makes names and failure contracts important. Keep domain beha
 - Transactions cover database work on their connection; they do not roll back HTTP calls or restore in-memory objects. Use raising persistence methods when failure must abort; ordinary `save` returning false does not trigger rollback automatically.
 - `ActiveRecord::Rollback` rolls back but is swallowed by the transaction boundary. Do not rescue database statement errors inside a transaction and continue using a potentially aborted transaction.
 - Schedule external effects after commit when appropriate; use durable coordination when delivery must survive a process crash. Make jobs safe under duplicate execution and bounded retries.
+- On Rails 8.1, long-running jobs can include `ActiveJob::Continuable` and split work into `step`s with a cursor so a deploy or restart resumes from the last completed step. Each step must still be idempotent, because a step interrupted mid-way reruns.
+- Rails 8.1's `has_many :x, deprecated: true` reports remaining uses of an association before removal; prefer it over deleting an association blind.
 - Active Job supports records via GlobalID, which reloads them later. Choose IDs, records, or explicit snapshots according to desired semantics and handle deletion before execution. Verify enqueue-after-commit behavior for the actual adapter/database setup.
 
 ## Example
@@ -80,7 +82,7 @@ This boundary expects string input for `attempts`, such as form/config text. Mis
 - Check Ruby/Rails version gates and retain the project's formatter and testing conventions.
 - Distinguish nil/false/missing from invalid data; check mutation and block-return semantics.
 - Verify transaction failure, database constraints, job duplication, and commit timing.
-- Use installed project commands through `bundle exec` or binstubs when authorized; test observable behavior with the existing Minitest/RSpec setup. Do not replace fixtures or test libraries by preference.
+- Use installed project commands through `bundle exec`, binstubs, or a Rails 8.1 `bin/ci` when present and authorized; test observable behavior with the existing Minitest/RSpec setup. Do not replace fixtures or test libraries by preference.
 
 ## References
 
@@ -88,6 +90,7 @@ This boundary expects string input for `attempts`, such as form/config text. Mis
 - [Ruby 4.0 features and experimental status](https://www.ruby-lang.org/en/news/2025/12/25/ruby-4-0-0-released/)
 - [Ruby 3.4 changes](https://www.ruby-lang.org/en/news/2024/12/25/ruby-3-4-0-released/)
 - [Data immutability](https://docs.ruby-lang.org/en/4.0/Data.html), [Proc control flow](https://docs.ruby-lang.org/en/4.0/Proc.html), and [Hash access](https://docs.ruby-lang.org/en/4.0/Hash.html)
+- [Rails 8.1 release](https://rubyonrails.org/2025/10/22/rails-8-1)
 - [Strong Parameters](https://api.rubyonrails.org/classes/ActionController/Parameters.html)
 - [Active Record transactions](https://api.rubyonrails.org/classes/ActiveRecord/Transactions/ClassMethods.html)
 - [Active Job and transaction behavior](https://guides.rubyonrails.org/active_job_basics.html)

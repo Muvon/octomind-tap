@@ -16,265 +16,204 @@ rules:
 
 ## Overview
 
-Translate documents, code comments, UI strings, and structured content between languages while preserving original formatting, adapting terminology to the target domain, and maintaining consistency across large files. This skill handles everything from single paragraphs to multi-file projects by splitting work into coherent batches, tracking terminology across segments, and validating output quality.
+Translate and localize documents, code comments, UI strings, and structured content while preserving meaning, formatting, placeholders, and terminology. Use for anything from one string to a multi-file documentation set. For a native-fluency audit of the result, load the content-locale-humanize skill.
 
-Use this skill when:
-- Translating documentation, READMEs, or technical guides
-- Localizing UI strings, error messages, or API docs
-- Translating code comments or inline documentation
-- Working with large files that exceed context-window limits
-- Adapting content for a specific domain (medical, legal, technical, marketing)
+## Mental model
 
-## Instructions
+A translation is a contract: same meaning and function, target-native form. Accuracy and completeness come first, then terminology, then fluency, style, and locale conventions; these are the MQM error dimensions reviewers will score. Professional practice (ISO 17100) separates translation from an independent revision. An LLM draft is machine output: it still needs that revision step (ISO 18587 post-editing), however fluent it reads.
 
-### 1. Pre-Translation Analysis
+## Rules
 
-Before translating any content, analyze the source to determine:
+### Brief before translating
 
-| Factor | What to Identify | How to Record |
-|--------|-----------------|---------------|
-| Source language | Detect from content or ask user | Note in translation log |
-| Target language | User-specified or inferred from context | Note in translation log |
-| Domain | technical, legal, medical, marketing, academic, casual | Determine from vocabulary and context |
-| Tone | formal, informal, instructional, persuasive, neutral | Match in target language |
-| Audience | developers, end-users, experts, general public | Adjust complexity accordingly |
-| Format constraints | markdown, code blocks, frontmatter, tables, HTML | Preserve exactly |
-| Key terminology | Domain-specific words that must translate consistently | Build a glossary BEFORE translating |
+| Factor | Decide |
+|---|---|
+| Locale | Full BCP 47 tag, not just language: es-ES vs es-419, pt-BR vs pt-PT, fr-FR vs fr-CA, zh-Hans-CN vs zh-Hant-TW |
+| Domain and audience | Technical, legal, medical, marketing, academic, UI; expert or general |
+| Register | tu/vous, du/Sie, tú/usted, keigo level, Korean speech level; hold it constant |
+| Assets | Existing glossary, translation memory, style guide, shipped localized UI |
+| Do-not-translate | Brand and product names, code identifiers, commands, legal entity names |
 
-Rule: If the user does not specify source/target language or domain, ASK before proceeding. Do not guess languages or domains.
+Ask when the locale variant, register, or domain is unknown and would change the output. Don't guess between es-ES and es-419.
 
-### 2. Terminology Glossary (Mandatory for Multi-File or Domain Work)
+### Terminology
 
-For any translation involving domain-specific language or multiple batches:
+- Build or load a glossary before translating: `source term → target term [domain, notes, rejected alternatives]`. Reuse it in every section and extend it when new terms appear.
+- UI labels in docs must match the shipped localized UI exactly. If the product isn't localized, keep the source label and add a translation only if the style guide asks for it.
+- Verify uncertain terms against target-language vendor documentation and terminology portals, or an exact-phrase search on native sites. Keep established English loanwords where the target domain uses them ("commit," "pull request" in most developer registers).
+- One source term, one target term per sense. If the source uses one word for two concepts, split it rather than forcing consistency.
 
-1. Extract key terms from the source before translating
-2. Research equivalents in the target language for the identified domain
-3. Record decisions in a glossary format:
-   ```
-   TERM (source) → TRANSLATION (target) [domain: X, notes: Y]
-   ```
-4. Reference the glossary in every subsequent batch
-5. Update the glossary if new terms appear mid-translation
+### Context and segmentation
 
-Rule: Never translate the same domain term differently across batches. Consistency trumps literal accuracy.
+- Give the model the brief, glossary, and enough surrounding document to resolve references. Current long-context models can hold a whole document; segment by output budget, not by an old context ceiling.
+- Split only at structural boundaries: headings, functions, string groups, scenes. Never split inside code blocks, tables, frontmatter, lists with cross-references, or sentences.
+- Pass the previous translated section as context instead of overlapping source text and deduplicating later.
+- Track state per section (`Section X/Y | heading | status`). After assembly, read start to finish for tone drift, cross-references, anchors, and glossary use.
 
-### 3. Batching Strategy for Large Files
-
-When a file exceeds safe context-window limits (typically >2000 words or >15000 characters):
-
-1. Split at natural boundaries:
-   - Markdown: split at `##` or `###` headers
-   - Code: split at function/class boundaries
-   - UI strings: split by screen or feature group
-   - Narrative: split at paragraph or scene breaks
-
-2. Never split inside:
-   - Code blocks (```...```)
-   - Tables (breaks alignment)
-   - Frontmatter blocks (---...---)
-   - Numbered lists with cross-references
-   - Sentences (split at period + newline, not mid-sentence)
-
-3. Batch size guidelines:
-   | Content Type | Max Words/Batch | Max Characters/Batch |
-   |-------------|----------------|---------------------|
-   | Plain text / Markdown | 1500 | 10000 |
-   | Technical docs with code | 1000 | 7000 |
-   | UI strings / JSON | 500 | 4000 |
-   | Legal / Medical | 800 | 6000 |
-
-4. Overlap strategy: Include the last 1-2 sentences of the previous batch at the start of the next batch to maintain flow and context. Remove duplicates in final assembly.
-
-5. Track batch state:
-   ```
-   Batch X/Y | Section: "Heading Name" | Words: N | Status: translated
-   ```
-
-### 4. Translation Workflow
-
-Follow this exact sequence for every translation task:
-
-Step 1 — Analyze: Identify language pair, domain, tone, audience, format.
-Step 2 — Glossary: Extract and define key terminology (skip for trivial <200 word translations).
-Step 3 — Batch: Split large content into coherent segments.
-Step 4 — Translate: Process each batch with full context.
-Step 5 — Assemble: Combine batches, remove overlaps, verify continuity.
-Step 6 — Validate: Run quality checks (see Section 6).
-Step 7 — Deliver: Present final translation with glossary if applicable.
-
-### 5. Format Preservation Rules
-
-Preserve all non-textual elements exactly. Translate ONLY human-readable text.
+### Format preservation
 
 | Element | Rule |
-|---------|------|
-| Markdown syntax | Keep `#`, `##`, `**`, `*`, `` ` ``, `[](url)`, `![]()` unchanged |
-| Code blocks | Do NOT translate code inside ```. Translate ONLY comments (`//`, `#`, `/* */`) |
-| **Inline code** | Keep `` `variable_name` `` unchanged. Translate surrounding text only |
-| **Frontmatter (YAML/TOML)** | Keep keys unchanged. Translate string values only |
-| **HTML tags** | Keep `<tag attr="value">`. Translate text nodes only |
-| **URLs** | Never translate URLs. Keep `https://...` as-is |
-| **Variables / Placeholders** | Keep `{name}`, `%s`, `{{var}}`, `$VAR` unchanged |
-| **Tables** | Translate cell contents. Preserve `|` and `-` alignment structure |
-| **Numbered lists** | Keep numbers. Translate text. Preserve indentation |
-| **Emoji** | Preserve emoji. Do not translate to text equivalents unless requested |
+|---|---|
+| Markdown | Keep syntax; translate text, link text, and alt text |
+| Code blocks | Translate comments and user-facing strings only, never code |
+| Inline code, variables, placeholders | Keep `{name}`, `%s`, `{{var}}`, `$VAR` byte-for-byte; reorder around them as grammar needs |
+| Frontmatter | Keep keys; translate string values that are human-facing |
+| HTML | Keep tags and attributes; translate text nodes and `alt`/`title` |
+| URLs | Keep, unless a localized page exists; then point to it |
+| Heading anchors | Translated headings change `#slugs`; update in-page links and TOC |
 
-**Rule**: If you are unsure whether something should be translated, keep it unchanged and add a translator note `[TN: ...]`.
+If unsure whether something is translatable, keep it and add `[TN: ...]`.
 
-### 6. Domain Adaptation
+### Software strings
 
-Adapt translation style based on detected domain:
+- Translate whole messages; never concatenate fragments, which breaks word order and agreement.
+- Use ICU MessageFormat or the platform's plural API with CLDR plural categories (Arabic has six forms, Russian and Polish four, Japanese and Chinese one). Don't hand-code an English "s".
+- Check gender, case, and article agreement around placeholders; ask for translator comments when a placeholder's content is unknown.
+- Respect length limits. Labels under 10 characters can double or triple in European languages; text over 70 characters runs about 30% longer (W3C, citing IBM). Typical whole-text expansion: German +20–30%, Spanish and French +15–25%, Russian +15%; CJK usually runs shorter in characters. Flag truncation risks instead of abbreviating unclearly.
+- RTL: isolate embedded LTR runs (`<bdi>`, `dir="auto"`, or Unicode FSI/PDI), keep numbers and code readable, and let layout mirror.
+
+### Locale conventions
+
+Follow Unicode CLDR data for the exact locale; this table covers the common traps.
+
+| Locale | Quotes | Number | Date | Watch |
+|---|---|---|---|---|
+| de-DE | „…“ (de-CH «…») | 1.234,56 (CH 1’234.56) | 12.10.2026 | de-CH uses ss, not ß |
+| fr-FR | « … » | 1 234,56 | 12/10/2026 | narrow no-break space before ; ! ? and no-break space before : |
+| fr-CA | « … » | 1 234,56 | 2026-10-12 | OQLF: no space before ; ! ?, space before : |
+| es-ES | «…» (RAE first choice), then “…” | 1234,56; 12 345,6 | 12/10/2026 | opening ¿ ¡ required |
+| es-MX | “…” | 1,234.56 | 12/10/2026 | ustedes, no vosotros, across es-419 |
+| it-IT | «…» or “…” | 1.234,56 | 12/10/2026 | perché (acute), è (grave) |
+| pt-BR / pt-PT | “…” / «…» | decimal comma | 12/10/2026 | vocabulary and pronouns differ; never mix |
+| ja-JP | 「…」『…』 | 1,234.56; 万 for large | 2026年10月12日 | full-width 、。; no spaces between words |
+| zh-Hans-CN | “…”, 《》 for titles | 1,234.56; 万/亿 | 2026年10月12日 | full-width ，。、；：？！; …… and —— |
+| zh-Hant-TW | 「…」『…』 | same | same | regional terms: 軟體, 網路, 資訊, 影片 (CN 软件, 网络, 信息, 视频) |
+| ko-KR | “…” | 1,234.56 | 2026. 10. 12. | word spacing (띄어쓰기) per National Institute of Korean Language |
+| ar | «…» or “…” | Western or Arabic-Indic digits per market | RTL | ، ؛ ؟ punctuation |
+| hi-IN | “…” | 12,34,567.89 (lakh/crore) | 12/10/2026 | । ends sentences |
+| th-TH | “…” | 1,234.56 | Buddhist Era (CE + 543) in formal contexts | no spaces between words; a space marks a clause or sentence break |
+
+Headings: English Title Case is an error in most target languages; use sentence case (German capitalizes nouns only). Converting Simplified to Traditional script is not localization for Taiwan or Hong Kong.
+
+en-US: 1,000.50, 05/23/2026 (ISO 2026-05-23 when the source enforces it). Russian, Polish, Czech, Slovak: «…» or „…“ by country.
+
+### Domain adaptation
 
 | Domain | Approach |
-|--------|----------|
-| **Technical / Developer** | Use established technical terminology in target language. Keep English loanwords if they are standard (e.g., "debug", "commit", "pull request" in many languages). Prefer official documentation translations. |
-| **Legal** | Use precise legal terminology. When exact equivalents don't exist, use accepted transliterations or add explanatory notes. Never paraphrase. |
-| **Medical** | Use internationally recognized medical terms (ICD, anatomical). When translating for patients vs. professionals, adjust complexity. |
-| **Marketing** | Prioritize emotional impact and cultural resonance over literal accuracy. Adapt idioms, metaphors, and cultural references. |
-| **Academic** | Maintain formal register. Use discipline-standard terminology. Preserve citation formats. |
-| **Casual / UI** | Use concise, natural phrasing. Respect character limits if specified. Ensure buttons/labels feel native. |
+|---|---|
+| Technical | Target-market standard terms; keep standard loanwords; mirror vendor docs in the target language |
+| Legal | Preserve legal effect; use the target jurisdiction's terms; flag concepts with no equivalent instead of paraphrasing them away |
+| Medical | Recognized terminology; plain language for patients, technical for professionals; never soften warnings or dosages |
+| Marketing | Transcreate from the brief: adapt idiom, rhythm, and cultural reference, but keep claims, prices, and disclaimers exact |
+| Academic | Formal register, discipline terminology, citation format unchanged |
+| UI | Shortest natural phrasing; consistent verbs for the same action; respect limits |
 
-### 7. Quality Validation Checklist
+Gender-inclusive forms follow the client's style guide. Academies and several governments restrict typographic forms (asterisks, colons, the French point médian, the Italian schwa); the per-language locale skills carry the current norms. Without a guide, prefer neutral rewording or paired forms. Spanish: doublets ("todos y todas") or neutral rewording in formal text; the RAE rejects "todes", "tod@s", and "todxs", though some activist or youth audiences expect them.
 
-Before delivering any translation, verify:
+### Risk inventory
 
-- [ ] **Completeness**: Every sentence from the source is present in the target
-- [ ] **Consistency**: Key terms are translated the same way throughout
-- [ ] **Accuracy**: No meaning is added, removed, or distorted
-- [ ] **Fluency**: Target text reads naturally to a native speaker
-- [ ] **Format**: All markdown, code, frontmatter, and structure is preserved
-- [ ] **Variables**: All placeholders, URLs, and code identifiers are intact
-- [ ] **Numbers/Dates**: Formatted correctly for target locale (if applicable)
-- [ ] **Gender/Formality**: Correctly matches target language conventions
+| Risk | Handling |
+|---|---|
+| Idioms and calques | Target equivalent or paraphrase, never literal ("raining cats and dogs") |
+| Culture-bound references | Localize for marketing and literary; preserve and gloss for technical and legal |
+| Untranslatables (saudade, hygge, schadenfreude, mono no aware) | Source word italicized with a short gloss on first use, or paraphrase |
+| False friends | actually ≠ actualmente; sympathique ≠ sympathetic; embarazada ≠ embarrassed; library ≠ librería (bookshop); Gift means poison in German |
+| Wordplay, puns, alliteration, rhyme | Recreate the effect, not the form |
+| Honorifics | Japanese -san/-sama, Korean -ssi/-nim, Indian -ji |
+| Gendered references | Follow the target's requirements; ask when the source is silent and the reader unknown |
+| Names, brands, products, code identifiers | Usually verbatim; verify official localized names |
+| Numbers, dates, currencies, units, addresses, phones, quotes | Locale-format; convert currency or units only on explicit ask |
+| Source-syntax bleed | English passives read unnatural in Romance and Slavic targets; literal nominalization-heavy German reads bureaucratic in English |
+| Marketing under-localization | A transliterated tagline usually dies; transcreate with the requester's permission |
 
-**Rule**: If any check fails, flag the issue and re-translate the affected section. Do not deliver partial or unverified translations.
+### Ambiguity
 
-### 8. Handling Ambiguity
+Choose the reading the domain and context support and note it: `[TN: ambiguous source; translated as "X" meaning Y]`. Ask when the choice changes meaning materially.
 
-When the source is ambiguous:
-1. Choose the most likely meaning based on domain and context
-2. Add a translator note: `[TN: ambiguous source; translated as "X" meaning Y]`
-3. If the ambiguity significantly affects meaning, ASK the user for clarification instead of guessing
+### Quality review
 
-### 9. Post-Translation Consistency Review
+- Revise against the source, segment by segment: omissions, additions, numbers, negation, units, names, glossary terms. Reading only the target misses fluent errors.
+- Run mechanical checks: placeholder and tag parity, numbers, URLs, glossary hits, length limits. For shipped content, log findings with MQM-style categories and severities.
+- LLM self-review misses errors and favors its own output. For high-stakes content, review with a different model or a qualified human. Metrics (COMET, MetricX) and LLM judges (GEMBA-style) are screening tools, not sign-off; back-translation catches only gross drift.
+- Fixing raw machine translation is full post-editing (ISO 18587:2017, under revision): human-translation quality, every check applies. Light post-editing (comprehensible, not publishable) only for internal gisting at the requester's word; state which level was delivered.
+- Grade an existing translation analytically (ISO 5060:2024, MQM): tag each error by type (accuracy, fluency, terminology, style, locale convention, markup/placeholder) and severity (critical / major / minor); counts drive the verdict, not impression.
 
-For multi-batch translations, perform a final pass:
-1. Read the assembled translation start-to-finish
-2. Check for tone shifts between batches
-3. Verify that pronouns and references resolve correctly across batch boundaries
-4. Ensure the glossary was applied uniformly
-5. Confirm formatting is intact across the entire document
+### Report shapes
+
+Adjustment delta note:
+
+```
+✏️ Adjustments (<what the user asked for>)
+
+- <change category> — was: "<short snippet>" → now: "<short snippet>" — <reason>
+- <change category> — applied throughout: <e.g. T-V form switched tú → usted>
+- Preserved: <what was kept intact>
+```
+
+Translation notes (non-trivial choices only, one bullet each):
+
+```
+🗒 Translation notes (<source-lang> → <target-locale>)
+
+- T-V form / Register: <choice> (reason)
+- Untranslatable: <source term> rendered as <choice> — alternative: <other>
+- Idiom: <source> → <target rendering> (literal would be misleading)
+- Culture-bound: <reference> localized (purpose=marketing) / preserved+glossed (purpose=technical)
+- Ambiguity flagged: <sentence> — read as <A> over <B> because <reason>
+- Length: +/-X% vs source — <warn if a UI string may break layout>
+```
 
 ## Examples
 
-### Example 1: Simple Markdown Document
+Markdown, EN → es-ES (technical):
 
-**Source**:
-```markdown
-# Getting Started
-
-Install the package via npm:
-
+````markdown
+## Getting started
+Install the package with npm:
 ```bash
 npm install my-package
 ```
+````
 
-Then import it in your code:
-
-```javascript
-import { init } from 'my-package';
-init({ apiKey: 'your-key' });
-```
-```
-
-**Target (Spanish, technical domain)**:
-```markdown
-# Primeros pasos
-
-Instala el paquete mediante npm:
-
+````markdown
+## Primeros pasos
+Instala el paquete con npm:
 ```bash
 npm install my-package
 ```
+````
 
-Luego impórtalo en tu código:
+Heading in sentence case, code untouched, informal tú matching a developer audience in Spain.
 
-```javascript
-import { init } from 'my-package';
-init({ apiKey: 'your-key' });
+Plural string, EN → ru. Wrong (concatenation, one form):
+
 ```
-```
-
-**Notes**: Code blocks preserved. Comments would be translated if present. `npm install` command kept as-is (standard CLI).
-
----
-
-### Example 2: Large File Batching
-
-**Source**: 5000-word technical guide with 12 sections.
-
-**Workflow**:
-```
-Analysis: EN → DE, domain: technical/software, tone: formal instructional
-Glossary: 23 terms extracted (API, webhook, endpoint, payload, etc.)
-
-Batch 1/4: Sections 1-3 (Introduction, Setup, Configuration) — 1200 words
-Batch 2/4: Sections 4-6 (Authentication, Requests, Responses) — 1150 words
-Batch 3/4: Sections 7-9 (Error Handling, Rate Limits, Webhooks) — 1300 words
-Batch 4/4: Sections 10-12 (SDKs, Examples, Changelog) — 1350 words
-
-Overlap: Last sentence of Batch 1 included at start of Batch 2 for context.
-Assembly: Combined, overlaps removed, TOC regenerated.
-Validation: All 23 glossary terms consistent. All code blocks intact.
+"Deleted " + count + " files"  →  "Удалено " + count + " файлов"
 ```
 
----
+Right (ICU, CLDR categories):
 
-### Example 3: Domain-Specific UI Strings
-
-**Source** (medical app, English):
-```json
-{
-  "symptom_checker_title": "Check Your Symptoms",
-  "disclaimer": "This tool does not provide medical advice. Consult a doctor for diagnosis.",
-  "button_start": "Start Assessment"
-}
+```
+{count, plural, one {Удалён # файл} few {Удалено # файла} many {Удалено # файлов} other {Удалено # файла}}
 ```
 
-**Target** (German, medical domain):
-```json
-{
-  "symptom_checker_title": "Symptome überprüfen",
-  "disclaimer": "Dieses Tool ersetzt keine medizinische Beratung. Konsultieren Sie einen Arzt für eine Diagnose.",
-  "button_start": "Untersuchung starten"
-}
-```
+## Checklist
 
-**Glossary entry**: `assessment` → `Untersuchung` [domain: medical, notes: NOT "Bewertung" — medical context requires clinical term]
-
----
-
-### Example 4: Frontmatter Preservation
-
-**Source**:
-```markdown
-title: "Deployment Guide"
-description: "How to deploy to production"
-author: "DevOps Team"
-# Deployment Guide
-```
-
-**Target** (French):
-```markdown
-title: "Guide de déploiement"
-description: "Comment déployer en production"
-author: "DevOps Team"
-# Guide de déploiement
-```
-
-Notes: Keys (`title`, `description`, `author`) preserved. Values translated except `author` (proper noun).
+- [ ] Locale tag, domain, audience, and register fixed before translating.
+- [ ] Every source sentence present; nothing added, dropped, or softened.
+- [ ] Glossary applied uniformly; UI labels match the shipped localized UI.
+- [ ] Code, placeholders, tags, URLs, and frontmatter keys byte-identical; anchors updated.
+- [ ] Plurals, agreement, and length limits handled for UI strings.
+- [ ] Quotes, numbers, dates, spacing, and heading case follow the target locale.
+- [ ] Revised against the source, ideally by a different model or a human for high-stakes text.
+- [ ] Translator notes and unresolved ambiguities listed for the requester.
 
 ## References
 
-- For right-to-left (RTL) languages: ensure bidirectional text markers are preserved if present in source
-- For CJK languages: be aware that word boundaries differ; segment by meaning, not spaces
+Reviewed 2026-10-12.
+
+- ISO 17100 (translation services), ISO 18587 (post-editing; revision in progress), [ISO 5060:2024](https://www.iso.org/standard/80701.html) (evaluating translation output)
+- [MQM scoring models](https://themqm.org/error-types-2/the-mqm-scoring-models/)
+- [Unicode CLDR](https://cldr.unicode.org/) and [MessageFormat 2.0](https://messageformat.unicode.org/) (stable since CLDR 47, 2025)
+- [W3C Internationalization: inline bidi markup](https://www.w3.org/International/articles/inline-bidi-markup/) and [text size in translation](https://www.w3.org/International/articles/article-text-size)
+- [OQLF: spacing around punctuation](https://vitrinelinguistique.oqlf.gouv.qc.ca/22039/la-typographie/espacement/espacement-avant-et-apres-les-signes-de-ponctuation-et-les-symboles)

@@ -117,7 +117,8 @@ Writing rules:
 - Scannable — Use headers, bullets, tables, code blocks. No walls of text. A developer scanning for 15 seconds should find what they need.
 - Honest — Don't oversell. Mention limitations or early-stage status if relevant. Builds trust.
 - Badges — Use shields.io format. Only include badges that provide real info (build status, version, license). No vanity badges.
-- TOC — Include for READMEs with >5 sections. Use markdown links.
+- Images — alt text on every image; logos that must work in dark mode use `<picture>` with `prefers-color-scheme` sources. Repo-internal links are relative so they survive forks and mirrors.
+- TOC — GitHub and GitLab render an outline menu automatically; add a manual TOC only for long READMEs (>8 sections) or other renderers.
 - No empty sections — If a section doesn't apply, skip it entirely. Never write "TODO" or "Coming soon".
 - Consistent voice — Professional but approachable. Second person ("you") for instructions. Active voice.
 - Platform-aware — If multi-platform, use tabs or separate sections. Don't assume macOS/Linux.

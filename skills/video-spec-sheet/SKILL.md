@@ -27,46 +27,48 @@ rules:
 
 ## Overview
 
-Each social platform has its own combination of aspect ratio, max duration, codec, bitrate, frame rate, and caption / UI safe zones. Getting any of these wrong on the export means the platform will either reject, re-encode (quality drop), or crop your creative. This skill encodes the current 2026 specs as a single-source-of-truth table the agent can extract from per brief.
+Each social platform has its own combination of aspect ratio, max duration, codec, bitrate, frame rate, and caption / UI safe zones. Getting any of these wrong on the export means the platform will either reject, re-encode (quality drop), or crop your creative. This skill encodes the 2026 specs as a single table the agent extracts from per brief. Caps and safe zones move several times a year: treat every number marked 2026 as a starting point and confirm it against the platform's live spec page before a paid launch.
 
 ## Instructions
 
 ### Core Rules
 
 - Always pick the platform spec before generating frames — generation must match the export aspect ratio (don't generate 16:9 then crop to 9:16 unless intentional).
-- Burn captions on top of the base render, not as a sidecar — sound-off viewing is the default.
+- Burn captions on top of the base render, not as a sidecar. Meta feeds are watched largely muted and TikTok mostly with sound, so captions carry the message for the muted viewer and accessibility while the audio carries it for everyone else.
 - Respect the safe zone — keep all critical text and faces away from where the platform's UI sits (top, bottom, right side for TikTok).
 - Final encode in H.264 / yuv420p, even if the source is HEVC / 10-bit. Universal compatibility beats marginal quality.
-- Audio: AAC stereo, 128 kbps minimum, 48 kHz sample rate. Mono audio reads as low-quality on most feeds.
-- Loudness: -14 LUFS integrated (TikTok / IG / YT now normalize to roughly this — overshooting means platform compression hits you).
+- Audio: AAC-LC stereo, 48 kHz, 128 kbps minimum (YouTube recommends 384 kbps stereo for uploads). Mono audio reads as low-quality on most feeds.
+- Loudness: master to about -14 LUFS integrated, true peak ≤ -1 dBTP. YouTube normalizes to roughly that level; TikTok and Meta don't publish a target, so -14 is a safe common master.
+- AI-generated clips usually come out at 720p (Runway Gen-4 Turbo renders 1280×720 / 720×1280). Upscale picked shots before the final 1080p encode; never let the platform upscale.
+- Re-encoding with ffmpeg drops any C2PA Content Credentials the generator embedded, so platform auto-labelling of AI content will not fire. Disclose manually at upload (see Disclosure and Rights).
 
-### Platform Spec Table
+### Platform Spec Table (2026 — verify live)
 
 | Platform | Aspect | Resolution | Length cap | Frame rate | Codec | Bitrate | Audio |
 |---|---|---|---|---|---|---|---|
-| TikTok feed | 9:16 | 1080×1920 | 60s (organic), 60min (max) | 30 / 60 | H.264 | 8–10 Mbps | AAC 128k 48kHz |
-| Instagram Reels | 9:16 | 1080×1920 | 90s (organic), 15min (Reels Long) | 30 | H.264 | 5–8 Mbps | AAC 128k 48kHz |
-| YouTube Shorts | 9:16 | 1080×1920 | 60s (cap is enforced) | 30 / 60 | H.264 | 8–12 Mbps | AAC 192k 48kHz |
-| IG / FB feed video | 1:1 or 4:5 | 1080×1080 / 1080×1350 | 60min (FB), 90s organic on Reels | 30 | H.264 | 5–8 Mbps | AAC 128k 48kHz |
-| IG / FB Stories | 9:16 | 1080×1920 | 60s per card | 30 | H.264 | 5–8 Mbps | AAC 128k 48kHz |
-| Snapchat | 9:16 | 1080×1920 | 60s | 30 | H.264 | 5–8 Mbps | AAC 128k 48kHz |
-| YouTube long-form | 16:9 | 1920×1080 (1080p) / 3840×2160 (4K) | 12hr | 30 / 60 | H.264 (or H.265 source) | 8–12 Mbps (1080p) / 35–45 Mbps (4K) | AAC 192k 48kHz |
-| X / Twitter | 16:9 or 1:1 | 1280×720+ | 140s organic, 10min Premium | 30 / 60 | H.264 | 5–25 Mbps | AAC 128k 48kHz |
-| LinkedIn feed | 16:9, 1:1, 9:16 | 1920×1080 / 1080×1080 / 1080×1920 | 10min | 30 | H.264 | 8–10 Mbps | AAC 128k 48kHz |
-| Pinterest Idea Pin | 9:16 | 1080×1920 | 60s | 30 | H.264 | 5–8 Mbps | AAC 128k 48kHz |
+| TikTok organic | 9:16 | 1080×1920 | 10 min recorded in-app, 60 min uploaded | 30 / 60 | H.264 | 8–10 Mbps | AAC 128k+ 48kHz |
+| TikTok in-feed ad (non-Spark) | 9:16 (16:9, 1:1 accepted) | 1080×1920 (min 540×960) | 10 min, 500 MB | 30 | H.264 | ≥516 kbps (aim 8 Mbps) | AAC 128k+ 48kHz |
+| Instagram Reels | 9:16 | 1080×1920 (Meta ads guide recommends 1440×2560) | 3 min organic; Reels ads up to 15 min, 4 GB | 30 | H.264 | 5–8 Mbps | AAC 128k+ 48kHz |
+| YouTube Shorts | 9:16 or 1:1 | 1080×1920 | 3 min; any square/vertical upload ≤3 min is classified as a Short automatically | 30 / 60 | H.264 | 8–12 Mbps | AAC 384k 48kHz |
+| Facebook video | 9:16 or 4:5 | 1080×1920 / 1080×1350 | All Facebook video uploads publish as Reels since 2025; feed ads 1s–241 min, 4 GB | 30 | H.264 | 5–8 Mbps | AAC 128k+ 48kHz |
+| IG / FB Stories | 9:16 | 1080×1920 | 60s per card | 30 | H.264 | 5–8 Mbps | AAC 128k+ 48kHz |
+| Snapchat | 9:16 | 1080×1920 | 60s (verify Spotlight cap) | 30 | H.264 | 5–8 Mbps | AAC 128k+ 48kHz |
+| YouTube long-form | 16:9 | 1920×1080 / 3840×2160 | 12 hr or 256 GB | 30 / 60 | H.264 (or H.265 source) | 8 / 12 Mbps (1080p30/60), 35–45 Mbps (4K30) | AAC 384k 48kHz |
+| X | 16:9 or 1:1 | 1280×720+ | 2 min 20 s standard; longer on Premium | 30 / 60 | H.264 | 5–25 Mbps | AAC 128k 48kHz |
+| LinkedIn feed | 1:1, 4:5, 16:9, 9:16 | 1080×1080 / 1920×1080 / 1080×1920 | 15 min desktop upload, 10 min mobile | 30 | H.264 | 8–10 Mbps | AAC 128k 48kHz |
+| Pinterest video Pin | 9:16 or 2:3 | 1080×1920 | 15 min | 30 | H.264 | 5–8 Mbps | AAC 128k 48kHz |
 
-### Safe Zones (don't put critical content here)
+### Safe Zones (keep critical text, faces and logos out of these UI bands)
 
-| Platform | Top reserve | Bottom reserve | Right reserve | Left reserve |
+| Platform | Top band | Bottom band | Side bands | Source |
 |---|---|---|---|---|
-| TikTok | 130 px | 350 px (caption + buttons) | 200 px (action rail) | 0 px |
-| IG Reels | 200 px (header) | 360 px (caption + reel CTA) | 100 px | 0 px |
-| YT Shorts | 110 px | 280 px | 180 px | 0 px |
-| IG Stories | 250 px (DM bar) | 250 px (Send to / Reactions) | 0 px | 0 px |
-| FB Reels | 200 px | 350 px | 120 px | 0 px |
-| YT long-form 16:9 | 60 px | 100 px (progress bar) | 0 px | 0 px |
+| Meta Reels ads (IG + FB) | 14% (~270 px) | 35% (~672 px) | 6% each (~65 px) | Meta Ads Guide |
+| Meta Stories | 14% (~270 px) | 20% (~380 px) | 6% each | Meta Ads Guide |
+| TikTok | ~130–160 px | ~350–440 px, grows with caption length | right ~140–200 px (action rail) | download TikTok's official safe-zone template |
+| YT Shorts | ~110 px | ~280 px | right ~180 px | approximation; preview on device |
+| YT long-form 16:9 | ~60 px | ~100 px (progress bar) | 0 px | approximation |
 
-(All measured at 1080×1920 or 1920×1080. Scale with output resolution.)
+(Pixels at 1080×1920 or 1920×1080; scale with output resolution. Ads that carry a legal disclaimer on Meta need the bottom 40% clear.) Instagram's profile grid crops covers to 3:4, so keep the cover's subject and title inside the centre 1080×1440.
 
 ### Captions / On-Screen Text Rules
 
@@ -109,17 +111,28 @@ Each social platform has its own combination of aspect ratio, max duration, code
 
 | Brief says | Output |
 |---|---|
-| "TikTok ad" | 9:16, 1080×1920, 30fps, ≤60s, H.264 8 Mbps |
-| "Instagram Reel" | 9:16, 1080×1920, 30fps, ≤90s, H.264 6 Mbps |
-| "YouTube Short" | 9:16, 1080×1920, 60fps if motion-heavy else 30, ≤60s, H.264 10 Mbps |
-| "Story (any platform)" | 9:16, 1080×1920, 30fps, ≤15s per card |
+| "TikTok ad" | 9:16, 1080×1920, 30fps, H.264 8 Mbps; length is a creative choice (allowed up to 10 min) |
+| "Instagram Reel" | 9:16, 1080×1920, 30fps, ≤3 min, H.264 6 Mbps |
+| "YouTube Short" | 9:16, 1080×1920, 60fps if motion-heavy else 30, ≤3 min; keep ≤60s if it uses any claimable music |
+| "Story (any platform)" | 9:16, 1080×1920, 30fps, ≤60s per card |
 | "IG feed" | 4:5, 1080×1350, 30fps |
-| "FB feed" | 1:1, 1080×1080, 30fps |
+| "FB feed" | 4:5, 1080×1350 (1:1 also fine), 30fps |
 | "YouTube long-form" / "explainer" | 16:9, 1920×1080, 30fps (60fps if screen-cap) |
-| "Hero video for landing page" | 16:9, 1920×1080, 30fps, mute by default, MP4 + WebM |
-| "X / Twitter post" | 16:9 1280×720 if widescreen, else 1:1 1080×1080 |
-| "LinkedIn post" | 1:1 1080×1080 (preferred) or 16:9 1920×1080 |
+| "Hero video for landing page" | 16:9, 1920×1080, 30fps, muted, poster frame, MP4 (H.264) + WebM/AV1, short loop under ~5 MB |
+| "X post" | 16:9 1280×720 if widescreen, else 1:1 1080×1080 |
+| "LinkedIn post" | 1:1 1080×1080 or 4:5 1080×1350 |
 | "Pinterest" | 9:16 1080×1920 |
+
+### Disclosure and Rights (2026 — verify live)
+
+| Item | Rule |
+|---|---|
+| YouTube | Turn on "altered or synthetic content" in Studio when realistic AI makes a real person say/do something, alters a real event or place, or shows a realistic scene that never happened. Not needed for clearly unrealistic/animated content or AI used only for scripts, captions, production help. |
+| TikTok organic | Use the AI-generated content label (API field `is_aigc`) for realistic AI content; unlabelled realistic AI content can be removed. Paid partnerships and own-brand promotion need the commercial content toggles. |
+| TikTok ads | Ads Manager's AI-generated content disclaimer is mandatory for AI-generated or AI-significantly-altered images, video or audio; undisclosed ads are rejected or restricted. |
+| Meta | Meta auto-applies "AI info" when it detects C2PA/IPTC signals or its own gen-AI tools; political and social-issue ads must self-disclose photorealistic AI. |
+| EU | AI Act Art. 50(4): deepfake content shown to EU audiences must be disclosed as AI-generated or manipulated from 2 Aug 2026. |
+| Music | YouTube Shorts over 1 min with any active Content ID claim are blocked worldwide. Business TikTok accounts and all ads use the Commercial Music Library or owned/licensed music; trending sounds are not cleared for brand use. AI music (e.g. ElevenLabs) is commercially usable only on a paid plan per its terms. |
 
 ## Examples
 
@@ -149,9 +162,20 @@ Brief: One ad, ship to TikTok + IG Reels + IG feed + YT Shorts + YT long-form tr
 | IG feed (1:1 cut-down) | 1:1 | 1080×1080 | 30s (re-edited, key beats only) |
 | YT long-form trailer | 16:9 | 1920×1080 | 60s (re-edited, b-roll padded) |
 
+## Checklist
+
+- [ ] Aspect and resolution match the platform row; no platform-side upscaling.
+- [ ] Length is under the 2026 cap and the cap was checked live for paid launches.
+- [ ] Captions, faces and CTA sit outside every UI band of every placement the cut will run in.
+- [ ] H.264 yuv420p, AAC 48 kHz stereo, `+faststart`, about -14 LUFS / -1 dBTP.
+- [ ] AI-disclosure and music-rights rows resolved for each platform.
+
 ## References
 
-- [TikTok video specs](https://support.tiktok.com/en/using-tiktok/creating-videos)
-- [Instagram Reels specs](https://help.instagram.com/270447560766967)
-- [YouTube Shorts specs](https://support.google.com/youtube/answer/12340300)
-- [Meta Ads guidelines](https://www.facebook.com/business/ads-guide)
+- [TikTok in-feed ad specs](https://ads.tiktok.com/help/article/video-ads-specifications)
+- [TikTok ad disclaimers (AI-generated content)](https://ads.tiktok.com/help/article/about-ad-disclaimers-in-tiktok-ads-manager)
+- [Instagram Reels ad specs and safe zones](https://www.facebook.com/business/ads-guide/update/video/instagram-reels)
+- [YouTube Shorts up to 3 minutes](https://support.google.com/youtube/answer/15424877)
+- [YouTube recommended upload encoding settings](https://support.google.com/youtube/answer/1722171)
+- [YouTube altered or synthetic content disclosure](https://support.google.com/youtube/answer/14328491)
+- [Meta Ads Guide](https://www.facebook.com/business/ads-guide)

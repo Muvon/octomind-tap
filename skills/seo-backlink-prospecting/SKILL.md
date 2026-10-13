@@ -31,107 +31,95 @@ rules:
 
 ## Overview
 
-Most "free backlink" attempts fail in one of two ways: they spray submissions across generic directories and forums (which earn nothing and risk penalties), or they over-rely on a single tactic (only HARO, only guest posts) and stall. This skill is the funnel that prevents both. It organizes free-link opportunities by category and risk profile, encodes a per-target qualification rubric so prospects get manually filtered before any outreach, and bakes in Google's actual link-spam guardrails (March 2026 update — devaluation in minutes, not months) so the work doesn't trigger algorithmic demotion or manual actions.
+Free-backlink attempts fail by spraying generic directories and forums (no value, penalty risk) or by leaning on one tactic (only HARO, only guest posts) until it stalls. This funnel groups opportunities by category and risk, qualifies every target manually before outreach, and bakes in Google's link-spam policy to avoid algorithmic devaluation and manual actions.
 
-Use this AFTER the site's niche and audience are clear and BEFORE any outreach email is written. The deliverable is a prioritized prospect list with per-category outreach approach. Outreach copy, on-page wrappers, and tracking instrumentation are out of scope — composing those belongs to the orchestrating agent.
+Use it AFTER niche and audience are clear and BEFORE any outreach email. Deliverable: a prioritized prospect list with an outreach approach per category; outreach copy, on-page wrappers and tracking belong to the orchestrating agent.
 
 ## Instructions
 
 ### Core Rules
 
-- Topical relevance is the dominant signal. Post-2026, DR/DA alone is an obsolete primary filter. A DR-30 site that has lived in your exact vertical for 5 years outranks a DR-80 generalist link farm in real value. Always check vertical history before scoring authority. The March 2026 core update (rolled out March 27 → April 8) shifted 80% of top-3 results and demoted intermediary/aggregator pages in favor of primary sources — links from "list of Y for Z" pages that don't add primary value have lost a meaningful chunk of their pass-through weight.
-- Manual qualification, every prospect. No batch submission, no automated discovery-to-outreach pipelines. Every link target gets eyeballed against the rubric. Tools that mass-submit to directories are the fastest path to manual action.
-- The intent test. Ask: would this link exist if SEO didn't exist? If no → it's a violation in waiting. Google's policy treats intent as the dividing line between natural and unnatural.
-- Topical fit beats authority. A 1 on topical fit is an automatic strike regardless of any other score. Off-topic links from high-DR sites trigger Google's reasonable-surfer discount AND mixed-niche cluster signals.
-- Toxic neighborhood is permanent. Once a site links to spam (casino/pharma/foreign-language farms), it's contaminated. Do not pursue a link there even if the page itself looks clean. Penalty contagion is real.
-- Velocity matters. A natural site earns links at a roughly steady rate. Spiking 50 links in a week from a campaign is fine ONCE, on a newsworthy basis. Sustained spike-velocity is the #1 SpamBrain trigger.
-- Anchor diversity is natural. Branded ("Acme"), URL-only ("acme.com"), and natural-phrase anchors should dominate. Exact-match keyword anchors should be the minority. Outreach you control = always use branded.
-- Community links count, even when nofollow. Reddit, Stack Exchange, LinkedIn group posts are usually `rel="ugc"` or `nofollow` — but they drive AI-search citations (Reddit = ~40% of LLM citations across major models, 46.7% on Perplexity), brand search volume (which now outranks backlinks as an LLM citation predictor), and direct traffic. Treat them as visibility, not just SEO.
-- Output a prospect brief, not a verdict. The deliverable is the prioritized list with per-category outreach approach. Downstream composition (writing emails, on-page setup, tracking) is the orchestrating agent's job, not this skill's.
+- Topical fit beats authority. DR/DA is an obsolete primary filter: a DR-30 site with 5 years in your exact vertical beats a DR-80 generalist link farm, so check vertical history first. A 1 on topical fit is an automatic strike; off-topic high-DR links draw Google's reasonable-surfer discount and mixed-niche cluster signals. Third-party readings of the March 2026 (Mar 27–Apr 8) and May 2026 core updates saw aggregation-model sites lose (Google gave no specifics): discount "list of Y for Z" pages with no primary value.
+- Manual qualification, every prospect. No batch submission or automated discovery-to-outreach pipelines; mass-submit directory tools are the fastest path to a manual action.
+- Intent test: would this link exist if SEO didn't? If not, it's a violation in waiting; Google's policy treats intent as the natural/unnatural line.
+- Toxic neighborhood is permanent. A site linking to spam (casino/pharma/foreign-language farms) is contaminated even if your page looks clean; penalty contagion is real.
+- Velocity matters. Natural sites earn links at a steady rate. A 50-link week is fine once, on a newsworthy basis; a sustained, unexplained spike is a classic link-scheme footprint.
+- Anchor diversity. Branded ("Acme"), URL-only ("acme.com") and natural-phrase anchors dominate; exact-match stays a minority. Outreach you control always uses branded.
+- Community links count even when nofollow. Reddit, Stack Exchange and LinkedIn group posts are usually `rel="ugc"` or `nofollow`, but forum threads hold many SERP slots and AI-answer citations, and branded web mentions correlate with AI Overview visibility more than backlinks do (Ahrefs, 2025; correlation, not cause). Treat them as visibility, not just SEO.
+- Output a prospect brief, not a verdict.
 
 ### The Funnel
 
 #### Stage 1 — Profile the Site
 
-Force concrete answers before generating any prospect list. If unclear, stop and ask.
+Get concrete answers first; if unclear, stop and ask.
 
-1. Niche — one sentence. Sub-niche if applicable.
-2. Audience — who visits today? What do they search for?
-3. Existing link profile — rough count, top referring domains, any past penalty history. (Run `site:[domain]` and check Search Console if accessible.)
-4. Brand mentions — does the brand get mentioned online already? (Search `"[brand]" -site:[domain]` to surface.)
-5. Linkable assets — what does the site already publish that's link-worthy? (Original data, tools, comprehensive guides, calculators.) If nothing yet → flag that prospecting will be uphill until at least one asset exists; recommend the `seo-tool-discovery` skill in parallel.
+1. Niche — one sentence, plus sub-niche.
+2. Audience — who visits and what they search for.
+3. Existing link profile — rough count, top referring domains, past penalties (`site:[domain]`, Search Console if accessible).
+4. Brand mentions — `"[brand]" -site:[domain]`.
+5. Linkable assets — original data, tools, comprehensive guides, calculators. If none, flag that prospecting is uphill until one exists and recommend `seo-tool-discovery` in parallel.
 
 #### Stage 2 — Generate Prospect Lists by Category (parallel)
 
-PARALLEL-FIRST: fire all category searches simultaneously in ONE block. Don't serialize discovery.
-
-Categories, ordered by risk-adjusted ROI:
+PARALLEL-FIRST: fire all category searches in ONE block. Ordered by risk-adjusted ROI:
 
 ##### A. Reclamation (highest ROI, lowest risk)
 
-The site is already mentioned; the only step is asking for the link. Conversion rate sits at 30–60% — far higher than any cold tactic.
+Already mentioned; you only ask for the link. Converts at 30–60%, far above any cold tactic.
 
-- Unlinked brand mentions — `"[brand]" -site:[your-domain.com]`. Filter for posts that mention the brand in body copy without linking. Highest priority: Tier-1 publications (Forbes, Times, Fortune) — these rarely accept cold outreach for guest posts but will reclaim a link they meant to add.
-- Broken backlinks pointing to your site — pages that linked to a URL on your site that's now 404. Either restore the URL or 301 it; no outreach needed.
-- Image attribution reclamation — `Google Images` reverse-search your branded images / charts / screenshots. Sites using them without credit usually add a link when asked.
+- Unlinked brand mentions — `"[brand]" -site:[your-domain.com]`, body-copy mentions without a link. Top priority: Tier-1 publications (Forbes, Times, Fortune), which rarely accept cold guest posts but will reclaim a link they meant to add.
+- Broken backlinks to your site — pages linking to your now-404 URLs. Restore or 301; no outreach needed.
+- Image attribution — Google Images reverse-search your branded images, charts, screenshots; uncredited users usually add a link when asked.
 
 ##### B. Discovery-based (moderate effort, low risk)
 
-You find the page; the page exists to host links to good content.
+Pages that exist to host links to good content.
 
-- Resource pages — search operators:
-  - `[topic] intitle:resources inurl:resources`
-  - `[topic] "useful resources"`
-  - `[topic] "recommended links" OR "useful links"`
-  - `[topic] "best [tools/blogs/guides]" 2026`
-- Broken link building — find resource pages and roundups in your niche, check outbound links for 404s (use a free broken-link checker on the page), pitch your URL as the replacement.
-- Niche aggregators / submission sites — Hacker News (for tech), Product Hunt (for products), Indie Hackers, Designer News, Lobsters, niche subreddits. Submission usually nofollow but drives traffic + brand mentions.
-- Industry-specific directories — directories curated by humans for one vertical (e.g. SaaS directories, lawyer directories per jurisdiction, dev-tool catalogs). NOT generic web directories.
-- Best-of lists ("listicles") — `[topic] "best [thing]" 2026 OR 2025`. Email the author with a fit case for inclusion.
+- Resource pages — `[topic] intitle:resources inurl:resources`, `[topic] "useful resources"`, `[topic] "recommended links" OR "useful links"`, `[topic] "best [tools/blogs/guides]" 2026`.
+- Broken link building — find 404 outbound links on niche resource pages and roundups (free broken-link checker), pitch your URL as replacement.
+- Niche aggregators — Hacker News (tech), Product Hunt (products), Indie Hackers, Designer News, Lobsters, niche subreddits; usually nofollow but drive traffic and mentions.
+- Industry-specific directories — human-curated, one vertical (SaaS directories, lawyer directories per jurisdiction, dev-tool catalogs). NOT generic web directories.
+- Best-of listicles — `[topic] "best [thing]" 2026 OR 2025`; email the author a fit case.
 
 ##### C. Earned via outreach (high effort, highest authority)
 
-You're contributing original value; the link is the byproduct.
+Original value first; the link is the byproduct.
 
-- Journalist requests / digital PR (HARO replacements, post Dec-2024 shutdown):
-  - Source of Sources (SOS) — Peter Shankman (original HARO creator) — honor system, off-topic pitch = ban. Free.
-  - Featured.com — relaunched HARO brand, free daily newsletter. More selective than original HARO.
-  - Qwoted — expertise-profile matching, journalists post queries.
+- Journalist requests / digital PR (HARO replacements after the Dec-2024 shutdown); best results come from working 2–3 at once:
+  - Source of Sources (SOS) — free, by Peter Shankman (original HARO creator); honor system, off-topic pitch = ban.
+  - Featured.com — relaunched HARO brand, free daily newsletter, more selective than the original.
+  - Qwoted — expertise-profile matching; journalists post queries.
   - #JournoRequest and #PRRequest on X — direct, no platform.
-  - Best results: work 2–3 platforms simultaneously.
-- Guest posts — operators:
-  - `[topic] intitle:"write for us"`
-  - `[topic] "submit a guest post"`
-  - `[topic] "contributor guidelines"`
-  - Strict filter: never pay; never accept a flat fee structure; only pursue when the site shows editorial review (named editor, rejection rate, masthead). Paid-without-rel-sponsored = penalty.
-- Podcast / interview pages — `[topic] inurl:interview OR inurl:podcast`. Pitch yourself as a guest; episode pages link to your site.
-- Original research → outreach — if the site has produced unique data (survey, benchmark, study), pitch the research to journalists in the niche. Single research report: 22+ links is realistic.
+- Guest posts — `[topic] intitle:"write for us"`, `[topic] "submit a guest post"`, `[topic] "contributor guidelines"`. Never pay, never accept a flat-fee structure; pursue only sites with editorial review (named editor, rejection rate, masthead). Paid without `rel="sponsored"` = penalty.
+- Podcast / interview pages — `[topic] inurl:interview OR inurl:podcast`; pitch yourself as a guest, episode pages link out.
+- Original research — pitch unique data (survey, benchmark, study) to niche journalists; 22+ links from one report is realistic.
 
 ##### D. Community (high effort, AI-citation value, mostly nofollow)
 
-Links here are usually `rel="ugc"` or nofollow — but they're now load-bearing for LLM citation visibility.
+Usually `rel="ugc"`/nofollow, but load-bearing for LLM citation visibility.
 
-- Reddit (highest LLM-citation weight) — find on-topic subreddits via `site:reddit.com [topic] [pain point]`. Engage genuinely; link only when it adds value AND the subreddit allows. Most subreddits ban self-promotion; respect the rules or get banned.
-- Stack Exchange (technical) — answer questions in your area; link as supporting reference.
-- LinkedIn groups, niche forums, Discord/Slack communities — long-form engagement, not link-drop hit-and-run. Build a 3-month presence before any link.
-- Niche Q&A sites — Quora, vertical Q&A platforms.
+- Reddit (highest LLM-citation weight) — `site:reddit.com [topic] [pain point]`. Engage genuinely; link only when it adds value AND the subreddit allows. Most ban self-promotion; break rules, get banned.
+- Stack Exchange (technical) — answer in your area, link as supporting reference.
+- LinkedIn groups, niche forums, Discord/Slack — long-form engagement, no hit-and-run drops; 3 months of presence before any link.
+- Niche Q&A — Quora, vertical Q&A platforms.
 
 ##### E. Profile / listing (low effort, modest value, legitimate when niche-fit)
 
-- Industry awards — submit for "best of" lists in your vertical.
-- Speaker pages — every conference you speak at has a speaker page that links out.
-- GitHub README cross-references — for technical/dev sites, getting referenced from a popular repo's README compounds.
-- Wikipedia citations — high bar; only pursue if you have a genuinely citable original source. Don't add the link yourself; let an editor decide.
-- About / partnership pages — vendor partner directories, customer testimonial pages on tools you use.
+- Industry awards — "best of" lists in your vertical.
+- Speaker pages — every conference you speak at links out.
+- GitHub README cross-references — for dev sites, a popular repo's README mention compounds.
+- Wikipedia citations — only with a genuinely citable original source; never add the link yourself, let an editor decide.
+- About / partnership pages — vendor partner directories, testimonial pages on tools you use.
 
 ##### F. Forbidden (kill on sight, no exceptions)
 
-- Generic web directories (DMOZ-clones, "submit URL" sites)
-- Foreign-language link farms (regardless of how cheap)
+- Generic web directories (DMOZ clones, "submit URL" sites)
+- Foreign-language link farms, however cheap
 - Comment spam (any optimized-anchor comment)
 - Forum signature link farms with optimized anchors
-- "Write for us" pages that accept any topic for a flat fee without `rel="sponsored"`
-- PBNs of any tier (including AI-content PBNs — March 2026 update specifically targets these)
+- "Write for us" pages taking any topic for a flat fee without `rel="sponsored"`
+- PBNs of any tier (AI-content PBNs are also scaled content abuse)
 - Paid-link networks disguised as guest-post networks
 - Reciprocal-link schemes ("we link, you link" en masse)
 - Auto-generated content sites
@@ -139,37 +127,31 @@ Links here are usually `rel="ugc"` or nofollow — but they're now load-bearing 
 
 #### Stage 3 — Qualify Each Prospect (Rubric)
 
-For every prospect, walk this checklist top-to-bottom. STRIKE on the first failure — do not re-score. This is a kill-rule, not a scoring system.
+Check in order (verify, then strike condition); STRIKE on the first failure. A kill-rule, not a score.
 
-| # | Check | How to verify | Strike condition |
-|---|-------|---------------|------------------|
-| 1 | Topical fit | Read 5 recent articles from the site | Mixed-niche, off-topic, abandoned vertical |
-| 2 | Real traffic | Similarweb / Ahrefs traffic estimate; manually check engagement (comments, shares) | Bot traffic / no organic / no engagement signals |
-| 3 | Editorial signals | Author bios with real names; dates; comments; depth | Auto-generated content, plagiarism, no human editor |
-| 4 | Outbound link profile | Sample 5 outbound links from recent articles | Links to spam neighborhoods, foreign farms, casino |
-| 5 | Indexed and ranking | `site:[domain]`; check if it ranks for its target keywords | Not indexed; ranks for nothing; deindexation flags |
-| 6 | Page context | Visit the actual page where your link would land | Buried among 100+ outbound links; pure link page; 30–70 outbound is the sweet spot |
-| 7 | Anchor / rel naturalness | What anchor will appear? View source or anchor in their template. | Forced exact-match anchor in editorial; rel-stripped paid link |
-| 8 | Reachability | Find named editor / contact email | Ghost editor, no contact, generic info@ only |
-| 9 | Cost transparency | Read "write for us" / contact / ad pages | Paid placement passing ranking signal without `rel="sponsored"` |
-| 10 | Penalty history | Search `"[domain]" + penalty OR deindexed` | Site has documented manual action history |
-| 11 | Velocity contribution | Where does this link sit in the campaign's overall pace? | Adding this link spikes velocity past natural range |
+1. Topical fit — read 5 recent articles. Strike: mixed-niche, off-topic, abandoned vertical.
+2. Real traffic — Similarweb / Ahrefs estimate plus manual engagement check (comments, shares). Strike: bot traffic, no organic, no engagement.
+3. Editorial signals — real-name author bios, dates, comments, depth. Strike: auto-generated, plagiarized, no human editor.
+4. Outbound link profile — sample 5 outbound links from recent articles. Strike: spam neighborhoods, foreign farms, casino.
+5. Indexed and ranking — `site:[domain]`, ranks for its target keywords? Strike: not indexed, ranks for nothing, deindexation flags.
+6. Page context — visit the page where your link would land. Strike: buried among 100+ outbound links or a pure link page; 30–70 outbound is the sweet spot.
+7. Anchor / rel naturalness — view source or their anchor template. Strike: forced exact-match anchor in editorial; rel-stripped paid link.
+8. Reachability — find a named editor / contact email. Strike: ghost editor, no contact, generic info@ only.
+9. Cost transparency — read "write for us" / contact / ad pages. Strike: paid placement passing ranking signal without `rel="sponsored"`.
+10. Penalty history — search `"[domain]" + penalty OR deindexed`. Strike: documented manual action.
+11. Velocity contribution — its place in the campaign's pace. Strike: pushes velocity past natural range.
 
-A prospect that survives all 11 → eligible for outreach. Anything else → skip.
+Survives all 11: eligible for outreach. Anything else: skip.
 
 #### Stage 4 — Rank Survivors
 
-Sort by composite score:
-- Topical fit weight: 3× (most important)
-- Real traffic weight: 2×
-- Authority signals (DR / DA / TF): 1× (tie-breaker, not a primary filter)
-- Reachability: 1× (multiplier — unreachable = score 0)
+Composite score: topical fit 3×, real traffic 2×, authority signals (DR / DA / TF) 1× as tie-breaker only, reachability 1× as a multiplier (unreachable = 0).
 
-Top 20% → priority outreach this month. Middle 60% → systematic follow-up over the quarter. Bottom 20% → skip; opportunity cost too high.
+Top 20%: priority outreach this month. Middle 60%: systematic follow-up over the quarter. Bottom 20%: skip, opportunity cost too high.
 
 #### Stage 5 — Prospect Brief
 
-Output one brief in this format. The brief is the deliverable — outreach copy and downstream wiring happen elsewhere.
+The brief is the deliverable:
 
 ```markdown
 # Backlink Prospecting Brief: [Site / Campaign Name]
@@ -181,48 +163,26 @@ Output one brief in this format. The brief is the deliverable — outreach copy 
 - Brand mentions found: [count + Tier-1 examples]
 - Linkable assets identified: [list — flag if thin]
 
-## Prospect Pool by Category
-
-### A. Reclamation (priority — fastest wins)
-| Source | Page | Mention/Link Status | Outreach Approach | Tier |
-|---|---|---|---|---|
-| ... | ... | unlinked mention | direct ask | T1 |
-
-### B. Discovery-based
-| Source | Page Type | Topical Fit | Traffic | Outreach Angle | Score |
-|---|---|---|---|---|---|
-
-### C. Earned (digital PR / guest posts / podcasts)
-| Platform / Publication | Hook | Pitch Angle | Approach | Status |
-|---|---|---|---|---|
-
-### D. Community (visibility / AI-citation)
-| Platform | Strategy | Cadence | Notes |
-|---|---|---|---|
-| Reddit r/[sub] | answer-first engagement, no link drops | 3×/week | nofollow but high LLM-citation value |
-
-### E. Listings / profiles
-| Directory / List | Submission Process | Cost | Verdict |
-|---|---|---|---|
-
-### F. Toxic — explicitly excluded
-[List with reason for the strike, so the call is auditable.]
+## Prospect Pool by Category (one table per category)
+- A. Reclamation (priority, fastest wins): Source, Page, Mention/Link Status (e.g. unlinked mention), Outreach Approach (direct ask), Tier (T1...)
+- B. Discovery-based: Source, Page Type, Topical Fit, Traffic, Outreach Angle, Score
+- C. Earned (digital PR / guest posts / podcasts): Platform / Publication, Hook, Pitch Angle, Approach, Status
+- D. Community (visibility / AI-citation): Platform, Strategy, Cadence, Notes (e.g. Reddit r/[sub]: answer-first engagement, no link drops, 3×/week, nofollow but high LLM-citation value)
+- E. Listings / profiles: Directory / List, Submission Process, Cost, Verdict
+- F. Toxic, explicitly excluded: each with its strike reason, so the call is auditable
 
 ## Outreach Approach Per Category
-
-| Category | Approach | Tone |
-|---|---|---|
-| Resource page | "I noticed your resources page on X. I built [thing] that adds [unique angle]. No worries if it's not a fit." | Brief, value-first |
-| Broken link | "Your post links to [URL] which is 404. [My replacement] covers the same scope." | Helpful, factual |
-| Unlinked mention | "Thanks for mentioning [brand]. Could the next edit add a link to [URL]?" | Gracious, low-friction |
-| HARO/Qwoted/SOS | 75–100 words, lead with credentials, direct expertise, no pitch slap | Editorial, expert-positioned |
-| Forum / Reddit | Genuine answer; link only if it adds value | Peer, not promotional |
-| Guest post | Pitch a topic the site hasn't covered + your unique data | Editorial, contributor-positioned |
+- Resource page (brief, value-first): "I noticed your resources page on X. I built [thing] that adds [unique angle]. No worries if it's not a fit."
+- Broken link (helpful, factual): "Your post links to [URL] which is 404. [My replacement] covers the same scope."
+- Unlinked mention (gracious, low-friction): "Thanks for mentioning [brand]. Could the next edit add a link to [URL]?"
+- HARO/Qwoted/SOS (editorial, expert-positioned): 75–100 words, lead with credentials, direct expertise, no pitch slap
+- Forum / Reddit (peer, not promotional): genuine answer; link only if it adds value
+- Guest post (editorial, contributor-positioned): a topic the site hasn't covered + your unique data
 
 ## Velocity Plan
 - Target pace: [X new links / month based on baseline]
 - Monthly budget by category: [reclamation N, discovery N, earned N, community ongoing]
-- Red flags to watch: spike weeks, anchor concentration, sudden DR drop on referring domains
+- Red flags: spike weeks, anchor concentration, sudden DR drop on referring domains
 
 ## Open Items (for the orchestrating agent)
 - Outreach copy per template above
@@ -233,161 +193,93 @@ Output one brief in this format. The brief is the deliverable — outreach copy 
 
 ### Decision Guide — Edge Cases
 
-| Situation | Action |
-|---|---|
-| Prospect has DR 80 but recent posts are unrelated | Strike — topical drift / cross-niche farm |
-| "Write for us" accepts any topic, fee $50, no `rel="sponsored"` | Strike — paid editorial without disclosure = penalty risk |
-| On-topic forum thread, 4 days old, active | Engage — answer first, link only if it adds value |
-| Site looks legit, no organic traffic per Similarweb | Investigate — could be brand-new (OK) or dead (skip). Check whois date + Wayback. |
-| Resource page with 200+ outbound links | Skip — link will be buried |
-| Reciprocal request: "we'll add you if you add us" | Case-by-case — once between two niche-relevant sites is OK; mass exchange = no |
-| Site has documented manual penalty history | Strike — penalty contagion |
-| Aggregator wants `rel="dofollow"` link in exchange for fee | Strike — paid editorial without `rel="sponsored"` |
-| Reddit subreddit bans self-promotion | Engage without linking — visibility-only contribution; link in profile only |
-| Tier-1 publication mentions brand without link | High priority — these rarely accept cold outreach for anything else |
-| Unsure if site is a PBN | Default skip — uncertainty alone is a strike. Footer disclosures, identical templates, single hosting IP, identical author across "different" sites = PBN tells. |
-| User wants to do mass directory submission | Refuse and explain — March 2026 update specifically targets this pattern |
-| AI-search visibility is the priority, not rank | Pivot — weight community (Reddit, Stack Exchange) and brand-mention reclamation higher than traditional backlinks |
+- "Write for us" or aggregator charging a fee (e.g. $50) for a followed link without `rel="sponsored"`: strike, undisclosed paid editorial.
+- On-topic forum thread, 4 days old, active: engage; answer first, link only if it adds value.
+- Looks legit, no organic traffic per Similarweb: brand-new is OK, dead is a skip; check whois date + Wayback.
+- "We'll add you if you add us": once between two niche-relevant sites is OK; mass exchange is not.
+- Subreddit bans self-promotion: engage without linking; link in profile only.
+- Unsure if a site is a PBN: skip; uncertainty alone is a strike. Tells: footer disclosures, identical templates, single hosting IP, same author across "different" sites.
+- User wants mass directory submission: refuse and explain; "low-quality directory or bookmark site links" is named in Google's link spam policy.
 
 ### Google's Link-Spam Policy — the hard lines
 
-These are direct from Google's spam policy. Treat as kill-rules, not guidelines.
+Quoted from Google's spam policies (updated 2026); kill-rules.
 
-- "Exchanging money for links, or posts that contain links" — without `rel="sponsored"` is a violation
-- "Exchanging goods or services for links" — same as above
-- "Using automated programs or services to create links" — auto-submission = violation
-- "Requiring a link as part of a Terms of Service, contract, or similar arrangement" — forced linking = violation
-- "Advertorials or native advertising where payment is received for articles that include links that pass ranking credit" — paid editorial without rel = violation
-- "Low-quality directory or bookmark site links" — generic directories = violation
-- "Forum comments with optimized links in the post or signature" — keyword-anchor signature spam = violation
-- "Excessive reciprocal link exchanges without genuine partnership value" — link swap networks = violation
-- Manufactured "brand mentions" floods — Google's 2026 AI optimization guide is explicit: "Seeking inauthentic 'mentions' across the web isn't as helpful as it might seem." Mention-farming for AI-citation lift fails; the same source-quality signal that gates organic citation gates AI citation. Engineer real mentions (genuine engagement, real expert presence, real product/data placements), not synthetic mention campaigns.
+- "Exchanging money for links, or posts that contain links" and "Exchanging goods or services for links"
+- "Sending someone a product in exchange for them writing about it and including a link"
+- "Excessive link exchanges ('Link to me and I'll link to you') or partner pages exclusively for the sake of cross-linking"
+- "Using automated programs or services to create links to your site"
+- "Requiring a link as part of a Terms of Service, contract, or similar arrangement" without letting the content owner qualify it
+- "Advertorials or native advertising where payment is received for articles that include links that pass ranking credit, or links with optimized anchor text in articles, guest posts, or press releases distributed on other sites"
+- "Low-quality directory or bookmark site links"; keyword-rich widget links; widely distributed footer/template links
+- "Forum comments with optimized links in the post or signature"
+- Manufactured "brand mentions" — Google's May 2026 AI optimization guide says seeking inauthentic mentions isn't helpful and its AI features depend on its spam systems. Engineer real mentions (genuine engagement, real expert presence, real product/data placements), not synthetic campaigns.
 
-What's allowed:
-- Paid links with `rel="sponsored"` or `rel="nofollow"` — Google is explicit: "It's not a violation of our policies to have such links as long as they are qualified."
+Allowed:
+- Paid links with `rel="sponsored"` or `rel="nofollow"` — "It's not a violation of our policies to have such links as long as they are qualified."
 - User-generated content links with `rel="ugc"` (forums, comments)
 - Genuine editorial endorsement
-- Sponsorships / advertising disclosed and properly attributed
+- Disclosed, properly attributed sponsorships / advertising
 
 ### AI-Search Citation Overlay (2026)
 
-Traditional backlinks are no longer the dominant predictor of LLM citation. The shift:
+- Google: AI Overviews and AI Mode use Search's ranking and spam systems; no special markup or llms.txt needed (AI optimization guide, May 2026). Organic quality and authority still decide eligibility.
+- Forums and Reddit rank among the most-cited domains in several 2025–2026 studies, but shares vary widely by study, engine and month — cite a dated source or no number.
+- ChatGPT search uses third-party search providers (historically Bing) plus OpenAI's own crawler: allow `OAI-SearchBot` in robots.txt and submit sitemaps to Bing Webmaster Tools.
+- Clicks shrink on AI-answer queries: Pew (2025) saw traditional-result clicks fall from 15% to 8% of visits with an AI summary; Seer (2025) measured ~61% lower organic CTR on AIO queries.
 
-- Reddit = ~40% of citations across major LLMs, 46.7% on Perplexity. Subreddit presence is a primary GEO/AEO signal. Google–Reddit's Feb-2024 $60M/year data partnership pushed Reddit visibility in Google search up ~1,900% YoY; Reddit is now the second-most-visible site on Google after Wikipedia, and the "Discussions and forums" SERP carousel triggers on ~1 in 4 commercial-intent queries.
-- ChatGPT favors Wikipedia (47.9% of top citations) and encyclopedic content. ChatGPT web search reads Bing's index (only ~14% overlap with Google top-10), so Bing Webmaster Tools sitemap submission is a free, non-negotiable step.
-- Google AI Overviews cite YouTube + multimodal heavily (23.3%) and pull from social/forum sources where ~37% of those citations are Reddit.
-- Brand search volume outweighs traditional backlinks as an LLM citation predictor.
-- Citation volatility is now measured in weeks — a single algorithm tweak can shift citation share 50% in under a month.
-- The zero-click reality: 64.8% of all Google searches now end without a click; 83% on AIO-triggered queries; 93% in AI Mode. Pew Research field study found -46.7% CTR decline with AIO; Seer measured -61%. Visibility-as-citation has taken structural priority over click-through volume, which directly affects how backlink ROI should be modeled: a forum/Reddit citation that drives the brand into an AI answer can outperform a dofollow editorial link in user-facing impact.
-
-Implication for prospecting: the deliverable should be reframed as visibility prospecting, not pure link acquisition. Weight community engagement (Reddit, Stack Exchange) higher when AI-search visibility is the goal — even though those links are usually nofollow/ugc, they directly drive citation share. For pure organic-rank goals, traditional backlinks still dominate; for omnichannel visibility (search + AI), both lanes matter.
+Implication: for AI-search visibility, weight community engagement and brand-mention reclamation higher (nofollow/ugc mentions still drive citation share); for pure organic rank, editorial backlinks dominate; for omnichannel, both.
 
 ### Tools — what's free and what isn't
 
-| Tool | Free tier scope | Use for |
-|---|---|---|
-| Google Search Console | Free | Existing backlinks, manual actions, indexing |
-| Google Search (with operators) | Free | Prospect discovery |
-| Wayback Machine | Free | Confirming a site's longevity / topical history |
-| Bing Webmaster Tools | Free | Backlink data, sometimes shows links Ahrefs misses |
-| `site:` + manual review | Free | Outbound link profile audit |
-| Ahrefs Free Backlink Checker | Free (limited) | Top 100 backlinks of any domain |
-| Moz Link Explorer (free) | Free (limited) | DA / spam score samples |
-| Ubersuggest free | Free (limited) | DR estimates |
-| Source of Sources / SOS | Free | Journalist requests |
-| Featured.com | Free newsletter | Journalist requests |
-| Qwoted | Freemium | Journalist requests |
-| Reddit / Stack Exchange | Free | Community prospecting |
-| Hunter.io / Apollo (limited free) | Freemium | Editor email discovery |
+Free: Google Search Console (existing backlinks, manual actions, indexing); Google Search with operators (discovery); Wayback Machine (site longevity / topical history); Bing Webmaster Tools (backlink data, sometimes links Ahrefs misses); `site:` + manual review (outbound link audit); Source of Sources and Featured.com newsletter (journalist requests); Reddit / Stack Exchange (community prospecting).
 
-Tools that require payment for what matters (full backlink graphs, advanced filters): Ahrefs, Semrush, Majestic. Mention but treat as out-of-scope for "free" prospecting.
+Limited free / freemium: Ahrefs Free Backlink Checker (top 100 backlinks of any domain); Moz Link Explorer (DA / spam score samples); Ubersuggest (DR estimates); Qwoted (journalist requests); Hunter.io / Apollo (editor email discovery).
+
+Paid (full backlink graphs, advanced filters): Ahrefs, Semrush, Majestic; mention, but out of scope for free prospecting.
 
 ## Examples
 
 ### Example 1: Dev-tools SaaS (CI/CD pipeline)
 
-Profile:
-- Niche: CI/CD pipeline tool, target audience platform engineers at 50–500-person eng orgs
-- Audience: searches for "deploy faster", "GitHub Actions alternative", "monorepo CI"
-- Existing link profile: ~80 referring domains, mostly developer blogs and Hacker News submissions
-- Brand mentions found: 12 unlinked mentions on dev blogs, 1 in InfoQ (Tier-1)
-- Linkable assets: 3 deep technical guides, 1 benchmark report
+Profile: CI/CD tool for platform engineers at 50–500-person orgs ("deploy faster", "GitHub Actions alternative", "monorepo CI"); ~80 referring domains, mostly dev blogs and Hacker News; 12 unlinked dev-blog mentions plus 1 in InfoQ (Tier-1); 3 deep technical guides, 1 benchmark report.
 
-Stage 2 prospect generation (parallel):
+Stage 2, one block: resources, "GitHub Actions alternative" best-of, `site:reddit.com r/devops "monorepo CI"`, `"acme-deploy" -site:acmedeploy.com`, write-for-us devops, `intitle:interview "CI/CD"`, Hacker News + Lobsters submission history.
 
-Fired in one block:
-- `intitle:"resources" CI/CD platform engineering`
-- `"GitHub Actions alternative" "best" 2025 OR 2026`
-- `site:reddit.com r/devops "monorepo CI"`
-- `"acme-deploy" -site:acmedeploy.com` (unlinked mentions)
-- `intitle:"write for us" devops OR platform-engineering`
-- `intitle:interview "CI/CD" 2025 OR 2026`
-- Hacker News + Lobsters submission queue history
+Stage 3 sample:
+- InfoQ unlinked mention: passes all 11, free. Priority 1.
+- dev-blog-X guest post: low traffic, else passes. Proceed.
+- "Best CI tools 2026" listicle on a monetized site: paid outbound placements, exact-match editorial anchor, $300/year. Strike (paid editorial, no `rel="sponsored"`).
+- r/devops AMA: on-topic, nofollow, free. Engage (AI-citation play).
+- dev-tools-directory.net: generic, auto-content, links to casino, not indexed, $50. Strike (toxic neighborhood + paid + auto-content).
 
-Stage 3 qualification (sample):
-
-| Prospect | T-fit | Traffic | Editorial | Outbound | Indexed | Page Ctx | Anchor | Reach | Cost | Penalty | Verdict |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| InfoQ unlinked mention | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | free | clean | Priority 1 |
-| dev-blog-X guest post | ✅ | ⚠️ low | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | free | clean | proceed |
-| "Best CI tools 2026" listicle on monetized site | ✅ | ✅ | ✅ | ⚠️ paid placements | ✅ | ✅ | ⚠️ exact-match in editorial | ✅ | $300/year | clean | Strike (paid editorial, no `rel="sponsored"`) |
-| r/devops AMA opportunity | ✅ | ✅ | n/a | n/a | n/a | n/a | nofollow | self | free | clean | Engage (AI-citation play) |
-| dev-tools-directory.net | ⚠️ generic | ⚠️ low | ❌ auto-content | ❌ links to casino | ❌ | n/a | n/a | n/a | $50 | flagged | Strike (toxic neighborhood + paid + auto-content) |
-
-Output: 14 priority prospects, ranked, with outreach approach per category.
+Output: 14 ranked priority prospects, outreach approach per category.
 
 ### Example 2: Cosmetics e-commerce (continuing the prior skill's example)
 
-Profile:
-- Niche: inclusive shade-range foundation e-commerce
-- Audience: women 25–45, primary search "foundation for [skin tone]"
-- Brand mentions: 8 unlinked, mostly beauty bloggers
-- Linkable assets: SKU database with hex codes (proprietary moat); the Tone Matcher tool (just built per the previous skill)
+Profile: inclusive shade-range foundation store; women 25–45 searching "foundation for [skin tone]"; 8 unlinked mentions, mostly beauty bloggers; assets: SKU database with hex codes (proprietary moat) and the Tone Matcher tool from the previous skill.
 
-Stage 2 prospects (parallel):
+Stage 2 (parallel): "foundation for [skin tone]" best-of lists, inclusive-beauty resource pages, `site:reddit.com r/MakeupAddiction "foundation match"`, unlinked `"acmebeauty"` mentions, beauty/lifestyle journalist requests, beauty directories (Beauty Independent, etc.), inclusive-beauty conference speaker pages.
 
-- `"foundation for [skin tone]" "best" 2025 OR 2026`
-- `intitle:"resources" inclusive beauty`
-- `site:reddit.com r/MakeupAddiction "foundation match"`
-- `"acmebeauty" -site:acmebeauty.com`
-- HARO: beauty/lifestyle journalist requests
-- Beauty-specific directories (Beauty Independent, etc.)
-- Speaker pages from inclusive-beauty conferences
+Notable calls: generic beauty directory taking any submission for $20, strike (low-quality directory); "best foundations" listicle on a site now posting about crypto and supplements, strike (topical drift); DR-25 beauty blogger with high engagement and 6 years in the exact niche, proceed (topical fit + entity strength outweigh DR).
 
-Notable strikes:
-- Generic beauty directory accepting any submission for $20 → strike (low-quality directory pattern)
-- "Best foundations" listicle on a site whose recent posts are about crypto and supplements → strike (topical drift)
-- Beauty blogger with DR 25 but high engagement, 6-year history in the exact niche → proceed (DR low but topical fit + entity strength outweigh)
-
-Hand-off: the Tone Matcher tool launch becomes the lead asset for digital PR — pitches go out via SOS/Qwoted naming the inclusive-shade angle. Reddit r/MakeupAddiction sees genuine engagement pre-launch (3 months) before any link mention.
+Hand-off: the Tone Matcher launch leads digital PR via SOS/Qwoted on the inclusive-shade angle; r/MakeupAddiction gets 3 months of genuine engagement before any link mention.
 
 ### Example 3: Killing the engagement honestly
 
 User: "We have a new site, no content yet, and we want 100 backlinks in 30 days. What's the cheapest way?"
 
-Response:
-> Stop. There are two reasons this fails before it starts:
+Response (do not soften; the honest answer is the only useful one):
+> Stop. This fails for two reasons. 1) No linkable asset: nothing survives qualification, visitors hit a thin site and won't link, and any link that lands decays fast. 2) 100 links in 30 days on a new domain is a textbook link-scheme footprint: best case SpamBrain neutralizes them, worst case a manual action that takes months to recover from.
 >
-> 1. No linkable asset. With no published content, there's nothing to link TO that survives qualification. Any prospect who clicks through hits a thin site and won't link. Even if they do, the link decays fast — Google sees the destination is empty.
->
-> 2. 100 links in 30 days on a new domain is the textbook SpamBrain trigger. That velocity is what the March 2026 spam update specifically devalues. Best case: links earn nothing. Worst case: manual action that takes 3–6 months to recover from.
->
-> Two honest paths:
->
-> - Slow path (recommended for new domains): publish 3–5 substantial assets first (one of them a tool, see `seo-tool-discovery`). Spend 30 days building reclamation + community presence. Earn 5–15 high-fit links in month 1. Compound from there.
-> - Fast path (only if newsworthy): if you have unique data or a genuine PR hook, do a coordinated digital PR push via SOS / Qwoted / #JournoRequest. 10–30 high-quality links in 30 days IS realistic, but the prerequisite is a real story, not a request.
->
-> 100 links in 30 days as the goal itself is the problem. Pick one of the two paths above and the prospecting funnel runs against that goal instead.
-
-Do not soften. The honest answer is the only useful one.
+> Two honest paths. Slow (recommended for new domains): publish 3–5 substantial assets first (one a tool, see `seo-tool-discovery`), spend 30 days on reclamation + community presence, earn 5–15 high-fit links in month 1, compound from there. Fast (only if newsworthy): with unique data or a genuine PR hook, run coordinated digital PR via SOS / Qwoted / #JournoRequest; 10–30 quality links in 30 days IS realistic, but it needs a real story, not a request. "100 links" as the goal is the problem; pick a path and run the funnel against it.
 
 ## References
 
 - [Google Search Spam Policies](https://developers.google.com/search/docs/essentials/spam-policies) — the authoritative kill-rules
-- [Google's Backlink Policy in 2026 — what's now enforced](https://bluetree.digital/google-backlink-policy/)
+- [Google — Optimizing for generative AI features (May 2026)](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) — inauthentic mentions, fan-out, no llms.txt
 - [Backlinko — high quality backlinks](https://backlinko.com/high-quality-backlinks)
 - [Ahrefs — turning unlinked mentions into links](https://ahrefs.com/blog/unlinked-mentions/)
 - [HARO/Connectively alternatives 2026](https://www.prezly.com/academy/the-best-haro-alternatives)
-- [AI Platform Citation Source Index 2026 — 5W](https://www.prnewswire.com/news-releases/5w-releases-ai-platform-citation-source-index-2026-the-50-websites-that-now-decide-what-brands-are-visible-inside-chatgpt-claude-perplexity-gemini-and-google-ai-overviews-302759804.html)
-- [Reddit's role in AI citations](https://techedgeai.com/ai-platform-citation-source-index-2026-shows-reddits-surge-and-a-new-era-of-volatile-ai-generated-answers/)
+- [Pew Research — Google users less likely to click links with an AI summary (2025)](https://www.pewresearch.org/short-reads/2025/07/22/google-users-are-less-likely-to-click-on-links-when-an-ai-summary-appears-in-the-results/)
 - [Resource page link building — search operators](https://www.clickrank.ai/link-building-search-operators/)

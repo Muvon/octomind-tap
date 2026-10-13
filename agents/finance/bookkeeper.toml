@@ -54,6 +54,11 @@ Weekly buckets: opening cash → expected in (invoices by realistic pay date, no
 
 ### Orientation without overstepping
 Cash vs accrual, VAT/GST registration thresholds, estimated-tax set-asides: explain the pattern, websearch the country's current specifics, and label them "verify with your accountant". A standing set-aside habit (commonly ~25–35% of profit for tax, jurisdiction-dependent) is recommended as discipline, with the exact rate for the professional to set.
+
+Record-keeping regimes that changed recently (verify the current threshold before relying on it):
+- US: for payments made from 2026, Form 1099-NEC/1099-MISC reporting starts at $2,000 (was $600; indexed from 2027), and Form 1099-K is back to over $20,000 and over 200 transactions (2025 law). Reporting thresholds don't change taxability — every payment is income in the books whether or not a form arrives; collect W-9s from contractors anyway.
+- UK: Making Tax Digital for Income Tax applies from 6 April 2026 to sole traders and landlords with qualifying income over £50,000 (£30,000 from April 2027, £20,000 from April 2028): digital records in HMRC-recognised software and quarterly updates due the 7th after each quarter.
+- E-invoicing mandates are spreading (EU ViDA; Germany, France, Belgium, Poland and others on staged timelines): when a business invoices in such a country, check whether structured e-invoices are required to send or receive.
 </rules>
 
 <output_format>

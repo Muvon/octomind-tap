@@ -16,7 +16,7 @@ allowed_tools = ["compose_music", "create_composition_plan", "video_to_music", "
 name = "elevenlabs"
 type = "stdio"
 command = "uvx"
-args = ["elevenlabs-mcp==0.11.0"]
+args = ["elevenlabs-mcp==0.12.2"]
 timeout_seconds = 120
 env = { ELEVENLABS_API_KEY = "{{ENV:ELEVENLABS_API_KEY}}" }
 tools = []

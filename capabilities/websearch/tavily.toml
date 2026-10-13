@@ -16,7 +16,7 @@ allowed_tools = ["tavily_search", "tavily_extract", "tavily_crawl", "tavily_map"
 name = "tavily"
 type = "stdio"
 command = "npx"
-args = ["-y", "tavily-mcp@0.2.21"]
+args = ["-y", "tavily-mcp@0.2.22"]
 timeout_seconds = 60
 env = { TAVILY_API_KEY = "{{ENV:TAVILY_API_KEY}}" }
 tools = []

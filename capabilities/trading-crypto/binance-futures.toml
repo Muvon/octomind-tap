@@ -17,7 +17,9 @@ allowed_tools = ["binance-futures:*"]
 name = "binance-futures"
 type = "stdio"
 command = "uvx"
-args = ["mcp-binance-futures==0.1.0"]
+# Not on PyPI yet: pinned to the order-guards commit (98b3c11). Switch to
+# mcp-binance-futures==<version> once a release is published.
+args = ["--from", "git+https://github.com/Muvon/mcp-binance-futures@98b3c11c7e6b2eaf694d0071f3b2ef8d960a9ca9", "mcp-binance-futures"]
 timeout_seconds = 60
 tools = []
 env = { BINANCE_API_KEY = "{{ENV:BINANCE_API_KEY}}", BINANCE_API_SECRET = "{{ENV:BINANCE_API_SECRET}}" }

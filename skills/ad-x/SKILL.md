@@ -53,7 +53,7 @@ This skill defines exactly what to produce for an X (Twitter) ad. It is platform
 
 | Slot | Limit | Notes |
 |------|-------|-------|
-| Card title | 70 chars | Bold line below image/video |
+| Card title | 70 chars (2026: verify in Ads Manager — X revises limits) | Shown below image/video |
 | Card image | 1.91:1 (1200×628) or 1:1 (800×800) | Required if no video |
 | Card video | 16:9, 1:1, or 9:16 | Up to 2:20 — sweet spot 15–60s |
 | Destination URL | URL | Landing page |
@@ -83,9 +83,9 @@ This skill defines exactly what to produce for an X (Twitter) ad. It is platform
 | Video bitrate | 6,000–10,000 kbps | Higher for vertical |
 | Video frame rate | 29.97 or 30 fps | 60 fps allowed |
 
-### CTA Button Enum (Website Card / App Card — 2025+ Sales-Objective Link Preview)
+### CTA Button Enum (2026 — verify in Ads Manager)
 
-X consolidated the CTA enum in 2025 alongside the new Sales-objective link preview format. Both Website Card and App Card now share this enum:
+X's creative specs page lists these CTA labels; the link-preview format with a headline below the media and a CTA button rolled out first for the Sales objective in 2025:
 
 - Play
 - Install
@@ -95,7 +95,7 @@ X consolidated the CTA enum in 2025 alongside the new Sales-objective link previ
 - Connect
 - Order
 
-Legacy CTAs (Learn More, Sign Up, Buy Now, Visit Site, Subscribe, Get Quote, Shop Now) are deprecated in the new link preview but may still appear on older running campaigns. Do not use legacy values in new creative.
+Older labels (Learn More, Sign Up, Visit Site, Shop Now) may still appear on legacy cards or other objectives — pick from what Ads Manager offers for the chosen objective.
 
 ### Copy Rules — Promoted Post Must Read Native
 
@@ -105,18 +105,18 @@ Legacy CTAs (Learn More, Sign Up, Buy Now, Visit Site, Subscribe, Get Quote, Sho
 - 1 link per post — if you append a Website Card, do NOT also put the URL in the text. Pick the card.
 - Emojis: 0–2, and only if they replace a word or anchor an idea. Decorative emoji strings (✨🚀💯) flag as low-quality.
 - Avoid "Click the link below" — readers know.
-- Avoid "Hey [audience]," openers — algorithmic cold-start penalty.
-- Brand-safety verdict: edgy is fine if defensible. Crude language drops `MediumRisk` → ads system pulls placements → reach collapses.
+- Avoid "Hey [audience]," openers — they read as templated ads.
+- Brand-safety verdict: edgy is fine if defensible. Crude language gets the ad classed as higher brand-safety risk, which narrows placements and reach.
 
-### Algorithm Touchpoints (for ad-as-post)
+### Ranking Touchpoints (for ad-as-post)
 
-X's ad surface ranks against the same For You ranker (Phoenix-era) as organic. Promoted Posts pass through:
+Promoted Posts compete in the same feed ranking as organic posts, so the same quality signals apply:
 
-- Banger Initial Screen — VLM scores quality + slop. Templated copy gets flagged. Make it look like a real artifact.
-- Scroll-past as negative signal — failing to earn dwell costs score across the audience cluster.
-- 7 PTOS safety classifiers — a single hit zeroes the post. Ad disapproval is the visible form; reach loss is the invisible form.
+- Templated, generic copy and stock visuals underperform — make it look like a real artifact.
+- Fast scroll-past and negative feedback ("not interested", mutes, reports) cost delivery across the audience.
+- Brand-safety and policy classifiers can limit or stop delivery; disapproval is the visible form, reach loss the invisible one.
 
-Takeover surfaces (Timeline, Trend, Spotlight) bypass the auction but still hit safety classifiers.
+Takeover surfaces (Timeline, Trend, Spotlight) bypass the auction but still pass policy review.
 
 ### Audience Reach Caveat (Premium / Premium+)
 
@@ -129,10 +129,10 @@ Takeover surfaces (Timeline, Trend, Spotlight) bypass the auction but still hit 
 
 - Trademark / copyrighted material without authorisation — disapproval
 - Misleading metrics ("10M users" without proof) — manual review
-- Crypto (Feb 2026 update) — exchanges, wallets, kiosks/ATMs, debit/credit cards permitted in SA, KW, TR, IE, HK, KR, UK, FR, DE only. Singapore removed in 2026. Other crypto products still gated. All paid promotional crypto content (including influencer shilling) requires machine-readable disclosure or account suspension
+- Crypto and financial products — country-restricted and certification-gated; check X's financial services policy for the target country before writing (2026 rules change often)
 - Gambling — restricted, country-specific certification required
 - Adult content — banned in ads even though organic permits some under the Adult Content Creator (ACC) program
-- Political / issue ads (2026) — reinstated under structured disclosure across 38 eligible countries. Required: certified advertiser status + machine-readable "Paid For By" disclosure. Targeting an ineligible country = auto-reject
+- Political / issue ads — allowed only in specified countries, for certified advertisers, under local election law and silence periods (X reinstated political ads in 2023). Targeting an ineligible country = rejection
 - Personal attributes targeting in copy — disapproval risk
 - Sensitive personal events (illness, bereavement) — restricted
 - Adjacency exclusion — ads will not serve adjacent to 12 categories (adult, violence, political conflict, profanity, drugs, spam, misinfo, hate, terrorism, self-harm, gambling, obscenity). Affects reach in regulated verticals

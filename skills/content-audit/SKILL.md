@@ -3,7 +3,7 @@ name: content-audit
 title: "Content Audit Rubric & Scoring Harness"
 description: "Read-only audit harness for content quality: detects the content type (X post / X thread / LinkedIn / Threads / Bluesky / Mastodon / Hacker News / Reddit post, or blog / article), routes to the matching social-* skill plus the cross-cutting voice/humanize/grounding/geo checks, scores per-axis 0-10 + overall 0-100, and emits a canonical findings report with severity tiers, evidence, and suggested rewrites. For X surfaces also emits a Phoenix-style verdict (Pass / Borderline / Likely-Suppressed / Kill-Switch-Risk); single source of truth for the diagnostic shape, used by content:audit (read-only) and content:editor (diagnose-then-edit)."
 license: Apache-2.0
-compatibility: "Composes with content-domain skills only: social-*, content-voice, content-humanize, content-grounding, content-geo. Read-only — never mutates source files. Requires filesystem-read for file inputs."
+compatibility: "Read-only. Requires filesystem read access for file inputs; live SERP or source checks need network access."
 domains: content
 rules:
   - content(audit)
@@ -22,9 +22,7 @@ rules:
 
 ## Overview
 
-The shared rubric for scoring any piece of content the system writes for. The audit agent uses it to produce read-only reports. The editor agent uses it to produce the diagnosis that drives its rewrites. Same rubric, same vocabulary, same report shape — the only difference is what happens after the report is rendered.
-
-The harness does three things: detect what kind of content this is, route to the platform-specific knowledge skill, and grade the content with a structured per-axis score plus a prioritized findings list. It never writes to the source file.
+The shared rubric for scoring any content the system writes. The audit agent renders read-only reports from it; the editor agent uses the same diagnosis to drive rewrites. The harness detects the content type, routes to the platform skill, and grades with per-axis scores plus a prioritized findings list. It never writes to the source file.
 
 ## Mental model
 
@@ -55,21 +53,13 @@ Cross-cutting skills always loaded: `content-voice`, `content-humanize`, `conten
 
 Don't guess between blog and article — confirm if borderline. Don't guess platform if no cue — ask which one.
 
-This audit covers content quality — voice, hook, dwell, slop, structure, specificity, grounding, safety, topic fit, and answer-first structure for long-form. The rubric stays focused on what makes the writing itself work.
+This audit covers the writing itself: hook, dwell, slop, voice, specificity, structure, grounding, safety, topic fit, and answer-first structure for long-form.
 
 ### Inputs the audit accepts
 
 Required: the content (file path or pasted text).
 
-Optional context that sharpens the score — ask for any that are missing if the user wants a thorough audit, otherwise note as "Unscored axis":
-- Target platform / format (if not auto-detectable)
-- Account / brand niche
-- Account stage (new account, established, large)
-- Target audience
-- Primary keyword (for SEO content)
-- Anchor accounts (for X / LinkedIn)
-- Brand voice notes (pull from memory before asking)
-- Intended posting time / cadence (for social)
+Optional context that sharpens the score (ask for missing items on a thorough audit, otherwise mark the axis "Unscored"): target platform, niche, account stage, audience, primary keyword, anchor accounts, brand voice notes (check memory first), posting time.
 
 ### Score axes
 
@@ -79,8 +69,8 @@ Every audit returns the same axis set. Weight per axis varies by content type �
 |---|---|
 | Hook | First sentence / first 280 chars / title — does it earn the next read? |
 | Dwell risk | Visual density, paragraph length, scroll-friction. Low score = predicted scroll-past. |
-| Slop risk | AI-template shape, recycled hook, motivational fluff, synonym rotation. |
-| Voice | Match to documented brand voice; first-person specificity; contractions; rhythm variation. |
+| Slop risk | AI-template shape, recycled hook, motivational fluff, synonym rotation. An editorial judgment: never cite an AI-detector percentage as evidence (detectors are unreliable on edited text). |
+| Voice | Match to documented brand voice; first-person claims owned by the speaker; register and rhythm that fit the venue (no contraction or sentence-length quotas). |
 | Specificity | Real numbers, named tools, named people, dated events vs. abstractions. |
 | Structure | Format-appropriate sectioning, one-idea-per-unit, transitions, conclusion landing. |
 | Grounding | Fabrication risk on named entities, stats, quotes, versions, URLs. |
@@ -176,7 +166,7 @@ Overall: {N}/100 — {verdict band}
 | Axis | Score | Weight | Weighted |
 |---|---|---|---|
 | Hook | 7/10 | 20 | 14.0 |
-| Dwell risk | 4/10 | 15 | 6.0 |
+| Dwell risk | 4/10 | 18 | 7.2 |
 | ...
 
 ## Critical findings
@@ -222,19 +212,19 @@ Context missing: none
 
 ## Score
 
-Overall: 62/100 — Borderline
+Overall: 69/100 — Borderline
 Phoenix verdict: Borderline — Dwell-risk axis at 4 is the choke point
 
 | Axis | Score | Weight | Weighted |
 |---|---|---|---|
 | Hook | 8/10 | 20 | 16.0 |
-| Dwell risk | 4/10 | 15 | 6.0 |
+| Dwell risk | 4/10 | 18 | 7.2 |
 | Slop risk | 7/10 | 15 | 10.5 |
 | Voice | 7/10 | 10 | 7.0 |
 | Specificity | 6/10 | 10 | 6.0 |
 | Structure | 5/10 | 5 | 2.5 |
 | Grounding | 9/10 | 10 | 9.0 |
-| Safety + brand-safety | 10/10 | 10 | 10.0 |
+| Safety + brand-safety | 10/10 | 7 | 7.0 |
 | Topic fit | 8/10 | 5 | 4.0 |
 
 ## Critical findings

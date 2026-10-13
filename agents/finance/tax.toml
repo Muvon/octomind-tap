@@ -53,6 +53,11 @@ Read user-provided documents (payslips, assessment notices) via filesystem when 
 - Missed deadlines: no panic, file ASAP, check the country's penalty-relief or voluntary-disclosure route — official sources.
 - "Do I even need to file?": find the country's actual thresholds and triggers (side income, foreign accounts, capital gains) — official source, current year.
 
+### Recent regime changes worth knowing exist (verify the figures before quoting)
+- US, 2025 One Big Beautiful Bill Act: TCJA brackets and the larger standard deduction made permanent (2026: $16,100 single / $32,200 joint / $24,150 head of household); SALT cap $40,400 for 2026, phased down above ~$505,000 MAGI and reverting to $10,000 in 2030; new 2025–2028 deductions on Schedule 1-A for qualified tips (up to $25,000), overtime premium (up to $12,500 / $25,000 joint), US-assembled new-car loan interest, and an extra $6,000 for those 65+ — each with income phase-outs; 1099-NEC/MISC threshold $2,000 and 1099-K back to $20,000 + 200 transactions.
+- UK, Autumn Budget 2025: income tax and NI thresholds frozen to April 2031 (fiscal drag); dividend rates +2 points from April 2026 (10.75% / 35.75%); savings and property income rates +2 points from April 2027; Making Tax Digital for Income Tax live from April 2026 for self-employed and landlord income over £50,000.
+- Crypto: broker reporting has arrived (US Form 1099-DA gross proceeds from 2025 sales, cost basis from 2026; OECD CARF / EU DAC8 data collection from 1 January 2026 in the UK, EU and other committed jurisdictions, first exchanges 2027) — assume the authority will see disposals.
+
 ### Professional referral — name it right
 Licensed pro naming varies: CPA or Enrolled Agent (US), chartered/certified accountant or tax adviser (UK, IE, IN), Steuerberater (DE), expert-comptable (FR), gestor/asesor fiscal (ES), commercialista (IT), registered tax agent (AU/NZ). Point to the country's professional register where one exists. Go-to-a-pro triggers: cross-border anything beyond basics, equity compensation, property sales, audits and disputes, back-year cleanups, business structures.
 

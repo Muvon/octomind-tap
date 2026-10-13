@@ -31,10 +31,11 @@ The goal is trustworthy, readable work, not text that fools a classifier. Facts 
 
 ## Evidence and scope
 
-- Research checked 2026-09-05. Detector findings depend on language, genre, model, sample, and evaluation setup. A 2026 Czech-language study found no systematic non-native bias in its tested detectors, unlike claims derived from earlier English studies. Neither result gives a universal social-post detector or a safe punctuation formula.
+- Research checked 2026-10-12. AI-text detectors beat chance but carry real error rates and degrade on edited, paraphrased, or translated text (Weber-Wulff et al. 2023: none of 14 tools reached 80% accuracy). Findings also depend on language and setup: a 2026 Czech study found no systematic non-native bias in current detectors, unlike earlier English studies. Neither result gives a safe score, threshold, or punctuation formula.
+- Pattern lists such as Wikipedia's "Signs of AI writing" (inflated significance, vague attributions, "-ing" significance tails, forced triads, "not just X but Y" contrasts, boldface and inline-header lists) are review prompts. That guide itself warns that single signs prove little and that hiding signs without fixing sourcing only makes problems harder to find.
 - Don't label a draft “80% human,” invent perplexity/burstiness thresholds, or claim that grammar, contractions, em dashes, or sentence variation prove authorship. Don't promise detector avoidance.
-- Google's guidance emphasizes accuracy, quality, relevance, and value. E-E-A-T is not a single ranking factor, and quality-rater scores do not directly set rankings. Don't attach unsourced traffic multipliers, attention percentages, or search-update claims to this editing process.
-- Check the destination's actual authorship policy before rewriting publishable prose. Some communities restrict AI-generated or AI-edited posts/comments; a stylistic rewrite or disclosure does not automatically make them eligible. Where necessary, provide factual research notes and leave prohibited public prose to the human author.
+- Google judges accuracy, quality, and value regardless of how text was produced, but mass-produced or mass-rewritten pages without added value fall under its scaled content abuse policy, and its October 2026 guidance asks for manual fact-checking of AI output. E-E-A-T is not a single ranking factor, and quality-rater scores do not directly set rankings. Don't attach unsourced traffic multipliers or search-update claims to this editing process.
+- Check the destination's actual authorship and disclosure rules before rewriting publishable prose. Some communities restrict AI-generated or AI-edited posts; in the EU, AI-generated public-interest text needs disclosure unless a human with editorial responsibility reviewed it (AI Act Art. 50(4), from 2 August 2026). A stylistic rewrite does not change those obligations. Where necessary, provide research notes and leave prohibited public prose to the human author.
 - Keep the requested scope. Editing voice does not authorize changing the speaker's opinion, results, product claims, affiliation, or source. If a claim is uncertain, verify or flag that specific claim while progressing on independent edits.
 
 ## Eight-dimension diagnostic
@@ -96,12 +97,14 @@ When a diagnostic is requested, report the affected dimensions, excerpts, fixes,
 
 ## References
 
-Review date: 2026-09-05; this is not a publication/update date for the sources below.
+Review date: 2026-10-12; this is not a publication/update date for the sources below.
 
 - [Al Ali et al., EACL 2026](https://aclanthology.org/2026.eacl-srw.20/) — language-specific detector evaluation; do not generalize its Czech findings to every language or platform.
+- [Weber-Wulff et al., Testing of detection tools for AI-generated text (IJEI 2023)](https://doi.org/10.1007/s40979-023-00146-z) — accuracy and false positives across 14 detectors.
+- [Wikipedia: Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) — descriptive pattern catalogue, not proof of authorship.
 - [Google AI-content guidance](https://developers.google.com/search/docs/fundamentals/using-gen-ai-content) and [people-first content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content).
 - [GOV.UK clear-language guidance](https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/writing-guidelines/clear-language/) — an example of professional plain language.
 
-Validated: 2026-09
+Validated: 2026-10
 
-Re-validate when the cited detector research is revised, Google guidance changes, or the diagnostic/workflow is revised.
+Re-validate when the cited detector research is revised, Google guidance or AI-disclosure law changes, or the diagnostic/workflow is revised.

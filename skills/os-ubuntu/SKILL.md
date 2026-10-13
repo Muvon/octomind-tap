@@ -11,7 +11,7 @@ rules:
 
 ## Overview
 
-Operate the installed Ubuntu release using its supported repositories and management tools. Baseline checked 2026-09-05: Ubuntu 26.04 LTS “Resolute Raccoon” is current; recheck release status before lifecycle decisions. Read `/etc/os-release`, package architecture, image definition, and repository configuration. Apply [shared Linux guidance](../os-linux/SKILL.md) for host/container boundaries and general service diagnostics.
+Operate the installed Ubuntu release using its supported repositories and management tools. Baseline checked 2026-10-12: Ubuntu 26.04 LTS “Resolute Raccoon” is current; interim 26.10 “Stonking Stingray” is scheduled for 2026-10-15 with nine months of support. Recheck release status before lifecycle decisions. Read `/etc/os-release`, package architecture, image definition, and repository configuration. Apply [shared Linux guidance](../os-linux/SKILL.md) for host/container boundaries and general service diagnostics.
 
 ## Mental model
 

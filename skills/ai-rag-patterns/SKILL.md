@@ -1,7 +1,7 @@
 ---
 name: ai-rag-patterns
 title: "RAG Patterns: Chunking, Retrieval, Reranking, Evaluation"
-description: "Operational playbook for designing and tuning production RAG (Retrieval-Augmented Generation) systems in 2026. Covers chunking strategies (fixed/recursive, semantic, late chunking, Anthropic Contextual Retrieval), retrieval (BM25, dense, hybrid with reciprocal rank fusion, ColBERT late-interaction), query rewriting (HyDE, multi-query, decomposition), reranking (Cohere Rerank, cross-encoders, BGE-Reranker), evaluation (RAGAS metrics, TruLens RAG Triad, DeepEval), the seven failure modes (Barnett et al.), agentic RAG patterns, multi-modal RAG (ColPali), and the long-context-vs-RAG trade-off. Use when designing a new RAG pipeline, diagnosing why an existing one underperforms, or evaluating retrieval quality. Output: architecture decisions with cited numbers, not vibes."
+description: "Operational playbook for designing and tuning production RAG (Retrieval-Augmented Generation) systems in 2026. Covers chunking strategies (fixed/recursive, semantic, late chunking, Anthropic Contextual Retrieval), retrieval (BM25, dense, hybrid with reciprocal rank fusion, ColBERT late-interaction), query rewriting (HyDE, multi-query, decomposition), reranking (Cohere Rerank 4, cross-encoders, BGE-Reranker), evaluation (RAGAS metrics, TruLens RAG Triad, DeepEval), the seven failure modes (Barnett et al.), agentic RAG and agentic search, multi-modal RAG (ColPali), and the long-context-vs-RAG trade-off including context rot. Use when designing a new RAG pipeline, diagnosing why an existing one underperforms, or evaluating retrieval quality. Output: architecture decisions with cited numbers, not vibes."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Requires webfetch (for accessing docs and APIs) and a vector store. Many sub-techniques (Cohere Rerank, voyage embeddings, Anthropic Contextual Retrieval) require external API keys."
 domains: ai
@@ -32,7 +32,7 @@ rules:
 
 Production RAG in 2026 is no longer "embed, retrieve top-5, generate." Three measurable shifts changed the playbook: hybrid retrieval beating either BM25 or dense alone, reranking moving from optional to default, and Anthropic's Contextual Retrieval (September 2024) collapsing retrieval-failure rates dramatically. This skill encodes the patterns that actually move the metrics, with cited numbers and the failure modes they address.
 
-Use this skill when designing a new RAG pipeline, diagnosing why an existing one underperforms, or evaluating retrieval quality before generation. Skip it for simple in-context document Q&A on a small static corpus where long-context generation (1M Sonnet / 2M Gemini) is the cheaper answer — see §6.
+Use this skill when designing a new RAG pipeline, diagnosing why an existing one underperforms, or evaluating retrieval quality before generation. Skip it for a small, stable corpus (under ~200K tokens) where putting everything in a cached prompt is the cheaper answer — see §6.
 
 ## Mental model
 
@@ -91,7 +91,7 @@ Reranking is the second filter: take 50–100 candidates from first-stage retrie
 
 | Reranker | Source |
 |---|---|
-| Cohere Rerank 3.5 / 4 | [Cohere Rerank docs](https://docs.cohere.com/docs/rerank) — pricing $2 per 1K searches (1 query + up to 100 docs) |
+| Cohere Rerank 3.5 / Rerank 4 (Pro, Fast; Apr 2026) | [Cohere Rerank docs](https://docs.cohere.com/docs/rerank) — billed per search (1 query + up to 100 docs); check current pricing |
 | Cross-encoders (`sentence-transformers/ms-marco-MiniLM-L-6-v2`) | Reimers & Gurevych, EMNLP 2019 |
 | BGE-Reranker (`bge-reranker-v2-m3`) | Xiao et al., BAAI, [arXiv:2309.07597](https://arxiv.org/abs/2309.07597) |
 | ColBERT as reranker | Late-interaction over first-stage top-k |
@@ -119,11 +119,13 @@ Cross-check with the eval-design skill in the same domain for statistical-signif
 
 ### 6. Long context vs RAG (the 2025–2026 question)
 
-Anthropic Sonnet/Opus 1M context (Aug 2025); Gemini 1.5/2.0 Pro 2M context. The question: does long-context generation replace RAG?
+2026 frontier models take very long inputs (the Claude 5 family at 1M tokens; Gemini Pro and OpenAI price prompts above 200K and 272K tokens at a higher tier). The question: does long-context generation replace RAG?
 
-Databricks "Long Context RAG Performance of LLMs" ([blog](https://www.databricks.com/blog/long-context-rag-performance-llms)) finds long-context QA beats chunk-RAG on stable, single-doc tasks but Gemini 1.5 underperforms o1 / GPT-4o / Sonnet 3.5 on DocsQA and FinanceBench. The RULER benchmark (Hsieh et al., [arXiv:2404.06654](https://arxiv.org/abs/2404.06654)) shows advertised context degrades early — effective context is shorter than the stated window.
+- Advertised context is not effective context. RULER (Hsieh et al., [arXiv:2404.06654](https://arxiv.org/abs/2404.06654)) shows degradation well before the stated window; Chroma's "Context Rot" report ([Jul 2025](https://research.trychroma.com/context-rot)) shows reliability dropping with input length across 18 models even on simple tasks, worse with topically similar distractors.
+- Anthropic's guidance: a knowledge base under ~200K tokens (~500 pages) can go straight into the prompt, with prompt caching making it fast and cheap ([Contextual Retrieval](https://www.anthropic.com/news/contextual-retrieval)).
+- Databricks' long-context RAG study ([blog](https://www.databricks.com/blog/long-context-rag-performance-llms), 2024 models) found more retrieved context helps only up to a model-specific point.
 
-Practitioner consensus (no single citation): use hybrid — retrieve a wider top-50 to top-100K-token shortlist, then long-context generate over the shortlist. Pure long-context loses on cost, citation auditability, and corpus freshness; pure short-RAG loses on multi-step reasoning across distant context. Pick by corpus size, refresh rate, citation requirements, and budget.
+Practitioner consensus (no single citation): retrieve a wide shortlist, then let a long-context model reason over it. Pure long-context loses on cost, citation auditability, and freshness for large or changing corpora; pure short-RAG loses on multi-step reasoning across distant passages. Decide by corpus size, refresh rate, citation requirements, and budget.
 
 ### 7. Multi-modal RAG
 
@@ -140,6 +142,8 @@ Singh et al., "Agentic Retrieval-Augmented Generation: A Survey" ([arXiv:2501.09
 
 Use agentic RAG when queries are heterogeneous (some need code search, some need docs, some need web), or when single-pass retrieval has known failure modes the agent can detect and recover from. Cost: 2–4× a single-pass RAG; justify with evidence the simpler design failed.
 
+Agentic search is the 2026 variant for code and structured workspaces: give the agent grep/glob/read tools and let it retrieve just in time instead of pre-indexing everything (Anthropic, [Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents), Sep 2025). It trades index maintenance for more tool calls; measure both on your eval set.
+
 ### 9. The seven failure modes (Barnett et al.)
 
 [arXiv:2401.05856](https://arxiv.org/abs/2401.05856), Jan 2024 — canonical failure taxonomy:
@@ -153,7 +157,7 @@ Use agentic RAG when queries are heterogeneous (some need code search, some need
 
 Diagnose at the failing layer; map fix to the right intervention (corpus curation, retrieval tuning, reranking, chunk-size, generator prompting).
 
-### 10. Production patterns checklist
+## Checklist
 
 - [ ] Chunking strategy chosen with rationale tied to corpus structure
 - [ ] Retrieval is hybrid (BM25 + dense + RRF or convex combination)
@@ -162,7 +166,7 @@ Diagnose at the failing layer; map fix to the right intervention (corpus curatio
 - [ ] Eval suite using RAGAS or TruLens RAG Triad with a versioned golden set
 - [ ] Production tracing via Phoenix / LangSmith / Langfuse
 - [ ] Drift monitoring on retrieval (embedding centroid distance over time)
-- [ ] Long-context vs RAG decision documented with rationale
+- [ ] Long-context vs RAG decision documented with rationale (corpus size, refresh rate, citation needs, measured context rot)
 - [ ] Multi-modal corpus uses ColPali-family when documents are visually rich
 - [ ] Agentic patterns only when single-pass has documented failure modes
 

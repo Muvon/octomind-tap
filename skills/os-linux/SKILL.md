@@ -27,7 +27,7 @@ Kernel, distribution userspace, libc, service manager, and deployment boundary a
 
 ## Identify the target
 
-- Guidance checked 2026-09-05 against current kernel and systemd documentation. Distribution-supported kernels often backport fixes; an older upstream version string alone does not prove an unpatched vulnerability. Check the vendor advisory and installed package revision.
+- Guidance checked 2026-10-12 against current kernel, systemd, and container-runtime documentation. Distribution-supported kernels often backport fixes; an older upstream version string alone does not prove an unpatched vulnerability. Check the vendor advisory and installed package revision.
 - Record the target host/container, effective identity, distribution `ID`/`VERSION_ID`, architecture, libc, init/service manager, and deployment mode before changing state. The workstation running the assistant is not necessarily the target.
 - Read `/etc/os-release`, or `/usr/lib/os-release` only when the former is absent. Do not merge both files. `ID_LIKE` suggests ancestry, not interchangeable repositories or upgrade paths.
 - `uname` reports the running kernel and machine architecture, not the distribution release, package architecture, CPU feature baseline, or glibc/musl ABI. Inspect the artifact and target before selecting binaries.
@@ -44,6 +44,7 @@ Kernel, distribution userspace, libc, service manager, and deployment boundary a
 ## Resource and network diagnosis
 
 - Identify the process's actual cgroup before interpreting memory or CPU pressure. On cgroup v2, inspect effective limits and relevant `memory.events`, `memory.current`, `memory.max`, and `cpu.stat`; ancestor limits also apply. Host-wide free memory does not rule out a container OOM.
+- Treat a cgroup v1 host as a migration item: Kubernetes 1.35+ kubelets refuse to start on cgroup v1 by default, and Docker Engine 29 deprecates it. Check `stat -fc %T /sys/fs/cgroup` (`cgroup2fs` means v2) before applying resource-limit advice.
 - Use pressure-stall information when available to distinguish resource stalls from simple utilization. Correlate events over time; one CPU or memory snapshot is weak evidence.
 - Check both filesystem space and inodes, mount options, quotas, and deleted-but-open files. `du` and `df` answer different questions. Don't delete logs, volumes, or caches indiscriminately to make a metric look healthy.
 - Separate listener, DNS, routing, firewall, TLS, and upstream failure. Use the target's network namespace and resolver configuration; public DNS success does not prove application resolution works.

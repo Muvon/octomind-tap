@@ -18,24 +18,29 @@ Meta reported 500 million monthly active users in June 2026 (official, Meta Comm
 | Text attachments | Standard posts support 500 characters; attachments support 10,000 characters (official, Meta Text, 2025-09). | Summarize the useful claim in the root. Use the attachment for context that would otherwise require fragmented posts (directional). |
 | Insights | Owner tools include views, interactions, follower detail, discovery sources, and trends over 7–90 days (official, Meta Personalization, 2025-07). | Record available metrics and observation windows. Public visibility and authorized owner access are different evidence scopes (directional). |
 
-Start at [threads.com](https://www.threads.com/) after the domain migration (official, Meta Web, 2025-04). Use visible navigation for search and feeds; copy resolved URLs from the actual interface. Don't construct query parameters, profile routes, tag routes, or a Help Center landing path from memory. Topic choice is an editorial recommendation here; the supplied evidence doesn't verify a current maximum topic count.
+Start at [threads.com](https://www.threads.com/) after the domain migration (official, Meta Web, 2025-04). Use visible navigation for search and feeds; copy resolved URLs from the actual interface. Don't construct query parameters, profile routes, tag routes, or a Help Center landing path from memory. A post carries one topic tag (official, Threads API posts docs, reviewed 2026-10).
+
+### API publishing limits
+
+2026, verify live: 500 characters per post; up to 5 unique links; one topic tag of 1–50 characters; carousels of 2–20 images or videos; video up to 5 minutes and 1 GB; 250 published posts per 24 hours per profile, a carousel counting as one (official, Threads API posts docs, reviewed 2026-10). The API works for profiles without a linked Instagram account since September 2025, and supports polls, GIFs (GIPHY since February 2026), spoilers, text attachments, ghost posts, reply approvals, topic-tag search, and cross-sharing a post to the linked Instagram account as a Story (official, Threads API changelog, 2025–2026).
 
 ### Features requiring an account check
 
-The supplied verified sources don't establish the mechanics below. The choices in this table are conditional craft guidance, not claims of rollout, limits, retention, ranking, or policy (directional).
+The features below exist; their account-level availability and controls still need checking before a publishing promise (official, Threads API changelog, 2025–2026; Meta Messaging, 2025-07). The choices are conditional craft guidance (directional).
 
-| Requested feature | Check before drafting | Conditional use or fallback |
+| Requested feature | Verified scope | Conditional use or fallback |
 |---|---|---|
-| Bio/profile editing | Actual bio field limit and available link fields in the target account before packaging the draft | Fit the verified profile constraints separately from the standard-post cap; include an optional verified destination only where supported. If access is unavailable, mark field constraints unverified. |
-| Threads DMs | Messaging access, recipient permissions, and the exact contact path | Offer private follow-up only with consent; otherwise use the verified destination. Don't promise that an Instagram DM case establishes native Threads DM behavior. |
-| Polls | Composer availability and displayed option limits | Ask a decision-relevant question with balanced options. Treat responses as self-selected feedback, not market-demand proof. |
-| GIFs | Availability and asset rights | Use a reaction only if it fits the author's humor; keep essential meaning in prose. |
-| Ghost or disappearing posts | Exact expiry, retention, and visibility shown in the interface | Use only for nonessential conversation after checking behavior. Keep launch terms and proof in a durable, verified destination. |
-| Spoiler text | Actual reveal behavior and accessibility | Keep offer limitations and disclosure visible without reveal. |
-| Scheduled posts | Tool support, timezone, and editable fields | Schedule approved evergreen material and reserve human reply coverage. |
-| Custom feeds | Available feed controls and what the selected feed contains | Listen through a relevant feed; don't invent a feed-creation or promotion entitlement. |
-| Cross-posting | Actual source/destination sharing controls and preview | Rewrite context and inspect media. Neither a boost nor a penalty is established here. |
-| Threads ads | Placement eligibility, format requirements, account access, and reporting | Treat paid execution as a separate downstream brief after verification. Don't assert global availability from an unsupported generic marketing guide. |
+| Bio/profile editing | Check the bio field limit and link fields in the target account | Fit the profile constraints separately from the post cap; mark them unverified if access is unavailable. |
+| Threads DMs | Native inbox since July 2025; message requests from non-followers carry no links or media; group chats up to 50 since October 2025 (official, Meta Messaging, 2025-07; TechCrunch, 2025-07) | Offer private follow-up only with consent; don't open a pitch with a cold request. |
+| Polls | Composer and API support since April 2025 | Ask a decision-relevant question with balanced options. Responses are self-selected feedback, not demand proof. |
+| GIFs | Composer and API support since October 2025 | Use a reaction only if it fits the author's humor; keep essential meaning in prose. |
+| Ghost posts | Text-only; archive after 24 hours; replies go to the poster's inbox (Engadget, 2025-10) | Nonessential conversation only. Keep launch terms and proof in a durable post. |
+| Spoiler text | Supported on text, image, and video posts since October 2025 | Keep offer limitations and disclosure visible without reveal. |
+| Reply approvals and controls | Reply approvals since February 2026; followers-only and author-only reply audiences | Use on launch roots that attract spam; state the choice if replies are filtered. |
+| Scheduled posts | Check the tool's support, timezone, and editable fields | Schedule approved evergreen material and reserve human reply coverage. |
+| Custom feeds | Check the feed controls and contents | Listen through a relevant feed; don't invent a promotion entitlement. |
+| Cross-posting | Threads posts can be shared to the linked Instagram Story (API since March 2026) | Rewrite context and inspect media. Neither a boost nor a penalty is established. |
+| Threads ads | Ads run through Meta Ads Manager for page-backed accounts, with video and carousel formats | Treat paid execution as a separate downstream brief. |
 
 ## Benchmarks and timing
 
@@ -101,6 +106,8 @@ MIDI found benefits from conversational context but continuing uneven idiom comp
 - [Meta Text](https://about.fb.com/news/2025/09/attach-text-threads-posts-share-longer-perspectives/), 2025-09-04.
 - [Meta Personalization](https://about.fb.com/news/2025/03/new-threads-features-more-personalized-experience-you-control/), updated 2025-07-22.
 - [Meta Web](https://about.fb.com/news/2025/04/new-features-threads-web-experience/), 2025-04-24.
+- [Threads API changelog](https://developers.facebook.com/docs/threads/changelog) and [posts reference](https://developers.facebook.com/docs/threads/posts), reviewed 2026-10.
+- [Meta Messaging](https://about.fb.com/news/2025/07/introducing-messaging-highlighted-perspectives-threads/), 2025-07; [TechCrunch on Threads DMs](https://techcrunch.com/2025/07/01/threads-gets-its-own-dms-as-app-distances-itself-from-instagram), 2025-07-01; [Engadget on ghost posts](https://www.engadget.com/social-media/threads-introduces-ghost-posts-that-disappear-after-24-hours-160000228.html), 2025-10.
 - [Meta AI Info](https://about.fb.com/news/2026/02/meta-prepares-for-2026-us-midterms/), 2026-02-19; updated 2026-06-01.
 - [Buffer Engagement](https://buffer.com/resources/state-of-social-media-engagement-2026/), 2026-03-05.
 - [Buffer Replies](https://buffer.com/resources/threads-comments-engagement/), 2026-02-24.
@@ -119,4 +126,4 @@ MIDI found benefits from conversational context but continuing uneven idiom comp
 - [Lees](https://www.housingwire.com/articles/taste-guts-receipts-ai-writing/), 2026-08-07; [MIDI](https://arxiv.org/abs/2606.02147), 2026-06-01; [Detector Study](https://arxiv.org/abs/2608.26710), 2026-08-27.
 
 Re-validate when: surface availability or names change; policy or eligibility updates; a dated regional study replaces an undated source; new benchmark methods change scope.
-Validated: 2026-09
+Validated: 2026-10

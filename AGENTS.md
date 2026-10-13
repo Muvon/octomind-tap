@@ -142,8 +142,8 @@ tools = []
 | `name` | Must NOT be set — injected at runtime from the tag |
 | `system` | Required; XML-tagged blocks in canonical order (below); stable run-to-run for prompt caching |
 | `welcome` | Required; `{{CWD}}` and `{{DATE}}` allowed here only — they break caching if used in `system` |
-| `temperature` / `top_p` / `top_k` | Required; 0.1–0.3 technical / 0.4–0.6 general; `top_p` 0.9; `top_k` 0 to disable, 10–40 for determinism |
-| `model` | Optional override, e.g. `"openrouter:anthropic/claude-sonnet-4"` |
+| `temperature` / `top_p` / `top_k` | Required by lint; 0.1–0.3 technical / 0.4–0.6 general; `top_p` 0.9; `top_k` 0 to disable, 10–40 for determinism. Inert on Claude Opus 4.7+/Claude 5 and thinking-enabled requests (octolib drops them) — the prompt, not sampling, sets behaviour there |
+| `model` | Optional override, `"<provider>:<model>"` |
 
 ### System Prompt Structure (2026 standard — XML-tagged blocks)
 
@@ -183,7 +183,7 @@ Full authoring spec, rationale, anti-patterns: `skills/tap-agent-authoring/SKILL
 
 | Tier | Capability | Tools | Who declares it |
 |------|-----------|-------|-----------------|
-| self-management | `core` | `plan` | **every** agent |
+| self-management | `core` | `recall` (planning is supervisor-owned, not a tool) | **every** agent |
 | do the work | domain caps | `shell`, `filesystem-*`, `codesearch-*`, `legal-*`, … | per agent |
 | intra-domain team | `agent` | `agent_*` | sub-orchestrators |
 | orchestration | `orchestration` | `tap`, `schedule` | orchestrators only (e.g. `assistant:concierge`, `developer:general`) |

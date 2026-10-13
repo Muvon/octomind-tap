@@ -3,7 +3,7 @@ name: content-locale-humanize-ko
 title: "Korean Native-Fluency Calibration"
 description: "Per-language calibration anchors for detecting AI-slop and translationese in Korean (ko) target text; auto-loads alongside content-locale-humanize when the target language is Korean."
 license: Apache-2.0
-compatibility: "Extends content-locale-humanize's AI-Slop & Translationese dimension. Load both together — this file has no rubric of its own."
+compatibility: "Calibration data only; no tools required. Network access helps for usage checks."
 domains: content
 rules:
   - content(korean)
@@ -16,20 +16,29 @@ rules:
 
 ## Overview
 
-Sourced calibration anchors for Korean, feeding `content-locale-humanize`'s AI-Slop & Translationese dimension. This is a calibration aid, not the checklist — reason natively beyond it (see the core skill's "why structure, not word lists" section).
+Calibration anchors and current norms for Korean (ko-KR), feeding content-locale-humanize's dimensions. A calibration aid, not the checklist; reason natively beyond it.
 
-## Instructions
+## Rules
 
-Sourcing confidence: moderate, but with one structurally important, well-reasoned finding below.
+### AI tells
 
-Korean makes up roughly 1% of typical LLM training corpora versus roughly 60% English — meaning Korean output starts from a shakier native-fluency baseline than most other languages checked here. Weight interference and awkward-register findings a little more heavily for Korean; the model has comparatively less native Korean signal to draw on, so translationese bleeds through more easily.
+Sourcing confidence: moderate.
 
-Connector pileup: 그리고 (and), 하지만 (but), 그래서 (so) — mechanically chaining sentences instead of letting the logic connect on its own, a substitute for genuine narrative flow.
+- Korean is a small share of typical LLM training data compared with English, so interference bleeds through more easily; weight interference and register findings slightly higher.
+- Connector pileup: 그리고, 하지만, 그래서 chaining sentences mechanically instead of letting the logic connect.
+- Adverb-modified generic verbs (-게, -이, -히) where a concrete verb would carry the meaning.
+- 중요한 / 중요하다 measured as disproportionately overused against native baselines.
 
-Overused descriptive-adverb endings: -게, -이, -히 — these tell rather than show; native Korean writing favors more concrete verbs over adverb-modified generic ones.
+### Translationese (번역투)
 
-Frequency-outlier word: 중요한 (important) and its English cognate "significant" — both measured as disproportionately overused versus native baselines.
+- "~에 의해" passives, "~을/를 가지다" for "have", "~에 있어서", "~하는 것이 필요하다", and "~를 통해" everywhere.
+- Pronouns 그/그녀 and plural -들 where Korean leaves them implicit; stacked -적 adjectives.
+
+### Current norms
+
+- Speech level: 합니다체 for formal documents and notices, 해요체 for most consumer apps and UI; pick one and hold it.
+- Word spacing (띄어쓰기) and loanword spelling (외래어 표기법: 콘텐츠, 메시지) follow the National Institute of Korean Language; spacing errors read as machine output immediately.
 
 ## References
 
-rebrandb.com, zdnet.co.kr, curious-500.com.
+Reviewed 2026-10-12. AI tells: rebrandb.com, zdnet.co.kr, curious-500.com. Norms: [국립국어원](https://www.korean.go.kr/).

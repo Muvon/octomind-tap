@@ -65,7 +65,23 @@ The evidence supplied for this playbook doesn't settle the following. Resolve th
 | Video-tab placement or Community Notes reach effect | Don't promise distribution or infer enforcement; review actual notices and evidence |
 | Premium reply-priority magnitude | Don't quote a lift or infer subscription from appearance alone |
 
-Creator Revenue Sharing closed enrollment on August 7, 2026; its retirement is scheduled for September 7, with Original Content Rewards applications beginning rollout for existing members on September 8 (official, X creator monetization help, 2026-08). As of September 5, those latter events are upcoming. Direct eligible creators to check Creator Studio after rollout; don't budget revenue from old Premium-engagement rules.
+Creator Revenue Sharing closed enrollment on August 7, 2026 and retired on September 7; former members could apply to Original Content Rewards from September 8, which pays on qualified impressions rather than an ad-revenue split (official, X creator monetization help, 2026-08; MediaPost, 2026-09). Eligibility thresholds are moving; check Creator Studio before budgeting any creator income.
+
+## Automation and API
+
+X's Developer Guidelines govern any account that posts through the API or a scheduler acting on its own (official, X Developer Guidelines, reviewed 2026-10):
+
+| Requirement | Rule |
+|---|---|
+| Disclosure | Enable the "Automated" profile label; bio states it's a bot and who operates it; link a human-managed account |
+| Posting | Allowed; no unsolicited @mentions; avoid identical cross-posting |
+| Replies | Only after the user engaged first; one reply per interaction |
+| AI-generated replies | Require X's prior approval; even then they can't impersonate a human |
+| DMs | Only after the user messaged first, with an easy opt-out |
+| Likes, follows | No automated, bulk, or aggressive liking or following |
+| Opt-out | Stop when a user says stop |
+
+2026: X's published API pricing is pay-per-use with prepaid credits; the pricing page lists no free or subscription tier, only Enterprise above the caps. Listed rates include $0.015 per post create, $0.20 per post create containing a URL, and $0.005 per post read, with a 3M post-read monthly cap before Enterprise (official, X API pricing, reviewed 2026-10). Prices change; verify live in the Developer Console before costing a scheduled link-post programme.
 
 ## References
 
@@ -78,10 +94,11 @@ Creator Revenue Sharing closed enrollment on August 7, 2026; its retirement is s
 - [X posting help](https://help.x.com/en/using-x/how-to-post), [Premium](https://help.x.com/en/using-x/x-premium), undated, reviewed September 2026.
 - [Media Literacy](https://help.x.com/en/rules-and-policies/media-literacy-plan), July 2026; [Authenticity](https://help.x.com/en/rules-and-policies/authenticity), April 2025.
 - [Creator monetization transition](https://help.x.com/en/using-x/creator-revenue-sharing), August 7, 2026.
+- [X Developer Guidelines](https://docs.x.com/developer-guidelines), [X API pricing](https://docs.x.com/x-api/getting-started/pricing), reviewed October 2026; [MediaPost on Original Content Rewards](https://www.mediapost.com/publications/article/417128/x-sunsets-its-revenue-sharing-program-for-creators.html), September 2026.
 
 Re-validate when:
 - Algorithm commits or runtime defaults change.
 - Feature names, subscription tiers, policies, or monetization programs change.
 - New vendor reports motivate a different distribution claim.
 
-Validated: 2026-09
+Validated: 2026-10

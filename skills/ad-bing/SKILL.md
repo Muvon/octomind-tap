@@ -1,9 +1,9 @@
 ---
 name: ad-bing
 title: "Microsoft Advertising (Bing) Production Spec"
-description: "Specifies what to produce for a Microsoft Advertising (Bing) creative: Responsive Search Ads (RSA with Microsoft-only long headlines), Multimedia Ads, Audience Ads (Outlook.com, MSN, Microsoft Start, Edge News), Performance Max, Shopping, Lodging/Travel verticals, Video, and Connected TV (Netflix inventory via Microsoft Invest / Xandr), with exact slots, char limits (including Microsoft's 90-char long-headline slot that Google does not have), asset ratios, CTA enum, LinkedIn Profile Targeting note, Copilot creative behavior, and the trademark/political/regional policy differences from Google. Use whenever the task is producing Microsoft Ads / Bing copy or assets; strictly platform-specific, so it does not cover keyword strategy, bidding, audience setup, or UET pixel."
+description: "Specifies what to produce for a Microsoft Advertising (Bing) creative: Responsive Search Ads, Multimedia Ads (with 90-char long headlines), Audience Ads (MSN, Outlook.com, Edge), Performance Max, Shopping, and Lodging/Travel verticals, with exact slots, char limits, asset ratios, CTA enum, the AI Max and Copilot creative controls, a LinkedIn Profile Targeting note, and the trademark/political/regional policy differences from Google. Use whenever the task is producing Microsoft Ads / Bing copy or assets; strictly platform-specific, so it does not cover keyword strategy, bidding, audience setup, or UET pixel."
 license: Apache-2.0
-compatibility: "Octomind launch agents. Platform-specific to Microsoft Advertising (Bing, MSN, Outlook.com, Microsoft Start, Edge News, Microsoft Invest CTV)."
+compatibility: "Octomind launch agents. Platform-specific to Microsoft Advertising (Bing, Yahoo/AOL syndication, MSN, Outlook.com, Edge, Copilot)."
 domains: launch
 rules:
   - content(microsoft ads)
@@ -22,16 +22,17 @@ rules:
 
 ## Overview
 
-This skill defines exactly what to produce for a Microsoft Advertising creative. Microsoft Ads (still commonly called "Bing Ads") serves across Bing, MSN, Outlook.com, Microsoft Start, Edge News, Yahoo, AOL, and CTV inventory including Netflix (via Microsoft Invest / Xandr). It's the second-largest search ad platform and the typical second channel after a Google Ads launch.
+This skill defines exactly what to produce for a Microsoft Advertising creative. Microsoft Ads (still commonly called "Bing Ads") serves across Bing, Copilot, MSN, Outlook.com, Edge, and syndicated Yahoo/AOL search. It's the second-largest search ad platform and the typical second channel after a Google Ads launch.
 
-Key Microsoft differences from Google:
+Key Microsoft differences from Google (2026 — verify live in Microsoft Advertising Help):
 
-- RSA has long headlines (90 chars, 3–5 required) — this slot does NOT exist in Google RSA. The most common mistake is importing from Google and leaving long headlines empty.
-- Competitor trademarks in ad copy are PROHIBITED by default (Google often allows). Trademark enforcement is faster (~5 business days).
-- Political ads are paused globally since 2019, still paused 2026.
+- RSA slots match Google (15 × 30-char headlines, 4 × 90-char descriptions). The 90-char long headlines belong to Multimedia Ads, Audience Ads, and PMax — the common Google-import miss is skipping Multimedia Ads, not RSA fields.
+- AI Max for Search reached all accounts globally in August 2026: search term matching, text customization, and final URL expansion, each with its own checkbox, plus brand exclusions/inclusions and term exclusions for generated text.
+- Trademark use in ad text is complaint-driven: owners file Microsoft's trademark-misuse form and Microsoft investigates; repeat misuse (including via dynamic insertion) can get terms blocked.
+- Political and election ads are prohibited.
 - Audience Ads description allows 130 chars (vs Google Demand Gen 90).
-- LinkedIn Profile Targeting is native to Microsoft (Job Function, Seniority, Company, Industry, Custom Company Lists for ABM).
-- CTV via Netflix inventory — no QR codes allowed on Netflix.
+- LinkedIn Profile Targeting (company, industry, job function) is native to Microsoft.
+- Microsoft Invest (the former Xandr DSP) shut down on February 28, 2026, so programmatic CTV and video buys go through other DSPs.
 
 Out of scope: keyword strategy, audience setup, bidding, UET pixel, conversion goals, ABM list construction.
 
@@ -41,30 +42,25 @@ Out of scope: keyword strategy, audience setup, bidding, UET pixel, conversion g
 
 | Format | Surfaces | What You Produce |
 |--------|----------|------------------|
-| Responsive Search Ads (RSA) | Bing, Yahoo, AOL search | Short headlines × 15, long headlines × 5, descriptions × 4, paths × 2, business name |
+| Responsive Search Ads (RSA) | Bing, Copilot, Yahoo, AOL search | Headlines × 15, descriptions × 4, paths × 2 |
 | Multimedia Ads (MMA) | Mainline search + Audience Network | Short headlines × 15, long headlines × 5, descriptions × 4, 4 image ratios, business name |
-| Microsoft Audience Ads | Outlook.com, MSN, Microsoft Start, Edge News | Short headline (50 char) × 5, long headline × 5, description × 5 (130 char), images, CTA |
+| Microsoft Audience Ads | MSN, Outlook.com, Edge, partner sites | Short headline (50 char) × 5, long headline × 5, description × 5 (130 char), images, CTA |
 | Performance Max | All surfaces | Asset group: headlines, descriptions, images, logos, videos |
 | Product Ads (Shopping) | Bing Shopping | Catalog-driven, "Highlights for Copilot" enrichment available |
 | Hotel Price Ads (HPA) | Travel verticals | Feed-driven, image optional |
 | Property Promotion Ads | Lodging | Image required, property name, tagline |
 | Tours & Activities Ads | Travel | Feed-driven, image + price + duration |
 | Cruise Ads | Travel | Feed-driven |
-| Video Ads | Microsoft Invest | 16:9 MP4, 6/15/30/60s |
-| Connected TV (CTV) | Netflix, premium CTV via Microsoft Invest / Xandr | 1080p 16:9, 15s or 30s, NO QR codes on Netflix |
-| Brand Ads (premium) | MSN, Edge, IAB display | IAB New Ad Portfolio formats |
 | Smart Search / Smart Campaigns | Bing search | Auto-generated by Copilot from URL crawl |
 
 ### Responsive Search Ads (RSA) — Slots
 
 | Slot | Count | Limit | Notes |
 |------|-------|-------|-------|
-| Short headlines | 3–15 | 30 chars | Same as Google RSA |
-| Long headlines | 3–5 | 90 chars | MICROSOFT-ONLY. Does not exist on Google. The #1 import-from-Google mistake is leaving these empty. |
+| Headlines | 3–15 | 30 chars | Same as Google RSA; optional pins |
 | Descriptions | 2–4 | 90 chars | Same as Google |
 | Path 1 / Path 2 | 0–2 | 15 chars each | Display URL only |
 | Final URL | 1 | 2048 | Destination |
-| Business name | 0–1 | 25 chars | Brand surface |
 
 ### Multimedia Ads (MMA) — Slots
 
@@ -98,7 +94,7 @@ Out of scope: keyword strategy, audience setup, bidding, UET pixel, conversion g
 | Slot | Range | Notes |
 |------|-------|-------|
 | Short headlines | 3–15 × 30 chars | Same as RSA |
-| Long headlines | 1–5 × 90 chars | Microsoft-specific |
+| Long headlines | 1–5 × 90 chars | Same role as Google PMax long headlines |
 | Descriptions | 2–5 × 90 chars | |
 | Business name | 1 × 25 chars | |
 | Images (all ratios) | 1–20 total | Mix of 1:1, 1.91:1, 1.5:1 |
@@ -111,21 +107,9 @@ Out of scope: keyword strategy, audience setup, bidding, UET pixel, conversion g
 | Asset groups per campaign | up to 100 | |
 | Products per asset group | up to 19,998 | |
 
-### CTV / Video Specs (Microsoft Invest)
+### Video / CTV
 
-| Spec | Value | Notes |
-|------|-------|-------|
-| Format | MP4, MOV, WebM | |
-| Codec | H.264 (preferred), H.265, VP9 | |
-| CTV resolution | 1920×1080 (1080p) required | |
-| Video min resolution | 1280×720 | |
-| Aspect ratio | 16:9 only (CTV) | |
-| Frame rate | 23.976 / 24 / 25 / 29.97 / 30 fps | |
-| Bitrate | 15–20 Mbps for 1080p CTV | |
-| Audio | AAC, 128 kbps min, -23 to -24 LKFS | |
-| Duration | 15s or 30s (CTV); 6/15/30/60s (video) | |
-| File size | ≤ 200 MB | |
-| Netflix inventory | NO QR CODES, no clickable CTA | Awareness play only |
+Microsoft Invest (the former Xandr DSP, which carried Netflix and premium CTV inventory) shut down on February 28, 2026; Microsoft named Amazon DSP as the preferred partner. Produce CTV and video creative to the chosen DSP's spec, not here. Inside Microsoft Advertising, video runs through PMax and Audience Ads assets.
 
 ### Image Asset Library
 
@@ -140,7 +124,7 @@ Out of scope: keyword strategy, audience setup, bidding, UET pixel, conversion g
 | Max dimensions | — | 2592×2048 max | — | — |
 | Formats | JPG, JPEG, PNG, non-animated GIF | — | — | — |
 
-Image rules: ≤20% text overlay (OCR-enforced on Audience Network), no QR codes on Netflix CTV, no animated GIFs in Audience Ads, no transparent backgrounds for native.
+Image rules: keep text overlay light, no animated GIFs in Audience Ads, no transparent backgrounds for native.
 
 ### CTA Behavior
 
@@ -148,16 +132,16 @@ Image rules: ≤20% text overlay (OCR-enforced on Audience Network), no QR codes
 - Audience Ads — optional CTA from enum:
   - Apply Now, Book Now, Contact Us, Download, Get Quote, Learn More, Order Now, See More, Shop Now, Sign Up, Subscribe, Visit Site
 - Performance Max — inherits Audience Ads CTA enum on native placements; no button on search.
-- Custom CTA text is NOT supported (unlike Google Demand Gen which allows ≤10 char custom override).
+- Custom CTA text is NOT supported.
 
-### Copilot Creative Generation (2025–2026)
+### AI Max and Copilot Creative (2026 — verify live)
 
-Microsoft's Copilot auto-generates headlines + descriptions from final URL crawl. By default, auto-generated assets backfill empty RSA slots.
+With AI Max text customization on, Microsoft generates headlines and descriptions from your final URL and site; final URL expansion can send traffic to other pages (limit it with URL rules).
 
-- Term Exclusions (2026) — supply a blocklist of words the AI must never produce (competitor names, banned phrases)
-- Messaging Constraints (2026) — upload brand/legal guidelines document the AI must honor
-- Brand voice profile in Microsoft Ads Editor — pick tone (Professional / Friendly / Conversational / Bold) + reading level
-- Automatic Image Extensions — Microsoft sources images from landing page if no image asset supplied (opt-out per account)
+- Term exclusions — a blocklist of words generated text must never use (competitor names, banned claims)
+- Brand exclusions / inclusions — up to 20 brand lists per campaign, 100 brands per list
+- Autogenerated text assets and predictive matching now live under AI Max; campaigns that used them have the matching AI Max setting switched on
+- Automatic image extensions — Microsoft may source images from the landing page if no image asset is supplied (opt-out per account)
 
 ### LinkedIn Profile Targeting (Audience-Level — Affects Creative Choice)
 
@@ -169,7 +153,7 @@ Microsoft Audience Network supports LinkedIn-based targeting natively (audience 
 - Job Seniority (10 levels: CXO → Entry)
 - Custom Company Lists (ABM, event lists)
 
-Available in US, CA, UK, FR, DE, AU. 2026: now also supported on Search Ads (previously Audience-only).
+Campaigns must target the US, UK, Canada, Australia, France, or Germany; works on Search and Audience campaigns as bid adjustment or observation. Job Seniority and Company Lists on Search were in a US/Canada pilot as of April 2026.
 
 Creative implication: when LinkedIn targeting is active, write to the role/seniority — but do NOT name the role in the copy itself ("Hey CTO at [Co]…") because that triggers Personal Attributes policy.
 
@@ -187,13 +171,13 @@ Restricted (certification or geo-limits required):
 - Political ads — PAUSED GLOBALLY since 2019, still paused 2026
 - Cannabis — CBD topicals allowed in some US/CA states with restrictions; THC products disallowed everywhere
 
-Trademark (stricter than Google):
+Trademark (complaint-driven, per Microsoft's intellectual property policy):
 
-- Competitor trademarks in ad copy: PROHIBITED by default (Google allows in many markets)
-- Competitor trademarks as keywords: permitted
-- Complaint takedown: ~5 business days
+- Competitor trademarks in ad copy: owners can file a trademark-misuse complaint; Microsoft investigates and may disapprove the ad. Exceptions include authentic resellers, informational/review sites, and comparative advertising with restrictions
+- Competitor trademarks as keywords: permitted in many markets; complaints use the same form
+- Dynamic keyword insertion that injects a competitor mark into copy gets disapproved — use static ads for those keywords
 
-AI-generated content: No formal label required globally, but synthetic media depicting real people in financial/political/election contexts requires "AI-generated" overlay (per 2024 EU AI Act, Microsoft enforces globally).
+AI-generated content: from August 2026 the EU AI Act requires disclosure of deepfakes (realistic synthetic people, voices, or events); label such assets and check Microsoft's current policy for AI disclosure.
 
 No serving: China, Russia, Crimea, Iran, North Korea, Syria, Cuba.
 
@@ -205,7 +189,7 @@ EU: GDPR + Digital Services Act labeling for sponsored content.
 # Microsoft Ads — [Product] [Campaign Name]
 
 ## Format
-[RSA / Multimedia / Audience / PMax / Shopping / Hotel / Property / CTV]
+[RSA / Multimedia / Audience / PMax / Shopping / Hotel / Property]
 
 ## Final URL
 [URL]
@@ -214,17 +198,12 @@ EU: GDPR + Digital Services Act labeling for sponsored content.
 - Short headlines (≤15 × 30 char):
   1. [Headline] — [chars/30]
   ...
-- Long headlines (3-5 × 90 char — MICROSOFT-ONLY, do not skip):
-  1. [Long headline] — [chars/90]
-  2. [Long headline] — [chars/90]
-  3. [Long headline] — [chars/90]
 - Descriptions (≤4 × 90 char):
   1. [Description] — [chars/90]
   ...
 - Paths (≤2 × 15 char):
   - Path 1: [path] — [chars/15]
   - Path 2: [path] — [chars/15]
-- Business name (≤25): [name] — [chars/25]
 
 ## Multimedia Ads / Audience Ads / PMax Additions
 [Slots per format above, including image asset specs]
@@ -236,46 +215,35 @@ EU: GDPR + Digital Services Act labeling for sponsored content.
 - 4:1 (1200×300): [scenario, banner placements]
 - Logo 1:1: [supplied]
 
-## Video / CTV (if applicable)
-- Format: MP4 H.264
-- Duration: [15s / 30s for CTV]
-- Resolution: 1920×1080
-- Audio: -23 LKFS
-- QR codes: [None if Netflix inventory]
-
 ## CTA (Audience Ads / PMax native only)
 [From enum]
 
-## Copilot Settings
-- Brand voice profile: [Professional / Friendly / Conversational / Bold]
-- Term Exclusions: [competitor names, banned phrases]
-- Messaging Constraints: [brand guideline doc reference]
-- Auto-generated assets: [allow / block]
+## AI Max Settings
+- Text customization / final URL expansion / search term matching: [on / off per checkbox]
+- Term exclusions: [competitor names, banned phrases]
+- Brand exclusions / inclusions: [lists]
 
 ## LinkedIn Targeting Note (if active)
 - Targeting layer: [Company / Industry / Job Function / Seniority / Custom List]
 - Creative angle should match the targeted role WITHOUT naming it in copy (Personal Attributes policy)
 
 ## Pre-Submit Checklist
-- [ ] 3-5 long headlines populated (90 char each) — most common Google-import miss
+- [ ] Multimedia/Audience/PMax: 90-char long headlines populated
 - [ ] No competitor trademark in copy
 - [ ] No political ad copy
 - [ ] If restricted vertical: certification/license referenced
 - [ ] Alcohol copy excluded from restricted markets (UAE/SA/PK/India regions)
-- [ ] If Netflix CTV: NO QR codes, no clickable CTA
-- [ ] Brand voice profile aligned to target audience
+- [ ] AI Max term exclusions set if text customization is on
 - [ ] If LinkedIn-targeted: role mentioned in angle, not in copy text
 ```
 
 ### Realistic 2026 Scenarios
 
-A. Google Ads import (most common entry point): Imported via Ads Editor. RSA short headlines transfer 1:1. Manually add 3-5 long headlines (90 chars) — they don't exist on Google side. Add Microsoft business name. Set up UET tag before launch. Without long headlines populated, ad strength stays at "Average" maximum.
+A. Google Ads import (most common entry point): Imported via Ads Editor. RSA headlines and descriptions transfer 1:1. Add a Multimedia Ad with 3–5 long headlines (90 chars) and images — Google RSAs have nothing to import for it. Set up UET before launch, and review AI Max checkboxes and term exclusions so generated text stays on-brand.
 
 B. B2B SaaS targeting Microsoft 365 / Outlook users via Audience Ads: 1.91:1 product screenshot + 1:1 logo, short headline ≤50 chars emphasizing Outlook/Teams integration, description ≤130 chars with concrete outcome stat, CTA="Get Quote", layered LinkedIn Profile Targeting (Director+, IT/Engineering, Custom Company List from ABM CRM). Copy avoids "you, the IT director" Personal-Attributes phrasing.
 
-C. Multimedia Ads for premium consumer (luxury / craftsmanship): Supply all 4 image ratios at 2592×2048 quality, 15 short headlines mixing brand + benefit + offer, 5 long headlines (90 chars) for premium narrative, 4 descriptions emphasizing craftsmanship. Brand voice = "Bold." Term Exclusions includes competitor names + "cheap/affordable."
-
-D. CTV app launch via Netflix inventory: 15s + 30s 1080p MP4 H.264 16:9, audio -24 LKFS, no QR codes, no end-card URL (CTV unclickable — drive to search). Upload via Microsoft Invest. Geo: US/CA/UK/DE/FR/AU. Pair with retargeting Audience Ads (1.91:1 + 1:1) on Edge News.
+C. Multimedia Ads for premium consumer (luxury / craftsmanship): Supply all 4 image ratios at high resolution, 15 short headlines mixing brand + benefit + offer, 5 long headlines (90 chars) for premium narrative, 4 descriptions emphasizing craftsmanship. Term exclusions include competitor names + "cheap/affordable."
 
 ## When NOT to Use This Skill
 

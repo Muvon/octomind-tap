@@ -51,12 +51,12 @@ Break any link in the chain and rankings collapse downstream regardless of how g
 
 Before scoring anything, get the evidence:
 
-- `webfetch` the target URL — capture HTML, response headers, render the page if JS-heavy.
+- Read the target URL with `knowledge(command="read", source="<url>")` — HTML content, headings, JSON-LD.
 - `shell curl -sI <url>` — capture raw HTTP response and follow redirect chain (`-L` with `-w "%{redirect_url}\n%{http_code}\n"`).
 - `shell curl -s <origin>/robots.txt` — fetch robots, parse `Allow` / `Disallow` / `Sitemap:` directives.
 - `shell curl -s <origin>/sitemap.xml` — fetch sitemap; check for index file vs flat sitemap; spot-validate 5–10 URLs.
-- `websearch site:<domain>` — sanity-check indexed page count and freshness.
-- For JS-rendered sites: compare `webfetch` raw HTML vs a rendered fetch (skill `references/render-parity-check.md` if needed).
+- Web search `site:<domain>` — rough indexed-page sanity check only; the search tool is not Google, so Google index coverage needs Search Console.
+- For JS-rendered sites: raw HTML from `shell curl -s <url>` shows what non-rendering crawlers and most AI fetchers see; true render parity needs a headless browser or Search Console URL Inspection — otherwise mark it Unverified.
 
 Run all six in one tool block. Don't serialize. If any fetch fails, the result becomes an "Unverified" finding — never inferred.
 
@@ -70,8 +70,8 @@ Run all six in one tool block. Don't serialize. If any fetch fails, the result b
 | 4 | Canonical | canonical tag present, points to self or correct alternate | Critical if canonical points to a different page incorrectly |
 | 5 | Sitemap inclusion | URL appears in sitemap.xml, last-modified valid | Moderate if absent; Critical if sitemap itself 404s |
 | 6 | Redirect chain | chain length ≤1 hop, no loops, terminal is 200 | Moderate at 2 hops; Critical at 3+ or any loop |
-| 7 | Schema validity | JSON-LD parses; types match content (Article, FAQ, HowTo, Person, Organization, Product); required fields present | Moderate per missing/invalid type on eligible page |
-| 8 | Core Web Vitals | LCP <2.5s (target <2.0s); INP <200ms; CLS <0.1 | Critical if any metric in Google's "poor" band; Moderate if "needs improvement" |
+| 7 | Schema validity | JSON-LD parses; types match visible content (Article, Product, Organization, Person, BreadcrumbList, Review where genuine); required fields present | Moderate per invalid type or markup contradicting visible text; missing markup matters only where a live rich result is at stake |
+| 8 | Core Web Vitals | Field data at the 75th percentile: LCP ≤2.5s; INP ≤200ms (replaced FID March 2024); CLS ≤0.1 | Critical if any metric in Google's "poor" band; Moderate if "needs improvement" |
 | 9 | hreflang | each variant points to the others bidirectionally; uses ISO codes | Moderate if asymmetric or broken; Critical if hreflang errors mean wrong region ranks |
 | 10 | JS-render parity | primary content (title, H1, body) visible in raw HTML view-source | Critical if primary content only appears after hydration |
 | 11 | URL architecture | descriptive slug, no query-string for canonical content, consistent trailing-slash policy | Minor unless duplicate content created |
@@ -98,11 +98,11 @@ Never infer a finding from absence of evidence. "Could not fetch" is its own fin
 
 ### Schema validation notes
 
-- FAQ schema → check `mainEntity` array, each `Question` has `acceptedAnswer.Answer.text`. Highest single-impact schema for AI citation eligibility.
-- Article schema → `headline`, `author` (Person with name + optional sameAs/url), `datePublished`, `dateModified`, `description`. Missing `author` on a YMYL page is a Critical-tier finding (March 2026 amplified author-credential signal — 73% of post-update YMYL top results display detailed author credentials, up from 58%).
-- Person / Organization schema → required to anchor entity recognition for E-E-A-T. Missing `sameAs` outbound to LinkedIn / publication / org bio is Moderate.
-- HowTo schema → `step` array with `name` + `text` per step. Cited for procedural queries.
-- Review / AggregateRating → present only when genuine reviews back it; fake review-schema is a manual-action trigger.
+- Google states AI Overviews and AI Mode need no special schema, llms.txt, or content chunking (AI optimization guide, May 2026). Score schema for rich-result eligibility and entity clarity, not as an AI-citation lever.
+- Retired rich results — don't report missing markup as lost visibility: FAQ (ended May 7, 2026), HowTo (2023), Practice problem (Jan 2026), and ClaimReview, Course info, Estimated salary, Learning video, Special announcement, Vehicle listing (2025–26). Leaving the markup in place is harmless. Check Google's search gallery live before citing a type.
+- Article schema → `headline`, `author` (Person with name + sameAs/url), `datePublished`, `dateModified`, `image`. Missing author identity on a YMYL page is Critical-tier as an E-E-A-T gap, schema or not.
+- Person / Organization schema → anchors entity recognition. Missing `sameAs` to LinkedIn / publication / org bio is Moderate.
+- Review / AggregateRating → present only when genuine reviews back it; self-serving reviews on LocalBusiness/Organization aren't eligible, and fake review markup risks a manual action (and the FTC reviews rule in the US).
 
 ### Core Web Vitals — interpretation, not measurement
 
@@ -133,7 +133,7 @@ Use the canonical output structure from the agent that runs this skill. Every fi
 - [ ] Each finding cites concrete evidence (URL, line, header, schema field, metric)
 - [ ] Severity assigned by impact, not effort
 - [ ] Unverified findings name the specific blocker and the unblock path
-- [ ] Schema findings name the type and the missing/invalid field
+- [ ] Schema findings name the type and the missing/invalid field; retired rich-result types (FAQ, HowTo, etc.) are not reported as lost visibility
 - [ ] CWV findings name the source (field / lab / PSI) and the band (good / needs improvement / poor)
 - [ ] Internal-link topology checked for pillar/cluster pattern and orphan pages
 - [ ] Report saved to disk with timestamped filename
@@ -148,6 +148,7 @@ External authoritative sources:
 - [Google Search Central — Crawling and indexing](https://developers.google.com/search/docs/crawling-indexing/overview)
 - [Google Search Central — Structured data general guidelines](https://developers.google.com/search/docs/appearance/structured-data/sd-policies)
 - [Google Search Central — Core Web Vitals](https://developers.google.com/search/docs/appearance/core-web-vitals)
+- [Google Search Central — Optimizing for generative AI features (May 2026)](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide)
 - [Schema.org — full type vocabulary](https://schema.org/docs/full.html)
 - [web.dev — INP](https://web.dev/articles/inp)
 - [Google Search Central — hreflang](https://developers.google.com/search/docs/specialty/international/localized-versions)

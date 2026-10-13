@@ -4,8 +4,8 @@ Detailed reference for stages 5–8 of the workflow, decision-guide edge cases, 
 
 ## Stage 5 — Pitch architecture (the 80–150-word email)
 
-Pitch performance data:
-- Personalized pitch = 18% reply vs 6% generic (3× difference)
+Pitch performance (vendor data, directional):
+- Personalized pitches get several times the replies of generic ones
 - Length: 80–150 words, no longer
 - Subject line: specific, references their content, not generic
 - Body structure (in order): personalization hook → credibility line → 3 topic offers → soft CTA
@@ -65,7 +65,7 @@ For T1/T2 (acceptance <20%), do this BEFORE the pitch over 2–4 weeks:
 - Send one appreciation email — no pitch, just thank them for a specific piece
 - Reference all of this implicitly in the eventual pitch
 
-This moves T1/T2 acceptance rates from 5% to 20%+.
+This measurably lifts T1/T2 acceptance; treat any specific rate as anecdotal.
 
 ## Stage 6 — Writing standards by tier
 
@@ -97,7 +97,7 @@ Tier-4 standard:
 
 Universal rules across all tiers:
 - Original — never duplicate published-elsewhere content
-- Human-written — AI-content farms are a tagged violation category (Oct 2025 update)
+- Human-written — mass AI content falls under Google's scaled content abuse policy
 - Match the publication's voice (read 5 of their posts before writing)
 - Lead with the value, not the setup
 - No promotional content for your own product/service in the body
@@ -112,7 +112,7 @@ Link placement:
 
 | Link type | Count | Placement | Notes |
 |---|---|---|---|
-| Body link (preferred) | 1–2 | Inside the article body, contextually relevant | 387% more referral traffic than bio-only |
+| Body link (preferred) | 1–2 | Inside the article body, contextually relevant | Earns more referral traffic than bio-only |
 | Author bio link | 1 | In bio top or bottom | Standard; usually nofollow |
 | In-content related link | 0–1 | Linking to host's other content | Signals editorial care |
 
@@ -121,7 +121,7 @@ Body link rules:
 - Place near (within 1–2 paragraphs of) a topic the linked page covers
 - Don't force a link if the post doesn't naturally call for one — bio-only is fine
 
-Anchor text distribution (track across all posts):
+Anchor text distribution (practitioner heuristic, not a Google ratio — track across all posts):
 
 | Anchor type | Target mix | Examples |
 |---|---|---|
@@ -131,7 +131,7 @@ Anchor text distribution (track across all posts):
 | Generic | 5–10% | "here", "this article", "see this case study", URL-only |
 | Exact-match keyword | <10% | "monorepo CI tool", "best CI/CD platform" — used SPARINGLY |
 
-Why this matters: diversification reduces manual-action risk by 68%. Sites that use exact-match on every guest post get flagged within months. Track anchor distribution across last 20 placements; if exact-match exceeds 10%, stop using until ratio rebalances.
+Why this matters: Google's link spam policy names "links with optimized anchor text in articles, guest posts, or press releases distributed on other sites." Exact-match on every guest post is the footprint. Track anchor distribution across the last 20 placements; if exact-match exceeds 10%, stop using it until the ratio rebalances.
 
 Author bio rules:
 - ONE link only
@@ -162,7 +162,7 @@ Goal: convert a one-off placement into a 3–4 post relationship over 12 months.
 | Situation | Action |
 |---|---|
 | Site lists "guest post fee: $200" with no `rel="sponsored"` | Strike — paid placement passing ranking signal = penalty |
-| "Vetted network" agency offers 10 placements/month for $2k | Strike — guest-post farm; Oct 2025 update target |
+| "Vetted network" agency offers 10 placements/month for $2k | Strike — paid guest-post network; link spam + scaled content footprint |
 | Niche-edit / link-insertion service offers placement on existing article for $300 | Strike — same penalty class as paid guest posts |
 | Site clearly editorial but "write for us" page is 2 years old | Email the editor directly anyway — page outdated, not policy |
 | Editor responds: "We charge $150 per published post, fully edited" | Skip unless `rel="sponsored"` is explicitly applied |
@@ -183,13 +183,13 @@ Allowed:
 - Properly attributed sponsored content with `rel="sponsored"`
 - Niche-relevant outreach that builds real relationships
 
-Violations (per Google's spam policy):
-- "Advertorials or native advertising where payment is received for articles that include links that pass ranking credit" (paid guest posts without `rel="sponsored"`)
-- "Using automated programs or services to create links" (mass guest-post farms)
-- "Excessive reciprocal link exchanges" (scaled "you write for me, I write for you")
-- Guest post networks (closed networks publishing for SEO)
-- AI-generated guest post farms (Oct 2025 update — distinct violation category)
-- Repetitive exact-match anchor patterns across multiple guest posts (algorithmic flag)
+Violations (quoted from Google's spam policies, updated 2026):
+- "Advertorials or native advertising where payment is received for articles that include links that pass ranking credit, or links with optimized anchor text in articles, guest posts, or press releases distributed on other sites"
+- "Using automated programs or services to create links to your site" (mass guest-post farms)
+- "Excessive link exchanges" (scaled "you write for me, I write for you")
+- "Sending someone a product in exchange for them writing about it and including a link"
+- Scaled content abuse: "using generative AI tools or other similar tools to generate many pages without adding value for users" (AI guest-post farms)
+- Site reputation policy: third-party content placed on a host "mainly because of that host's already-established ranking signals"
 
 The intent test: would this guest post exist if SEO didn't exist? If yes → editorial. If no → violation in waiting.
 

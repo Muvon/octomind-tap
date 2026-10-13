@@ -59,7 +59,7 @@ X's current app help permits up to 4 total media items, including mixed photos, 
 
 Write each image's alt text for the visible evidence, including relevant screenshot text; X allows 1,000 characters per image. Put a longer source document's link in the post, not only the description. X's image-description field doesn't cover video: supply captions and a textual explanation of essential visual action (official, X image-description help, reviewed 2026-09-05; video explanation is editorial guidance).
 
-Text narrowly led images in Buffer's X format sample; video wasn't the engagement leader (measured, Buffer, n=X subset of 52M+ cross-platform posts, 2026-03). Media must earn its place.
+Media must earn its place; format benchmarks live in `reference/launch.md`.
 
 For optional surfaces, use these as conditional assignments, not availability promises (directional): an Article for a formatted evaluation guide; Spaces for a live discussion with an available host; a poll for an answer that will change a decision; Communities for participation that fits the visible rules; Lists for listening; DMs for relevant follow-up with permission. Check access and current controls first. A poll response isn't representative customer research.
 
@@ -138,6 +138,8 @@ Separate policy evidence from low engagement. X prohibits deceptive manipulated 
 
 When available, inspect `https://x.com/i/under_the_hood` for aggregate visibility labels before diagnosing suppression; availability is a pilot (official, X algorithm README, 2026-08). Distinguish provenance labels, policy actions, and ad-adjacency classifications. Neither awkward prose nor `slop_score` proves a reach penalty. Open the mechanics reference for the actual safety categories and source limits.
 
+Automated posting is a separate rulebook. A bot or API agent account needs the "Automated" profile label, a bio naming its operator, and a linked human-managed account; it may reply only after the user engaged first, and AI-generated replies need X's prior approval (official, X Developer Guidelines, reviewed 2026-10). Drafts a human reviews and posts by hand aren't automation. API costs and limits: `reference/mechanics.md`.
+
 ## Examples
 
 These are fictional teaching briefs and drafts, not reported results. Their premises are illustrative; production copy needs equivalent supplied evidence. Bracketed specifics remain unpublishable until filled and verified.
@@ -205,6 +207,7 @@ The evidence rule preserves uncertainty without adding fake mobile typing errors
 - X algorithm: [README](https://github.com/xai-org/x-algorithm/blob/main/README.md), [parameters](https://github.com/xai-org/x-algorithm/blob/main/home-mixer/params/param.rs), [cold-start](https://github.com/xai-org/x-algorithm/blob/main/home-mixer/scorers/author_cold_start.rs). Dated evidence snapshot: August 12–13, 2026; details in `reference/mechanics.md`.
 - X Help: [posting](https://help.x.com/en/using-x/how-to-post), [Premium](https://help.x.com/en/using-x/x-premium), [Paid Partnerships](https://help.x.com/en/rules-and-policies/paid-partnerships-policy), undated, reviewed September 2026; [Authenticity](https://help.x.com/en/rules-and-policies/authenticity), April 2025; [Media Literacy](https://help.x.com/en/rules-and-policies/media-literacy-plan), July 2026.
 - [Image-description controls](https://help.x.com/en/using-x/picture-descriptions) and [writing image descriptions](https://help.x.com/en/using-x/write-image-descriptions), reviewed 2026-09-05.
+- [X Developer Guidelines](https://docs.x.com/developer-guidelines) (automated-account label, reply/DM rules, AI-reply approval) and [API pricing](https://docs.x.com/x-api/getting-started/pricing), reviewed 2026-10.
 - Buffer: [engagement report](https://buffer.com/resources/state-of-social-media-engagement-2026/), March 5, 2026; [timing](https://buffer.com/resources/best-time-to-post-on-twitter-x/), March 13, 2026. [NDSS link study](https://www.ndss-symposium.org/wp-content/uploads/2026-s718-paper.pdf), February 2026.
 - [Google campaign URLs](https://support.google.com/analytics/answer/10917952?hl=en), [Product Hunt launch sharing](https://www.producthunt.com/launch/sharing-your-launch), [Show HN](https://news.ycombinator.com/showhn.html): undated, reviewed September 2026. [Clickstrike](https://clickstrike.com/launch-playbook/), undated agency self-report.
 - Voice heuristics: [Aborn](https://emilyaborn.com/ai-writing-tells-what-they-cost-you/), July 10, 2026; [Cox](https://huntingthemuse.net/library/how-to-tell-if-writing-is-ai), June 2026; [Gichigi](https://tahigichigi.substack.com/p/12-red-flags-of-ai-writing-and-how), February 18, 2026. Scope and further sources in `reference/examples.md`.
@@ -214,4 +217,4 @@ Re-validate when:
 - Policies or algorithm commits change, including runtime defaults.
 - New vendor reports replace these samples.
 
-Validated: 2026-09
+Validated: 2026-10

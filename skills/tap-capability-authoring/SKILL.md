@@ -1,170 +1,148 @@
 ---
 name: tap-capability-authoring
 title: "Capability Authoring"
-description: "Deep guide for creating Octomind capabilities: capability file format, provider files and the default.toml symlink pattern, dep script companion .md requirements, setup-symlinks.sh registration, and the validation checklist. Activate when creating or editing capabilities/<name>/ files."
+description: "Guide for creating Octomind capabilities: the config.toml triggers file, provider files and the default.toml symlink, MCP server wiring with env and headers, version pins, setup-symlinks.sh registration, and the validation checklist. Activate when creating or editing capabilities/<name>/ files."
 license: Apache-2.0
-compatibility: "Requires: octomind-tap repo. Use alongside tap-agent-authoring for agent creation."
+compatibility: "Requires: an Octomind tap checkout with scripts/lint-capabilities.sh and scripts/setup-symlinks.sh."
 domains: octomind
 ---
 
 ## Overview
 
-This skill encodes everything needed to create a new capability or dep script in the octomind-tap registry. A capability is the abstraction layer between agents and MCP servers — agents declare what they need, capabilities provide the wiring. This skill covers the full creation checklist: capability file format, provider/symlink pattern, dep script structure, platform coverage requirements, companion documentation, `setup-symlinks.sh` registration, and how to validate everything.
+A capability is the layer between agents and MCP servers or toolchains: agents declare what they need (`capabilities = ["websearch"]`), the capability supplies the wiring. This skill covers the two files every capability needs, provider wiring, registration, and validation. Use it when an agent needs a tool no existing capability covers, or when adding a provider to an existing one.
 
-Use this skill whenever you need to create a new capability or dep script, or when an agent needs a tool not covered by existing capabilities.
+## Mental model
 
-## Instructions
+One capability, two kinds of file:
 
-### What Is a Capability?
+- `config.toml` — routing metadata: required `triggers` (how users phrase the need) and an optional `domains` gate. It drives auto-activation, `capability discover`, and the tap's embedding model.
+- `<provider>.toml` — how one tool fulfils the capability: `[deps]`, `[roles.mcp]`, `[[mcp.servers]]`. `default.toml` is a symlink to the active provider; users switch with `[capabilities] <name> = "<provider>"` in their config.
 
-A capability is a named bundle that provides:
-- Deps — install scripts to run before the session
-- MCP server config — how to launch the server
-- Tool permissions — which tools the agent can call
+Agents never see providers, so implementations swap without touching agents.
 
-Agents declare `capabilities = ["name"]`. At runtime, `bin/load` resolves each name to `capabilities/<name>/default.toml` and merges everything into the final manifest.
+## Rules
 
-Key principle: capabilities hide MCP complexity from agents. An agent says "I need websearch" — it doesn't care whether that's Tavily, Brave, or something else. The capability + provider pattern enables swapping implementations without touching agents.
-
-### Capability Directory Structure
+### Directory layout
 
 ```
 capabilities/<name>/
-  <provider-a>.toml    ← provider definition (the real file)
-  <provider-b>.toml    ← alternative provider (optional)
-  default.toml         → <provider-a>.toml  (symlink to active provider)
+  config.toml          triggers (+ optional domains)
+  <provider-a>.toml    provider wiring
+  <provider-b>.toml    optional alternative
+  default.toml  → <provider-a>.toml
 ```
 
-- `default.toml` is ALWAYS a symlink — never a real file (except `core` and `agent` which are built-ins)
-- Users can override the active provider via `[capabilities]` in their config
+`default.toml` is always a symlink, except for the built-ins `core`, `agent`, and `orchestration`, which have real files and no `link` entries.
 
-### Capability File Format
+### config.toml
+
+```toml
+# capabilities/<name>/config.toml
+triggers = [
+  "search the web for recent news on this",
+  "look up the latest docs online",
+  "find sources about this topic",
+]
+# domains = ["developer"]   # omit = available in every domain
+```
+
+Author 5–15 short, concrete phrasings in the user's voice, not abstract descriptions. Use vocabulary specific to this capability; sibling capabilities that share generic verbs (all `messaging-*`, all `legal-*`) end in near-ties and the runtime abstains. A capability without `config.toml` or with empty triggers fails to resolve. Changing triggers changes the embedding model's training data — see the `tap-model-training` skill.
+
+### Provider file
 
 ```toml
 # capabilities/<name>/<provider>.toml
 # Capability: <name>
-# Provider: <provider-name>
+# Provider: <provider>
 # Title: Short Capability Title (5–60 chars)
-# Description: What this capability provides (20–160 chars).
+# Description: What this provider supplies (20–160 chars). Requires FOO_API_KEY.
 
 [deps]
-require = ["org/tool"]       # each entry needs a deps/<org>/<tool>.sh script
+require = ["org/tool"]              # each needs deps/<org>/<tool>.sh + .md
 
 [roles.mcp]
-server_refs = ["servername"]       # must match a [[mcp.servers]] name below
-allowed_tools = ["servername:*"]   # wildcards OK
+server_refs = ["servername"]
+allowed_tools = ["servername:*"]
 
 [[mcp.servers]]
 name = "servername"
-type = "stdio"                     # "stdio", "http", or "builtin"
-command = "..."                    # for stdio
-args = [...]
-timeout_seconds = 60
-tools = []
+type = "stdio"                      # stdio | http | builtin
+command = "npx"                     # spawned directly, no shell expansion
+args = ["-y", "some-mcp@1.4.2"]     # exact version pin
+timeout_seconds = 60                # 1–3600, idle deadline reset by MCP progress
+tools = []                          # required; [] = all
+env = { FOO_API_KEY = "{{ENV:FOO_API_KEY}}" }
 ```
 
-Not all sections are required:
-- Deps-only capability (e.g. `programming-python`): only `[deps]` section
-- MCP-only capability: only `[roles.mcp]` + `[[mcp.servers]]`
-- Full capability: all three sections
+- Sections are optional per kind: deps-only (toolchains like `programming-python`), MCP-only, or both.
+- The `# Title:`/`# Description:` header is what `capability list` and `discover` show; mention required env vars there.
+- `allowed_tools`: `server:*` exposes everything; `server:tool` and trailing-`*` prefixes narrow it.
+- Built-in server refs (`core`, `octofs`, `agent`, `octocode`) need no `[[mcp.servers]]` block; every other `server_refs` entry must have one with the same `name`.
+- stdio servers take `env` (passed to the child) and optional `cwd`; http servers take `url` and optional `headers` (e.g. `Authorization = "Bearer {{ENV:TOKEN}}"`).
+- `{{ENV:KEY}}` in `env` or `headers` resolves from the environment at spawn time, and the capability is withheld from auto-activation (and refuses `enable`) while any such key is unset. Use the exact variable name the server reads. Literal values in `env` are passed through as-is.
+- `{{INPUT:KEY}}` is a text substitution from the user's persistent input store at manifest load; prefer `{{ENV:KEY}}` for anything a server reads from its environment.
+- `bin/load` parses capability files with a simple regex TOML subset: keep arrays on one line and avoid inline nesting beyond what the examples show.
 
-Built-in servers (`core`, `octofs`, `agent`, `octocode`) do NOT need `[[mcp.servers]]` blocks. Every other `server_refs` entry MUST have a matching `[[mcp.servers]]` block.
+### Version pins
 
-Environment variable injection: use `{{ENV:VAR_NAME}}` in capability files for runtime env vars (e.g. API keys). Document required env vars in the capability file header comment.
+Every registry-launched server (`npx`, `uvx`, including inside `sh -c`) pins an exact version (`pkg@X.Y.Z`, `pkg==X.Y.Z`), so a registry publish never changes what users run. `lint-capabilities.sh` enforces presence offline; `scripts/mcp-versions.sh check|update|test` handles drift and live MCP handshakes.
 
-### Full Creation Checklist
+### Registration
 
-When creating a new capability:
+Add both to `scripts/setup-symlinks.sh`:
 
-1. Create `capabilities/<name>/<provider>.toml` with `# Title:`, `# Description:`, and the appropriate sections
-2. Create the dep script at `deps/<org>/<tool>.sh` (if needed) — see dep script format below
-3. Create the companion doc at `deps/<org>/<tool>.md` — required for every `.sh`
-4. Create the symlink: `cd capabilities/<name> && ln -s <provider>.toml default.toml`
-5. Register in `scripts/setup-symlinks.sh`:
-   - Add `link "<name>" "<provider>.toml"` line in the links section
-   - Add `"<name>"` to the `DECLARED` array
-6. Run `bash scripts/setup-symlinks.sh` to verify symlinks
-7. Run `bash scripts/lint-deps.sh deps/<org>/<tool>.sh` to validate dep script
-8. Run `bash scripts/lint-capabilities.sh capabilities/<name>` to validate capability
-9. Reference `"<name>"` in the agent's `capabilities = [...]`
-
-### Dep Script Authoring
-
-Dep scripts are covered in full by the `tap-deps-authoring` skill. Load it when you need to write or edit a `deps/<org>/<tool>.sh` file:
-
-```
-skill(action="use", name="tap-deps-authoring")
-```
-
-Key points to know here:
-- Every `require = ["<org>/<tool>"]` entry in a capability needs a matching `deps/<org>/<tool>.sh`
-- `type: mcp` — ensures an MCP server runtime is runnable (e.g. `npx`, `uvx`)
-- `type: dep` — installs a standalone CLI tool used directly
-- Every `.sh` must have a companion `.md` at the same path
-
-### Companion Documentation Format
-
-Every dep script MUST have a matching `.md` file at `deps/<org>/<tool>.md`.
-
-For MCP servers (`type: mcp`) — use `templates/dep-mcp.md` as base, must include:
-- `## MCP Server` — what the server provides
-- `## Authentication` — required env vars, tokens, setup
-- `## Available Tools` — list of tools the server exposes
-- `## Configuration Example` — example capability TOML snippet
-
-For plain deps (`type: dep`) — use `templates/dep-tool.md` as base, must include:
-- `## Key Commands` — most important CLI commands
-- `## Common Usage` — typical usage patterns
-
-### setup-symlinks.sh Registration
-
-When adding a new capability, you MUST update `scripts/setup-symlinks.sh` in two places:
-
-1. Add a `link` call in the links section:
 ```bash
 link "my-capability" "provider.toml"
+DECLARED=( ... "my-capability" )
 ```
 
-2. Add the name to the `DECLARED` array:
-```bash
-DECLARED=(
-  ...existing entries...
-  "my-capability"
-)
-```
+Then run `bash scripts/setup-symlinks.sh` — it force-creates links, exits 1 on a missing provider file, and warns about undeclared directories.
 
-If you skip either step, `setup-symlinks.sh` will emit a `WARN` for undeclared dirs.
+### Dep scripts
 
-Note: `core` and `agent` are built-in capabilities — do NOT add `link` entries for them. They have real files, not symlinks.
+Every `require = ["<org>/<tool>"]` needs `deps/<org>/<tool>.sh` plus a companion `.md`. `type: mcp` makes a server launchable (ensures `npx`/`uvx`), `type: dep` installs a CLI used directly. Load the `tap-deps-authoring` skill to write them.
+
+### Creation checklist
+
+1. `capabilities/<name>/config.toml` with triggers (and `domains` if domain-specific).
+2. `capabilities/<name>/<provider>.toml` with header, wiring, pins, env.
+3. Dep scripts and companion docs for every `require` entry.
+4. `link` + `DECLARED` entries, then `bash scripts/setup-symlinks.sh`.
+5. `bash scripts/lint-capabilities.sh capabilities/<name>`, `bash scripts/lint-deps.sh deps/<org>/<tool>.sh`, `bash scripts/validate-capabilities.sh`.
+6. `scripts/mcp-versions.sh test <name>` for npx/uvx servers (missing-credential errors are fine if the server speaks MCP).
+7. Reference `"<name>"` from agents; retrain the embedding model when triggers changed.
 
 ## Examples
 
-### Example 1: Simple MCP capability
+### Example 1: MCP capability with an API key
 
 ```toml
 # capabilities/websearch/tavily.toml
 # Capability: websearch
 # Provider: tavily
-# Title: Web Search via Tavily
-# Description: Web search and content extraction using the Tavily API. Requires TAVILY_API_KEY.
+# Title: Web Search (Tavily)
+# Description: Web search, content extraction, crawling, and site mapping via the Tavily API.
 
 [deps]
-require = ["tavily/tavily-mcp"]
+require = ["tavily-ai/tavily"]
 
 [roles.mcp]
 server_refs = ["tavily"]
-allowed_tools = ["tavily:*"]
+allowed_tools = ["tavily_search", "tavily_extract", "tavily_crawl", "tavily_map", "tavily_research"]
 
 [[mcp.servers]]
 name = "tavily"
 type = "stdio"
 command = "npx"
-args = ["-y", "tavily-mcp@0.1.14", "--api-key", "{{ENV:TAVILY_API_KEY}}"]
+args = ["-y", "tavily-mcp@0.2.22"]
 timeout_seconds = 60
+env = { TAVILY_API_KEY = "{{ENV:TAVILY_API_KEY}}" }
 tools = []
 ```
 
-### Example 2: Deps-only capability (no MCP server)
+Bare tool names in `allowed_tools` narrow the surface to exactly those tools.
+
+### Example 2: deps-only toolchain
 
 ```toml
 # capabilities/programming-python/uv.toml
@@ -177,34 +155,24 @@ tools = []
 require = ["astral-sh/uv"]
 ```
 
-### Example 3: Capability with HTTP MCP server
+### Example 3: common mistake — secret as an argument
 
-```toml
-# capabilities/octoweb/octoweb.toml
-# Capability: octoweb
-# Provider: octoweb
-# Title: Browser Automation via Octoweb
-# Description: Browser automation and web scraping via Octoweb HTTP MCP server.
+❌ `args = ["-y", "some-mcp@1.0.0", "--api-key", "{{INPUT:KEY}}"]` — the secret shows up in process listings and the capability is never env-gated.
 
-[deps]
-require = ["muvon/octoweb"]
+✅ `env = { SOME_API_KEY = "{{ENV:SOME_API_KEY}}" }` — delivered to the child, and auto-activation waits until the key exists.
 
-[roles.mcp]
-server_refs = ["octoweb"]
-allowed_tools = ["octoweb:*"]
+## Checklist
 
-[[mcp.servers]]
-name = "octoweb"
-type = "http"
-url = "http://localhost:3333"
-timeout_seconds = 30
-tools = []
-```
+- [ ] `config.toml` has 5–15 concrete, capability-specific triggers?
+- [ ] Provider header has Title, Description, and required env vars?
+- [ ] Every non-built-in `server_refs` entry has a matching `[[mcp.servers]]` block with `timeout_seconds` and `tools`?
+- [ ] npx/uvx servers pinned to an exact version?
+- [ ] Secrets passed via `env`/`headers` with `{{ENV:KEY}}` using the server's exact variable name?
+- [ ] `link` and `DECLARED` updated; `setup-symlinks.sh`, `lint-capabilities.sh`, `lint-deps.sh`, `validate-capabilities.sh` all pass?
 
 ## References
 
-- `templates/agent.toml` — canonical agent template (for agent creation)
-- `scripts/setup-symlinks.sh` — symlink management (must update when adding capabilities)
-- `bash scripts/lint-capabilities.sh` — validates capability files
-- `bash scripts/setup-symlinks.sh` — creates/refreshes default.toml symlinks
-- `tap-deps-authoring` skill — full dep script authoring guide
+- `templates/capability.toml`, `templates/capability-config.toml` — canonical templates
+- `scripts/setup-symlinks.sh` — default provider links
+- `scripts/mcp-versions.sh` — pin drift, updates, smoke tests
+- `tap-deps-authoring` skill — dep scripts

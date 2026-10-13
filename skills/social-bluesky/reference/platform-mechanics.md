@@ -52,6 +52,14 @@ Bluesky documents automated sensitive-media labels and hide/warn/show controls (
 
 Disclose commercial relationships and avoid disruptive repetition or manipulated social signals (official, Community Guidelines, 2025-09). Don't transfer another network's synthetic-media policy to Bluesky. Check the current applicable policy if the work depends on a specific disclosure requirement.
 
+### Automation
+
+For scheduled or bot posting through the AT Protocol (official, Bluesky bot docs and rate limits, reviewed 2026-10):
+
+- Add the bot self-label to the profile so people and moderation tools recognize the account as automated.
+- Interact (like, repost, reply) only with users who tagged the account; unsolicited interaction is the main way bots get treated as spam.
+- 2026, verify live: each account has 5,000 points per hour and 35,000 per day, a record create costing 3 points (about 1,666 creates per hour); a PDS allows 3,000 requests per IP per 5 minutes. Log in once per session and reuse it, since login limits are far lower than posting limits.
+
 ## References
 
 - [Search Tips](https://bsky.social/about/blog/05-31-2024-search), 2024-05-31; reviewed 2026-09-05.
@@ -69,7 +77,8 @@ Disclose commercial relationships and avoid disruptive repetition or manipulated
 - [Search rollout](https://bsky.app/profile/bsky.app/post/3mqafridzgk2e), 2026-07-09; [Search migration](https://github.com/bluesky-social/social-app/releases/tag/1.128.0), 2026-07-16.
 - [Transparency report](https://bsky.social/about/blog/01-29-2026-transparency-report-2025), 2026-01-29.
 - [Community Guidelines](https://bsky.social/about/support/community-guidelines), 2025-09-19.
+- [Bluesky bot docs](https://github.com/bluesky-social/bsky-docs/blob/main/docs/starter-templates/bots.mdx) and [rate limits](https://github.com/bluesky-social/bsky-docs/blob/main/docs/advanced-guides/rate-limits.md), reviewed 2026-10.
 
 Re-validate when: media lexicons change; composer or conversation controls change; search navigation changes; eligibility or labeling policies change.
 
-Validated: 2026-09
+Validated: 2026-10

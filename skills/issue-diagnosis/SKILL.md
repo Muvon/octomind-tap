@@ -21,12 +21,13 @@ A reported issue describes a symptom from the reporter's point of view; the merg
 
 - Restate what the reporter observed and what they expected. The gap between those two is the actual requirement — not the sentence in the title.
 - The report's framing can be wrong or partial: a reporter's proposed solution describes their guess, not the project's design. Weigh it as one hypothesis.
-- When the reported behavior can be observed directly, observing it before and after the change is the strongest evidence available that the change addresses the report — the symptom's absence alone is not; observe what the change actually produces.
+- When the reported behavior can be observed directly, observing it before and after the change is the strongest evidence available that the change addresses the report — the symptom's absence alone is not; observe what the change actually produces. Capture the repro as a failing test first when the project has a suite; it becomes the regression guard.
+- "It worked in vX" is a regression: let `git bisect run <repro-script>` find the introducing commit (the script exits 0 for good, 1 for bad, 125 to skip an unbuildable commit). That commit's diff usually names the real cause.
 
 ### 2. Find the upstream resolution (public projects)
 
 - Search the project's issue tracker and changelog for this report, linked discussion, or an existing fix.
-- Resolve the chain in order: the issue page itself → the pull request linked as closing it → that pull request's actual diff. An issue number is not a PR number; never fetch a PR by the issue's number or trust an artifact not confirmed to match this issue.
+- Resolve the chain in order: the issue page itself → the pull request linked as closing it → that pull request's actual diff. An issue number is not a PR number; never fetch a PR by the issue's number or trust an artifact not confirmed to match this issue. On GitHub, `gh issue view <n> --json closedByPullRequestsReferences` (recent gh releases) or the issue timeline's cross-references name the closing PR.
 - When upstream work exists, align with it exactly: names, signatures, parameter names, call conventions, which layer owns the change, and every file the upstream diff touches — an upstream-touched surface not visited is an unfinished step.
 - Private code, or nothing public found: note that and continue; the rest of the method applies unchanged.
 

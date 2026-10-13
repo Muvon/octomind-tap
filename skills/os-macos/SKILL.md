@@ -21,10 +21,10 @@ macOS combines Unix permissions, signed system software, privacy controls, sessi
 
 ## Release and hardware gate
 
-Verified 2026-09-05: macOS Tahoe 26 is the current stable family; Apple's security page lists 26.6.2. macOS 27 remains prerelease. Older Sequoia 15 and Sonoma 14 receive listed updates, but don't infer identical security coverage or guaranteed support dates from a three-release rule.
+Verified 2026-10-12: macOS Golden Gate 27 is the current stable family (27.0.1 on Apple's security page) and runs on Apple silicon only; Tahoe 26 is the last release for Intel Macs. Tahoe 26.7.x and Sequoia 15.8.x still receive listed updates, but don't infer identical security coverage or guaranteed support dates from a three-release rule. Recheck the security releases page before lifecycle decisions.
 
 - Record product version/build, model, Intel versus Apple silicon, native/process architecture, logged-in user, shell, and enrollment status. macOS has no Windows-style Home/Pro editions; release, hardware eligibility, and management enrollment are the relevant distinctions.
-- Rosetta can make an Apple-silicon process report x86_64. Prefer native compatible tools, and inspect binary architecture and dependencies before choosing Intel packages. Translation availability is version-specific, not a permanent fallback guarantee.
+- Rosetta can make an Apple-silicon process report x86_64. Prefer native compatible tools, and inspect binary architecture and dependencies before choosing Intel packages. Rosetta is general-purpose only through macOS 27; from macOS 28 Apple keeps it for certain older games only, so treat Intel-only tooling as a migration item, not a fallback.
 - macOS command-line utilities often use BSD behavior. Check the target's manual before importing GNU flags; don't replace system tools or rewrite global PATH merely to make a Linux command work.
 - Interactive shell startup files do not define a launchd job's environment. Use explicit executable paths, arguments, working directory, and required environment for unattended work.
 

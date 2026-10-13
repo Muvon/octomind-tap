@@ -1,9 +1,9 @@
 # capabilities/core/default.toml
 # Capability: core
 # Provider: Octomind built-in core server
-# Title: Core Task Planner
-# Description: Structured step-by-step task planning via the built-in core server's plan tool.
-# Provides tools: plan — structured step-by-step task tracker
+# Title: Core Built-ins
+# Description: Octomind built-in core server: recall of folded context blocks. Planning is supervisor-owned, not a tool.
+# Provides tools: recall — only when [compression.attention] or its governance is enabled
 
 [roles.mcp]
 server_refs = ["core"]

@@ -33,8 +33,8 @@ YouTube ads are bought through Google Ads but follow their own creative rules. M
 
 | Format | Duration | Skippable | Where It Shows |
 |--------|----------|-----------|----------------|
-| Skippable In-Stream Ads | ≥12s, no max (sweet spot 15–60s) | After 5s | Pre/mid/post-roll on watch pages |
-| Non-Skippable In-Stream | 6–15s standard globally; 15-20s in select markets/reservation buys | No | Pre/mid/post-roll |
+| Skippable In-Stream Ads | No fixed max; sweet spot 15–60s | After 5s | Pre/mid/post-roll on watch pages |
+| Non-Skippable In-Stream | Up to 15s; 16–30s on TV screens (Brand awareness & reach) — 2026: verify live | No | Pre/mid/post-roll |
 | Bumper Ads | ≤6s | No | Pre/mid/post-roll |
 | In-Feed Video Ads (formerly Discovery) | Any | n/a (click-to-watch) | YouTube search results, watch-next sidebar, homepage |
 | Masthead | Up to 30s autoplay muted | n/a | YouTube homepage hero — reservation-only buy |
@@ -51,7 +51,7 @@ YouTube ads are bought through Google Ads but follow their own creative rules. M
 
 | Slot | Limit | Notes |
 |------|-------|-------|
-| Video | ≥12s; sweet spot 15–60s | Hook in first 5s before skip |
+| Video | Sweet spot 15–60s | Hook in first 5s before skip |
 | Headline | 15 chars | Shown alongside ad |
 | Description | 2 lines × 35 chars | Optional |
 | Companion banner | 300×60 (auto-generated or custom) | Desktop only |
@@ -61,7 +61,7 @@ YouTube ads are bought through Google Ads but follow their own creative rules. M
 ### Non-Skippable In-Stream — Slots
 
 Same as Skippable, but:
-- Duration: 15s or 20s only (region-dependent)
+- Duration: up to 15s; up to 30s on TV screens (region- and objective-dependent — verify live)
 - No skip — full watch is forced
 - Higher CPM, sharper diminishing returns past second 10
 - Region-restricted: not available in all markets
@@ -136,7 +136,7 @@ CTA text in YouTube ads is limited to 10 chars on the in-video overlay button �
 ### The First-5-Seconds Rule (Skippable In-Stream)
 
 The skip button appears at second 5. Everything before that decides:
-1. Whether the view counts as paid (5s view = paid impression for TrueView)
+1. Whether you pay — with CPV bidding you're charged at 30 seconds watched (or the full ad if shorter) or on interaction, whichever comes first
 2. Whether the user clicks the skip
 3. Whether they remember the brand at all
 
@@ -176,8 +176,9 @@ The thumbnail does the work, not the title. The viewer chooses to click — ther
 - Restricted categories: alcohol, gambling, dating, healthcare, financial — region certification
 - Trademark / music licensing — Content ID matches block ads
 - Made for Kids (MFK) — personalised ads DISABLED; CTA overlays DISABLED; no remarketing; no companion banner clickable
-- Mandatory AI/synthetic content disclosure (effective March 2024, enforced 2025+) — if video uses realistic AI-generated faces/voices/events, disclose at upload via Creator Studio. Failure = disapproval. Does NOT apply to: clearly animated, obvious VFX, AI used only for scripts/captions/ideation, beauty filters.
-- Inauthentic content (2025) — ads using cloned voices of real people without consent are disapproved
+- AI/synthetic content — YouTube requires creators to disclose realistic altered or synthetic content at upload (since 2024); Google Ads added an AI content label setting in July 2026 (auto for Google-generated assets, declare third-party AI assets; visible disclosure in the EU, India, New York). Not needed for clearly animated content, obvious VFX, or AI used only for scripts/captions.
+- Cloned voices or likenesses of real people without consent — disapproval
+- EU political ads — Google stopped serving them in the EU from October 2025
 - Shorts has no 5s skip — viewer can swipe at any moment. Hook must be at frame 1, not second 1.
 
 ### Output Format
@@ -234,7 +235,7 @@ The thumbnail does the work, not the title. The viewer chooses to click — ther
 
 ## Pre-Submit Checklist
 - [ ] Video uploaded to YouTube (public or unlisted)
-- [ ] Format duration respected (Bumper ≤6s, Non-Skip 15/20, Skippable ≥12s)
+- [ ] Format duration respected (Bumper ≤6s, Non-Skip ≤15s or ≤30s on TV screens)
 - [ ] Hook within first 3s, brand reveal by second 1 (Skippable)
 - [ ] Pay-off promise before second 5 (skip-decision moment)
 - [ ] Captions / SRT for accessibility

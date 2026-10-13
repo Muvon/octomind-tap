@@ -25,7 +25,7 @@ The compiler checks declared contracts, while runtime boundaries still validate 
 
 ## Version gate
 
-Verified 2026-09-05: .NET 10 LTS and C# 14 are stable. Check `global.json`, target frameworks, `LangVersion`, nullable settings, and CI SDKs before selecting APIs. Don't set `latest` or `preview` to make an example compile; the target framework's default language version normally supplies the supported pairing.
+As of 2026-10: .NET 10 (LTS, supported to November 2028) and C# 14 are the current stable pair; .NET 11 is in prerelease for a November 2026 GA. .NET 8 and .NET 9 both reach end of support in November 2026, so plan runtime upgrades for services still targeting them. Check `global.json`, target frameworks, `LangVersion`, nullable settings, and CI SDKs before selecting APIs. Don't set `latest` or `preview` to make an example compile; the target framework's default language version normally supplies the supported pairing.
 
 C# 12 supplies primary constructors and collection expressions. C# 14 adds extension members, field-backed property accessors using `field`, and null-conditional assignment. Use them where ownership remains clear: a primary-constructor parameter is not automatically a property, and `obj?.Property = value` deliberately skips an update when null rather than validating a required receiver.
 

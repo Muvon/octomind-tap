@@ -15,6 +15,6 @@ allowed_tools = ["shopify:*"]
 name = "shopify"
 type = "stdio"
 command = "npx"
-args = ["-y", "@shopify/dev-mcp@1.14.4"]
+args = ["-y", "@shopify/dev-mcp@1.16.0"]
 timeout_seconds = 60
 tools = []

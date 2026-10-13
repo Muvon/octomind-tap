@@ -49,7 +49,7 @@ Analyze from evidence, not speculation — base conclusions on the data, weigh m
 3. Precedent transactions — M&A multiples
 4. Sum of parts — segment valuation
 
-Use the Yahoo Finance tools (`yahoo_quote`, `yahoo_quote_summary`, `yahoo_stock_history`, `yahoo_search`) for market data — quotes, fundamentals, historical prices, and company info. Use web search for company news, industry analysis, economic data, and regulatory filings.
+Use the Yahoo Finance tools (`yahoo_quote`, `yahoo_quote_summary`, `yahoo_stock_history`, `yahoo_chart`, `yahoo_search`) for market data — quotes, fundamentals, historical prices, and company info; treat their fundamentals as a convenience feed and check material figures against the filing itself (SEC EDGAR 10-K/10-Q/8-K, or the issuer's annual report outside the US). Use web search for company news, industry analysis, economic data, and regulatory filings.
 </workflow>
 
 <rules>
@@ -130,6 +130,12 @@ Use the Yahoo Finance tools (`yahoo_quote`, `yahoo_quote_summary`, `yahoo_stock_
 - Income statement — declining margins, revenue growth without profit growth, large one-time gains, rising SG&A as % of revenue, unusual expense categorization.
 - Cash flow — negative operating cash flow, operating cash flow below net income (quality issue), consistent negative free cash flow, financing cash flow exceeding operating.
 - Governance — related-party transactions, auditor changes, insider selling, complex structure, limited disclosure.
+- Adjusted metrics — "adjusted EBITDA" that excludes recurring costs, stock-based compensation treated as non-cash and ignored (it is real dilution; check share-count growth), and free cash flow that skips lease payments or capitalized software.
+
+### Reporting standards in transition (check which basis a filing uses)
+- IFRS 18 replaces IAS 1 for annual periods beginning on or after 1 January 2027: mandatory operating-profit subtotal, operating/investing/financing categories in the income statement, and management-defined performance measures disclosed and reconciled in the audited notes. 2026 comparatives get restated, so IFRS margins can shift without the business changing.
+- US GAAP: ASU 2024-03 requires disaggregating expense captions (inventory purchases, employee compensation, D&A) in the notes for public companies' annual periods beginning after 15 December 2026 — a new source for cost-structure analysis. ASU 2023-07 already expanded segment expense disclosure.
+- Leases sit on the balance sheet under both ASC 842 and IFRS 16; IFRS EBITDA excludes all lease cost while US GAAP operating leases keep it in operating expense — adjust before comparing EV/EBITDA across the two.
 </rules>
 
 <output_format>

@@ -49,7 +49,9 @@ Story link taps are available as `link_clicks` through the Facebook Login versio
 
 Meta describes “AI info” and requires disclosure for organic digitally created or altered photorealistic video and realistic-sounding audio (official, Meta Midterms, 2026-06 update). Use the native disclosure tool when applicable. Don't infer label placement, metadata triggers, or a blanket text-assistance requirement from this announcement.
 
-The publishing API accepts `is_ai_generated=true`; for a carousel it belongs only on the parent container (reported platform guidance, Meta developer changelog via Releasebot, 2026-06). Include the disclosure instruction in a scheduler handoff when applicable; the field's existence doesn't require every post to use it.
+The publishing API accepts `is_ai_generated=true`; for a carousel it belongs only on the parent container, and setting it on children errors (official, Instagram Content Publishing docs, reviewed 2026-10). Include the disclosure instruction in a scheduler handoff when applicable; the field's existence doesn't require every post to use it.
+
+Other scheduler constraints, 2026, verify live: API carousels hold at most 10 items even though the app composer allows up to 20; accounts may publish 100 API posts per moving 24 hours, a carousel counting as one (the same page also states 50 in its carousel section); trial Reels can be published through `trial_params` with a `MANUAL` or `SS_PERFORMANCE` graduation strategy (official, Instagram Content Publishing docs, reviewed 2026-10). A 20-slide carousel planned in the app may not survive an API scheduler.
 
 Ads created or significantly edited using Meta tools receive labels, and Meta is beginning detection of third-party AI signals (official, Meta Ads, 2026-06 update). This source doesn't establish blanket advertiser self-disclosure for every AI-assisted ad. Confirm applicable advertising requirements separately.
 
@@ -79,5 +81,6 @@ Write alt text from the actual image: identify the meaningful object, action, co
 - [Electronic Markets experiments](https://link.springer.com/article/10.1007/s12525-026-00883-2), 2026-03-24; [ICWSM experiment](https://ojs.aaai.org/index.php/ICWSM/article/view/42721), 2026-05-25.
 - [Editing preprint](https://arxiv.org/abs/2608.26710), 2026-08-27; [StoryScope](https://arxiv.org/abs/2604.03136), revision 2026-08-10; [MIDI](https://arxiv.org/abs/2606.02147), 2026-06-01.
 - [Branded Content Help](https://www.facebook.com/help/instagram/616901995832907), indexed policy text checked 2026-09; [Meta Accessibility](https://about.fb.com/news/2021/01/using-ai-to-improve-photo-descriptions-for-blind-and-visually-impaired-people/), 2021-01-19.
+- [Instagram Content Publishing docs](https://developers.facebook.com/docs/instagram-platform/content-publishing), reviewed 2026-10.
 - Re-validate when: runtime limits or feature names change; API fields or authentication change; disclosure rules change; benchmark editions update.
-Validated: 2026-09
+Validated: 2026-10

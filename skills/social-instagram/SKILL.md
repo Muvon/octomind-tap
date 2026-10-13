@@ -30,7 +30,7 @@ Choose a format by its job. Reels led discovery in Metricool's sample; carousels
 | Job | Format and anatomy | Length decision |
 |---|---|---|
 | Show a result or process | Reel: visible task, action, observable result, limitation | Use a micro-loop for a repeatable visual; a compact narrative for a decision; an extended explainer only while each beat advances it (directional). Test 45–60 seconds for narratives (measured, Socialinsider, n=Reels length analysis; sample size unstated, 2026-07). |
-| Explain or document proof | Carousel: independent opening frames, evidence, conditions, useful ending | Use only slides that add information; preview the current composer's capacity (directional). |
+| Explain or document proof | Carousel: independent opening frames, evidence, conditions, useful ending | Use only slides that add information. The app allows up to 20; API schedulers cap carousels at 10 (official, Instagram Content Publishing docs, 2026-10), so confirm the publishing path before designing past 10. |
 | Maintain a conversation | Story: immediate context, demonstration, relevant reply or link invitation | Keep a short sequence and remove any frame whose loss changes nothing (directional). |
 | Let an asset speak | Single image: strong photograph or legible artifact with necessary context | Keep the caption brief unless interpretation needs space (directional). |
 
@@ -204,7 +204,8 @@ The voice rule answers a buying concern without inventing a successful treatment
 - [Buffer frequency](https://buffer.com/resources/how-often-to-post-on-instagram/), 2025-08; [timing](https://buffer.com/resources/when-is-the-best-time-to-post-on-instagram/), 2026-07.
 - [Originality](https://techcrunch.com/2026/04/30/instagram-restricts-reach-of-content-aggregators-in-new-crackdown/), 2026-04; [AI profiles](https://techcrunch.com/2026/08/31/instagram-puts-new-limits-on-undisclosed-ai-profiles/), 2026-08.
 - [Meta Midterms disclosure](https://about.fb.com/news/2026/02/meta-prepares-for-2026-us-midterms/), updated 2026-06.
+- [Instagram Content Publishing docs](https://developers.facebook.com/docs/instagram-platform/content-publishing), reviewed 2026-10.
 - [Meta Originality](https://about.fb.com/br/news/2024/04/ajudando-o-criador-de-conteudo-a-encontrar-novos-publicos/), 2024-04-30; [branded-content definition](https://www.facebook.com/help/instagram/616901995832907), Help Center indexed text checked 2026-09.
 - [Aborn](https://emilyaborn.com/ai-writing-tells-what-they-cost-you/), 2026-07; [Cox](https://huntingthemuse.net/library/how-to-tell-if-writing-is-ai), 2026-06; [Gichigi](https://tahigichigi.substack.com/p/12-red-flags-of-ai-writing-and-how), 2026-02.
 - Re-validate when: feature names or limits change; policy or ranking guidance changes; new vendor reports arrive; account eligibility or link controls differ.
-Validated: 2026-09
+Validated: 2026-10

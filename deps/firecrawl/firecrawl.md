@@ -26,7 +26,7 @@ API key
 | `firecrawl_map` | Discover site URLs |
 | `firecrawl_crawl` | Multi-page crawl |
 | `firecrawl_search` | Web search |
-| `firecrawl_extract` | Structured data extraction |
+| `firecrawl_credit_usage` | Remaining API credits |
 
 ## Configuration Example
 

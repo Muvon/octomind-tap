@@ -12,7 +12,7 @@ rules:
 
 ## Overview
 
-Write Elixir as clear data transformations with explicit process and failure ownership. Research baseline: 2026-09-05, Elixir 1.20 stable, with gradual compiler type inference across language constructs. Inspect the project's Elixir/Erlang requirements and locked Phoenix/Ecto versions first. Elixir 1.20 requires OTP 27+; select a documented compatible pair rather than independently upgrading runtimes.
+Write Elixir as clear data transformations with explicit process and failure ownership. As of 2026-10: Elixir 1.20 is the current stable line (released June 2026) and Phoenix 1.8.x the current Phoenix line, with gradual compiler type inference across language constructs. Inspect the project's Elixir/Erlang requirements and locked Phoenix/Ecto versions first. Elixir 1.20 requires OTP 27+; select a documented compatible pair rather than independently upgrading runtimes.
 
 ## Mental model
 
@@ -46,6 +46,7 @@ Modules organize behavior; processes own concurrent activity and state. Supervis
 - Changesets cast allowed external fields, validate domain rules, and translate declared database constraint failures. Back race-sensitive invariants with actual database constraints; preflight checks alone are insufficient.
 - Use `Ecto.Multi` for named dependent database operations when it improves clarity. Handle the failed operation and reason; returned `changes_so_far` contains prior operation results, while the transaction's database writes roll back. Transactions do not make external API calls reversible.
 - Respect existing Phoenix context APIs so controllers and LiveViews share authorization and domain rules. Avoid blanket rules forbidding meaningful domain validation in changesets.
+- Phoenix 1.8 generators thread a `Scope` struct (`current_scope`) from authentication into context functions. When the project uses scopes, pass the scope explicitly and filter queries by it rather than reading the user from assigns deep inside contexts.
 - Authorize protected operations on the server, including LiveView events. A hidden button and a successful initial mount do not establish ongoing authorization.
 - In supported LiveView versions, use `assign_async`/`start_async` for lifecycle-managed work, with loading/error rendering. Capture needed values before starting work; avoid blocking callbacks with `Task.await`.
 - Use streams for large changing collections when their identity/update model fits. They reduce retained collection state; they do not remove the need for query limits or pagination.
@@ -71,7 +72,7 @@ The final clause returns an explicit expected failure. Internal callers can patt
 - Keep process boundaries motivated by concurrency/lifecycle, not code organization.
 - Check expected failures, compiler warnings, atom handling, and boundary validation.
 - Check task links, bounded work, timeouts, duplicate effects, and transaction limits.
-- Use installed formatter, compilation checks, ExUnit, and existing analysis tools when authorized. Format checks alone do not prove compilation or behavior; use async tests only when their shared resources are isolated.
+- Use installed formatter, `mix compile --warnings-as-errors`, ExUnit, and existing analysis tools when authorized. Format checks alone do not prove compilation or behavior; use async tests only when their shared resources are isolated.
 
 ## References
 
@@ -81,4 +82,5 @@ The final clause returns an explicit expected failure. Internal callers can patt
 - [Task ownership and concurrency](https://elixir.hexdocs.pm/Task.html)
 - [GenServer call semantics](https://elixir.hexdocs.pm/GenServer.html) and [supervision policies](https://elixir.hexdocs.pm/Supervisor.html)
 - [Ecto changesets](https://ecto.hexdocs.pm/Ecto.Changeset.html) and [transactions with Multi](https://ecto.hexdocs.pm/Ecto.Multi.html)
+- [Phoenix scopes](https://hexdocs.pm/phoenix/scopes.html)
 - [LiveView async operations and streams](https://phoenix-live-view.hexdocs.pm/Phoenix.LiveView.html)

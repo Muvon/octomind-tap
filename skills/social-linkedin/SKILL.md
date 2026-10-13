@@ -21,7 +21,7 @@ Write LinkedIn content that expresses the author's actual judgment and helps a s
 
 LinkedIn uses profile information and interaction history in retrieval and ranking; it publishes no universal comment multiplier or single dominant signal (official, LinkedIn Feed Engineering, 2026-03). Write for a reader's professional problem, rather than an imagined scoring formula (directional).
 
-Keep evidence labels with advice. Official labels identify documented features or policy; measured labels identify observational cohorts, not causal promises. Directional labels identify craft judgment. Keep sample scope and limitations when quoting a benchmark. Never combine vendor engagement rates into a universal target.
+Keep evidence labels with advice: official marks documented features or policy, measured marks observational cohorts (not causal promises), directional marks craft judgment. Keep sample scope and limitations when quoting a benchmark. Never combine vendor engagement rates into a universal target.
 
 Open `reference/mechanics.md` when selecting formats from benchmarks, checking feature availability, or explaining ranking and disclosure. Open `reference/launch.md` when preparing customer proof, a joint launch, paid-support copy, or attribution handoff.
 
@@ -31,22 +31,22 @@ Standard posts allow 3,000 characters; Articles are a separate long-form feature
 
 Put the concrete subject and stake in the opening. Follow with the evidence and its conditions; end with an appropriate next action or stop. Use paragraph breaks where the thought changes, without a staircase of isolated sentences (directional). Preview the actual mobile opening; treat published mobile/desktop fold estimates as approximate interface observations, not a guaranteed character budget (directional; AuthoredUp Length, 2026-08). Don't place a fictional fold marker after a fixed line.
 
-| Reader need / available asset | Format and execution |
+| Reader need / available asset | Format and execution (directional unless marked) |
 |---|---|
-| Understand a decision or lived experience | Text post: show the supplied decision or experience and what informed it; retain relevant costs or unresolved questions when supported (directional). |
-| Follow a procedure or inspect a mini-report | Native PDF document: make the cover promise specific, give each slide a substantive job, and finish with the usable takeaway. Choose slide count from the material (directional). |
-| Inspect physical evidence or compare states | Image or multi-image post: label context and comparison conditions; make each image legible on a phone. Test portrait framing without cropping proof (directional). |
-| See behavior or hear an explanation | Native captioned video: start with the task/result, show the operation, retain failure boundaries. Let necessary demonstration determine duration (directional). |
-| Evaluate a launch | Announcement with a demonstration or artifact. Apply the strip-test below (directional). |
-| Read a durable argument | Article: give it a specific title, sourced sections, and a feed introduction that delivers a useful finding (directional). |
-| Return to a recurring subject | Newsletter brief: define the recurring reader promise and issue scope; confirm account availability before packaging it. Don't promise notification delivery or growth (directional). |
-| Participate in a demonstration or discussion | Live: schedule an Event before broadcasting (official, LinkedIn Live Help, 2026-06). For audio-only requests, confirm the current event options before promising standalone Audio Events (directional). |
-| Help decide between real alternatives | Poll: use meaningful options and explain who the answer applies to. Treat votes as self-selected input (directional). |
-| Discuss someone else's work | Repost with commentary: name the original contribution, add a supported implication or disagreement, and credit the source. Avoid an empty reshare (directional). |
+| Understand a decision or lived experience | Text post: show the supplied decision or experience and what informed it; retain relevant costs or unresolved questions when supported. |
+| Follow a procedure or inspect a mini-report | Native PDF document: make the cover promise specific, give each slide a substantive job, and finish with the usable takeaway. Choose slide count from the material. |
+| Inspect physical evidence or compare states | Image or multi-image post: label context and comparison conditions; make each image legible on a phone. Test portrait framing without cropping proof. |
+| See behavior or hear an explanation | Native captioned video: start with the task/result, show the operation, retain failure boundaries. Let necessary demonstration determine duration. |
+| Evaluate a launch | Announcement with a demonstration or artifact. Apply the strip-test below. |
+| Read a durable argument | Article: give it a specific title, sourced sections, and a feed introduction that delivers a useful finding. |
+| Return to a recurring subject | Newsletter brief: define the recurring reader promise and issue scope; confirm account availability before packaging it. Don't promise notification delivery or growth. |
+| Participate in a demonstration or discussion | Live: schedule an Event before broadcasting (official, LinkedIn Live Help, 2026-06). For audio-only requests, confirm the current event options before promising standalone Audio Events. |
+| Help decide between real alternatives | Poll: use meaningful options and explain who the answer applies to. Treat votes as self-selected input. |
+| Discuss someone else's work | Repost with commentary: name the original contribution, add a supported implication or disagreement, and credit the source. Avoid an empty reshare. |
 
-Metricool observed stronger results for some document and multi-image formats than for video in its cohort (measured, Metricool, n=673,658 posts, 2026-04); AuthoredUp observed stronger document than video results in its personal-profile cohort (measured, AuthoredUp Formats, n=3M+ personal-profile posts, 2026-09). Include documents and multi-image posts among relevant format tests; do not infer a universal video advantage from these cohorts (directional). Don't discard polls: Socialinsider reports 4.50% engagement for its Q2 table, but its collection dates conflict with that table's period (measured, Socialinsider, n=1.3M business posts, 2026-03; see reference caveat).
+Metricool observed stronger results for some document and multi-image formats than for video in its cohort (measured, Metricool, n=673,658 posts, 2026-04); AuthoredUp observed stronger document than video results in its personal-profile cohort (measured, AuthoredUp Formats, n=3M+ personal-profile posts, 2026-09). Test documents and multi-image posts; don't infer a universal video advantage (directional). Don't discard polls: Socialinsider reports 4.50% engagement for its Q2 table, but its collection dates conflict with that table's period (measured, Socialinsider, n=1.3M business posts, 2026-03; see reference caveat).
 
-Package image descriptions and alt text wherever supported. LinkedIn may supply automatic alt text, with no assignment alert on mobile; review each image's description rather than assuming missing warnings mean it is ready (official, LinkedIn Alt Text Help, reviewed 2026-09-05). For documents, include accessible text and a text summary if the uploader lacks per-slide descriptions. Supply corrected captions, an asset brief, and source permissions (directional).
+Package image descriptions and alt text wherever supported. LinkedIn may supply automatic alt text, with no assignment alert on mobile; review every description, since a missing warning doesn't mean it is ready (official, LinkedIn Alt Text Help, reviewed 2026-09-05). For documents, include accessible text and a text summary if the uploader lacks per-slide descriptions. Supply corrected captions, an asset brief, and source permissions (directional).
 
 ## Launch and proof posts
 
@@ -54,7 +54,7 @@ For launch or proof planning, record the audience, buying situation, promise, av
 
 Use problem framing before announcement and follow with deeper evaluation material. This follows LinkedIn's ramp, launch, and nurture guidance (official, LinkedIn Launch Guide, 2026-05). Bundle minor changes when they don't justify a distinct buyer story (directional; Oakley, 2026-03).
 
-Use the observed AuthoredUp depth band above as an optional starting range for developed feed posts, without padding. Use shorter captions when the asset supplies the explanation; use an Article when the argument exceeds the post constraint. These shape choices are craft judgment (directional).
+Developed feed posts may start from the AuthoredUp band above, without padding; use shorter captions when the asset explains, and an Article when the argument exceeds the post limit (directional).
 
 | Shape | Anatomy | Length band |
 |---|---|---|
@@ -65,9 +65,9 @@ Use the observed AuthoredUp depth band above as an optional starting range for d
 | Objection answer | Specific buyer concern → evidence → cases where concern still applies → next step | Developed feed post |
 | Recap / lessons | Expected outcome → observed result → attribution limits → changed plan | Developed feed post; Article for detailed analysis |
 
-For announcement and proof posts, remove the product name temporarily: the remaining post should still show something useful. If it doesn't, add the artifact or explain the decision. A factual availability notice may remain short when availability itself serves the audience; don't invent a lesson (directional).
+Strip-test announcement and proof posts: without the product name, the post should still show something useful; if not, add the artifact or explain the decision. A factual availability notice may stay short when availability itself serves the audience; don't invent a lesson (directional).
 
-Use a root-post link when the reader needs immediate access. If testing a first-comment link, prepare a descriptive resource sentence and publish it immediately with the post; state where it is and check visibility. This is publishing discipline, with no proven ranking protection (directional). Link effects differed by account type: profile link posts had fewer impressions, Page link posts more (measured, Metricool, n=673,658 posts, 2026-04). Test qualified visits, not reach alone.
+Use a root-post link when the reader needs immediate access. If testing a first-comment link, publish a descriptive resource sentence immediately with the post, state where it is, and check visibility; this is publishing discipline with no proven ranking protection (directional). Link effects differed by account type: profile link posts had fewer impressions, Page link posts more (measured, Metricool, n=673,658 posts, 2026-04). Test qualified visits, not reach alone.
 
 Disclose material relationships and obtain consent for customer/partner attribution and reuse (directional). Content shared for money, free products/services, or other value requires LinkedIn's Brand Partnership label; its toggle works only on Public posts and resets Off for each new post. Don't bypass it through audience settings (official, Brand Partnership Help, reviewed 2026-09-05). LinkedIn recommends disclosing heavy AI reliance when non-obvious; this isn't a blanket AI-assistance labeling mandate (official, AI Help, reviewed 2026-09-05). Preserve C2PA Content Credentials; a missing provenance icon doesn't establish human origin (official, Credentials Help, reviewed 2026-09).
 
@@ -75,15 +75,15 @@ Use genuine Collaborative Posts for joint work; members and Pages can invite up 
 
 Prefer a founder or expert for personal decisions and discussion; keep the Page useful for verified product facts, shareable proof, and buyer evaluation (directional). Similar impressions per post, but higher profile engagement, were observed in Metricool's sample; a universal Page reach discount isn't supported (measured, Metricool, n=673,658 posts, 2026-04).
 
-Illustrative launch-week schedule, not a measured timing prescription; offsets below are planning examples. Choose posts only when new substance exists.
+Illustrative launch-week schedule, not a measured timing prescription; post only when new substance exists.
 
 | Illustrative day | Shape | Reply plan during first hours | Measure |
 |---|---|---|---|
-| T−7 (illustrative) | Buyer problem or founder decision | Author handles context questions | Relevant objections and reader roles |
-| T−3 (illustrative) | Artifact preview | Expert answers feasibility questions | Requests to inspect or try |
-| T0 (illustrative) | Launch demonstration | Staff product answers; check promised link immediately | Qualified comments and outbound clicks |
-| T+2 (illustrative) | Proof or objection answer | Return to unresolved questions | Evaluation requests and consenting DM conversations |
-| T+7 (illustrative) | Bounded recap | Answer late replies; acknowledge missing evidence | Qualified visits and attributed next actions |
+| T−7 | Buyer problem or founder decision | Author handles context questions | Relevant objections and reader roles |
+| T−3 | Artifact preview | Expert answers feasibility questions | Requests to inspect or try |
+| T0 | Launch demonstration | Staff product answers; check promised link immediately | Qualified comments and outbound clicks |
+| T+2 | Proof or objection answer | Return to unresolved questions | Evaluation requests and consenting DM conversations |
+| T+7 | Bounded recap | Answer late replies; acknowledge missing evidence | Qualified visits and attributed next actions |
 
 Review native clicks and media consumption where exposed alongside public reactions; public counts omit useful activity (measured, Metricool Press, n=673,658 posts, 2026-04). Keep inquiries separate from verified signups or opportunities. Supply consistent campaign tags and distinguish creative/link placement with `utm_content` (official, Google URL Builder, 2026-09 review, undated). Attribution implementation and publishing are downstream steps.
 
@@ -91,14 +91,14 @@ Review native clicks and media consumption where exposed alongside public reacti
 
 Read supplied LinkedIn samples for formality and how the author explains a decision. Preserve that register; fall back to direct professional prose. Keep natural contractions and fragments without adding errors. Don't inject dropped articles, lowercase camouflage, fake edits, or typos to simulate humanity (directional; Aborn, 2026-07).
 
-| Surface | Register choice |
+| Surface | Register choice (directional) |
 |---|---|
-| Feed post | State the actual subject before institutional excitement. Retain the author's specific judgment and bounded uncertainty (directional). |
-| Professional comment | Read the thread; address its claim with evidence or a useful clarification. Don't invent a matching workplace anecdote (directional). |
-| Personal announcement reply | A sincere acknowledgment is enough. Don't turn another person's news into a pitch or forced question (directional). |
-| Document / Article | Use structure for navigation; proofread labels and preserve technical precision (directional). |
-| Profile headline / About | Name the work and whom it helps. Support credentials with evidence; make the next step clear. Avoid an invented founder persona (directional). |
-| Connection note / DM / InMail | Refer to an observed buyer problem or actual conversation. Explain relevance and ask permission before sending a resource; don't treat a reaction as purchase intent (directional; Venetz, 2026-07). |
+| Feed post | State the actual subject before institutional excitement. Retain the author's specific judgment and bounded uncertainty. |
+| Professional comment | Read the thread; address its claim with evidence or a useful clarification. Don't invent a matching workplace anecdote. |
+| Personal announcement reply | A sincere acknowledgment is enough. Don't turn another person's news into a pitch or forced question. |
+| Document / Article | Use structure for navigation; proofread labels and preserve technical precision. |
+| Profile headline / About | Name the work and whom it helps. Support credentials with evidence; make the next step clear. Avoid an invented founder persona. |
+| Connection note / DM / InMail | Refer to an observed buyer problem or actual conversation. Explain relevance and ask permission before sending a resource; don't treat a reaction as purchase intent (Venetz, 2026-07). |
 
 Review voice and substance, not supposed proof of authorship. Remove filler, repetitive suspense, unsupported “nobody talks about” claims, and generic conclusions. Keep meaningful contrasts, useful lists, ordinary questions, and summaries when they serve the professional reader; don't turn an editing heuristic into a word or punctuation ban (directional; Aborn, 2026-07; Cox, 2026-06; Gichigi, 2026-02). Preserve necessary uncertainty and actual tradeoffs (directional inference from StoryScope, 2026-08).
 
@@ -123,6 +123,8 @@ LinkedIn reduces wider distribution of apparently AI-generated content without p
 LinkedIn explicitly targets “comment to agree” bait, repetitive low-substance posts, and videos unrelated to their accompanying text (official, Feed Update, 2026-03). A specific question with a useful answer is different from a demand for comments. Add the author's supported perspective; cosmetic rewording of an empty post does not address the published concern (directional).
 
 Treat a “Seems like AI slop” analytics tip as a revision cue, not a takedown or policy decision (official, AI Help, reviewed 2026-09-05). Diagnose weak substance before cosmetic edits. Don't describe legitimate stories, announcements, or promotional links as automatically prohibited (directional).
+
+The User Agreement bars bots or unauthorized automated methods that create, comment on, like, or share posts, send messages, or scrape (official, LinkedIn User Agreement, effective 2025-11-03). Hand drafts to a person or an approved API integration for publishing; don't plan automated comments, connection requests, or DMs.
 
 ## Examples
 
@@ -191,12 +193,13 @@ The service boundary replaces generic excitement and avoids promising every repa
 ## References
 
 - [Feed Update](https://news.linkedin.com/2026/ImprovingTheFeed), 2026-03-12; [Alt Text Help](https://www.linkedin.com/help/linkedin/answer/a519856/adding-alternative-text-to-images-for-accessibility?lang=en), reviewed 2026-09-05.
-- [Brand Partnership Help](https://www.linkedin.com/help/linkedin/answer/a1627083) and [AI Help](https://www.linkedin.com/help/linkedin/answer/a1481496), reviewed 2026-09-05.
+- [Brand Partnership Help](https://www.linkedin.com/help/linkedin/answer/a1627083), reviewed 2026-09-05.
 
 Dates identify publication/update unless marked review. Detailed sources and cohort caveats: [mechanics](reference/mechanics.md) and [launch execution](reference/launch.md).
 
 - [LinkedIn Feed Engineering](https://www.linkedin.com/blog/engineering/feed/engineering-the-next-generation-of-linkedins-feed), 2026-03-12; [Post Help](https://www.linkedin.com/help/linkedin/answer/a528176), 2026-08.
-- [LinkedIn Authenticity](https://news.linkedin.com/2026/keeping-conversations-real-on-linkedin), 2026-06-04; [AI Help](https://www.linkedin.com/help/linkedin/answer/a1481496/best-practices-for-content-created-with-the-help-of-ai?lang=en), 2026-08; [Credentials Help](https://www.linkedin.com/help/linkedin/answer/a6282984?lang=en), undated, reviewed 2026-09.
+- [LinkedIn Authenticity](https://news.linkedin.com/2026/keeping-conversations-real-on-linkedin), 2026-06-04; [AI Help](https://www.linkedin.com/help/linkedin/answer/a1481496/best-practices-for-content-created-with-the-help-of-ai?lang=en), 2026-08, reviewed 2026-09-05; [Credentials Help](https://www.linkedin.com/help/linkedin/answer/a6282984?lang=en), undated, reviewed 2026-09.
+- [LinkedIn User Agreement](https://www.linkedin.com/legal/user-agreement), effective 2025-11-03, reviewed 2026-10.
 - [LinkedIn Live Help](https://www.linkedin.com/help/linkedin/answer/a7460595), 2026-06-22; [Collaborative Posts](https://news.linkedin.com/2026/introducing-collaborative-posts-now-available-to-members-and-company-pages-on-linkedin), 2026-07-23; [Launch Guide](https://www.linkedin.com/business/marketing/blog/linkedin-ads/how-to-launch-a-product-on-linkedin), 2026-05-26.
 - [Metricool](https://metricool.com/linkedin-trends/), 2026-04-16; [Metricool Press](https://metricool.com/press-release-linkedin-study-2026/), 2026-04-14; [Socialinsider](https://www.socialinsider.io/social-media-benchmarks/linkedin), 2026-03-16.
 - [AuthoredUp Formats](https://authoredup.com/blog/best-performing-content-on-linkedin), 2026-09-02; [AuthoredUp Length](https://authoredup.com/blog/linkedin-character-limit), 2026-08-11; [Flypost](https://www.flypost.io/learn/linkedin-post-length), 2026-07-24.
@@ -205,4 +208,4 @@ Dates identify publication/update unless marked review. Detailed sources and coh
 - [Oakley](https://dreamdata.io/blog/b2b-product-launches-should-be-campaigns-not-single-events), 2026-03-13; [Venetz](https://dreamdata.io/blog/leslie-venetz-why-your-b2b-outbound-is-killing-your-brand), 2026-07-03; [Google URL Builder](https://support.google.com/analytics/answer/10917952?hl=en), undated, reviewed 2026-09.
 
 Re-validate when feature names or composer controls change; disclosure/policy pages update; feed engineering changes; new vendor reports revise cohorts or findings.
-Validated: 2026-09
+Validated: 2026-10

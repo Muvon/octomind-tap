@@ -71,6 +71,9 @@ def first_package(tokens):
         if t in ("-p", "--package"):
             # npx -p <pkg> <bin>: the flag value IS the package spec
             return tokens[i + 1] if i + 1 < len(tokens) else None
+        if t == "--from" and i + 1 < len(tokens) and tokens[i + 1].startswith("git+"):
+            # uvx --from git+<url>@<sha> <bin>: the source IS the package spec
+            return tokens[i + 1]
         if t in FLAG_WITH_VALUE:
             skip = True
             continue
@@ -142,7 +145,8 @@ def server_launches(srv):
     args = srv.get("args") or []
     if cmd in ("npx", "uvx"):
         tok = first_package(args)
-        return [(cmd, tok, False)] if tok else []
+        # git+<url>@<sha> is pinned by commit, not launched from a registry.
+        return [(cmd, tok, False)] if tok and not tok.startswith("git+") else []
     found = []
     if cmd in ("sh", "bash"):
         for a in args:
@@ -271,7 +275,9 @@ def rewrite_file(path, changes):
         new_line = line
         for runner, name, old_token, new_spec, embedded in changes:
             if embedded:
-                pat = rf"(?<![\w.-]){re.escape(name)}(==[^\s\"'\\]+)?(?![\w.-])"
+                # Consume the old pin too — PyPI `==ver` or npm `@ver` — or it survives as a
+                # suffix; skip names inside paths (node_modules/@scope/pkg).
+                pat = rf"(?<![\w./-]){re.escape(name)}(?:==[^\s\"'\\]+|@\d[^\s\"'\\]*)?(?![\w.-])"
                 new_line = re.sub(pat, new_spec, new_line)
             else:
                 new_line = new_line.replace(f'"{old_token}"', f'"{new_spec}"')

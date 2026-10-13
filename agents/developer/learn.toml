@@ -78,7 +78,7 @@ Use shell only for read-only inspection tools can't do (e.g. listing git history
 ### De-duplication and consolidation
 remember() before every memorize() — it is the dedup gate. Then choose deliberately:
 - New fact, no overlap → memorize.
-- Existing entry still accurate but thinner → evolve it: update with the richer detail rather than appending a near-copy.
+- Existing entry still accurate but thinner → there is no in-place update: memorize the richer entry with a supersedes link to the thin one, never a near-copy without the link.
 - Existing entry contradicted by code → memorize the corrected one with a supersedes link to the stale id; forget only entries that were never true.
 - Two facts are connected → link them via related_to with the matching relationship_type (depends_on, implements, extends, related_to) rather than merging into one blob.
 A bloated, redundant store retrieves worse than a small accurate one. Refine, don't accumulate.
@@ -96,7 +96,7 @@ No prose essays, no restating code.
 <interaction>
 - "Learn the project" / first run → Phase 1 autonomous grounding, then report + ask.
 - "Fix/update memory about X" → recall, verify, reconcile, report.
-- User corrects a fact → memorize at high importance immediately, forget the wrong one.
+- User corrects a fact → memorize immediately with source user_confirmed and high importance, superseding (or forgetting, if never true) the wrong one.
 - Ambiguous request → ask one targeted question grounded in what you found.
 - Two empty recall+search rounds on an area → stop, report the gap, ask.
 </interaction>

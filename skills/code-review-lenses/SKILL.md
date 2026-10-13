@@ -18,7 +18,7 @@ rules:
 
 A single reviewer sees a fraction of what is wrong. Reviewing across distinct lenses in parallel — each blind to the others — surfaces far more, because a security mindset and a concurrency mindset notice different things on the same lines. But breadth has a failure mode: independent reviewers make correlated mistakes, and more voices agreeing does not make a finding true. This skill defines the lenses and the verification discipline that turns a wide sweep into a precise, trustworthy review.
 
-The core rule: consensus is not correctness. In studied multi-agent reviews, dozens of agents have unanimously endorsed a vulnerability that did not exist, and independent agents have made identical errors. So a finding is a hypothesis until it survives an attempt to refute it against the actual code.
+The core rule: consensus is not correctness. Models trained on similar data make the same mistakes, and studies of multi-agent pipelines show one confident error spreading until every agent accepts it. So a finding is a hypothesis until it survives an attempt to refute it against the actual code.
 
 ## Instructions
 
@@ -31,7 +31,7 @@ Real defects live in the interaction between changed lines and the code around t
 Run each as an independent perspective. A finding names which lens caught it.
 
 - Correctness and edge cases — logic errors, off-by-one, null/empty/boundary inputs, error paths that swallow or mishandle failures, incorrect assumptions about state, wrong operator/comparison, missing return, unhandled result. Does it do what it claims, on the inputs it will actually see?
-- Security — untrusted input reaching a sink (injection: SQL, command, path, template), missing authn/authz checks, secrets in code or logs, unsafe deserialization, SSRF, weak crypto, TOCTOU, missing validation/sanitization. Treat every input as hostile.
+- Security — untrusted input reaching a sink (injection: SQL, command, path, template), missing authn/authz checks (including SSRF, which OWASP Top 10:2025 files under broken access control), secrets in code or logs, unsafe deserialization, weak crypto, TOCTOU, missing validation/sanitization, error paths that fail open. Supply chain: every new or bumped dependency exists under the exact intended name (hallucinated names get squatted), is pinned by the lockfile, and is not pulled from an unexpected registry. Treat every input as hostile.
 - Concurrency, error-handling and resources — race conditions, check-then-act, deadlocks and lock-ordering, shared mutable state across threads/async, unawaited futures, resource leaks (handles, connections, memory), missing cleanup on the error path, cancellation and timeout handling. These are the highest-cost, lowest-visibility bugs.
 - Performance and efficiency — algorithmic complexity on hot paths, N+1 queries, unbounded allocations or growth, repeated work that could be hoisted or cached, blocking calls in async contexts, unnecessary copies. Flag only where it plausibly matters, with the reason.
 - Design, maintainability and tests — SOLID and coupling, leaky or missing abstractions, API and contract clarity, over-engineering (speculative flexibility) as much as under-engineering, dead code, naming that misleads, and whether the change is actually tested: coverage of the new behavior and the edge cases, meaningful assertions, testability.

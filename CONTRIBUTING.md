@@ -230,7 +230,7 @@ The dependency system will:
 
 | server_ref | Provides |
 |------------|----------|
-| `core` | `plan` — structured task tracker |
+| `core` | `recall` — folded-context recall; planning is supervisor-owned, not a tool |
 | `agent` | `agent_*` tools — delegate to configured layers |
 
 ### Adding Custom MCP Servers

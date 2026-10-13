@@ -14,7 +14,7 @@ rules:
 
 ## Overview
 
-Build React interfaces with explicit state ownership, pure rendering, and dependable loading and mutation behavior. Research baseline: 2026-09-05, React 19.2 stable and React Compiler 1.0 stable. Inspect installed React, framework, renderer, and compiler configuration first; documentation can include Canary-only APIs. Keep existing routing, styling, and state libraries unless the task requires changing them.
+Build React interfaces with explicit state ownership, pure rendering, and dependable loading and mutation behavior. As of 2026-10: React 19.3 (2026-09-09) is the latest stable release and React Compiler 1.0 is stable. Inspect installed React, framework, renderer, and compiler configuration first; documentation can include Canary-only APIs. Keep existing routing, styling, and state libraries unless the task requires changing them.
 
 ## Mental model
 
@@ -37,6 +37,8 @@ A render describes UI from a snapshot of props, state, and context; React may re
 - React 19 permits function components to receive `ref` as a prop. Use this for new 19-targeted APIs; preserve `forwardRef` where older consumers need it.
 - React 19.2's `Activity` can hide UI while preserving state and cleaning up its effects. Use it when that lifecycle is needed; ordinary conditional rendering remains appropriate.
 - React Compiler can memoize supported code when enabled in the build. Do not assume it is active because React is installed. Profile before adding manual memoization; memoization must never be required for correctness.
+- Use the current `eslint-plugin-react-hooks` `recommended` preset; it includes compiler-derived rules (`set-state-in-render`, `set-state-in-effect`, `refs`) that work without the compiler installed and replace the separate `eslint-plugin-react-compiler`.
+- React 19.3 stabilizes `<ViewTransition>` with `addTransitionType`, and Fragment refs. View transitions animate only updates inside a Transition (`startTransition`, Suspense reveal, `useDeferredValue`); keep them progressive and respect reduced-motion preferences.
 
 ## Data, server boundaries, and forms
 
@@ -80,7 +82,8 @@ No effect or duplicate state is needed. The caller remains responsible for disti
 
 ## References
 
-- [Current React versions](https://react.dev/versions) and [React 19.2](https://react.dev/blog/2025/10/01/react-19-2)
+- [Current React versions](https://react.dev/versions), [React 19.3](https://react.dev/blog/2026/09/09/react-19-3), and [React 19.2](https://react.dev/blog/2025/10/01/react-19-2)
+- [React Compiler 1.0 and hooks lint rules](https://react.dev/blog/2025/10/07/react-compiler-1)
 - [Removing unnecessary effects](https://react.dev/learn/you-might-not-need-an-effect)
 - [use and promise ownership](https://react.dev/reference/react/use)
 - [useEffectEvent constraints](https://react.dev/reference/react/useEffectEvent)

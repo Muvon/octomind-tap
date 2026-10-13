@@ -100,7 +100,7 @@ Return the scope and coverage limits before the candidate table. For each useful
 
 Group substantive objections by evaluation problem, with links to the supporting comments. Separate native attention counts from destination conversion evidence. End with what the author needs to supply and which sources remain inaccessible (directional).
 
-HN prohibits generated or AI-edited text in comments, and moderator guidance extends the hand-writing requirement to Show HN text (official, HN Guidelines and Show HN Tips, 2026-09). Deliver research notes; don't propose disguising AI authorship.
+HN's guidelines prohibit generated or AI-edited text in posts and comments and ask users not to automate posting; moderator guidance extends the hand-writing requirement to Show HN text (official, HN Guidelines and Show HN Tips, rechecked 2026-10). Deliver research notes; don't propose disguising AI authorship.
 
 ## Examples
 
@@ -159,4 +159,4 @@ Re-validate when:
 - HN policy, moderation guidance, or submission text placement changes.
 - New reproducible outcome or response-timing studies appear.
 
-Validated: 2026-09
+Validated: 2026-10

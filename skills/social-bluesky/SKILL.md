@@ -116,6 +116,8 @@ Open reference/measured-signals.md when selecting formats, comparing results, or
 
 Bluesky reports detecting and downranking toxic or spammy posts (official, Bluesky outlook, 2026-01). Use a fresh, useful follow-up instead of repeating the announcement. Don't interpret weak engagement as proof of bots or punishment (directional).
 
+Automated accounts self-label as bots on the profile and like, repost, or reply only to users who tagged them; unsolicited bot interaction reads as spam (official, Bluesky bot docs, reviewed 2026-10). Rate limits and API detail: reference/platform-mechanics.md.
+
 Automated media labels and hide/warn/show controls are documented for sensitive content (official, Transparency report, 2026-01). Inspect the current post self-label picker for an applicable content warning. Writing "AI image" is a plain disclosure; don't present it as a picker selection or promise it prevents labeling. Disclose synthetic media when relevant to understanding its provenance (directional). The verified evidence establishes neither a universal AI self-label nor punctuation-based hiding.
 
 Before launch, decide the intended reply audience and quote participation. Inspect current threadgate, hide-reply, quote-disable, and quote-detach controls where available; verify scope rather than assuming these settings make a post private. Keep an accessible support route if participation is restricted (directional).
@@ -202,6 +204,7 @@ The limited test supports an observation about appearance, with no safety promis
 - [Thread numbering](https://bsky.app/profile/bsky.app/post/3msqpusnigc2t), 2026-08-10; [App releases](https://github.com/bluesky-social/social-app/releases), 2026-09-03.
 - [Bluesky outlook](https://bsky.social/about/blog/01-28-2026-bluesky-2026-predictions), 2026-01-28; [Community Guidelines](https://bsky.social/about/support/community-guidelines), 2025-09-19.
 - [Transparency report](https://bsky.social/about/blog/01-29-2026-transparency-report-2025), 2026-01-29.
+- [Bluesky bot docs](https://github.com/bluesky-social/bsky-docs/blob/main/docs/starter-templates/bots.mdx) and [rate limits](https://github.com/bluesky-social/bsky-docs/blob/main/docs/advanced-guides/rate-limits.md), reviewed 2026-10.
 - [Summer of Standard.site](https://bsky.social/about/blog/06-22-2026-summer-of-standard-site), 2026-06-22.
 - [Google URL builder](https://support.google.com/analytics/answer/10917952?hl=en), undated; reviewed 2026-09.
 - [Buffer engagement](https://buffer.com/resources/state-of-social-media-engagement-2026/), 2026-03-05; [Buffer timing](https://buffer.com/resources/best-time-to-post-on-bluesky/), 2026-08-05.
@@ -211,4 +214,4 @@ The limited test supports an observation about appearance, with no safety promis
 
 Re-validate when: composer limits or controls change; feed names or ranking code change; labeling policies change; new vendor reports appear.
 
-Validated: 2026-09
+Validated: 2026-10

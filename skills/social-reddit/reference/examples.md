@@ -24,6 +24,18 @@ Additional formats (directional); check current composer constraints before draf
 | Permission-based private reply | Record the recipient's request or consent before drafting; answer that request, disclose affiliation, and include a destination only when relevant. Don't turn public engagement into unsolicited private outreach. |
 | Profile bio | State the supplied role/affiliation and a useful destination without invented credentials. Don't use the bio as a detour around community promotion bans. |
 
+## Launch-week rhythm
+
+Illustrative planning offsets, not measured timing optima; skip slots that lack new evidence or local permission. T denotes launch day.
+
+| Offset (illustrative schedule) | Work or post shape | Reply plan | Qualified-interest evidence |
+|---|---|---|---|
+| T-7 to T-3 | Research buyer questions; prepare demo and permission requests | Resolve scope with moderators when needed | Relevant unanswered questions; community clearance |
+| T-2 to T-1 | Rehearse the promise; optional permitted teaser with useful artifact | Assign technical and product/support owners | Specific evaluation requests |
+| T | Publish approved launch or demo | Cover the first hours; answer substantive questions and log objections | Relevant replies, requests to try, stated buying constraints |
+| T+1 to T+3 | Correct the original; answer objections in context | Follow actual conversations; don't mass-message commenters | Continued evaluation; obstacles resolved or still open |
+| T+4 to T+7 | Publish new proof or recap only if warranted | Return with evidence to unresolved questions | Repeat participation; attributed activation where available |
+
 ## Measurement package
 
 Record the contribution URL, subreddit, date/time with timezone, angle, format, disclosure, destination, and definition of the desired action. Preserve the observed values and collection time; missing data stays unknown (directional).

@@ -25,9 +25,9 @@ Use [threads.com](https://www.threads.com/) as the web entry point; Meta migrate
 
 | Constraint or surface | Writing decision |
 |---|---|
-| Standard post: up to 500 characters; text attachment: up to 10,000 characters (official, Meta Text, 2025-09) | Count the finished root including its link. Keep the core point in the root; use an attachment for necessary depth. |
+| 2026: standard post up to 500 characters; text attachment up to 10,000; at most 5 unique links per post (official, Meta Text, 2025-09; Threads API posts docs, reviewed 2026-10) | Count the finished root including its link. Keep the core point in the root; use an attachment for necessary depth. Verify limits live. |
 | Keyword search began rolling out in September 2023 (official, Meta Introduction, 2023-09) | Name the actual subject in readable language; avoid keyword stuffing (directional). |
-| Tagged-topic posts generally receive more views (official, Meta Personalization, 2025-07) | Choose a relevant topic when it fits; this is an editorial choice, not a verified maximum-tag rule (directional). |
+| One topic tag per post, 1–50 characters, no periods or ampersands; tagged-topic posts generally receive more views (official, Threads API posts docs, 2026-10; Meta Personalization, 2025-07) | Choose the single most relevant topic, not a broad one chosen for volume (directional). |
 | Communities Hub, Community Progress, expanded Champion recognition, and Local Communities exist (official, Meta Communities, 2026-06) | Read the community before drafting. Recognition doesn't establish endorsement or buying intent (directional). |
 | Your Algo introduced private topic preferences with an initial market-limited rollout (official, Meta Communities, 2026-06) | Keep topic relevance clear; don't promise fixed engagement weights or universal distribution (directional). |
 | Insights includes views, interactions, follower detail, discovery sources, and trends (official, Meta Personalization, 2025-07) | Use available owner metrics; don't assume competitors expose the same data (directional). |
@@ -54,7 +54,7 @@ Length bands below are qualitative drafting choices, not performance optima (dir
 | Explain something requiring depth | Text attachment | Developed root summarizing the claim and why to open it; extended supporting text (directional). |
 | Add a distinct update or answer a recurring question | Self-reply | Make each addition useful independently; don't split sentences merely to manufacture a chain. Add it when the information is ready, without a timer or promised resurfacing (directional). |
 
-For polls, GIFs, spoilers, ephemeral posts, and messaging, open the reference's availability table before committing the publishing package. These aren't verified universal features in this evidence set.
+Polls, GIFs, spoilers, 24-hour ghost posts, reply approvals, and DMs now exist (official, Threads API changelog and Meta Messaging, 2025–2026). Open the reference's feature table for their limits and the account checks before committing the publishing package.
 
 ## Launch and proof posts
 
@@ -204,7 +204,8 @@ The inspection boundary prevents a remote-diagnosis promise.
 - [Aborn](https://emilyaborn.com/ai-writing-tells-what-they-cost-you/), 2026-07-10; [Cox](https://huntingthemuse.net/library/how-to-tell-if-writing-is-ai), 2026-06; [Gichigi](https://tahigichigi.substack.com/p/12-red-flags-of-ai-writing-and-how), 2026-02-18.
 - [Lees](https://www.housingwire.com/articles/taste-guts-receipts-ai-writing/), 2026-08-07; [MIDI](https://arxiv.org/abs/2606.02147), 2026-06-01; [Detector Study](https://arxiv.org/abs/2608.26710), 2026-08-27.
 - [Respondology](https://www.prnewswire.com/news-releases/47-of-consumers-hold-brands-responsible-for-toxic-and-spammy-comments-respondology-report-finds-302736755.html), 2026-04-09.
-- [Detailed mechanics and evidence](reference/platform-and-evidence.md), validation 2026-09.
+- [Threads API changelog](https://developers.facebook.com/docs/threads/changelog) and [posts reference](https://developers.facebook.com/docs/threads/posts), reviewed 2026-10.
+- [Detailed mechanics and evidence](reference/platform-and-evidence.md), validation 2026-10.
 
 Re-validate when: feature names or routes change; limits or policies update; Meta publishes ranking details; vendors release new methods or reports.
-Validated: 2026-09
+Validated: 2026-10

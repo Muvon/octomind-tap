@@ -1,7 +1,7 @@
 ---
 name: ad-reddit
 title: "Reddit Ads Production Spec"
-description: "Specifies what to produce for a Reddit ad: Promoted Posts (image, video, link, text), Free-form Ads (the rich-content 2023+ flagship), Carousel Ads, Conversation Placement Ads, Promoted User Posts (boost an existing organic), Product Catalog Ads, and AMA Ads, with the exact slots, char limits, asset ratios, CTA enum, and the Reddit-specific creative rules (native voice, per-subreddit variants, real-artifact imagery, comment engagement plan) that decide whether the ad performs or gets downvoted into oblivion. Use whenever the task is producing Reddit ad copy or assets; strictly platform-specific, so it does not cover subreddit targeting strategy or Reddit Pixel setup."
+description: "Specifies what to produce for a Reddit ad: Promoted Posts (image, video, link, text), Free-form Ads (the rich-content flagship, launched 2024), Carousel Ads, Conversation Placement Ads, Promoted User Posts (boost an existing organic), Product Catalog Ads, and AMA Ads, with the exact slots, char limits, asset ratios, CTA enum, and the Reddit-specific creative rules (native voice, per-subreddit variants, real-artifact imagery, comment engagement plan) that decide whether the ad performs or gets downvoted into oblivion. Use whenever the task is producing Reddit ad copy or assets; strictly platform-specific, so it does not cover subreddit targeting strategy or Reddit Pixel setup."
 license: Apache-2.0
 compatibility: "Octomind launch agents. Platform-specific to Reddit Ads."
 domains: launch
@@ -35,17 +35,17 @@ Reddit is the platform where polished ad creative DIES. The audience is hostile 
 | Promoted Post — Video | Single video post (in-feed + conversation) | Username, headline, video, thumbnail, CTA, URL |
 | Promoted Post — Link | Card with link preview | Username, headline, URL/link card, CTA |
 | Promoted Post — Text | Self-text post | Username, headline, body, CTA, URL |
-| Free-form Ads (2023+ flagship) | Rich multi-asset native post | Username, headline, body (up to 40k chars, rich text), up to 20 inline images/GIFs/videos, CTA, URL |
+| Free-form Ads (launched March 2024) | Rich multi-asset native post | Username, headline, body (up to 40k chars, rich text), up to 20 inline images/GIFs/videos, CTA, URL |
 | Carousel Ads | Swipeable cards in feed or conversation | 2–6 cards, each: image, headline, caption, URL |
 | Conversation Placement Ads | Slot between OP and comments | Headline, thumbnail (400×300 strongly recommended), CTA, URL |
 | Promoted User Posts | Boost an existing organic post (Reddit's Spark Ad equivalent) | Inherits original post slots; adds CTA + destination URL; owner permission required |
-| Product Ads (Catalog) | Shoppable, dynamic from feed | Catalog product fields, 1:1 image, dynamic price/title |
+| Product Ads (Catalog) | Shoppable, dynamic from feed (2026: availability expanding — verify for your account) | Catalog product fields, 1:1 image, dynamic price/title |
 | AMA Ads | Promoted AMA event | Headline, body, scheduling metadata |
 | Premium — Reddit Takeover | 24h dominance Home/Popular/Search | Multi-placement managed |
 | Premium — Category Takeover | 24h 100% SOV in a category | Managed creative bundle |
 | Premium — First View | First in-feed impression on Home/Popular | Image or video |
 | Interactive Ads | Games, polls, countdowns, branded challenges | Managed |
-| Max Campaigns | AI-optimized mix across creative variants | Accepts all standard creative inputs |
+| AI-optimized campaign types | Automated creative/placement mixes (2026: names and availability change — verify in Ads Manager) | Accepts all standard creative inputs |
 
 ### Text Field Limits
 

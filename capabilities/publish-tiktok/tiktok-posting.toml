@@ -16,7 +16,7 @@ allowed_tools = ["upload_video", "upload_photos", "get_status", "get_job_status"
 name = "tiktok-posting"
 type = "stdio"
 command = "npx"
-args = ["-y", "@upload-post/mcp@0.7.0"]
+args = ["-y", "@upload-post/mcp@0.11.4"]
 timeout_seconds = 240
 env = { UPLOAD_POST_API_KEY = "{{ENV:UPLOAD_POST_API_KEY}}" }
 tools = []

@@ -3,7 +3,7 @@ name: programming-java
 title: "Java Development Best Practices"
 description: "Modern idiomatic Java best practices for AI coding agents: records, sealed types, pattern matching, virtual threads, and explicit failure contracts. Auto-activates in Java projects."
 license: Apache-2.0
-compatibility: "Requires the project's JDK and Maven or Gradle; guidance distinguishes Java 17, 21, 25, and 26 features."
+compatibility: "Requires the project's JDK and Maven or Gradle; guidance distinguishes Java 17, 21, 25, and later feature releases."
 domains: developer
 rules:
   - file(pom.xml)
@@ -21,7 +21,7 @@ Make invalid states difficult to construct and ownership easy to see. Records re
 
 ## Version gate
 
-Verified 2026-09-05: Java 26 is released; Java 25 is the latest LTS release. Recheck the vendor's support policy before choosing a runtime. Read Maven compiler release or Gradle toolchains, CI images, and deployment constraints; the installed JDK alone does not determine usable APIs.
+As of 2026-10: JDK 27 (GA 2026-09-15) is the current feature release and Java 25 is the latest LTS. Recheck the vendor's support policy before choosing a runtime. Read Maven compiler release or Gradle toolchains, CI images, and deployment constraints; the installed JDK alone does not determine usable APIs.
 
 | Minimum release | Useful stable features |
 |---|---|
@@ -29,9 +29,11 @@ Verified 2026-09-05: Java 26 is released; Java 25 is the latest LTS release. Rec
 | 21 | Record patterns, pattern switch, virtual threads |
 | 22 | Unnamed variables and patterns |
 | 24 | Stream gatherers; synchronized virtual-thread pinning fixed |
-| 25 | Scoped values, flexible constructor bodies, compact source files |
+| 25 | Scoped values, flexible constructor bodies, compact source files, module import declarations |
+| 26 | HTTP/3 in `java.net.http.HttpClient` (opt-in); warnings when deep reflection mutates `final` fields |
+| 27 | G1 is the default GC in every environment; compact object headers on by default |
 
-Structured concurrency and primitive patterns remain preview in Java 26. Don't introduce preview flags or copy preview examples into ordinary production changes. Compact source files suit small programs; they do not justify flattening application structure.
+Structured concurrency (seventh preview), primitive types in patterns (fifth preview), and lazy constants (third preview) remain preview in JDK 27. Don't introduce preview flags or copy preview examples into ordinary production changes. Compact source files suit small programs; they do not justify flattening application structure. Code or libraries that mutate `final` fields via reflection (some serializers and mocking tools) will need `--enable-final-field-mutation` or an upgrade as JEP 500 moves toward enforcement.
 
 ## Values and APIs
 
@@ -88,6 +90,7 @@ Strings are immutable, so a shallow snapshot suffices here. A list of mutable do
 ## References
 
 - [Java support roadmap](https://www.oracle.com/java/technologies/java-se-support-roadmap.html) and [language changes](https://docs.oracle.com/en/java/javase/26/language/java-language-changes-summary.html)
+- [JDK 27 JEPs](https://openjdk.org/projects/jdk/27/), [JDK 26 JEPs](https://openjdk.org/projects/jdk/26/), and [JEP 500 final-field mutation](https://openjdk.org/jeps/500)
 - [Record contract](https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Record.html)
 - [Virtual threads](https://docs.oracle.com/en/java/javase/26/core/virtual-threads.html) and [ScopedValue](https://docs.oracle.com/en/java/javase/26/docs/api/java.base/java/lang/ScopedValue.html)
 - [JUnit](https://junit.org/)

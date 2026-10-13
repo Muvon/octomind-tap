@@ -40,7 +40,7 @@ asset bundle (./video-out/<slug>/cuts/* + meta/*)
 
 ### Phase 1 — Intake + spec validation
 
-1. Confirm the bundle has the cuts the user wants to ship: `tiktok.mp4`, `reels.mp4`, `shorts.mp4`, `feed-1x1.mp4`, `youtube-16x9.mp4`, `stories-15s.mp4` — whichever are required.
+1. Confirm the bundle has the cuts the user wants to ship: `tiktok.mp4`, `reels.mp4`, `shorts.mp4`, `feed-4x5.mp4`, `youtube-16x9.mp4`, `stories-15s.mp4` — whichever are required — plus `meta/publish-checklist.md` (which assets are AI-generated, music source, paid relationships).
 2. For each cut, validate against the `video-spec-sheet` skill:
    - Aspect ratio matches platform.
    - Duration ≤ platform cap.
@@ -50,16 +50,17 @@ asset bundle (./video-out/<slug>/cuts/* + meta/*)
 
 ### Phase 2 — Compliance check
 
-For each platform, run platform-specific checks before upload:
+For each platform, run these checks before upload (2026 rules — they change often; the `video-spec-sheet` skill's Disclosure and Rights table is the reference):
 
 | Platform | Check |
 |---|---|
-| TikTok | Audio rights (commercial use only on Business Account). No medical / financial / drug claims. No counterfeit indicators. Captions for accessibility. |
-| Instagram (Reels) | Same audio rights via Meta Music Library or original. No watermarks (TikTok / YouTube logos). Aspect 9:16 strictly. |
-| YouTube (Shorts) | `#shorts` in title or description. Vertical 9:16. ≤60s. No copyrighted music unless cleared. |
-| YouTube (long-form) | Custom thumbnail recommended. CC-BY for any external b-roll. Description with chapters if ≥4 distinct sections. |
+| All | Realistic AI people, cloned voices, or AI scenes that could pass as real → platform AI label on. Paid creator or brand relationship → disclosed in the video itself (said and shown, early), not only in the caption — FTC Endorsement Guides; platform toggles alone don't satisfy it. No medical / financial guarantees or unsubstantiated claims. |
+| TikTok | AI-generated content label (`is_aigc`) for realistic AI content. Commercial content toggles: paid partnership or own-brand promotion. Business accounts may only use Commercial Music Library or owned/licensed audio. |
+| Instagram (Reels / feed) | Paid partnership label for branded content. AI info label for realistic AI content (Meta may auto-apply it). Licensed or original audio only. No TikTok / YouTube watermarks. Max 5 hashtags. |
+| YouTube (Shorts) | 9:16 or 1:1, ≤3 min (classified as a Short automatically; `#shorts` is optional). A Short over 1 min with any active Content ID claim is blocked worldwide — clear the music first. |
+| YouTube (all) | "Altered or synthetic content" setting for realistic AI; "Includes paid promotion" box for sponsored content. Long-form: custom thumbnail, chapters if ≥4 sections (first at 0:00, at least 3, each ≥10s), licensed b-roll only. |
 
-If any check fails, surface to user with the specific blocker. Don't try to "soften" copy without explicit approval.
+If any check fails, surface the specific blocker to the user. Don't "soften" copy without explicit approval.
 
 ### Phase 3 — Metadata adaptation
 
@@ -67,11 +68,11 @@ Read `./video-out/<slug>/meta/` if present, otherwise ask. Adapt to each platfor
 
 | Platform | Title / primary text | Description | Hashtags | Notes |
 |---|---|---|---|---|
-| TikTok | n/a | ≤150 chars (caption) | 3–6 niche tags + 0–2 broad | First 2 lines visible without "more" |
-| Instagram Reels | n/a | ≤2200 chars caption (use only top ~125 visible) | 5–10 mixed reach + niche | Cover photo, audio attribution if remixing |
-| Instagram feed | n/a | same | same | Aspect 1:1 or 4:5 |
-| YouTube Shorts | ≤100 chars | ≤5000 chars | ≤15 in description | Add `#shorts` |
-| YouTube long-form | ≤100 chars (front-load keyword) | ≤5000 chars | ≤15 | Add chapters, end-screen, custom thumbnail |
+| TikTok | n/a | ≤4000 chars (caption); front-load the first line | 3–5 niche tags | Only the first line or two show before "more" |
+| Instagram Reels | n/a | ≤2200 chars (only top ~125 visible) | ≤5 (platform cap) | Cover readable in the 3:4 grid crop; audio attribution if remixing |
+| Instagram feed | n/a | same | ≤5 | Aspect 4:5 (or 1:1) |
+| YouTube Shorts | ≤100 chars | ≤5000 chars | ≤3 shown above title; >15 means all are ignored | `#shorts` optional |
+| YouTube long-form | ≤100 chars (front-load keyword) | ≤5000 chars | same | Add chapters, end-screen, custom thumbnail |
 
 Save adapted metadata to `./video-out/<slug>/meta/<platform>-final.md` per platform.
 
@@ -83,7 +84,7 @@ For each requested platform:
 
 #### TikTok via `publish-tiktok`
 
-1. `upload_video` with the cut, the adapted caption, and the requested privacy level; respect the account's duration cap and watermark restriction.
+1. `upload_video` with the cut, the adapted caption, and the requested privacy level; respect the account's duration cap and watermark restriction. Set the AI-generated content flag and commercial-content toggles the checklist calls for; if the tool doesn't expose them, publish as a draft or private and ask the user to set them in the app before going public.
 2. Poll `get_job_status` / `get_status` until published or a terminal failure. Scheduled posts are managed with `list_scheduled` / `edit_scheduled` / `cancel_scheduled`.
 
 #### Instagram via `publish-instagram`
@@ -96,7 +97,7 @@ For each requested platform:
 
 The wired provider manages already-published videos; it has no upload tool.
 
-1. Hand the user the adapted title / description / tags and the thumbnail path (`./video-out/<slug>/meta/thumbnail.jpg`) for upload in YouTube Studio.
+1. Hand the user the adapted title / description / tags, the thumbnail path (`./video-out/<slug>/meta/thumbnail.jpg`), and the Studio settings to tick at upload (altered or synthetic content, paid promotion).
 2. Once the video exists, find it with `search_my_videos`, apply the metadata with `update_video_seo`, and confirm with `get_video_details`.
 3. For long-form: ensure description has chapters if applicable.
 
@@ -146,6 +147,7 @@ Don't:
 - Upload to a platform the brief didn't name.
 - Re-publish a failed upload silently — surface the error.
 - Strip captions or rewrite metadata to "make it work" through compliance.
+- Publish publicly when a required AI label or paid-partnership disclosure couldn't be set — hold it private and tell the user.
 - Touch the source bundle in `./video-out/<slug>/cuts/` — read-only.
 
 Do:

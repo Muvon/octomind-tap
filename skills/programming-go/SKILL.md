@@ -12,7 +12,7 @@ rules:
 
 ## Overview
 
-Write explicit Go with small packages, inspectable errors, and bounded concurrency. Research baseline: stable Go 1.27, checked 2026-09-05. Read `go.mod`, `go.work`, toolchain directives, build tags, and CI before introducing newer APIs. Use a supported toolchain, but preserve the module's language compatibility unless an upgrade is requested. Recheck official releases when updating this guidance.
+Write explicit Go with small packages, inspectable errors, and bounded concurrency. As of 2026-10: Go 1.27 is the current stable release (1.27.2 at research time; 1.26 is the other supported line). Read `go.mod`, `go.work`, toolchain directives, build tags, and CI before introducing newer APIs. Use a supported toolchain, but preserve the module's language compatibility unless an upgrade is requested. Recheck official releases when updating this guidance.
 
 ## Mental model
 
@@ -25,9 +25,12 @@ Keep control flow and ownership visible. Ordinary functions, structs, and explic
 | 1.22 | Loop variables declared by the loop have per-iteration semantics; preexisting variables assigned by the loop still share storage. `ServeMux` supports method and wildcard patterns. |
 | 1.23 | Range-over-function iterators and `iter`, `slices`, and `maps` helpers can replace custom collection plumbing. |
 | 1.25 | `sync.WaitGroup.Go` couples task startup with completion accounting; the function must not panic. `testing/synctest` supports deterministic concurrent tests. |
-| 1.27 | Methods may declare type parameters. Interface methods still cannot, and generic methods cannot implement interface methods. `encoding/json/v2` and `encoding/json/jsontext` are available without the former experiment requirement. |
+| 1.26 | `new(expr)` allocates an initialized value (handy for optional pointer fields). `errors.AsType[T]` is a typed `errors.As`. `go fix` became a modernizer suite with `//go:fix inline` API migration. Green Tea GC is the default. |
+| 1.27 | Methods may declare type parameters. Interface methods still cannot, and generic methods cannot implement interface methods. Struct-literal keys may be nested field selectors. `encoding/json/v2`, `encoding/json/jsontext`, and `crypto/mldsa` are stable. `go test` runs the `stdversion` vet check by default. Darwin requires macOS 13+. |
 
-Go 1.27 JSON v2 rejects duplicate object names and invalid UTF-8 by default. Migration changes wire behavior; inspect the documented differences and test existing payloads. The original `encoding/json` API remains supported. SIMD packages are still experimental; do not treat them as ordinary stable APIs.
+In Go 1.27, `encoding/json` is reimplemented on top of v2: the v1 API and semantics are kept, but error text may differ (`GOEXPERIMENT=nojsonv2` is a temporary opt-out). Calling `encoding/json/v2` directly rejects duplicate object names and invalid UTF-8 by default and changes other wire behavior; test existing payloads before migrating. `simd` and `simd/archsimd` remain behind `GOEXPERIMENT=simd`; don't treat them as stable APIs.
+
+When the task is modernization, run `go fix ./...` on a clean tree and review its diff separately from feature changes. Modernizers are intended to preserve behavior; still run tests afterward.
 
 ## Packages, types, and interfaces
 
@@ -80,6 +83,6 @@ This function uses the standard `fmt` and `strconv` packages.
 
 ## References
 
-- [Release history](https://go.dev/doc/devel/release), [Go 1.27](https://go.dev/doc/go1.27), and [Go 1.25](https://go.dev/doc/go1.25).
+- [Release history](https://go.dev/doc/devel/release), [Go 1.27](https://go.dev/doc/go1.27), [Go 1.26](https://go.dev/doc/go1.26), and [Go 1.25](https://go.dev/doc/go1.25).
 - [Language specification](https://go.dev/ref/spec) and [Go code review guidance](https://go.dev/wiki/CodeReviewComments).
 - [Context lifecycle](https://pkg.go.dev/context), [synchronization contracts](https://pkg.go.dev/sync), and [JSON v2](https://pkg.go.dev/encoding/json/v2).

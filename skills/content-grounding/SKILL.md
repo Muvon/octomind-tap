@@ -64,7 +64,8 @@ This is a risk-based check, not a requirement to browse for every ordinary noun.
 - Claims such as “faster,” “best,” “free,” “available now,” and “works offline” need their actual conditions. Don't replace an unverified precise number with “many” or “significant” and call it grounded.
 - Preserve author ownership: “the study found” is not “we found”; “the product supports” is not “I tried.” Founder enthusiasm, customer disappointment, and a personal decision need source support too.
 - For quotations, customer names, screenshots, logos, and private details, verify the intended reuse context and permissions where required. Redaction must leave enough evidence to support the claim.
-- Distinguish commercial disclosure from AI/media provenance and platform permission. US-facing endorsement guidance requires truthful experience and clear material-connection disclosure. Neither a disclosure label nor polished copy makes an unsupported claim true.
+- Distinguish commercial disclosure from AI/media provenance and platform permission. US-facing endorsement guidance requires truthful experience and clear material-connection disclosure; the FTC's 2024 reviews rule also bans fake or AI-fabricated reviews and testimonials. EU-facing AI-generated text published to inform the public on matters of public interest must be disclosed as such unless it has had human review or editorial control under a named editorial owner (AI Act Art. 50(4), applicable from 2 August 2026). Neither a disclosure label nor polished copy makes an unsupported claim true.
+- AI-drafted copy gets the same check as any other source, including metadata: Google's guidance asks publishers to fact-check AI-generated titles, meta descriptions, structured data, and alt text before publishing.
 
 ## Missing or conflicting evidence
 
@@ -106,12 +107,13 @@ For an unverified command in a supplied draft, preserve it during a wording edit
 
 ## References
 
-Guidance reviewed 2026-09-05. This is a review date, not a publication/update date for the sources below.
+Guidance reviewed 2026-10-12. This is a review date, not a publication/update date for the sources below.
 
-- [Google people-first content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content) — sourcing, authorship, evidence of experience, and the limits of ranking inferences.
+- [Google people-first content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content) and [AI-generated content guidance](https://developers.google.com/search/docs/fundamentals/using-gen-ai-content) (updated 2026-10-01) — sourcing, authorship, evidence of experience, fact-checking AI output.
 - [FTC endorsement disclosures](https://www.ftc.gov/business-guidance/resources/disclosures-101-social-media-influencers) and [reviews/testimonials questions](https://www.ftc.gov/business-guidance/resources/consumer-reviews-testimonials-rule-questions-answers) — US-facing commercial claims.
+- [EU AI Act Article 50](https://artificialintelligenceact.eu/article/50/) — transparency for AI-generated public-interest text.
 - [Professional voice](../content-voice/SKILL.md) — preserve facts through stylistic revision.
 
-Validated: 2026-09
+Validated: 2026-10
 
-Re-validate when source-verification guidance or endorsement/testimonial requirements change.
+Re-validate when source-verification guidance, AI-disclosure law, or endorsement/testimonial requirements change.

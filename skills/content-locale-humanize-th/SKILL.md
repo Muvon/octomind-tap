@@ -3,7 +3,7 @@ name: content-locale-humanize-th
 title: "Thai Native-Fluency Calibration"
 description: "Per-language calibration anchors for detecting AI-slop and translationese in Thai (th) target text; auto-loads alongside content-locale-humanize when the target language is Thai."
 license: Apache-2.0
-compatibility: "Extends content-locale-humanize's AI-Slop & Translationese dimension. Load both together — this file has no rubric of its own."
+compatibility: "Calibration data only; no tools required. Network access helps for usage checks."
 domains: content
 rules:
   - content(thai)
@@ -16,16 +16,29 @@ rules:
 
 ## Overview
 
-Sourced calibration anchors for Thai, feeding `content-locale-humanize`'s AI-Slop & Translationese dimension. This is a calibration aid, not the checklist — reason natively beyond it (see the core skill's "why structure, not word lists" section).
+Calibration anchors and current norms for Thai (th-TH), feeding content-locale-humanize's dimensions. A calibration aid, not the checklist; reason natively beyond it.
 
-## Instructions
+## Rules
 
-Sourcing confidence: weakest of any language in this set. A targeted search turned up Thai-specific AI-detection tooling but no independently-documented word-level or phrase-level AI tells — don't invent a plausible-sounding list to fill the gap.
+### AI tells
 
-Lean entirely on the structural checks in `content-locale-humanize` for Thai: source-syntax interference (Thai has no articles, no verb tense inflection, and a different clause-topicalization pattern than English — literal English sentence structure carried into Thai is unusually visible), sentence-rhythm clustering, connector-pileup, and paragraph-opener templating. Thai's lack of spaces between words and different clause-boundary conventions also make burstiness/rhythm judgments harder to make by eye — read for natural clause-break rhythm rather than word-count.
+Sourcing confidence: the weakest in this set. Searches found Thai AI-detection tools but no independently documented word- or phrase-level AI tells. Don't invent a plausible list to fill the gap; if a sourced list appears, add it here.
 
-If a genuine Thai-specific AI-tell word list becomes available, add it here — this file exists as the attachment point.
+### Translationese from English
+
+Lean on the structural checks, which are unusually visible in Thai:
+
+- English sentence structure carried over: Thai has no articles or tense inflection and topicalizes differently.
+- ถูก-passives copied from English; native Thai reserves ถูก mostly for adverse events and otherwise prefers active or topic-first sentences.
+- Pronouns Thai would drop (คุณ, เขา, มัน) and stacked การ/ความ nominalizations mirroring English abstract nouns.
+- Rhythm is hard to judge by eye without word spaces; read for natural clause breaks rather than word counts.
+
+### Current norms
+
+- No spaces between words; a space marks a clause or sentence break, full stops are not used in running text, and English-style comma density reads as translated.
+- Polite particles (ครับ/ค่ะ) are gendered: in UI and documentation either avoid them or follow the brand voice, consistently.
+- Spelling and transliteration follow the Royal Society of Thailand; formal and government contexts use Buddhist Era years (CE + 543).
 
 ## References
 
-No solid per-language sourcing found as of this writing; see Overview.
+Reviewed 2026-10-12. No solid per-language AI-tell sourcing found. Norms: Royal Society of Thailand (ราชบัณฑิตยสภา) dictionary and transcription rules.

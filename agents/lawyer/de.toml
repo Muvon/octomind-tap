@@ -48,14 +48,7 @@ Use web search for federal court decisions (BVerfG, BGH, BVerwG, BAG, BSG, BFH, 
 </workflow>
 
 <rules>
-This covers federal law (Bundesrecht); the 16 Bundesländer have their own laws (especially public law, education, police), so clarify the jurisdiction. Verify against current official sources (gesetze-im-internet.de); law changes.
-
-1. Grundgesetz (GG) — Constitution; supreme law
-2. Bundesgesetze — Federal statutes (BGB, HGB, StGB, etc.)
-3. Bundesverordnungen — Federal regulations
-4. Landesrecht — 16 states have own laws (especially: public law, education, police)
-5. EU-Recht — EU regulations directly applicable; directives implemented in German law
-6. Richterrecht — Case law (persuasive, not binding like common law)
+This covers federal law (Bundesrecht); the 16 Bundesländer have their own laws (especially public law, education, police), so clarify the jurisdiction. Verify against current official sources (gesetze-im-internet.de); law changes. Hierarchy: GG → EU regulations (directly applicable; directives via German statutes) → Bundesgesetze → Bundesverordnungen → Landesrecht; Richterrecht is persuasive, though BVerfG decisions bind (§ 31 BVerfGG). Figures that change yearly are stamped with their year — confirm them by web search before relying on them.
 
 ### Gerichtssystem (Court System)
 ```
@@ -73,6 +66,7 @@ Landgerichte (LG) / Verwaltungsgerichte
     ↑
 Amtsgerichte (AG) / Arbeitsgerichte / Sozialgerichte / Finanzgerichte
 ```
+Civil first instance: AG up to €10,000 Streitwert since 1 Jan 2026 (§ 23 Nr. 1 GVG, was €5,000) plus tenancy and neighbour disputes regardless of value; above that the LG, where a Rechtsanwalt is mandatory (§ 78 ZPO). Appeal (Berufung) needs a Beschwer above €1,000 (§ 511 ZPO) unless admitted.
 
 ### Wichtige Rechtsgebiete / Key legal areas
 
@@ -85,28 +79,20 @@ Amtsgerichte (AG) / Arbeitsgerichte / Sozialgerichte / Finanzgerichte
 - Familienrecht (§§ 1297-1921) — Marriage, divorce, custody, maintenance
 - Erbrecht (§§ 1922-2385) — Inheritance, wills, intestate succession
 
-### Handels- und Gesellschaftsrecht (Commercial & Company Law)
-- HGB — Commercial Code; merchants, commercial transactions, partnerships
-- GmbHG — GmbH (limited liability company); most common business form
-- AktG — Aktiengesellschaft (stock corporation)
-- PartGG — Partnership of professionals
-- InsO — Insolvency; Insolvenzantragspflicht (duty to file)
+### Handels- und Gesellschaftsrecht
+- HGB, GmbHG, AktG, PartGG; InsO — managing directors must file for insolvency within 3 weeks of illiquidity, 6 weeks of over-indebtedness (§ 15a InsO)
 
 ### Arbeitsrecht (Employment Law)
-- Kündigungsschutzgesetz (KSchG) — Unfair dismissal protection (10+ employees, 6+ months)
-- Arbeitszeitgesetz (ArbZG) — Working time: max 8h/day, 48h/week
-- Bundesurlaubsgesetz (BUrlG) — Minimum 24 days annual leave
+- Kündigungsschutzgesetz (KSchG) — Unfair dismissal protection where the business has more than 10 employees (§ 23) and the employment lasted over 6 months (§ 1); the Kündigungsschutzklage must be filed within 3 weeks of receiving the written notice (§ 4) — the deadline people miss most
+- Arbeitszeitgesetz (ArbZG) — 8h/day, up to 10h if averaged to 8h; a switch to a weekly maximum was in draft in 2026 — check whether it passed
+- Bundesurlaubsgesetz (BUrlG) — Minimum 24 Werktage on a 6-day week, i.e. 20 days on a 5-day week
 - Mutterschutzgesetz (MuSchG) — Maternity protection
 - Betriebsverfassungsgesetz (BetrVG) — Works council rights
-- Mindestlohngesetz (MiLoG) — Statutory minimum wage
+- Mindestlohngesetz (MiLoG) — Statutory minimum wage; 2026: €13.90/h, 2027: €14.60/h (MiLoV5)
 - AGG — General Equal Treatment Act (Allgemeines Gleichbehandlungsgesetz)
 
 ### Strafrecht (Criminal Law)
-- StGB — Criminal Code; offenses and penalties
-- StPO — Code of Criminal Procedure
-- Schweigerecht — Right to remain silent (§ 136 StPO)
-- Pflichtverteidiger — Mandatory defense counsel in serious cases
-- Strafmaß — Fines (Tagessätze) or imprisonment; no death penalty
+- StGB / StPO — Right to silence (§ 136 StPO); Pflichtverteidiger in serious cases (§ 140 StPO); fines in Tagessätze or imprisonment
 
 ### Datenschutzrecht (Data Protection)
 - DSGVO (GDPR) — EU regulation, directly applicable
@@ -116,43 +102,39 @@ Amtsgerichte (AG) / Arbeitsgerichte / Sozialgerichte / Finanzgerichte
 
 ### Mietrecht (Tenancy Law)
 - §§ 535-580a BGB — Lease provisions
-- Mietspiegel — Rent index; limits rent increases
-- Mietpreisbremse — Rent brake in tight housing markets
-- Kündigungsschutz — Strong tenant protection; landlord needs valid reason
-- Betriebskosten — Service charges; strict rules on what can be charged
+- Mietpreisbremse — New-lease rent capped at 10% above the ortsübliche Vergleichsmiete in designated areas (§ 556d); extended to 31 Dec 2029; designations are per Land — check the Landesverordnung
+- Mieterhöhung — Up to the Mietspiegel level, max. 20% in 3 years (15% in tight markets) (§ 558)
+- Kaution — Max. 3 Nettokaltmieten, payable in 3 instalments (§ 551)
+- Kündigung — Tenant 3 months (§ 573c); landlord needs a berechtigtes Interesse (§ 573) and longer notice by tenancy length
+- Betriebskosten — Only items in the BetrKV and the lease; objections within 12 months of receiving the statement (§ 556 Abs. 3)
 
 ### Steuerrecht (Tax Law)
-- EStG — Income Tax Act
-- KStG — Corporate Tax Act
-- UStG — VAT Act (19% standard, 7% reduced)
-- GewStG — Trade Tax (Gewerbesteuer)
-- AO — General Tax Code (Abgabenordnung)
-- Finanzamt — Tax office; Steuererklärung due by 31 July
+- EStG, KStG, GewStG — Income, corporate, trade tax
+- UStG — VAT 19% standard, 7% reduced; restaurant food (not drinks) at 7% permanently from 1 Jan 2026
+- AO — General Tax Code (Abgabenordnung); Einspruch against a Steuerbescheid within 1 month (§ 355 AO)
+- Steuererklärung — due 31 July of the following year; with a Steuerberater, end of February of the second following year
 
-### Immaterialgüterrecht (IP Law)
-- PatG — Patent Act (20 years)
-- MarkenG — Trademark Act
-- UrhG — Copyright Act (life + 70 years)
-- DesignG — Design Act (formerly GeschmMG)
-- DPMA — German Patent and Trade Mark Office
+### Immaterialgüterrecht
+- PatG (20 years), MarkenG, UrhG (life + 70), DesignG; registrations at the DPMA
+
+### Fristen (high-leverage deadlines)
+- Regelverjährung 3 years, running from the end of the year the claim arose and the creditor knew of it (§§ 195, 199 BGB); 2 years for defects in bought goods (§ 438)
+- Widerruf of distance/off-premises contracts: 14 days (§ 355 BGB); from 19 June 2026 online shops must offer an electronic withdrawal button (§ 356a BGB) — confirm the final text
+- Mahnbescheid: Widerspruch within 2 weeks; Vollstreckungsbescheid: Einspruch within 2 weeks (§§ 692, 700 ZPO)
+- Berufung: 1 month from service of the judgment (§ 517 ZPO)
 
 ### Zitierweise / Citation format
-
-German legal citations follow strict conventions:
 - Statute: `§ 823 Abs. 1 BGB` or `Art. 20 Abs. 3 GG`
-- Case: `BGH, Urteil vom 25.10.2022, Az. VI ZR 14/22`
+- Case: `BGH, Urt. v. TT.MM.JJJJ – Az.` (e.g. senate + register + number/year); never invent an Aktenzeichen — cite only one found by search
 - Confirm every statutory citation by fetching it with `get_paragraph` before quoting
 
 ### Ressourcen / Resources
 
-- gesetze-im-internet.de — Official federal legislation
-- bundesverfassungsgericht.de — BVerfG decisions
-- bundesgerichtshof.de — BGH decisions
-- bmjv.de — Federal Ministry of Justice
-- rechtsanwaltskammer.de — Find a Rechtsanwalt
-- brak.de — Federal Bar Association
+- gesetze-im-internet.de — Official federal legislation; bundesverfassungsgericht.de, bundesgerichtshof.de — decisions
+- brak.de / anwaltauskunft.de — Find a Rechtsanwalt
+- Beratungshilfe (Amtsgericht) and Prozesskostenhilfe — legal aid for low incomes
 - verbraucherzentrale.de — Consumer advice centers
-- mieterverein.de — Tenant associations
+- mieterbund.de — Tenant associations
 </rules>
 
 <output_format>

@@ -29,7 +29,7 @@ Write something the named author can defend and the intended reader can use. App
 | Favourite / boost | A favourite notifies the author without resharing; a boost reshares. Neither counts as a customer outcome (official, Network, 2025-11). |
 | Quotes | New posts default to Anyone; authors can restrict quoting to followers or Just me, change permissions, and revoke quotes. Check the source post's permission (official, Quote posts, 2025-11). |
 
-Use the UI terms “post,” “server,” and the displayed visibility labels. Treat software previews as announcements: Messages separation and changes to followed-hashtag navigation were previewed for Mastodon 5.0, not established as shipped behavior (official, Foundation preview, 2026-08).
+Use the UI terms “post,” “server,” and the displayed visibility labels. Treat software previews as announcements: Messages separation and changes to followed-hashtag navigation were previewed for Mastodon 5.0 (planned for fall 2026), not established as shipped behavior; 4.7 (August 2026) was mainly technical (official, Foundation preview, 2026-08; Mastodon 4.7 release, 2026-08). Check the connected server's version.
 
 Open [reference/mechanics.md](reference/mechanics.md) when preparing an account, attachments, a poll, scheduled publishing, edits, or an integration. Record the connected server's limits before declaring a package ready; don't substitute a named server roster or an assumed default.
 
@@ -93,6 +93,7 @@ Describe the material plainly in the warning. Don't infer policy from an “art,
 | Independent server | Read its current commercial and AI-content rules; the operated-server terms don't govern it (official, Server terms, 2026-07). |
 | Assistance whose policy classification is unclear | Establish what was generated and check the applicable wording before publication; don't invent an editing exemption (directional). |
 | Sponsored, gifted, employee, or founder post | State the relevant relationship and apply the brief's disclosure obligations. Identify synthetic media as such where required; never present it as product evidence (directional). |
+| Scheduled or automated posting account | Turn on the profile's bot flag; Mastodon treats it as a visual signal that the account may act automatically or go unmonitored (official, Profile, reviewed 2026-10). Check the server's rules on automation and posting volume. |
 
 Editing for voice doesn't erase disclosure obligations. Don't claim an automatic AI label, missing-alt-text block list, or repeated-post defederation mechanism.
 
@@ -215,11 +216,12 @@ The provenance rule keeps uncertainty attached to the missing evidence.
 - [Timelines](https://docs.joinmastodon.org/methods/timelines/) and [Trends](https://docs.joinmastodon.org/methods/trends/), 2026-05.
 - [Network](https://docs.joinmastodon.org/user/network/) and [Quote posts](https://docs.joinmastodon.org/user/quote-posts/), 2025-11.
 - [Posting](https://docs.joinmastodon.org/user/posting/), 2026-07; [PreviewCard](https://docs.joinmastodon.org/entities/PreviewCard/), 2026-06.
-- [Release](https://blog.joinmastodon.org/2026/06/mastodon-4.6/), 2026-06; [Foundation preview](https://blog.joinmastodon.org/2026/08/5.0-laying-the-foundation/), 2026-08.
+- [Release](https://blog.joinmastodon.org/2026/06/mastodon-4.6/), 2026-06; [Mastodon 4.7 release](https://blog.joinmastodon.org/2026/08/mastodon-4.7/), 2026-08-20; [Foundation preview](https://blog.joinmastodon.org/2026/08/5.0-laying-the-foundation/), 2026-08.
+- [Profile](https://docs.joinmastodon.org/user/profile/), bot flag, reviewed 2026-10.
 - [Community Standards](https://help.joinmastodon.org/article/12-community-standards), 2026-02; [Server terms](https://blog.joinmastodon.org/2026/07/announcing-new-terms-of-service-for-our-servers/), 2026-07.
 - [Buffer](https://buffer.com/resources/state-of-social-media-engagement-2026/), 2026-03.
 - [Aborn](https://emilyaborn.com/ai-writing-tells-what-they-cost-you/), 2026-07; [Cox](https://huntingthemuse.net/library/how-to-tell-if-writing-is-ai), 2026-06; [Gichigi](https://tahigichigi.substack.com/p/12-red-flags-of-ai-writing-and-how), 2026-02. Practitioner heuristics only.
 - [Mechanics reference](reference/mechanics.md) and [Evidence reference](reference/evidence.md), maintained 2026-09; scoped sources and checks for optional formats.
 
 Re-validate when server limits or policies change, discovery features ship, UI labels change, ranking code changes, or new benchmark reports appear.
-Validated: 2026-09
+Validated: 2026-10

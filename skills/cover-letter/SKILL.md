@@ -20,6 +20,10 @@ A cover letter's job is to connect the candidate's real, specific experience to 
 
 Every claim traces to the candidate's actual background. A cover letter that invents enthusiasm, achievements, or fit is worse than none.
 
+## Mental model
+
+Generative AI made fluent, well-aligned letters free, so fluency no longer signals anything. On a large online labour platform, after an AI cover-letter tool launched, the link between letter-to-job alignment and callbacks fell by about half and employers shifted weight to work history; time spent editing the AI draft still predicted hiring (Cui, Dias & Ye, 2025). What still carries signal is what a generic draft can't produce: verifiable specifics about this candidate and this company.
+
 ## Instructions
 
 ### What a good cover letter does
@@ -51,8 +55,24 @@ Generic cover letters read as mass-produced. Apply content-voice's rules: no dea
 
 Match the target market: the letter language follows the posting, formality follows the market (more formal in DE/FR/JP, warmer and more direct in the US), and the greeting/sign-off use local convention. Hand non-English letters to the localization path for native fluency.
 
+### When the letter is optional
+
+If the posting marks it optional or the form has no field, a short letter (or a 3–4 sentence note in the application's message box) is still worth sending for a role the candidate really wants or a career change that the resume alone doesn't explain. Skip it for high-volume, knockout-driven applications rather than send a generic one.
+
 ## Examples
 
 Generic open (discard pile): "I am writing to express my strong interest in the Senior Engineer position at your company. I am a passionate team player with a proven track record."
 
 Specific open (grounded, human): "I spent the last two years cutting a data pipeline's cost by 60% at 3B events/day — which is the exact scaling problem your engineering blog described last month. That's why the Senior Data Engineer role caught my eye."
+
+## Checklist
+
+- [ ] Every achievement, number, and skill traces to the resume or the candidate's confirmed input.
+- [ ] The hook names something specific and true about this company or role.
+- [ ] 2–3 achievements, each mapped to a top posting requirement.
+- [ ] Swap the company name for a competitor's: if a sentence still works, it's rewritten.
+- [ ] No template phrases; 250–400 words; local greeting and formality.
+
+## References
+
+- [Cui, Dias & Ye — Signaling in the Age of AI: Evidence from Cover Letters (arXiv 2025)](https://arxiv.org/abs/2509.25054)

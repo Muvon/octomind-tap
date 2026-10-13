@@ -1,7 +1,7 @@
 ---
 name: browser-backlink-submission
 title: "Browser Backlink Submission Execution"
-description: "Operational playbook for executing backlink submissions via a headless browser: driving directory/listing/Web2.0 forms with Playwright, mapping a single site profile to per-target fields, handling signup + email verification + captchas, throttling to avoid spam flags, and producing an auditable submission log. Activate only when the user has a qualified prospect list and wants the browser to submit. Prospect discovery, qualification, and anchor/description copy are upstream concerns; this skill is execution-only."
+description: "Operational playbook for executing backlink submissions via a headless browser: driving directory, listing, and business-profile forms with Playwright, mapping a single site profile to per-target fields, handling signup + email verification + captchas, human-paced throttling within Google's link-spam policies, and producing an auditable submission log. Activate only when the user has a qualified prospect list and wants the browser to submit. Prospect discovery, qualification, and anchor/description copy are upstream concerns; this skill is execution-only."
 license: Apache-2.0
 compatibility: "Requires browser:general agent with browser (Playwright) capability and filesystem-write. Assumes a prospect list already qualified for safety and topical fit."
 domains: browser
@@ -33,6 +33,8 @@ Outcome: a `submission-log.json` with one row per attempt (status, evidence, liv
 
 A submission run is a pipeline: profile → per-target field mapping → form drive → evidence capture → verification follow-up. Most failures are not bugs — they are signals: captcha walls, login-required, paid-only, dead form, off-topic category. The skill's job is to detect, classify, and log these honestly so the user gets a reliable picture of what shipped.
 
+Set expectations from Google's spam policies: "low-quality directory or bookmark site links", "using automated programs or services to create links to your site", and optimized anchor text in distributed content are all listed as link spam, and most directories mark outbound links `nofollow` or `ugc` anyway. A defensible run is a short list of human-reviewed listings with a real audience — startup and SaaS directories, review sites, business profiles, industry associations — whose value is referral traffic, discovery, and consistent business citations, not PageRank. Submit at human pace, one listing per target, as a person would.
+
 Three immovable invariants:
 1. Never submit to a target the prospect list did not qualify. If a target looks shady mid-run (hidden links, casino/pharma neighbours, "1000 directories for $5" footer), skip and log `skipped:quality`.
 2. One identity per run. Reuse the same email, brand name, contact, anchor pool — directories that detect inconsistency flag listings. The profile is the source of truth.
@@ -51,7 +53,7 @@ The user (or an upstream step) supplies one JSON file. If any required field is 
 | `tagline` | yes | ≤ 80 chars |
 | `description_short` | yes | ≤ 160 chars |
 | `description_long` | yes | 300–600 chars, neutral tone |
-| `description_alt` | recommended | A second long variant — rotate to avoid duplicate-content footprint |
+| `description_alt` | recommended | A second long variant for forms where the first does not fit the field or the category |
 | `category_primary` | yes | Map to each directory's taxonomy |
 | `category_alt` | recommended | Fallback when primary doesn't exist on a target |
 | `tags` | yes | 5–10 keywords, lowercase |
@@ -62,21 +64,21 @@ The user (or an upstream step) supplies one JSON file. If any required field is 
 | `pricing` | recommended | "free" / "freemium" / "paid" — startup directories ask |
 | `founded_year`, `location`, `team_size` | recommended | Business directories ask |
 | `social.twitter`, `social.linkedin`, `social.github` | recommended | Many forms require ≥ 1 social URL |
-| `anchors` | yes | Array of 3–6 anchor texts: brand, brand+keyword, naked URL, generic ("learn more"). Rotate; never reuse same anchor more than 30% of the run. |
+| `anchors` | yes | 1–3 entries: the brand name and the naked URL (optionally brand + product type). Keyword-rich anchors are not used. |
 
 ### Target classification (per prospect, before driving the form)
 
 | Target type | Treat as | Notes |
 |---|---|---|
-| Free general directory (BOTW free tier, niche aggregators) | submit | Verify it's still live and indexed |
-| Business directory (GMB, Yelp, BBB, Apple Maps) | submit, ownership-verify | Often needs phone/postcard verification — log as `pending:ownership-verify` |
+| Free general directory (curated, with editorial review and real traffic) | submit | Verify it's still live, indexed, and reviewed by humans |
+| Business profile (Google Business Profile, Bing Places, Apple Business Connect, Yelp, BBB) | submit, ownership-verify | Often needs phone, postcard, or video verification — log as `pending:ownership-verify`; name, address, and phone must match the profile exactly |
 | Startup / SaaS directory (BetaList, F6S, AlternativeTo, SaaSHub, Tools Directory style) | submit | Usually needs account + email verify |
-| Web2.0 property (Medium, Tumblr, WordPress.com, Notion public, Bear) | publish, not submit | Different flow — author a short on-topic post linking once, naturally |
+| Web2.0 property (Medium, Tumblr, WordPress.com, Notion public pages) | skip | Thin posts created to carry a link are link spam under Google's policies — log `skipped:not-a-form` |
 | Niche industry list (curated GitHub awesome lists, vertical aggregators) | PR / issue, not form | Reroute: open issue / PR — out of this skill's scope, log `skipped:not-a-form` |
 | Q&A / forum (Quora, Reddit, Stack Exchange) | NOT this skill | Persona / on-topic answers are out of scope — log `skipped:not-a-form` |
 | Paid-only ($/listing) | skip unless user pre-approved budget | Log `skipped:paid` with the price |
 | Link farm / "submit to 500 directories" / spammy ad-laden / hidden links / unrelated niche | skip, hard | Log `skipped:quality` with the reason |
-| Captcha-walled (hCaptcha, reCAPTCHA v2, Cloudflare Turnstile) | stop and escalate | Do not attempt to bypass. Log `skipped:captcha`; the user solves manually if they want |
+| Captcha-walled (hCaptcha, reCAPTCHA, Cloudflare Turnstile, "verify you are human" pages) | stop and escalate | Do not attempt to bypass. Invisible score-based checks can reject a submit silently — a form that resets or errors with no message after submit counts here too. Log `skipped:captcha`; the user solves manually if they want |
 | Login-required and we have no account | escalate | Either user supplies creds, or log `skipped:auth` |
 
 ### Field-mapping rules
@@ -84,11 +86,11 @@ The user (or an upstream step) supplies one JSON file. If any required field is 
 - `name` → "Site Name", "Title", "Project", "Tool name", "Company". Match what the form asks; never invent prefixes/suffixes.
 - `url` → "URL", "Website", "Homepage". Always canonical https; never with tracking params.
 - `description_short` → "Tagline", "Short description", "Pitch", fields with ≤ 160 char limit.
-- `description_long` / `description_alt` → "Description", "About", "Details" (300+ chars). Rotate variants across the run; don't paste the identical paragraph 50 times.
+- `description_long` / `description_alt` → "Description", "About", "Details" (300+ chars). Pick the variant that fits the field and the category.
 - `category` → match to directory taxonomy by exact label first, then nearest synonym. If nothing fits, pick the closest and log `category_mapping`.
 - `tags` → split into the form's expected separator (comma, space, enter-per-tag). Trim to the form's max count.
-- `anchors` → only used when the target lets you choose anchor text on the link. Rotate per-target from `anchors[]`; track usage to keep brand-anchor share ≥ 50%.
-- `logo` / `screenshot` → upload via `setInputFiles` on the file input; verify the upload preview appears before submit.
+- `anchors` → only used when the target lets you choose anchor text on the link. Use the brand name or the naked URL.
+- `logo` / `screenshot` → upload with `browser_file_upload` (absolute paths) after clicking the file input; verify the upload preview appears before submit.
 
 ### Drive protocol (per target)
 
@@ -105,11 +107,10 @@ The user (or an upstream step) supplies one JSON file. If any required field is 
 
 ### Throttling and identity hygiene
 
-- Spread across time: never submit to more than 5 targets in a row from the same IP without a 60-second cool-off.
-- Pace per day: cap free-directory submissions at 20 per day per identity; business directories at 5; web2.0 publishes at 2.
-- Rotate anchor variants — track use counts in-memory; never let one anchor exceed 30% of the run.
-- Rotate description variants — alternate `description_long` and `description_alt` per target.
-- One profile, one email, one contact name across the entire run. Inconsistency is a flag.
+- Spread across time: never submit to more than 5 targets in a row without a 60-second cool-off.
+- Pace per day: cap free-directory submissions at 20 per day per identity; business profiles at 5.
+- One profile, one email, one contact name across the entire run. Inconsistent business details split citations and get listings rejected.
+- Read each target's submission rules first; skip targets whose terms forbid automated submission or require a reciprocal link (log `skipped:quality`).
 
 ### Submission log schema
 
@@ -133,28 +134,21 @@ The user (or an upstream step) supplies one JSON file. If any required field is 
 }
 ```
 
-### Out-of-scope handling
-
-- Need fresh, on-topic descriptions per niche → stop; copy authoring is an upstream concern, do NOT write copy here.
-- Need to qualify fresh prospects mid-run → stop. This skill does not vet new targets on the fly; prospect vetting is an upstream concern.
-- Q&A / forum / community work → out of scope. Persona / on-topic answers are not this skill's job.
-
 ## Examples
 
-### Example 1: Bad → Good (description handling)
+### Example 1: Bad → Good (anchor handling)
 
 ❌ Bad:
 ```
-For all 50 directories, paste description_long verbatim. Reuse "TheBrand" anchor every time.
+For all 50 directories, rotate keyword anchors ("best project management tool", "PM software") to look natural.
 ```
 
 ✅ Good:
 ```
-Alternate description_long and description_alt across submissions.
-Rotate anchors from profile.anchors[]; track use, cap brand-anchor share at 50%, naked-URL at 20%, generic at 30%.
+Where anchor text is selectable, use the brand name or naked URL. Submit only to the 12 directories with real traffic and editorial review.
 ```
 
-What changed: identical copy + identical anchor across many targets is the duplicate-footprint signal Google uses to discount or penalize.
+What changed: engineered keyword anchors across directories are the link-spam pattern Google's policies name; brand anchors on a few real listings are what a business would do anyway.
 
 ### Example 2: Edge case — category not in taxonomy
 
@@ -170,7 +164,7 @@ Form filled cleanly, "Submit" button reveals an hCaptcha challenge. Stop. Screen
 - [ ] Prospect list classified — each target has a `target_type`; link-farm / unrelated targets pre-filtered out
 - [ ] Output directory `./out/backlinks/` exists; previous `submission-log.json` either rotated or appended to deliberately
 - [ ] Per submission: post-submit screenshot saved, log row appended, status reflects reality (no "submitted" without evidence)
-- [ ] Anchor and description rotation is enforced — no anchor or description variant exceeds its share cap
+- [ ] Anchors are brand name or naked URL only; descriptions chosen to fit each field
 - [ ] Throttling respected — pace caps and cool-offs honored
 - [ ] Captcha / paid / login-required targets skipped, not faked
 - [ ] No credentials persisted to disk after the run
@@ -178,8 +172,8 @@ Form filled cleanly, "Submit" button reveals an hCaptcha challenge. Stop. Screen
 
 ## Composition / References
 
-- Pairs with `browser-form-filling-patterns` (selector resilience, file uploads, multi-step forms) — base layer.
+- Selector resilience, uploads, and waiting follow the browser agent's own snapshot-and-ref discipline.
 - Runs only after an upstream prospect-vetting step has produced a qualified list — this skill does not discover or qualify prospects.
-- Copy generation (descriptions, anchor variants) is an upstream concern — do not author copy inside this skill.
-- [Google Search Essentials — Link spam](https://developers.google.com/search/docs/essentials/spam-policies#link-spam)
-- [Google: Qualifying outbound links to your site](https://developers.google.com/search/docs/essentials/spam-policies#user-generated-spam)
+- Copy generation (descriptions) is an upstream concern — do not author copy inside this skill.
+- [Google Search Essentials — Spam policies: link spam](https://developers.google.com/search/docs/essentials/spam-policies#link-spam)
+- [Google: Qualify outbound links (nofollow, ugc, sponsored)](https://developers.google.com/search/docs/crawling-indexing/qualify-outbound-links)

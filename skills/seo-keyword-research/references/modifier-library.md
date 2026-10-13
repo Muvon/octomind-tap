@@ -47,7 +47,7 @@ get [seed]
 hire [seed]
 ```
 
-Caveat for "best [seed] [year]" patterns post-Site-Reputation-Abuse update: Forbes / Fortune / CNN-style brand-page listicles now dominate these SERPs artificially. Score realism low unless the user has DR ≥ 50 or a niche-brand-page play.
+Caveat for "best [seed] [year]" patterns: third-party review sections on Forbes / Fortune / CNN-style publishers still crowd some of these SERPs despite Google's site reputation policy (whose manual actions no longer apply to EEA searchers since Aug 30, 2026). Score realism low unless the user has DR ≥ 50 or a niche-brand-page play.
 
 ## Constraint modifiers (sharpen specificity → reduce competition)
 
@@ -162,3 +162,21 @@ Cross-multiply axes for 36+ candidate phrasings per seed. Filter at Stage 4.
 - Glimpse / Exploding Topics — surfaces trending and emerging keywords before tools assign volume.
 
 Run all SERP-mined sources in parallel for each seed; dedupe at Stage 4.
+
+## Tools — free vs paid
+
+| Tool | Tier | Use for |
+|---|---|---|
+| Google Search (incognito) + autocomplete | Free | Seed expansion, SERP review |
+| Google Trends | Free | Volume sanity, trend direction, "Related queries (rising)" momentum |
+| Google Search Console | Free | Existing query mining, page-2 quick wins, impression data |
+| Bing Webmaster Tools | Free | Keyword data, IndexNow, sitemap submission — Bing's index also feeds Copilot and, historically, ChatGPT search |
+| Ahrefs Free Backlink Checker | Free | DR estimate for site + competitors |
+| AlsoAsked / AnswerThePublic free | Free (limited) | PAA / question-modifier expansion |
+| Reddit / forums | Free | Real user phrasing, zero-volume validation, AI-citation pre-mining |
+| Lowfruits | Freemium | Purpose-built low-competition keyword discovery — flags SERPs dominated by weak/forum content |
+| Glimpse / Exploding Topics | Freemium | Emerging keywords pre-volume; momentum signal before tools assign KD |
+| SparkToro | Freemium | Audience research — what your buyers actually read/listen-to/follow (informs seed phrasing) |
+| Ahrefs / SE Ranking / Serpstat / SEMrush | Paid | Full keyword databases, KD scores, competitor ranking lists, SERP overview |
+| Surfer SEO / NeuronWriter / Frase | Paid | TF-IDF / NLP entity coverage — which entities the top 10 cover that you're missing (Stage 5) |
+| Profound / Otterly / AthenaHQ / Peec | Paid | AI search visibility tracking — share of citation across ChatGPT, Perplexity, Google AI Overviews, Gemini, Claude; the measurement layer for the brief's GEO claims |

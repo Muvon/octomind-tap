@@ -39,7 +39,7 @@ The hosted server converts the X API OpenAPI spec into MCP tools (200+ endpoints
 name = "x"
 type = "stdio"
 command = "sh"
-args = ["-c", "CLIENT_ID=\"$X_CLIENT_ID\" CLIENT_SECRET=\"$X_CLIENT_SECRET\" exec npx -y @xdevplatform/xurl@1.3.1 mcp https://api.x.com/mcp"]
+args = ["-c", "CLIENT_ID=\"$X_CLIENT_ID\" CLIENT_SECRET=\"$X_CLIENT_SECRET\" exec npx -y @xdevplatform/xurl@1.3.4 mcp https://api.x.com/mcp"]
 timeout_seconds = 300
 env = { X_CLIENT_ID = "{{ENV:X_CLIENT_ID}}", X_CLIENT_SECRET = "{{ENV:X_CLIENT_SECRET}}" }
 tools = []

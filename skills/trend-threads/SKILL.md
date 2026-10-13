@@ -39,7 +39,7 @@ Start at [threads.com](https://www.threads.com/), the current web domain after M
 | Surface | Procedure | Evidence and use |
 |---|---|---|
 | Search | Enter topic language and buyer-problem wording. Use only tabs or date filters visible in the current interface; record their labels and final URL. | Keyword search began rolling out on mobile and web in September 2023 (official, Meta Introduction, 2023-09). Compare discovery results with recent conversations if that control is available (directional). |
-| Tagged topics | Open the topic from an actual post or search result; copy the destination. | Meta says tagged-topic posts generally receive more views (official, Meta Personalization, 2025-07). Capture the tag as context without assuming a maximum count or multiplier (directional). |
+| Tagged topics | Open the topic from an actual post or search result; copy the destination. | A post carries one topic tag (official, Threads API posts docs, 2026-10); Meta says tagged-topic posts generally receive more views (official, Meta Personalization, 2025-07). Capture the tag as context, not a multiplier (directional). |
 | Communities Hub | Open the main-menu Hub and select a relevant community. | Communities graduated from beta; Progress and expanded Champion recognition are documented (official, Meta Communities, 2026-06). Use them to find conversations, not certify sales influence (directional). |
 | Local Communities | Look for the relevant native-language tags and inspect actual language use. | Initial scope included Japan, Korea, and Taiwan (official, Meta Communities, 2026-06). Preserve local terminology in the brief (directional). |
 | Feed selection | Inspect For You, Following, or relevant custom feeds when exposed. Record the selected feed and how it was reached. | Availability and contents are session observations. Sample beyond a personalized feed before claiming a niche trend (directional). |
@@ -51,7 +51,7 @@ Open independent surfaces in separate tabs when useful. Scroll until the relevan
 
 ### Capture each candidate
 
-Retain the post permalink, handle, visible author context, publication time, capture time and timezone, originating surface, and query or topic. Mark missing dates or rounded counts explicitly.
+Retain the post permalink, handle, visible author context, publication time, capture time and timezone, originating surface, and query or topic. Mark missing dates or rounded counts explicitly. Ghost posts archive after 24 hours and their replies go privately to the author (Engadget, 2025-10); capture them promptly and expect no reply evidence.
 
 Record text, format, media content, root or reply position, and the observed chain structure. Keep visible likes, views, replies, reposts, and quotes as separately named fields. Where useful, retain an account's comparable posts as a baseline. Don't fabricate follower counts or derive exact metrics from rounded displays.
 
@@ -183,9 +183,10 @@ Limited conclusion: retain usage language and the comfort objection for research
 - [Meta Personalization](https://about.fb.com/news/2025/03/new-threads-features-more-personalized-experience-you-control/), updated 2025-07-22.
 - [Meta Text](https://about.fb.com/news/2025/09/attach-text-threads-posts-share-longer-perspectives/), 2025-09-04.
 - [Meta Civic](https://about.fb.com/news/2025/01/meta-more-speech-fewer-mistakes/), 2025-01-07.
+- [Threads API posts reference](https://developers.facebook.com/docs/threads/posts), reviewed 2026-10; [Engadget on ghost posts](https://www.engadget.com/social-media/threads-introduces-ghost-posts-that-disappear-after-24-hours-160000228.html), 2025-10.
 - [Buffer Replies](https://buffer.com/resources/threads-comments-engagement/), 2026-02-24.
 - [Buffer Engagement](https://buffer.com/resources/state-of-social-media-engagement-2026/), 2026-03-05.
 - [Buffer Timing](https://buffer.com/resources/the-best-time-to-post-on-threads/), 2026-02-04.
 
 Re-validate when: domain or navigation changes; metric visibility changes; limits or policies update; Meta publishes ranking details; new vendor reports change the baseline.
-Validated: 2026-09
+Validated: 2026-10

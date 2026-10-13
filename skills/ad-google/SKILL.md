@@ -33,8 +33,11 @@ Use this skill whenever the deliverable is the actual ad copy or asset set that 
 | Type | What You Produce |
 |------|------------------|
 | Search (RSA) | Headlines × 15, descriptions × 4, paths × 2, sitelinks (optional), callouts |
-| Performance Max | Headlines, long headlines, descriptions, long descriptions, business name, images, logos, videos |
+| Performance Max | Headlines, long headlines, descriptions, business name, images, logos, videos |
+| Demand Gen | Headlines (40 char), long headlines, descriptions, images incl. 9:16, videos, carousel |
 | Display | Responsive display assets — headlines, long headline, descriptions, images, logo, video |
+
+2026 context (verify live in Google Ads Help before relying on dates): AI Max for Search adds search term matching, text customization, and final URL expansion to Search campaigns; Google announced in April 2026 that Dynamic Search Ads, automatically created assets, and campaign-level broad match upgrade into AI Max from September 2026. With text customization on, Google generates extra headlines and descriptions from your site and landing pages, so your supplied copy sets the tone it imitates. Search, Shopping, and PMax ads can also serve in AI Overviews and AI Mode.
 
 Out of scope for this skill: keyword lists, negative keywords, bid strategy, audience signals, conversion goals.
 
@@ -53,7 +56,7 @@ Out of scope for this skill: keyword lists, negative keywords, bid strategy, aud
 ### RSA Production Rules
 
 - Produce at least 8 headlines and 3 descriptions. Fewer reduces the ad strength signal.
-- Pin only when policy or brand requires it. Pinning H1 forces it to position 1 every impression, which kills Google's optimisation surface.
+- Pin only when policy or brand requires it. Pinning H1 forces it to position 1 every impression, which kills Google's optimisation surface. Final URL expansion overrides RSA pins.
 - Include the primary keyword in at least 3 headlines. Search intent match drives quality score.
 - Vary headline angles: benefit, feature, social proof, urgency, question. Repeating the same angle across all 15 wastes slots.
 - Descriptions complement headlines — do not restate the same benefit twice.
@@ -62,30 +65,31 @@ Out of scope for this skill: keyword lists, negative keywords, bid strategy, aud
 
 ### Performance Max — Slots
 
+2026 spec (Google Ads Help, "Performance Max campaigns specs" — verify live):
+
 | Asset Group Slot | Count Range | Limit | Notes |
 |------------------|-------------|-------|-------|
-| Headline | 3–15 | 30 chars | Same as RSA headlines |
-| Long headline | 1–5 | 90 chars | Used in display/video placements |
-| Description | 1–5 | 90 chars | Standard description |
-| Long description | 1 | 90 chars | Used in some display formats |
-| Business name | 1 | 25 chars | Brand surface across placements |
-| Image — landscape | up to 20 | 1.91:1 | 1200×628 recommended |
-| Image — square | up to 20 | 1:1 | 1200×1200 recommended |
-| Image — portrait | up to 20 | 4:5 | 960×1200 recommended (≥3 portraits lifts mobile placement significantly) |
-| Logo — square | up to 5 | 1:1 | 1200×1200, min 128×128 |
-| Logo — landscape | up to 5 | 4:1 | 1200×300 (optional) |
-| Video | 0–5 per aspect ratio (15 total max) | 16:9, 9:16, or 1:1 | 10s minimum, YouTube-hosted. ≥1 9:16 vertical (10-60s) required for Shorts placement |
-| CTA | 1 | ≤10 char custom override OR enum | Custom CTA now exposed in Editor 2.12+ |
-| Sitelink | 2+ | Standard sitelink limits | Required for full eligibility |
-| Callout | 2+ | 25 chars | Required for full eligibility |
+| Headline | 3–15 (aim for 11+) | 30 chars | At least one ≤15 chars |
+| Long headline | 1–5 (aim for 2+) | 90 chars | Used in display/video placements |
+| Description | 2–5 (aim for 4+) | 90 chars | Standard description |
+| Business name | 1 | 25 chars | Must match your domain or verified legal business name |
+| Display path | 0–2 | 15 chars each | Optional |
+| Image — landscape 1.91:1 | 1–20 (aim for 4+) | 1200×628 rec, 600×314 min | Required |
+| Image — square 1:1 | 1–20 (aim for 4+) | 1200×1200 rec, 300×300 min | Required |
+| Image — portrait 4:5 | 0–20 (aim for 2+) | 960×1200 rec, 480×600 min | Optional; helps mobile placements |
+| Logo — square 1:1 | 1–5 | 1200×1200 rec, 128×128 min | Prefer a non-white background |
+| Logo — landscape 4:1 | 0–5 | 1200×300 rec, 512×128 min | Optional |
+| Video | up to 15 per orientation | 16:9, 1:1, 9:16; ≥10s | Without uploads Google may auto-generate videos; supply all three orientations to avoid that |
+| CTA | 1 | Automated by default or picked from a list | |
+| Sitelinks / callouts | recommended | Standard limits | Improve coverage on Search inventory |
 
 ### Demand Gen — Slots (Replaced Discovery Ads in 2024)
 
-Demand Gen serves across YouTube (In-Stream, In-Feed, Shorts), Discover, Gmail, and Maps. The biggest pitfall is reusing PMax/RSA copy — Demand Gen has DIFFERENT char limits.
+Demand Gen serves across YouTube (In-Stream, In-Feed, Shorts), Discover, Gmail, and Maps; it also absorbed Video Action Campaigns in 2025. The biggest pitfall is reusing PMax/RSA copy — Demand Gen has DIFFERENT char limits. 2026 specs per Google Ads Help; verify live.
 
 | Slot | Count | Limit | Notes |
 |------|-------|-------|-------|
-| Headline | up to 5 | 40 chars | NOT 30 — most common reuse error |
+| Headline | up to 5 (3+ unique recommended) | 40 chars | NOT 30 — most common reuse error |
 | Long headline (video ads only) | up to 5 | 90 chars | |
 | Description | up to 5 | 90 chars | |
 | Business name | 1 | 25 chars | |
@@ -93,7 +97,7 @@ Demand Gen serves across YouTube (In-Stream, In-Feed, Shorts), Discover, Gmail, 
 | Image 1.91:1 | up to 20 | 1200×628 | |
 | Image 1:1 | up to 20 | 1200×1200 | |
 | Image 4:5 | up to 20 | 960×1200 | |
-| Image 9:16 (NEW for Shorts) | up to 20 | 1080×1920 | |
+| Image 9:16 (optional, for Shorts) | up to 20 | 1080×1920 rec, 600×1067 min | Use 9:16 safe zones; may be rejected via Display & Video 360 |
 | Logo | up to 5 | 1:1, min 128×128 | |
 | Video | 1-5 per aspect ratio | 16:9 / 1:1 / 9:16 | 5s min (10s+ for in-stream), MP4 |
 | Carousel | 2-10 cards | Ratios must match across cards | |
@@ -127,7 +131,7 @@ Demand Gen CTA enum (subject to vertical eligibility): Apply Now, Book Now, Cont
 
 ### CTA Behavior
 
-Google does not expose a CTA button field for RSA — the CTA lives in the headline/description copy. For Performance Max and Display, an auto-generated CTA appears based on the ad copy and conversion action; the agent does not set it directly. So:
+Google does not expose a CTA button field for RSA — the CTA lives in the headline/description copy. Performance Max picks a CTA automatically unless you choose one from its list; Display auto-selects based on the ad copy and conversion action. So:
 
 - Write the CTA INSIDE a headline or description ("Start free trial", "Get the demo", "See pricing")
 - Do not waste a slot on a generic CTA-only line like "Click here" — every slot must contain product/value
@@ -135,21 +139,19 @@ Google does not expose a CTA button field for RSA — the CTA lives in the headl
 
 ### Policy Constraints (Common Disapprovals + 2025-2026 Updates)
 
-- Trademark in headline without authorisation — auto-disapproval
+- Trademark in headline without authorisation — disapproval on complaint
 - Superlatives without verifiable claim ("#1", "best", "cheapest") — manual review trigger
-- Exclamation points: max 1 per ad total across headlines and descriptions
-- ALL CAPS words: not allowed except for acronyms (CRM, SEO, API). LLM enforcement now catches evasion ("B-E-S-T")
-- Punctuation: no repeated punctuation ("Save!! Now!!"), no symbols replacing letters ("S@ve")
+- Punctuation: no repeated or gimmicky punctuation ("Save!!"), no symbols replacing letters ("S@ve"); exclamation marks are banned in callouts and sitelinks — house rule: none in headlines, at most one per description
+- ALL CAPS words: not allowed except for acronyms (CRM, SEO, API) and trademarks
 - Restricted categories (healthcare, finance, gambling, alcohol, dating) — additional certification required
 - Personal pronouns in display URL paths look spammy: `/you-need-this` will flag
 
-2025-2026 Policy Updates:
+2025–2026 policy context (verify live):
 
-- Asset-level disapprovals (April 2026, PMax + Demand Gen) — Google now disapproves individual assets, not the whole group. Submit 8-10 assets per slot as buffer.
-- AI-generated content disclosure (March 2026) — Any AI-generated creative element (image, video, voice) must carry "AI Generated" label. Deepfake-style human likeness banned outright.
-- LLM semantic review — Text assets parsed by LLM, not regex. False-positive trigger categories: healthcare imagery (15-25%), before/after (20-30%), superlatives (10-15%), testimonials (15-20%), financial charts (10-20%).
-- Predictive enforcement — Google flags ads before they violate based on account history + vertical. New accounts in regulated verticals see pre-emptive limited serving.
-- Hidden-fees rule (auto retail Oct 2025, spillover expected) — All-in pricing required in vehicle ads; subscription/SaaS likely next.
+- AI content labels (July 2026) — a new setting labels image and video assets made or edited with AI. Google's own generative tools label automatically; declare third-party AI assets yourself. Campaigns targeting the EU, India, or New York may show a visible disclosure. The label alone doesn't guarantee legal compliance; the EU AI Act's transparency duties for deepfakes apply from August 2026.
+- EU political ads — Google stopped serving political ads in the EU from October 2025 (TTPA regulation).
+- All-in pricing — the US FTC fees rule (May 2025) requires total price up front for live-event tickets and short-term lodging; several states go further. Don't advertise a price that excludes mandatory fees.
+- Consent — EEA/UK traffic needs Consent Mode v2 signals for personalized ads and remarketing (out of scope here, but it changes which audiences an asset can reach).
 
 ### Output Format
 
@@ -183,7 +185,6 @@ Google does not expose a CTA button field for RSA — the CTA lives in the headl
 
 ## PMax / Display Additions
 - Long headline: [copy] — [chars/90]
-- Long description: [copy] — [chars/90]
 - Business name: [name] — [chars/25]
 
 ## Visual Asset Specs (PMax / Display)

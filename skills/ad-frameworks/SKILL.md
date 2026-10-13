@@ -39,6 +39,7 @@ Strong ads aren't written from scratch — they're written into a framework that
 - Match framework to audience awareness, not your preference. A cold audience can't follow PAS — they don't yet feel the problem.
 - One framework per piece. Mixing AIDA + PAS halfway through makes the piece muddled.
 - Specifics, not adjectives. "47% faster" beats "much faster". Numbers, names, time spans.
+- Every claim needs proof you could show a regulator. Testimonials and before/after beats must reflect typical results or say what's typical, and paid creators or UGC scripts need a clear disclosure (US FTC Endorsement Guides; FTC reviews rule since Oct 2024 bans fake or bought testimonials). Meta and TikTok also restrict before/after imagery in health, weight-loss, and cosmetic ads.
 
 ### Framework Catalog
 

@@ -1,7 +1,7 @@
 ---
 name: octomind-supervisor
 title: "Octomind Supervisor & Learning"
-description: "Reference for octomind's out-of-band control plane: the self-report token, deterministic loop/no-progress/recovery detectors, the verify-gate and its free pre-gates, the plan mechanic with plan-complete gating and reassess on broken assumptions, condense, steer, recite, and cross-session lessons plus orientation memory, together with the strict [supervisor] config sections. Activate when a user asks why a turn was re-run or gated, how the verify-gate or the loop and no-progress detectors work, how lessons or orientation are stored and recalled, why tool output was condensed, or how to tune [supervisor.gate], [supervisor.learning], [supervisor.plan], or [supervisor.condense]."
+description: "Reference for octomind's out-of-band control plane: the self-report token, deterministic loop/no-progress/recovery detectors, the verify-gate on every turn stop, the supervisor-owned plan manager, condense, steer, recite, the optional tool authorizer, calibrated evaluation gates and hindsight, and cross-session lessons, orientation, and experience memory with optional evolution, together with the strict [supervisor] config sections. Activate when a user asks why a turn was re-run or gated, how the detectors work, why a tool call was blocked, how lessons are stored and recalled, why tool output was condensed, or how to tune any [supervisor.*] section."
 license: Apache-2.0
 compatibility: "Requires: octomind binary. macOS/Linux/Windows."
 domains: octomind
@@ -9,168 +9,176 @@ rules:
   - match((?i)\bsupervisor\b)
   - match((?i)\bverify.?gate\b)
   - match((?i)\[supervisor)
-  - match((?i)\b(orientation memory|cross.session learning|condense)\b)
+  - match((?i)\b(orientation memory|cross.session learning|condense|authorizer|hindsight)\b)
   - semantic(why did octomind re-run or gate my turn)
 metadata:
-  version: "1.0"
+  version: "1.1"
   tags: "octomind supervisor learning verify-gate condense"
 ---
 
 ## Overview
 
-The supervisor is a control plane running beside the agent loop, never inside the transcript. It watches each turn, steers the agent off dead ends, verifies completion claims, narrows oversized tool output, and carries lessons and orientation across sessions. Learning is one mechanic among several.
+The supervisor is a control plane running beside the agent loop, never inside the transcript. It watches each turn, steers the agent off dead ends, verifies every stop before accepting it, manages the plan, narrows oversized tool output, and carries lessons and grounded knowledge across sessions.
 
-Use this skill to explain supervisor behaviour a user is observing, and to tune the `[supervisor]` sections. Its config is strict: a missing section or required key is a hard parse error.
+Use this skill to explain supervisor behaviour a user observes and to tune the `[supervisor]` sections. The config is strict: the section and its mechanic tables must be present even when a mechanic is disabled.
 
 ## Mental model
 
-Free signals gate expensive ones. Every turn produces two zero-cost signals — the agent's self-report and deterministic counters. When they agree, the supervisor acts with no model call at all. A model runs only on disagreement, on a completion claim, or on an oversized tool round.
+Free signals gate expensive ones. Every turn produces two zero-cost signals — the agent's self-report and deterministic counters. A model call happens only at a turn stop, on an oversized tool round, on a plan signal, or (if enabled) before tool execution.
 
-The verify-gate is the reward signal: it labels a run pass or fail, so the system only learns from work it has evidence was correct.
+The verify-gate is the reward signal: a run counts as verified only when the turn changed state and a recognised check ran on the result. Learning credits only memories the agent reports as materially used.
 
-Everything mid-trajectory is advisory. The supervisor steers, it never blocks a route or silently rewrites context.
+Mid-trajectory everything is advisory: steering nudges, it never forces. The only blockers are the opt-in authorizer and project guardrails.
 
 ## Rules
 
-### The closed loop
-
-Every turn, free: self-report fused with detectors. On conflict or a `done` claim, the verify-gate runs. On pass, distill writes lessons and orientation. Next turn or session, recall injects them. When a detector fires, steer queues an advisory re-anchor.
-
 ### Self-report
 
-The agent ends each turn with a compact structured handoff carrying `state`, `focus`, `next`, and `carry`. The supervisor parses it and strips it before display, so the user never sees it. It feeds conversation compression as an attention hint, grounded against the transcript — never evidence on its own. Credential values are forbidden in `carry`; only opaque pointers.
+With supervision on, the agent ends each response with a hidden structured status (`state`, `focus`, `next`, `carry`, plan signal, used memory ids). It is parsed and stripped before display. `focus`/`next`/`carry` feed compression as an attention hint, grounded against the transcript; credential values are forbidden in `carry`.
 
 | State | Effect |
 |-------|--------|
-| `done` | Arms the verify-gate |
-| `need_input` | Treated as a question, passed through, never gated |
-| `blocked` | Triggers a steer note |
+| `done` | Completion claim, checked by the verify-gate |
+| `need_input` / `blocked` | Hand-back; the gate checks the blocker is genuine, otherwise sends the agent back |
 | `exploring` / `progressing` | Fused with the counters |
 
 ### Detectors
 
-Deterministic, free, every turn, with fixed thresholds that are behaviour rather than knobs. Two derive from information novelty — a mutation always advances state, a read advances only when its result is new.
+Deterministic, free, fixed thresholds. Novelty compares the call target with its result, so a reworded call returning the same output is not new information, while a successful mutation always counts as progress.
 
-- Loop — the same result repeats three times running. Keyed on the result, so reworded calls returning the same thing still count.
-- No-progress — five actions with zero novelty.
-- Recovery — command-shaped checks keep failing with no later success from the same check.
+- Loop — identical calls and results for 3 tool rounds without novelty.
+- No-progress — 5 tool rounds without new receipts or successful mutations.
+- Recovery — command executions keep failing with no later success for those calls.
 
-The power is fusion: a counter saying "no progress" while the agent reports `progressing` is the real stuck signal. Any `done` defers to the gate; no-progress while `exploring` waits; loop, recovery, or unexcused no-progress steers.
+All three only queue advisory steer notes. `done`, `blocked`, and `need_input` are left alone, and no-progress is suppressed while `exploring`. Repeated notes back off by doubling when the agent ignores them.
 
 ### Verify-gate
 
-Armed by a `done` self-report when `[supervisor.gate].enabled`. Free pre-gates run first: mutation-without-check (state changed but no successful command ran since), and plan-complete (more than the final phase still open). Machine-checkable plan assumptions are monitored during execution; a broken one emits `reassess`.
+With `[supervisor.gate].enabled`, every stop of a user-owned turn — a `done` claim, a hand-back, or a turn ending without status — gets an independent model verification. Mutation and verification detectors supply context but cannot reject on their own; a saved artifact can satisfy an artifact request. Explicit user prohibitions on running checks are honoured: a forbidden check's absence is compliance.
 
-Only if those pass does an independent model verify the result against the request. Pass labels the run verified and permits distill. Gaps inject an advisory and re-run the turn within a fixed budget, hard-stopping on exhaustion. Indeterminate fails closed for the turn.
+- Pass — accepted; labelled verified only with execution evidence, otherwise unknown.
+- Gaps — an advisory listing gaps is injected and the turn re-runs within a fixed budget; blocking findings first get a refutation pass.
+- Indeterminate — transport failure or invalid protocol fails closed for the turn, recorded as unknown.
 
-Set `verifier_model` to a different model family than the agent model — a same-family verifier inherits the same blind spots and rubber-stamps them.
+All supervisor calls use `[supervisor.model]` (inheriting `[model]`). There is no separate verifier model, so pointing `[supervisor.model]` at a different model family is the way to get an independent verifier.
+
+### Plan manager
+
+Planning is exceptional and supervisor-owned. The agent emits sparse `request`, `phase_complete`, or `reassess` signals; a separate call creates, advances, holds, or revises the plan. The agent has no plan tool; `/plan` displays it. Machine-checkable assumptions (e.g. `file_exists: src/foo.rs`) are monitored and a broken one triggers `reassess`.
 
 ### Steer and recite
 
-Steer queues an advisory re-anchor at the next safe point when a detector fires; re-emission backs off by doubling when the agent provably ignores it. Recite re-injects the live goal at the context tail on already-compacted sessions so intent stays in the recency window. Both are always on and unconfigurable.
+Steer injects the advisory re-anchor note at the next safe point. Recite re-injects the live goal, plan, prohibitions, and verification policy near the request tail. Both are automatic.
 
 ### Condense
 
-When a tool round returns results above `[supervisor.condense].tokens_threshold`, one cheap-model call decides per result what the task needs. Fully relevant results are kept byte-for-byte. Partly relevant ones are reduced to line ranges — the condenser sees a numbered copy and answers with ranges, and kept lines are reconstructed verbatim, so nothing can be mis-copied. Irrelevant ones are replaced by a deterministic notice, never a model-written summary.
+A plain-text tool result above `[supervisor.condense].tokens_threshold` (minimum 512) is a candidate. One call per round decides per candidate: fully relevant kept byte-for-byte; partly relevant reduced to line ranges reconstructed verbatim from the original; irrelevant replaced by a deterministic notice. The `mcp_response_tokens_threshold` prefix-cut runs first, so condense narrows only what the agent would have received. The narrowed body spills to a file whose path the result carries; condense runs only when the role has a local file-reading tool, only in the main session. `adaptive = true` lets a per-session multiplier move the threshold within 0.5x–2.0x.
 
-It is recoverable: the full original spills to a session file first and every condensed result carries the path. It runs only for plain-text results when the role has a local file-reading tool, only in the main session, and any condenser error leaves results untouched. The `mcp_response_tokens_threshold` prefix-cut still applies afterwards as the hard ceiling.
+### Authorizer (opt-in)
 
-### Lessons and orientation
+`[supervisor.authorizer] enabled = true` checks each pending tool batch against role instructions and user intent after native guards. Allow-first: only an independently confirmed conflict blocks, returned as a normal tool error. Judge failures allow the call.
 
-Two cross-session memories share one backend under `[supervisor.learning]`.
+### Evaluation gates and hindsight (opt-in)
 
-- Lessons — procedural do/avoid rules extracted from user corrections. Scope is either `scoped` (default, stored under `learning/{project}/{role_base}/`, retrieved by relevance) or `global` (stored under `learning/_/`, injected once per session by importance with no relevance gating). The role component truncates at the colon, so `developer:general` stores under `developer/`.
-- Orientation — durable descriptive understanding of the subject, stored with `memory_type = "orientation"` and recalled as working assumptions to verify, never as truth.
+`[supervisor.evaluate]` routes bounded yes/no questions at specific seams to a calibrated evaluation model (`model = "cloudflare:typesafe/jev"`, `typesafe:jev-latest`, or `octohub:auto`, keys from the environment). Each seam is one boolean, default `false`: `recall`, `skills`, `capabilities`, `authorizer`, `condense`, `compression`, `distill`, `plan`, `gate`, `evolution`. Any failure falls back to the pre-existing behaviour. `octomind evaluate` runs the same model by hand.
 
-The storage rule: cache what is expensive to re-derive, never what one search recovers. A symbol's location is cheap; an architectural decision is not.
+`[supervisor.hindsight]` (`enabled = false`, `model = "muvon/hindsight"`) is a local ONNX verifier that predicts whether the user's next turn will be a correction. Observe-only: scores are logged, shown, and tallied in `/info`.
 
-The loop self-corrects. Entries in context when a run passes gain importance; entries present when a run fails after retries decay and are dropped below a floor. Extraction is quote-first — every lesson carries a verbatim user quote, and a batched verifier drops any lesson whose quote the transcript does not support.
+### Lessons, orientation, and experience
 
-Extraction runs after `/done` or during auto-compaction. Cadence (three user messages) and the per-retrieval injection cap (five) are fixed constants.
+All learning is file-backed under `<data_dir>/learning/`; there is no separate learning model.
+
+- Lessons — short do/avoid rules from user corrections and stated rules, each carrying a verbatim user quote that a verifier must support. At most 3 per extraction. `scoped` (default) lives in `learning/{project}/{role_base}/` (role cut at the colon) and is recalled by relevance; `global` lives in `learning/_/` and is reconsidered every turn by importance.
+- Orientation — grounded descriptive understanding, recalled as working assumptions to verify, never as truth.
+- Experience — occasional longer records of non-obvious, hard-won knowledge with an outcome label and evidence handles.
+
+Extraction runs after `/done`, at every auto-compaction fold, and at session end (a detached child). Each genuine user turn builds a fresh Active Memory Pack capped at 2,000 tokens (512 for global rules). Retention archives low-utility records to a cold store rather than deleting them; `/learning` lists, shows, deletes, and clears.
+
+`[supervisor.learning.evolution]` (`enabled = false`) can compile recurring grounded memories into generated skills or guardrail candidates, promoted only after a randomized treatment-vs-control trial scored by verify-gate verdicts (`min_samples`, `noise_margin`, `cost_allowance`, `cost_per_gain`, `max_trial_uses`). It needs the gate enabled.
 
 ### Delegation
 
-`tap run` and `agent_*` spawn a context-isolated child that sees only the prompt string — no transcript, no prior tool output. The handoff must therefore carry the goal, established facts, constraints, and expected deliverable. The child reports its own verified or unverified verdict back to the parent, which folds it into detector and gate state.
+`tap(action="run")` and `agent_*` spawn a context-isolated child that sees only its prompt. The handoff must carry the goal, established facts, constraints, and expected deliverable. The child reports its measured outcome back; missing or failed handbacks count as unverified.
 
 ### Configuration
 
 ```toml
 [supervisor]
 enabled = true
-model = "octohub:auto"
+
+[supervisor.model]            # optional overrides; omitted fields inherit [model]
+name = "octohub:auto"
+reasoning_effort = "medium"
+max_tokens = 8192
+temperature = 0.0
 
 [supervisor.learning]
 enabled = true
-model = "octohub:auto"
-backend = "file"
+
+[supervisor.learning.evolution]
+enabled = false
 
 [supervisor.gate]
 enabled = true
-verifier_model = "openai:gpt-5-mini"
-max_tokens = 8192
+
+[supervisor.authorizer]
+enabled = false
+
+[supervisor.evaluate]
+model = "cloudflare:typesafe/jev"
+# recall, skills, capabilities, authorizer, condense,
+# compression, distill, plan, gate, evolution = false
+
+[supervisor.hindsight]
+enabled = false
+model = "muvon/hindsight"
 
 [supervisor.plan]
 enabled = true
-model = "octohub:auto"
 
 [supervisor.condense]
 enabled = true
+adaptive = false
 tokens_threshold = 5000
-model = "anthropic:claude-haiku-4-5"
 ```
 
-`[supervisor.learning].backend` accepts `"file"` or `"mcp"`; the MCP backend adds `[supervisor.learning.store]` and `[supervisor.learning.retrieve]`, each with a `tool` name and a `field_map` where an empty string omits a field.
-
-Detectors, recitation, and the free pre-gates have no configuration. Note the strictness asymmetry: the sections are required, but an omitted field inside them takes the code default — `enabled` defaults to `false` for learning, which is on out of the box only because the shipped template sets it explicitly.
-
-### Mechanics at a glance
-
-| Mechanic | When | Cost | Config |
-|----------|------|------|--------|
-| Self-report, detectors, steer, recite | Every turn | Free | None |
-| Free pre-gates | On `done` | Free | `[supervisor.gate]` |
-| Verify-gate | On `done`, pre-gates passed | Model, rare | `[supervisor.gate]` |
-| Condense | Oversized tool results | Model, cheap | `[supervisor.condense]` |
-| Distill | End of a verified run | Model, cheap | `[supervisor.learning]` |
-| Recall | Session start and per turn | Embedding | `[supervisor.learning]` |
+Detectors, steer, recite, and the detector thresholds have no configuration. Strictness asymmetry: the tables are required, but an omitted field inside them can take a code default — learning's `enabled` defaults to `false` in code and is on only because the template sets it.
 
 ## Examples
 
-### Example 1: verifier in the same family
+### Example 1: deleting a section to switch a mechanic off
 
-❌ Bad:
-```toml
-[supervisor.gate]
-verifier_model = "anthropic:claude-sonnet-4"   # agent model is also Anthropic
-```
+❌ Bad: removing `[supervisor.condense]` entirely.
 
 ✅ Good:
 ```toml
-[supervisor.gate]
-verifier_model = "openai:gpt-5-mini"
+[supervisor.condense]
+enabled = false
+adaptive = false
+tokens_threshold = 5000
 ```
 
-What changed: an independent family catches blind spots the agent's own family shares and would otherwise approve.
+What changed: the table is required by the parser; `enabled` is the switch.
 
 ### Example 2: condense threshold above the hard ceiling
 
-Keep `[supervisor.condense].tokens_threshold` well below `mcp_response_tokens_threshold`. Set higher, condensation never fires before the hard prefix-cut truncates the result, and the task-aware narrowing is wasted.
+Keep `tokens_threshold` well below `mcp_response_tokens_threshold`. The prefix-cut runs first, so a higher threshold means nothing ever qualifies for condensing.
 
 ### Example 3: "the agent keeps redoing the same thing"
 
-That is the loop detector's territory, not a config problem. The counter fires on a repeated result and queues an advisory. Look for a genuinely repeated tool result; disabling the supervisor removes the warning without fixing the repetition.
+That is the loop detector's territory. It fires on repeated identical calls and results and queues an advisory. Disabling the supervisor removes the note without fixing the repetition.
 
 ## Checklist
 
-- [ ] `[supervisor]` and its required subsections present — no section deleted to disable a mechanic?
-- [ ] `verifier_model` from a different family than the agent model?
+- [ ] Every `[supervisor.*]` table present — mechanics switched off with `enabled`, not by deleting sections?
+- [ ] Supervisor model set in `[supervisor.model]` (no per-mechanic or verifier model keys)?
 - [ ] `[supervisor.condense].tokens_threshold` comfortably below `mcp_response_tokens_threshold`?
-- [ ] Cheap models on learning, plan, and condense; the strong model reserved for the run?
+- [ ] Evolution enabled only together with the gate?
 - [ ] Delegation prompts carry full context, since the child sees only the prompt string?
 - [ ] Behaviour attributed to the right mechanic before recommending a config change?
 
 ## Composition / References
 
 - Pairs with `octomind-config` for every non-supervisor section of `config.toml`.
-- Pairs with `octomind-cli` for `/done` and `/learning`, which drive these mechanics from a session.
+- Pairs with `octomind-cli` for `/done`, `/plan`, `/learning`, and `octomind evaluate`.
 - Octomind docs: `doc/usage/14-supervisor.md`, `doc/usage/13-learning.md`, `doc/reference/03-config-reference.md`

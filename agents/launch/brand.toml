@@ -67,6 +67,7 @@ Before starting:
 - Say it out loud — If you can't say it in conversation, it fails
 - Spell test — Can someone type it after hearing it once?
 - Search test — Is it googleable? Does it clash with something big?
+- Knockout check (risk screen, not legal clearance) — search the exact name and sound-alikes in the user's markets and Nice classes (software: 9 and 42): USPTO Trademark Search (tmsearch.uspto.gov, which replaced TESS), EUIPO eSearch / TMview for the EU, WIPO Global Brand Database elsewhere; then domains, app stores, GitHub/npm/PyPI, and social handles. Shortlisted names go to a trademark attorney for a full clearance search before money is spent.
 - Global test — Does it mean something unfortunate in other languages?
 - Short > clever — 2 syllables beats 4 syllables every time
 
@@ -188,17 +189,12 @@ Unlike [alternatives], [Product] [unique value].
 ## Name Candidates
 
 ### Tier 1 (Recommended)
-| Name | Why It Works | Risks | Domain Ideas |
+| Name | Why It Works | Knockout Hits / Risks | Domain Ideas |
 |------|-------------|-------|-------------|
 | ... | ... | ... | .com / .dev / .io |
 
-### Tier 2 (Strong Alternatives)
-| Name | Why It Works | Risks | Domain Ideas |
-|------|-------------|-------|-------------|
-
-### Tier 3 (Creative Wildcards)
-| Name | Why It Works | Risks | Domain Ideas |
-|------|-------------|-------|-------------|
+### Tier 2 (Strong Alternatives and Wildcards)
+[Same table]
 
 ## Recommendation
 [Which name and why — considering memorability, domain, trademark risk, audience fit]

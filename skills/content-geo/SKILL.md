@@ -20,195 +20,116 @@ rules:
 
 ## Overview
 
-AI search engines (ChatGPT, Perplexity, Google AI Overviews) don't rank pages — they cite them. Two disciplines layer on top of traditional SEO:
-- AEO (Answer Engine Optimization) — getting cited in Google AI Overviews
-- GEO (Generative Engine Optimization) — getting cited in ChatGPT, Perplexity, Gemini, Claude, Copilot
+AI answer surfaces (Google AI Overviews and AI Mode, ChatGPT search, Perplexity, Copilot, Claude, Gemini) retrieve passages, compose an answer, and cite a few sources. Use this skill when planning, writing, or auditing content that should be retrieved and cited there. Generative engine optimization (GEO, also sold as AEO) is not a separate discipline: Google's May 2026 AI optimization guide says its generative features are "rooted in our core Search ranking and quality systems." Crawlable, indexable, genuinely useful pages remain the foundation.
 
-AI-referred traffic is growing +527% YoY with 4.4x higher conversion rates than standard organic. But 97% of AI Overview citations come from pages already in the top 20 organic results — traditional SEO remains the foundation, GEO layers on top.
+## Mental model
 
-### The 2026 zero-click reality (why GEO matters now, not later)
+Each engine expands a prompt into several sub-queries (query fan-out), retrieves passages from its own index or search partners, and cites the passages that best support the answer. A page wins by being retrievable by that engine, holding the clearest and most specific passage for one sub-query, and offering something the commodity pages don't.
 
-- 64.82% of all Google searches end without a click (up from 50% in 2019).
-- On AI-Overview-triggered queries the zero-click rate jumps to ~83%.
-- In Google's AI Mode, 93% of searches end without a single click to any external site.
-- Pew Research field study: organic CTR drops -46.7% (15% → 8%) when AI Overviews appear.
-- Seer Interactive: organic CTR -61% on triggered queries (1.76% → 0.61%).
-- Search Engine Journal-cited field study: outbound organic clicks -38% on AI-Overview queries, with zero-click rising from 54% to 72%, effects strongest when AIO appears at the top.
+Ranking helps but no longer guarantees a citation. Ahrefs' 2026 study (863k keywords) found about 38% of AI Overview citations rank in Google's top 10 for the same query, down from 76% in its July 2025 study (parser changes and the Gemini 3 switch limit comparability). Clicks are scarcer too: Pew's 2025 browsing study found users clicked a traditional result on 8% of visits with an AI summary versus 15% without, and clicked a cited link inside the summary on 1%. Measure citations and impressions, not only clicks.
 
-The new primary metric is citation share — how often your brand appears as a source inside the generative answer, not blue-link rank. Tools tracking citation frequency, share of voice, and AI referral traffic: Otterly.ai, Semrush AI Toolkit, Ahrefs Brand Radar, Rankability. Probe manually too: 10 fixed niche queries logged monthly across ChatGPT / Perplexity / Claude / Gemini reveals citation drift early.
+## Rules
 
-## Instructions
+### Retrieval differs by surface
 
-### Platform Differences
-
-| Platform | Source | Key fact |
+| Surface | Retrieval | Action |
 |---|---|---|
-| Google AI Overviews | Google's own top-20 organic results | Tightly coupled to traditional SEO |
-| ChatGPT | Bing's index | Only ~14% overlap with Google top-10. Bing matters. |
-| Perplexity | Real-time web search | Correlates with Google top-10 results 91% of the time |
+| Google AI Overviews / AI Mode | Google index and core ranking, fan-out | Normal SEO; stay included in the Search Console "Search generative AI" control (default on) |
+| ChatGPT search | OAI-SearchBot index plus external providers; OpenAI doesn't publish the mix | Allow OAI-SearchBot; submit to Bing Webmaster Tools and IndexNow; don't assume Google rank transfers |
+| Perplexity | Own index (PerplexityBot) plus live fetches | Allow PerplexityBot |
+| Copilot | Bing index | Bing Webmaster Tools; read its AI Performance report |
+| Claude | Claude-SearchBot index plus Claude-User fetches | Allow both |
 
-ChatGPT accounts for 87.4% of all AI referral traffic — Bing Webmaster Tools submission is critical.
+Answers are nondeterministic and vary by engine, location, and session. Judge trends over repeated runs, never a single screenshot.
 
-### How AI search retrieves content (Google's named mechanics)
+### Content that earns citations
 
-Google's 2026 AI optimization guide names two mechanics worth designing for:
+- Non-commodity first. Google's guide separates commodity content ("based on common knowledge, which could originate from anyone") from content that "provides unique expert or experienced takes," and says "Don't just recycle what others on the internet have already said." Before drafting, name the gain: original data, a first-hand test with specifics, practitioner gotchas, real costs, or a synthesis nobody has published. If an LLM could rebuild the draft from the current top results, send it back to research.
+- Answer first. Open each section with a one- or two-sentence direct answer to its heading, then evidence and nuance. Each passage must stand alone: no "as mentioned above," no pronouns pointing at earlier sections.
+- Evidence density. In the GEO benchmark (Aggarwal et al., KDD 2024), adding cited sources, quotations, and statistics raised a source's visibility by up to about 40%, while keyword stuffing did not help. Use real, attributed numbers and quotes; never invent them to look citable.
+- Cover the fan-out neighbourhood on one strong page: related questions, comparisons, constraints, edge cases, and alternatives. Don't publish a page per query variation; Google's guide says that can violate the scaled content abuse policy and "a high quantity of pages doesn't make a website higher quality."
+- Natural structure, no artificial chunking. Google: "There's no requirement to break your content into tiny pieces." Use descriptive headings (question form where readers ask questions), lists and tables only for genuinely parallel items, and paragraph length that follows the topic.
+- Experience and authorship. Name a real author with relevant credentials and a bio page. Show first-hand evidence: own screenshots, exact versions and settings, errors met, what failed. Stock heroes and "Admin" bylines add nothing.
+- Real freshness. Update facts and `dateModified` when content changes; don't bump dates without changes.
+- Comparison pages. Make each item self-contained (who it suits, key facts, price with an as-of date, limitations), disclose affiliations, and don't rank yourself first without evidence.
 
-- RAG / grounding — AI answers are built on top of Google's core Search index. Google states plainly: "The best practices for SEO continue to be relevant because our generative AI features on Google Search are rooted in our core Search ranking and quality systems." The signals that earn organic positions are the same signals that earn AI citations.
-- Query fan-out — for a single user prompt, Google's AI generates multiple concurrent sub-queries (Google's own example: a weeds question expands to "best herbicides for lawns" and "how to prevent dandelions from growing back"). Implication for content design: cover the semantic neighborhood, not just the headline phrase. Question variants, related entities, comparison framings, and intent-adjacent long-tails need surface area inside the same cluster so fan-out lands on your pages.
+### Structured data (2026 status)
 
-### The Seven Pillars of GEO
+- Not required for AI features: "Structured data isn't required for generative AI search." It still drives rich-result eligibility and entity disambiguation, and other engines may parse it.
+- Use JSON-LD that matches visible content: `Article`/`BlogPosting` (headline, author as `Person` with `url`/`sameAs`, `datePublished`, `dateModified`), `Organization` (logo, `sameAs`), `Product`/`Offer`, `BreadcrumbList`.
+- Google stopped showing FAQ rich results on 7 May 2026; HowTo rich results went in 2023. Keep a visible FAQ when it helps readers; leftover markup is harmless but no longer a Google lever.
+- Review and `AggregateRating` markup about your own business on your own site is not eligible for review snippets. Mark up genuine third-party reviews only.
 
-Combining these improves AI visibility by 30–40%:
+### Spam-policy boundaries
 
-1. Direct response — answer the question immediately, don't bury the answer
-2. Numerical data — specific numbers, percentages, statistics get cited more
-3. Authoritative quotations — expert quotes with named attribution and credentials
-4. Extractable structure — clear headings, lists, tables that AI can parse
-5. Original expertise — first-hand experience, unique insights, proprietary data
-6. Technical infrastructure — schema markup, proper crawl access, fast loading
-7. Fresh content — AI-surfaced URLs are 25.7% fresher than traditional search results
+- Scaled content abuse covers mass-produced or mass-rewritten pages, AI-assisted or not, and Google's guide applies it to attempts to manipulate generative AI responses.
+- Site reputation abuse: third-party pages placed on a host to exploit its ranking signals violate policy even with first-party involvement (Google's November 2024 clarification). Pitch placements only where the topical fit is genuine.
+- The helpful content system was folded into core ranking in March 2024; there is no separate update to wait out. Core updates (latest confirmed: 27 March to 8 April 2026) re-evaluate quality broadly. Don't quote ranking-shift percentages without a primary source.
 
-### Information Gain (2026 ranking gate)
+### Crawlers and controls
 
-Every piece must add something the top 10 results don't already say. Google's 2026 systems reward novel contribution; generic summaries get demoted as AI-derivable filler.
-
-Before drafting, identify the gain:
-- Original data, survey, internal benchmark, or measurement
-- First-hand case study with specifics (numbers, screenshots, timestamps)
-- Contrarian take supported by evidence
-- Synthesis across sources nobody else has combined
-- Practitioner detail the ranking pages skip (edge cases, gotchas, real cost)
-
-If the draft could be reconstructed by an LLM reading the top 10 alone, it has no information gain. Send it back to research, not to publish.
-
-### Experience signals (the "E" Google amplified in 2026)
-
-Google's March 2026 core update (rolled out March 27 → April 8) made first-hand Experience outweigh comprehensive-but-impersonal content. The update's measured impact: 80% of top-3 results shifted, nearly 1 in 4 top-10 pages fell out of the top 100, and 73% of post-update YMYL top results now display detailed author credentials (up from 58% before the cycle). Visibility flowed to primary sources, official institutions, and specialist publishers — and away from intermediary "list/aggregator" pages that rephrase the existing top results without adding original signal. Bake at least one of these into every article that allows it:
-
-- "From the Field" block — original photos, screenshots (blur sensitive data), short video, or a captioned step-through of the team actually doing the thing
-- Time-boxed case study framing — "I tried this for 30 days", "We ran this for one quarter across 12 clients", "Here's the dashboard at week 6"
-- Named-tool specifics — exact versions, exact settings, exact error messages encountered, not abstracted summaries
-- Failure honesty — what didn't work, what we'd do differently, where the data is mixed
-
-Stock photos, AI-illustrated heroes, and "Admin" bylines actively work against this. Every article needs a real human author with credentials, bio, and outbound LinkedIn/publication link.
-
-### Content Structure Rules
-
-Answer-first sections
-Lead every section with the key takeaway in 1–2 sentences, then elaborate. 44.2% of all AI citations come from the first 30% of text. If an AI engine reads only the first sentence of each section, the reader should still get the full answer.
-
-Featured snippet block (40–50 words after each H2)
-Immediately after each H2, place a tight 40–50 word direct answer to the heading's question. This is the unit Google extracts for Position Zero and the unit AI Overviews quote verbatim. It sits before the longer ~150-word elaboration. Make it self-contained — no "as discussed above", no pronouns referring to earlier sections.
-
-Extractable passages (~150 words)
-Each major point should be a self-contained 134–167 word unit that works as a standalone answer. If someone read only that paragraph, they'd get the complete answer. This is natural answer-unit structure, not "chunking" — Google's 2026 AI optimization guide explicitly warns against artificially fragmenting content into tiny pieces to chase AI features. The unit comes from how the topic decomposes for a real reader, not from a mechanical word-count cut.
-
-Voice-search H2s
-Phrase H2s the way users actually speak the query, not the way SEO tools rank tokens. "What is topical authority?" beats "Topical Authority". "How to set up FAQ schema" beats "FAQ Schema Setup". Voice/AI assistants match conversational phrasing.
-
-Data density
-At least one concrete number, percentage, or statistic per major section. Numerical data gets cited more. Flag data-free sections.
-
-FAQ sections
-Include a FAQ for informational and commercial intent pages. Pages with FAQ sections are 2.8x more likely to be cited in AI answers. Each answer: 2–4 sentences, direct and self-contained.
-
-Listicle format for commercial keywords
-100–200 word overviews per item, "Best For" tags, 3–4 pros, 2–3 cons, pricing indication. Listicles are the #1 AI-cited format (21.9% of all citations). Each item must work as a standalone answer.
-
-Semantic completeness
-Cover topics comprehensively from multiple angles. Content scoring 8.5/10+ on semantic completeness is 4.2x more likely to be cited. Depth over breadth.
-
-E-E-A-T amplification
-Author bylines with real credentials, first-hand examples, expert quotes with attribution, citations to reputable studies. AI engines apply multi-source corroboration before citing.
-
-### Schema Markup
-
-Schema is not strictly required for AI citation — Google's 2026 AI optimization guide clarifies that no special markup is needed for generative AI search. Comprehensive JSON-LD still pays: it strengthens rich-results eligibility, entity recognition, and the indexed-signal pipeline AI features draw on via RAG. Treat schema as a force multiplier on the same SEO foundation, not a separate AI-only lever. Apply in order of impact:
-
-1. FAQ Schema — highest single impact, directly extracted by AI:
-```json
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"...","acceptedAnswer":{"@type":"Answer","text":"..."}}]}
-```
-
-2. Article Schema — establishes content authority:
-```json
-{"@context":"https://schema.org","@type":"Article","headline":"...","author":{"@type":"Person","name":"..."},"datePublished":"...","dateModified":"...","description":"..."}
-```
-
-3. HowTo Schema — cited for procedural queries:
-```json
-{"@context":"https://schema.org","@type":"HowTo","name":"...","step":[{"@type":"HowToStep","name":"...","text":"..."}]}
-```
-
-4. Organization Schema — builds entity recognition:
-```json
-{"@context":"https://schema.org","@type":"Organization","name":"...","url":"...","logo":"...","sameAs":["..."]}
-```
-
-5. Person/Author Schema — author authority is now a ranking signal. Every byline needs credentials and outbound links:
-```json
-{"@context":"https://schema.org","@type":"Person","name":"...","jobTitle":"...","worksFor":{"@type":"Organization","name":"..."},"sameAs":["https://linkedin.com/in/...","https://twitter.com/..."],"alumniOf":"...","knowsAbout":["..."]}
-```
-
-6. Review / AggregateRating Schema — for any page that hosts user reviews, product comparisons, or testimonials. Drives star displays in SERPs and is consumed directly by AI Overviews to assess brand sentiment:
-```json
-{"@context":"https://schema.org","@type":"AggregateRating","ratingValue":"4.7","reviewCount":"312","bestRating":"5"}
-```
-
-Always use JSON-LD (not microdata). Apply all applicable schemas together for maximum citation probability.
-
-### Helpful Content System — continuous, not occasional
-
-The Helpful Content Update was folded into the main core ranking algorithm; in 2026 it operates as a continuous real-time signal, not a periodic refresh. There is no longer a "recovery window" to wait for — every change is evaluated as it indexes. Practical implication: don't ship content that fails the information-gain test "for now and refresh later" — Google sees the same demotion signal the day it goes live.
-
-### Site Reputation Abuse — algorithmic since August 2025
-
-What started as a manual-action-only policy in March 2024 became fully algorithmic with the August 2025 Spam Update. Google now detects when a section of a site is topically independent from the parent domain and treats it as a separate entity — stripping the parent's authority transfer. The lifespan of a spammy "parasite" page on a high-DA host has dropped from ~9 months to roughly 6–8 weeks. Treat any "rank by riding a DA-90 host's authority" idea as both unethical and short-lived; pitch placements only where the topical fit is genuine.
-
-### AI Crawler Setup
-
-robots.txt — allow AI search bots (they cite and link back):
 ```
 User-agent: OAI-SearchBot
 Allow: /
 User-agent: PerplexityBot
 Allow: /
-User-agent: ChatGPT-User
+User-agent: Claude-SearchBot
 Allow: /
-User-agent: ClaudeBot
+User-agent: Claude-User
+Allow: /
+User-agent: Bingbot
 Allow: /
 ```
-Training crawlers (GPTBot, Google-Extended) are optional — they train models but don't cite.
 
-Bing Webmaster Tools — submit sitemap to Bing, not just Google Search Console. Critical for ChatGPT visibility.
+- Training crawlers are separate tokens: GPTBot, ClaudeBot, Google-Extended, Applebot-Extended, CCBot. Blocking them is the owner's licensing choice and does not remove the site from search citations.
+- User-initiated fetchers (ChatGPT-User, Perplexity-User, Claude-User) act for a person; OpenAI and Perplexity state robots.txt may not apply to them.
+- Google's AI features use Googlebot. Limit display with `nosnippet`, `data-nosnippet`, or `max-snippet`; the Search Console "Search generative AI" control (all sites since 31 August 2026) removes a site from AI Overviews, AI Mode, and Discover AI features and is not a ranking signal elsewhere. Google-Extended limits training, not appearance.
+- Serve key content in the initial HTML. Several AI crawlers don't execute JavaScript, so client-rendered text may be invisible to them.
+- llms.txt: Google Search ignores it ("You don't need to create new machine readable files, AI text files, markup, or Markdown"). Keeping one for developer tools is harmless; don't promise visibility from it.
 
-llms.txt — skip it. Google's 2026 AI optimization guide is explicit: "you don't need to create new machine readable files, AI text files, markup, or Markdown." Near-zero adoption among the search engines that actually drive AI citations; building one is wasted effort that signals "I read an llms.txt thinkpiece" more than it signals optimization.
+### Measurement
 
-### Agentic experiences (emerging — Google's forward-looking note)
+- Google Search Console Generative AI performance report (June 2026): impressions in AI Overviews, AI Mode, and Discover by page, country, and device. Impressions only, and already counted in the Web totals.
+- Bing Webmaster Tools AI Performance report (public preview February 2026): Copilot and Bing AI citations, cited pages, and grounding queries; no clicks.
+- A fixed set of 10 to 20 niche prompts re-run monthly across engines, logging which page and passage got cited. Segment referral traffic from chatgpt.com, perplexity.ai, copilot.microsoft.com, and gemini.google.com. Treat vendor citation trackers as samples.
 
-Google's 2026 guide flags autonomous AI agents — systems that book reservations, compare specs, transact on behalf of users — as the next surface to design for. Two concrete asks land today: keep the DOM clean and the accessibility tree well-formed (agents inspect both during automated browsing), and track the Universal Commerce Protocol (UCP) as it firms up for product/ecommerce surfaces. No new markup is required; this is normal semantic HTML and a11y hygiene paying compound interest as the agentic layer matures.
+### Agentic experiences
+
+Google's guide flags agents that act for users (book, compare, buy). Browser agents read screenshots, the DOM, and the accessibility tree, so semantic HTML, labelled controls, and accessible forms matter. For commerce, track the Universal Commerce Protocol (UCP) as it matures. No new markup is required.
 
 ## Examples
 
-### Answer-first section (correct)
+Answer-first section, wrong:
 
-> Why answer-first structure matters
-> AI engines extract opening sentences first — 44.2% of citations come from the first 30% of text. Writing the key takeaway at the start of every section maximises the chance of being cited, and also makes the content easier for human readers to scan.
+> How long does a full reindex take?
+> When we look at how indexing works, there are many factors at play. Researchers have studied this extensively...
 
-### Answer-first section (wrong)
+Right:
 
-> Why answer-first structure matters
-> When we look at how AI search engines process content, we can see that there are many factors at play. Researchers have studied this extensively. The way content is structured plays an important role...
+> How long does a full reindex take?
+> On our 40 GB test index, a full reindex took 18 minutes on 8 vCPUs and 52 minutes on 2. Time scales roughly with document count; the settings that change it are below.
 
-### FAQ block (citable format)
+Fan-out coverage, wrong: separate pages for "reindex time", "how long reindex", and "reindex duration large index".
+Right: one page answering the time question first, then hardware scaling, partial reindex, zero-downtime swaps, and common failures, each under its own heading.
 
-```json
-{
-  "@type": "Question",
-  "name": "How long should an extractable passage be?",
-  "acceptedAnswer": {
-    "@type": "Answer",
-    "text": "134–167 words. Each passage should work as a standalone answer — if someone read only that paragraph, they'd get the complete answer without needing surrounding context."
-  }
-}
-```
+## Checklist
+
+- [ ] The page states a non-commodity gain (data, test, experience, synthesis) in the first screen.
+- [ ] Every section opens with a standalone answer; no passage depends on an earlier one.
+- [ ] Numbers and quotes are real, attributed, and dated; none invented for citability.
+- [ ] Related sub-questions are covered on this page, not spun into near-duplicate pages.
+- [ ] Named author with credentials and bio; first-hand evidence where the topic allows.
+- [ ] JSON-LD matches visible content; no self-serving review markup; no claim that FAQ or HowTo markup earns Google features.
+- [ ] Search crawlers allowed, key content in initial HTML, Bing submission done, Google generative AI control left on unless the owner opts out.
+- [ ] Citation tracking set up (Search Console, Bing AI Performance, fixed prompt set) and judged over repeated runs.
+
+## References
+
+Reviewed 2026-10-12.
+
+- [Google: optimizing for generative AI features](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) and [AI features and your website](https://developers.google.com/search/docs/appearance/ai-features)
+- [Google: Search generative AI control](https://support.google.com/webmasters/answer/16908024) and [generative AI performance reports](https://developers.google.com/search/blog/2026/06/gen-ai-performance-reports)
+- [Google spam policies](https://developers.google.com/search/docs/essentials/spam-policies) and [AI-generated content guidance](https://developers.google.com/search/docs/fundamentals/using-gen-ai-content)
+- [OpenAI crawlers](https://developers.openai.com/api/docs/bots), [Perplexity crawlers](https://docs.perplexity.ai/docs/resources/perplexity-crawlers), [Anthropic crawlers](https://support.claude.com/en/articles/8896518)
+- [Aggarwal et al., GEO: Generative Engine Optimization (KDD 2024)](https://arxiv.org/abs/2311.09735)
+- [Pew Research, AI summaries and clicks (2025)](https://www.pewresearch.org/short-reads/2025/07/22/google-users-are-less-likely-to-click-on-links-when-an-ai-summary-appears-in-the-results/)

@@ -21,38 +21,27 @@ rules:
 
 ## Overview
 
-A landing page has one job: turn a stranger into a buyer (or trial user). Everything else — logos, headers, badges, blog links — is decoration. This skill encodes the patterns that consistently convert: a tight design system that handles dark/light mode automatically, an opinionated section order that walks visitors through the buy decision, copy rules that avoid AI-generic language, and the SEO/structured-data baseline that gets the page found in the first place.
+A landing page has one job: turn a stranger into a buyer or trial user; everything else is decoration. This skill covers a token-level design system with automatic dark/light mode, a section order that walks visitors to the buy decision, copy rules against AI-generic language, and the SEO/structured-data baseline.
 
-Pair with `content-voice` for copy. This skill handles structure, design system, and conversion mechanics. `content-voice` handles how the words sound.
+Pair with `content-voice`, which owns how the words sound; this skill owns structure, design system and conversion mechanics.
 
 ## Tech Stack Baseline
 
-Default to the lightest possible stack. Heavy frameworks slow time-to-interactive, hurt SEO, and add maintenance burden for what should be ~80% prerendered HTML.
+Use the lightest stack: heavy frameworks slow time-to-interactive, hurt SEO and add maintenance to what should be ~80% prerendered HTML.
 
-Recommended:
-- SvelteKit + adapter-static for prerendered SSR. Zero JS on most pages, full SEO, instant LCP.
-- Plain CSS with custom properties — no Tailwind, no UI library. CSS custom properties + `prefers-color-scheme` give you theming for free.
-- System font stack — `-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif`. Zero font load, native OS feel.
-- TypeScript in `<script>` blocks.
-- Vite for bundling.
-- Cloudflare Pages or Vercel for hosting (static + edge functions).
+Recommended: SvelteKit + adapter-static (or Astro) for prerendered HTML (zero JS on most pages, full SEO, instant LCP); plain CSS custom properties + `prefers-color-scheme` for free theming; system font stack `system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif` (zero font load, native feel); TypeScript in `<script>`; Vite; Cloudflare Pages or Vercel (static + edge functions).
 
-Avoid unless specifically needed:
-- React + Next.js for a marketing site (overkill, hydration cost)
-- Tailwind for a single-domain landing (verbose class soup, design tokens scattered)
-- Heavy animation libraries (GSAP, Framer Motion) for fade-ins (CSS does it in 4 lines)
-- Web fonts (system fonts look better than 90% of imported fonts on Apple devices)
-- Component libraries (Radix, shadcn) — landing pages need brand-specific UI, not generic primitives
+Avoid unless needed: React + Next.js for a marketing site (hydration cost); Tailwind for a single-domain landing (class soup, scattered tokens); GSAP or Framer Motion for fade-ins (CSS does it in 4 lines); web fonts (system fonts beat 90% of imports on Apple devices); Radix, shadcn and other component libraries (landing pages need brand-specific UI).
 
 ## Design System (Single Source of Truth)
 
-All design tokens live in one CSS file as custom properties on `:root`. Components read tokens via `var(--token)`. Hardcoded colors, spacing, or radii in components is a smell.
+All tokens live in one CSS file as `:root` custom properties read via `var(--token)`; hardcoded colors, spacing or radii in components are a smell.
 
 ### Color tokens
 
 ```css
 :root {
-  /* Neutrals — Apple-style cold grays for premium feel */
+  /* Neutrals — Apple-style cold grays */
   --gray-50: #fbfbfd;
   --gray-100: #f5f5f7;
   --gray-200: #e8e8ed;
@@ -64,7 +53,7 @@ All design tokens live in one CSS file as custom properties on `:root`. Componen
   --gray-800: #3a3a3c;
   --gray-900: #1d1d1f;
 
-  /* Brand accent — pick ONE primary, use shades */
+  /* Brand accent — ONE primary, use shades */
   --accent-50:  #eef2ff;
   --accent-100: #dbe4ff;
   --accent-200: #bfcfff;
@@ -72,7 +61,7 @@ All design tokens live in one CSS file as custom properties on `:root`. Componen
   --accent-500: #4a6cf7;  /* primary — buttons, links */
   --accent-600: #3451d1;  /* hover */
 
-  /* Semantic — these are what components reference */
+  /* Semantic — what components reference */
   --bg: var(--white);
   --bg-muted: var(--gray-100);
   --card-bg: var(--white);
@@ -81,61 +70,32 @@ All design tokens live in one CSS file as custom properties on `:root`. Componen
   --text-muted: var(--gray-500);
   --border: var(--gray-200);
   --border-light: var(--gray-100);
-  --on-accent: #ffffff;  /* text on accent backgrounds — does NOT invert */
+  --on-accent: #ffffff;  /* does NOT invert */
   --nav-bg: rgba(255, 255, 255, 0.72);
 
-  /* Trust accent — green for privacy/security signals */
-  --green-500: #30d158;
+  --green-500: #30d158;  /* privacy/security trust signals */
 }
 ```
 
-### Typography scale
+### Typography, spacing (8px base), effects
 
 ```css
 :root {
-  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display',
-               'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+               Roboto, 'Helvetica Neue', Arial, sans-serif;
   --font-mono: 'SF Mono', SFMono-Regular, ui-monospace, 'Cascadia Code', Menlo, monospace;
 
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 2rem;
-  --text-4xl: 2.5rem;
-}
-```
+  --text-xs: 0.75rem;  --text-sm: 0.875rem;  --text-base: 1rem;  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;  --text-2xl: 1.5rem;    --text-3xl: 2rem;   --text-4xl: 2.5rem;
 
-### Spacing scale (8px base)
+  --space-1: 0.25rem;  --space-2: 0.5rem;  --space-3: 0.75rem;  --space-4: 1rem;
+  --space-5: 1.25rem;  --space-6: 1.5rem;  --space-8: 2rem;     --space-10: 2.5rem;
+  --space-12: 3rem;    --space-16: 4rem;   --space-20: 5rem;    --space-24: 6rem;
 
-```css
-:root {
-  --space-1: 0.25rem;   --space-5: 1.25rem;
-  --space-2: 0.5rem;    --space-6: 1.5rem;
-  --space-3: 0.75rem;   --space-8: 2rem;
-  --space-4: 1rem;      --space-10: 2.5rem;
-                        --space-12: 3rem;
-                        --space-16: 4rem;
-                        --space-20: 5rem;
-                        --space-24: 6rem;
-}
-```
-
-### Effects
-
-```css
-:root {
-  --radius-sm: 0.5rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1rem;
-  --radius-full: 9999px;
-
+  --radius-sm: 0.5rem;  --radius-md: 0.75rem;  --radius-lg: 1rem;  --radius-full: 9999px;
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
   --shadow-lg: 0 12px 32px rgba(0,0,0,0.08);
-
   --transition: 0.2s ease;
   --nav-height: 56px;
   --max-width: 1100px;
@@ -144,7 +104,7 @@ All design tokens live in one CSS file as custom properties on `:root`. Componen
 
 ## Automatic Dark/Light Mode
 
-This is non-negotiable for modern landing pages. Implement once at the token level — components shouldn't know which mode they're in.
+Non-negotiable. Implement once at the token level — components shouldn't know which mode they're in.
 
 ```css
 @media (prefers-color-scheme: dark) {
@@ -158,213 +118,103 @@ This is non-negotiable for modern landing pages. Implement once at the token lev
     --border: #2a2a2e;
     --border-light: #1c1c1f;
     --nav-bg: rgba(0, 0, 0, 0.72);
-
-    /* Brighten accent slightly for dark mode contrast */
-    --accent-500: #6d8aff;
-
-    /* Adjust shadows — heavier on dark */
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+    --accent-500: #6d8aff;  /* brighter for contrast */
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.4);  /* heavier on dark */
     --shadow-lg: 0 12px 32px rgba(0,0,0,0.6);
   }
 }
 ```
 
 Rules:
-- Never hardcode colors in components. Use `var(--token)`.
+- Never hardcode colors in components.
 - `--on-accent` does NOT invert — text on a colored button stays white in both modes.
-- Test both modes. Dark mode reveals contrast bugs that pass in light.
-- Add the meta tag so the OS chrome matches:
+- Test both modes; dark reveals contrast bugs. Component-specific values (e.g. a `rgba(0,0,0,0.4)` overlay) need dark overrides inside the component.
+- Match the OS chrome:
   ```html
   <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
   <meta name="color-scheme" content="light dark" />
   ```
-- Component-specific cases (like a `rgba(0,0,0,0.4)` overlay) need explicit dark-mode overrides inside the component.
+- Shorter alternative for current browsers: `:root { color-scheme: light dark; --bg: light-dark(#fff, #000); }` (`light-dark()` is Baseline 2024).
 
 ## Section Anatomy (Top to Bottom)
 
-Order matters. The page is a sales conversation. Each section answers the next objection.
+The page is a sales conversation; each section answers the next objection.
 
-### 1. Nav (sticky, blur backdrop)
+1. Nav — fixed, ~56px; logo + 1–3 links + one accent CTA pill; `backdrop-filter: blur(20px)` on a translucent background; border/shadow appears on scroll. Mobile: smaller paddings, no hamburger unless > 5 items.
 
-- Fixed top, height ~56px
-- Logo + 1–3 links + 1 primary CTA pill (accent fill)
-- `backdrop-filter: blur(20px)` + translucent background
-- Border-bottom appears on scroll (subtle shadow change)
-- Mobile: same layout, smaller paddings — don't add a hamburger unless > 5 items
+2. Hero — conversion is decided here.
+   - Badge above headline: tiny, uppercase, muted context tag ("macOS 14+ · Apple Silicon").
+   - Headline: `clamp(2.5rem, 6vw, 3.5rem)`, weight 700, letter-spacing -0.035em, line-height 1.08, `text-wrap: balance` (Baseline 2024) instead of `<br>`.
+   - Subtitle: one sentence, ≤ ~30 words, `--text-lg`, `--text-secondary`, naming 2–3 features.
+   - Primary CTA: accent pill, `--text-lg`, generous padding; trust line under it with trial limits ("100 free dictations · No credit card"), `--text-sm` muted.
+   - Optional `brew install ...` monospace block; system requirements last, muted.
+   - `min-height: calc(100svh - var(--nav-height))` (`svh` avoids the mobile URL-bar jump of `100vh`); subtle radial gradient to accent-50 at top.
 
-### 2. Hero
+3. How It Works — three cards numbered 01/02/03, headline + 1–2 sentences; card-bg, 1px border, radius-lg, padding-8; hover `translateY(-2px)` + shadow-md.
 
-The single most important section. Conversion is decided here.
+4. Modes / use cases — if the product has 3+ distinct jobs (dictation + meetings + notes), introduce them early as cards.
 
-- Badge above headline — context tag (e.g., "macOS 14+ · Apple Silicon"). Tiny, uppercase, muted.
-- Headline — `clamp(2.5rem, 6vw, 3.5rem)`, weight 700, letter-spacing -0.035em, line-height 1.08. Two lines max with `<br>`. State the outcome, not the feature. "Talk to your computer, don't type." beats "AI-powered voice recognition for macOS."
-- Subtitle — single sentence, max ~30 words, `--text-lg`, `--text-secondary`. Includes 2–3 specific features ("smart cleanup, live translation, meeting summaries").
-- Primary CTA — pill button, accent fill, `--text-lg`, generous padding. Use action verbs. "Download Free" beats "Get Started." Concrete > abstract.
-- Trust line under CTA — free trial limits ("100 free dictations · No credit card") in `--text-sm` muted.
-- Alt install — `brew install ...` block in monospace if relevant.
-- System requirements — last line, muted small text.
+5. Feature deep-dives — one section per major feature, text beside visual, alternating sides: heading (`--text-4xl`, 700, letter-spacing -0.03em), 2–4 sentences, 3 accent-dot specifics, a real screenshot, demo card or stylized illustration.
 
-Vertical centering: `min-height: calc(100vh - var(--nav-height))`. Background: subtle radial gradient to accent-50 at top.
+6. Privacy / trust — any privacy/local/data angle gets its own section; people scroll for trust.
 
-### 3. How It Works (3 steps)
+7. Pricing — two+ cards: yours (highlighted, "Best Value" badge) vs the alternative (cloud subscription): price (`--text-4xl`), period ("once" vs "/month"), year-2 cost line (the kicker), checkmarks (you) vs X marks (them).
 
-Three cards, numbered 01/02/03. Headline + 1–2 sentence description per step. Each card: card-bg, 1px border, radius-lg, padding-8. Hover: `translateY(-2px)` + shadow-md.
+8. Competitor table — feature-by-feature vs named competitors, your column on `--accent-50`, strikethrough promo prices, cost-after-2-years row in a heavier border. Often the highest-converting section.
 
-### 4. Three Modes / Use Cases overview (if multi-feature product)
+9. Stats (if applicable) — one big number ("150x realtime") with a simple you-vs-them bar chart.
 
-If the product has 3+ distinct modes/jobs (dictation + meetings + notes, etc.), establish them early as cards. Sets expectations for the rest of the page.
+10. Compatibility — pill grid of supported apps/integrations.
 
-### 5. Feature deep-dives (alternating two-column blocks)
+11. About / made by — "Built by [team] in [city]. Selectively shipped." plus company link.
 
-Each major feature gets its own section: text on one side, visual on the other. Alternate sides for rhythm. Each block:
-- Section heading (`--text-4xl`, weight 700, letter-spacing -0.03em)
-- 2–4 sentence paragraph
-- 3-bullet list of specifics (with accent dot before each)
-- Visual: real screenshot, demo card, or stylized illustration
+12. FAQ — 8–12 questions in `<details name="faq">`: zero JS, accessible, exclusive accordion via shared `name` (Baseline 2024). Animating open state (`::details-content` + `interpolate-size`) isn't cross-browser in 2026 — enhancement only. Cover: what it is (headline echoed differently), privacy/data, platform/requirements, free trial, pricing, how each major feature works, objections ("What if X doesn't work?"), refund/cancellation.
 
-### 6. Privacy / Trust section
+13. Footer CTA — same CTA and trust line under a different, summarizing headline ("Local. Fast. Yours.").
 
-If your product has any privacy/local/data angle, give it a section. People scroll for trust signals.
-
-### 7. Pricing (vs subscription comparison)
-
-Two cards minimum: yours (highlighted) and the alternative (cloud subscription). Show:
-- Price (`--text-4xl`)
-- Period ("once" vs "/month")
-- Year-2 cost line (the kicker)
-- Feature list with checkmarks (you) or X marks (them)
-- "Best Value" badge on yours
-
-### 8. Competitor Comparison Table
-
-Feature-by-feature against named competitors. Your column highlighted with `--accent-50` background. Strikethroughs for promo prices. Cost-after-2-years row at bottom in heavier border. This is often the highest-converting section — visitors scroll specifically to compare.
-
-### 9. Performance / Stats (if applicable)
-
-One big number ("150x realtime"). Bar chart or simple visual showing you vs competition.
-
-### 10. Compatibility (where it works)
-
-Pill grid of supported apps/integrations. Reassures buyers that the tool fits their existing workflow.
-
-### 11. About / Made by
-
-Brief: "Built by [team] in [city]. Selectively shipped." Link to company. Builds trust without taking up space.
-
-### 12. FAQ
-
-8–12 questions. Use `<details>` element — zero JS, accessible, animates with CSS. Cover:
-- "What is it?" (echo the headline differently)
-- Privacy / data handling
-- Platform / requirements
-- Free trial details
-- Pricing details
-- Each major feature ("How does X work?")
-- Common objections ("What if X doesn't work?")
-- Refund / cancellation
-
-### 13. Footer CTA
-
-A repeat CTA section before the footer. Different headline from hero — emotional or summarizing ("Local. Fast. Yours."). Same CTA. Same trust line.
-
-### 14. Footer
-
-Brand + tagline on left, columns on right (Product, Company, Legal, Connect). Copyright at bottom. Keep it minimal — 3–4 columns max.
+14. Footer — brand + tagline left; 3–4 columns max right (Product, Company, Legal, Connect); copyright at bottom.
 
 ## CTA Hierarchy
 
-A landing page should have one primary action and zero or one secondary action. Multiple CTAs of equal weight = no CTA.
+One primary action, zero or one secondary; equal-weight CTAs = no CTA.
 
-Hierarchy:
-1. Primary CTA — accent-filled pill, white text. Use for the conversion goal (Download, Buy, Sign up). Placed in: Nav, Hero, FooterCTA. Same label, same color.
-2. Secondary CTA — outline pill (accent border + accent text, transparent fill). Use for alternate paths (Learn more, Buy after free trial). Different label.
-3. Tertiary — text links with underline-on-hover. Used in nav, footer, inline copy.
+1. Primary — accent-filled pill, white text, for the conversion goal (Download, Buy, Sign up); same label and color in Nav, Hero and Footer CTA.
+2. Secondary — outline pill (accent border + text) for alternate paths (Learn more, Buy after free trial), different label.
+3. Tertiary — text links, underline on hover.
 
 Rules:
 - Never two filled accent CTAs in the same viewport.
-- Never use red, orange, or yellow for primary CTAs unless brand-justified — they read as warnings.
-- CTA text is a verb + outcome: "Download Free", "Start Trial", "Buy Vext" — not "Click here", "Learn more", "Submit".
-- Pill radius (`border-radius: 9999px`) outperforms rounded rectangles in tests for software products.
+- No red, orange or yellow primary CTAs unless brand-justified — they read as warnings.
+- Pill radius (9999px) is the default for software CTAs — a brand choice, not a proven conversion lever; test it if it matters.
 
 ## Conversion Patterns
 
-### Show price prominently
+- Show the price. Hidden price reads as "expensive" or "talk to sales"; complex pricing still shows a starting number.
+- Compare against the alternative (subscription vs one-time, tool vs status quo, you vs named competitors) with visible math: "$49 vs $200 over 2 years".
+- Specific over abstract: "150x realtime" beats "blazingly fast", "$24.50 with VEXT50" beats "Save big". Every claim should be checkable.
+- Layer trust throughout: requirements badge in hero, "No credit card" in trial copy, privacy section mid-page, real screenshots, company name + jurisdiction in footer.
+- Explicit trial limits: "100 dictations, 50 notes, 10 meeting recordings — no credit card" outperforms "Try free".
+- Real urgency only (pulsing dot pill, deadline date, strikethrough price). Fake countdowns or deadlines kill trust, and regulators treat fake scarcity as a deceptive dark pattern.
 
-Hide the price = lose the sale. Visitors who can't see the price assume "expensive" or "you have to talk to sales." Even if pricing is complex, show a starting number.
+## Copy Rules (on top of `content-voice`)
 
-### Compare against the alternative
-
-People don't evaluate prices in isolation — they evaluate them against alternatives. Always include a comparison: subscription vs one-time, your-tool vs status-quo, you vs named competitors. Make the math visible (e.g., "$49 vs $200 over 2 years").
-
-### Specific over abstract
-
-"150x realtime" beats "blazingly fast." "$24.50 with VEXT50" beats "Save big." Numbers, named features, named competitors, named integrations. Every abstract claim should be replaced with something checkable.
-
-### Trust signals layered throughout
-
-Don't bunch all trust at the bottom. Sprinkle:
-- System requirements badge in hero
-- "No credit card" in trial copy
-- Privacy section mid-page
-- Real screenshots (not stock illustrations)
-- Specific company name + jurisdiction in footer
-
-### Free trial with explicit limits
-
-"Free trial — 100 dictations, 50 notes, 10 meeting recordings — no credit card" outperforms "Try free." Numbers make the offer concrete.
-
-### Urgency without manipulation
-
-If you have a real launch promo or deadline, show it: pulsing dot pill, deadline date, original price strikethrough. Never use fake countdowns or invented deadlines — buyers detect them, and trust dies fast.
-
-### Multiple CTAs, one ask
-
-The CTA should appear in nav, hero, mid-page (after pricing), and footer. All point to the same action. Don't split between "Buy" and "Sign up free" and "Watch demo" — pick one primary outcome and repeat.
-
-## Copy Rules (apply on top of `content-voice`)
-
-### Headlines
-
-- State the outcome, not the feature. "Talk to your computer, don't type." > "AI-powered voice recognition."
-- Two lines max — use `<br>` to control wrapping. Mobile gets the same break.
-- Verb-driven when possible. "Capture a thought before it's gone." > "Voice notes feature."
-- No marketing dead words in headlines: "revolutionary", "next-generation", "ultimate", "powerful". Use the words your customer would use describing it to a friend.
-
-### Subtitles / lead paragraphs
-
-- One sentence. Two if you must.
-- Includes 2–3 concrete features by name.
-- Ends with a trust signal ("No cloud. No subscription.") or differentiator.
-
-### Section headings
-
-- Short. 1–4 words ideally. End with a period for tonal calm: "Voice notes." "How it works." "What you earn."
-- Avoid "Discover", "Unlock", "Experience", "Explore" — dead AI vocabulary.
-
-### Body copy
-
-- Apply `content-voice` rules: contractions, dramatic rhythm, no dead words.
-- Concrete examples > abstract claims.
-- One idea per paragraph.
-- Bullet lists only when you have 3+ parallel items. Otherwise use prose.
-
-### CTAs
-
-- 1–3 words. "Download Free", "Buy for $24.50", "Get started".
-- Action + outcome. Never "Click here" or "Submit".
-- Match what happens next. "Buy" → checkout. "Download Free" → trial. "Start" → signup. Don't bait.
+- Headlines: outcome not feature, two lines max, verb-driven ("Capture a thought before it's gone." > "Voice notes feature."); no "revolutionary", "next-generation", "ultimate", "powerful" — use words a customer would tell a friend.
+- Subtitles: one or two sentences, 2–3 named features, ending on a trust signal ("No cloud. No subscription.") or differentiator.
+- Section headings: 1–4 words ending with a period for calm ("How it works." "What you earn."); no "Discover", "Unlock", "Experience", "Explore".
+- Body: contractions, dramatic rhythm, concrete examples, one idea per paragraph, bullets only for 3+ parallel items.
+- CTAs: 1–3 words, verb + outcome; never "Click here", "Learn more", "Submit". Match what happens next ("Buy" to checkout, "Download Free" to trial, "Start" to signup).
 
 ## SEO + Social Baseline
 
-Every page (not just the landing) must set:
+Every page sets:
 
 ```html
 <title>Page Name — Brand</title>
 <meta name="description" content="..." />  <!-- under 160 chars, unique per page -->
 <link rel="canonical" href="https://domain.com/path" />
 
-<meta property="og:type" content="website" />  <!-- or "article" for blog posts -->
+<meta property="og:type" content="website" />  <!-- "article" for blog posts -->
 <meta property="og:url" content="..." />
 <meta property="og:title" content="..." />
 <meta property="og:description" content="..." />
@@ -380,18 +230,9 @@ Every page (not just the landing) must set:
 <meta name="twitter:site" content="@handle" />
 ```
 
-### OG image generation
+OG images: build-time 1200×630 SVG → PNG per page (`@resvg/resvg-js` or similar); PNG only, since Facebook, Slack and LinkedIn don't render SVG. Layout: dark background, accent gradient bar top/bottom, logo top-left, headline center-left, domain footer; titles auto-wrap with dynamic sizing (80 → 64 → 52px). Gitignore the generated files.
 
-Generate per-page OG images at build time as 1200×630 SVG → PNG (use `@resvg/resvg-js` or similar).
-
-- PNG only for `og:image` and `twitter:image` — Facebook, Slack, LinkedIn don't render SVG.
-- Brand-consistent: dark background, accent gradient bar at top/bottom, logo top-left, headline center-left, domain footer.
-- Auto-wrap titles with dynamic font sizing (drop from 80px → 64px → 52px as line count grows).
-- Generated files in .gitignore — they're build artifacts, not source.
-
-### JSON-LD structured data
-
-For a software product landing page, include `SoftwareApplication`:
+JSON-LD for a software product:
 
 ```json
 {
@@ -412,237 +253,144 @@ For a software product landing page, include `SoftwareApplication`:
 }
 ```
 
-Plus `Organization` and `FAQPage` (if you have a FAQ section).
+Add `Organization`. `FAQPage` is harmless, but since 2023 Google shows FAQ rich results only for authoritative government and health sites. The software-app rich result needs a real `aggregateRating` or `review` (otherwise no stars, though other parsers still benefit). Never invent ratings or review counts — it violates Google's structured-data policy and the US FTC fake-review rule.
 
-Never invent `aggregateRating` with fake review counts — Google penalizes this. Only include if you have real reviews.
-
-### Canonical and sitemap
-
-- Every page sets `<link rel="canonical">`.
-- Static `sitemap.xml` listing all routes with `lastmod` and reasonable `priority` (1.0 for home, 0.7 for content, 0.3 for legal).
-- `robots.txt` allowing everything except `/api/` and `/_`.
+Canonical and sitemap: `<link rel="canonical">` on every page; static `sitemap.xml` of all routes with accurate `lastmod` (Google ignores `priority` and `changefreq`); `robots.txt` allowing everything except `/api/` and `/_`.
 
 ## Error Pages (404, 5xx)
 
-A non-existent route is a conversion opportunity, not a dead end. Most sites ship the framework's default 404 — generic, brand-broken, no recovery path. Don't.
+One error component (`+error.svelte`, `error.tsx` or equivalent) branching on `status`: 404 a light on-brand line ("Page not found."), 5xx an honest "Something broke on our end", others the real message in a plain frame.
 
-### One component, all errors
-
-Build a single `+error.svelte` (SvelteKit) / `error.tsx` (Next) / equivalent that handles every status code. Branch the headline and copy on `status`:
-
-- 404 — "Lost in transcription." / "Page not found." Light, on-brand, slight humor if it fits the voice.
-- 5xx — "Something glitched on our end." Acknowledge the problem honestly. Don't blame the user.
-- Other (403, 401, etc.) — fall back to the actual error message in a plain frame.
-
-### Required elements
-
-1. Status badge — small monospace pill ("Error 404"). Tells the user what category of problem it is without the page looking like a debug screen.
-2. Headline — `clamp(2rem, 5vw, 2.75rem)`, on-brand, friendly. Avoid all-caps "OOPS!" or "PAGE NOT FOUND!".
-3. Blurb — single sentence explaining what happened in human language. Never expose stack traces or server-side error messages to users.
-4. Two CTAs — "Back home" (primary, accent-filled) + a secondary path ("Read the blog", "See pricing"). Same hierarchy as the rest of the site.
-5. Suggestions list — 3–5 inline links to common destinations (Pricing, FAQ, Contact, etc.). Catches the "I was looking for X" case where Home isn't the right answer.
-6. Visual — optional but recommended: a subtle brand element (animated icon, illustration). Reuses brand tokens so it doesn't break in dark mode.
-
-### Tone rules
-
-- Be human, not corporate. "We can't find that page" beats "The requested resource was not found."
-- Don't apologize excessively. One sentence acknowledging is enough.
-- No "Click here to" instructions. The CTAs are obvious.
-- No marketing copy. Don't try to sell. Just help them find what they wanted.
-- Never blame the user. "You typed the wrong URL" is hostile. "This page doesn't exist anymore" is neutral.
-
-### Technical requirements
-
-- Title: `<title>404 — Brand</title>` (use the actual status code).
-- Meta: `<meta name="robots" content="noindex">` — error pages should never be indexed.
-- Same layout: nav + footer present, identical to the rest of the site. Visitors should see continuity, not a stripped-down system page.
-- Dark/light mode: error page uses the same CSS custom properties — zero special-case styling.
-- Reduced motion: any animations gate on `@media (prefers-reduced-motion: reduce)`.
-- No third-party calls: error pages must work even when APIs are down. No analytics that block render, no social embeds.
-
-### Static fallback
-
-For static sites (`adapter-static`, Next export, etc.), configure the adapter to emit `404.html` from your error component. Cloudflare Pages, Netlify, Vercel, and S3 will serve it automatically for unknown routes:
-
-```js
-// SvelteKit svelte.config.js
-adapter: adapter({ fallback: '404.html' })
-```
-
-The `+error.svelte` component is what gets prerendered into `404.html` at build time.
-
-### Don't do
-
-- ❌ Render a stack trace or framework default error page in production
-- ❌ Auto-redirect after a delay ("Redirecting in 5 seconds...") — disorienting and feels broken
-- ❌ Show a search bar without a real search backend
-- ❌ Use stock "lost robot" / "broken cable" illustrations — generic and dated
-- ❌ Skip the nav and footer — the page should feel like part of the site
-- ❌ Index error pages (missing `noindex` is a common SEO bug)
+- Monospace status pill, friendly headline, one human sentence (no stack trace), "Back home" primary CTA + one secondary path, 3–5 common links.
+- Same nav, footer, tokens and dark mode; `<title>404 — Brand</title>`; `<meta name="robots" content="noindex">`; no third-party calls, so it renders when APIs are down.
+- Static sites emit `404.html` from the same component (SvelteKit: `adapter({ fallback: '404.html' })`); Cloudflare Pages, Netlify, Vercel and S3 serve it for unknown routes.
+- Don't: timed auto-redirects, a search box with no backend, stock "lost robot" art, blaming the user ("You typed the wrong URL").
 
 ## Animation (Restrained)
 
-Default to no animation. Add only when it serves communication.
-
-### `.animate-on-scroll` pattern
+Default to none; add only when it serves communication.
 
 ```js
 const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  },
+  (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add('visible')),
   { threshold: 0.1 }
 );
 document.querySelectorAll('.animate-on-scroll').forEach((el) => observer.observe(el));
 ```
 
 ```css
-.animate-on-scroll {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+.animate-on-scroll { opacity: 0; transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease; }
+.animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  .animate-on-scroll { opacity: 1; transform: none; transition: none; }
 }
-.animate-on-scroll.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.4); } }
+.dot { animation: pulse 1.6s ease-in-out infinite; }  /* live indicators: recording, launch promo */
 ```
 
 Rules:
 - Use sparingly — every section animating is annoying.
-- Never animate content above the fold (hero is visible at load).
-- Disable on `prefers-reduced-motion: reduce`:
-  ```css
-  @media (prefers-reduced-motion: reduce) {
-    .animate-on-scroll { opacity: 1; transform: none; transition: none; }
-  }
-  ```
-
-### Hover micro-interactions
-
-- Buttons: `transform: translateY(-1px)` on hover, accent color shift.
-- Cards: `translateY(-2px)` + shadow upgrade.
-- Links: color shift only, no underline-fade gimmicks.
-
-### Pulsing dots
-
-For "live" indicators (recording, launch promo):
-```css
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.4); }
-}
-.dot { animation: pulse 1.6s ease-in-out infinite; }
-```
+- Never animate above-the-fold content, and never start the LCP element at `opacity: 0`.
+- Same-document View Transitions are Baseline since Oct 2025, fine for state changes. Scroll-driven animations (`animation-timeline`) lack stable Firefox in 2026: only inside `@supports (animation-timeline: view())`, IntersectionObserver as default.
+- Honour `prefers-reduced-motion: reduce`.
+- Hover: buttons `translateY(-1px)` + accent shift; cards `translateY(-2px)` + shadow upgrade; links color shift only, no underline-fade gimmicks.
 
 ## Responsive Rules
 
-Two breakpoints cover ~95% of cases:
+Two breakpoints cover ~95% of cases: `@media (max-width: 768px)` (tablet) and `@media (max-width: 640px)` (mobile).
 
-```css
-@media (max-width: 768px) { /* tablet */ }
-@media (max-width: 640px) { /* mobile */ }
-```
+- 3-column grids → 1 column on mobile, max-width 480px centered; 2-column feature blocks stack on tablet, both full-width.
+- Components living in different column widths (pricing cards, feature blocks) can use container queries (`@container`, Baseline since 2023).
+- Hero `clamp()` handles headline sizing — no manual mobile override.
+- Tap targets ≥ 44×44px on mobile; WCAG 2.2 AA's floor is 24×24px with spacing.
+- Tables: `overflow-x: auto` wrapper, `min-width` on the table.
 
-Patterns:
-- 3-column grids → 1 column on mobile, max-width 480px centered
-- 2-column feature blocks → stack on tablet, both full-width
-- Hero clamp() handles headline sizing automatically — no manual mobile override needed
-- Tap targets ≥ 44×44px on mobile
-- Tables: `overflow-x: auto` wrapper with `min-width` on the table itself
+## Performance Targets (Core Web Vitals, 2026)
 
-## Performance Targets
+Google judges Core Web Vitals on field data at p75, mobile and desktop separately: LCP ≤ 2.5s, INP ≤ 200ms (replaced FID in 2024), CLS ≤ 0.1. Lab Lighthouse is a smoke test — the verdict is CrUX / Search Console or your RUM.
 
-A landing page that takes >1s to render loses customers regardless of copy quality.
+- LCP: aim ≤ 1.5s — prerendered HTML, system fonts, LCP image with `fetchpriority="high"`, never `loading="lazy"` on it.
+- INP: under ~50KB gzipped JS, no hydration of static sections, defer or drop third-party tags (chat widgets, heatmaps, tag managers), break up long tasks.
+- CLS: explicit width/height (or `aspect-ratio`) on images and embeds; reserve space for late-injected content.
+- Images: AVIF or WebP via `<picture>` with `srcset`/`sizes`, SVG for illustrations, PNG only for pixel-exact screenshots.
+- Inline critical above-the-fold CSS if your stack supports it.
 
-- LCP < 1.5s — system fonts, prerendered HTML, images optimized
-- CLS < 0.1 — explicit width/height on images, no layout-shifting embeds
-- Total JS shipped — under 50KB gzipped for a marketing-only landing
-- Image format — WebP for photos, SVG for illustrations, PNG only for screenshots that need pixel accuracy
-- Hero image — preload it: `<link rel="preload" as="image" href="...">`
-- Above-the-fold CSS — inline critical CSS if your stack supports it
+## Accessibility (WCAG 2.2 AA)
+
+WCAG 2.2 AA is the bar; the EU European Accessibility Act has effectively required it for consumer e-commerce and services since 28 June 2025.
+
+- Contrast: 4.5:1 body text, 3:1 large text and UI boundaries, in both themes.
+- Focus: visible ring on every interactive element, never hidden behind the sticky nav (2.4.11) — set `scroll-padding-top: var(--nav-height)` on `html`.
+- Semantics: one `<h1>`, ordered headings, `<header>/<nav>/<main>/<footer>` landmarks, real `<button>` and `<a>`.
+- Motion: honour `prefers-reduced-motion`; no auto-moving content over 5s without a pause control.
+- Media: captions on video with speech, meaningful `alt`, decorative images `alt=""`.
+
+## Forms (signup, waitlist, checkout)
+
+Every field costs conversions; ask only what the next step needs — usually just email.
+
+- Visible `<label>` per field; placeholder is not a label.
+- Correct `type`, `autocomplete` (`email`, `name`, `tel`, `one-time-code`) and `inputmode`, so autofill and the right mobile keyboard work.
+- Single column, primary button right under the last field, label repeating the outcome ("Get the download link").
+- Validate on blur, not per keystroke; error next to the field, linked via `aria-describedby`; keep the user's input.
+- Don't block paste, don't ask for the same data twice (3.3.7), no puzzle CAPTCHAs (3.3.8) — use an invisible bot check or honeypot.
+- Say what happens after submit and how often you'll email.
 
 ## Anti-Patterns (Don't)
 
-- Don't autoplay video — it ships +500KB, distracts, and breaks on mobile
-- Don't use full-bleed background videos — performance disaster
-- Don't gate the price behind "Contact us" unless you genuinely sell enterprise
-- Don't add a "newsletter signup" modal that interrupts reading
-- Don't use generic stock photos of laptops/teams/handshakes — kills credibility
-- Don't put "Award winning" or trust-badge soup in hero — empty signals
-- Don't bury the CTA below 4 sections of content
-- Don't write copy that sounds like AI — see `content-voice`
-- Don't scroll-jack with libraries that hijack the wheel event
-- Don't hide nav on scroll — visitors lose orientation
-- Don't ship cookie banners unless you actually need them (most marketing sites don't if no third-party cookies)
-- Don't write "trusted by X companies" without showing real logos and numbers — adds nothing
+- Autoplay video with sound or a heavy hero video (a muted `playsinline` loop only with poster, small file and pause control); full-bleed background videos dominate LCP and bandwidth
+- Price gated behind "Contact us" unless you genuinely sell enterprise
+- Newsletter modals that interrupt reading
+- Stock photos of laptops/teams/handshakes; "Award winning" or trust-badge soup in the hero; "Trusted by X companies" without real logos and numbers
+- CTA buried below 4 sections
+- AI-sounding copy (see `content-voice`)
+- Scroll-jacking the wheel event; hiding nav on scroll (visitors lose orientation)
+- Non-essential analytics cookies — cookieless analytics avoids the EU consent banner; otherwise consent comes first
+
+## When to Break the Rules
+
+Patterns are calibrated for $20–200 indie/SaaS products for individuals or small teams; add depth and proof as price rises.
+
+- Premium (>$500): case studies, named customers, ROI calculator; one page may not be enough.
+- Enterprise B2B: gate pricing behind a demo if the sales motion needs qualification.
+- High-emotion products (luxury, lifestyle): typography and imagery outweigh spec lists.
+- Developer tools: code samples in hero, GitHub stars badge, technical spec sheet upfront.
 
 ## Examples
 
-### Hero — what works
+Hero:
+- ❌ "Revolutionary AI-Powered Voice Recognition Software for Modern Professionals"
+- ✅ "Talk to your computer, don't type." Subtitle: Voice to text with smart cleanup, live translation, meeting summaries. No cloud. No subscription. Your voice never leaves your Mac.
 
-❌ AI-generic:
-> "Revolutionary AI-Powered Voice Recognition Software for Modern Professionals"
+Pricing:
+- ❌ "Get a quote" or "Starting at $—"
+- ✅ Vext: $49 once · $0 in year 2 vs cloud voice tools: $10–30 /month · $120–360/year
 
-✅ Outcome-driven:
-> "Talk to your computer, don't type."
-> Subtitle: Voice to text with smart cleanup, live translation, meeting summaries. No cloud. No subscription. Your voice never leaves your Mac.
+CTA:
+- ❌ "Click here", "Submit", "Get started"
+- ✅ "Download Free" (verb + outcome), "Buy for $24.50" (verb + price clarity), "Apply to join" (verb + commitment level)
 
-### Pricing — what works
-
-❌ Hidden / vague:
-> "Get a quote" or "Starting at $—"
-
-✅ Concrete + comparison:
-> Vext: $49 once · $0 in year 2
-> Cloud voice tools: $10–30 /month · $120–360/year
-
-### CTA — what works
-
-❌ "Click here", "Submit", "Get started"
-
-✅ "Download Free" (verb + outcome)
-✅ "Buy for $24.50" (verb + price clarity)
-✅ "Apply to join" (verb + commitment level)
-
-### Comparison row — what works
-
-❌ Generic feature names:
-> "Cloud-dependent · Account required"
-
-✅ Specific friction points:
-> "Audio sent to third-party servers · Requires monthly subscription · Account + login required"
+Comparison row:
+- ❌ "Cloud-dependent · Account required"
+- ✅ "Audio sent to third-party servers · Requires monthly subscription · Account + login required"
 
 ## Pre-Ship Checklist
 
-Before declaring a landing page ready:
-
-- [ ] Hero passes the 3-second test: someone landing here understands what it is and what to do
+- [ ] Hero passes the 3-second test: what it is and what to do
 - [ ] Primary CTA visible without scrolling on a 13" laptop
 - [ ] Dark mode tested — no contrast bugs
 - [ ] Mobile tested at 375px and 414px
 - [ ] All copy passes `content-voice` rules (no dead vocabulary)
-- [ ] Every external link has `rel="noopener"` and `target="_blank"` if appropriate
+- [ ] New-tab links use `target="_blank"` (`noopener` is now default; `rel="noreferrer"` only to hide the referrer)
 - [ ] Every image has descriptive `alt`
 - [ ] OG image renders in https://www.opengraph.xyz preview
-- [ ] Lighthouse: Performance ≥ 95, SEO 100, Accessibility ≥ 95
-- [ ] Tested on actual mobile device (not just DevTools)
+- [ ] Lighthouse lab: Performance ≥ 95, SEO 100, Accessibility 100; field data (when available) passes LCP, INP and CLS at p75
+- [ ] Keyboard-only pass: every control reachable, focus visible and never under the sticky nav; usable at 200% zoom
+- [ ] Tested on an actual mobile device (not just DevTools)
 - [ ] No console errors in production build
-- [ ] Form submissions / CTAs actually work end-to-end
+- [ ] Form submissions / CTAs work end-to-end
 - [ ] 404 page exists and matches brand
 - [ ] Sitemap.xml lists every page
-- [ ] Canonical URL is set on every page
+- [ ] Canonical URL set on every page
 - [ ] At least one trust signal in hero, one mid-page, one footer
-
-## When to Break the Rules
-
-- Premium price points (>$500) — add more credibility (case studies, named customers, ROI calculator). Single-page may not be enough.
-- Enterprise B2B — gate pricing behind a demo if your sales motion needs qualification.
-- High-emotion products (luxury, lifestyle) — typography and imagery matter more than spec lists.
-- Developer tools — code samples in hero, GitHub stars badge, technical spec sheet upfront.
-
-The patterns above are calibrated for $20–200 indie/SaaS products sold to individuals or small teams. Adjust upward (more depth, more proof) for higher prices.

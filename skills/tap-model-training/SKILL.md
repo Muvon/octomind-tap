@@ -1,9 +1,9 @@
 ---
 name: tap-model-training
 title: "Octomind-Tap Embed Model Training and Publishing"
-description: "Operational playbook for training, evaluating, and publishing `muvon/octomind-embed`, the BGE-small-en-v1.5 fine-tune that powers octomind's capability auto-activation. Covers when to retrain (after any change to `capabilities/*/config.toml` triggers or `skills/*/SKILL.md` semantic phrases), the full pipeline (LLM augmentation, dataset build, iterative hard-negative mining, CachedMNRL + GISTEmbed + Matryoshka loss stack, holdout + eval_real evaluation, ONNX export, HuggingFace publish), how to resume an interrupted training, how to calibrate the runtime threshold/margin from eval_real, and how to update the publish baseline. Use whenever the user adds/removes/edits capability triggers or skill semantic rules, asks about retraining the tap model, or reports false-positive/false-negative auto-activation issues."
+description: "Operational playbook for training, evaluating, and publishing muvon/octomind-embed, the granite-embedding-30m WiSE-FT soup that powers octomind's capability auto-activation and skill semantic() rules. Covers when to retrain (any change to capabilities/*/config.toml triggers or skills/*/SKILL.md semantic phrases), the bin/train pipeline (LLM augmentation, dataset build, hard-negative re-mining, CachedMNRL + Matryoshka fine-tune, soup sweep, holdout and eval_real evaluation, int8 ONNX export and calibration), resuming an interrupted run, calibrating the runtime threshold and margin, publishing behind the regression gate, and recording the baseline. Use when triggers or semantic rules change, when retraining or republishing the tap model, or when auto-activation picks the wrong capability."
 license: Apache-2.0
-compatibility: "octomind-tap repo with `model/` subdirectory. Requires Python 3.11+ (for onnxruntime wheels), `uv` for dependency management, ANTHROPIC_API_KEY for LLM augmentation, HF_TOKEN with read+write scope for publish, and ~30min-6h compute (GPU vs CPU) per training run."
+compatibility: "octomind-tap repo with the model/ subdirectory. Requires Python 3.11+, uv, ANTHROPIC_API_KEY for LLM augmentation, HF_TOKEN with write scope for publishing. GPU optional."
 capabilities: core
 domains: octomind
 rules:
@@ -17,7 +17,7 @@ rules:
   - match(\b(re)?train\s+(the\s+)?(tap|embedding|embed)\b)
   - match(\b(publish|ship)\s+(the\s+)?(tap|embedding|embed|model)\b)
   - match(\b(add|edit|update)\s+(a\s+)?(new\s+)?(capability|capabilities|trigger|triggers)\b)
-  - match(\b(eval_gate|eval_real|build_dataset|build_eval_seed|calibrate_thresholds)\b)
+  - match(\b(eval_gate|eval_real|build_dataset|build_eval_seed|calibrate_thresholds|model_soup|compare_bases)\b)
   - match(\bbin/(train|publish)\b)
   - match(\b(auto[\s-]?activation|capability\s+routing)\b)
   - semantic(retrain the tap embedding model)
@@ -29,218 +29,123 @@ rules:
   - semantic(the model is missing intents for one of my capabilities)
 ---
 
-## What this skill is for
+## Overview
 
-`muvon/octomind-embed` is the bi-encoder that decides which capability
-auto-activates from a user's prompt. It is fine-tuned from
-BGE-small-en-v1.5 on the triggers authored in `capabilities/*/config.toml`
-and the `semantic(phrase)` rules in `skills/*/SKILL.md`.
+`muvon/octomind-embed` is the bi-encoder octomind uses to score a user message against capability triggers and skill `semantic()` phrases. Since 2026-09 it is `ibm-granite/granite-embedding-30m-english` (6 layers, 384-dim, CLS-pooled) given a short contrastive fine-tune and blended back into the base as a WiSE-FT soup; the runtime loads its int8 ONNX graph. Whenever triggers or semantic phrases change, the model is stale. This skill walks through retraining, calibration, publishing, and recovery.
 
-Whenever those source files change, the model is stale. This skill walks
-through the retrain-and-publish loop and the recovery paths.
+The cross-encoder reranker is intentionally not trained or shipped: at the current capability count it does not improve routing over a well-calibrated bi-encoder.
 
-The cross-encoder reranker (`muvon/octomind-rerank`) is **intentionally
-not maintained**. Production validation showed it doesn't help at the
-current capability count (~75 labels); the bi-encoder + a well-tuned
-runtime gate is the production path.
+## Mental model
 
-## When to retrain
+The runtime decision is: intent → one installed capability, or abstain. It scores each capability as the mean of its top-3 trigger cosines and accepts the winner only if it clears an absolute threshold and beats the runner-up by a margin. The model, the trigger corpus, and those two constants are one system: retraining moves the cosine scale, so the constants must be recalibrated on the int8 graph and shipped together with the weights.
 
-You MUST retrain (and republish) when the supervision set changes:
+The fine-tune is a nudge. A full fine-tune forgets the base's generalization; interpolating fine-tuned and base weights beats both parents, so `bin/train` sweeps the soup alpha and ships the best gate.
 
-| Change                                                       | Retrain? |
-| ------------------------------------------------------------ | -------- |
-| Added `capabilities/<new>/config.toml`                       | yes      |
-| Removed a capability                                         | yes      |
-| Edited `triggers = [...]` in any `config.toml`               | yes      |
-| Added or edited `semantic(...)` rules in any `SKILL.md`      | yes      |
-| Edited `_oos` curated phrases in `build_dataset.py`          | yes      |
-| Agent/playbook/docs change with no trigger touched           | no       |
-| Code change in `octomind/` runtime only                      | no       |
-| Threshold/margin tweak in `capability.rs` / `skill.rs`       | no (just rebuild octomind) |
+## Rules
 
-## Standard retrain flow
+### When to retrain
 
-ALWAYS run inside `tmux` or `nohup` — sessions get disconnected.
+| Change | Retrain? |
+|--------|----------|
+| Added or removed a capability (`capabilities/<name>/config.toml`) | yes |
+| Edited `triggers = [...]` | yes |
+| Added or edited `semantic(...)` rules in any `SKILL.md` | yes |
+| Edited the `_oos` curated phrases in `build_dataset.py` | yes |
+| Agent, skill body, or docs change with no trigger touched | no |
+| Threshold/margin change in octomind `capability.rs` / `skill.rs` | no — rebuild octomind |
+
+### Standard retrain flow
+
+Run from `model/`, inside `tmux` or `nohup` so a dropped connection doesn't kill it:
 
 ```bash
-cd model
-uv sync  # if env not warm
-
+cd model && uv sync
 tmux new -s train
-ANTHROPIC_API_KEY=sk-ant-... bin/train --llm --resume --iterations 2
-# Ctrl+B then D to detach. Reattach with: tmux attach -t train
+ANTHROPIC_API_KEY=... bin/train --llm --resume --iterations 2
 ```
 
-What runs:
+What runs (`bin/train`):
 
-1. `augment_llm.py --resume` — paraphrases ONLY the new `(label, trigger)`
-   pairs against `data/intents.jsonl`. Skips already-augmented ones.
-   Cost: ~$0.10–$2 depending on how many new triggers. Time: 3–5 min.
-2. `build_dataset.py` — rebuilds `pairs.jsonl`, `triplets.jsonl`,
-   `holdout.jsonl` from `capabilities/` + `skills/` + LLM intents + OOS
-   sink + multi-turn surfaces + realistic typo augmentation.
-3. Train iter 1 with CachedMNRL + GISTEmbed + Matryoshka. ~3-6h on
-   GPU, 6-12h on CPU.
-4. Re-mine triplets with iter-1 model (retrieval-aligned + NV-Retriever
-   positive-aware filter).
-5. Train iter 2. Same time as iter 1.
-6. `eval.py` against holdout (in-distribution).
-7. `eval_gate.py` against `data/eval_real.jsonl` (real-user
-   distribution — informational at this step, blocks at publish).
-8. `export_onnx.py` — produces `checkpoints/embed-<ts>/onnx/` for
-   ORT-based consumers.
+1. `build_eval_seed.py` once, if `data/eval_real.jsonl` is missing.
+2. `augment_llm.py --resume` — LLM paraphrases for new `(label, trigger)` pairs only, appended to `data/intents.jsonl`.
+3. `build_dataset.py` — `pairs.jsonl`, `triplets.jsonl`, `holdout.jsonl`, and `raw_triggers.jsonl` (the un-augmented corpus the runtime actually embeds), with the `_oos` sink label, multi-turn surfaces, and hard-negative mining.
+4. `train.py` — CachedMNRL (scale 10) + Matryoshka, one epoch capped by `train.max_steps`; with `--iterations N`, triplets are re-mined from the previous round's mistakes between rounds.
+5. `model_soup.py` + `compare_bases.py` — sweep `soup.alphas` against the base and keep the best gate on `raw_triggers.jsonl`.
+6. `eval.py` (holdout) and `eval_gate.py` (`eval_real`, informational here).
+7. `export_onnx.py` (fp32 + int8), then `eval_gate.py` and `calibrate_thresholds.py --target-fpr 0.03` on the int8 graph.
 
-When it finishes, publish:
+Other flags: `--skip-build` (reuse `data/`), `--skip-export`, `--ft checkpoints/<dir>` (redo soup, eval, export, and calibration on an existing run), `--legacy` (diagnostic `model.fit` path).
+
+### Calibrating the runtime gate
+
+`bin/train` prints the recommended operating point. To rerun by hand:
 
 ```bash
-HF_TOKEN=hf_... bin/publish
+uv run python scripts/calibrate_thresholds.py \
+  --model checkpoints/<run>/onnx --onnx-file model_quantized.onnx --target-fpr 0.03
 ```
 
-`bin/publish` runs `eval_gate.py` against `eval_baselines.json` first
-and aborts on regression (top1_acc drops >1pt, null_fpr rises >1pt, any
-per-cap recall drops >5pts). Use `--force` only for documented
-emergencies.
+It sweeps τ × δ over `data/eval_real.jsonl` and recommends the highest gate accuracy with null false-positive rate under the target. Copy the values into:
 
-After production rollout, record the new baseline so the NEXT publish
-gates against it:
+- `octomind/src/mcp/runtime/capability.rs` — `AUTO_ACTIVATE_THRESHOLD`, `AUTO_ACTIVATE_MARGIN`
+- `octomind/src/mcp/runtime/skill.rs` — `SEMANTIC_DEFAULT_THRESHOLD`, `SEMANTIC_MARGIN`
+- `model/configs/default.yaml` — `eval.runtime_threshold`, `eval.runtime_margin` (the publish gate scores at these)
+
+The shipped soup runs at 0.65 / 0.06. Calibrate on the int8 graph: quantization shifts cosines, and that graph is what users load.
+
+### Publishing
 
 ```bash
-uv run python scripts/eval_gate.py --model muvon/octomind-embed \
-    --write-baseline eval_baselines.json
+HF_TOKEN=hf_... bin/publish            # latest checkpoint; --run <dir> to choose
 ```
 
-## Resuming an interrupted training
+`bin/publish` runs `eval_gate.py` against `eval_baselines.json` on the fp32 weights and again on the int8 graph, and aborts on regression (top-1 accuracy drop > 0.01, null FPR rise > 0.01, any per-capability recall drop > 0.05). It warns if `onnx/model_quantized.onnx` is missing, since the runtime prefers it. `--force`/`--skip-gate` bypass the gate for documented emergencies only; `--dry-run` prints without uploading.
 
-SentenceTransformerTrainer auto-checkpoints at the end of each epoch
-(`save_strategy="epoch"`, `save_total_limit=2`). Recovery:
+New weights reach fresh installs only — a cached HF repo is not re-checked — so ship the recalibrated octomind constants in the same release. After the rollout is confirmed, record the baseline the next publish gates against:
 
 ```bash
-# 1. check what got saved
-ls checkpoints/embed-*/checkpoint-*
+uv run python scripts/eval_gate.py --model muvon/octomind-embed --write-baseline eval_baselines.json
 ```
 
-If you see `checkpoint-N/` dirs, there's state. Resume:
+### Resuming an interrupted run
+
+The trainer checkpoints every epoch (`save_total_limit=2`). If `checkpoints/embed-*/checkpoint-N/` exists:
 
 ```bash
-uv run python scripts/train.py --resume
+uv run python scripts/train.py --resume                 # latest run dir
+uv run python scripts/train.py --resume-from <run-dir>  # explicit
 ```
 
-That picks the latest `checkpoints/embed-*/` dir and continues from the
-highest-numbered `checkpoint-N`. Use `--resume-from <path>` for an
-explicit run dir.
+If iteration 1 was interrupted: finish it with `--resume`, re-mine with `build_dataset.py --neg-embed-model <iter1-dir>`, train iteration 2 with `train.py`, then `bin/train --ft <iter2-dir>` for soup, eval, export, and calibration. `--resume` covers the modern `train.py` path only, not `--legacy`.
 
-Mid-iter-1 interruption — finish iter 1, then continue iter 2 manually:
+## Examples
 
-```bash
-# 1. finish iter 1
-uv run python scripts/train.py --resume
+### Example 1: new triggers not picked up
 
-# 2. re-mine triplets with iter-1 model
-ITER1=$(ls -td checkpoints/embed-*/ | head -1 | sed 's:/$::')
-uv run python scripts/build_dataset.py --neg-embed-model "$ITER1"
+❌ `bin/train --skip-build` after editing triggers — the build is what turns triggers into training surfaces, so the new run inherits the old weaknesses.
 
-# 3. train iter 2 fresh
-uv run python scripts/train.py
+✅ `bin/train --llm --resume --iterations 2` — rebuild, augment only the new triggers, retrain.
 
-# 4. eval + export
-ITER2=$(ls -td checkpoints/embed-*/ | head -1 | sed 's:/$::')
-uv run python scripts/eval.py        --run "$ITER2"
-uv run python scripts/eval_gate.py   --model "$ITER2"
-uv run python scripts/export_onnx.py --run "$ITER2"
-```
+### Example 2: wrong capability wins but triggers look right
 
-`--resume` works only for the modern `train.py` path (CachedMNRL +
-GIST + Matryoshka). `--legacy` has no checkpoint-resume.
+Retraining rarely fixes this. First run `calibrate_thresholds.py` to see whether the shipped τ/δ still fit the model; add the failing prompt to `data/eval_real.jsonl` with its correct label and rerun `eval_gate.py`; then compare the competing capabilities' triggers — shared generic vocabulary is fixed by differentiating triggers, not by more training.
 
-## Calibrating the runtime gate
+### Example 3: publishing without a baseline update
 
-After every retrain, recalibrate the runtime threshold/margin against
-eval_real:
+Publishing and forgetting `--write-baseline` leaves the next publish gating against the previous model, so a later regression can slip through. Record the baseline once the rollout is confirmed.
 
-```bash
-RUN=$(ls -td model/checkpoints/embed-*/ | head -1 | sed 's:/$::')
-uv run python model/scripts/calibrate_thresholds.py --model "$RUN" --target-fpr 0.05
-```
+## Checklist
 
-It sweeps τ × δ over `data/eval_real.jsonl`, prints the Pareto front,
-and recommends the operating point with highest gate_acc whose
-null_fpr ≤ target. Copy-paste the recommended constants into:
+- [ ] Trigger or semantic-phrase change → full rebuild with `--llm --resume`, not `--skip-build`?
+- [ ] Training run inside tmux or nohup?
+- [ ] Soup winner evaluated on holdout and `eval_real`, int8 graph exported and scored?
+- [ ] τ/δ calibrated on the int8 graph and copied into `capability.rs`, `skill.rs`, and `configs/default.yaml`?
+- [ ] `bin/publish` passed the gate without `--force`, and the octomind release carries the new constants?
+- [ ] Baseline rewritten after the rollout was confirmed?
 
-- `octomind/src/mcp/core/capability.rs:772` → `AUTO_ACTIVATE_THRESHOLD`
-- `octomind/src/mcp/core/capability.rs:781` → `AUTO_ACTIVATE_MARGIN`
-- `octomind/src/mcp/core/skill.rs:66`       → `SEMANTIC_DEFAULT_THRESHOLD`
-- `octomind/src/mcp/core/skill.rs:78`       → `SEMANTIC_MARGIN`
+## Composition / References
 
-The threshold often drops after fine-tuning (0.55 → ~0.45) because the
-FT model puts every matched positive well above the floor; the margin
-becomes the binding constraint, not the floor.
-
-## Common mistakes
-
-1. Using `--skip-build` when triggers changed. The build is what
-   converts new triggers into training surfaces. `--skip-build` reuses
-   the previous `pairs.jsonl`, so new triggers don't show up in the
-   training set, and the resulting checkpoint inherits the old
-   weaknesses. The new run is wasted compute. Always rebuild after a
-   catalog change.
-
-2. Forgetting `--llm` after adding triggers. `--llm` is what kicks off
-   `augment_llm.py` to generate user-style paraphrases of the new
-   triggers. Without it, the new triggers only get rule-template
-   expansion, which is much narrower. Use `--llm --resume` to skip
-   already-paraphrased triggers.
-
-3. Running outside tmux/nohup. Long training (5h+) over SSH dies when
-   the connection drops. Always wrap in tmux or nohup.
-
-4. Skipping the publish gate. `bin/publish --force` exists for
-   emergencies. Don't use it as habit — silent regressions ship.
-
-5. Not recording the new baseline after promotion. If you don't run
-   `eval_gate.py --write-baseline` after a successful publish, the
-   next publish has nothing to gate against and any future regression
-   slips through.
-
-6. Editing trigger lists without thinking about overlap. When two
-   capabilities share vocabulary (e.g. all `messaging-*`, all
-   `legal-*`, `webfetch` vs `scraping`), the model gets confused. Use
-   PLATFORM-specific or JURISDICTION-specific vocabulary in each cap's
-   triggers — not the same generic verbs across the family.
-
-## Key files
-
-- `model/bin/train` — full pipeline entrypoint.
-- `model/bin/publish` — gate-protected HF upload.
-- `model/configs/default.yaml` — loss stack, batch sizes, eval paths.
-- `model/scripts/build_dataset.py` — surface generation, OOS sink,
-  multi-turn, typo aug, hard-negative mining.
-- `model/scripts/train.py` — modern trainer (CachedMNRL + GIST +
-  Matryoshka) + `--resume` flag.
-- `model/scripts/eval_gate.py` — publish-time regression gate.
-- `model/scripts/calibrate_thresholds.py` — runtime τ/δ sweep.
-- `model/scripts/build_eval_seed.py` — frozen real-user eval set
-  generator. Hand-edit `data/eval_real.jsonl` to add production-observed
-  failure modes.
-- `model/eval_baselines.json` — recorded baseline; the publish gate
-  reads this.
-- `model/data/intents.jsonl` — LLM paraphrases. `augment_llm.py
-  --resume` skips entries already here.
-
-## When NOT to retrain
-
-If the symptom is "auto-activation picks the wrong capability for X but
-the triggers are correct", retraining usually won't fix it. Three other
-levers first:
-
-1. Run `calibrate_thresholds.py` to see if the current τ/δ in the
-   Rust constants matches the FT model's distribution.
-2. Add the failing prompt to `data/eval_real.jsonl` with the correct
-   label, then re-run `eval_gate.py` to confirm it's an actual model
-   problem and not an eval-distribution gap.
-3. Check the trigger lists for the competing capabilities — if two
-   neighbors share generic vocabulary, the fix is differentiating
-   triggers, not retraining alone.
-
-Retrain when the triggers themselves change, not when production
-behavior is unexpected.
+- `model/README.md` — pipeline, dataset, loss stack, eval set
+- `model/configs/default.yaml` — base model, training, soup alphas, export, runtime-mirror constants
+- `model/bin/train`, `model/bin/publish` — entry points
+- `tap-capability-authoring` skill — writing triggers

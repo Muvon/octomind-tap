@@ -91,7 +91,7 @@ Require real decisions and supporting receipts before adding personal stakes (di
 
 Adapt the same claim and proof to each audience and medium: narration, visual evidence, captions, replies, and long-form explanations have different jobs. Don't cross-post a lightly reworded script everywhere. Keep source labels, confidence notes, and research instructions in the internal handoff; retain public attribution, material limitations, and disclosures in the actual copy. A factual draft is not evidence that the speaker experienced its claims (directional).
 
-For US-facing endorsements, disclose material connections clearly with the endorsement and preserve truthful personal experience. A platform's partnership toggle may not sufficiently explain the relationship; verify both the applicable disclosure requirements and the platform's rules (official, FTC Disclosures 101, checked 2026-09). Disclosure does not make prohibited promotion permissible.
+For US-facing endorsements, disclose material connections clearly with the endorsement and preserve truthful personal experience. A platform's partnership toggle may not sufficiently explain the relationship; verify both the applicable disclosure requirements and the platform's rules (official, FTC Disclosures 101, checked 2026-09). Disclosure does not make prohibited promotion permissible. The FTC's reviews and testimonials rule (16 CFR Part 465, in force since 2024-10-21) also bans testimonials from people who don't exist, including AI personas, undisclosed insider reviews, and buying or selling fake follower or engagement indicators, with civil penalties (official, FTC fake-review warning template, 2025-12).
 
 ## Cadence, engagement, and measurement
 
@@ -127,10 +127,11 @@ Apply community rules before scheduling; don't presume disclosure makes prohibit
 | Surface | Participation gate |
 |---|---|
 | Reddit | Repetitive mass promotion and unsolicited mass messages are spam (official, Reddit Spam, 2026-05). Read each subreddit's rules; r/mcp requires disclosed self-promotion and Showcase tagging, and bans fake unaffiliated promotion and promotional AI slop (official, r/mcp Rules, 2026-09). Don't generalize that permission to other subreddits. |
-| HN | Supply factual notes for independent human authorship; generated or AI-edited text is prohibited. Exclude booster comments (official, HN Guidelines and Show HN Tips, 2026-09). |
+| HN | Supply factual notes for independent human authorship; generated or AI-edited text in posts and comments is prohibited, and so is automated posting. Exclude booster comments (official, HN Guidelines and Show HN Tips, rechecked 2026-10). |
 | dev.to | AI-assisted promotional articles are prohibited; removing the CTA doesn't change promotional purpose. Generated comments are also prohibited apart from the stated basic translation, grammar/syntax, and assistive-technology exceptions. Educational assistance must stay within the author's own understanding (official, DEV AI Guidelines, 2024-04; checked 2026-09). |
 | Medium | Third-party ads and sponsorships are prohibited; first-party links don't authorize traffic-first spam (official, Medium Rules, 2026-09). |
 | Product Hunt | Feedback invitations are allowed; direct upvote requests and vote rewards are prohibited (official, Product Hunt Sharing, 2026-09). |
+| Automated or agent posting | X requires the Automated profile label, a linked human account, replies only after user engagement, and prior approval for AI-generated replies (official, X Developer Guidelines, 2026-10). Reddit requires API approval and bot disclosure under its Responsible Builder Policy (official, 2025-11). LinkedIn's User Agreement bars unauthorized automated posting, commenting, and messaging (official, 2025-11). Bluesky and Mastodon expect a bot self-label. Plan human publishing unless the account meets these terms. |
 | Other communities | Check local rules and moderator permission for the planned activity. Don't use sockpuppets, scripted employee applause, voting rings, or disguised commercial participation (directional). |
 
 ## Examples
@@ -180,6 +181,8 @@ Undated official pages below use their verification month in inline labels.
 - [DEV Organization Guide](https://dev.to/help/organizations/maximizing-your-dev-organization), checked 2026-09; [DEV AI Guidelines](https://dev.to/guidelines-for-ai-assisted-articles-on-dev/), 2024-04-08.
 - [Medium Rules](https://help.medium.com/hc/en-us/articles/213477928-Medium-Rules), checked 2026-09.
 - [FTC endorsement disclosures](https://www.ftc.gov/business-guidance/resources/disclosures-101-social-media-influencers), checked 2026-09; US-facing commercial endorsements.
+- [FTC fake-review warning template](https://search.ftc.gov/system/files/ftc_gov/pdf/2025-Fake-Review-Warning-Template.pdf), 2025-12-22; 16 CFR Part 465.
+- [X Developer Guidelines](https://docs.x.com/developer-guidelines), reviewed 2026-10; [Reddit Responsible Builder Policy](https://support.reddithelp.com/hc/en-us/articles/42728983564564-Responsible-Builder-Policy), 2025-11; [LinkedIn User Agreement](https://www.linkedin.com/legal/user-agreement), effective 2025-11-03.
 - [Sprout Social Search](https://sproutsocial.com/insights/?p=173051), 2026-06-22; [Platform Preferences](https://sproutsocial.com/insights/?p=193529), 2026-03-16; [Statistics](https://sproutsocial.com/insights/social-media-statistics/), 2026-02-09.
 - [Product Hunt Sharing](https://www.producthunt.com/launch/sharing-your-launch), checked 2026-09.
 - [Serge Bulaev](https://www.linkedin.com/pulse/company-page-personal-profile-where-should-b2b-content-serge-bulaev-micve), 2026-08-17; [Dreamdata Benchmarks](https://dreamdata.io/blog/announcing-linkedin-ads-benchmarks-report-2026), 2026-03-10.
@@ -193,4 +196,4 @@ Re-validate when:
 - Algorithm repositories gain relevant commits.
 - New vendor reports replace the measured baseline.
 
-Validated: 2026-09
+Validated: 2026-10

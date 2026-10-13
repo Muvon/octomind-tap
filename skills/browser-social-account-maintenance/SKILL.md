@@ -1,7 +1,7 @@
 ---
 name: browser-social-account-maintenance
 title: "Browser Social Account Maintenance Ops"
-description: "Operational playbook for recurring social-account hygiene executed via a headless browser: profile/bio sync across networks, cross-posting a pre-written piece to N platforms, scheduled-post audits, follower/connection cleanup, notification triage, archive/delete of old posts. Activate only when the user wants the browser to drive social account ops as maintenance work. Authoring new post copy is out of scope; text must be supplied as input or fetched from a content specialist via tap."
+description: "Operational playbook for recurring social-account hygiene executed via a headless browser: profile/bio sync across networks, cross-posting a pre-written piece to N platforms, scheduled-post audits, follower/connection cleanup, notification triage, archive/delete of old posts — within each platform's automation terms. Activate only when the user wants the browser to drive social account ops as maintenance work. Authoring new post copy is out of scope; text must be supplied as input."
 license: Apache-2.0
 compatibility: "Requires browser:general agent with browser (Playwright) capability and filesystem-write. Assumes user has authenticated sessions or supplies credentials this session."
 domains: browser
@@ -25,9 +25,9 @@ metadata:
 
 ## Overview
 
-Drive recurring social-account operations across X, LinkedIn, Mastodon, Bluesky, Threads, Instagram, YouTube, TikTok, Reddit and similar — when the work is mechanical hygiene, not voice work. The skill covers six operations: profile sync, cross-post, scheduled-post audit, follower/connection cleanup, notification triage, archive/delete. Each follows the same shape: pull current state per platform, diff against the user's source-of-truth profile or task spec, drive the per-platform UI, capture evidence, log.
+Drive recurring social-account operations across X, LinkedIn, Mastodon, Bluesky, Threads, Instagram, YouTube, TikTok, Reddit and similar — when the work is mechanical hygiene, not voice work. The skill covers six operations: profile sync, cross-post, scheduled-post audit, follower/connection cleanup, notification triage, archive/delete.
 
-This skill explicitly does NOT write new posts. New copy is supplied as input or authored by content specialists called via `tap`. This skill takes already-written copy and ships it.
+This skill explicitly does NOT write new posts. New copy is supplied as input; this skill takes already-written copy and ships it.
 
 ## Mental model
 
@@ -36,7 +36,9 @@ Treat each social network as a target with three things: (1) a profile surface (
 Three immovable invariants:
 1. One source of truth per operation. Profile sync reads `profile.json`; cross-post reads `post.json`; cleanup reads `cleanup-rules.json`. Never invent values; never paraphrase the user's bio.
 2. Confirm-before-destructive. Delete, unfollow, archive, mass-block — confirm the count and a sample with the user before executing, even if the rules file says "auto".
-3. Per-platform compliance > convenience. Twitter/X 280-char limit, LinkedIn URL-penalty, Bluesky 300-char, Mastodon CW conventions — honor each. If a piece doesn't fit, log and skip that platform; do NOT silently truncate.
+3. Per-platform compliance > convenience. X 280-char limit, Bluesky 300, Mastodon CW conventions — honor each. If a piece doesn't fit, log and skip that platform; do NOT silently truncate.
+
+Platform automation terms bound every operation. LinkedIn's User Agreement (section 8.2) bans bots and browser automation of on-site activity, X prohibits bulk or automated following and unfollowing, and Meta's terms bar accessing or collecting Instagram data by automated means without permission — driving these with a browser risks restriction of the user's account. Before the first action on such a platform, tell the user that risk once and get their yes; keep every action user-confirmed and human-paced. Prefer official channels where they exist: native schedulers, the X API, LinkedIn's posting API, the Threads API, and the open Bluesky (AT Protocol) and Mastodon APIs, which permit disclosed automation.
 
 ## Rules
 
@@ -45,15 +47,14 @@ Three immovable invariants:
 | Network | Compose limit | Link handling | Image / video | Notes |
 |---|---|---|---|---|
 | X (Twitter) | 280 chars (free) / 25k (premium) | Counts as ~23 chars | 4 imgs / 1 video / 1 GIF | Threads: post 1, then reply with 2..N to own root |
-| LinkedIn | 3000 chars; 210-char "see more" fold | Naked links suppress reach ~60% — put link in first comment | 9 imgs / 1 video | Personal profile vs page have different composers |
+| LinkedIn | 3000 chars; ~210-char "see more" fold | Third-party studies measure lower reach for posts with external links (estimates vary widely; LinkedIn has not confirmed a penalty) | Multi-image / 1 video / document | Personal profile vs page have different composers |
 | Mastodon | 500 chars (instance default; varies) | No penalty | 4 imgs / 1 video | CW (content warning) is a culture norm, not optional for sensitive content |
 | Bluesky | 300 chars | No penalty | 4 imgs / 1 video | Threads via reply-to-self |
-| Threads | 500 chars | No penalty | 10 imgs / 1 video | Cross-post toggle to Instagram exists |
-| Instagram | Caption 2200 chars; bio 150 chars | Only one clickable URL in bio | Feed / Reels / Stories all separate composers | Posting requires mobile-style flow even on web |
+| Threads | 500 chars | No penalty | Up to 20 imgs/videos | Cross-post toggle to Instagram exists |
+| Instagram | Caption 2200 chars; bio 150 chars | Up to 5 bio links (only the first shows); caption URLs aren't clickable | Up to 20 items per carousel; Feed / Reels / Stories separate composers | Web composer supports feed posts and Reels; Stories need the app |
 | YouTube (community / Shorts metadata) | Community 500 chars | URLs allowed | N/A for community | Use Studio composer, not the consumer site |
-| Reddit | Title 300 / body 40k | Allowed; subreddit rules vary | 1 img/video per post | NEVER mass-post; subreddit-by-subreddit only |
-| TikTok | Caption 2200 chars | Bio link only | Vertical video required | Captions accept hashtags, no naked URLs in caption-link form |
-| Mastodon / Bluesky / Threads | — | — | — | Treat as the "open social" trio for low-risk cross-posting |
+| Reddit | Title 300 / body 40k | Allowed; subreddit rules vary | Image galleries or 1 video per post | NEVER mass-post; subreddit-by-subreddit only |
+| TikTok | Caption 2200 chars | Bio link only | Vertical video recommended; photo posts supported | Captions accept hashtags, no clickable URLs |
 
 ### Operation 1 — Profile sync
 
@@ -136,7 +137,7 @@ Input: `cleanup-rules.json`.
 }
 ```
 
-Always start with `dry_run: true` regardless of input — produce a candidates list with reasons. Then ask the user to confirm before running with `dry_run: false`. Cap actions per session at 50 even if `max_actions` is larger; rate-limit one action per ~3 seconds; abort on first rate-limit warning from the platform.
+Always start with `dry_run: true` regardless of input — produce a candidates list with reasons. Then ask the user to confirm before running with `dry_run: false`. Cap actions per session at 50 even if `max_actions` is larger; rate-limit one action per ~3 seconds; abort on first rate-limit warning from the platform. On X and LinkedIn, automated unfollowing is itself against the platform rules: default to handing the user the reviewed candidate list to act on, and drive the UI only on their explicit per-batch instruction.
 
 ### Operation 5 — Notification triage
 
@@ -144,7 +145,7 @@ Input: `triage-rules.json` — patterns + intent (reply / like / archive / ignor
 
 For each notification:
 - Match against rules.
-- `intent: reply` → DO NOT compose here; collect into a queue. Hand the queue to a content specialist via `tap` for batch-drafted replies. This skill never writes the reply text itself.
+- `intent: reply` → DO NOT compose here; collect into a queue and return it in the final report so the replies can be drafted upstream. This skill never writes the reply text itself.
 - `intent: like` → click like, log.
 - `intent: archive` / `ignore` → mark read, log.
 
@@ -187,11 +188,11 @@ For X, the post is 480 chars and no x-variant was supplied → log `skipped:leng
 report at the end: "X skipped — supply variants.x or shorten to ≤ 280 chars."
 ```
 
-What changed: silent truncation produces broken posts in the user's name. Skip and report — never mangle copy.
+What changed: silent truncation publishes broken posts in the user's name.
 
 ### Example 2: Edge case — LinkedIn link-in-first-comment
 
-LinkedIn down-ranks posts with naked external URLs in the body by ~60%. If `variants.linkedin.link_in_first_comment` is set: post body without the URL → after publish, capture the post URL → reopen the post → add the link as the first comment from the same account → screenshot. Log both actions in one row.
+LinkedIn's treatment of links (in the body or the first comment) is unconfirmed and studies disagree, so follow the user's spec: if `variants.linkedin.link_in_first_comment` is set, post the body without the URL → capture the post URL → add the link as the first comment from the same account → screenshot. Log both actions in one row.
 
 ### Example 3: Edge case — cleanup dry-run
 
@@ -204,17 +205,18 @@ User says "unfollow all bots, do it now." Skill still runs `dry_run: true` first
 - [ ] Per-platform compose limits checked BEFORE driving the UI; over-limit posts skipped with a `skipped:length` row, not truncated
 - [ ] Destructive operations (delete, unfollow, block, archive) ran a dry-run first and got explicit user confirmation
 - [ ] Each action has evidence: post URL captured for publishes, screenshots for profile/cleanup, log row for everything
-- [ ] Anchor / link / variant rotation respected for cross-post (no identical paste across all platforms when variants exist)
+- [ ] Platform automation terms respected: account-restriction risk stated and accepted for LinkedIn / X / Meta platforms, official APIs or native schedulers used where available
 - [ ] Rate limits honored: ≥ 2 s between actions, ≤ 50 destructive actions per session, abort on platform warning
-- [ ] Reply / comment composition was NOT done inside this skill — handed to content specialists via `tap`
+- [ ] Reply / comment composition was NOT done inside this skill — the reply queue was returned in the report
 - [ ] No credentials, cookies, or tokens persisted to disk after the run
 - [ ] Final report: per platform, what changed, what was skipped (with reason), what failed (with reason), artifact paths
 
 ## Composition / References
 
-- Pairs with `browser-form-filling-patterns` (selector resilience, file upload, multi-step UI).
-- For ANY new copy (post bodies, replies, comments, DMs): call a content specialist via `tap`. This skill ships copy; it does not author it.
-- For follower / engagement analysis or growth strategy: out of scope. Hand to a marketing specialist via `tap`.
+- Selector resilience, uploads, and waiting follow the browser agent's own snapshot-and-ref discipline.
+- New copy (post bodies, replies, comments, DMs) and follower or growth analysis are upstream concerns: this skill ships copy and returns data, it does not author or analyze.
+- [LinkedIn Help — Prohibited software and extensions](https://www.linkedin.com/help/linkedin/answer/a1341387)
+- [X Help — About following (abusive and automated following)](https://help.x.com/en/using-x/x-follow-limit)
 - [X Help — Tweet length](https://help.x.com/en/using-x/x-tweet-character-counter)
 - [LinkedIn Help — Post length](https://www.linkedin.com/help/linkedin/answer/a522537)
 - [Bluesky — Post length](https://bsky.social/about)

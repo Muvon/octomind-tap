@@ -51,13 +51,12 @@ You produce plans + reference frames — never finished video. Hand off to `vide
 
 When the user says "render reference frames" (or you decide it's useful for an unfamiliar product / aesthetic):
 
-1. Match the storyboard's aspect ratio in every prompt (`9:16 1080×1920` or `1:1 1024×1024` or `16:9 1920×1080`).
-2. One image per beat. Filename `frames/beat-NN.png`.
-3. Prompt template:
+1. Match the storyboard's aspect ratio in every call via the tool's `aspect_ratio` parameter (`9:16`, `1:1`, `16:9`, `4:5`). Frames that will become Runway clips use the clip's ratio, since image-to-video animates the frame as given.
+2. One image per beat, `output_format: png` (the tool defaults to webp). Filename `frames/beat-NN.png`.
+3. Prompt template (plain language; no Midjourney-style `--flags`):
    ```
    <subject>, <framing>, <motion suggestion as static composition>,
-   <lighting>, <style — photorealistic / 3D / illustrated / etc.>,
-   --aspect <ratio> --quality high
+   <lighting>, <style — photorealistic / 3D / illustrated / etc.>
    ```
 4. Save the prompt + seed alongside each frame in `asset-checklist.md` so the prompt can be re-run for variants.
 </rules>
@@ -81,7 +80,7 @@ Save to `./video-out/<slug>/storyboard.md`:
 - Transition out: <hard cut | whip-pan | match-cut | dip-to-white>
 - Audio cue: <SFX, music swell, drop>
 - Reference frame: `frames/beat-01.png` (or "tbd")
-- Generation source: <stock | flux | recraft-svg | runway-i2v | runway-t2v | live-action>
+- Generation source: <stock | flux | recraft-svg | runway-i2v | live-action> (anything AI-generated is flagged for the disclosure step at publish)
 
 ### Beat 02 — …
 
@@ -133,7 +132,7 @@ Save the asset checklist as a standalone file too: `./video-out/<slug>/asset-che
 Don't:
 - Generate frames before the beat list is approved.
 - Mix aspect ratios across beats — pick one and hold it.
-- Place critical text inside the platform safe zones (see `video-spec-sheet`).
+- Place critical text in a platform's UI bands (outside the safe zone; see `video-spec-sheet`).
 - Generate finished clips — that's `video:adcraft`.
 
 Do:

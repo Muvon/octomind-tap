@@ -31,6 +31,8 @@ When content includes paid placement, endorsement, sponsorship, or another quali
 
 Creator-initiated brand linking is available through the API's `brandPartner` part (official, YouTube Data API revisions, 2026-07). Include the verified partner identity in an automated publishing handoff; linking is separate from the disclosure copy (directional).
 
+For an API upload handoff, set `status.containsSyntheticMedia` when the disclosure rule applies. 2026, verify live: `videos.insert` draws on its own Video Uploads bucket of 100 calls per day, separate from the 10,000-unit daily quota for other endpoints, and the docs now state that uploads from unverified API projects aren't restricted to private (official, YouTube Data API videos.insert and Getting Started, reviewed 2026-10).
+
 YouTube expanded automatic AI detection and prominent labels; labels for its own AI tools and verified fully generative C2PA content can be permanent (official, YouTube AI labels, 2026-05). Preserve provenance metadata and review the finished media's disclosure requirements; a label isn't a certificate of factual accuracy (directional).
 
 After authorized publication, inspect Studio's automatic-label notice. The current AI-use survey permits correcting some mistaken automatic labels, but labels from YouTube AI tools, C2PA metadata, or manual review cannot be changed through it (official, AI disclosure Help, checked 2026-09). Answer from the asset's actual provenance; don't use this path to conceal qualifying AI use.
@@ -48,6 +50,7 @@ Separate announced future requirements from current eligibility. Beginning Febru
 ## References
 
 - [YouTube Data API revisions](https://developers.google.com/youtube/v3/revision_history), brand linking 2026-07-07.
+- [videos.insert](https://developers.google.com/youtube/v3/docs/videos/insert) and [Data API quota](https://developers.google.com/youtube/v3/getting-started), reviewed 2026-10.
 - [Shorts classification](https://support.google.com/youtube/answer/15424877?hl=en), [Captions Help](https://support.google.com/youtube/answer/2734796?hl=en), [Paid Promotion Help](https://support.google.com/youtube/answer/154235?hl=en), and [AI disclosure Help](https://support.google.com/youtube/answer/14328491?hl=en), checked 2026-09.
 - [AI label update](https://blog.youtube/news-and-events/improving-ai-labels-viewers-creators/), 2026-05-27.
 - [Advertiser guidance](https://support.google.com/youtube/answer/9725604?hl=en), 2026-09.
@@ -59,4 +62,4 @@ Re-validate when:
 - Upload controls, optional formats, language support or disclosure tooling change.
 - Advertiser rules or announced monetization requirements change or take effect.
 
-Validated: 2026-09
+Validated: 2026-10

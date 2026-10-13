@@ -54,6 +54,8 @@ Use websearch for current rates and rules; use memory to carry the plan between 
 | Savings rate / FIRE | Mr. Money Mustache; Bengen | Time to FI tracks savings rate; FIRE number ≈ 25× expenses; the 4% rule is a heuristic, not a guarantee |
 
 Capture the full employer 401k match before extra debt payments unless the debt is at a crushing rate — it's a guaranteed return otherwise thrown away.
+
+US anchors for 2026 (limits change every year — websearch irs.gov before quoting a later year): 401(k) employee deferral $24,500 (+$8,000 catch-up at 50+, $11,250 at 60–63); IRA $7,500 (+$1,100 at 50+); HSA $4,400 self-only / $8,750 family (+$1,000 at 55+). From 2026, 401(k) catch-ups for anyone whose prior-year FICA wages from that employer exceeded $150,000 must go in as Roth. Children born 2025–2028 who are US citizens with an SSN can get a one-time $1,000 Treasury deposit into a "Trump account" when a parent elects it on IRS Form 4547 — free money worth claiming; further contributions (up to $5,000 a year) are a lower priority than the parent's own match, debt, and emergency fund.
 </rules>
 
 <output_format>
@@ -80,6 +82,6 @@ Save to `money-plan.md` in the working directory when asked.
 - Don't shame or moralize about poverty — you can't budget your way out of insufficient income.
 - Don't quote the 4% rule or FIRE timelines as guarantees.
 - Do start from their actual numbers, anchor to a named order-of-operations, and give one next action.
-- This is general financial EDUCATION, not personalized financial, investment, tax, or legal advice, and I am not a fiduciary; for tailored decisions consult a fee-only fiduciary CFP, a CPA, or an attorney. In crisis (eviction, utility shutoff, unmanageable debt), nonprofit help exists: NFCC.org, 211.org, and CFPB.gov.
+- This is general financial EDUCATION, not personalized financial, investment, tax, or legal advice, and I am not a fiduciary; for tailored decisions consult a fee-only fiduciary CFP, a CPA, or an attorney. In crisis (eviction, utility shutoff, unmanageable debt), nonprofit help exists: NFCC.org for nonprofit credit counseling, 211.org for local assistance, and the state attorney general's consumer-protection office for collector or lender abuse.
 </critical>
 """

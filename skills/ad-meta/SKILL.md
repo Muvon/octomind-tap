@@ -38,13 +38,13 @@ Meta is unusual: most copy fields have no hard cap, only truncation thresholds. 
 | Reels (FB + IG) | Vertical video, primary text, CTA — sound-on but caption-required |
 | Marketplace | Same as Feed, narrower visible primary text |
 | Audience Network | Headline, description, image/video, CTA |
-| Threads Ads (globally rolled out Jan 2026) | Must co-run with IG Feed; single image, single video, image-carousel; 1:1 or 4:5; 80-160 char primary text sweet spot |
+| Threads Ads | Advertiser access since 2025; ads shown to users in all markets from early 2026 with a gradual ramp. Image, video, carousel; 1:1 or 4:5. Included in Advantage+ placements by default (opt out per ad set) |
 | Carousel Ads | 2-10 cards with per-card image/headline/URL; shared primary text |
 | Collection Ads | Hero (1:1 or 1.91:1) + 4 product tiles from catalog; opens Instant Experience; mobile-only |
 | Lead Ads | Native in-app form, no landing page; intro card + ≤3-5 questions + privacy URL + thank-you |
 | Messenger / Click-to-Messenger Ads | Feed creative + "Send Message" CTA → opens Messenger thread with welcome template (≤3 quick-reply chips) |
 | Click-to-WhatsApp Ads | Feed/Reels/Stories creative + "Send WhatsApp Message" CTA → opens WA chat with pre-filled message (≤160 char, editable) |
-| Advantage+ Shopping campaigns | Up to 150 creatives per campaign; catalog feed must include 1:1 + 4:5 (+ 9:16 for Reels) |
+| Advantage+ sales campaigns (formerly Advantage+ Shopping) | Meta merged manual and Advantage+ setup into one flow in 2025–26; legacy ASC/AAC creation ended with Marketing API v25. 2026: up to 50 ads per ad set, 150 per campaign (verify live). Catalog feed should include 1:1 + 4:5 (+ 9:16 for Reels) |
 
 ### Feed — Slots and Limits
 
@@ -79,7 +79,7 @@ Meta is unusual: most copy fields have no hard cap, only truncation thresholds. 
 | Marketplace | 1:1 | Same as Feed |
 | Video minimum | 1 second | Practical min: 6–15s for short, 15–30s for full |
 | Video max | 241 minutes (Feed) | Practical max: 60s for performance ads |
-| Reels video max | 90 seconds | Sweet spot: 15–30s |
+| Reels video max | Varies by placement (2026 sources disagree: 90s to 15 min — verify in Ads Manager) | Sweet spot: 15–30s |
 | Stories video max | 60 seconds (auto-split into 15s cards) | Each card is its own segment |
 | File size — image | 30 MB | JPG or PNG |
 | File size — video | 4 GB | MP4, MOV, GIF |
@@ -91,9 +91,9 @@ Meta is unusual: most copy fields have no hard cap, only truncation thresholds. 
 - Effective safe zone: middle band of the 1920px height
 - Logo + key copy belongs in the middle band
 
-### Advantage+ Creative (Default-On Since Feb 2026)
+### Advantage+ Creative Enhancements (2026 — check toggles live)
 
-Default ON for Sales, Leads, and App Promotion objectives. The system auto-applies these enhancements unless toggled off per ad:
+Many enhancements are on by default for new ads, and Meta keeps adding and renaming them. Review the enhancement list per ad before publishing. Common ones:
 
 1. Image enhancement (recolor / crop)
 2. 3D parallax effect
@@ -104,7 +104,7 @@ Default ON for Sales, Leads, and App Promotion objectives. The system auto-appli
 7. Image animation (animate statics)
 8. Text variations generation
 
-Brand-safety opt-outs (toggle per ad, persist across future campaigns since Mar 2026):
+Brand-safety opt-outs (toggle per ad; confirm whether your choice persists to new ads):
 - Disable "Image enhancement" + "3D effect" for brand-driven creative
 - Disable "Music" for accounts with sonic identity
 - Disable "Image animation" for product photography
@@ -151,6 +151,8 @@ Messaging-objective only:
 
 Pick the CTA that matches the actual landing-page action. "Learn More" is the universal default but converts worse than a verb that names the action.
 
+Variant strategy: Meta's ad retrieval (Andromeda, 2024–) rewards genuinely different concepts — different hooks, angles, formats, people — over near-duplicate tweaks of one ad. Build the variant set from distinct concepts.
+
 ### Hook Rules (Where Reads Actually Happen)
 
 Meta is brutal about scroll-speed. The first 3 elements decide everything:
@@ -172,7 +174,9 @@ So:
 - Sensational language: "Shocking", "You won't believe" — manual review trigger
 - Misleading scarcity: "Last day!" "Only 3 left!" without evidence — disapproval
 - Profanity: even mild ("damn") — disapproval
-- Restricted categories: weight loss, gambling, dating, financial products, healthcare — require certification
+- Restricted categories: weight loss, gambling, dating, financial products, healthcare — require certification; health and wellness advertisers also face limits on lower-funnel event optimization
+- Political, electoral, and social-issue ads: no longer delivered in the EU since October 2025 (Meta's response to the TTPA regulation); elsewhere they need authorization and a "Paid for by" disclaimer
+- AI-generated or digitally altered realistic people/events in political or social-issue ads require Meta's AI disclosure
 - Body parts isolated from context: cropped tight on stomach/legs — disapproval risk
 - Text-on-image rule: was strict, now relaxed — but heavy text overlays still suppress delivery (lower reach, higher CPM)
 

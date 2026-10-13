@@ -1,7 +1,7 @@
 ---
 name: device-computer-automation
 title: "Desktop Device UI Automation"
-description: "Operate the local computer's native UI (macOS, Linux, or Windows) via the desktop-automation MCP server. Covers OS accessibility and screen-recording permissions, pixel-anchor targeting (no semantic UI tree), region-capture discipline under the MCP response cap, window focus and multi-monitor handling, keyboard and mouse sequencing, and the safety boundary around destructive desktop actions and screen-lock or biometric bypass. Activate when the user wants to drive a native desktop app or the OS shell at the GUI layer. Pairs with the device:operator agent, which carries the shared snapshot, verify, and record discipline; this skill carries the desktop-specific tooling and rules and pulls the device-computer capability automatically."
+description: "Operate the local computer's native UI (macOS, Linux, or Windows) via the desktop-automation MCP server. Covers OS accessibility and screen-recording permissions, pixel-anchor targeting (no semantic UI tree), full-screen capture limits under the MCP response cap, HiDPI coordinate mapping, window focus and multi-monitor handling, keyboard and mouse sequencing, and the safety boundary around destructive desktop actions and screen-lock or biometric bypass. Activate when the user wants to drive a native desktop app or the OS shell at the GUI layer. Pairs with the device:operator agent, which carries the shared snapshot, verify, and record discipline; this skill carries the desktop-specific tooling and rules and pulls the device-computer capability automatically."
 license: Apache-2.0
 compatibility: "Requires the device:operator agent. The host OS must grant Accessibility and Screen Recording permissions (macOS), or the equivalent input-monitoring permission (Linux / Windows), to the process running the MCP server."
 domains: device
@@ -34,21 +34,24 @@ A desktop is the opposite of a mobile device in two important ways. First, there
 
 Three immovable invariants on the desktop:
 
-1. The desktop is the last resort. If the same outcome can be reached by a terminal command (shell capability) or a DOM-driven browser-automation action, propose that and stop. The GUI layer is slow, fragile, and hard to verify; reserve it for native apps that genuinely have no automation API.
+1. The desktop is the last resort. If the same outcome can be reached by a terminal command or a DOM-driven browser-automation action, propose that and stop. Native apps often have a scriptable path too: on macOS, AppleScript/JXA via `osascript` (scriptable apps, or System Events UI scripting through the Accessibility API) and `shortcuts run`; on Windows, PowerShell and UI Automation; on Linux, D-Bus, AT-SPI, or `xdotool` under X11. The GUI layer is slow, fragile, and hard to verify; reserve it for apps that genuinely have no automation API.
 2. Window focus is part of state. You do not type until you have just-now confirmed the target window is foregrounded. A keystroke into the wrong window can submit a chat message, delete a tab, or trigger a destructive shortcut.
-3. The MCP response has a ~1 MB cap. Full-screen screenshots on modern displays will exceed it and silently return nothing useful. Always prefer region captures sized to the target.
+3. The screenshot is the only state you get, and it is expensive. `screen_capture` returns the whole primary display; the server's MCP response cap is about 1 MB, and its author reports only ~800×600 as reliably under it. On Retina / 4K displays a capture can fail outright — treat that as a tool failure, never click from memory.
 
 ## Tooling — what desktop-automation gives you
 
-The `desktop-automation` MCP server exposes a small surface. There is no semantic UI tree; every action is coordinate-based.
+The `desktop-automation` server (pinned 0.1.6) exposes six tools. There is no semantic UI tree and no region capture; every action is coordinate-based.
 
-| Family | Tools | Notes |
+| Tool | Arguments | Notes |
 |---|---|---|
-| Screen | `get_screen_size`, `screen_capture` | Capture full screen or a region; full-screen often exceeds the 1 MB response cap on Retina / 4K displays |
-| Mouse | `mouse_move`, `mouse_click` | Origin is top-left of the primary display |
-| Keyboard | `keyboard_type`, `keyboard_press` | `keyboard_press` accepts named keys and modifier combos (Cmd+S, Ctrl+Shift+T, etc.) |
+| `get_screen_size` | none | Logical screen size in points — the coordinate space `mouse_move` uses |
+| `screen_capture` | none | Full primary display, returned inline and kept as a `screenshot://<id>` resource; it cannot write a file |
+| `mouse_move` | `x`, `y` | Origin top-left of the primary display |
+| `mouse_click` | `button` (left/right/middle), `double` | Clicks wherever the pointer is — always `mouse_move` first |
+| `keyboard_type` | `text` | Types at the current focus |
+| `keyboard_press` | `key`, `modifiers` (`command`, `control`, `shift`, `alt`) | Lowercase key names (`enter`, `tab`, `escape`, `s`) |
 
-Always call `get_screen_size` once at run start and record it in `run.json.target.screen`. If the user resizes a window or changes display arrangement mid-run, re-screenshot before the next click — `get_screen_size` itself does not change, but the visual layout of the target window did.
+Call `get_screen_size` once at run start and record it in `run.json.target.screen`. On HiDPI displays the screenshot is in physical pixels (2× on Retina) while `mouse_move` takes logical points: divide screenshot coordinates by the ratio of image width to `get_screen_size` width before moving. Checkpoint evidence is the capture id, since the tool cannot save PNGs.
 
 ## Targeting without a UI tree
 
@@ -60,19 +63,17 @@ You cannot ask the OS "where is the Save button". You can only screenshot, recog
    - Keyboard shortcuts when one exists for the action (a `Cmd+S` is a thousand times more reliable than locating a "Save" toolbar icon).
 2. Avoid pixel-perfect targeting of small UI (< 16 px). Click the center of the visible region with a small margin (~2–3 px inset).
 3. Do not carry coordinates between sessions. Today's "Save" button is not at yesterday's coordinates — DPI, theme, window position, and accent settings all shift pixels. Re-screenshot and re-locate every run.
-4. After every click, capture a focused region around the expected next state and confirm it arrived. Do not chain clicks without a verifying capture.
+4. After every click, capture the screen and confirm the expected next state arrived. Do not chain clicks without a verifying capture.
 
 When a keyboard shortcut exists for the action, use it instead of a mouse click. `Cmd+W` to close a tab, `Cmd+F` to open find, `Cmd+S` to save — these bypass the pixel-anchor problem entirely.
 
 ## Screen-capture discipline
 
-The 1 MB MCP response cap is the dominant performance constraint on this skill. Strategies:
+The response-size cap is the dominant constraint on this skill. Strategies:
 
-- Default to region captures sized to the smallest rectangle that contains the target. A 600×400 region around a dialog beats a 5120×2880 full-screen capture every time.
-- For full-screen captures, ask the user to lower resolution or arrange windows so the target fits in a small region first. Do not silently return a corrupted / truncated capture.
-- For verifying a state change, capture only the region where the change is expected — not the whole screen.
-
-If a capture is unexpectedly empty / truncated, treat it as a tool failure. Do not click based on what you "expected" to see.
+- Before the run, ask the user to set a lower or scaled display resolution if captures fail — that is the only lever, because the tool cannot crop.
+- Capture only when you need to locate or verify, not after every keystroke.
+- If a capture is empty, errors, or is truncated, record `capture_too_large` or the error and stop. Do not click based on what you "expected" to see.
 
 ## Window focus and multi-monitor
 
@@ -81,7 +82,7 @@ Before any `keyboard_type` or shortcut press, you must have confirmed in the las
 Multi-monitor setups:
 
 - Coordinates are relative to the primary display's top-left. Secondary displays may have positive coordinates (to the right / below) or negative (to the left / above of the primary).
-- Confirm which display the target window is on before clicking. Get the user to bring it to the primary display if you cannot reliably address coordinates on the secondary one.
+- `screen_capture` shows only the primary display, so you cannot verify anything on a secondary one. Ask the user to move the target window to the primary display before the run.
 - A click that lands on the wrong display silently activates whatever window happened to be under those coordinates. That is exactly the failure mode this skill exists to prevent.
 
 ## Host prerequisites and permissions
@@ -90,15 +91,15 @@ The skill's `device-computer` capability brings in `desktop-automation` automati
 
 macOS:
 - `System Settings → Privacy & Security → Accessibility` — toggle on for the process.
-- `System Settings → Privacy & Security → Screen Recording` — toggle on for the process.
+- `System Settings → Privacy & Security → Screen & System Audio Recording` — toggle on for the process. Since macOS Sequoia the system re-asks for this periodically ("Allow For One Month"); a capture that suddenly fails mid-project is usually that prompt waiting for the user.
 - Some apps additionally require `Input Monitoring`.
 
 Linux:
 - X11: usually works without extra permissions for the user's display.
-- Wayland: most RobotJS-style tools have limited or no support; if the user is on Wayland, propose alternatives (xdotool under XWayland, ydotool with proper setup) or escalate.
+- Wayland: RobotJS injects input through X11, so it reaches only XWayland windows; native Wayland apps ignore it. Propose ydotool or the desktop's portal-based tools, or escalate.
 
 Windows:
-- Run the process from a session that has UI access. Per-monitor DPI scaling needs to be considered — capture coordinates may need adjustment.
+- Run the process in the interactive user session. A non-elevated process cannot send input to an elevated (administrator) window — User Interface Privilege Isolation silently drops it — so target windows must run at the same integrity level. Per-monitor DPI scaling shifts coordinates; map them as on HiDPI macOS.
 
 If a tool call fails with what looks like a permission error, stop and tell the user the exact toggle to flip. Do not retry blindly — the next attempt will fail the same way.
 
@@ -108,9 +109,9 @@ The agent's `failures[]` reason enum extends with these on desktop:
 
 | `reason` | What it means |
 |---|---|
-| `anchor_not_found` | Region capture didn't contain the expected anchor pixels after a fresh screenshot |
+| `anchor_not_found` | A fresh screen capture didn't contain the expected anchor |
 | `window_focus_lost` | A keystroke was about to land in a different window than intended; aborted |
-| `capture_too_large` | Full-screen capture exceeded the response cap; retry with a smaller region |
+| `capture_too_large` | `screen_capture` failed or came back truncated at the current resolution; ask the user to lower it |
 | `permission_denied` | OS accessibility / screen-recording permission missing for the host process |
 | `wayland_unsupported` | The host is on Wayland and the tool cannot drive it; escalate |
 | `wrong_display` | The target window is on a non-primary display and coordinates cannot be reliably addressed |
@@ -140,17 +141,17 @@ If a destructive shortcut is even possible in the focused window (`Cmd+Shift+Del
 
 ## When to refuse and route
 
-This skill exists to drive native desktop applications. Refuse and route when:
+Refuse and route when:
 
-- The task is a web page → route to DOM-driven browser automation. The DOM is far more reliable than pixel-pushing on a browser window.
-- The task is a shell command, file edit, build, or git operation → route to engineering/CLI work. Use the CLI.
-- The task is a mobile app or simulator → the wrong device skill is active. The `device-mobile-automation` skill should be running instead.
+- The task is a web page → DOM-driven browser automation is far more reliable than pixel-pushing a browser window.
+- The task is a shell command, file edit, build, or git operation → CLI work.
+- The task is a mobile app or simulator → the `device-mobile-automation` skill should be active instead.
 
 ## Checklist
 
 - [ ] `get_screen_size` was called and host info recorded in `run.json.target`
 - [ ] OS permissions verified (or a clean failure with instructions for the user)
-- [ ] Region captures used by default; full-screen only when justified and within the size cap
+- [ ] Screen captures succeeded at the current resolution, and screenshot pixels were mapped to logical points before every `mouse_move`
 - [ ] Window focus confirmed in the immediately-preceding capture before any keystroke
 - [ ] Coordinates derived fresh from today's screenshots, never reused from a prior session
 - [ ] Keyboard shortcuts preferred over pixel-anchor clicks when one exists

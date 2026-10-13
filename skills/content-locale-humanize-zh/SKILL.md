@@ -3,7 +3,7 @@ name: content-locale-humanize-zh
 title: "Chinese Native-Fluency Calibration"
 description: "Per-language calibration anchors for detecting AI-slop and translationese in Chinese (zh) target text; auto-loads alongside content-locale-humanize when the target language is Chinese."
 license: Apache-2.0
-compatibility: "Extends content-locale-humanize's AI-Slop & Translationese dimension. Load both together — this file has no rubric of its own."
+compatibility: "Calibration data only; no tools required. Network access helps for usage checks."
 domains: content
 rules:
   - content(chinese)
@@ -16,18 +16,29 @@ rules:
 
 ## Overview
 
-Sourced calibration anchors for Chinese, feeding `content-locale-humanize`'s AI-Slop & Translationese dimension. This is a calibration aid, not the checklist — reason natively beyond it (see the core skill's "why structure, not word lists" section).
+Calibration anchors and current norms for Chinese (zh-Hans and zh-Hant variants), feeding content-locale-humanize's dimensions. A calibration aid, not the checklist; reason natively beyond it.
 
-## Instructions
+## Rules
 
-Sourcing confidence: the best quantitative backing of any non-English language checked. A university news-lab corpus study measured roughly 4x higher parallel-sentence-structure rates in AI-generated Chinese text versus human-written text.
+### AI tells
 
-Calque tell: "不是…而是…" (a direct calque of the English "not X but Y" hedge-flip construction).
+Sourcing confidence: the best quantitative backing of any non-English language here; a Renmin University news-lab corpus study measured roughly 4x higher parallel-sentence-structure rates in AI-generated Chinese than in human writing. Phrase-level tells below are practitioner discourse.
 
-Triad-listing tell: "首先…其次…最后" (first…second…finally), used as a rhythm crutch rather than because the content has exactly three parts.
+- Overused contrast pivots "不是…而是…" and "不仅…更…". Both are native constructions; the tell is frequency, mirroring English "not X, but Y".
+- "首先…其次…最后" as a rhythm crutch when the content doesn't have exactly three steps.
+- Stock frames: "在当今…的时代", "值得注意的是", "总而言之"; parallel four-character slogans stacked for effect.
 
-Watch for English-syntax interference in translated technical content: relative clauses and passive constructions that mirror English sentence structure instead of Chinese topic-comment structure.
+### Translationese (翻译腔)
+
+- 被-passives where Chinese uses active or topic-comment structure.
+- Long 的 chains copied from English relative clauses; dummy verbs ("进行讨论" for "讨论", "作出决定").
+- Overused 当…的时候, 一个, and pronouns (他, 她, 它, 我们) that Chinese would drop.
+
+### Current norms
+
+- Variant is more than script. zh-Hans (mainland, Singapore) vs zh-Hant (Taiwan, Hong Kong) differ in vocabulary (软件/軟體, 视频/影片, 网络/網路, 信息/資訊) and quotes (“” vs 「」); automatic script conversion is not localization.
+- Punctuation: full-width ，。、；：？！ per GB/T 15834-2011; 《》 for titles; …… and —— as two-character marks. Spacing between Chinese and Latin text or digits follows the house style (common in tech docs, not required by the national standard); hold it throughout.
 
 ## References
 
-Renmin University 新闻坊 (RUC Journalism Studio) news-lab corpus study.
+Reviewed 2026-10-12. AI tells: Renmin University 新闻坊 (RUC Journalism Studio) news-lab study; Chinese practitioner guides. Norms: GB/T 15834-2011 标点符号用法.

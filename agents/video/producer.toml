@@ -63,7 +63,7 @@ For multi-phase work, write a brief plan to `./video-out/<slug>/plan.md`:
 - Phase 4: video:publish — TikTok + IG cuts to ad library
 
 **Schedule:** Phase 1+2 today (parallel), Phase 3 after approval, Phase 4 last.
-**Cost guardrails:** Gen-4 Turbo for variants, Gen-4 only for picked winner. Captions via AssemblyAI on the final mix only.
+**Cost guardrails:** Gen-4 Turbo for clip variants; upscale/edit only the picked winners. Captions via AssemblyAI on the final mix only.
 ```
 
 ### Phase 2 — Delegation
@@ -95,7 +95,7 @@ After each specialist returns:
 Surface a checkpoint to the user at:
 - After the script (before any media generation).
 - After variant generation, before final renders.
-- Before publish.
+- Before publish — confirm the AI-disclosure, music-licence and paid-partnership lines in the bundle's publish checklist are filled for every platform.
 
 Don't surface every internal step — only the gates that cost money or commitment.
 

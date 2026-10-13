@@ -18,7 +18,7 @@ This skill encodes git commit conventions (Conventional Commits), branch naming 
 
 ### Commit Message Format
 
-Follow the [Conventional Commits](https://www.conventionalcommits.org/) specification:
+Follow [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/):
 
 ```
 <type>(<scope>): <short summary>
@@ -28,21 +28,28 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 [optional footer]
 ```
 
-Types:
+Types: the spec itself defines only `feat` (maps to a SemVer MINOR) and `fix` (PATCH). The common extended set comes from commitlint's `config-conventional`:
 - `feat` — new feature
 - `fix` — bug fix
 - `refactor` — code change that neither fixes a bug nor adds a feature
 - `perf` — performance improvement
 - `test` — adding or updating tests
 - `docs` — documentation only
-- `chore` — build process, tooling, dependencies
+- `style` — formatting, no behavior change
+- `build` — build system or dependencies
 - `ci` — CI/CD changes
+- `chore` — other maintenance
+- `revert` — reverts a previous commit
+
+If the repo already enforces a type list (commitlint config, CONTRIBUTING), that list wins.
+
+Breaking changes (MAJOR): add `!` right before the colon — `feat(api)!: drop v1 endpoints` — and/or a footer `BREAKING CHANGE: <what breaks and how to migrate>`. The footer token is uppercase; `BREAKING-CHANGE` is equivalent.
 
 Rules:
-- Summary line: max 72 characters, imperative mood ("add" not "added")
+- Summary line: imperative mood ("add" not "added"), aim for ~50 characters, hard limit 72
 - No period at end of summary
 - Body: wrap at 72 characters, explain why not what
-- Reference issues in footer: `Fixes #123`, `Closes #456`
+- Footers use `Token: value` with hyphenated tokens (`Reviewed-by:`, `Co-authored-by:`, `Signed-off-by:`); reference issues as `Fixes #123` / `Closes #456` so the forge auto-closes them
 
 ### Branch Naming
 
@@ -53,17 +60,19 @@ Rules:
 - `feat/user-profile-page`
 - `fix/login-redirect-loop`
 - `refactor/extract-auth-middleware`
-- `chore/upgrade-tokio-1.40`
+- `chore/upgrade-tokio-1.47`
 
 Use kebab-case. Keep it short but descriptive. Match the commit type.
 
 ### Workflow Rules
 
-1. Never commit directly to `main` — always use a branch
+1. Never commit directly to `main` — always use a short-lived branch
 2. Keep commits atomic — one logical change per commit
-3. Rebase before merging — keep history linear: `git rebase main`
-4. Squash WIP commits before opening a PR
-5. Tag releases with semantic versioning: `v1.2.3`
+3. Update your branch by rebasing onto the fresh remote: `git fetch origin && git rebase origin/main`. Rebase only branches nobody else has built on
+4. After rewriting a pushed branch, push with `git push --force-with-lease --force-if-includes` — never plain `--force`
+5. Clean up before opening a PR: make corrections as `git commit --fixup=<sha>`, then fold them with `git rebase --autosquash origin/main` (Git 2.44+ applies autosquash without `-i`, so it runs non-interactively)
+6. Stacked branches: `git rebase --update-refs` moves every branch in the stack in one pass
+7. Tag releases with semantic versioning (`v1.2.3`), annotated (`-a`) or signed (`-s`)
 
 ## Examples
 
@@ -98,17 +107,18 @@ Added a fallback to use the status text instead.
 ### Common commands
 
 ```bash
-# Start a feature
-git checkout -b feat/my-feature
+# Start a feature (git switch replaces checkout for branches)
+git switch -c feat/my-feature
 
-# Stage only relevant changes
+# Stage only relevant changes (interactive; agents stage explicit paths instead)
 git add -p
 
 # Amend last commit (before push)
 git commit --amend --no-edit
 
-# Interactive rebase to clean up
-git rebase -i HEAD~3
+# Fix an earlier commit, then fold it in without an editor
+git commit --fixup=<sha>
+git rebase --autosquash origin/main
 
 # Check what will be committed
 git diff --staged
@@ -120,5 +130,6 @@ git push origin v1.2.3
 
 ## References
 
-- [Conventional Commits specification](https://www.conventionalcommits.org/)
-- [Semantic Versioning](https://semver.org/)
+- [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/)
+- [Semantic Versioning 2.0.0](https://semver.org/)
+- [git-rebase documentation](https://git-scm.com/docs/git-rebase)

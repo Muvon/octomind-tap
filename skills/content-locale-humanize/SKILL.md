@@ -3,7 +3,7 @@ name: content-locale-humanize
 title: "Locale-Native Humanization & Translationese Elimination"
 description: "MQM-informed, structural-pattern diagnostic for making translated/localized content read as if a native speaker wrote it from scratch, in any target language. Detects translationese and AI-slop by pattern (interference, frequency outliers, rhythm, templating), not by a per-language word list."
 license: Apache-2.0
-compatibility: "Composes with content-translate. Used by content:translate in NATIVE-AUDIT mode. Language-agnostic — the dimensions apply to any target locale."
+compatibility: "Language-agnostic; works on any target locale. Network access helps for exact-phrase usage checks."
 domains: content
 rules:
   - content(localize)
@@ -20,167 +20,126 @@ rules:
 
 ## Overview
 
-A translation can be accurate and still read as translated — stiff syntax, over-explicit connectors, a handful of statistically overused words, uniform sentence rhythm. Readers feel it as "not written by someone who thinks in this language," and it costs the same trust an English AI-slop draft costs an English reader.
+A translation can be accurate and still read as translated: stiff syntax, over-explicit connectors, a few statistically overused words, uniform rhythm, English conventions leaking through. Native readers feel it as "not written by someone who thinks in this language," and it costs the same trust an English AI-slop draft does. Use this skill to audit and fix translated or AI-generated text in any target language.
 
-Per-language dead-word lists don't generalize and go stale fast — the English list in `content-voice` already had to be refreshed once the first-wave words (delve, tapestry) faded. This skill encodes the STRUCTURAL patterns that stay evergreen across any language, backed by translation-quality research (MQM, Mona Baker's translation universals), with a few sourced example words per major language as calibration aids — not a boundary.
+Per-language word lists go stale and don't generalize, so this skill encodes structural patterns backed by translation-quality research (MQM, translation universals). Per-language calibration skills add sourced examples and current orthography norms; they are aids, not the boundary.
 
-## Instructions
+## Mental model
 
-### Why structure, not word lists
+Corpus research on translated text identifies four universals that hold across language pairs (Baker; Volansky, Ordan and Wintner 2015 report high classification accuracy from these features alone):
 
-Corpus research on translationese identifies four measurable universals, independent of language pair (Baker's translation universals, corroborated across studies at ~77–100% classification accuracy):
+- Simplification: shorter sentences, plainer words, lower lexical density, avoided subordination compared with native writing in the same register.
+- Explicitation: spelling out what a native writer leaves implicit; connectors linking ideas that need no link.
+- Interference (shining-through): source syntax, word order, idiom, or conventions bleeding into the target. Function-word and structure distributions alone identify translated text in corpus studies. Weight it heaviest.
+- Normalization: a distinctive voice flattened into safe, generic phrasing.
 
-- Simplification — shorter sentences, plainer words, lower lexical density, avoided subordination, compared to what a native writer in that register would produce.
-- Explicitation — spelling out what a native writer leaves implicit; retained optional connective words a native writer would drop; over-connecting ideas that don't need a connector.
-- Interference (also called "shining-through") — source-language syntax, word order, or idiom bleeding into the target. The single strongest, most reliably detectable signal — function-word and sentence-structure distributions alone identify translated text at 86–93% accuracy in corpus studies, beating human judges. Weight it heaviest.
-- Normalization — flattening a distinctive voice into safe, generic, canonical phrasing; leveled register.
+AI-generated text in other languages shows the same meta-pattern seen in English: a handful of frequency-outlier "power words," connectors opening most paragraphs, sentences clustered in one length band, and English AI clichés calqued into the target (French "plonger dans," Spanish "sumergirse en," both doing the job of "delve into"). Multilingual models export English habits through translation. Check for the pattern; word lists only calibrate.
 
-Separately, real per-language research into AI-generated text (2024–2026) turns up the exact same meta-pattern in every language checked: a handful of frequency-outlier "power words," logical connectors opening nearly every paragraph, sentences clustering in one length band, and — strikingly — the SAME cliché metaphors showing up translated literally (French "plonger dans," Spanish "sumergirse en" — both doing the job of English "delve into"). Multilingual models are exporting English AI-habits through translation. Check for the pattern; the word list below is a calibration aid, not the checklist.
+Sourcing for per-language tells is uneven: say so in the report when it is thin, and never present a blog-sourced word list as corpus evidence.
 
-Sourcing confidence varies sharply by language — say so in the report when it's thin. Spanish and French have solid, convergent, independently-reported sourcing. German sourcing is SEO-blog convergence, not corpus research — treat it as a weaker prior. Japanese sourcing is anecdotal blog discourse. Chinese has the best quantitative backing of any non-English language (a university news-lab study measured ~4x higher parallel-sentence-structure rates in AI text). Arabic is the weakest — most published lists are direct translations of the English canon, not independent findings. Don't present any of this table as harder evidence than it is.
+## Rules
 
-### Domain calibration — do this before scoring
+### Calibrate to the domain first
 
-Native-fluency expectations shift by content domain; the same signal reads differently depending on what's being translated. Detect the domain first — technical, legal, medical, marketing, academic, casual/UI, journalistic, literary (the same categories `content-translate` Phase 2 already detects) — then calibrate every dimension below to it:
+Detect the domain (technical, legal, medical, marketing, academic, casual/UI, journalistic, literary; the same categories as content-translate's domain adaptation) and calibrate every dimension to it:
 
-- Technical/developer: English loanwords for established terms ("commit," "webhook," "endpoint," "pull request") are NATIVE in most languages' tech register — never flag them as anglicism/interference. Short, direct sentences are the domain norm, not a simplification tell. Flag missing or incorrect standard terminology instead.
-- Legal: heavier subordination and formality ARE the native register here — don't apply the general rhythm-clustering penalty. Precision beats natural flow; a stiff-sounding legal sentence can still be exactly correct.
-- Medical: internationally recognized terms (ICD codes, anatomical Latin) are expected verbatim. Register shifts hard between patient-facing (plain) and professional (technical) content — check the audience match, not just fluency.
-- Marketing: highest tolerance — and expectation — for transcreation. Idiom, rhythm, and cultural reference should be reshaped aggressively for impact, not preserved literally. Judge against "would this land with a native reader," not sentence-by-sentence naturalness.
-- Academic: formal register is native; don't flag formality as stiffness. Discipline-standard terminology and citation format matter more than rhythm variation.
-- Casual/UI: shortest, plainest phrasing wins. Button/label brevity is domain-native, not oversimplification.
+- Technical: established English loanwords ("commit," "webhook," "endpoint") are native in most tech registers; don't flag them. Short direct sentences are normal. Flag missing or wrong standard terminology instead.
+- Legal: heavy subordination and formality are native; skip the rhythm penalty. Precision beats flow.
+- Medical: recognized terms verbatim; check patient-facing versus professional register.
+- Marketing: highest expectation of transcreation. Judge whether it lands with a native reader, not sentence-level fidelity.
+- Academic: formal register is native; terminology and citation format matter more than rhythm.
+- Casual/UI: shortest natural phrasing wins; brevity is not simplification.
 
-When domain is ambiguous, detect it from vocabulary and structure before scoring — never apply one universal register expectation across every content type.
+### Six dimensions
 
-### The 6 Dimensions
+Score each 0–10 (10 = fully native and faithful). Sum to X/60. Bands: Pass (48+), Borderline (34–47), Flagged (20–33), Critical (<20).
 
-Score each 0–10 (10 = fully native/faithful). Sum = X/60.
+Dual gate, borrowed from MQM: MQM weights errors exponentially (default Neutral 0, Minor 1, Major 5, Critical 25), normalizes penalty points per word, and compares against a project pass threshold. Here, any single Critical finding fails the audit regardless of band. A fluent but wrong translation is not a pass.
 
-Bands: Pass (48+) / Borderline (34–47) / Flagged (20–33) / Critical (<20)
+1. Accuracy and completeness. Every claim, instruction, number, negation, and nuance present; nothing added or dropped. Mistranslation, omission, addition, untranslated fragments, and broken placeholders are Critical. Compare 2–3 load-bearing sentences against the source directly; back-translation catches only gross drift.
+2. Native fluency. Interference (clause order and nesting mirroring the source), calques, unnatural collocations, simplification, explicitation, rhythm clustering (3+ consecutive sentences in one length band, judged by the target language's own range: German tolerates longer sentences than Japanese), and the read-aloud test: would a native say this to a colleague?
+3. Register and formality. One T-V form, honorific level, or speech level held start to finish; formality fits purpose and audience; no politeness padding that softens a direct source statement.
+4. Terminology and consistency. Domain terms, brand names, and glossary entries identical every time. Flag an anglicism where the target has a standard native term, unless the loanword is the domain standard.
+5. Locale conventions. Quotes, spacing before punctuation, number and date formats, units, currency, script variant (zh-Hans vs zh-Hant), regional vocabulary, and heading case (English Title Case carried into es/fr/it/pt/de is an interference error). See content-translate's locale conventions table.
+6. AI slop and translationese. The same evaluative word (an adjective, adverb, or verb added for emphasis) repeated 3+ times; connectors opening more than about 1 in 4 paragraphs; the same paragraph-opener template section after section; English clichés calqued into the target. A word that names something (product, protocol, command, field, person) must repeat as often as needed; dimension 4 wins that conflict. Ask: does varying it change what is pointed at? If yes, leave it.
 
-Dual gate, mirroring MQM's actual scoring mechanic (themqm.org: Neutral=0/Minor=1/Major=5/Critical=25 penalty weights, quality = 1 − penalty÷word-count): a single Critical finding fails the audit regardless of the numeric band. A fluent-but-wrong translation is not a pass. Don't let a high AI-Slop or Native-Fluency score paper over a Critical Accuracy finding.
+### Per-language calibration
 
-#### 1. Accuracy & Completeness
-- Every claim, instruction, and nuance from the source present in the target — nothing added, nothing dropped.
-- Mistranslation, omission, addition, untranslated fragments, broken placeholders — each an instant Critical finding.
-- Spot-check 2–3 load-bearing sentences via mental back-translation. If meaning drifts, it's a finding.
+Per-language skills (`content-locale-humanize-es`, `-fr`, `-de`, `-ja`, `-zh`, `-ar`, `-pt`, `-it`, `-ko`, `-hi`, `-th`) auto-load when the target language comes up. They add translationese patterns, AI tells, and current orthography norms. Add a language as a new skill; don't grow this file with per-language content. With no matching skill, run the same structural checks and reason as a native speaker of that language.
 
-#### 2. Native Fluency & Naturalness (the core "does this sound native" check)
-- Interference: does sentence structure, clause order, or nesting mirror the SOURCE language's grammar instead of the target's? This is the highest-value check in the whole rubric.
-- Calques: idioms or fixed expressions rendered word-for-word instead of the target's real equivalent.
-- Collocation naturalness: correct dictionary words that don't actually pair that way in native usage.
-- Simplification: suspiciously plain/short sentences and avoided subordination versus what this register normally produces.
-- Explicitation: information spelled out that a native writer would leave implicit; connectors linking ideas that don't need linking.
-- Rhythm clustering: 3+ consecutive sentences in the same length band — judged against the TARGET language's own natural range, not English norms (German tolerates much longer sentences than Japanese; don't import one language's burstiness rule into another).
-- Read-aloud test: would a native speaker actually say this to a colleague, or does it read like a translated pamphlet?
+### Verify phrases against real usage
 
-#### 3. Register & Formality Consistency
-- T-V form / honorific level / keigo tier chosen once, held constant start to finish — no mid-document drift.
-- Formality matches the stated purpose and audience.
-- Politeness padding that oversoftens a direct source statement — a known MT/AI tell in several languages.
+When unsure whether a collocation is native, run an exact-phrase search in the target language (e.g. `"чувствительные данные"`, `"权限边界"`), scoped where possible to native sites in the domain, plus an unscoped search. Real hits on native-written pages: keep. None: rephrase and check the replacement the same way. Verify both suspicious phrases in the draft and phrases you rewrite into it. Keep a running list of verified-natural and verified-unused phrases. Reserve this for a handful of genuinely uncertain phrases per document, and never claim usage evidence you didn't check.
 
-#### 4. Terminology & Consistency
-- Domain terms, brand names, glossary entries rendered identically every time — no synonym rotation across one document.
-- Anglicism check: an English loanword used where the target has a standard native term (lexical interference) — flag it, unless the loanword IS the domain standard (e.g. "commit" in developer docs).
+### Fix passes
 
-#### 5. Locale Convention Fidelity
-- Dates, numbers, currency, units, punctuation, and quotation marks match target-locale convention (see `content-translate` Phase 3 for the full cheat sheet).
+Preserve every fact and instruction; rewrite phrasing, not content.
 
-#### 6. AI-Slop & Translationese Calibration
-- Frequency-outlier words: the same EVALUATIVE word — an adjective, adverb, or verb an AI reaches for to add emphasis ("crucial," "seamlessly," "leverages") — repeated 3+ times across the piece is a tell regardless of language. This check targets stylistic choice, never identity: a word that NAMES something (a product, brand, protocol, command, field, person) is referential, not evaluative, and must repeat exactly as many times as the content needs it to — that's dimension 4's job, and dimension 4 always wins the conflict. Before flagging a repeated word, ask "does varying or shortening this change what's being pointed at?" — if yes, it's a name, leave it alone; if no, it's a style choice, count it.
-- Connector pileup: logical connectors ("furthermore"-class words in the target language) opening more than roughly 1 in 4 paragraphs.
-- Templated structure: the same paragraph-opener pattern repeating section after section.
-- Cross-lingual cliché transfer: an English AI-cliché calqued into the target (see examples below).
+1. Interference: source syntax and calques first, rewritten with native grammar and idiom, not word substitution.
+2. Frequency outliers: cut or vary repeated power words and connectors to a native writer's range.
+3. Rhythm: rebuild sentence-length variation to the target language's norms.
+4. Register lock: one formality level throughout.
+5. Locale conventions: punctuation, spacing, numbers, dates, units, heading case, script and regional vocabulary.
+6. Native-ear read: any sentence a native wouldn't say aloud gets rewritten.
 
-### Calibration anchors — per-language, auto-loaded
-
-Sourced per-language calibration lives in dedicated skills, not inline here — `content-locale-humanize-es`, `-fr`, `-de`, `-ja`, `-zh`, `-ar`, `-pt`, `-it`, `-ko`, `-hi`, `-th` — each auto-loads by its own rule match when the target language comes up, so a Spanish job never pulls in Chinese or Korean anchors it doesn't need. Add a new language by dropping in a new `content-locale-humanize-<code>` skill; never grow this file with per-language content.
-
-No matching per-language skill exists yet for this target: run the same structural checks anyway — connector density, power-word frequency, sentence-rhythm clustering, paragraph-opener templating, cross-lingual cliché transfer, source-syntax interference. Reason as a native speaker of that specific language; don't wait on a word list to exist.
-
-### Phrase verification — check real usage when unsure
-
-Intuition is fallible in a target language; real usage is the arbiter. When you can't tell whether a collocation or turn of phrase sounds native, run an exact quoted-phrase web search and let the result decide.
-
-The technique:
-1. Search the phrase in double quotes (exact-phrase match), in the target language — e.g. `"чувствительные данные"`, `"权限边界"`.
-2. Scope to where native speakers of this domain actually write, when you can: add a site filter for a native-language platform the audience uses (a popular native tech blog/forum for developer content, a native news site for journalism, etc.). Also try the unscoped search.
-3. Read the verdict: real hits on genuinely native-written pages mean people say it — keep it. Zero / "no results" means they don't — rephrase, then run the SAME check on your replacement before accepting it. Don't swap one unverified phrase for another.
-
-Verify BOTH directions: a phrase already in the draft that sounds off, AND any phrase you're rewriting INTO the draft. A confident-sounding replacement that nobody actually uses is the same defect as the original.
-
-Build a running list as you go — phrases you verified as natural (safe to reuse) and phrases you verified as not-used (avoid). It saves repeat lookups and makes the report auditable.
-
-Reserve this for genuinely uncertain phrases — a handful per document; constructions you already know are native don't need lookups. And never claim support from usage or documentation you didn't actually check — a fabricated authority claim ("natives say this" / "the docs use this term" when you never searched or opened them) is worse than admitted uncertainty, because it shuts down the review that would have caught the error.
-
-### Fix-Pass Technique
-
-Apply in order. Preserve every fact and instruction — rewrite the phrasing, not the content.
-
-Pass 1 — Interference sweep: hunt source-syntax bleed and calques first (highest-value signal). Rewrite with native grammar and idiom, not word-substitution.
-
-Pass 2 — Frequency-outlier sweep: count repeated power words and connectors; cut or vary within the range a native writer would actually use.
-
-Pass 3 — Rhythm pass: rebuild sentence-length variation to the TARGET language's own natural norms.
-
-Pass 4 — Register lock: verify T-V/honorific/politeness level held constant start to finish.
-
-Pass 5 — Locale-convention pass: dates, numbers, currency, units, punctuation, quotation marks.
-
-Pass 6 — Native-ear final read: read the whole piece as a skeptical native editor. Any sentence a real native speaker wouldn't say out loud gets rewritten.
-
-### Diagnostic Report Format
+### Report format
 
 ```
-## 🌐 NATIVE-FLUENCY DIAGNOSTIC: [locale] — [filename or "Draft"]
-**Word count**: X words (target) vs Y words (source)
-**Overall score**: X/60
-**Band**: Pass (48+) / Borderline (34–47) / Flagged (20–33) / Critical (<20)
+NATIVE-FLUENCY DIAGNOSTIC: [locale] — [filename or "Draft"]
+Word count: X (target) vs Y (source)
+Overall: X/60 — [band]; Critical findings: N
 
-| Dimension                        | Score | Key Findings |
-|-----------------------------------|-------|--------------|
-| Accuracy & Completeness           | X/10  | [summary]    |
-| Native Fluency & Naturalness      | X/10  | [summary]    |
-| Register & Formality Consistency  | X/10  | [summary]    |
-| Terminology & Consistency         | X/10  | [summary]    |
-| Locale Convention Fidelity        | X/10  | [summary]    |
-| AI-Slop & Translationese          | X/10  | [summary]    |
+| Dimension | Score | Key findings |
+|---|---|---|
+| Accuracy & completeness | X/10 | ... |
+| Native fluency | X/10 | ... |
+| Register & formality | X/10 | ... |
+| Terminology & consistency | X/10 | ... |
+| Locale conventions | X/10 | ... |
+| AI slop & translationese | X/10 | ... |
 
-### Findings (severity-ordered)
-[CRITICAL/MODERATE/MINOR] {one-line issue} — source: "..." → target: "..." — fix direction
+Findings (severity-ordered)
+[CRITICAL/MODERATE/MINOR] issue — source: "..." → target: "..." — fix direction
 
-### What's working
-- {strength}
+What's working
+- ...
 ```
 
 ### Evaluator caution
 
-LLM self-evaluation research shows evaluators miss a large share of errors and carry self-preference bias toward output from their own model family. Reference-free quality estimation is a documented poor hallucination detector — fluent-but-wrong can outscore disfluent-but-faithful, which is exactly why the Accuracy dimension's back-translation spot-check is mandatory, not optional. Treat a Pass band as strong evidence, not a guarantee — for high-stakes or YMYL content, run the audit with a different model than the one that produced the translation.
+LLM judges miss a large share of errors and favour output from their own model family; reference-free quality estimation is a weak hallucination detector, so fluent-but-wrong can outscore faithful-but-stiff. WMT now pairs MQM with ESA (error span annotation) for human evaluation, and automatic metrics (COMET, MetricX, GEMBA-MQM) are far more reliable for ranking systems than for judging an individual segment. Treat a Pass band as evidence, not a guarantee; for high-stakes or YMYL content, audit with a different model than the translator or a qualified human.
 
-More rounds is not more quality. Research on iterative LLM self-refinement (TEaR; Self-Refine; CorrectBench) consistently finds that score-then-fix loops peak around the first correction pass and can decline by the third-to-fifth round — the estimator's judgment quality is the bottleneck, not the number of iterations. Keep loop caps low (2 rounds, not open-ended), and if a second round still fails, escalate to a cross-model check or a human rather than looping further.
+More rounds are not more quality. Self-refinement studies (Self-Refine, TEaR, CorrectBench) find gains peak around the first correction pass and can decline by rounds 3–5. Cap at 2 rounds, then escalate to a cross-model check or a human.
 
 ## Examples
 
-### Interference (highest-value catch)
+Interference. Source (German): "...weil das System jede Anfrage validiert, bevor es sie verarbeitet."
+❌ "...because the system, before it processes it, validates every request."
+✅ "...because the system validates every request before processing it."
 
-Source (German, verb-final subordinate clause): "...weil das System jede Anfrage validiert, bevor es sie verarbeitet."
+Cross-lingual cliché.
+❌ French: "Dans cet article, nous allons plonger dans les subtilités de..."
+✅ "Cet article détaille..." or "Voyons comment...", whatever a French writer would actually open with.
 
-❌ Translationese English: "...because the system, before it processes it, validates every request." (clause order bled from German)
+Frequency outlier.
+❌ Spanish: "...una función crucial..." / "...un papel crucial..." / "...un paso crucial..."
+✅ Use the word each context calls for ("fundamental," "decisivo," "central") or drop the modifier.
 
-✅ Native: "...because the system validates every request before processing it."
+## Checklist
 
-### Cross-lingual cliché transfer
-
-❌ French: "Dans cet article, nous allons plonger dans les subtilités de..." (calqued English AI-cliché "delve into")
-
-✅ Native: "Cet article détaille..." / "Voyons comment..." — whatever a French writer would actually open with.
-
-### Frequency-outlier power word
-
-❌ Spanish, same document: "...una función crucial..." / "...un papel crucial..." / "...un paso crucial..." (three uses of "crucial")
-
-✅ Native: vary with the specific word each context calls for — "fundamental," "decisivo," "central" — or cut the modifier where the sentence doesn't need it.
+- [ ] Domain detected and dimensions calibrated to it.
+- [ ] Source and target compared directly on load-bearing sentences; every Critical finding listed.
+- [ ] Interference and calques checked before word-level slop.
+- [ ] Register held constant; locale conventions and heading case match the target.
+- [ ] Names and terms left identical even when repeated.
+- [ ] Uncertain phrases verified by real usage, not intuition; no fabricated usage claims.
+- [ ] Sourcing strength for per-language tells stated; at most 2 fix rounds.
 
 ## References
 
-MQM framework: Lommel/Uszkoreit/Burchardt 2013; themqm.org; WMT operational set (Freitag et al., arXiv:2104.14478); LLM-as-MQM-judge (GEMBA-MQM, arXiv:2310.13988; xCOMET, arXiv:2310.10482). Translation universals: Baker; Olohan & Baker 2000; Laviosa 1998; Volansky/Ordan/Wintner 2015; Baroni & Bernardini 2006; Koppel & Ordan 2011; Teich 2003 (interference/shining-through). Per-language AI-tell research: adslzone.net, genbeta.com, pageon.ai (Spanish); startups-nation.fr, gpthuman.ai (French); walterwrites.ai, the-decoder.de, eology.de (German); note.com/Zenn blog discourse (Japanese); Renmin University 新闻坊 news-lab study (Chinese); Al Jazeera (Arabic). LLM-as-judge blind spots and self-preference bias: arXiv:2406.13439, arXiv:2512.16272, arXiv:2306.05685, arXiv:2410.21819. Reference-free QE as weak hallucination detector: arXiv:2208.05309. Iteration-count findings: TEaR (arXiv:2402.16379), Self-Refine (arXiv:2303.17651), CorrectBench (arXiv:2510.16062), M-MAD (arXiv:2412.20127).
+Reviewed 2026-10-12.
+
+- MQM: [scoring models](https://themqm.org/error-types-2/the-mqm-scoring-models/); Lommel, Uszkoreit and Burchardt 2013; Freitag et al. 2021 (arXiv:2104.14478); [ISO 5060:2024](https://www.iso.org/standard/80701.html); WMT25 metrics task (ESA and MQM).
+- LLM and metric evaluation: GEMBA-MQM (arXiv:2310.13988); xCOMET (arXiv:2310.10482); judge bias (arXiv:2306.05685, arXiv:2406.13439, arXiv:2410.21819); reference-free QE and hallucinations (arXiv:2208.05309).
+- Translation universals: Baker 1993; Laviosa 1998; Olohan and Baker 2000; Teich 2003; Baroni and Bernardini 2006; Koppel and Ordan 2011; Volansky, Ordan and Wintner 2015.
+- Iteration: Self-Refine (arXiv:2303.17651); TEaR (arXiv:2402.16379); CorrectBench (arXiv:2510.16062); M-MAD (arXiv:2412.20127).

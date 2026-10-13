@@ -3,7 +3,7 @@ name: prompt-engineering
 title: "Prompt Engineering: SOTA 2026 Toolkit"
 description: "Generate, improve, analyze, and debug LLM prompts. Activate only when the user explicitly asks to write, rewrite, optimize, diagnose, or design a prompt/system prompt, or names a prompt-engineering technique."
 license: Apache-2.0
-compatibility: "Works with any LLM. Anthropic-specific notes flagged inline (Claude 4.7 behavior, XML tags, effort levels, structured outputs)."
+compatibility: "Works with any LLM. Anthropic-specific notes flagged inline (Claude 4.6+ and Claude 5 family behavior, XML tags, effort levels, structured outputs)."
 domains: assistant
 rules:
   - match(\bprompt\s+engineer(?:ing|ed|er)?\b)
@@ -30,10 +30,10 @@ Default framing: the prompt is a contract. Specify what the model should know, d
 Three layers compose every effective prompt:
 
 1. Spec — what the goal is, what success looks like, what counts as failure. Vague specs are the single largest source of bad output (the documented "underspecification" failure mode).
-2. Context — who the model is, what facts it has, what examples bound the task. Context goes first when long; query goes last (30% accuracy lift on multi-document inputs).
+2. Context — who the model is, what facts it has, what examples bound the task. Long data goes first; the query goes last (Anthropic: up to 30% better on complex multi-document inputs).
 3. Reasoning shape — whether to ask for direct answer, step-by-step, multi-path, or plan-then-execute. Pick by problem type, not by habit.
 
-Iteration is the work. Expert prompts hit requirements first try only 40–60% of the time; the same prompt after 3 iterations hits 85%. Treat prompts as code: specify, test, iterate.
+Iteration is the work. Treat prompts as code: specify, test against representative inputs, iterate.
 
 The five-step authoring loop:
 1. Write the success criteria first (what does "right" look like, measurably).
@@ -54,6 +54,7 @@ Apply in this order — earlier items have higher impact per minute spent.
 4. Structure with XML tags. `<instructions>`, `<context>`, `<input>`, `<output_format>` — Claude was trained to treat these as semantic separators, not decoration.
 5. Assign a role in the system prompt. One sentence focuses tone and behaviour ("You are a senior code reviewer specialising in Rust").
 6. Long context: data at the top, query at the bottom. Wrap each document in `<document index="n">` with `<source>` and `<document_content>`. For 20k+ token inputs, ask the model to extract relevant quotes first into `<quotes>` before answering.
+7. Prefer general instructions over prescriptive steps. On current models "think thoroughly" often beats a hand-written step-by-step plan, and prompts written for older models are often too prescriptive for the Claude 5 family; state the goal, constraints, and done-criteria, then let the model plan.
 
 ### Reasoning techniques (pick by problem type)
 
@@ -61,73 +62,57 @@ Apply in this order — earlier items have higher impact per minute spent.
 |---|---|---|
 | Simple lookup, classification | Zero-shot direct | Default; no scaffolding |
 | Format-sensitive output | Few-shot (3–5 examples) | Style, tone, structure |
-| Multi-step math/logic | Chain-of-Thought ("think step by step") | GSM8K-style 17.7% → 78.7% jump on PaLM |
+| Multi-step math/logic | Chain-of-Thought ("think step by step") | Zero-shot CoT took MultiArith 17.7% → 78.7% (Kojima et al. 2022); on reasoning models it's a fallback for thinking-off routes |
 | Open-ended planning, multiple valid paths | Tree-of-Thought (explore branches) | Game-of-24: GPT-4 went 4% → 74% |
-| High-stakes correctness, single answer | Self-Consistency (sample N, majority vote) | +12–18% over CoT, no training |
+| High-stakes correctness, single answer | Self-Consistency (sample N, majority vote) | +11–18 points over CoT on arithmetic benchmarks (Wang et al. 2022) |
 | Abstract problem hard to attack | Step-Back (ask the general principle first) | Physics, law, framework-application |
 | Long task with distinct stages | Plan-and-Solve (write plan, stop, then execute) | Reduces drift on multi-section outputs |
-| Wrong first try, can be self-judged | Reflexion / Self-Refine (draft → critique → revise) | +10–25% quality on creative tasks |
+| Wrong first try, can be self-judged | Reflexion / Self-Refine (draft → critique → revise) | Gains depend on a reliable critic; verify on your eval set |
 | Tool-use agent | ReAct (thought → action → observation loop) | The standard agentic pattern |
 
-### Agentic prompts (Claude 4.7-specific, 2026)
+Reasoning models change this table. Current frontier models think internally (Claude adaptive thinking, OpenAI reasoning effort, Gemini thinking level): control depth with the effort parameter, not prompt scaffolding. On Claude Fable 5.1, Opus 5.5, and Sonnet 5.5, a prompt that asks for reasoning written into the response may be declined (`reasoning_extraction`); ask for a short explanation instead and read summarized thinking if you need the trace.
 
-Agent prompts are runbooks: goal, tools, decision criteria, error handling, stopping conditions. For Claude Opus 4.7 specifically:
+### Agentic prompts (Claude 5 family, 2026)
 
-- Put everything the model needs in the first user turn. Ambiguous progressive disclosure across multiple turns reduces both intelligence and token efficiency.
-- Set effort to xhigh for coding and agentic work; minimum high for any intelligence-sensitive task. Effort is a more important lever in 4.7 than in any prior Opus.
-- Trust adaptive thinking. Don't manually steer the thinking budget; raise effort if you see under-thinking.
-- 4.7 follows instructions literally. State scope explicitly ("apply to every section, not just the first"). It will not silently generalise.
-- For tool-light behaviour: describe when and why to use each tool. For tool-heavy behaviour: raise effort to high or xhigh.
-- Subagent control: "do not spawn a subagent for work you can complete in a single response; spawn multiple in the same turn for fan-out across files".
-- Prefilled assistant turns are deprecated in 4.6+. Use Structured Outputs for JSON/schema, and direct system instructions for "no preamble".
+Agent prompts are runbooks: goal, tools, decision criteria, error handling, stopping conditions. For current Claude models (verify on the model-specific prompting pages):
+
+- Put the full task spec in the first turn; progressive disclosure across turns costs quality and tokens.
+- Effort is the main dial. Defaults differ (Opus 5.5 and Haiku 5.5: `medium`; Fable 5.1 and Sonnet 5.5: `high`) and level names don't map across models, so sweep per model against evals. Lowering effort cuts thinking more reliably than prompt instructions.
+- Thinking is always on for Fable 5.1 and Opus 5.5: remove "don't think" rules. `budget_tokens` returns 400 on Claude 4.7+, prefill on 4.6+, forced `tool_choice` on Opus 5.5 / Sonnet 5.5 / Fable 5.1 — use structured outputs, or `auto` + an instruction + `strict: true`.
+- State scope explicitly ("apply to every section"); current models follow instructions literally.
+- Ask for progress updates when you want them (Opus 5.5 returns them as thinking blocks, visible with `display: "updates"`). In unattended runs a text-only turn is a report, not completion.
+- State when subagents are and aren't warranted; current models delegate readily.
+- Wrap user-pasted content in tags with a random ID; keep histories append-only and add reminders as new messages.
 
 ### Tone calibration (the over-emphasis anti-pattern on 4.6+)
 
-Claude 4.5+ is far more responsive to the system prompt than 3.x. Aggressive language written to defeat under-triggering on older models now causes over-triggering. The fix is tonal, not structural — substance stays, theatre goes.
+Claude 4.5 and later are far more responsive to the system prompt than 3.x; aggressive language written to defeat under-triggering now over-triggers. Substance stays, theatre goes: `CRITICAL: YOU MUST use this tool when...` → `Use this tool when...`; stacked `NEVER`/`ALWAYS` bullets → plain `Don't …` / `Do …`; `DEFAULT TO X` → `Use X when it helps`. Reserve all-caps for one or two genuine safety hard-stops. Substance test: delete the `NEVER`/`MUST` and lowercase the line — if it still makes sense, soften it; if it reads as filler, cut it.
 
-- `CRITICAL: YOU MUST use this tool when...` → `Use this tool when...`
-- `🚨 HARD RULES` + stacked `NEVER`/`ALWAYS` bullets → plain `Don't …` / `Do …` bullets in a `<critical>` block
-- `MANDATORY: Run validation` → `Run validation after edits.`
-- `DEFAULT TO using web search` → `Use web search when it would enhance your understanding of the problem.`
-- `After every 3 tool calls, summarize` → drop entirely on 4.7 (internalised)
+Full recipe with verbatim Anthropic quotes, parallel-tool-calls block, and message-history rules: `reference/claude-4-emphasis-and-tools.md`.
 
-Reserve all-caps and "must" for one or two genuine safety hard-stops (e.g. `Never force-push to main`). Stacking ten dilutes attention and the model treats them as flavour.
+### Frameworks
 
-Substance test: delete the `NEVER`/`ALWAYS`/`MUST` and lowercase the line. Does the rule still make sense? Soften it. Does it now read as filler? Cut it.
-
-Full recipe with verbatim Anthropic quotes, parallel-tool-calls block, message-history rules, and authoring checklist: `reference/claude-4-emphasis-and-tools.md`.
-
-### Frameworks (when you need a quick template)
-
-| Framework | Slots | Best for |
-|---|---|---|
-| RTF | Role · Task · Format | Fast one-offs, draft quality |
-| RACE | Role · Action · Context · Expectation | Everyday structured tasks (default beginner pick) |
-| CRAFT | Context · Role · Action · Format · Tone | Most general-purpose work |
-| RISEN | Role · Input · Steps · Expectation · Narrowing | Multi-step procedures |
-| CRISPE | Context · Response format · Input · System role · Persona · Execution | Creative, multi-variant generation |
-
-These are scaffolding for thinking, not magic. Output quality comes from spec clarity, not letter-counting.
+Acronym templates (RTF, RACE, CRAFT, RISEN, CRISPE) are scaffolding for beginners, not magic: output quality comes from spec clarity, not letter-counting.
 
 ### Token efficiency (cost-effective by default)
 
 - Minimise instructions: every line should do work; if removing it doesn't change behaviour, cut it.
 - Compress context: summarise large documents before injecting; prefer extractive summaries over re-paraphrasing.
-- Cache aggressively: put static content (system prompt, tool definitions, examples) at the top of the message; put variable content (user query, runtime data) at the bottom. With Anthropic prompt caching this can cut cost by up to 90% and latency by 85%.
-- Don't pad. "Let's think step by step in great detail with maximum thoroughness" wastes tokens; "think step by step" works the same.
-- Watch for context rot: even on a 1M-token window, recall degrades visibly past ~50k. Padding actively hurts; irrelevant context is noise.
+- Cache by design: static content (tools, system prompt, examples) first and byte-stable; variable content (query, runtime data, timestamps) last. Anthropic cache reads cost ~0.1× input or less, writes 1.25× (5-min) or 2× (1-hour); OpenAI and Gemini cache prefixes automatically.
+- Don't pad. "Think step by step in great detail with maximum thoroughness" wastes tokens; on reasoning models, raise effort instead.
+- Watch for context rot: reliability drops as input grows even on simple tasks (Chroma, Jul 2025). Irrelevant context is noise.
 
 ### Output control
 
 - Tell, don't forbid. "Write smoothly flowing prose" beats "do not use markdown".
 - Plain directives outperform theatrical ones on 4.6+. `Use tool X when ...` lands harder than `CRITICAL: YOU MUST use X`. See the "Tone calibration" section above and `reference/claude-4-emphasis-and-tools.md`.
-- For structured output, use Structured Outputs (JSON Schema) for typed responses. For classification, use a tool with an enum field.
+- For structured output, use Structured Outputs (Anthropic `output_config.format`, OpenAI Structured Outputs) for typed responses; prefill is not an option on Claude 4.6 and later. For classification, use a tool with an enum field.
 - For format constraints, wrap in tags: `Write the answer inside <answer> tags`.
 - Match prompt style to desired output style — if you want minimal markdown out, use minimal markdown in.
 
 ### Failure modes and their fixes
 
-The 12 documented LLM failure modes (Masood 2026, Galileo 2026):
+Common failure modes:
 
 | Mode | Symptom | Fix |
 |---|---|---|
@@ -160,12 +145,12 @@ When the user shows you a prompt that misbehaves:
 
 ### Evaluation
 
-Don't change prompts without tests. Build a 5–20 input eval set with known-good outputs. Score on accuracy, relevance, coherence, completeness, conciseness. Tools: PromptFoo (open-source), LangSmith, Braintrust. Iteration target: 55% → 85% after 3 rounds is the documented expert baseline — if you're not improving, your eval set is missing the actual failure mode.
+Don't change prompts without tests. Build a 5–20 input eval set with known-good outputs, scored on the criteria that matter (accuracy, completeness, format, conciseness). Tools: Promptfoo (open source), LangSmith, Braintrust. If three rounds of fixes don't move the score, the eval set is missing the actual failure mode.
 
 ### Meta-techniques
 
 - DSPy / MIPROv2 / GEPA: programmatic prompt optimisation. Write input/output signatures, let the optimiser compile prompts. Useful for production pipelines with stable specs.
-- Meta-prompting: ask the model to critique and rewrite its own prompt. 10–25% quality lift, near-zero engineering cost. Pattern: "Here is my prompt. Here are 3 inputs and the bad outputs it produced. Suggest 3 specific changes that would fix the failures."
+- Meta-prompting: ask the model to critique and rewrite its own prompt from concrete failures. Pattern: "Here is my prompt. Here are 3 inputs and the bad outputs it produced. Suggest 3 specific changes that would fix the failures." Verify the rewrite on the eval set.
 - Constitutional AI: give the model principles, ask it to self-check and revise against them. Works well for safety/tone consistency.
 
 ## Examples
@@ -198,11 +183,11 @@ What changed: explicit format, audience, length cap, opening rule. The model now
 
 User: "I'm asking the model to solve a logic puzzle and it gets the answer wrong half the time."
 
-Diagnosis: multi-step reasoning, single answer, high-stakes. → Self-Consistency.
+Diagnosis: multi-step reasoning, single answer, high-stakes.
 
-Fix: sample 5 CoT runs at temperature 0.7, take the majority answer. Ship the most-frequent answer, not the first.
+Fix: on a reasoning model, raise effort one level first and re-measure. If errors persist, use Self-Consistency: sample 5 independent runs and ship the majority answer, not the first. (Several current Claude models reject non-default `temperature`, so rely on run-to-run variance there.)
 
-### Example 3: Agent prompt skeleton (Claude 4.7-tuned)
+### Example 3: Agent prompt skeleton (Claude 5 family)
 
 ```
 <role>
@@ -229,7 +214,7 @@ JSON array of {file, line, severity, confidence, explanation}.
 </diff>
 ```
 
-Effort: xhigh. Adaptive thinking: on. The literal-instruction-follower behaviour of 4.7 means stating "report every issue including low-severity" is load-bearing — without it, recall drops.
+Effort: start at the model's default and sweep against an eval; adaptive thinking is on. Current models follow instructions literally, so "report every issue including low-severity" is load-bearing — without it, recall drops.
 
 ### Example 4: Token-efficient long-context query
 
@@ -252,26 +237,7 @@ Good (data first, quote-first, query last):
 Find quotes from the contract that govern termination. Place them in <quotes> tags. Then answer: under what conditions can either party terminate, with what notice period? Place the answer in <answer> tags.
 ```
 
-Why: data-at-top is the documented +30% accuracy pattern; quote-first cuts through document noise; trailing query gets recency attention.
-
-### Example 5: Meta-prompt for self-improvement
-
-```
-Here is my system prompt:
-<prompt>{{CURRENT_PROMPT}}</prompt>
-
-Here are 3 user inputs and the unwanted outputs the prompt produced:
-<failure index="1">
-  <input>{{INPUT_1}}</input>
-  <bad_output>{{OUTPUT_1}}</bad_output>
-  <desired>{{DESIRED_1}}</desired>
-</failure>
-<!-- repeat for 2, 3 -->
-
-Diagnose which of these failure modes is at play (hallucination, underspecification, instruction attenuation, context rot, sycophancy, task drift, format error, other). For each diagnosed mode, propose ONE specific change to the prompt that would fix it. Output a revised prompt that applies the highest-impact fix only.
-```
-
-This pattern delivers 10–25% quality lift on first iteration with no model fine-tuning.
+Why: data first and query last improves quality by up to 30% on complex multi-document inputs (Anthropic); quote-first cuts through document noise.
 
 ## Checklist
 
@@ -291,7 +257,7 @@ Before shipping a prompt, verify:
 - [ ] No `{{CWD}}` / `{{DATE}}` / dynamic placeholders in the static portion (they break caching).
 - [ ] Static content first, variable content last (cache hit ratio).
 - [ ] For agents: stopping condition stated; tool descriptions explicit.
-- [ ] For Claude 4.7: effort level chosen deliberately (xhigh for coding/agentic, high minimum for intelligence-sensitive).
+- [ ] Effort chosen deliberately and swept per model (level names don't map across models); no "don't think" rules on always-thinking models; no prefill or forced tool choice where the model rejects them.
 - [ ] Re-tested after every change against the eval set.
 
 ## Composition / References
@@ -301,14 +267,15 @@ Within-domain skills that pair naturally with this one:
 - A prompt being designed for an agent system prompt: structural rules live in `tap-agent-authoring` (XML block order, U-shape attention, caching rules).
 
 In-skill references:
-- `reference/claude-4-emphasis-and-tools.md` — Claude 4.6+ tone calibration, parallel-tool-calls block, message-history rules, dial-back recipes.
+- `reference/claude-4-emphasis-and-tools.md` — Claude 4.6+ and Claude 5 family tone calibration, parallel-tool-calls block, message-history rules, dial-back recipes.
 
 External authoritative sources:
 - [Anthropic — Prompt engineering best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)
 - [Anthropic — Use XML tags to structure prompts](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/use-xml-tags)
 - [Anthropic — Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
-- [Anthropic — Prompt caching](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching)
-- [Anthropic — Extended thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking)
+- [Anthropic — Prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)
+- [Anthropic — Adaptive thinking](https://platform.claude.com/docs/en/build-with-claude/thinking) and [effort](https://platform.claude.com/docs/en/build-with-claude/effort)
+- [Anthropic — Prompting Claude Opus 5.5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5) and [Fable 5.1](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-1)
 - [Anthropic — Structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs)
 - [Prompting Guide — CoT](https://www.promptingguide.ai/techniques/cot), [ToT](https://www.promptingguide.ai/techniques/tot), [ReAct](https://www.promptingguide.ai/techniques/react), [Self-Consistency](https://www.promptingguide.ai/techniques/consistency)
 - [Lost in the Middle (Liu et al., TACL 2024)](https://aclanthology.org/2024.tacl-1.9/) — U-shape attention foundation

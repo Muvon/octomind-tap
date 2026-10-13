@@ -13,7 +13,7 @@ rules:
 
 ## Overview
 
-Research baseline: 2026-09-05, Fedora Linux 44 stable; Fedora 45 remains prerelease. Recheck release status before upgrades. Apply the [Linux baseline](../os-linux/SKILL.md) for shared host/container, systemd, and resource diagnostics.
+Research baseline: 2026-10-12, Fedora Linux 44 stable; Fedora 45 is in final freeze for an October 2026 release (secondary reports give a 2026-10-20 target). A release stays supported until about four weeks after the release two versions newer, so Fedora 43 ends shortly after Fedora 45 ships. Recheck release status before upgrades. Apply the [Linux baseline](../os-linux/SKILL.md) for shared host/container, systemd, and resource diagnostics.
 
 ## Mental model
 
@@ -25,6 +25,7 @@ Fedora is a short-lifecycle distribution with multiple deployment models. Identi
 - Traditional Fedora uses DNF5 by default since Fedora 41. Check `dnf --version` and installed command help; DNF4 Python APIs, plugins, options, and history behavior are not interchangeable with DNF5.
 - Query installed packages and enabled repository configuration before a transaction. Preserve signatures, release matching, and intentional third-party sources. A missing dependency is a reason to inspect provenance and availability, not mix Fedora versions or RHEL/EPEL packages.
 - DNF5 `check-upgrade` returns 100 when upgrades are available and 0 when none are found. Treat real errors separately; `|| true` hides failed checks. Repository queries may refresh metadata, so prefer installed-package queries for strictly local inventory.
+- Fedora 45 enforces RPM signature verification by default (`%_pkgverify_level all`): unsigned or unknown-key packages fail with direct `rpm -i`/`-U`. Import the publisher's key or sign local builds; don't lower the verification level globally to make an install pass.
 - Major release upgrades use the documented upgrade workflow, not a routine package refresh. Review proposed removals and third-party compatibility; flags such as `--allowerasing` can change the outcome substantially.
 - Keep a known bootable kernel/deployment and account for out-of-tree module compatibility when planning updates. Do not remove older kernels or disable Secure Boot simply because a driver failed to load.
 
@@ -71,7 +72,7 @@ An absent package is evidence, not an instruction to install it. Inspect deploym
 ## References
 
 - [Fedora 44 release](https://fedoramagazine.org/announcing-fedora-linux-44/) and [release support duration](https://fedoraproject.org/workstation/)
-- [Fedora 45 scheduled milestones](https://fedoraproject.org/wiki/I18N/Meetings/2026-08-17)
+- [Fedora 45 Beta announcement](https://discussion.fedoraproject.org/t/fedora-linux-45-beta-released/202136) and [signature enforcement change](https://fedoraproject.org/wiki/Changes/Enforcing_signature_checking_by_default)
 - [Fedora's DNF5 transition](https://fedoraproject.org/wiki/Changes/SwitchToDnf5)
 - [DNF5 reference](https://dnf5.readthedocs.io/en/latest/dnf5.8.html) and [check-upgrade exit status](https://dnf5.readthedocs.io/en/latest/commands/check-upgrade.8.html)
 - [Atomic Desktop 44 deployment status](https://fedoramagazine.org/whats-new-fedora-atomic-desktops-in-fedora-linux-44/)

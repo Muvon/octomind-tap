@@ -52,7 +52,7 @@ agents/developer/rust.toml
 
 Each `capabilities/<name>/default.toml` is either:
 - A **real file** (built-ins: `core`, `agent`) — no symlink needed
-- A **symlink** pointing to the active provider (e.g. `default.toml → tavily.toml`)
+- A **symlink** pointing to the active provider (e.g. `default.toml → duckduckgo.toml`)
 
 Symlinks are managed by `scripts/setup-symlinks.sh` which **always force-creates** them (`ln -sf`).
 
@@ -62,7 +62,7 @@ Symlinks are managed by `scripts/setup-symlinks.sh` which **always force-creates
 
 | Capability     | Providers              | What it provides                                      |
 |----------------|------------------------|-------------------------------------------------------|
-| `core`         | default (built-in)     | `plan` task tracker — universal self-management; every agent has it |
+| `core`         | default (built-in)     | `recall` (folded-context recall, only when attention compression is on); planning is supervisor-owned, not a tool — every agent declares it |
 | `agent`        | default (built-in)     | `agent_*` — delegate to your own **configured** sub-agents (intra-domain team) |
 | `orchestration`| default (built-in)     | `tap` (discover/run registry specialists) + `schedule` (defer/recur loops) — **orchestrator-tier, deliberate grant** |
 | `runtime`      | octomind (built-in)    | `mcp` · `agent`-register · `skill` · `capability` — runtime tool-surface config (**high-trust**) |
@@ -72,8 +72,9 @@ Symlinks are managed by `scripts/setup-symlinks.sh` which **always force-creates
 | `codesearch-semantic`   | octocode               | `semantic_search` (natural-language code search) |
 | `codesearch-structural` | octocode               | `structural_search`, `view_signatures` (AST/symbol search + file layout) |
 | `codesearch-graph`      | octocode               | `graphrag` (dependency-graph traversal)   |
-| `memory`       | octobrain              | `remember`, `memorize`                                |
-| `websearch`    | tavily                 | web search and content extraction                     |
+| `memory-read` / `memory-write` | octobrain | `remember` / `memorize`, `forget`              |
+| `webfetch`     | octobrain              | `knowledge` — fetch URLs and local documents          |
+| `websearch`    | duckduckgo (also brave, exa, tavily) | `search` — web search                     |
 | `versioning`   | git                    | git operations                                        |
 | `programming-python`  | uv               | Python runtime (uv, uvx)                              |
 | `programming-rust`    | cargo            | Rust toolchain (cargo, rustc, clippy, rustfmt)        |
@@ -81,24 +82,24 @@ Symlinks are managed by `scripts/setup-symlinks.sh` which **always force-creates
 | `docker`              | docker           | Docker CLI (docker, docker-compose)                   |
 | `kubernetes`          | kubernetes       | Kubernetes CLI (kubectl, helm)                        |
 | `svelte`              | svelte           | Svelte/SvelteKit documentation MCP server             |
-| `medical`             | medical          | medical references (PubMed, FDA, WHO, RxNorm)         |
-| `finance`             | yfinance         | financial data (Yahoo Finance)                        |
+| `medical-reference`   | medical          | medical references (PubMed, FDA, WHO, RxNorm)         |
+| `market-data`         | yfinance         | financial data (Yahoo Finance)                        |
 
 ---
 
 ## Capability Access Tiers (least privilege)
 
-Capabilities are grouped by **who needs the tool**. Each tier is its own built-in server with its own code module, so capability ⟷ server ⟷ module map 1:1 — `core` (`plan`), `orchestration` (`tap`, `schedule`), `runtime` (the tool-surface controls). An agent only gets the tiers its role declares.
+Capabilities are grouped by **who needs the tool**. Each tier is its own built-in server with its own code module, so capability ⟷ server ⟷ module map 1:1 — `core` (`recall`), `orchestration` (`tap`, `schedule`), `runtime` (the tool-surface controls). An agent only gets the tiers its role declares.
 
 | Tier | Capability | Tools | Who declares it |
 |------|-----------|-------|-----------------|
-| self-management | `core` | `plan` | **every** agent |
+| self-management | `core` | `recall` (planning is supervisor-owned) | **every** agent |
 | do the work | domain caps | `shell`, `filesystem-*`, `websearch`, `codesearch-*`, `legal-*`, … | per agent |
 | intra-domain team | `agent` | `agent_*` | sub-orchestrators (delegate to their *own configured* agents) |
 | **orchestration** | `orchestration` | `tap`, `schedule` | **orchestrators only** |
 | runtime config | `runtime` | `mcp`, `agent`-register, `skill`, `capability` | **high-trust only** |
 
-**The rule — orchestration is for those who intend to orchestrate.** A narrow domain specialist (`lawyer:us`, `doctor:general`, `content:editor`) declares `core` + its domain tools and **never** `orchestration` or `runtime`. It does its job with domain tools, it does not route across domains, and it does not reconfigure the tool surface. This is enforced **structurally** — the unwanted tool is physically absent from the agent's context, not merely discouraged in the prompt. `tap` and `schedule` live on a separate built-in **`orchestration` server**, so an orchestrator that declares `core` + `orchestration` resolves to `core:*` (`plan`) + `orchestration:*` (`tap`, `schedule`), while a leaf agent that declares only `core` resolves to `core:*` (`plan`) alone — the orchestration server never enters its tool surface.
+**The rule — orchestration is for those who intend to orchestrate.** A narrow domain specialist (`lawyer:us`, `doctor:general`, `content:editor`) declares `core` + its domain tools and **never** `orchestration` or `runtime`. It does its job with domain tools, it does not route across domains, and it does not reconfigure the tool surface. This is enforced **structurally** — the unwanted tool is physically absent from the agent's context, not merely discouraged in the prompt. `tap` and `schedule` live on a separate built-in **`orchestration` server**, so an orchestrator that declares `core` + `orchestration` resolves to `core:*` (`recall`) + `orchestration:*` (`tap`, `schedule`), while a leaf agent that declares only `core` resolves to `core:*` (`recall`) alone — the orchestration server never enters its tool surface.
 
 Only agents that genuinely orchestrate carry `orchestration`:
 - `assistant:concierge` — the global system orchestrator (routes every domain).
@@ -149,7 +150,7 @@ args = ["mcp"]
 ## Switching a Capability Provider
 
 ```bash
-# Switch websearch from Tavily to Brave
+# Switch websearch from DuckDuckGo to Brave
 ln -sf brave.toml capabilities/websearch/default.toml
 
 # Reset all defaults
@@ -420,14 +421,19 @@ capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "program
 
 [[roles]]
 system = """
+<identity>
 You are a <persona> assistant.
-Working directory: {{CWD}}
+</identity>
 """
-welcome = "🔧 <Short greeting>. Working in {{CWD}}"
-temperature = 0.3
+welcome = """🔧 <Short greeting>.
+<system>
+Working dir: {{CWD}}
+Current date: {{DATE}}
+</system>"""   # {{CWD}}/{{DATE}} only here — in `system` they break prompt caching
+temperature = 0.3   # sent only to models that accept sampling params; octolib drops them for Claude Opus 4.7+/Claude 5 and thinking-enabled requests
 top_p = 0.9
 top_k = 0
 
 # Optional: model override
-# model = "openrouter:anthropic/claude-sonnet-4"
+# model = "<provider>:<model>"
 ```

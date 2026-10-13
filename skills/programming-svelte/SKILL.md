@@ -15,7 +15,7 @@ rules:
 
 ## Overview
 
-Write Svelte 5 components and SvelteKit applications with explicit reactive ownership and request-safe server boundaries. Research baseline: 2026-09-05, Svelte 5 and SvelteKit 2 stable; SvelteKit 3 is a release candidate. Read package versions, adapter, compiler options, and existing component mode first. Do not mix prerelease migration instructions into stable maintenance work.
+Write Svelte 5 components and SvelteKit applications with explicit reactive ownership and request-safe server boundaries. As of 2026-10: Svelte 5 (5.57.x) is stable and SvelteKit 3 was released on 2026-10-01; many projects remain on SvelteKit 2. Read package versions, adapter, Vite config, compiler options, and existing component mode first, and apply only the rules for the installed major version.
 
 ## Mental model
 
@@ -36,19 +36,27 @@ Runes express state and derivation; effects synchronize with external systems af
 
 - Do not keep per-user state in a server module singleton, whether it uses runes, stores, or plain variables. Use request `locals`, returned load data, and component/context instances scoped to the rendered tree.
 - Initialize shared UI context at the owning component. Svelte 5.40+ offers typed `createContext`; 5.57 adds its third presence-check function. Prefer the project's supported API instead of a module-global state shortcut.
-- On Svelte 5 with Kit 2.12+, use `page` from `$app/state`. Derive values such as `$derived(page.params.id)`; legacy `$:` does not react to this API's updates.
+- Use `page` from `$app/state` (Kit 2.12+; `$app/stores` is removed in Kit 3). Derive values such as `$derived(page.params.id)`; legacy `$:` does not react to this API's updates. In Kit 3, `page.url` is readonly; copy it before mutating.
 - Pages/layouts can survive navigation. Recompute from changing props or page state instead of capturing the initial value once. Put shareable state in URL parameters and durable preferences in appropriate persistence.
 
 ## Loading, mutations, and failures
 
 - Use `+page.server.ts`/`+layout.server.ts` for secrets and database access. Universal `load` also runs in the browser; use its provided `fetch` and return data without mutating shared state.
-- Put server-only helpers in `$lib/server` or server-only modules. Private environment imports belong behind this boundary. Authorize access where protected data and mutations are handled; a parent layout is not a universal authorization gate.
-- Kit 2's `error(...)` and `redirect(...)` throw internally; call them directly and avoid broad catches that swallow them.
+- Put server-only helpers in a server-only location (`$lib/server` in Kit 2; any `server` directory or `server` filename segment in Kit 3). Private environment imports belong behind this boundary. Authorize access where protected data and mutations are handled; a parent layout is not a universal authorization gate.
+- `error(...)` and `redirect(...)` throw internally; call them directly and avoid broad catches that swallow them. Use `isHttpError`/`isRedirect` rather than `instanceof` checks. In Kit 3, `error()` takes a string message (extra fields in a third argument), `redirect()` to an external URL needs the `external` option, and `handleError` receives every error, including validation errors with `kind: 'validation'`.
 - Await data needed to decide status, redirects, or page structure. To stream noncritical server-load data, return its promise and render with `{#await}`; awaiting it before returning blocks streaming. Account for rejection handling and adapter support.
 - Use form actions for ordinary form mutations. Return `fail(status, data)` for expected validation errors, preserve safe entered values, and validate/authorize on the server.
 - `use:enhance` progressively enhances supported POST action forms; it does not automatically implement optimistic business state. When customizing it, preserve the intended default update/reset/invalidation behavior.
 - Keep pending, empty, validation, and unexpected failure states distinct. Retry or default only when the domain permits it.
-- In the researched stable documentation, remote functions and component async `await` require experimental opt-ins. Use them only when intentionally enabled and supported; ordinary load/actions remain valid.
+- Remote functions and component async `await` still require experimental opt-ins in SvelteKit 3 (`experimental.remoteFunctions`, `compilerOptions.experimental.async`). Use them only when intentionally enabled; ordinary load/actions remain valid.
+
+## SvelteKit 3 migration traps
+
+- Run `npx sv migrate sveltekit-3` after upgrading to the latest 2.x and clearing its deprecation warnings. Kit 3 requires Node 22.17+, TypeScript 6, Svelte 5.57.1+, and Vite 8.
+- Configuration moves from `svelte.config.js` into the `sveltekit()` plugin options in `vite.config`; `tsconfig.json` extends `$app/tsconfig`.
+- `$lib` becomes `#lib` (a `package.json` subpath import) and needs explicit file extensions; `$app/environment` becomes `$app/env`; `$env/*` is deprecated in favor of `$app/env/private` and `$app/env/public`.
+- Any file with a `server` path segment or any `server` directory (outside `src/routes` and `static`) is server-only. CSRF origin checking is always on; configure `csrf.trustedOrigins` instead of disabling it.
+- `invalidateAll` and `pushState`/`replaceState` are deprecated in favor of `refreshAll` and `goto(..., { shallow })`.
 
 ## Example
 
@@ -77,7 +85,7 @@ A typed prop and local state drive a derivation without an effect:
 
 ## Checklist
 
-- Confirm stable versus experimental APIs and supported TypeScript checker versions.
+- Confirm the installed SvelteKit major, stable versus experimental APIs, and supported TypeScript checker versions (as of 2026-10, Svelte's language tools still embed TypeScript 6 rather than the native TypeScript 7 compiler).
 - Check derivation tracking, prop ownership, navigation reuse, and effect cleanup.
 - Keep user data request-scoped and secrets out of universal modules.
 - Verify form behavior with and without enhancement, failures, and streamed rejection paths.
@@ -85,7 +93,7 @@ A typed prop and local state drive a derivation without an effect:
 
 ## References
 
-- [September 2026 release status](https://svelte.dev/blog/whats-new-in-svelte-september-2026)
+- [SvelteKit 3 announcement](https://svelte.dev/blog/sveltekit-3-is-here) and [migration guide](https://svelte.dev/docs/kit/migrating-to-sveltekit-3)
 - [Derived state](https://svelte.dev/docs/svelte/$derived) and [effect tracking](https://svelte.dev/docs/svelte/$effect)
 - [State and request isolation](https://svelte.dev/docs/kit/state-management)
 - [Reactive page state](https://svelte.dev/docs/kit/$app-state)

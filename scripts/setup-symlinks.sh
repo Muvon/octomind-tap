@@ -54,13 +54,9 @@ link "kubernetes" "kubernetes.toml"
 link "svelte" "svelte.toml"
 link "medical-reference" "medical.toml"
 link "market-data" "yfinance.toml"
-link "legal-au" "ansvar.toml"
 link "legal-ca" "ansvar.toml"
 link "legal-de" "german-law.toml"
 link "legal-fr" "ansvar.toml"
-link "legal-in" "ansvar.toml"
-link "legal-sg" "ansvar.toml"
-link "legal-th" "ansvar.toml"
 link "legal-uk" "legislation-gov-uk.toml"
 link "legal-us" "stare.toml"
 link "octoweb" "octoweb.toml"
@@ -69,7 +65,6 @@ link "messaging-slack" "slack.toml"
 link "messaging-discord" "discord.toml"
 link "messaging-telegram" "iflow-mcp.toml"
 link "messaging-whatsapp" "iflow-mcp.toml"
-link "messaging-linkedin" "pegasusheavy.toml"
 link "messaging-instagram" "mcpware.toml"
 link "messaging-email" "codefuturist.toml"
 link "messaging-sms" "twilio.toml"
@@ -114,7 +109,7 @@ link "trading-crypto" "binance-futures.toml"
 
 # Detect capability dirs that have NO mapping declared above
 echo ""
-DECLARED=("filesystem-read" "filesystem-write" "shell" "codesearch-semantic" "codesearch-structural" "codesearch-graph" "memory-read" "memory-write" "websearch" "versioning" "core" "agent" "orchestration" "runtime" "programming-python" "programming-rust" "programming-nodejs" "programming-swift" "docker" "kubernetes" "svelte" "medical-reference" "market-data" "trading-crypto" "legal-au" "legal-ca" "legal-de" "legal-fr" "legal-in" "legal-sg" "legal-th" "legal-uk" "legal-us" "octoweb" "browser" "messaging-slack" "messaging-discord" "messaging-telegram" "messaging-whatsapp" "messaging-linkedin" "messaging-instagram" "messaging-email" "messaging-sms" "calendar" "customer-management" "database-postgres" "database-sqlite" "devdocs" "ecommerce" "edge-hosting" "error-tracking" "highlights" "maps" "payments" "scraping" "task-management" "translation" "webfetch" "knowledge" "video-gen" "voice" "avatar" "lipsync" "music" "composition" "captions" "stock" "image-gen" "publish-tiktok" "publish-instagram" "publish-youtube" "publish-x" "device-mobile" "device-computer")
+DECLARED=("filesystem-read" "filesystem-write" "shell" "codesearch-semantic" "codesearch-structural" "codesearch-graph" "memory-read" "memory-write" "websearch" "versioning" "core" "agent" "orchestration" "runtime" "programming-python" "programming-rust" "programming-nodejs" "programming-swift" "docker" "kubernetes" "svelte" "medical-reference" "market-data" "trading-crypto" "legal-ca" "legal-de" "legal-fr" "legal-uk" "legal-us" "octoweb" "browser" "messaging-slack" "messaging-discord" "messaging-telegram" "messaging-whatsapp" "messaging-instagram" "messaging-email" "messaging-sms" "calendar" "customer-management" "database-postgres" "database-sqlite" "devdocs" "ecommerce" "edge-hosting" "error-tracking" "highlights" "maps" "payments" "scraping" "task-management" "translation" "webfetch" "knowledge" "video-gen" "voice" "avatar" "lipsync" "music" "composition" "captions" "stock" "image-gen" "publish-tiktok" "publish-instagram" "publish-youtube" "publish-x" "device-mobile" "device-computer")
 for dir in "$CAP_ROOT"/*/; do
   cap="$(basename "$dir")"
   found=0

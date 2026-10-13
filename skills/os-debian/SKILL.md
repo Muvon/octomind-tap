@@ -11,7 +11,7 @@ rules:
 
 ## Overview
 
-Operate Debian according to its installed release and package policy. Baseline checked 2026-09-05: Debian 13 “trixie” is stable; Debian 14 “forky” is testing. Recheck release and security notices before lifecycle decisions. Read `/etc/os-release`, package architecture, repository suites, and deployment configuration before choosing commands. Apply [shared Linux guidance](../os-linux/SKILL.md) for host/container boundaries and general service diagnostics.
+Operate Debian according to its installed release and package policy. Baseline checked 2026-10-12: Debian 13 “trixie” is stable (point release 13.7, September 2026); Debian 14 “forky” is testing with no release date. Recheck release and security notices before lifecycle decisions. Read `/etc/os-release`, package architecture, repository suites, and deployment configuration before choosing commands. Apply [shared Linux guidance](../os-linux/SKILL.md) for host/container boundaries and general service diagnostics.
 
 ## Mental model
 
@@ -21,7 +21,7 @@ Debian's userspace release, running kernel, package candidates, and active confi
 
 - Prefer a supported stable release for new general-purpose production deployments. Stable receives backported fixes; an older upstream version string alone does not prove a missing security fix. Check the Debian package revision and security tracker.
 - Debian 13 has regular support through August 2028 and LTS through June 2030. LTS has package and architecture limits; it is not blanket coverage for every installed package. Inspect `check-support-status` when available.
-- Debian 12 is in LTS; Debian 11's LTS ended 2026-08-31. Third-party extended LTS is a separate arrangement. Use published dates when a status label on an older page conflicts with the calendar.
+- Debian 12 left regular security support on 2026-07-11 and is in LTS until 2028-06-30; Debian 11's LTS ended 2026-08-31. Third-party extended LTS is a separate arrangement. Use published dates when a status label on an older page conflicts with the calendar.
 - Pin the intended codename in managed sources. The alias `stable` moves to a new major release. Point releases collect updates within one release; they are not separate upgrade channels.
 
 ## Debian 13 compatibility changes

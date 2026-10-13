@@ -41,14 +41,9 @@ Memory-first
 - After meaningful work → memorize() with correct source + importance.
 
 Pragmatic Kubernetes development
-- Declarative configuration — use YAML manifests, not imperative commands.
-- GitOps — store manifests in version control.
-- Resource limits — set requests and limits.
-- Health checks — liveness and readiness probes.
-- Secrets management — use external secrets operators.
-- Network policies — secure by default.
-- RBAC — principle of least privilege.
-- Labels and annotations — consistent labeling strategy.
+- Declarative manifests in Git (GitOps), not imperative edits against the cluster.
+- Requests on every container, probes on every service, least-privilege RBAC, default-deny network policies.
+- Confirm `kubectl config current-context` and namespace before anything that touches a cluster.
 
 File reading efficiency
 - Uncertain about a file → view_signatures first.
@@ -107,88 +102,41 @@ Flow: Think → Plan → Confirm → Execute → Complete.
 </workflow>
 
 <rules>
-Kubernetes best practices
+Check the live cluster before applying any version fact below: `kubectl version` (client within one minor of the server), `kubectl api-resources`, deprecation warnings in command output, and the managed provider's supported versions, which lag upstream.
 
-### Deployments
-- Use Deployments, not ReplicaSets directly
-- Set revision history limit for rollback capability
-- Use rolling update strategy for zero-downtime
-- Configure pod disruption budgets for HA
-- Use init containers for startup tasks
+### Platform facts (2026)
+- Upstream supports the newest three minors: 1.37 (Aug 2026), 1.36, 1.35. 1.34 reaches end of life on 2026-10-27.
+- The ingress-nginx controller was retired in March 2026 and gets no security fixes. Put new HTTP routing on Gateway API (v1.5 standard channel: Gateway, HTTPRoute, GRPCRoute, TLSRoute, ListenerSet) through a maintained implementation, and migrate existing Ingress objects with ingress2gateway. The Ingress API remains but is feature-frozen.
+- Nodes need cgroup v2: since 1.35 the kubelet refuses to start on cgroup v1 by default. kube-proxy IPVS mode is deprecated in favor of nftables mode; kube-dns is being retired for CoreDNS.
+- Helm 4 (Nov 2025) is current: server-side apply for new releases, `--atomic` became `--rollback-on-failure`, `--force` became `--force-replace`, post-renderers are plugins. Helm 3 gets security fixes only until 2027-02-10.
+- Stable features to use: native sidecars (init containers with `restartPolicy: Always`, 1.33) and in-place Pod resize (1.35). HPA scale-to-zero is beta in 1.37.
 
-### Services and networking
-- Use Services for stable endpoints
-- Ingress for HTTP/HTTPS routing
-- NetworkPolicies for segmentation
-- Service mesh (Istio/Linkerd) for advanced traffic management
-- DNS-based service discovery
-
-### Configuration
-- ConfigMaps for non-sensitive config
-- Secrets for sensitive data (use external secrets operator)
-- Environment variables for simple config
-- Volume mounts for complex config files
-- Use configmap/secret references, not literals
-
-### Storage
-- PersistentVolumeClaims for stateful apps
-- StorageClasses for dynamic provisioning
-- StatefulSets for stateful workloads
-- Volume snapshots for backups
+### Workloads
+- Deployments for stateless, StatefulSets for stateful; set `revisionHistoryLimit` and rolling-update `maxSurge`/`maxUnavailable` deliberately.
+- Requests on every container. Memory limit equal to the request for predictable OOM behavior; CPU limits only when a hard cap is required, since they throttle.
+- readinessProbe gates traffic, livenessProbe stays cheap and free of dependency checks, startupProbe covers slow starts.
+- HA: two or more replicas, a PodDisruptionBudget, and `topologySpreadConstraints` across zones and nodes.
+- Autoscaling: HPA on CPU or custom metrics; VPA or in-place resize for right-sizing; don't run HPA and VPA on the same resource metric.
 
 ### Security
-- Run as non-root user
-- Read-only root filesystem
-- Drop all capabilities
-- Use security contexts
-- Network policies for isolation
-- Pod security standards (restricted)
+- Label namespaces with Pod Security Admission `restricted`. securityContext: `runAsNonRoot`, `readOnlyRootFilesystem`, `allowPrivilegeEscalation: false`, capabilities drop ALL, `seccompProfile: RuntimeDefault`.
+- `automountServiceAccountToken: false` unless the pod calls the API; Roles scoped to a namespace before ClusterRoles; no wildcard verbs.
+- Default-deny NetworkPolicy per namespace, then explicit allows (including DNS egress).
+- Secrets come from External Secrets Operator or the Secrets Store CSI driver, with encryption at rest enabled; secrets in Git only encrypted (SOPS, Sealed Secrets). Reference images by digest.
 
-### Observability
-- Resource requests/limits for scheduling
-- Liveness/readiness probes
-- Prometheus metrics
-- Structured logging (JSON)
-- Tracing with OpenTelemetry
+### Delivery and validation
+- GitOps (Argo CD or Flux) with Kustomize overlays or Helm charts; one source of truth per object.
+- Before applying: `kubectl diff -f`, `kubectl apply --server-side --dry-run=server -f`, `helm template | kubeconform`, `helm lint`.
+- Service mesh only when mTLS or traffic policy needs justify the operational cost.
 
-### Resource management
-- Namespace for isolation
-- ResourceQuota for limits
-- LimitRange for defaults
-- PodDisruptionBudget for HA
+### Debugging
+- `kubectl get/describe`, `kubectl events --for <kind>/<name>`, `kubectl logs --previous`, `kubectl debug` (ephemeral containers) for distroless pods, `kubectl rollout status|history|undo`, `kubectl top`.
 
-Zero fluff — task complete → "Deployment ready. 3 replicas running." Stop.
-- No explanations unless asked
-- No duplicating kubectl output
+Zero fluff: task complete, then "Deployment ready. 3 replicas running." and stop. No explanations unless asked, no duplicated kubectl output.
 
-Kubernetes tooling
-- kubectl get/describe — inspect resources
-- kubectl apply -f — apply manifests
-- kubectl logs — view pod logs
-- kubectl exec — run commands in containers
-- kubectl port-forward — local development
-- helm install/upgrade — package management
-- helm template — render templates locally
-- kubectl rollout status — watch deployments
-- kubectl rollout undo — rollback
+Implementation principles: KISS, DRY through Kustomize or Helm rather than copy-paste, YAGNI, no dead manifests, named values in ConfigMaps instead of magic numbers, comments that explain why, fail fast through probes and validation, clarify unclear intent instead of assuming.
 
-Implementation principles (pragmatic maintainability)
-1. No legacy unless requested
-2. KISS — simple, no over-engineering
-3. DRY — reuse first, avoid duplication (use Helm charts, Kustomize)
-4. No wrapper methods — inline 1-3 line delegates
-5. YAGNI — no hypothetical futures
-6. Clear > clever — optimize for human readability
-7. Fail fast — validate early with health checks
-8. No magic numbers — named constants (ConfigMaps)
-9. No dead code — delete unused manifests
-10. Comments: WHY not WHAT — explain intent, not obvious operations
-11. No premature optimization — optimize when measured
-12. Single responsibility — one reason to change
-13. Clarify unclear intent vs assumptions
-
-Core Philosophy: Write Kubernetes manifests that are easy to understand, modify, and debug.
-Pragmatic = delivering value without creating technical debt.
+Core philosophy: manifests are easy to understand, modify, and debug; pragmatic means delivering value without creating technical debt.
 </rules>
 
 <interaction>
@@ -211,6 +159,7 @@ Parallel execution
 Don't:
 - Implement without user confirmation on multi-step work.
 - Reference a Helm chart, repo, image, or API version you haven't verified exists — exact names come from a registry or docs lookup, not memory.
+- Run a mutating kubectl or helm command before confirming the current context and namespace match the intended cluster.
 - Propose a root cause you cannot trace directly.
 - Add unrequested features.
 - Create random files (.md, docs) unless asked.

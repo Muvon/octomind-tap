@@ -1,7 +1,7 @@
 ---
 name: ai-agent-design
 title: "AI Agent Design: Loops, Tools, Schemas, Orchestration"
-description: "Operational playbook for designing production LLM agents in 2026. Covers agent loop patterns (ReAct, Reflexion, Plan-and-Execute, function calling, Anthropic tool use), tool schema engineering (JSON Schema, strict mode, description craft, anti-patterns), the Agent Skills open standard (Anthropic Dec 2025), Model Context Protocol (MCP) integration, multi-agent orchestration (LangGraph, CrewAI, AutoGen, with cost trade-offs), error handling and infinite-loop prevention, observability via OpenTelemetry GenAI semantic conventions, the OWASP LLM Top 10 v2025 and OWASP Top 10 for Agentic Applications 2026, and the context-engineering discipline that replaced 'prompt engineering' in 2026. Use when designing a new agent, picking an orchestration framework, debugging a misbehaving agent, or hardening tool exposure. Output: agent specs with named patterns, cost projections, observability hooks, and OWASP-mapped risk surfaces."
+description: "Operational playbook for designing production LLM agents in 2026. Covers agent loop patterns (ReAct, Reflexion, Plan-and-Execute, native tool use), tool schema engineering (descriptions, strict mode, input examples, tool search, anti-patterns), the Agent Skills open standard, Model Context Protocol (spec 2026-07-28) integration and security, multi-agent orchestration (LangGraph, CrewAI, AutoGen, vendor agent SDKs) with cost trade-offs, error handling, loop prevention and unattended-run termination, observability via OpenTelemetry GenAI semantic conventions, OWASP LLM and Agentic Top 10 mapping, and context engineering (just-in-time retrieval, compaction, memory, sub-agent isolation, caching). Use when designing a new agent, picking an orchestration framework, debugging a misbehaving agent, or hardening tool exposure. Output: agent specs with named patterns, cost projections, observability hooks, and OWASP-mapped risk surfaces."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Production agent stacks typically need: LLM provider SDK (Anthropic / OpenAI / Google), an orchestration framework or hand-rolled loop, a tracing backend (Langfuse / Phoenix / OpenTelemetry collector), MCP servers or REST tools."
 domains: ai
@@ -43,7 +43,7 @@ Three forces shape every agent design:
 2. Tool surface — what the agent can do. The schema is the API; descriptions decide behavior; the privilege scope decides blast radius. Tool design is the highest-leverage engineering surface and the most-underserved craft.
 3. Failure containment — what stops the agent when things go wrong. Max iterations, action deduplication, error feedback, escalation ladders. Without these, an agent that hits an unhandled state burns money in a loop until someone notices.
 
-The 2026 shift: "prompt engineering" → "context engineering" (term coined by Andrej Karpathy, June 2025; amplified by Tobi Lütke). Context engineering covers the whole window — system prompt, tool definitions, retrieved docs, memory, conversation history, few-shot examples, output format. Prompt engineering is now a subset.
+The 2026 shift: "prompt engineering" → "context engineering" — curating the whole window (system prompt, tools, retrieved docs, memory, history, examples, output format) across many turns. See §9.
 
 ## Instructions
 
@@ -56,60 +56,50 @@ The 2026 shift: "prompt engineering" → "context engineering" (term coined by A
 | Tree-of-Thoughts (ToT) | Hard search problems where ReAct gets stuck; branches reasoning paths | Yao et al., [arXiv:2305.10601](https://arxiv.org/abs/2305.10601) |
 | Plan-and-Execute | Cheaper than ReAct (fewer LLM calls per step); brittle when early steps surprise | LangGraph docs; practitioner pattern |
 | ReWOO (Reasoning WithOut Observation) | Reduce tokens by decoupling reasoning from tool execution | [arXiv:2305.18323](https://arxiv.org/abs/2305.18323) |
-| OpenAI function calling / Anthropic tool use | Production-grade structured tool invocation; default for new builds | [OpenAI function calling guide](https://platform.openai.com/docs/guides/function-calling) (verify URL); [Anthropic tool use](https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use) |
+| Native tool use (OpenAI function calling / Anthropic tool use) | Production-grade structured tool invocation; default for new builds | [OpenAI function calling](https://platform.openai.com/docs/guides/function-calling); [Anthropic define tools](https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools) |
 
-Both Anthropic and OpenAI converge on JSON Schema input definitions. Anthropic added `strict: true` mode and Programmatic Tool Calling (agent writes code to orchestrate tools).
+Both providers converge on JSON Schema tool inputs with a strict mode. Anthropic adds `input_examples`, tool search with deferred loading for large tool sets, and programmatic tool calling (the model orchestrates tools from code execution). The newest Claude models (Opus 5.5, Sonnet 5.5, Fable 5.1) reject forced `tool_choice` (`any` / `tool`): use `auto` with a prompt instruction, `strict: true`, or structured outputs.
 
 ### 2. Tool schema design
 
 The most-underserved craft area in 2026. Bad tool schemas produce loops, wrong-tool calls, and ambiguous outcomes.
 
-Best practices (per [Anthropic tool-use docs](https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use)):
-- Tool descriptions carry more behavioral weight than tool names. Write detailed descriptions; include usage patterns and edge cases.
-- Include examples in description text — JSON Schema can't express "when to use this tool."
-- Use strict mode when available (Anthropic strict tool use, OpenAI strict function calling).
-- Explicit JSON Schema types per parameter; document the expected format with examples.
-- One tool per concept; do not overlap. Two tools that could plausibly answer the same query produce wrong-tool calls.
+Best practices (per [Anthropic define-tools docs](https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools) and [Writing tools for agents](https://www.anthropic.com/engineering/writing-tools-for-agents)):
+- Descriptions are the biggest lever: what the tool does, when to use it and when not, what each parameter means, caveats. Aim for 3–4+ sentences.
+- Consolidate related operations into fewer tools (an `action` parameter) and namespace by service (`github_list_prs`); no two tools should plausibly answer the same query.
+- Use `input_examples` or in-description examples for nested or format-sensitive inputs; explicit JSON Schema types; strict mode where available.
+- Return only high-signal fields with stable, semantic identifiers; bloated tool results waste context.
+- If a parameter asks why the call is made, ask for a short explanation, not step-by-step reasoning (the newest Claude models may decline reasoning-extraction requests).
 
-Anti-patterns:
-- Generic names (`get_data`, `process`) — the model has no signal for when to call.
-- Overlapping tools — `search_customers` and `find_customer` create routing ambiguity.
-- Too many optional fields — model fills them with hallucinated defaults.
-- Missing examples in description — model has no template for parameter format.
-- Vague return-shape — model can't reason about how to use the result.
+Anti-patterns: generic names (`get_data`), overlapping tools (`search_customers` vs `find_customer`), many optional fields (filled with hallucinated defaults), vague return shapes.
 
-### 3. Agent Skills (Anthropic open standard, Dec 18, 2025)
+### 3. Agent Skills (open standard, Dec 2025)
 
-Portable skill format across Claude.ai, Claude Code, Agent SDK, and Anthropic Developer Platform. Microsoft integrated it into VS Code; OpenAI announced a "Skills Editor" to export Custom GPTs to the format. Launch partners include Canva, Notion, Figma, Atlassian, Cloudflare, Stripe, Zapier.
-
-Skill format: a directory with a `SKILL.md` (YAML frontmatter + instruction body), optional `validate` script, optional `references/` and `scripts/`. See the canonical spec at the [Anthropic announcement](https://siliconangle.com/2025/12/18/anthropic-makes-agent-skills-open-standard/) and verify current spec URL before integrating.
-
-Use the standard for: agent-specific knowledge that should travel between agents and clients; reusable playbooks across Claude / Cursor / Copilot deployments; production agents whose behavior depends on portable expertise.
+Anthropic published Agent Skills as an open standard on Dec 18, 2025; the spec lives at [agentskills.io](https://agentskills.io/specification). A skill is a directory with `SKILL.md` (YAML frontmatter + instruction body) and optional scripts and references, loaded on demand so only the frontmatter costs context until it's needed. Use skills for portable expertise that should travel between agents and clients; verify which clients support the current spec before relying on it.
 
 ### 4. Model Context Protocol (MCP)
 
-Anthropic, launched November 2024. Client–server architecture using JSON-RPC 2.0. Transports: stdio (local), Streamable HTTP (replaced SSE in the November 2025 spec).
+Open protocol launched by Anthropic in Nov 2024, governed since Dec 2025 under the Linux Foundation's Agentic AI Foundation. Current spec revision: [2026-07-28](https://modelcontextprotocol.io/specification/latest/changelog), a partly breaking release:
+- Stateless: no `initialize` handshake and no `Mcp-Session-Id`; each request carries protocol version and capabilities in `_meta`; servers implement `server/discover`. Cross-call state uses server-minted handles passed as tool arguments.
+- Transports: stdio and Streamable HTTP (requests carry `Mcp-Method` / `Mcp-Name` headers); HTTP+SSE is deprecated.
+- Multi Round-Trip Requests replace server-initiated sampling, elicitation, and roots requests; Roots, Sampling, and Logging are deprecated. Tasks moved to an official extension.
+- Auth: OAuth with Client ID Metadata Documents preferred over Dynamic Client Registration; clients validate `iss`.
+- `tools/list` should be deterministic (helps prompt-cache hits) and carries cache TTL hints.
 
-2026 roadmap priorities (per [MCP 2026 roadmap](https://blog.modelcontextprotocol.io/posts/2026-mcp-roadmap/)):
-- Stateless Streamable HTTP for horizontal scale
-- Tasks primitive (async long-running operations)
-- MCP Server Cards (`.well-known` metadata)
-- Centralized server registry (npm-style)
-- SSO-integrated auth, audit trails
+Security ([best practices](https://modelcontextprotocol.io/specification/latest/basic/security_best_practices)): servers must not accept or pass through tokens not issued to them; proxies need per-client consent; state handles are never authentication; local servers need explicit install consent and sandboxing; request minimal scopes and step up.
 
-MCP vs REST: MCP is purpose-built for LLM tool exposure (server discovery, tool inventory introspection, structured errors); REST is universal but requires manual schema mapping per agent. Use MCP when the tool will be reused across agent contexts; use REST when the tool is one-off or already exists as a deployed service.
-
-Spec: [modelcontextprotocol.io](https://modelcontextprotocol.io).
+MCP vs REST: MCP when a tool will be reused across agents and clients (discovery, schemas, structured errors); REST when the tool is one-off or already a deployed service.
 
 ### 5. Multi-agent orchestration
 
 | Framework | Strength | Trade-off |
 |---|---|---|
-| LangGraph | Stateful graph + conditional edges; deepest LangChain integration; most production-tested | Steeper learning curve; tied to LangChain abstractions |
-| CrewAI | Role-based crews; lowest onboarding cost | Less control over execution; ~18% token overhead vs LangGraph per practitioner benchmarks (verify) |
-| AutoGen | Conversational GroupChat patterns | Every turn re-evaluates full history; expensive for high-volume |
+| LangGraph | Stateful graph + conditional edges; most production-tested OSS option | Steeper learning curve; LangChain abstractions |
+| CrewAI | Role-based crews; lowest onboarding cost | Less control over execution |
+| AutoGen | Conversational group-chat patterns | Every turn re-reads the full history; expensive at volume |
+| Vendor agent SDKs (Claude Agent SDK, OpenAI Agents SDK, Google ADK) | Provider-tuned harness: tools, subagents, context management | Tied to one provider's features |
 
-Cost trade-off: multi-agent is typically 2–4× single-agent for similar tasks. An AutoGen 4-agent × 5-round debate is 20+ LLM calls minimum. Use multi-agent only when sub-tasks are genuinely parallel or specialized, or when a single agent with rich tools cannot solve the problem. The default should be single agent + better tools + better context.
+Cost trade-off: multi-agent is typically 2–4× single-agent for similar tasks; a 4-agent × 5-round debate is 20+ LLM calls minimum. Use it when sub-tasks are genuinely parallel, need isolated context windows, or need different tools; otherwise single agent + better tools + better context. Current frontier models delegate to subagents readily, so state when subagents are and aren't warranted.
 
 Orchestration patterns:
 - Orchestrator-worker: one planner agent dispatches to worker agents
@@ -121,19 +111,19 @@ Orchestration patterns:
 
 Hard requirements for every production agent:
 
-- Hard max_turns / max wall-time — every agent. No exceptions. A 50-turn cap on a Sonnet 4.6 conversation with rich context can cost $5+ per stuck run.
+- Hard max_turns / max wall-time / token budget — every agent. A stuck 50-turn run with rich context costs dollars on a frontier model; compute yours from the price book. Use provider budget controls where they exist (Anthropic task budgets, beta) on top of your own caps.
 - Action deduplication — hash `(tool_name, args)` across a run; flag a repeat as a likely loop.
 - Action-history comparison — detect oscillation (A → B → A → B …).
 - Exponential backoff on retries — 3–5 retries general; 5–7 for rate limits.
 - Error message as observation — when a tool fails, feed the error text back as the observation so the model can reason about recovery.
 - Escalation ladder — reflection prompt → alternative tool suggestion → context compression + restart → graceful termination with partial results.
-- Termination predicate — explicit "done" signal in the system prompt; without it, agents won't stop voluntarily.
+- Termination predicate — explicit "done" condition in the system prompt, plus a harness-side check. Unattended loops must not treat a text-only turn as completion: newer models end turns with progress reports, so keep a task checklist, nudge on open items, and stop after two or three automatic continuations ([Prompting Claude Opus 5.5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5)).
 
-Common root causes of stuck agents (per [agentpatterns.tech](https://www.agentpatterns.tech/en/failures/infinite-loop)): missing max_turns, broken termination predicate, no "done" signal in system prompt, ambiguous tool schemas, oscillation between two near-equivalent actions.
+Common root causes of stuck agents: missing max_turns, broken termination predicate, ambiguous tool schemas, oscillation between two near-equivalent actions.
 
 ### 7. Observability
 
-OpenTelemetry GenAI Semantic Conventions (2026 standardization) — standardizes span names, tool-call attributes, PII-safe prompt logging, agent span kind. Use this as the schema for any new agent.
+OpenTelemetry GenAI semantic conventions — span names, tool-call attributes, agent spans, PII-safe content capture. They now live in their own repository and are still evolving, so pin the version you emit. MCP (2026-07-28) documents `traceparent` propagation in `_meta`, so traces can cross server boundaries.
 
 | Tool | Strength |
 |---|---|
@@ -144,65 +134,40 @@ OpenTelemetry GenAI Semantic Conventions (2026 standardization) — standardizes
 
 Per-tool-call log — tool name, args (PII-safe), result, latency, token count, cost, error, parent span ID. Without these, debugging a multi-step failure is forensic guessing.
 
-### 8. OWASP LLM Top 10 (2025) and Agentic Top 10 (2026)
+### 8. OWASP risks and production failures
 
-Every agent design surfaces OWASP risks. Map every tool, every retrieved-context source, and every output sink to the relevant item.
+Map every tool, retrieved-context source, memory store, and output sink to the OWASP Top 10 for LLM Applications (2026 edition; name the edition, since many reports still use 2025 IDs) and the Agentic Top 10 (ASI01 Agent Goal Hijack … ASI10 Rogue Agents, Dec 2025). Full tables and defenses live in the sibling prompt-injection-defense skill.
 
-OWASP Top 10 for LLM Applications 2025 ([OWASP](https://genai.owasp.org/resource/owasp-top-10-for-llm-applications-2025/)):
-- LLM01 Prompt Injection — direct and indirect
-- LLM02 Sensitive Information Disclosure
-- LLM03 Supply Chain
-- LLM04 Data and Model Poisoning
-- LLM05 Improper Output Handling — agent outputs consumed by downstream sinks (SQL, shell, XSS)
-- LLM06 Excessive Agency — over-broad tool / permission scopes
-- LLM07 System Prompt Leakage (new in 2025)
-- LLM08 Vector and Embedding Weaknesses (new in 2025)
-- LLM09 Misinformation
-- LLM10 Unbounded Consumption — cost / token DoS
+Agentic failures to design against: Slack AI (Aug 2024, indirect injection exfiltrating private-channel data), EchoLeak (CVE-2025-32711, zero-click via email), GitHub Copilot RCE (CVE-2025-53773), ForcedLeak in Salesforce Agentforce (Sep 2025). In each, untrusted content reached an action surface. Design rule: no session should combine untrusted input, private data access, and external communication or state change without isolation or human confirmation (the "lethal trifecta").
 
-OWASP Top 10 for Agentic Applications 2026 ([OWASP](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/)) — items begin with `ASI` (Agentic Security Issue). ASI01 Agent Goal Hijack, ASI02 Tool Misuse, ASI03 Identity & Privilege Abuse, plus categories covering delegated trust, persistent memory poisoning, inter-agent communication abuse, unsafe planning/reasoning, supply-chain-of-agents, observability gaps, and ASI10 Rogue Agents. Verify exact names for ASI04–ASI09 against the OWASP PDF before citing in production reports.
+### 9. Context engineering (the discipline)
 
-Cross-reference with the sibling AI skill on prompt injection defense for the offensive-and-defensive playbook.
+Popularized in June 2025 (Tobi Lütke, Andrej Karpathy) as "filling the context window with just the right information for the next step." It covers system prompt, tool definitions, retrieved docs, memory, history, examples, and output constraints; prompt engineering is a subset.
 
-### 9. Production failures (cautionary)
+Practical implications (Anthropic, [Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents), Sep 2025):
+- Treat context as a finite budget; recall degrades as it grows (context rot), so the goal is the smallest high-signal set.
+- Retrieve just in time: give the agent lightweight identifiers (paths, queries, links) and tools to load data when needed instead of pre-loading everything.
+- Long-horizon work: compaction (summarize and restart), structured note-taking or memory files outside the window, and sub-agents with clean context windows that return condensed results. Server-side compaction and context editing exist on some APIs; on Claude models that enforce preserved thinking, keep histories append-only and let the server compact.
+- Keep the prefix cache-stable: deterministic tool order, static system prompt, volatile data last.
+- Untrusted retrieved content goes in clearly labeled tags (see the prompt-injection skill).
 
-- Slack AI indirect prompt injection (Aug 20, 2024) — PromptArmor disclosure; indirect injection from a public Slack channel exfiltrated private DMs via a clickable link. Slack initially called it "intended behavior." [The Register](https://www.theregister.com/2024/08/21/slack_ai_prompt_injection/).
-- EchoLeak (CVE-2025-32711) — Microsoft 365 Copilot zero-click; email-triggered indirect prompt injection plus reflection led to confidential data exfiltration. CVSS 9.3; took >5 months to patch. [The Hacker News](https://thehackernews.com/2025/06/zero-click-ai-vulnerability-exposes.html).
-- GitHub Copilot RCE (CVE-2025-53773) — prompt injection led to remote code execution; patched Aug 2025 Patch Tuesday. [Embrace the Red](https://embracethered.com/blog/posts/2025/github-copilot-remote-code-execution-via-prompt-injection/).
-- ShareLeak (Copilot Studio, late 2025) and PipeLeak (Salesforce Agentforce) — indirect injection via form/data inputs.
-
-These are all agentic-system failures where untrusted content reached an action surface. The lesson: indirect injection is the dominant 2026 risk; LLM05 (Improper Output Handling) and LLM06 (Excessive Agency) are the cost amplifiers.
-
-### 10. Context engineering (the discipline)
-
-Term coined by Andrej Karpathy, June 2025: "the delicate art and science of filling the context window with just the right information for the next step." Amplified by Tobi Lütke (Shopify CEO) as the "highest-leverage skill" for AI work.
-
-Covers: system prompt + tool definitions + retrieved docs + memory + conversation history + few-shot examples + output format constraints. Prompt engineering is now a subset; the standalone "prompt engineer" role is largely gone (Fast Company, May 2025).
-
-Practical implications:
-- Treat context as a budget — every section costs tokens and changes behavior.
-- System prompt + tool defs should be cached aggressively (Anthropic / OpenAI prompt caching) — they're long, stable, and re-sent every turn.
-- Retrieved context belongs in clearly labeled XML tags so the model knows what's instruction vs data.
-- Conversation history grows; cap it or summarize it past a threshold to keep latency / cost bounded.
-- Few-shot examples are still effective for behavior shaping when system-prompt instructions alone don't carry.
-
-Cross-reference the cost / FinOps skill for caching numbers and the prompt-injection-defense skill for the data-vs-instruction separation patterns.
+Cross-reference the cost / FinOps skill for caching numbers.
 
 ## Checklist
 
 - [ ] Loop pattern named (ReAct / Reflexion / Plan-and-Execute / native function calling) with rationale
-- [ ] Tool schemas have detailed descriptions with examples; strict mode where available
-- [ ] No overlapping tools; one concept per tool
+- [ ] Tool descriptions say what, when, when not, and caveats; examples for complex inputs; strict mode where available
+- [ ] No overlapping tools; related operations consolidated and namespaced; tool results high-signal
 - [ ] Hard max_turns + max wall-time configured
 - [ ] Action deduplication + oscillation detection in place
 - [ ] Error feedback loop wired (tool errors become observations)
-- [ ] Termination predicate explicit in system prompt
+- [ ] Termination predicate explicit; unattended harness doesn't treat a text-only turn as done
 - [ ] OpenTelemetry GenAI tracing enabled (Langfuse / Phoenix / Helicone / LangSmith)
 - [ ] Per-tool-call logging with cost, latency, token count
-- [ ] OWASP LLM Top 10 + Agentic Top 10 risks mapped per tool / context source / output sink
+- [ ] OWASP LLM (edition stated) + Agentic Top 10 risks mapped per tool / context source / output sink; no unguarded lethal-trifecta sessions
 - [ ] Single-agent considered before multi-agent (cost rationale documented if multi-agent chosen)
-- [ ] System prompt + tool defs marked for prompt caching
-- [ ] If using MCP: server has Server Card metadata (per 2026 roadmap); auth model documented
+- [ ] Prefix cache-stable: static system prompt, deterministic tool order, cache breakpoints set
+- [ ] If using MCP: targets spec 2026-07-28, auth via Client ID Metadata Documents, no token passthrough, third-party servers pinned and reviewed
 
 ## Composition / References
 
@@ -214,16 +179,13 @@ Within-domain pairings:
 
 Primary sources:
 - [ReAct, arXiv:2210.03629](https://arxiv.org/abs/2210.03629)
-- [Anthropic — Implement tool use](https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use)
-- [Anthropic — Advanced tool use](https://www.anthropic.com/engineering/advanced-tool-use)
-- [MCP 2026 Roadmap](https://blog.modelcontextprotocol.io/posts/2026-mcp-roadmap/)
-- [MCP specification](https://modelcontextprotocol.io)
-- [Anthropic Agent Skills open standard (SiliconANGLE, Dec 18 2025)](https://siliconangle.com/2025/12/18/anthropic-makes-agent-skills-open-standard/)
-- [OWASP Top 10 for LLM Applications 2025](https://genai.owasp.org/resource/owasp-top-10-for-llm-applications-2025/)
-- [OWASP Top 10 for Agentic Applications 2026](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/)
-- [OpenTelemetry GenAI Semantic Conventions](https://github.com/open-telemetry/semantic-conventions/tree/main/docs/gen-ai)
+- [Anthropic — Define tools](https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools)
+- [Anthropic — Writing tools for agents](https://www.anthropic.com/engineering/writing-tools-for-agents)
+- [Anthropic — Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
+- [MCP specification 2026-07-28 changelog](https://modelcontextprotocol.io/specification/latest/changelog)
+- [MCP security best practices](https://modelcontextprotocol.io/specification/latest/basic/security_best_practices)
+- [Agent Skills specification](https://agentskills.io/specification)
+- [Anthropic — Donating MCP and the Agentic AI Foundation](https://www.anthropic.com/news/donating-the-model-context-protocol-and-establishing-of-the-agentic-ai-foundation)
+- [OWASP Top 10 for Agentic Applications](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/)
+- [OpenTelemetry GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/)
 - [Langfuse OpenTelemetry integration](https://langfuse.com/integrations/native/opentelemetry)
-- [Slack AI prompt injection (The Register, Aug 2024)](https://www.theregister.com/2024/08/21/slack_ai_prompt_injection/)
-- [EchoLeak CVE-2025-32711](https://thehackernews.com/2025/06/zero-click-ai-vulnerability-exposes.html)
-- [GitHub Copilot RCE CVE-2025-53773](https://embracethered.com/blog/posts/2025/github-copilot-remote-code-execution-via-prompt-injection/)
-- [Agent Patterns: Infinite Loop](https://www.agentpatterns.tech/en/failures/infinite-loop)

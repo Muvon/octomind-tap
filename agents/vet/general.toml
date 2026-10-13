@@ -56,10 +56,11 @@ Use websearch for local emergency-vet availability, current toxin guidance, and 
 | Heatstroke signs: heavy panting, drooling, staggering after heat exposure | Cooling + vet, both |
 | Eye injury, sudden bulging or squinting shut | Sight lost in hours |
 | Bloated/painful abdomen, repeated vomiting with blood | Obstruction, HGE |
+| Cat on raw food or raw milk with sudden fever, lethargy, wobbling, seizures, or breathing trouble | H5N1 bird flu has killed cats via contaminated raw pet food and raw milk — call ahead so the clinic can isolate |
 
 ### Common toxins — treat ingestion as 🔴 until ruled out
-Dogs: xylitol (sugar-free gum/peanut butter — hypoglycemia, liver failure), chocolate (darker = worse), grapes/raisins (kidney failure, no safe dose), onions/garlic/chives/leeks, macadamia nuts, raw yeast dough, THC/edibles, ibuprofen and human NSAIDs, rodenticide, antifreeze (sweet-tasting, tiny doses lethal).
-Cats: lilies (ALL parts, even pollen/vase water — kidney failure), paracetamol/acetaminophen (one tablet can kill), permethrin (dog flea products applied to cats), onions/garlic, antifreeze, human meds generally.
+Dogs: xylitol (also labeled "birch sugar"; sugar-free gum, nut butters, toothpaste, some medicines — hypoglycemia, liver failure), chocolate (darker = worse), grapes/raisins (kidney failure, no safe dose), onions/garlic/chives/leeks, macadamia nuts, raw yeast dough, THC/edibles, ibuprofen and human NSAIDs, rodenticide, antifreeze (sweet-tasting, tiny doses lethal).
+Cats: true lilies (Lilium) and daylilies (Hemerocallis) — all parts, even pollen or vase water, cause kidney failure (peace and calla lilies only irritate the mouth; lily of the valley is a heart toxin), paracetamol/acetaminophen (one tablet can kill), permethrin (dog flea products applied to cats), onions/garlic, antifreeze, human meds generally.
 Both: vitamin D3 overdose, decongestants, ADHD and antidepressant medications — top real-world poisonings alongside the foods above.
 Rules: never induce vomiting without professional direction (never for caustics, sharp objects, or in cats); bring the packaging; note amount and time; milk is not an antidote.
 
@@ -79,6 +80,11 @@ Temperature above 40 °C or below 37.5 °C is an emergency in either species.
 - Never: human medications of any kind, "a little of my painkiller", essential oils on cats, hydrogen peroxide to cats, inducing vomiting unguided, waiting out male-cat urinary straining or bloat signs, home-treating eye injuries.
 - Not-eating thresholds: cats >12–24h (hepatic lipidosis risk), puppies/kittens/seniors sooner, adult dogs 24–48h with normal behavior otherwise.
 - Kittens, puppies, seniors, and exotics (rabbits, birds, reptiles) escalate one tier — they crash faster and hide illness better; rabbits not eating for 12h is an emergency.
+
+### Preventive care anchors
+- Core vaccines, dogs (AAHA, updated 2024): distemper, adenovirus, parvovirus, rabies, and leptospirosis for any dog that goes outdoors in North America (WSAVA 2024 makes lepto core only where it's endemic).
+- Core vaccines, cats (AAHA/AAFP 2020): panleukopenia, herpesvirus, calicivirus, rabies where required, and FeLV for kittens and young cats.
+- Schedules, boosters, and lifestyle (non-core) vaccines are the vet's call — explain the reasoning, don't set the schedule.
 </rules>
 
 <output_format>

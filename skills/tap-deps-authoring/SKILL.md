@@ -17,15 +17,17 @@ rules:
 
 ## Overview
 
-A dep script is a `deps/<org>/<tool>.sh` bash script that auto-installs a tool or MCP server runtime before an Octomind session starts. Deps are never run manually — Octomind runs them automatically to ensure the required binary is available. Every dep script must handle macOS and all major Linux package managers.
+A dep script is a `deps/<org>/<tool>.sh` bash script that installs a tool or MCP server runtime. Octomind runs every `[deps] require` entry of a manifest's capabilities before MCP initialisation, and a capability's deps again when it is activated at runtime. Every script must be idempotent and handle macOS and the major Linux package managers.
+
+Runtime contract: Octomind invokes `bash <script>` (Git Bash on Windows), so the executable bit is not required. stdin is closed, stdout is discarded, stderr is captured and shown only when the script fails; exit 0 means ready, non-zero aborts the session start or the activation with that stderr.
 
 Each dep script must have a matching `deps/<org>/<tool>.md` companion doc.
 
-## Instructions
+## Rules
 
 ### Required Header Comments
 
-Every dep script must start with these header comments (parsed by tooling):
+Every dep script starts with these header comments, exactly on lines 1–6 in this order (`lint-deps.sh` checks them by line number):
 
 ```bash
 #!/usr/bin/env bash
@@ -36,11 +38,12 @@ Every dep script must start with these header comments (parsed by tooling):
 # https://homepage-url
 ```
 
-- `# dep:` — must match the `require = ["<org>/<tool>"]` entry in the capability file
+- `# dep:` — must equal the file path (`deps/<org>/<tool>.sh` → `<org>/<tool>`) and the `require` entry in the capability file
 - `# type: mcp` — script ensures an MCP server runtime is runnable (e.g. `npx`, `uvx`, `docker`)
 - `# type: dep` — script installs a standalone CLI tool used directly (e.g. `cargo`, `kubectl`, `octofs`)
-- `# check:` — the command `pkg_check` uses to detect if already installed
-- URL — homepage or GitHub link
+- `# description:` — 10–160 chars
+- `# check:` — the command that proves the tool is installed
+- line 6 — homepage URL starting with `# https://`
 
 ### Type Classification
 
@@ -151,11 +154,11 @@ info "<tool> installed successfully."
 
 | Variable | Values |
 |----------|--------|
-| `$OS` | `macos` or `linux` |
+| `$OS` | `macos`, `linux`, or `windows` (Git Bash/MSYS) |
 | `$ARCH` | `x86_64` or `arm64` |
 | `$PKG_MANAGER` | `brew`, `apt`, `dnf`, `pacman`, `zypper`, `apk`, `unknown` |
 | `$IS_MACOS` | `1` or `0` |
-| `$IS_LINUX` | `1` or `0` |
+| `$IS_LINUX` / `$IS_WINDOWS` | `1` or `0` |
 | `$IS_ARM64` | `1` or `0` |
 | `$IS_X86_64` | `1` or `0` |
 
@@ -164,16 +167,17 @@ info "<tool> installed successfully."
 | Function | Purpose |
 |----------|---------|
 | `pkg_check <cmd>` | Returns 0 if command exists — use for fast-path and post-install verify |
-| `pkg_install <pkg>` | Install via detected package manager |
-| `brew_install <formula>` | macOS only, no-op on Linux |
+| `pkg_install <pkg>` | Install via the detected package manager (same name everywhere); dies when none is found |
+| `brew_install <formula>` | macOS only, no-op elsewhere |
 | `apt_install <pkg>` | Debian/Ubuntu only, no-op elsewhere |
 | `dnf_install <pkg>` | Fedora/RHEL only, no-op elsewhere |
+| `as_root <cmd...>` | Run as root directly or via `sudo`; dies when neither is available |
 | `install_dep <org/tool>` | Run another dep script as a prerequisite; sources PATH after |
 | `info <msg>` | Print informational message to stderr |
 | `warn <msg>` | Print warning to stderr |
 | `die <msg>` | Print error to stderr and exit 1 |
 
-Never re-implement platform detection — always source `deps/lib/platform.sh`.
+Never re-implement platform detection — always source `deps/lib/platform.sh` (it also sets `set -euo pipefail`).
 
 ### Companion Documentation
 
@@ -195,18 +199,7 @@ For plain deps (`type: dep`) — copy `templates/dep-tool.md`, must include:
 bash scripts/lint-deps.sh deps/<org>/<tool>.sh
 ```
 
-Checks: required header comments present, `# type:` set, companion `.md` exists, script is executable.
-
-### Creation Checklist
-
-- [ ] File at `deps/<org>/<tool>.sh` (org matches GitHub org or tool namespace)
-- [ ] Required header comments: `# dep:`, `# type:`, `# description:`, `# check:`, URL
-- [ ] Sources `deps/lib/platform.sh` — never re-implements platform detection
-- [ ] Fast-path `pkg_check` exit at top
-- [ ] Handles `macos` + all Linux package managers + universal fallback
-- [ ] Post-install `pkg_check` verify with `die` on failure
-- [ ] Companion `deps/<org>/<tool>.md` exists with correct sections
-- [ ] `bash scripts/lint-deps.sh deps/<org>/<tool>.sh` passes clean
+Checks: header lines 2–6 present in order, `# dep:` matches the file path, description length, `# type:` set, companion `.md` exists with an H1 equal to `<org>/<tool>` and the required `##` sections for its type. It does not check platform coverage or the executable bit — test the script yourself on an installed and a clean machine.
 
 ## Examples
 
@@ -301,6 +294,17 @@ DEPS_LIB="$(cd "$(dirname "${BASH_SOURCE[0]}")/../lib" && pwd)"
 source "$DEPS_LIB/platform.sh"
 brew_install something
 ```
+
+## Checklist
+
+- [ ] File at `deps/<org>/<tool>.sh` (org matches GitHub org or tool namespace)
+- [ ] Header comments on lines 2–6 in order: `# dep:`, `# type:`, `# description:`, `# check:`, URL
+- [ ] Sources `deps/lib/platform.sh` — never re-implements platform detection
+- [ ] Fast-path `pkg_check` exit at top; idempotent on an installed machine
+- [ ] Handles `macos` + all Linux package managers + universal fallback; nothing written to stdout that matters
+- [ ] Post-install `pkg_check` verify with `die` on failure
+- [ ] Companion `deps/<org>/<tool>.md` exists, its H1 is `<org>/<tool>`, and it has the sections for its type
+- [ ] `bash scripts/lint-deps.sh deps/<org>/<tool>.sh` passes clean
 
 ## References
 

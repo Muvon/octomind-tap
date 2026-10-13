@@ -21,7 +21,7 @@ rules:
 
 Prepare an HN publishing brief that makes the author's actual work understandable and worth examining. Use supplied proof and the author's documented voice before platform register; apply platform policy as the publication gate. Keep generic voice guidance in `content-voice`.
 
-HN prohibits generated or AI-edited text in its comments guidelines, and moderator guidance explicitly applies hand-writing to Show HN text (official, HN Guidelines and Show HN Tips, rechecked 2026-09-05). Deliver factual notes and editorial diagnostics for the human to write from independently. Identify a missing fact, unclear referent, or unsupported conclusion without supplying replacement sentences. Don't offer humanization as permission to paste generated prose, or claim an exemption for generated titles.
+HN's guidelines prohibit generated or AI-edited text in posts and comments and ask users not to automate posting; moderator guidance explicitly applies hand-writing to Show HN text (official, HN Guidelines and Show HN Tips, rechecked 2026-10). Deliver factual notes and editorial diagnostics for the human to write from independently. Identify a missing fact, unclear referent, or unsupported conclusion without supplying replacement sentences. Don't offer humanization as permission to paste generated prose, or claim an exemption for generated titles.
 
 ## Mental model
 
@@ -211,4 +211,4 @@ Re-validate when:
 - Feed names, moderation guidance, or Launch HN logistics change.
 - New reproducible studies replace the response and outcome samples.
 
-Validated: 2026-09
+Validated: 2026-10

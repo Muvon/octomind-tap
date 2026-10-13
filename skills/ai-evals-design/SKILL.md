@@ -1,7 +1,7 @@
 ---
 name: ai-evals-design
 title: "AI Evals Design: Golden Sets, Metrics, Significance, CI"
-description: "Operational playbook for designing production LLM evaluation in 2026. Covers eval framework selection (Promptfoo, DeepEval, Maxim, LangSmith, Braintrust, Phoenix, Galileo, Patronus), golden dataset construction (size, stratification, versioning), synthetic data generation, LLM-as-judge design with G-Eval methodology (Liu et al., EMNLP 2023), preference-leakage mitigation (Wong et al. 2025), statistical significance testing (McNemar's, paired t, Bayesian pairwise, bootstrap), RAG metrics (RAGAS, TruLens RAG Triad), agent trajectory evaluation, drift detection, eval-driven development (Red Hat, March 2026), CI/CD prompt-regression gates, and benchmark literacy (GAIA, BFCL, SWE-Bench Verified, MMLU-Pro, GPQA Diamond, HELM, tau-Bench). Use when designing an eval suite, validating a prompt change, gating a deploy, or diagnosing production quality drift. Output: eval verdicts with statistical evidence, not vibe judgments."
+description: "Operational playbook for designing production LLM evaluation in 2026. Covers eval framework selection (Promptfoo, DeepEval, Inspect, LangSmith, Braintrust, Phoenix, Galileo), golden dataset construction (size, stratification, versioning, contamination), synthetic data generation, LLM-as-judge design and calibration (G-Eval, human agreement, position/length bias, preference leakage), statistical significance (standard errors, clustering, paired differences, power analysis), RAG metrics (RAGAS, TruLens RAG Triad), agent evaluation (outcome grading, pass@k vs pass^k, transcripts), drift detection, eval-driven development and CI regression gates, and benchmark literacy (saturation and contamination of MMLU, GPQA, SWE-bench Verified; SWE-bench Pro, HLE, tau2-bench, BFCL, GAIA). Use when designing an eval suite, validating a prompt or model change, gating a deploy, or diagnosing production quality drift. Output: eval verdicts with statistical evidence, not vibe judgments."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Production eval stacks typically need: an LLM provider SDK, a framework (Promptfoo / DeepEval / Braintrust / LangSmith), and a tracing backend for production drift monitoring (Phoenix / Langfuse / Helicone / Galileo)."
 domains: ai
@@ -28,7 +28,7 @@ rules:
 
 ## Overview
 
-In 2026, eval engineering is a discipline with its own job title, its own salary band, and its own framework ecosystem. "Evals are the new code review" — Red Hat's "Eval-Driven Development" (EDD) article (March 23, 2026) made the framing explicit; ~75% of AI engineer interview questions now focus on evaluation. The reason: every prompt and model change is a stochastic intervention into a behavior surface, and "looks better" is not a verdict. This skill encodes the methodology that turns LLM evaluation from anecdote into evidence.
+Every prompt, model, or effort change is a stochastic intervention into a behavior surface, and "looks better" is not a verdict. Eval-driven development (Red Hat, March 2026) makes the suite the merge gate. This skill encodes the methodology that turns LLM evaluation from anecdote into evidence.
 
 Use this skill when designing a new eval suite, validating a prompt or model change, gating a deploy, debugging production quality drift, or building CI regression tests. Skip it when the change is purely structural (config, framework version) with no behavioral surface area.
 
@@ -46,21 +46,19 @@ Everything else (framework choice, CI integration, drift monitoring) is plumbing
 
 ## Instructions
 
-### 1. Framework landscape (May 2026)
+### 1. Framework landscape (2026)
 
 | Framework | OSS / paid | Best for | Source |
 |---|---|---|---|
-| Promptfoo | OSS CLI + YAML | Local dev loop, red-team mode (157 plugins, OWASP-LLM + NIST AI RMF presets) | [promptfoo.dev](https://www.promptfoo.dev) |
-| DeepEval (Confident AI) | OSS Python + paid cloud | 50+ metrics (G-Eval, hallucination, faithfulness, contextual precision/recall/relevancy); synthetic dataset generation | [deepeval.com](https://deepeval.com/docs/getting-started) |
-| Maxim AI | Paid | Simulation + eval + observability + gateway in one stack | [getmaxim.ai](https://www.getmaxim.ai/) |
-| LangSmith | Paid (per-seat) | Deepest LangChain / LangGraph integration; trajectory evals for agents | [docs.smith.langchain.com](https://docs.langchain.com/langsmith/) |
+| Promptfoo | OSS CLI + YAML (OpenAI-owned since Mar 2026) | Local dev loop, CI gates, red-team mode with OWASP / NIST presets | [promptfoo.dev](https://www.promptfoo.dev) |
+| DeepEval (Confident AI) | OSS Python + paid cloud | G-Eval, hallucination, faithfulness, contextual metrics; synthetic data | [deepeval.com](https://deepeval.com/docs/getting-started) |
+| Inspect (UK AI Security Institute) | OSS Python | Agentic and capability evals with sandboxes; used for frontier-model testing | [inspect.aisi.org.uk](https://inspect.aisi.org.uk/) |
+| LangSmith | Paid (per-seat) | LangChain / LangGraph integration; trajectory evals | [docs](https://docs.langchain.com/langsmith/) |
 | Braintrust | Paid | Dataset → scoring → monitoring → CI gating | [braintrust.dev](https://www.braintrust.dev) |
-| Helicone | OSS Rust gateway | Lightweight proxy logging | [helicone.ai](https://www.helicone.ai/) |
-| Phoenix (Arize) | OSS | Observability + embedding-drift clustering | [arize.com/phoenix](https://arize.com/phoenix/) |
-| Galileo | Paid | Galileo Signals (failure-mode mining); Luna-2 small-model evaluators | [galileo.ai](https://galileo.ai/) |
-| Patronus AI | Paid | Eval-first; hallucination + safety detectors | [patronus.ai](https://www.patronus.ai/) |
+| Phoenix (Arize) | OSS | Tracing + embedding-drift clustering | [arize.com/phoenix](https://arize.com/phoenix/) |
+| Galileo | Paid | Failure-mode mining; small-model evaluators | [galileo.ai](https://galileo.ai/) |
 
-Common production pattern: Helicone as gateway (always-on cost/latency logging) + Langfuse or Phoenix for trace storage + DeepEval or Promptfoo for the actual eval suites in CI.
+Common production pattern: tracing (Langfuse or Phoenix) for production samples + DeepEval, Promptfoo, or Inspect for the suites in CI.
 
 ### 2. Golden dataset construction
 
@@ -73,48 +71,44 @@ Common production pattern: Helicone as gateway (always-on cost/latency logging) 
 | Refresh cadence | Every quarter or when behavior shifts; add examples for newly observed failure modes |
 | Labels | Ground truth where possible (gold answers); for open-ended outputs, judge-rubric criteria suffice |
 
-Power analysis — when you want to detect an effect size of ~5 percentage points with 80% power and α=0.05, n ≈ 200 paired examples (rough rule-of-thumb for proportions). Smaller effects need larger n. Don't run an n=20 eval and report a "result."
+Start small where effects are large: 20–50 tasks drawn from real failures is enough to see early agent changes (Anthropic, Jan 2026). Then size for the smallest effect you care about. For paired pass/fail at 80% power and α=0.05, detecting a 5-point gain needs roughly 300 items when ~10% of pairs disagree and ~600 at 20%; an unpaired comparison near 50% accuracy needs ~1,500 per arm. Don't report a "result" from n=20.
 
 ### 3. Synthetic data generation
 
 - DeepEval Synthesizer — input → evolve → score on self-containment and clarity; multi-turn supported ([DeepEval Synthesizer docs](https://deepeval.com/docs/synthesizer-introduction)).
 - OpenAI Evals registry — YAML grader patterns; broad community-contributed eval set.
-- Adversarial example mining — for safety / robustness, mine known jailbreak datasets (PyRIT 53+ datasets, garak 37+ probes) for relevant patterns.
+- Adversarial example mining — for safety and robustness, pull relevant patterns from PyRIT and garak datasets.
+- Contamination hygiene — keep the golden set private, embed canary strings, and refresh it from production failures; synthetic items generated by the model under test inherit its blind spots.
 
 Synthetic data complements, never replaces, real production traffic. Use it to fill stratification gaps (rare intents, edge cases) — not to substitute for the messy reality of real users.
 
 ### 4. LLM-as-judge — G-Eval methodology
 
-[G-Eval](https://arxiv.org/abs/2303.16634) — Liu et al., EMNLP 2023. Chain-of-thought prompting + form-filling paradigm. Reports 0.514 Spearman correlation with human ratings on summarization tasks — the strongest open methodology for LLM-as-judge at the time of publication.
-
-G-Eval workflow:
-1. Define the evaluation criterion in narrow, explicit terms (broad criteria collapse to noise).
-2. Have the judge model generate a chain of thought reasoning about the criterion.
-3. Have the judge fill a structured score form (e.g., 1–5 scale with anchor descriptions per score).
-4. Use multiple judge runs or multiple judge models if score variance is high.
-
-DeepEval's `GEval` metric implements this directly. Use it when human-aligned scoring is needed and a deterministic metric doesn't fit.
+[G-Eval](https://arxiv.org/abs/2303.16634) — Liu et al., EMNLP 2023: the judge reasons about a narrow criterion, then fills a score form with anchored levels; 0.514 Spearman with human ratings on SummEval. DeepEval's `GEval` implements it. Use it when a deterministic metric doesn't fit; prefer binary pass/fail criteria when the behavior allows, and average multiple judge runs when variance is high.
 
 ### 5. Preference leakage and self-bias mitigation
 
-[Preference leakage](https://arxiv.org/abs/2502.01534) — Wong et al., 2025. When the judge model is from the same family as the generator (or trained on similar data), evaluation scores inflate. Reports ~23.6% leakage on SFT-aligned data. GPT-4o and Claude 3.5 prefer their own-family outputs in measurable ways ([self-bias paper](https://arxiv.org/html/2508.06709v1) — verify exact models cited).
+[Preference leakage](https://arxiv.org/abs/2502.01534) — Li et al., ICLR 2026. Judges favor students trained on data from the same model, an inheriting model, or the same family; the paper's SFT setting averaged a 23.6% leakage score. Judges also carry position bias, length bias, and self-preference.
 
 Mitigations:
-- Use a judge from a different model family than the generator (e.g., Claude judges OpenAI outputs and vice versa).
-- Run a small human-validation set (n=20–50) against the judge; calibrate.
-- Use multiple judges from different families; report disagreement as a confidence signal.
-- For pairwise comparisons, randomize positions and run both orderings.
+- Use a judge from a different model family than the generator and its data generator.
+- Calibrate against human labels before trusting the judge: report TPR/TNR or Cohen's kappa on a labelled sample sized like any other eval; the paper's most effective fix was contextual calibration on a held-out labelled set.
+- Prefer binary pass/fail on narrow criteria over Likert scales; give the judge an "unknown" option; use one judge per dimension (Anthropic, Jan 2026).
+- For pairwise comparisons, run both orderings and count only consistent verdicts.
+- Strip formatting and style cues the judge might key on.
 
 ### 6. Statistical significance
 
-| Test | When | Source |
-|---|---|---|
-| McNemar's test | Paired binary outcomes (pass/fail) | Cameron Wolfe — [Stats for LLM evals](https://cameronrwolfe.substack.com/p/stats-llm-evals) |
-| Paired t-test (modified for k-fold) | Paired continuous scores; k-fold cross-validation | [evalstats repo](https://github.com/ianarawjo/evalstats) |
-| Bayesian pairwise | Small N (<50); preferred over bootstrap | Same source |
-| Bootstrap | When parametric assumptions fail; medium N | Standard |
+Per Anthropic's statistical guidance (Miller, [arXiv:2411.00640](https://arxiv.org/abs/2411.00640), Nov 2024):
 
-Mandatory output for any "we improved X" claim: effect size + significance level + sample size + confidence interval. Point estimates without uncertainty are not eval results.
+- Report the mean with its standard error and 95% CI; an eval score is a sample estimate.
+- Cluster standard errors when items share a source (several questions per document); naive errors can be far too small.
+- Compare variants as paired differences on the same items (McNemar's for paired pass/fail), reporting the mean difference, its CI, and the correlation.
+- Reduce within-item variance by resampling stochastic outputs and averaging.
+- Run a power analysis before the eval, not after.
+- Correct for multiple comparisons (Holm, Benjamini–Hochberg) when testing many variants; bootstrap or Bayesian methods when n is small ([evalstats](https://github.com/ianarawjo/evalstats)).
+
+Mandatory output for any "we improved X" claim: effect size + CI + sample size + test used.
 
 ### 7. Eval categories and metric selection
 
@@ -148,65 +142,42 @@ All three are LLM-as-judge. Failure at any vertex names the failure mode.
 
 ### 9. Agent-specific evaluation
 
-LangSmith multi-turn evals ([docs](https://docs.langchain.com/langsmith/trajectory-evals)) — score semantic intent + final outcome + trajectory (tool-call sequence and arguments).
+Anthropic, ["Demystifying evals for AI agents"](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents) (Jan 2026):
+- Grade outcomes, not exact tool sequences; rigid trajectory checks penalize valid paths. Give partial credit on multi-part tasks.
+- pass@k (at least one of k trials succeeds) fits tasks where one good answer is enough; pass^k (all k succeed) fits customer-facing reliability. They diverge sharply as k grows.
+- Start each trial from a clean, isolated environment; shared state inflates scores and correlates failures.
+- Read transcripts to validate graders; a task at 0% across many trials usually means a broken task or grader.
+- Balance sets: include cases where the behavior should and shouldn't happen.
+- Capability evals start low and give room to climb; graduate saturated ones into regression suites that should stay near 100%.
 
-OSS `agentevals` package — trajectory match (exact or fuzzy) or LLM-judge for trajectories.
-
-Standard agent metrics:
-- Task completion rate — fraction of golden tasks the agent finished correctly
-- Tool-use accuracy — fraction of tool calls that picked the right tool with right arguments
-- Trajectory length — average number of steps; flag outliers as potential loops
-- Tool-error recovery — fraction of error-encountered runs that completed anyway
-- Cost per task — total tokens × $/token, including all turns
+Standard agent metrics: task completion rate, tool-use accuracy (right tool, right arguments), trajectory length (flag outliers as loops), tool-error recovery, cost per completed task.
 
 ### 10. Eval-driven development (EDD)
 
-[Red Hat — "Eval-Driven Development", March 23, 2026](https://developers.redhat.com/articles/2026/03/23/eval-driven-development-build-evaluate-ai-agents). Eight-stage framework with DeepEval + multi-turn + CI/CD for Red Hat AI agents. Framing: "evals are the new code review."
-
-EDD workflow:
-1. Define behavior spec.
-2. Build golden set.
-3. Implement first version.
-4. Run eval suite; record baseline.
-5. Iterate: every change runs through the suite.
-6. Statistical significance gate before merge.
-7. CI fail-the-build on regression.
-8. Production drift monitoring.
-
-Every prompt / model / RAG change runs through the suite before merge. The suite is versioned alongside the prompt. The suite fails the build on regression.
+[Red Hat — "Eval-Driven Development", March 23, 2026](https://developers.redhat.com/articles/2026/03/23/eval-driven-development-build-evaluate-ai-agents). Framing: evals are the new code review. Define the behavior spec, build the golden set, record a baseline, run every prompt / model / RAG change through the suite, gate merges on significance, fail the build on regression, and monitor drift in production. The suite is versioned alongside the prompt.
 
 ### 11. Drift detection and production monitoring
 
-- Arize / Phoenix — embedding-centroid distance across time windows for semantic drift in inputs or outputs ([Arize blog on agent observability](https://arize.com/blog/best-ai-observability-tools-for-autonomous-agents-in-2026/)).
-- Galileo — Galileo Signals; failure-mode mining across production traces ([Galileo blog](https://galileo.ai/blog/best-llm-output-drift-monitoring-platforms)).
-- Helicone — proxy-level cost / latency / error rate drift.
+- Phoenix / Arize — embedding-centroid distance across time windows for semantic drift in inputs or outputs.
+- Galileo — failure-mode mining across production traces.
+- Helicone / Langfuse — cost, latency, and error-rate drift.
 
-Drift alerting — set thresholds during eval baseline; alert on threshold crossings; do not just review dashboards.
+Set alert thresholds during the eval baseline and alert on crossings; dashboards alone don't catch drift.
 
 ### 12. Benchmark literacy
 
-| Benchmark | What it measures | Source |
+| Benchmark | Status in 2026 | Source |
 |---|---|---|
-| MMLU / MMLU-Pro | General knowledge, 14 subjects, 10-choice | [Artificial Analysis MMLU-Pro](https://artificialanalysis.ai/evaluations/mmlu-pro) |
-| GPQA Diamond | "Google-proof" PhD-level questions; 198 examples; PhDs ~65% | [GPQA Diamond](https://artificialanalysis.ai/evaluations/gpqa-diamond) |
-| MATH, HumanEval | Math and code basics; both largely saturated | Standard |
-| SWE-Bench Verified | Real GitHub issues; production code-agent benchmark | Standard |
-| GAIA | General assistant with tools | Meta / HF, [arXiv:2311.12983](https://arxiv.org/abs/2311.12983); Princeton [HAL leaderboard](https://hal.cs.princeton.edu/gaia) |
-| AgentBench | Multi-environment agent benchmark | Standard |
-| BFCL v4 | Function-calling evaluation; AST-based scoring, 2000+ Q/F/A pairs; serial + parallel + multi-turn | [Berkeley leaderboard](https://gorilla.cs.berkeley.edu/leaderboard.html); ICML 2025 paper |
-| τ-Bench | Reliability over reruns; how consistent is the model | Standard |
-| HELM | 7 metrics × 16 scenarios; reproducible benchmarking | [Stanford CRFM HELM](https://crfm.stanford.edu/helm/); [arXiv:2211.09110](https://arxiv.org/abs/2211.09110) |
+| MMLU / MMLU-Pro, GPQA Diamond, MATH, HumanEval | Near-saturated at the frontier; triage only | Standard |
+| SWE-bench Verified | Contaminated: OpenAI stopped reporting it in Feb 2026 and points to SWE-bench Pro | [OpenAI](https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/) |
+| SWE-bench Pro, Terminal-Bench | Harder coding / terminal-agent successors | Project sites |
+| Humanity's Last Exam | Expert-level closed-ended questions | Project site |
+| GAIA | General assistant with tools | [arXiv:2311.12983](https://arxiv.org/abs/2311.12983); [HAL leaderboard](https://hal.cs.princeton.edu/gaia) |
+| BFCL v4 | Function calling, multi-turn and agentic | [Berkeley leaderboard](https://gorilla.cs.berkeley.edu/leaderboard.html) |
+| τ²-bench | Tool-agent reliability over reruns (pass^k) | Project repo |
+| HELM | Reproducible multi-metric benchmarking | [Stanford CRFM HELM](https://crfm.stanford.edu/helm/) |
 
-Caution: published benchmarks have known training-set contamination; reward-hacking on tool-use benchmarks has been documented. Use them for capability triage; use your own held-out golden set for production decisions. Anthropic publishes detailed system cards with capability + safety eval methodology (e.g., Claude Opus 4.6, Feb 2026 — see [Claude system card](https://www.anthropic.com/claude-opus-4-6-system-card)).
-
-### 13. Common pitfalls
-
-- Small golden sets that overfit to whichever examples were handy when the prompt was tuned.
-- Single-metric eval — one number hides regressions in the components.
-- Same model family for generator and judge — preference leakage inflates scores.
-- No statistical significance — point estimates reported as "improvements."
-- Eval suite not in CI — devs forget to run it.
-- Eval suite never refreshed — production drift moves past the golden set's relevance.
+Caution: published benchmarks leak into training data and reward hacking on tool-use benchmarks is documented. Use them for capability triage; use your own private held-out set for production decisions. Verify saturation status live — it changes with every model generation.
 
 ## Checklist
 
@@ -215,10 +186,10 @@ Caution: published benchmarks have known training-set contamination; reward-hack
 - [ ] Stratification covers happy paths and named edge cases
 - [ ] Golden set is version-controlled alongside prompts
 - [ ] Metric is per-behavior, not composite
-- [ ] Judge model is from a different family than generator (or human-validated rubric)
-- [ ] G-Eval method used for non-binary criteria
-- [ ] Statistical significance test selected to match data shape
-- [ ] Effect size + CI reported alongside p-value
+- [ ] Judge is from a different family than the generator and has measured agreement with human labels
+- [ ] Narrow binary criteria (or G-Eval with anchored rubric) for non-deterministic metrics
+- [ ] Paired comparison with standard errors (clustered where needed), CI, and effect size
+- [ ] Agent evals grade outcomes, report pass@k or pass^k to match the use case, and run in isolated environments
 - [ ] CI integration gates merges on regression (Promptfoo / DeepEval / Braintrust)
 - [ ] Production drift monitoring in place with alert thresholds
 - [ ] Eval suite refresh cadence defined
@@ -233,18 +204,19 @@ Within-domain pairings:
 
 Primary sources:
 - [G-Eval, arXiv:2303.16634](https://arxiv.org/abs/2303.16634), Liu et al., EMNLP 2023
-- [Preference Leakage, arXiv:2502.01534](https://arxiv.org/abs/2502.01534), Wong et al., 2025
+- [Preference Leakage, arXiv:2502.01534](https://arxiv.org/abs/2502.01534), Li et al., ICLR 2026
+- [A statistical approach to model evaluations (Miller), arXiv:2411.00640](https://arxiv.org/abs/2411.00640)
+- [Anthropic — Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 - [RAGAS, arXiv:2309.15217](https://arxiv.org/abs/2309.15217)
 - [TruLens RAG Triad](https://www.trulens.org/getting_started/core_concepts/rag_triad/)
 - [DeepEval LLM evals](https://deepeval.com/docs/metrics-llm-evals)
 - [Red Hat — Eval-Driven Development, March 2026](https://developers.redhat.com/articles/2026/03/23/eval-driven-development-build-evaluate-ai-agents)
-- [Cameron Wolfe — Stats for LLM evals](https://cameronrwolfe.substack.com/p/stats-llm-evals)
 - [evalstats reference repo](https://github.com/ianarawjo/evalstats)
 - [GAIA, arXiv:2311.12983](https://arxiv.org/abs/2311.12983)
 - [Princeton HAL leaderboard](https://hal.cs.princeton.edu/gaia)
 - [BFCL leaderboard](https://gorilla.cs.berkeley.edu/leaderboard.html)
 - [HELM, arXiv:2211.09110](https://arxiv.org/abs/2211.09110)
-- [Anthropic Claude Opus 4.6 system card](https://www.anthropic.com/claude-opus-4-6-system-card)
-- [OpenAI–Anthropic joint safety evaluation pilot](https://openai.com/index/openai-anthropic-safety-evaluation/)
+- [OpenAI — Why we no longer evaluate SWE-bench Verified](https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/)
+- [Inspect (UK AISI)](https://inspect.aisi.org.uk/)
 - [Galileo drift monitoring platforms](https://galileo.ai/blog/best-llm-output-drift-monitoring-platforms)
 - [Promptfoo](https://www.promptfoo.dev)

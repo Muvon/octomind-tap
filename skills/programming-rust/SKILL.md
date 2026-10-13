@@ -13,7 +13,7 @@ rules:
 
 ## Overview
 
-Write Rust with explicit ownership, meaningful errors, and small APIs. Research baseline: stable Rust 1.98, checked 2026-09-05. Read `rust-toolchain.toml`, Cargo `edition`, `rust-version` (minimum supported Rust version, MSRV), features, and CI targets before choosing syntax or dependencies. Recheck official releases when updating; a newer compiler does not authorize raising the project's MSRV or changing its edition.
+Write Rust with explicit ownership, meaningful errors, and small APIs. As of 2026-10: stable Rust is 1.99 (2026-10-01) and the current edition is 2024. Read `rust-toolchain.toml`, Cargo `edition`, `rust-version` (minimum supported Rust version, MSRV), features, and CI targets before choosing syntax or dependencies. Recheck official releases when updating; a newer compiler does not authorize raising the project's MSRV or changing its edition.
 
 ## Mental model
 
@@ -21,9 +21,11 @@ Make invalid states difficult to construct and make each resource's owner visibl
 
 ## Version-aware choices
 
-- Rust 2024 requires 1.85+. Edition changes can alter temporary lifetimes and pattern behavior; follow the migration guide and review generated changes separately from feature work.
+- Rust 2024 requires 1.85+. Edition changes can alter temporary lifetimes and pattern behavior; follow the migration guide (`cargo fix --edition`) and review generated changes separately from feature work.
+- Edition 2024 enables `if let` / `while let` chains (`if let Some(x) = a && x > 0`, 1.88+); use them to flatten nested matches. Async closures (`async || {}`, 1.85+) replace closures returning `async` blocks when the future borrows captured state.
+- Cargo's MSRV-aware resolver (`resolver = "3"`, the default for edition 2024) prefers dependency versions compatible with `rust-version`; keep `rust-version` accurate so lockfile updates don't silently require a newer compiler.
 - Use stable standard-library facilities supported by the MSRV before adding a crate for the same small task. Nightly features remain opt-in; don't hide missing support behind unrequested compatibility branches.
-- Rust 1.98 adds integer `format_into` with `NumBuffer`, useful for measured formatting hotspots. Its floating-point `algebraic_*` methods permit reassociation and nondeterministic results; ordinary arithmetic remains appropriate when reproducibility matters.
+- Rust 1.98 adds integer `format_into` with `NumBuffer`, useful for measured formatting hotspots. Its floating-point `algebraic_*` methods permit reassociation and nondeterministic results; ordinary arithmetic remains appropriate when reproducibility matters. Rust 1.99 stabilizes defining C-variadic functions and `Vec::into_parts`/`from_parts`; prefer `Box::into_non_null`/`into_raw` over `Box::leak` when the memory will later be freed.
 
 ## Ownership and APIs
 
@@ -69,7 +71,7 @@ fn parse_workers(input: &str) -> Result<NonZeroUsize, ParseIntError> {
 
 ## References
 
-- [Rust releases](https://blog.rust-lang.org/releases/) and [1.98 changes](https://blog.rust-lang.org/2026/08/20/Rust-1.98.0/).
+- [Rust releases](https://blog.rust-lang.org/releases/), [1.99 changes](https://blog.rust-lang.org/2026/10/01/Rust-1.99.0/), and [1.98 changes](https://blog.rust-lang.org/2026/08/20/Rust-1.98.0/).
 - [Cargo MSRV](https://doc.rust-lang.org/cargo/reference/rust-version.html) and [Rust 2024 migration](https://doc.rust-lang.org/edition-guide/rust-2024/index.html).
 - [Rust API guidelines](https://rust-lang.github.io/api-guidelines/future-proofing.html), [error contract](https://doc.rust-lang.org/std/error/trait.Error.html), and [NonZero](https://doc.rust-lang.org/std/num/struct.NonZero.html).
 - [Tokio shared state](https://tokio.rs/tokio/tutorial/shared-state) and [cancellation with select](https://tokio.rs/tokio/tutorial/select).

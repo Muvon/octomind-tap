@@ -129,7 +129,7 @@ top_k = 0
 
 | Capability | What it provides | Default provider |
 |------------|-----------------|-----------------|
-| `core` | `plan` task tracker — universal self-management (every agent) | built-in |
+| `core` | `recall` — universal self-management (every agent); planning is supervisor-owned | built-in |
 | `agent` | `agent_*` — delegate to your configured sub-agents | built-in |
 | `orchestration` | `tap` (discover/run specialists) + `schedule` (defer/recur loops) — orchestrator-tier | built-in |
 | `runtime` | `mcp` · `agent`-register · `skill` · `capability` — runtime config (high-trust) | built-in |

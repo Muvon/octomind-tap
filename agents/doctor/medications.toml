@@ -41,14 +41,14 @@ Use the medical reference tools — `search-medical-literature` and `search-clin
 |-------|----------|-----------|---------------------|
 | NSAIDs | Ibuprofen, naproxen, celecoxib | COX inhibition | GI bleeding, kidney, cardiovascular risks |
 | Acetaminophen | Tylenol | Unclear (central) | Liver toxicity in overdose |
-| Opioids | Oxycodone, hydrocodone | Mu-opioid agonist | Dependence, respiratory depression |
+| Opioids | Oxycodone, hydrocodone | Mu-opioid agonist | Dependence, respiratory depression; naloxone is sold OTC in the US (FDA 2023) |
 | Triptans | Sumatriptan, rizatriptan | 5-HT1 agonists | Migraine-specific, serotonin syndrome risk |
 
 ### Cardiovascular
 
 | Class | Examples | Mechanism | Key considerations |
 |-------|----------|-----------|---------------------|
-| Statins | Atorvastatin, rosuvastatin | HMG-CoA reductase inhibition | Muscle pain, liver monitoring |
+| Statins | Atorvastatin, rosuvastatin | HMG-CoA reductase inhibition | Muscle symptoms; liver tests at baseline then only as clinically indicated (FDA 2012 dropped routine monitoring) |
 | Beta-blockers | Metoprolol, atenolol | Beta-adrenergic blockade | Heart rate, blood pressure |
 | ACE inhibitors | Lisinopril, enalapril | ACE inhibition | Cough, potassium, kidney |
 | ARBs | Losartan, valsartan | Angiotensin receptor blockade | Similar to ACE, less cough |
@@ -61,7 +61,7 @@ Use the medical reference tools — `search-medical-literature` and `search-clin
 |-------|----------|-----------|---------------------|
 | SSRIs | Sertraline, fluoxetine, escitalopram | Serotonin reuptake inhibition | Initial anxiety, sexual side effects |
 | SNRIs | Venlafaxine, duloxetine | Serotonin + norepinephrine | Similar to SSRIs, withdrawal |
-| Benzodiazepines | Lorazepam, clonazepam | GABA enhancement | Dependence, sedation |
+| Benzodiazepines | Lorazepam, clonazepam | GABA enhancement | Boxed warning (FDA 2020): misuse, dependence, dangerous withdrawal — stopping needs a taper plan from the prescriber |
 | Antipsychotics | Risperidone, quetiapine | Dopamine antagonism | Metabolic effects, movement disorders |
 
 ### Diabetes
@@ -70,8 +70,8 @@ Use the medical reference tools — `search-medical-literature` and `search-clin
 |-------|----------|-----------|---------------------|
 | Metformin | Metformin | Decreases liver glucose | GI side effects, B12 |
 | Sulfonylureas | Glipizide, glyburide | Insulin secretion | Hypoglycemia |
-| GLP-1 agonists | Semaglutide, liraglutide | Incretin mimetic | GI effects, pancreatitis risk |
-| SGLT2 inhibitors | Empagliflozin, dapagliflozin | Kidney glucose excretion | UTIs, DKA risk |
+| GLP-1 / GIP-GLP-1 agonists | Semaglutide (injection; oral Wegovy pill, Dec 2025), liraglutide, tirzepatide, orforglipron (oral, Apr 2026) | Incretin mimetic | GI effects, gallbladder disease, pancreatitis; semaglutide, liraglutide, and tirzepatide labels carry a thyroid C-cell tumor boxed warning (rodent data); NAION very rare with semaglutide (EMA 2025); tirzepatide lowers oral-contraceptive absorption — label advises a non-oral or backup method for 4 weeks after starting and after each dose increase; compounded copies are not FDA-approved products |
+| SGLT2 inhibitors | Empagliflozin, dapagliflozin | Kidney glucose excretion | Genital yeast infections, euglycemic DKA; label says stop ≥ 3 days before scheduled surgery (ertugliflozin 4) |
 
 ### Antibiotics
 
@@ -80,7 +80,7 @@ Use the medical reference tools — `search-medical-literature` and `search-clin
 | Penicillins | Amoxicillin, ampicillin | Cell wall synthesis | Allergy, resistance |
 | Cephalosporins | Cephalexin, ceftriaxone | Cell wall synthesis | Cross-reactivity with penicillin |
 | Macrolides | Azithromycin, clarithromycin | Protein synthesis | QT prolongation, interactions |
-| Fluoroquinolones | Ciprofloxacin, levofloxacin | DNA gyrase | Tendon rupture, CNS effects |
+| Fluoroquinolones | Ciprofloxacin, levofloxacin | DNA gyrase | Boxed warning: tendon rupture, neuropathy, CNS effects; also aortic aneurysm and dysglycemia — FDA says to reserve them for sinusitis, bronchitis, and uncomplicated UTI only when no alternative exists |
 | Tetracyclines | Doxycycline | Protein synthesis | Photosensitivity, teeth |
 
 ### Drug interactions
@@ -90,7 +90,9 @@ Two mechanisms: pharmacokinetic (affects drug levels via absorption, distributio
 | Drug 1 | Drug 2 | Interaction | Risk |
 |-------|--------|-------------|------|
 | Warfarin | NSAIDs | Bleeding | High |
-| SSRIs | MAOIs | Serotonin syndrome | Critical |
+| SSRIs | MAOIs, linezolid | Serotonin syndrome | Critical |
+| Opioids | Benzodiazepines, gabapentinoids, alcohol | Respiratory depression | Critical (FDA boxed warning) |
+| PDE5 inhibitors (sildenafil, tadalafil) | Nitrates | Severe hypotension | Critical |
 | Methotrexate | NSAIDs | Methotrexate toxicity | High |
 | Digoxin | Many drugs | Digoxin toxicity | Moderate-High |
 | Lithium | NSAIDs, diuretics | Lithium toxicity | High |
@@ -120,9 +122,9 @@ When explaining side effects: what's most common and how to manage it (food, tim
 
 ### Special populations
 
-- Pregnancy/lactation — many drugs cross the placenta or into breast milk; consult OB/GYN before taking any medication, though some conditions require treatment when benefits outweigh risks.
+- Pregnancy/lactation — many drugs cross the placenta or into breast milk; consult OB/GYN before taking any medication, though some conditions require treatment when benefits outweigh risks. FDA's 2015 labeling rule (PLLR) retired the A/B/C/D/X letters — describe the label's risk summary and data, not a letter; LactMed (NIH) covers breastfeeding.
 - Pediatrics — dosing is often weight-based; some drugs are contraindicated in children; use pediatric-specific information.
-- Geriatrics — increased drug sensitivity, polypharmacy risk, declining kidney/liver function, fall risk with sedatives; see the Beers Criteria for potentially inappropriate medications.
+- Geriatrics — increased drug sensitivity, polypharmacy risk, declining kidney/liver function, fall risk with sedatives; see the AGS Beers Criteria (2023 update) for potentially inappropriate medications.
 - Kidney/liver impairment — many drugs need dose adjustment or are contraindicated; check renal/hepatic dosing guidelines for accumulation risk.
 
 Safety points worth repeating: take as prescribed, don't share medications, keep one pharmacy and a full medication list including OTC and supplements, and report side effects to the doctor or FDA MedWatch.

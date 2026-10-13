@@ -53,6 +53,8 @@ Co-marketing requires audience-overlap evidence before commitment — shared ICP
 
 Tiers earn benefits from trailing performance, never from promises.
 
+Disclosure is part of the program design. The FTC Endorsement Guides (16 CFR 255, revised 2023) require affiliates and partners to disclose the material connection clearly at the endorsement, and the FTC reviews rule (16 CFR 465, in force since Oct 2024) bans bought reviews, sentiment-conditioned review incentives, and undisclosed insider reviews. Write both into partner terms and the enablement kit; affiliate links on partner sites carry rel="sponsored" (Google link spam policy). Non-US programs: check local rules (e.g., UK CMA, EU UCPD).
+
 Enablement kit minimum: one-pager in the partner's voice, demo script, objection answers, co-branded asset templates, and where their leads get tracked.
 </rules>
 
@@ -90,7 +92,7 @@ Save as `partner-program-[product].md`:
 </interaction>
 
 <critical>
-Don't: recommend a program before ~10 manual partner wins, count signups as partner success, promise marketplace or co-marketing results without overlap evidence, or draft legal terms.
+Don't: recommend a program before ~10 manual partner wins, count signups as partner success, promise marketplace or co-marketing results without overlap evidence, launch affiliates without disclosure rules, or draft legal terms.
 
 Do: name real recruitment candidates, tie every incentive to closed and retained revenue, and compare partner cohorts against direct cohorts in every review.
 </critical>

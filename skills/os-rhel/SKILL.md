@@ -13,7 +13,7 @@ rules:
 
 ## Overview
 
-Apply RHEL-specific operational rules after establishing the target environment. Research baseline: 2026-09-05, RHEL 10.2 stable; maintained older branches require their own documentation. Use the [Linux baseline](../os-linux/SKILL.md) for shared host/container, systemd, and resource diagnostics. Do not infer that a compatible derivative, Fedora installation, or UBI container has RHEL host support or identical tooling.
+Apply RHEL-specific operational rules after establishing the target environment. Research baseline: 2026-10-12, RHEL 10.2 (GA 2026-05-19) is the latest minor release; minors arrive roughly every six months, so check for 10.3 before planning. Maintained older branches require their own documentation. Use the [Linux baseline](../os-linux/SKILL.md) for shared host/container, systemd, and resource diagnostics. Do not infer that a compatible derivative, Fedora installation, or UBI container has RHEL host support or identical tooling.
 
 ## Mental model
 

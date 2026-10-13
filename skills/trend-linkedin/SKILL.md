@@ -28,7 +28,7 @@ Keep personal profiles separate from Company Pages. Metricool found similar impr
 
 Record the audience, professional problem, campaign stage if supplied, language, target geography/timezone, and observation window. Include practical alternatives to the favored product or thesis. Distinguish exact quotes from paraphrases and redact private material (directional).
 
-Start from the signed-in interface and follow controls actually present. The entry URL below is a navigation starting point, not a guaranteed harvest API; record redirects and unavailable controls (directional).
+Start from the signed-in interface and follow controls actually present. The entry URL below is a navigation starting point, not a guaranteed harvest API; record redirects and unavailable controls (directional). LinkedIn's User Agreement bars scraping and unauthorized automated access (official, LinkedIn User Agreement, effective 2025-11-03): keep collection to a small, owner-authorized reading sample at human pace, cite posts by URL, and don't bulk-copy profiles or contact data.
 
 | Surface | Entry and procedure | What to record |
 |---|---|---|
@@ -152,9 +152,10 @@ Decision: return a partial brief and mark the proposed booking trend insufficien
 
 - [LinkedIn Feed Engineering](https://www.linkedin.com/blog/engineering/feed/engineering-the-next-generation-of-linkedins-feed), 2026-03-12; [Post Help](https://www.linkedin.com/help/linkedin/answer/a528176), 2026-08.
 - [LinkedIn Authenticity](https://news.linkedin.com/2026/keeping-conversations-real-on-linkedin), 2026-06-04; [Creator Mode Help](https://www.linkedin.com/help/linkedin/answer/a5999182), 2024-03; [Credentials Help](https://www.linkedin.com/help/linkedin/answer/a6282984?lang=en), undated, reviewed 2026-09.
+- [LinkedIn User Agreement](https://www.linkedin.com/legal/user-agreement), effective 2025-11-03, reviewed 2026-10.
 - [Metricool](https://metricool.com/linkedin-trends/), 2026-04-16; [Metricool Press](https://metricool.com/press-release-linkedin-study-2026/), 2026-04-14.
 - [AuthoredUp Formats](https://authoredup.com/blog/best-performing-content-on-linkedin), 2026-09-02; [Socialinsider](https://www.socialinsider.io/social-media-benchmarks/linkedin), 2026-03-16, period/methodology conflict retained.
 - [Buffer Replies](https://buffer.com/resources/linkedin-engagement-data/), 2025-12-04; [Buffer Timing](https://buffer.com/resources/best-time-to-post-on-linkedin/), 2026-07-22.
 
 Re-validate when search/filter URLs or feature names change; feed engineering or disclosure policies update; new vendor reports revise cohorts or findings.
-Validated: 2026-09
+Validated: 2026-10

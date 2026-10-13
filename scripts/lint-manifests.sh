@@ -34,8 +34,9 @@ if [[ ${#FILES[@]} -eq 0 ]]; then
 fi
 
 # Python TOML parser — tomllib (3.11+) or tomli fallback
-PYTHON_TOML_CHECK=$(
-  cat <<'PYEOF'
+# Not $(cat <<'PYEOF' ...): macOS /bin/bash 3.2 quote-scans a heredoc inside
+# $(...) and fails to parse on this body's apostrophes.
+IFS= read -r -d '' PYTHON_TOML_CHECK <<'PYEOF' || true
 import sys, pathlib, re, os
 
 try:
@@ -233,7 +234,6 @@ if errors:
 
 sys.exit(0)
 PYEOF
-)
 
 lint_file() {
   local file="$1"

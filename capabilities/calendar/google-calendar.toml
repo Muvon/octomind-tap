@@ -15,7 +15,7 @@ allowed_tools = ["google-calendar:*"]
 name = "google-calendar"
 type = "stdio"
 command = "npx"
-args = ["-y", "@cocal/google-calendar-mcp@2.6.2"]
+args = ["-y", "@cocal/google-calendar-mcp@2.7.0"]
 timeout_seconds = 60
 # GOOGLE_OAUTH_CREDENTIALS: path to a GCP OAuth keys JSON file (desktop app credentials).
 env = { GOOGLE_OAUTH_CREDENTIALS = "{{ENV:GOOGLE_OAUTH_CREDENTIALS}}" }

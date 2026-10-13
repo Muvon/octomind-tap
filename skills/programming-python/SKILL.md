@@ -16,7 +16,7 @@ rules:
 
 ## Overview
 
-Write Python with clear data contracts, deliberate effects, and predictable failure behavior. Research baseline: Python 3.14 is stable; 3.15 is prerelease, checked 2026-09-05. Read `requires-python`, environment pins, dependency lockfiles, type-checker settings, and CI first. Use features supported by every required interpreter; don't raise the minimum version or replace the project's tooling during unrelated work. Recheck official releases when updating this guidance.
+Write Python with clear data contracts, deliberate effects, and predictable failure behavior. As of 2026-10: Python 3.15 is the newest stable release (2026-10-09), 3.14 is in bugfix, and 3.10 reached end of life on 2026-10-01. Read `requires-python`, environment pins, dependency lockfiles, type-checker settings, and CI first. Use features supported by every required interpreter; don't raise the minimum version or replace the project's tooling during unrelated work. Recheck official releases when updating this guidance.
 
 ## Mental model
 
@@ -30,8 +30,11 @@ Annotations describe a contract; validation enforces it. Keep boundary parsing e
 | 3.12 | `type Alias = ...` and type-parameter syntax (`def first[T](...)`) simplify typed APIs; older interpreters cannot parse them. |
 | 3.13 | `TypeIs` supports narrowing both branches; use it only when its condition exactly identifies the claimed type. |
 | 3.14 | Annotations are deferred by default; `annotationlib` supports introspection. T-strings produce `Template` objects, and free-threaded builds are officially supported. |
+| 3.15 | `lazy import` / `lazy from ... import` at module scope (PEP 810), built-in `frozendict` (PEP 814) and `sentinel` (PEP 661), unpacking in comprehensions (`[*xs for xs in groups]`), `TaskGroup.cancel()`, TypedDict `extra_items` (PEP 728), and the `profiling.sampling` profiler that attaches to a running PID. I/O defaults to UTF-8 regardless of locale (PEP 686). |
 
 Don't assume annotation values are eagerly evaluated or all strings. Use `typing.get_type_hints` when evaluated types are needed, or appropriate `annotationlib` formats for introspection; evaluating annotations can execute code. T-strings preserve literal and interpolated parts for a processor: they do not automatically escape HTML or parameterize SQL, and they are not interchangeable with `str`.
+
+Lazy imports defer import errors and import-time side effects to first use; don't make a module lazy when its import registers plugins or must fail fast at startup. `frozendict` is not a `dict` subclass, so `isinstance(x, dict)` checks miss it; check `collections.abc.Mapping` where both are valid. The UTF-8 default changes behavior on Windows and non-UTF-8 locales; keep passing `encoding=` explicitly in code that supports older interpreters.
 
 ## Types and data
 
@@ -47,7 +50,7 @@ Don't assume annotation values are eagerly evaluated or all strings. Use `typing
 - Don't replace missing required configuration, failed I/O, or invalid input with defaults. Suppress only a named, expected failure whose absence is part of the contract. Keep sensitive input out of exception messages and logs.
 - Use `with`/`async with` for resources and `ExitStack` for dynamic groups. Make cleanup observable where failure matters; finalizers and garbage collection do not guarantee timely cleanup.
 - Keep imports free of heavyweight work and mutable global configuration. Public submodules are valid APIs; re-exporting everything from `__init__.py` is unnecessary and can introduce cycles.
-- Use `pyproject.toml` for modern package metadata. A `src/` layout helps test installed-package behavior; flat layouts and requirements files still have valid uses. Preserve the established package/environment tools unless changing them is part of the task.
+- Use `pyproject.toml` for modern package metadata and `[dependency-groups]` (PEP 735) for dev/test dependencies. A `src/` layout helps test installed-package behavior; flat layouts and requirements files still have valid uses. Preserve the established package/environment tools unless changing them is part of the task. For a new project with no established tooling, uv (`uv.lock`, `uv run`) plus Ruff for lint and format is the common default; commit the lockfile for applications.
 
 ## Concurrency
 
@@ -83,7 +86,7 @@ def parse_workers(raw: str | None) -> int:
 
 ## References
 
-- [Release status](https://www.python.org/downloads/) and [Python 3.14 changes](https://docs.python.org/3.14/whatsnew/3.14.html).
+- [Release status](https://www.python.org/downloads/), [Python 3.15 changes](https://docs.python.org/3.15/whatsnew/3.15.html), and [Python 3.14 changes](https://docs.python.org/3.14/whatsnew/3.14.html).
 - [Typing](https://docs.python.org/3.14/library/typing.html), [dataclasses](https://docs.python.org/3.14/library/dataclasses.html), [annotation introspection](https://docs.python.org/3.14/library/annotationlib.html), and [t-strings](https://docs.python.org/3.14/library/string.templatelib.html).
 - [Async task contracts](https://docs.python.org/3.14/library/asyncio-task.html), [free threading](https://docs.python.org/3.14/howto/free-threading-python.html), [multiprocessing](https://docs.python.org/3.14/library/multiprocessing.html), and [executors](https://docs.python.org/3.14/library/concurrent.futures.html).
-- [PyPA layout tradeoffs](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/).
+- [uv project workflow](https://docs.astral.sh/uv/) and [PyPA layout tradeoffs](https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/).

@@ -1,7 +1,7 @@
 ---
 name: ai-cost-finops
 title: "AI Cost & FinOps: Caching, Batching, Model Routing"
-description: "Operational playbook for cutting LLM application cost in 2026. Covers provider pricing (Anthropic Claude Opus/Sonnet/Haiku, OpenAI GPT-4o/o-series, Google Gemini Pro/Flash), Anthropic prompt caching (90% discount on cached tokens, up to 85% latency cut), OpenAI automatic prompt caching (50% discount), Anthropic/OpenAI/Gemini Batch APIs (50% off), model routing patterns (Martian, NotDiamond, OpenRouter Auto vs manual rules), token economics (output 3-8x input), structured output cost wins, RAG cost stack (embeddings, rerank, vector DBs), and FinOps observability (Helicone, Langfuse, Phoenix, LangSmith, Vantage). Use when projecting LLM cost, hunting waste in an existing pipeline, picking a model, or setting up per-feature attribution. Output: cost projections with cited prices and quantified optimization levers."
+description: "Operational playbook for cutting LLM application cost in 2026. Covers the current price book (Anthropic Claude Fable/Opus/Sonnet/Haiku, OpenAI GPT-6 Astra/Sol/Luna, Google Gemini Pro/Flash/Flash-Lite), prompt caching mechanics (Anthropic write/read multipliers and TTLs, OpenAI and Gemini automatic caching), Batch and Flex tiers (50% off), effort and reasoning-depth controls, model routing vs effort tuning, output-length discipline, the RAG cost stack (embeddings, rerank, vector DBs), and FinOps attribution (provider usage APIs, Helicone, Langfuse, Phoenix, Vantage). Use when projecting LLM cost, hunting waste in an existing pipeline, picking a model or effort level, or setting up per-feature attribution. Output: cost-per-task projections with cited, dated prices and quantified optimization levers."
 license: Apache-2.0
 compatibility: "Stack-agnostic. FinOps observability typically needs a proxy (Helicone) or instrumented SDK (Langfuse / Phoenix / OpenLLMetry / Vantage). All major providers expose Batch APIs and prompt caching."
 domains: ai
@@ -18,7 +18,7 @@ rules:
   - match(\b(batch\s+api)\b)
   - match(\b(model\s+(routing|selection|router))\b)
   - match(\b(finops|cost\s+optimization|reduce\s+(ai|llm)\s+cost)\b)
-  - match(\b(Haiku|Sonnet|Opus|GPT-?4o|o1|Gemini\s+(Pro|Flash))\b)
+  - match(\b(Fable|Haiku|Sonnet|Opus|GPT-?6|Astra|Gemini\s+(Pro|Flash))\b)
   - match(\b(Helicone|Langfuse|Vantage|Phoenix|LangSmith|OpenLLMetry)\b)
   - semantic(reduce our LLM API spend)
   - semantic(why is our AI bill so high)
@@ -29,181 +29,150 @@ rules:
 
 ## Overview
 
-LLM cost is now a measurable engineering surface, not a line on the credit-card statement. Three levers move it most in 2026: prompt caching (Anthropic 90% / OpenAI 50% discount on cached tokens), Batch APIs (50% off across major providers), and model routing (Haiku vs Sonnet vs Opus at 5× cost spreads). This skill encodes the price book, the discount mechanics, and the optimization patterns with current numbers and primary-source citations.
+LLM cost is an engineering surface, not a line on the card statement. The levers that move it most in 2026, in order: prompt caching (cache reads cost a tenth of input or less), Batch/Flex tiers (50% off), effort or reasoning-depth tuning, then model routing. This skill holds the dated price book, the discount mechanics, and the optimization order with primary-source citations.
 
-Use this skill when projecting LLM cost for a new feature, hunting waste in an existing pipeline, picking a model, setting up per-feature attribution, or building a FinOps dashboard. Skip it for one-off prototypes where total spend stays under $100/month — over-optimizing tiny budgets is the engineering equivalent of premature optimization.
+Use it when projecting cost for a new feature, hunting waste in an existing pipeline, picking a model or effort level, or setting up per-feature attribution. Skip it for prototypes spending under ~$100/month.
 
 ## Mental model
 
-Every LLM call has a cost equation: `input_tokens × $/M_in + output_tokens × $/M_out` plus retrieval/rerank/storage if RAG. Three discounts apply: prompt caching on the input side, Batch APIs on whole calls, model routing on which model gets the call. Every optimization is a move along one of those axes. The cheapest call is the one not made; the second cheapest is the one cached; the third is the one batched; the fourth is the one routed to the smaller model.
+Every call costs `uncached_input × $in + cache_writes × $write + cache_reads × $read + output × $out` (thinking tokens bill as output), plus retrieval, rerank, and storage for RAG. Judge cost per completed task, not per request: a cheaper call that needs more turns or retries is not cheaper.
 
-Output tokens are 3–8× input tokens in cost across providers — the dominant lever after caching is output-length discipline (no markdown when consumer is machine, no preambles, no "let me think through this" verbosity on tasks that don't need reasoning).
+Work the levers in order. Free wins first, because they don't trade quality: caching, input hygiene, output hygiene, batch. Then quality trades, measured against an eval: effort level, then model choice. The cheapest call is the one not made; then the cached one; then the batched one; then the one at lower effort or on a smaller model.
 
-## Instructions
+Output tokens cost 5× input on most current models, so output-length discipline (no markdown for machine consumers, no preambles) is the next lever after caching.
 
-### 1. Provider pricing (May 2026, per 1M tokens, input/output)
+## Rules
+
+### 1. Price book (2026: verified 2026-10-12, per 1M tokens, standard tier, input/output)
+
+Prices change quarterly. Re-check the pricing pages before any budget.
 
 | Provider | Model | Input | Output | Notes |
 |---|---|---|---|---|
-| Anthropic | Haiku 4.5 | $1 | $5 | |
-| Anthropic | Sonnet 4.6 | $3 | $15 | |
-| Anthropic | Opus 4.7 | $5 | $25 | Tokenizer can emit up to 35% more tokens than 4.6 — verify per-call output budget |
-| OpenAI | GPT-4o | $2.50 | $10 | |
-| OpenAI | GPT-4o-mini | $0.15 | $0.60 | 16× cheaper than GPT-4o |
-| OpenAI | o1 | $15 | $60 | Reasoning model |
-| OpenAI | o3 | $2 | $8 | |
-| OpenAI | o4-mini | $1.10 | $4.40 | |
-| Google | Gemini 3.1 Pro | $2 | $12 | ≤200K context; $4 / $18 above 200K |
-| Google | Gemini 3 Flash | $0.50 | $3 | |
-| Google | Gemini 3.1 Flash-Lite | $0.25 | $1.50 | |
+| Anthropic | Claude Fable 5.1 | $10 | $50 | Most capable widely released Claude; thinking always on |
+| Anthropic | Claude Opus 5.5 | $4 | $20 | Default effort `medium` |
+| Anthropic | Claude Sonnet 5.5 | $2 | $10 | |
+| Anthropic | Claude Haiku 5.5 | $0.10 | $0.50 | Prompts ≤100K tokens; $0.50 / $2.50 above |
+| OpenAI | gpt-6-astra | $10 | $50 | Cached input $1; >272K input billed at a higher tier |
+| OpenAI | gpt-6.1-sol | $2 | $10 | Cached input $0.10 |
+| OpenAI | gpt-6-luna | $0.10 | $0.50 | Cached input $0.01 |
+| Google | Gemini 3.1 Pro (preview) | $2 | $12 | ≤200K prompt; $4 / $18 above |
+| Google | Gemini 3.8 Flash | $0.75 | $3.75 | Promotional to 31 Dec 2026, then $1.50 / $7.50 |
+| Google | Gemini 3.5 Flash-Lite | $0.30 | $2.50 | |
 
-Sources: [Anthropic pricing](https://platform.claude.com/docs/en/about-claude/pricing), [OpenAI pricing](https://openai.com/api/pricing/), [Gemini pricing](https://ai.google.dev/gemini-api/docs/pricing). Verify against live pages — prices update. Output tokens cost ~3–5× input on most models; o1 sits at 4×; some frontier models reach 8× (verify GPT-5.2 Pro reportedly $21/$168 — claim seen in secondary sources, verify on primary).
+Sources: [Anthropic pricing](https://platform.claude.com/docs/en/about-claude/pricing), [OpenAI pricing](https://developers.openai.com/api/docs/pricing), [Gemini pricing](https://ai.google.dev/gemini-api/docs/pricing). Older generations stay listed at their own prices; Claude Opus 4.7 and later use a tokenizer that emits ~1–1.35× the tokens of older Claude models, so re-baseline with token counting when migrating. Regional data-residency endpoints carry uplifts on some providers (OpenAI: +10%).
 
 ### 2. Prompt caching
 
-Anthropic prompt caching ([docs](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)):
-- Cache writes cost 1.25× input (5-min TTL) or 2.0× input (1-hour TTL).
-- Cache reads cost 0.10× input — 90% discount on cached tokens.
-- Up to 85% latency reduction on cached prefixes (per Anthropic's docs).
-- Mechanism: `"cache_control": {"type": "ephemeral", "ttl": "1h"}` on message blocks. Default TTL was silently changed from 1h to 5min in March 2026 — set explicitly.
-- Stacks with Batch API (batch 50% off + cache 90% off ≈ 95% off the input portion).
+Anthropic ([docs](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)):
+- Writes cost 1.25× input (5-minute TTL, the default) or 2× (1-hour TTL, set `"ttl": "1h"`). Reads cost ~0.1× input; 0.05× on Opus 5.5 and 0.025× on Fable 5.1.
+- Break-even: two requests on the 5-minute TTL, three on the 1-hour. A cache read refreshes the TTL, so traffic that arrives less than 5 minutes apart never needs the 1-hour TTL.
+- Prefix match in render order tools → system → messages; any byte change invalidates everything after it. Max 4 breakpoints; minimum cacheable prefix is model-dependent (512–4096 tokens) and shorter prefixes silently don't cache.
+- Top-level automatic caching moves the breakpoint forward as a conversation grows; add an explicit breakpoint on the static system prefix for agent loops.
+- Caches are model-scoped, and changing top-level effort mid-conversation invalidates the message cache.
+- Verify with `usage.cache_read_input_tokens`; zero across repeated requests means a silent invalidator (timestamps in the system prompt, unsorted JSON, a varying tool list).
 
-OpenAI automatic prompt caching ([announcement](https://openai.com/index/api-prompt-caching/), [guide](https://developers.openai.com/api/docs/guides/prompt-caching)):
-- Automatic 50% discount on cached prefixes — no code change.
-- Kicks in at ≥1024 tokens.
-- Cache evicted after 5–10 min idle, 1h max.
+OpenAI: automatic prefix caching, no code change; cached input is billed at 5–10% of input on the GPT-6 family (pricing page). Gemini: implicit caching plus explicit context caches billed at ~10% of input plus hourly storage.
 
-What to cache: system prompts, long tool/skill definitions, retrieval pre-context, few-shot examples — anything long, stable, and re-sent. The break-even on Anthropic 5-min cache writes is ~2 cache hits (you pay 1.25× write, save 0.90× × N reads); for 1-hour cache the break-even is ~3 hits.
+Cache system prompts, tool and skill definitions, few-shot examples, and long static documents — anything long, stable, and re-sent.
 
-### 3. Batch APIs (50% off everything that doesn't need real-time)
+### 3. Batch and Flex (50% off anything nobody waits on)
 
-- Anthropic Message Batches — 50% discount, up to 10,000 requests per batch, 24-hour SLA, stacks with prompt caching. [docs](https://platform.claude.com/docs/en/build-with-claude/batch-processing).
-- OpenAI Batch API — 50% discount on all models including embeddings; batched-on-cached gets additional 50% (so 25% of original price). [docs](https://developers.openai.com/api/docs/guides/batch).
-- Gemini Batch — 50% off, inline or JSONL input, context caching applies. [docs](https://ai.google.dev/gemini-api/docs/batch-api).
+- Anthropic Message Batches — 50% off every token, including cache reads and writes; results within 24 hours, in any order (key by `custom_id`). No mid-batch tool loop. [docs](https://platform.claude.com/docs/en/build-with-claude/batch-processing)
+- OpenAI Batch and Flex — both 50% below standard on current models. [pricing](https://developers.openai.com/api/docs/pricing)
+- Gemini Batch and Flex — 50% off; Priority costs ~1.8×. [pricing](https://ai.google.dev/gemini-api/docs/pricing)
 
-Use cases: evals, bulk processing, async pipelines, embeddings backfill, dataset enrichment. If real-time isn't required, batch it — there's no reason not to take the discount.
+Use for evals, backfills, embeddings, dataset enrichment, and scheduled jobs.
 
-### 4. Model routing
+### 4. Effort before routing
+
+Current frontier models expose a reasoning-depth control: Claude `output_config.effort` (`low` → `max`, with adaptive thinking), OpenAI reasoning effort, Gemini thinking level. Effort is the first quality-trading lever: it trades thoroughness for tokens inside one model and keeps one cache namespace.
+
+- Effort names don't mean the same thinking budget across models; re-run the sweep per model. Anthropic reports Opus 5.5 at `medium` matching or beating Opus 5 at `high` on coding and knowledge work ([prompting guide](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5)).
+- Chat, classification, and high-volume routes often hold quality at `low`; coding and long-horizon agents repay `high`/`xhigh`. Tune per route, not globally.
+- Before building a multi-model cascade, measure the strongest model at lower effort on the same tasks.
+
+### 5. Model routing
 
 | Approach | Pros | Cons |
 |---|---|---|
-| Manual rules (classify by complexity) | Predictable; cheap; auditable | Requires upfront classification logic |
-| Martian | Vendor-claimed savings up to 98% | Black-box; verify on your traffic |
-| NotDiamond | Vendor-claimed up to 10× cheaper | RouterArena benchmark ranks NotDiamond #12 by cost efficiency — chooses expensive models often |
-| OpenRouter Auto | Powered by NotDiamond, 33 model pool | Same caveat |
+| Manual rules (classify by complexity, escalate on validation failure) | Predictable, auditable | Needs upfront classification logic |
+| Commercial routers (Martian, NotDiamond, OpenRouter Auto) | Zero setup | Vendor-claimed savings; often pick expensive models ([RouterArena, arXiv:2510.00202](https://arxiv.org/abs/2510.00202)) |
 
-Practitioner pattern (cheaper and more predictable than commercial routers): default to the small model (Haiku, Gemini Flash, GPT-4o-mini) for typical traffic; escalate to mid-tier (Sonnet, Gemini Pro, GPT-4o) when classification confidence is low or output validation fails; reserve frontier (Opus, o1) for hard-reasoning paths only. GPT-4o-mini is 16× cheaper than GPT-4o; the typical Haiku-vs-Opus spread is 5× on input and 5× on output.
+Pattern: small model by default (Haiku, Flash-Lite, Luna), escalate to mid-tier on low confidence or failed validation, reserve the top tier for hard-reasoning paths — with an eval gate per tier. Every model switch forfeits cache reuse.
 
-Source: [RouterArena benchmark, arXiv:2510.00202](https://arxiv.org/html/2510.00202v1) — commercial routers often gain accuracy at higher cost; manual rules with explicit fallback are competitive on cost-effectiveness.
+### 6. Output and input hygiene
 
-### 5. Token economics
+- Structured outputs (Anthropic `output_config.format` and strict tools, OpenAI Structured Outputs) kill preambles and parse-retry loops.
+- No markdown when the consumer is a machine; ban preambles in the system prompt.
+- Don't ask current reasoning models to write their reasoning into the answer: it costs output tokens, and on the newest Claude models it can be declined (`reasoning_extraction`). Lower effort instead.
+- Trim tool results to high-signal fields; cap or compact long histories.
+- Set `max_tokens` with room for thinking — a truncated answer you retry costs twice.
 
-| Lever | Magnitude |
-|---|---|
-| Output is 3–5× input on most models | Cost equation dominator after caching |
-| Reasoning models waste >55% of budget on filler thought | Studies on chain-of-thought wastage |
-| Chain-of-Draft matches CoT accuracy at 7.6% of tokens | Latest research on compact CoT |
-| Structured output (JSON over prose) | Cuts output ~60% in typical fields |
-| TOON format | Vendor claim: 40–50% reduction on structured reference inputs (verify) |
+### 7. FinOps observability and attribution
 
-Source: [codeant.ai — input vs output token cost](https://www.codeant.ai/blogs/input-vs-output-vs-reasoning-tokens-cost).
+| Tool | Mode | Strength |
+|---|---|---|
+| Provider usage/cost APIs (Anthropic Usage & Cost Admin API, OpenAI usage) | Org-level | Ground truth for spend by model, key, workspace |
+| Helicone | Gateway (URL swap) | Always-on cost/latency logging; OSS |
+| Langfuse | SDK or OTLP | Per-generation cost tracking; OSS |
+| Phoenix (Arize) | OSS, OTLP-native | Local-first trace analysis |
+| LangSmith | SDK | Deepest LangChain integration |
+| Vantage | FinOps platform | Cross-provider and cloud roll-up, per-team allocation |
 
-Practical implications:
-- Strip markdown when the consumer is a machine — every `` and `#` is wasted tokens.
-- Use structured outputs (JSON Schema / function calling) — kills preambles and apologies; constrains the output surface.
-- Ban "let me think through this..." preambles via system prompt for tasks that don't benefit from reasoning.
-- Use Chain-of-Draft for arithmetic / logic over full CoT.
+Check current plan pricing on each vendor's site. Tag every call with `feature`, `team`, `customer_tier`, `experiment_arm`; use per-project API keys or workspaces so usage reports are attributable. Without attribution you can't optimize.
 
-### 6. FinOps observability and attribution
-
-| Tool | Mode | Strength | Pricing |
-|---|---|---|---|
-| Helicone | Gateway (1-URL swap) | Zero markup; OSS Rust | Pro $79/mo |
-| Langfuse | SDK or OTLP | OSS (MIT, 19k+ stars); per-generation cost tracking | Cloud from $29/mo |
-| LangSmith | SDK | Deepest LangChain integration | $39/seat Plus |
-| Phoenix (Arize) | OSS | Local-first; OTLP-native | Free / cloud paid |
-| OpenLLMetry (Traceloop) | OSS | Vendor-neutral OTel instrumentation | Free / cloud paid |
-| Vantage AI | FinOps platform | Cross-provider roll-up; per-team / per-customer allocation via virtual tags; MCP server; FinOps Agent | Paid, FinOps tiers |
-
-Sources: [Langfuse cost docs](https://langfuse.com/docs/observability/features/token-and-cost-tracking), [Phoenix repo](https://github.com/Arize-ai/phoenix), [Vantage FinOps for AI](https://www.vantage.sh/blog/finops-for-ai-token-costs).
-
-Common production pattern: Helicone as gateway for always-on cost/latency logging + Langfuse or Phoenix for trace-level analysis + Vantage for FinOps roll-up across AI providers and cloud infra in one pane.
-
-Per-feature attribution: tag every call with `feature`, `team`, `customer_tier`, `experiment_arm` headers (Helicone) or trace attributes (Langfuse / Phoenix). Without attribution, you can't optimize what you can't measure.
-
-### 7. Common waste patterns
+### 8. Waste patterns
 
 | Pattern | Impact | Fix |
 |---|---|---|
-| Over-retrieved RAG context (10× 500-token docs = 5K tokens) | Input bloat per call | Reranker + tighter top-k |
-| Uncached system prompts re-sent every request | Pay full input per turn | Prompt caching on system prompt + tool defs |
-| JSON parse-retry loops | 2–3× the cost on flaky calls | Structured outputs / strict tool mode |
-| Verbose CoT on tasks that don't need reasoning | Output bloat | Chain-of-Draft; ban preambles via system prompt |
-| Default to Opus/o1 when Haiku/4o-mini suffices | 5–20× over-spend | Model routing with eval validation per tier |
-| No streaming → no fail-fast | Pay for bad output | Stream + abort on quality signals |
-| Markdown formatting when consumer is machine | Output bloat | Plain text / JSON output |
+| Uncached system prompt and tools re-sent every turn | Full input price per turn | Stable prefix + breakpoints; verify hit rate |
+| Timestamp or request ID in the system prompt | Cache never hits | Move volatile content after the last breakpoint |
+| Over-retrieved RAG context | Input bloat | Rerank + tighter top-k |
+| JSON parse-retry loops | 2–3× cost on flaky calls | Structured outputs / strict tools |
+| Top tier at top effort for routine traffic | Several-fold over-spend | Effort sweep, then routing, gated by evals |
+| No streaming abort | Pay for bad output | Stream and stop on quality signals |
 
-### 8. RAG cost stack
+### 9. RAG cost stack
 
-Embeddings (per 1M tokens):
-- text-embedding-3-small: $0.02
-- voyage-3 lite: $0.02; voyage-3: $0.06; voyage-3-large: $0.12
-- Cohere Embed v3: $0.10; v4: $0.12 (text)
+- Embeddings are usually a rounding error next to generation; upgrade the embedding model only when retrieval evals show lift.
+- Rerankers bill per search (Cohere: one query + up to 100 documents; Rerank 4 shipped Apr 2026) — cost scales with candidates, so rerank the top 50, not the top 500.
+- Managed vector DBs (Pinecone, Weaviate, Qdrant, Turbopuffer) price on storage, reads, and writes; self-hosting wins at very large scale. Price your own volume on the vendor pages.
+- A stable corpus under ~200K tokens can skip RAG entirely: put it in the prompt and cache it ([Anthropic Contextual Retrieval](https://www.anthropic.com/news/contextual-retrieval)).
 
-Reranking ([Cohere pricing](https://cohere.com/pricing)):
-- Cohere Rerank 3.5: $2 per 1K searches (1 query + up to 100 docs)
-- Cohere Rerank v3: was $2/M tokens
+## Examples
 
-Vector DB cost at 10M vectors (approximate, May 2026):
-- Pinecone Serverless: ~$70/mo ($8.25/M reads, $2/M writes, $0.33/GB)
-- Weaviate Flex: ~$45/mo + $0.095/M dims
-- Qdrant Cloud: ~$65/mo (1GB free)
-- Turbopuffer: min $64/mo, ~$9/M reads+writes, S3-backed storage $0.02/GB
+Bad: "Use Opus for everything; it's the best." No per-task cost, no eval, no effort setting.
 
-At 100M vectors: Pinecone $700+, self-hosted Qdrant/Weaviate often <$100. Source: [particula.tech vector DB comparison](https://particula.tech/blog/pinecone-vs-weaviate-vs-qdrant-vector-database). Numbers verified at time of writing; vector DB pricing changes — verify on the provider's pricing page for production budgeting.
+Good: "Support triage runs 40K requests/day with a 6K-token static prefix. Caching the prefix cuts that input to ~0.1× after the first write; the nightly re-classification moves to Batch at 50% off; an effort sweep shows `low` holds the 94% routing accuracy of `high`. Projected per-ticket cost drops from $X to $Y (prices from the pricing page, 2026-10-12)."
 
-### 9. Optimization patterns checklist
+Case studies (Klarna, Intercom Fin) are useful for direction only; budget from your own attribution data, not vendor blog numbers.
 
-For an existing system, work top-down — biggest wins first:
+## Checklist
 
-- [ ] Caching — system prompts + long tool/skill defs + few-shot examples marked with cache_control or wrapped in the OpenAI auto-cache range (≥1024 tokens)
-- [ ] Batching — any non-real-time path moved to Batch API
-- [ ] Model routing — small model default, escalate on signal; manual rules with eval gates per tier
-- [ ] Output format — structured outputs; no markdown when consumer is machine; ban CoT preambles via system prompt
-- [ ] RAG over-fetch — measure context-token waste; tighten top-k; rerank; check for duplicate chunks
-- [ ] Per-feature attribution — every call tagged with feature, team, customer-tier
-- [ ] Streaming + abort — wired for any user-facing path
-- [ ] Embedding choice — voyage-3-lite or text-embedding-3-small for typical retrieval; only upgrade when RAG eval shows lift
-- [ ] Reranker is on top-50 first-stage, not top-500 — reranker cost scales with candidate count
-
-### 10. Production case studies (with caveats)
-
-- Klarna AI assistant — 2.3M chats in 30 days (≈700 FTE), 67% automation, reported $40M annual savings; 80% lower resolution time. [LangChain customer story](https://blog.langchain.com/customers-klarna/). Caveat: Klarna publicly walked back parts of the "AI-first" claim in 2025 and rehired human support; the cost story is real, the quality story was overstated.
-- Notion — 100M+ users; reportedly 90% of AI dev time spent on evals/observability; tiered eval stack (cheap unit tests run frequently, expensive regressions gated). Verify source attribution before citing externally.
-- Intercom Fin — agent resolution rates moved from ~25% to ~60% via GPT-4 + custom RAG + reranking. Verify exact figures via Intercom's own materials before publishing.
-
-Case studies are useful for direction; production budgeting requires your own attribution data, not vendor blog numbers.
+- [ ] Prices quoted with the date checked and the source URL
+- [ ] Cache hit rate measured from usage fields; static prefix byte-stable; TTL chosen from request gaps
+- [ ] Every non-real-time path on Batch or Flex
+- [ ] Effort swept per route against an eval before any model routing
+- [ ] Routing tiers each gated by an eval; cache-scope loss accounted for
+- [ ] Structured outputs on machine-consumed paths; no preambles; `max_tokens` leaves room for thinking
+- [ ] RAG: rerank depth bounded; long-context-with-cache considered for small corpora
+- [ ] Every call tagged for per-feature attribution; per-project keys or workspaces
+- [ ] Cost reported per completed task, not per request
 
 ## Composition / References
 
 Within-domain pairings:
-- Pairs with the sibling AI skill on RAG patterns (RAG cost stack — embeddings, rerank, vector DB).
-- Pairs with the sibling AI skill on agent design (multi-agent and tool-call cost trade-offs).
-- Pairs with the sibling AI skill on evals (eval workloads belong on Batch APIs).
+- Pairs with the sibling AI skill on RAG patterns (embeddings, rerank, vector DB costs).
+- Pairs with the sibling AI skill on agent design (multi-agent and tool-loop cost).
+- Pairs with the sibling AI skill on evals (every effort or routing change needs an eval gate; eval runs belong on Batch).
 
 Primary sources:
 - [Anthropic pricing](https://platform.claude.com/docs/en/about-claude/pricing)
 - [Anthropic prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)
-- [Anthropic Message Batches](https://platform.claude.com/docs/en/build-with-claude/batch-processing)
-- [OpenAI pricing](https://openai.com/api/pricing/)
-- [OpenAI prompt caching announcement](https://openai.com/index/api-prompt-caching/)
-- [OpenAI Batch API guide](https://developers.openai.com/api/docs/guides/batch)
+- [Anthropic batch processing](https://platform.claude.com/docs/en/build-with-claude/batch-processing)
+- [Anthropic effort](https://platform.claude.com/docs/en/build-with-claude/effort)
+- [OpenAI pricing](https://developers.openai.com/api/docs/pricing)
 - [Gemini pricing](https://ai.google.dev/gemini-api/docs/pricing)
-- [Gemini Batch API](https://ai.google.dev/gemini-api/docs/batch-api)
-- [Cohere pricing](https://cohere.com/pricing)
 - [Langfuse token and cost tracking](https://langfuse.com/docs/observability/features/token-and-cost-tracking)
-- [Helicone](https://www.helicone.ai/)
-- [Phoenix (Arize)](https://github.com/Arize-ai/phoenix)
-- [Vantage — FinOps for AI](https://www.vantage.sh/blog/finops-for-ai-token-costs)
-- [RouterArena benchmark, arXiv:2510.00202](https://arxiv.org/html/2510.00202v1)
-- [codeant.ai — input vs output token cost](https://www.codeant.ai/blogs/input-vs-output-vs-reasoning-tokens-cost)
+- [RouterArena, arXiv:2510.00202](https://arxiv.org/abs/2510.00202)

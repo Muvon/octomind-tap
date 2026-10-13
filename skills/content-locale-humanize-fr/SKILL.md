@@ -3,7 +3,7 @@ name: content-locale-humanize-fr
 title: "French Native-Fluency Calibration"
 description: "Per-language calibration anchors for detecting AI-slop and translationese in French (fr) target text; auto-loads alongside content-locale-humanize when the target language is French."
 license: Apache-2.0
-compatibility: "Extends content-locale-humanize's AI-Slop & Translationese dimension. Load both together — this file has no rubric of its own."
+compatibility: "Calibration data only; no tools required. Network access helps for usage checks."
 domains: content
 rules:
   - content(french)
@@ -16,22 +16,31 @@ rules:
 
 ## Overview
 
-Sourced calibration anchors for French, feeding `content-locale-humanize`'s AI-Slop & Translationese dimension. This is a calibration aid, not the checklist — reason natively beyond it (see the core skill's "why structure, not word lists" section).
+Calibration anchors and current norms for French (fr-FR, fr-CA, fr-BE, fr-CH), feeding content-locale-humanize's dimensions. A calibration aid, not the checklist; reason natively beyond it.
 
-## Instructions
+## Rules
 
-Sourcing confidence: solid. French has the most convergent, independently-reported sourcing of any language checked so far.
+### AI tells
 
-Connector pileup: de plus, en outre, par ailleurs, donc, cependant, ainsi — nearly every paragraph.
+Sourcing confidence: solid; convergent, independently reported sources.
 
-Cliché metaphors (English AI-isms calqued): plonger dans, naviguer, s'embarquer.
+- Connector pileup: de plus, en outre, par ailleurs, donc, cependant, ainsi, nearly every paragraph.
+- Calqued English metaphors: plonger dans, naviguer, s'embarquer.
+- Power words: crucial, essentiel, vital. Stock: en constante évolution, tapisserie, nuance, en conclusion.
+- Construction: "non seulement… mais aussi…" on repeat.
 
-Power words: crucial, essentiel, vital.
+### Translationese from English
 
-Stock: en constante évolution, tapisserie, nuance, en conclusion.
+- Anglicisms: "faire du sens" (avoir du sens), "adresser un problème" (traiter), "supporter" for prendre en charge, "être en charge de" (être chargé de), "définitivement" for certainement, "opportunité" for occasion.
+- Passive chains and possessives where French uses the article; Title Case headings; "2ème" for 2e.
 
-Construction: "non seulement… mais aussi…".
+### Current norms
+
+- Typography (France): no-break space before : and narrow no-break space before ; ! ? and inside « ». Quebec (OQLF): no space before ; ! ?, space before :. Accented capitals (É, À) are standard.
+- Register: vous for most brand and B2B copy; tu only when the brand guide uses it. Hold one.
+- Inclusive writing: the 21 November 2017 circular excludes the point médian from official texts, and the Académie française opposes it. Follow the client guide; otherwise prefer doublets ("les candidates et les candidats") and epicene nouns.
+- fr-CA vocabulary follows OQLF (courriel, clavardage) where the audience is Québécois.
 
 ## References
 
-alexiacontenuillimite.substack.com, startups-nation.fr, gpthuman.ai.
+Reviewed 2026-10-12. AI tells: alexiacontenuillimite.substack.com, startups-nation.fr, gpthuman.ai. Norms: [OQLF Vitrine linguistique](https://vitrinelinguistique.oqlf.gouv.qc.ca/), Académie française, Lexique des règles typographiques en usage à l'Imprimerie nationale.

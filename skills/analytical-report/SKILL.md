@@ -20,7 +20,9 @@ rules:
 
 A report exists to help a human decide something. Most data reports fail two ways: they bury the answer under process (a chronological data dump), or they fabricate/round numbers the underlying data doesn't support. This skill encodes how to produce a report that leads with the answer, proves it with real numbers traced to the data, and is delivered in a form a person can actually read and print.
 
-Two non-negotiables: the pyramid (answer first) for readability, and the grounding gate (every number computed from the data) for trust.
+## Mental model
+
+Two non-negotiables: the pyramid (answer first) for readability, and the grounding gate (every number computed from the data) for trust. Everything else — chart choice, layout, print CSS — serves one of those two.
 
 ## Instructions
 
@@ -41,7 +43,7 @@ Never open with "This report analyzes…" or a methodology wall. Open with the f
 - Compute every statistic from the actual data (load it, run the numbers — don't estimate). Report figures at the precision the data supports; don't invent decimals or round in a way that changes the story.
 - No fabricated or illustrative numbers. If a figure can't be computed from the provided data, say so — never fill the gap with a plausible-looking number.
 - State the data source, the date range/scope, and any filtering. Show the method in one line where a number could be questioned ("median of 1,204 sessions, bot traffic excluded").
-- Flag uncertainty honestly: small samples, missing data, outliers that move the result. A caveat is cheaper than a wrong decision.
+- Flag uncertainty honestly: small samples, missing data, outliers that move the result. Give a range or interval next to any estimate that a decision hinges on. A caveat is cheaper than a wrong decision.
 - Correlation is not causation — describe what the data shows, not a causal story it can't support.
 
 ### Charts — the right one, labelled, self-contained
@@ -51,6 +53,7 @@ Pick the chart by the question, not by variety:
 - Label directly (values on/next to marks) over forcing the eye to a legend and axis. Title each chart with its takeaway, not its variable names ("Signups fell 40% after the April change", not "Signups by month").
 - One visual system: consistent colours, fonts, and sizing across every chart so the report reads as one document. Use colour to encode meaning, not decoration; keep it colour-blind-safe and readable in greyscale (it will be printed).
 - Render charts as inline SVG embedded in the HTML — self-contained, styleable by the print CSS, no external image files or CDN dependencies. Compute the SVG from the data (a plotting library that emits SVG, or hand-built SVG for simple charts).
+- Make every chart readable without sight: `role="img"` plus a `<title>` (and `<desc>` for the takeaway) inside the SVG, and the underlying numbers available as a table nearby or in the appendix. Keep marks at 3:1 contrast against the background and never rely on colour alone — add labels, patterns, or direct annotation.
 
 ### Delivery — self-contained HTML that prints to clean PDF
 
@@ -62,22 +65,19 @@ Make it print cleanly:
 @media print {
   @page { size: A4; margin: 18mm; }
   .no-print { display: none; }
-  h2, h3 { page-break-after: avoid; }
-  table, figure, .card { page-break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
+  table, figure, .card { break-inside: avoid; }
   a { color: inherit; text-decoration: none; }
 }
 body { font: 11pt/1.5 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #1a1a1a; }
+td.num, .stat { font-variant-numeric: tabular-nums; text-align: right; }
 ```
 
-Use absolute units (pt, mm) for print layout, `page-break-inside: avoid` on tables/figures/cards, and a print-only footer (page context, source, date). Keep the on-screen version clean too — this is one document for both.
+Use absolute units (pt, mm) for print layout, `break-inside: avoid` on tables/figures/cards (the older `page-break-*` properties are legacy aliases), and a print-only footer (page context, source, date). Keep the on-screen version clean too — this is one document for both. Set `<html lang>` and a real `<title>`, and use semantic headings and `<table>` with `<th scope>` so the HTML and the PDF exported from it stay accessible.
 
 Typography and layout for humans: generous line height, a readable measure (not full-width text), clear heading hierarchy, tables for enumerable facts with right-aligned numbers, a stat-tile row for the headline metrics, whitespace over density. Restraint reads as authoritative.
 
 Format flexibility: HTML is the default and the most useful (browser + PDF in one). Produce Markdown if the request asks for it, or a rendered PDF if a renderer is available in the environment (the agent can render the HTML via a shell tool when one is present); otherwise deliver the HTML and tell the reader to open it and Print -> Save as PDF.
-
-### Readability check
-
-Before finalizing: does the first sentence give the answer? Can the reader get every key finding from the executive summary alone? Does every number trace to the data with its method? Is every chart the right type, directly labelled, titled with its takeaway, and part of one visual system? Does the HTML render standalone and print without broken tables or clipped charts?
 
 ## Examples
 
@@ -86,3 +86,14 @@ Weak opening (process-first, no answer): "This report presents an analysis of us
 Strong opening (answer-first, pyramid): "Engagement is up 22% — but entirely from existing power users; new-user activation actually fell 15%, and that's the risk. The three findings below, then the detail."
 
 Chart title, weak: "Sessions by Month". Chart title, strong: "Sessions doubled after launch, then plateaued in Q2 — the growth engine has stalled."
+
+## Checklist
+
+Before finalizing:
+
+- [ ] The first sentence gives the answer.
+- [ ] Every key finding is readable from the executive summary alone.
+- [ ] Every number traces to the data, with its method, at the precision the data supports; nothing is illustrative or estimated.
+- [ ] Every chart is the right type, directly labelled, titled with its takeaway, part of one visual system, and has a text alternative.
+- [ ] Caveats name sample size, missing data, and anything correlational.
+- [ ] The HTML renders standalone with no external requests and prints without broken tables or clipped charts.

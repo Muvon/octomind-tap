@@ -32,7 +32,7 @@ Record the audience and buying situation, target language/geography, research pe
 
 If available, use Reddit Pro Trends for keyword conversations and community discovery. Its coverage is public SFW English content; private, banned, quarantined, NSFW, deleted, and messaging content are excluded (official, Reddit Pro Trends, 2026-05). Inspect original posts behind theme summaries. State the coverage limits in the brief.
 
-Use modern `www.reddit.com` pages. Old Reddit requires login during the announced transition; new public API requests are being restricted gradually (official, Reddit Infrastructure, 2026-08). Use authorized authentication when available. Before automated collection, establish that the collection method and intended use are authorized. Don't treat a working login or publicly rendered page as evidence of scraping permission. If permission is unknown, use supplied records or an authorized research surface and report the coverage gap (directional). If blocked, record the blocked URL and missing evidence; don't bypass the gate or call the community inactive.
+Use modern `www.reddit.com` pages. Old Reddit requires login during the announced transition; new public API requests are being restricted gradually (official, Reddit Infrastructure, 2026-08). Self-service Data API access closed in November 2025: new API use needs Reddit's approval under the Responsible Builder Policy, and approved data may not train AI models or be resold without a separate agreement (official, Reddit Responsible Builder Policy, 2025-11). Use authorized authentication when available. Before automated collection, establish that the collection method and intended use are authorized. Don't treat a working login or publicly rendered page as evidence of scraping permission. If permission is unknown, use supplied records or an authorized research surface and report the coverage gap (directional). If blocked, record the blocked URL and missing evidence; don't bypass the gate or call the community inactive.
 
 ### Inspect surfaces
 
@@ -177,6 +177,7 @@ Why it works: buyer relevance, proof sufficiency, and permission remain separate
 - [Reddit Changelog](https://support.reddithelp.com/hc/en-us/articles/52393330268436-Changelog-August-12-2026), 2026-08-12.
 - [Reddit Pro Trends](https://support.reddithelp.com/hc/en-us/articles/47619216411284-Reddit-Pro-Feature-Trends), 2026-05-28.
 - [Reddit Infrastructure](https://redditinc.com/news/modernizing-reddits-infrastructure-and-moderation-tools), 2026-08-05.
+- [Reddit Responsible Builder Policy](https://support.reddithelp.com/hc/en-us/articles/42728983564564-Responsible-Builder-Policy), announced 2025-11-11 in r/redditdev; checked via the announcement 2026-10.
 - [Community Rules: r/rust](https://www.reddit.com/r/rust/about/rules.json) and [r/mcp](https://www.reddit.com/r/mcp/about/rules.json), undated, checked 2026-09.
 - [Reddit Shopping](https://redditinc.com/news/in-case-you-saw-it-we-are-testing-a-new-shopping-product-experience-in-search), 2026-02-19; page includes a later test expansion, checked 2026-09.
 - [Reddit Spam Guidance](https://support.reddithelp.com/hc/en-us/articles/28012014962580-How-do-I-keep-spam-out-of-my-community), 2026-03-28.
@@ -190,4 +191,4 @@ Why it works: buyer relevance, proof sufficiency, and permission remain separate
 
 Re-validate when feed names, URL behavior, access policy, community rules, moderation tools, analytics fields, or inspectable performance research change.
 
-Validated: 2026-09
+Validated: 2026-10

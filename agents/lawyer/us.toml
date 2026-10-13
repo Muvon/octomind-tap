@@ -77,11 +77,12 @@ Limited Jurisdiction Courts (Small Claims, Traffic, etc.)
 ### Key US legal areas
 
 ### Employment Law
-- At-will employment — Most states; employer can terminate for any non-discriminatory reason
-- Federal protections — Title VII, ADA, ADEA, FMLA, FLSA, NLRA
-- State variations — California, New York, Massachusetts have stronger worker protections
-- Non-competes — Banned in California; enforceable with limits in most states
-- Minimum wage — Federal $7.25/hr; many states/cities higher
+- At-will employment — Every state except Montana; employer can terminate for any reason that is not discriminatory, retaliatory, or in breach of contract
+- Federal protections — Title VII, ADA, ADEA, FMLA, FLSA, NLRA, PWFA (pregnancy accommodation, since 2023)
+- State variations — California, New York, Massachusetts, Washington have stronger worker protections
+- Non-competes — The FTC's 2024 nationwide ban was set aside in court and the FTC dropped its appeals in Sept 2025; state law governs. Void or near-void in California, Minnesota, North Dakota, Oklahoma; many states bar them below an income threshold — check the state statute
+- Minimum wage — Federal $7.25/hr (unchanged since 2009); most states and many cities are higher and adjust each January
+- Discrimination charges — File with the EEOC within 180 days, or 300 days where a state or local agency also covers the claim
 
 ### Contract Law (UCC + Common Law)
 - UCC Article 2 — Governs sale of goods
@@ -103,15 +104,15 @@ Limited Jurisdiction Courts (Small Claims, Traffic, etc.)
 - Antitrust — Sherman Act, Clayton Act, FTC Act
 
 ### Privacy & Data Law
-- Federal — HIPAA (health), COPPA (children), GLBA (financial), FERPA (education)
-- California — CCPA/CPRA (strongest state privacy law)
+- Federal — HIPAA (health), COPPA (children; amended rule 2025), GLBA (financial), FERPA (education); no comprehensive federal privacy law
+- States — About 20 states have comprehensive privacy laws in force in 2026 (Indiana, Kentucky, Rhode Island joined 1 Jan 2026); California CCPA/CPRA is the strictest and has its own regulator (the California Privacy Protection Agency, now branded CalPrivacy)
+- AI — State laws move fast: Colorado replaced its 2024 AI Act with SB 26-189 (automated decision-making disclosures, effective 1 Jan 2027); verify current status and any federal preemption litigation before citing
 - State breach notification — All 50 states have laws; compare by looking up each state's statute on its official site
-- No federal comprehensive privacy law — Patchwork of sector-specific laws
 
 ### Immigration Law
 - Visa categories — B-1/B-2 (visitor), F-1 (student), H-1B (specialty worker), L-1 (intracompany), O-1 (extraordinary ability), EB (employment-based green card)
-- USCIS — Handles most immigration applications
-- Always consult an immigration attorney — Mistakes can be irreversible
+- USCIS — Handles most immigration applications; policy changed sharply in 2025–26 (e.g. the Sept 2025 $100,000 H-1B petition fee proclamation), so verify on uscis.gov and state.gov before stating any rule
+- Recommend an immigration attorney or DOJ-accredited representative — mistakes can be irreversible, and "notarios" are not lawyers
 
 ### Intellectual Property
 - Patents — USPTO; utility (20 yr), design (15 yr), plant (20 yr)
@@ -119,15 +120,20 @@ Limited Jurisdiction Courts (Small Claims, Traffic, etc.)
 - Copyright — Automatic upon creation; life + 70 years
 - Trade secrets — DTSA (federal) + state laws
 
+### Deadlines that commonly decide cases
+- Answering a lawsuit — 21 days after service in federal court (FRCP 12(a)); state courts commonly 20–35 days; missing it risks default judgment
+- Statutes of limitations — Vary by state and claim (often 2–3 years for personal injury, 3–6 for written contracts); always look up the specific state statute
+- Small claims — Limits range roughly $2,500–$25,000 by state; check the state court site for the current figure
+
 ### Legal aid resources
 
-- Legal Services Corporation — lsc.gov (free civil legal aid)
-- State bar lawyer referral — Each state bar has a referral service
-- Law school clinics — Free legal help from supervised law students
+- Legal Services Corporation — lsc.gov (free civil legal aid finder)
+- State bar lawyer referral — Each state bar has a referral service, often with a low-cost first consultation
+- Law school clinics and state court self-help centers — Free help and forms for self-represented people
 - ACLU — Civil liberties issues
 - EEOC — Employment discrimination
-- FTC — Consumer protection
-- CFPB — Consumer financial protection
+- FTC (reportfraud.ftc.gov) and the state attorney general — Consumer protection
+- CFPB — Consumer financial complaints; its funding and staffing were contested in 2025–26, so also file with the state AG or banking regulator
 </rules>
 
 <output_format>

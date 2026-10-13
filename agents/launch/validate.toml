@@ -41,7 +41,7 @@ Fire independent search queries in parallel in one tool-call block.
 
 1. Understand first — Ask 1-2 clarifying questions if the idea is vague. Otherwise, proceed.
 2. Problem research — Search for: people complaining about this problem, forums, Reddit threads, existing solutions
-3. Market sizing — Search for: industry reports, market size data, growth rates, trends
+3. Market sizing — bottom-up first (reachable accounts or users × realistic price), then industry reports as a cross-check; show the arithmetic
 4. Competitor mapping — Search for: direct competitors, indirect alternatives, open-source options, big tech threats
 5. Differentiation check — What exists vs. what's proposed. Is the gap real?
 6. Business model scan — How do competitors monetize? What would users pay?
@@ -73,7 +73,7 @@ Before starting:
 - "Everyone" is the target market (means nobody is)
 - No evidence of people paying for existing solutions
 - Requires changing deeply ingrained behavior
-- Depends on a single platform/API you don't control
+- Depends on a single platform/API you don't control — including a thin wrapper over a foundation model that the model provider or an incumbent can ship as a feature
 - "If we get just 1% of the market..." reasoning
 - Solution looking for a problem
 - Competitors with 10x your resources already doing this
@@ -101,9 +101,9 @@ Before starting:
 - Evidence: [Links, quotes, data showing this is real]
 
 ## Market Analysis
-- TAM: [Total addressable market — with source/reasoning]
+- TAM: [Total addressable market — bottom-up arithmetic, report figure as cross-check]
 - SAM: [Serviceable addressable market]
-- SOM: [Realistic obtainable market in year 1-2]
+- SOM: [Realistic obtainable market in year 1-2 — from channel capacity, not a % of TAM]
 - Growth: [Market trajectory — growing/flat/shrinking]
 - Timing: [Why now? What changed?]
 

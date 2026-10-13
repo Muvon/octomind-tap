@@ -21,12 +21,13 @@ Value semantics control mutation; actor isolation controls access; task structur
 
 ## Version and isolation gate
 
-Verified 2026-09-05: Swift 6.3 is released; Apple's Xcode 27 beta lists Swift 6.4. Check the repository's toolchain, `swift-tools-version`, language mode, upcoming-feature flags, default isolation, and deployment targets separately. A Swift 6 compiler can compile in Swift 5 language mode.
+As of 2026-10: Swift 6.4 is the current release (September 2026, shipped in Xcode 27). Check the repository's toolchain, `swift-tools-version`, language mode, upcoming-feature flags, default isolation, and deployment targets separately. A Swift 6 compiler can compile in Swift 5 language mode.
 
 - Swift 6 language mode enables data-race safety checks. Migrate boundaries deliberately; don't assume a toolchain upgrade changes the package's language mode.
 - Swift 6.2 adds opt-in default MainActor isolation and `NonisolatedNonsendingByDefault`, under which nonisolated async functions inherit caller isolation. Read actual settings before inferring where a function runs. `async` does not mean background execution.
 - `@concurrent` on supported toolchains explicitly moves eligible async work to the concurrent executor. Use it for computation that must leave an actor, not as an annotation on every async function.
 - Swift 6.2 also introduces `InlineArray` and `Span`; use them for demonstrated fixed-storage or borrowing requirements. Swift 6.3 adds `@c` interoperability; prefer supported declarations over underscored attributes when the compiler and C contract permit them.
+- Swift 6.4 adds `withTaskCancellationShield` (SE-0504) for cleanup that must finish despite cancellation, awaited async calls in `defer` (SE-0493), `@diagnose` for in-source warning control (SE-0522), module selectors (`Module::name`, SE-0491), and noncopyable containers (`UniqueBox`, `UniqueArray`). Shield only bounded cleanup, not ordinary work; don't use `@diagnose` to silence a diagnostic whose cause is unresolved.
 
 ## Values and API design
 
@@ -49,8 +50,8 @@ Verified 2026-09-05: Swift 6.3 is released; Apple's Xcode 27 beta lists Swift 6.
 
 ## Packages and checks
 
-- Preserve the dependency manager and target layout. Create an SPM target only for a real reusable or independently testable boundary; macros require their supported compiler-plugin setup.
-- Follow existing formatters and tests. Swift Testing supports modern unit tests; XCTest remains appropriate for existing suites, UI automation, and XCTest-specific facilities. Don't migrate tests merely for syntax.
+- Preserve the dependency manager and target layout. Create an SPM target only for a real reusable or independently testable boundary; macros require their supported compiler-plugin setup. Swift 6.4 makes Swift Build SwiftPM's default build system; if a package build changes behavior after a toolchain upgrade, check that first.
+- Follow existing formatters and tests. Swift Testing supports modern unit tests; XCTest remains appropriate for existing suites, UI automation, and XCTest-specific facilities. On Swift 6.4, `XCTAssert` works inside Swift Testing and `#expect` inside XCTest, so suites can migrate incrementally; don't migrate tests merely for syntax.
 - Test actor reentrancy, cancellation, and invalid input when affected. Distinguish source review from checks actually executed under the supported toolchain.
 
 ## Example
@@ -81,7 +82,7 @@ A caller uses `await inventory.reserve(2)` across isolation. If remote authoriza
 
 ## References
 
-- [Swift 6.3](https://www.swift.org/blog/swift-6.3-released/) and [Swift 6.2](https://www.swift.org/blog/swift-6.2-released/)
+- [Swift 6.4](https://www.swift.org/blog/swift-6.4-released/), [Swift 6.3](https://www.swift.org/blog/swift-6.3-released/), and [Swift 6.2](https://www.swift.org/blog/swift-6.2-released/)
 - [Compiler and SDK matrix](https://developer.apple.com/xcode/system-requirements)
 - [Concurrency](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/)
 - [Migration guide](https://www.swift.org/migration/documentation/swift-6-concurrency-migration-guide/incrementaladoption/)

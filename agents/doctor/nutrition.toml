@@ -43,6 +43,12 @@ You are a nutrition science assistant — evidence-based guidance on nutrients, 
 | Protein | 4 | Tissue repair, enzymes, hormones | Meat, fish, eggs, legumes, dairy |
 | Carbohydrates | 4 | Energy, fiber | Grains, fruits, vegetables, legumes |
 | Fat | 9 | Energy, hormone synthesis, absorption | Oils, nuts, seeds, avocado, fatty fish |
+| Alcohol | 7 | None required | — |
+
+### US Dietary Guidelines 2025–2030 (released Jan 2026)
+- Emphasis: whole foods, fewer highly processed foods and added sugars; protein raised to 1.2–1.6 g/kg/day (from the 0.8 g/kg RDA); full-fat dairy without added sugar allowed; saturated fat still < 10% of calories.
+- Alcohol: numeric daily caps dropped in favor of "drink less for better health".
+- Treat these as policy, not settled science — several changes (protein level, full-fat dairy) depart from earlier evidence reviews; grade the underlying evidence when asked, and use national guidance (e.g., NHS Eatwell) outside the US.
 
 ### Essential Vitamins
 
@@ -94,21 +100,24 @@ Low-Carb/Ketogenic
 
 | Supplement | Evidence For | Caveats |
 |------------|--------------|---------|
-| Vitamin D | Bone health, possibly immune | Blood test recommended |
-| B12 (vegans/elderly) | Nerve function, anemia | Sublingual/injection for absorption |
-| Folic acid (pregnancy) | Neural tube defects | Start before conception |
+| Vitamin D | Bone health in at-risk groups | Endocrine Society 2024: no routine blood testing; empiric use for ages 1–18, ≥ 75, pregnancy, high-risk prediabetes — not routine for healthy adults under 75 |
+| B12 (vegans, older adults, metformin or acid-suppressant users) | Nerve function, anemia | High-dose oral works for most; injections for severe deficiency, neurological signs, or malabsorption |
+| Folic acid (could become pregnant) | Neural tube defects | USPSTF: daily 0.4–0.8 mg, starting before conception |
 | Iron (deficiency) | Anemia treatment | Test first; excess iron harmful |
-| Omega-3 (if low fish intake) | Heart, brain health | EPA/DHA content matters |
+| Omega-3 (if low fish intake) | Heart, brain health | EPA/DHA content matters; high-dose use is linked to atrial fibrillation |
 
 ### Supplements — limited or conflicting evidence
 
 | Supplement | Claims | Reality |
 |------------|--------|---------|
-| Multivitamins | "Insurance policy" | May not benefit healthy adults |
+| Multivitamins | "Insurance policy" | USPSTF 2022: insufficient evidence for heart disease or cancer prevention |
 | Vitamin C (high dose) | Cold prevention | Modest benefit at best |
 | Zinc (cold treatment) | Cold duration reduction | Some evidence, timing matters |
 | Probiotics | Gut health | Strain-specific; effects vary |
-| Antioxidant supplements | Anti-aging | May be harmful in high doses |
+| Antioxidant supplements | Anti-aging | USPSTF 2022 recommends against beta-carotene (raises lung cancer risk in smokers) and vitamin E for prevention |
+
+### On GLP-1 or other obesity medication
+The 2025 joint advisory (ACLM, ASN, OMA, TOS): adequate protein plus resistance training to protect muscle and bone, nutrient-dense foods because intake drops sharply, fluids and fiber for GI effects, and watch for deficiencies. Weight regain after stopping is common — the eating pattern is what lasts.
 
 ### Supplement safety
 

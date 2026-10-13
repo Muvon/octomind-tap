@@ -23,12 +23,12 @@ Windows behavior depends on edition, channel, identity, and execution context. A
 
 ## Release and execution gate
 
-Verified 2026-09-05: Windows 11 25H2 is the general feature-update baseline. Released 26H1 serves specific new hardware and is not an in-place upgrade from 24H2/25H2. Windows Server 2025 is the current LTSC release. Recheck release health and edition-specific lifecycle dates before prescribing an upgrade; Insider and optional preview updates are different channels.
+Verified 2026-10-12: Windows 11 26H2 (build 26300) reached general availability on 2026-09-29 as an enablement package for 24H2/25H2 devices; 25H2 remains supported. 26H1 (build 28000) serves specific new hardware and is not an in-place upgrade from 24H2/25H2. 24H2 Home/Pro servicing ends 2026-10-13. Windows Server 2025 is the current LTSC release; Server 2022 left mainstream support on 2026-10-13. Recheck release health and edition-specific lifecycle dates before prescribing an upgrade; Insider and optional preview updates are different channels.
 
 - Identify client versus Server, edition, display version, full build/revision, architecture, and installation type. Server Core, desktop clients, Enterprise LTSC, and IoT Enterprise LTSC have different component availability and support terms.
-- Windows 10 22H2 standard support ended in October 2025; verify ESU enrollment where applicable. Don't apply that lifecycle blindly to Windows 10 LTSC products.
+- Windows 10 22H2 standard support ended in October 2025, and consumer ESU ends on 2026-10-13; paid commercial ESU runs at most to October 2028. Verify actual ESU enrollment; don't apply that lifecycle blindly to Windows 10 LTSC products.
 - Distinguish native architecture from process bitness/emulation. A 32-bit shell on 64-bit Windows can see redirected filesystem/registry locations; ARM64 machines may run emulated x64 tools.
-- Windows PowerShell 5.1 uses `powershell.exe`; PowerShell 7 uses `pwsh.exe` and installs alongside it. PowerShell 7.6 is current LTS; 7.7 is preview. Check `$PSVersionTable`, module compatibility, and remoting endpoint rather than assuming Terminal selects PowerShell 7.
+- Windows PowerShell 5.1 uses `powershell.exe`; PowerShell 7 uses `pwsh.exe` and installs alongside it. PowerShell 7.6 (on .NET 10) is the current LTS; 7.4 LTS support ends November 2026; 7.7 is preview. Check `$PSVersionTable`, module compatibility, and remoting endpoint rather than assuming Terminal selects PowerShell 7.
 - Preserve argument boundaries with PowerShell arrays and `-LiteralPath` where appropriate. Explicitly use `sc.exe` for the service utility: `sc` can resolve to a PowerShell alias.
 
 ## Services and scheduled work

@@ -26,7 +26,7 @@ rules:
 
 ## Overview
 
-Short-form video lives or dies in the first 1.5 seconds. The hook is the only sentence in the script that matters more than the offer — if it doesn't earn the next breath, the user swipes and the rest of the work is wasted. This skill encodes the small number of hook patterns that actually convert on TikTok, Reels, and Shorts in 2025–2026, the rules each pattern follows, and the dead opens to avoid.
+Short-form video lives or dies in the first 1.5–3 seconds. The hook is the only sentence in the script that matters more than the offer — if it doesn't earn the next breath, the user swipes and the rest of the work is wasted. This skill encodes the hook patterns that convert on TikTok, Reels, and Shorts in 2026, the rules each pattern follows, and the dead opens to avoid. Platform research behind these rules is correlational: treat them as strong priors and let the account's own hook-rate data overrule them.
 
 ## Instructions
 
@@ -34,10 +34,10 @@ Short-form video lives or dies in the first 1.5 seconds. The hook is the only se
 
 - The hook is the first 1.5s of video, not the first sentence of the script. It is visual + audible + on-screen text together. Treat all three as the hook.
 - Earn the next second, not the next minute. Each beat (1.5s, 3s, 5s) needs its own retention reason.
-- Never open with the brand. Brand goes in the resolution, not the open. Brand-first opens have ~30–40% lower 3s retention.
-- Never open with "Hi guys" / "In this video" / "Today I'll show you". These are skip triggers — the algorithm has trained users to expect filler after them.
-- Show motion in frame 1. A still opener loses ~20% of viewers vs. a moving opener (camera shake, zoom, subject motion, or quick cut).
-- Caption visible by frame 5. ~85% of feed scrolls are sound-off — the hook must read silently.
+- Don't open on a logo card or with the brand name as the first word. Do get the product or brand on screen naturally inside the first 3–5 seconds — in use, in hand, in the result shot. Google's ABCD research ties early product/brand presence and tightly framed opening shots to higher recall, and TikTok's creative guidance reports that most of its highest-CTR auction ads surface the key message or product within 3 seconds.
+- Never open with "Hi guys" / "In this video" / "Today I'll show you". Viewers have learned that filler follows.
+- Show motion in frame 1 and change the frame early: subject motion, push-in, or a cut. Google's ABCD guidance recommends more than two distinct frames in the first five seconds.
+- Design for both sound states. TikTok is watched mostly with sound, Meta feeds largely muted: the hook text must read silently by frame 5 and the spoken line must work without the text.
 - One claim per hook. Two ideas = no idea.
 
 ### Hook Pattern Catalog
@@ -72,7 +72,8 @@ Short-form video lives or dies in the first 1.5 seconds. The hook is the only se
 3. Write 3 hook variants — one per pattern. Each ≤ 12 words on screen, ≤ 8 words spoken.
 4. For each variant, specify: visual (frame 1 description), on-screen text, voiceover line, motion device.
 5. Score each on: pattern-interrupt strength (1–5), claim specificity (1–5), caption readability sound-off (1–5).
-6. Pick the top scorer — but ship at least 2 variants for A/B testing.
+6. Pick the top scorer — but ship at least 2 variants for A/B testing. Judge live variants by hook rate (3-second views ÷ impressions) and hold rate (15-second or ThruPlay views ÷ 3-second views), not by likes.
+7. Any number in a hook needs a source before publish; claims also need substantiation under ad policies.
 
 ### Decision Guide
 
@@ -111,7 +112,7 @@ Variant C — Stat Punch
 - Voice: `Seventy-three percent of prod outages start in a migration. Here's how to stop being one of them.`
 - Motion: number scales up from 0 to 73 in 0.5s.
 
-Pick: B for cold dev audience — Contrarian + clear visual, no claim that needs sourcing.
+Pick: B for cold dev audience — Contrarian + clear visual, no claim that needs sourcing. Variant C's 73% is a placeholder and cannot ship without a cited source.
 
 ### Example 2: D2C skincare, retargeting audience
 
@@ -132,7 +133,7 @@ Variant B — Confession
 
 ## Hooks That Are Banned
 
-These openers measurably tank retention — never use them:
+These openers spend the first second on nothing — don't use them:
 
 - "Hi everyone / Hi guys / What's up"
 - "In this video / Today I'm going to / Let me show you"
@@ -145,5 +146,6 @@ These openers measurably tank retention — never use them:
 
 ## References
 
-- [TikTok Creative Center — Hook patterns](https://ads.tiktok.com/business/creativecenter/) — actual top-performing ad teardowns by vertical.
-- [Meta Ads Library](https://www.facebook.com/ads/library/) — search competitors and study their first 1.5s.
+- [TikTok Creative Center](https://ads.tiktok.com/business/creativecenter/) — top-performing ad teardowns by vertical.
+- [Meta Ads Library](https://www.facebook.com/ads/library/) — search competitors and study their first 3 seconds.
+- [Google ABCDs of effective video ads](https://business.google.com/us/resources/articles/abcds-of-effective-video-ads/) — Attract, Brand, Connect, Direct; correlational creative research.

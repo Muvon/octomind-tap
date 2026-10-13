@@ -20,7 +20,7 @@ PHP is dynamically typed with optional declarations and opt-in strict scalar che
 
 ## Runtime
 
-- Checked 2026-09-05: PHP 8.5 is the latest stable branch. Recheck the official support table when choosing a new baseline; prereleases are not production defaults.
+- As of 2026-10: PHP 8.5 is the latest stable branch; PHP 8.6 is at release candidate and not a production default until GA. PHP 8.2 security support ends 2026-12-31 and 8.3 active support has ended, so new baselines should be 8.4+. Recheck the official support table when choosing a baseline.
 - Determine the minimum runtime from Composer requirements, `config.platform`, CI, and deployment. Match syntax, extensions, dependencies, and analyzer settings to that minimum. A runtime condition cannot hide unsupported syntax in the same file.
 - Composer's platform setting simulates dependency resolution, not runtime compatibility. Verify with `composer check-platform-reqs` in the target environment. Preserve version constraints unless an upgrade is requested.
 

@@ -19,6 +19,6 @@ type = "stdio"
 command = "sh"
 # sh wrapper: octomind drops the env table at parse time, so constants and
 # derived paths must be exported by the launch command itself.
-args = ["-c", "MODE=stdio DEFAULT_SEARCH_ENGINE=duckduckgo ALLOWED_SEARCH_ENGINES=duckduckgo,bing,startpage,brave exec npx -y open-websearch@2.1.11"]
+args = ["-c", "MODE=stdio DEFAULT_SEARCH_ENGINE=duckduckgo ALLOWED_SEARCH_ENGINES=duckduckgo,bing,startpage,brave exec npx -y open-websearch@2.2.0"]
 timeout_seconds = 60
 tools = []

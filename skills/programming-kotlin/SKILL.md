@@ -21,7 +21,7 @@ Nullability describes absence, immutability describes ownership, and coroutine s
 
 ## Version gate
 
-Verified 2026-09-05: Kotlin 2.4 is the stable language line. It stabilizes context parameters, explicit backing fields, and annotation use-site target changes. Explicit context arguments, context-parameter callable references, and collection literals remain experimental. Check the actual compiler, language/API version, Gradle plugin, JVM target, and platform compatibility before using new syntax.
+As of 2026-10: Kotlin 2.4 is the stable language line (2.4.21 at research time; 2.5.0 planned for December 2026). It stabilizes context parameters, explicit backing fields, the `@all` meta-target, and new use-site annotation defaulting rules. Explicit context arguments, collection literals, and improved compile-time constants remain experimental behind compiler flags. Check the actual compiler, language/API version, Gradle plugin, JVM target, and platform compatibility before using new syntax.
 
 Use context parameters for an existing contextual API need, not to obscure ordinary constructor dependencies. Explicit backing fields can expose a narrower public type without a second property. New annotation targeting can affect frameworks and generated code; verify effective targets during upgrades. Do not enable experimental features merely to shorten an example.
 

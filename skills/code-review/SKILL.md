@@ -37,9 +37,15 @@ This skill provides a structured approach to code review: what to check, how to 
 - [ ] Are failure cases tested, not just the happy path?
 
 #### Security
-- [ ] Is user input validated and sanitized?
+- [ ] Is untrusted input validated, and does it stay out of query/command/path/template sinks?
 - [ ] Are secrets/credentials handled safely (not logged, not hardcoded)?
-- [ ] Are permissions/authorization checks in place?
+- [ ] Are permissions/authorization checks in place on every new entry point?
+- [ ] Do error paths fail closed (deny on exception, no stack traces or internals in responses)?
+
+#### Dependencies and supply chain
+- [ ] Does every new package exist on its registry, under the exact intended name? AI-suggested names are sometimes hallucinated, and attackers register them (slopsquatting).
+- [ ] Is it maintained, license-compatible, and pinned through the lockfile?
+- [ ] Could a few lines of code, the stdlib, or an existing dependency replace it?
 
 #### Performance
 - [ ] Are there any obvious N+1 queries or unnecessary allocations in hot paths?
@@ -47,18 +53,19 @@ This skill provides a structured approach to code review: what to check, how to 
 
 ### Giving Feedback
 
-Be specific: Point to the exact line and explain the concern.
+Be specific: point to the exact line and explain the concern.
 
-Distinguish severity:
-- `nit:` — minor style preference, take it or leave it
-- `suggestion:` — improvement worth considering
-- `question:` — genuinely unclear, needs explanation
-- `issue:` — must be addressed before merge
-- `blocker:` — serious correctness or security problem
+Label every comment with [Conventional Comments](https://conventionalcomments.org/): `<label> [decorations]: <subject>`, then optional discussion.
+- Labels: `praise`, `nitpick`, `suggestion`, `issue`, `todo`, `question`, `thought`, `chore`, `note`
+- Decorations: `(blocking)`, `(non-blocking)`, `(if-minor)` — e.g. `issue (blocking): …` for a must-fix, `nitpick (non-blocking): …` for taste
 
-Be constructive: Suggest an alternative, don't just say "this is wrong."
+Be constructive: suggest an alternative, don't just say "this is wrong." Pair each `issue` with a concrete fix or a question.
 
-Praise good work: Acknowledge clever solutions or clean refactors.
+Praise sincerely with `praise:` when something is genuinely good — one specific line, not filler.
+
+Respond fast: acknowledge a review request within one business day, even if the full review comes later. Slow reviews push authors toward bigger, riskier PRs.
+
+AI-written code gets the same bar as human code: verify that every API, flag, and config key it uses actually exists in the pinned version.
 
 ### Receiving Feedback
 
@@ -69,9 +76,7 @@ Praise good work: Acknowledge clever solutions or clean refactors.
 
 ### PR Size Guidelines
 
-- Ideal: < 400 lines changed
-- Acceptable: 400–800 lines (with good description)
-- Needs splitting: > 800 lines — break into smaller PRs
+Google's engineering practices: about 100 lines is usually a reasonable change, 1000 lines is usually too large, and spread matters — 200 lines in one file can be fine while the same 200 across 50 files is not. Split refactors from behavior changes, and stack dependent PRs instead of growing one.
 
 Large PRs get shallow reviews. Smaller PRs get better feedback faster.
 
@@ -80,9 +85,9 @@ Large PRs get shallow reviews. Smaller PRs get better feedback faster.
 ### Good feedback comment
 
 ```
-issue: This function panics on empty input (line 42). The `unwrap()` on
-`items.first()` will crash if the slice is empty. Consider returning
-`Option<T>` or checking `items.is_empty()` first.
+issue (blocking): This function panics on empty input (line 42). The
+`unwrap()` on `items.first()` will crash if the slice is empty. Consider
+returning `Option<T>` or checking `items.is_empty()` first.
 ```
 
 ### Bad feedback comment → fix it
@@ -93,8 +98,8 @@ This is wrong.
 Why did you do it this way?
 
 # Good
-suggestion: Using a HashMap here would reduce lookup from O(n) to O(1).
-Since this runs on every request, it may be worth the extra memory.
+suggestion (non-blocking): Using a HashMap here would reduce lookup from
+O(n) to O(1). Since this runs on every request, it may be worth the memory.
 ```
 
 ### PR description template
@@ -116,4 +121,5 @@ How you verified this works.
 ## References
 
 - [Google Engineering Practices: Code Review](https://google.github.io/eng-practices/review/)
+- [OWASP Top 10:2025](https://owasp.org/Top10/2025/)
 - [Conventional Comments](https://conventionalcomments.org/)

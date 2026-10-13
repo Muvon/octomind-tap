@@ -170,6 +170,9 @@ else:
             if t in ("-p", "--package"):
                 # npx -p <pkg> <bin>: the flag value IS the package spec
                 return tokens[i + 1] if i + 1 < len(tokens) else None
+            if t == "--from" and i + 1 < len(tokens) and tokens[i + 1].startswith("git+"):
+                # uvx --from git+<url>@<sha> <bin>: the source IS the package spec
+                return tokens[i + 1]
             if t in FLAG_WITH_VALUE:
                 skip = True
                 continue
@@ -204,6 +207,9 @@ else:
         if runner == "npx":
             m = re.match(r"^(@[^/]+/[^@]+?|[^@]+?)@(.+)$", token)
             return bool(m and re.fullmatch(r"\d+\.\d+\.\d+([-+][0-9A-Za-z.-]+)?", m.group(2)))
+        if token.startswith("git+"):
+            # Only a full commit SHA is immutable; branches and tags can move.
+            return re.fullmatch(r"git\+https://\S+@[0-9a-f]{40}", token) is not None
         if "==" not in token:
             return False
         ver = token.split("==", 1)[1]

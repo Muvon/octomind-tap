@@ -24,7 +24,7 @@ A Mac app may have many independently focused windows and continue running with 
 
 ## Platform gate
 
-Verified 2026-09-05: Xcode/macOS 26.x is the stable family; Xcode/macOS 27 is beta. Apple's compatibility table distinguishes compiler, build SDK, host OS, and deployment target. Check these independently before adopting APIs; use actual symbol availability, not the installed machine's OS, as the minimum-version contract.
+As of 2026-10: Xcode 27 (Swift 6.4 compiler, macOS 27 SDK, runs on macOS Tahoe 26.6+) is the stable release; Xcode 27.1 is at release candidate and 27.2 in beta. Bundled helpers built with non-Apple toolchains carry their own minimum macOS (for example, Go 1.27 binaries require macOS 13+); check it against the app's deployment target. Apple's compatibility table distinguishes compiler, build SDK, host OS, and deployment target. Check these independently before adopting APIs; use actual symbol availability, not the installed machine's OS, as the minimum-version contract.
 
 MenuBarExtra, NavigationSplitView, and SMAppService are available from macOS 13; Observation and SwiftData from macOS 14. Keep a supported AppKit implementation when it fits. Avoid speculative compatibility layers or raising deployment targets just to use a newer spelling.
 

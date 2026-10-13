@@ -54,7 +54,7 @@ Professional voice comes from a definite point, credible detail, and respect for
 - Read for comprehension and natural emphasis. Split an overloaded sentence or join choppy ones when it improves the logic. Don't enforce sentence-length alternation, contraction percentages, fragments, or punctuation quotas.
 - Contractions, fragments, lowercase, and slang should fit the author's register and venue. Correct accidental errors; never add typos, fake edit notes, broken grammar, or invented dialect as camouflage.
 - Use active voice when it clarifies responsibility; passive voice is useful when the actor is unknown or the process/result deserves focus.
-- Treat repeated contrast slogans, padded adjective lists, staccato paragraph stacks, and compulsory morals as review prompts. Keep a real comparison, a meaningful list of three, or a useful summary.
+- Treat these as review prompts, not bans: repeated "not just X, but Y" contrasts, forced groups of three, padded adjective lists, staccato paragraph stacks, compulsory morals, inflated significance ("pivotal," "testament to"), vague attributions ("experts say"), trailing "-ing" clauses that assert significance ("..., highlighting its importance"), "serves as" or "boasts" in place of "is" or "has," and bold inline headers on every bullet. Keep a real comparison, a meaningful list of three, or a useful summary.
 - Use questions when their answers matter, not as automatic openers or “Agree?” endings. End after the point, a useful next action, or an unresolved question grounded in the subject; no mandatory twist or inspirational closer.
 - Use headings, lists, and tables when they help readers navigate or compare. A technical reply may need steps or code; a brief conversational reply usually needs prose. Length and formatting follow the task, not an authorship stereotype.
 
@@ -98,14 +98,15 @@ Use:
 
 ## References
 
-Reviewed 2026-09-05. Apply source principles within their stated scope; they do not establish social-platform ranking factors. This is a review date, not a publication/update date for the sources below.
+Reviewed 2026-10-12. Apply source principles within their stated scope; they do not establish social-platform ranking factors. This is a review date, not a publication/update date for the sources below.
 
 - [GOV.UK clear-language guidance](https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/writing-guidelines/clear-language/) — a public-service style guide supporting audience-focused clarity, not a universal brand voice.
 - [FTC endorsement disclosures](https://www.ftc.gov/business-guidance/resources/disclosures-101-social-media-influencers) — US-facing endorsements and truthful experience.
 - [W3C image alternatives](https://www.w3.org/WAI/tutorials/images/decision-tree/) — communicate an image's purpose and relevant information.
 - [Google's AI-content guidance](https://developers.google.com/search/docs/fundamentals/using-gen-ai-content) — accuracy and reader value, not guaranteed traffic from “human” style.
+- [Wikipedia: Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing) — descriptive catalogue of formulaic patterns; single signs prove nothing about authorship.
 - [Fact grounding](../content-grounding/SKILL.md) and [structured revision](../content-humanize/SKILL.md).
 
-Validated: 2026-09
+Validated: 2026-10
 
 Re-validate when disclosure or accessibility guidance changes, or house voice guidance is revised.

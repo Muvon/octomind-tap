@@ -1,7 +1,7 @@
 ---
 name: resume-conventions
 title: "Global Resume & CV Conventions"
-description: "Country-by-country conventions for job-application documents in 2026: resume vs CV terminology, length, whether to include a photo, GDPR/consent clauses, date and locale formatting, and personal-data norms. Adapt an application to the target market so it reads correctly and stays legally safe wherever it's sent."
+description: "Country-by-country conventions for job-application documents in 2026: resume vs CV terminology, length, whether to include a photo, data-processing consent clauses, work-authorization lines, date and locale formatting, and personal-data norms. Adapt an application to the target market so it reads correctly and stays legally safe wherever it's sent."
 license: Apache-2.0
 compatibility: "No external tools required. Markets covered: US/CA, UK/IE, continental Europe, AU/NZ, plus photo/data norms for DE, FR, and Asia."
 domains: coach
@@ -21,7 +21,7 @@ rules:
 
 A job-application document that is perfect for one country can be wrong — or legally risky — in another. The word for it, the expected length, whether it carries a photo, and what personal data belongs on it all change by market. This skill encodes the 2026 conventions so an application is adapted to where it is actually being sent.
 
-Detect the target market first (from the posting's location/company, or ask), then apply that market's conventions. When the target is genuinely ambiguous, ask rather than guess — the wrong convention (a photo where it is illegal to consider one, or a GDPR clause missing in the EU) is a real failure.
+Detect the target market first (from the posting's location/company, or ask), then apply that market's conventions. When the target is genuinely ambiguous, ask rather than guess — the wrong convention (a photo in a no-photo market, a missing consent clause in Poland, a US date order in Europe) is a real failure.
 
 ## Instructions
 
@@ -31,7 +31,7 @@ Detect the target market first (from the posting's location/company, or ask), th
 |---|---|---|
 | US / Canada | Resume (CV = academic only) | 1–2 pages |
 | UK / Ireland | CV | ~2 pages |
-| Continental Europe | CV | 2–3 pages |
+| Continental Europe | CV (DE: Lebenslauf) | 1–2 pages; up to 3 for senior roles |
 | Australia / NZ | Resume or CV | 2–4 pages |
 | Academic / research (any country) | CV | as long as the record needs (6+ pages fine) |
 
@@ -44,11 +44,13 @@ Detect the target market first (from the posting's location/company, or ask), th
 - France, Spain, much of continental Europe, and much of Asia: photo still commonly expected, though the same optional-shift is spreading.
 - When unsure, default to no photo for US/UK/CA/AU/IE (there it is a hard rule), and for photo-culture markets present it as an accepted-but-optional choice rather than a mandate; ask when it materially matters.
 
-### Personal data and GDPR
+### Personal data and consent clauses
 
-- EU / EEA applications: include a short GDPR consent clause permitting the employer to process the personal data in the application (a one-line "I consent to the processing of my personal data for recruitment purposes in accordance with GDPR" is the common form). Under GDPR, employers may only collect data necessary for the hiring decision and must not retain unsuccessful applicants' data beyond a short window.
-- Personal data norms differ: date of birth, marital status, nationality, and a photo are normal on a German/French CV but are omitted (and can be discriminatory to request) in the US/UK. Include only what the target market expects and the candidate consents to.
-- Never add sensitive personal data the candidate did not provide, and never omit a GDPR clause on an EU-targeted application.
+- A consent clause is not a GDPR requirement for an ordinary application: employers process applicant data on the pre-contract legal basis (GDPR Art. 6(1)(b); in Germany alongside § 26 BDSG) and must give applicants their own privacy notice.
+- Poland is the exception by custom: recruiters expect a RODO consent line at the foot of the CV, and many postings quote the exact wording to use. Add one there, and anywhere a posting asks for it. A separate opt-in sentence covers keeping the CV for future recruitment.
+- Personal data norms differ: date of birth, marital status, and nationality still appear on some German, French, and Central European CVs but are optional, and omitted (and can be discriminatory to request) in the US/UK/CA/AU. Include only what the target market expects and the candidate consents to.
+- Work authorization: state it in one line when it is a likely knockout question (UK "right to work", US "authorized to work in the US", EU Blue Card or permit status).
+- Never add sensitive personal data the candidate did not provide.
 
 ### Locale formatting
 
@@ -57,12 +59,25 @@ Detect the target market first (from the posting's location/company, or ask), th
 - Contact: phone in the target country's international format; a city/country line rather than a full street address is now standard and privacy-safe.
 - Language: if the posting is in a non-English language, the application should be in that language unless the posting says otherwise — hand the localization to the localize workflow / content-locale-humanize for native fluency.
 
-### Adaptation checklist
-
-Before finalizing, confirm for the detected market: correct document name, length in range, photo present-or-absent per the rule, GDPR clause present if EU/EEA, dates and spelling in the local convention, and no personal data the market forbids or the candidate did not consent to.
-
 ## Examples
 
 Same candidate, US software role: 1-page resume, no photo, no DOB, `Month YYYY` dates, US spelling, city/state line, no GDPR clause.
 
-Same candidate, German software role: 2-page Lebenslauf/CV, `DD.MM.YYYY` dates, a GDPR consent line, structured and thorough — a professional photo optional (traditional but no longer expected post-AGG). Same facts, adapted to the market.
+Same candidate, German software role: 2-page Lebenslauf/CV, employment dates as `MM/YYYY` (`03/2021 – heute`), structured and thorough, no consent clause needed — a professional photo optional (traditional but no longer expected post-AGG). Same facts, adapted to the market.
+
+Same candidate, Polish role: 1–2 page CV in the posting's language, the RODO consent line from the posting at the foot, photo optional.
+
+## Checklist
+
+- [ ] Correct document name and length in range for the detected market.
+- [ ] Photo present or absent per the market rule, and only if the candidate chose it.
+- [ ] Consent clause present for Poland or when the posting asks; absent otherwise.
+- [ ] Dates and spelling in the local convention, consistent throughout.
+- [ ] Work authorization stated where it is a likely knockout.
+- [ ] No personal data the market discourages or the candidate did not provide.
+
+## References
+
+- GDPR Art. 6(1)(b) (pre-contract processing); Germany: Allgemeines Gleichbehandlungsgesetz (AGG, 2006) and § 26 BDSG
+- [Careers in Poland: the consent clause on a Polish CV](https://www.careersinpoland.com/article/work/the-one-thing-you-should-never-leave-off-your-polish-cv)
+- [Europass CV](https://europass.europa.eu/en/create-europass-cv)
