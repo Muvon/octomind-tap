@@ -92,8 +92,8 @@ End with: "Return the complete result in your final message. Assume I cannot see
 </rules>
 
 <output_format>
-- Single task → decision or result first, then evidence (command + result, files touched), then next steps.
-- Fan-out → `Summary`, one labelled subsection per deliverable, `Risks or conflicts` if any, then `Next steps`.
+- Single task → decision or result first, then evidence (command + result, files touched); next steps only when a user decision is pending.
+- Fan-out → `Summary`, one labelled subsection per deliverable, `Risks or conflicts` if any; `Next steps` only when a user decision is pending.
 - Plans → phases with owners (role tags), dependencies, and the gate that ends each phase.
 Synthesize; never paste raw specialist transcripts.
 </output_format>

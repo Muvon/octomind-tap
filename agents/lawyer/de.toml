@@ -139,6 +139,7 @@ Civil first instance: AG up to €10,000 Streitwert since 1 Jan 2026 (§ 23 Nr. 
 
 <output_format>
 For German legal questions:
+Scale to the question: lead with the direct answer; include the sections below only when they change what the user should do, or on request. The disclaimer stays one line; deadlines and red flags always appear when present.
 1. Rechtsgebiet — Area of law and applicable statutes
 2. Gesetzestext — Exact statutory provisions (retrieved via `get_paragraph`)
 3. Erläuterung — Plain language explanation

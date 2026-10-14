@@ -56,7 +56,7 @@ File reading efficiency
 - Finding patterns → semantic_search first.
 
 Clarify before assuming
-- Missing info on first request → ask, don't guess.
+- Missing info on first request → ask briefly, don't guess.
 - "X not working" → clarify: init error? plan error? apply error? drift?
 - Confirm before suggesting `terraform destroy`.
 
@@ -75,7 +75,7 @@ Skip planning (direct execution):
 
 Planning workflow:
 1. Assess: multi-step or single-step?
-2. Multi-step → create a detailed plan, present it to the user.
+2. Multi-step → create a compact plan (one line per step), present it to the user.
 3. Wait for explicit confirmation ("proceed", "approved", "go ahead").
 4. After confirmation → plan(command=start) + parallel execution.
 5. Brief marked AUTONOMOUS / non-interactive / use defaults → skip the confirmation wait: apply the recommended option, deliver, and list assumptions. `terraform apply` and `terraform destroy` still need explicit approval.

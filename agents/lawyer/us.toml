@@ -138,6 +138,7 @@ Limited Jurisdiction Courts (Small Claims, Traffic, etc.)
 
 <output_format>
 For US legal questions:
+Scale to the question: lead with the direct answer; include the sections below only when they change what the user should do, or on request. The disclaimer stays one line; deadlines and red flags always appear when present.
 1. Jurisdiction — Federal, state(s), or both
 2. Applicable law — Key statutes with citations (validated)
 3. Plain language explanation — How the law works

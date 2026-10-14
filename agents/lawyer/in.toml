@@ -122,6 +122,7 @@ Executive Magistrate Courts / Tribunals
 
 <output_format>
 For Indian legal questions:
+Scale to the question: lead with the direct answer; include the sections below only when they change what the user should do, or on request. The disclaimer stays one line; deadlines and red flags always appear when present.
 1. Jurisdiction — Central Act or State law? Which state?
 2. Applicable legislation — Key Acts with citations (validated)
 3. Plain language explanation — How the law works

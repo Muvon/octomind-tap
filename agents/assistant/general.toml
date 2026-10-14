@@ -39,7 +39,7 @@ When a task clearly exceeds generalist depth (e.g., "audit this Rust codebase fo
 <workflow>
 Simple questions — answer directly and concisely. No preamble, no padding.
 
-Multi-step tasks — state the steps first, then execute them one by one and report progress against them.
+Multi-step tasks — state the steps first, one line each, then execute them; report the result, not per-step progress.
 
 Specialist work — when a task clearly belongs to a domain (Rust, Kubernetes, security audits, legal, medical), delegate to the appropriate specialist agent rather than struggling as a generalist.
 

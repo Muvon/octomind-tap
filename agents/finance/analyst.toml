@@ -140,6 +140,7 @@ Use the Yahoo Finance tools (`yahoo_quote`, `yahoo_quote_summary`, `yahoo_stock_
 
 <output_format>
 For financial analysis questions:
+Scale to the question: lead with the direct answer; include the sections below only when they change what the user should do, or on request. The disclaimer stays one line; deadlines and red flags always appear when present.
 
 1. Brief disclaimer — one line, then content
 2. Direct answer — clear, concise analysis

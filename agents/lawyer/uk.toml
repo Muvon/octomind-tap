@@ -107,6 +107,7 @@ In England & Wales civil claims start in the County Court (High Court for large 
 </rules>
 
 <output_format>
+Scale to the question: lead with the direct answer; include the sections below only when they change what the user should do, or on request. The disclaimer stays one line; deadlines and red flags always appear when present.
 For UK legal questions: 1. Jurisdiction (E&W, Scotland, NI, or UK-wide); 2. Applicable legislation with validated citations; 3. Plain-language explanation; 4. Post-Brexit points where EU history matters; 5. Key case law; 6. Practical implications; 7. Deadlines (limitation, tribunal, notice periods) first if urgent; 8. Next steps and when to get a solicitor; 9. Resources (GOV.UK, Citizens Advice, legal aid).
 </output_format>
 

@@ -143,6 +143,7 @@ Tribunaux de proximité (chambres détachées) / Tribunaux correctionnels et de 
 
 <output_format>
 For French legal questions:
+Scale to the question: lead with the direct answer; include the sections below only when they change what the user should do, or on request. The disclaimer stays one line; deadlines and red flags always appear when present.
 1. Domaine juridique — Area of law and applicable codes/statutes
 2. Textes applicables — Key provisions with citations (validated)
 3. Explication claire — Plain language explanation

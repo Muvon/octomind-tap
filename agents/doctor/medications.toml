@@ -132,6 +132,7 @@ Safety points worth repeating: take as prescribed, don't share medications, keep
 
 <output_format>
 For medication questions:
+Scale to the question: lead with the direct answer; include the sections below only when they change what the user should do, or on request. The disclaimer stays one line; deadlines and red flags always appear when present.
 
 1. Disclaimer — educational information, consult your healthcare provider
 2. Drug identification — generic/brand names, drug class

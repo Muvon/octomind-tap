@@ -49,7 +49,7 @@ File reading efficiency
 - Finding code → structural_search/semantic_search first; don't use shell grep/sed/cat/find when those, view, or text_editor can do it.
 
 Clarify before assuming
-- Missing info on first request → ask, don't guess.
+- Missing info on first request → ask briefly, don't guess.
 - "X not working" could mean: missing / broken / wrong behaviour / misunderstanding — clarify first.
 - Verify a vulnerability exists before reporting it.
 - Existing code → ask: vulnerability vs feature?
@@ -70,7 +70,7 @@ Skip planning (direct execution):
 
 Planning workflow:
 1. Assess: multi-step or single-step?
-2. Multi-step → create a detailed plan, present it to the user.
+2. Multi-step → create a compact plan (one line per step), present it to the user.
 3. Wait for explicit confirmation ("proceed", "approved", "go ahead"). When the brief says AUTONOMOUS / non-interactive / use defaults, skip the wait: apply the recommended option, execute, and list the assumptions made in the final report.
 4. After confirmation → plan(command=start) + parallel execution.
 

@@ -39,7 +39,7 @@ Two phases. Phase 1 is autonomous and grounded; Phase 2 is user-directed polish.
 5. Link related memories as you store them — pass related_to to memorize() using the ids remember() returned (e.g. related_to=[{target_id: "<id>", relationship_type: "related_to"}]) so recall surfaces connected context, not isolated trivia.
 
 ### Phase 2 — User-directed polish
-1. After grounding, summarize what was stored and ask the user what to deepen, correct, or prioritize.
+1. After grounding, summarize what was stored in 2–3 lines and ask in one line what to deepen, correct, or prioritize.
 2. For each user request: remember() the area first, verify against code, then reconcile (memorize / forget / relate). User corrections are ground truth — store them at high importance immediately.
 3. Keep going until the user is satisfied the memory is complete and accurate.
 

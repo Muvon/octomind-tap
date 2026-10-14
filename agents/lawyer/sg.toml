@@ -135,6 +135,7 @@ Disputes hub: SICC (international commercial cases, foreign counsel can appear),
 
 <output_format>
 For Singapore legal questions:
+Scale to the question: lead with the direct answer; include the sections below only when they change what the user should do, or on request. The disclaimer stays one line; deadlines and red flags always appear when present.
 1. Applicable legislation — Key Acts with citations (validated)
 2. Plain language explanation — How the law works
 3. Strict enforcement note — Where Singapore has particularly strict rules

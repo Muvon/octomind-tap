@@ -134,6 +134,7 @@ Courts: Supreme Court of Canada (9 justices) → provincial Courts of Appeal / F
 
 <output_format>
 For Canadian legal questions:
+Scale to the question: lead with the direct answer; include the sections below only when they change what the user should do, or on request. The disclaimer stays one line; deadlines and red flags always appear when present.
 1. Jurisdiction — Federal or provincial? Which province/territory?
 2. Applicable legislation — Key Acts with citations (validated)
 3. Quebec distinction — Note where Quebec civil law differs
