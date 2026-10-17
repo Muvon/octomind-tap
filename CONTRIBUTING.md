@@ -454,7 +454,7 @@ rules:
 | `env(<VAR>=<value>)` | Environment variable `VAR` equals `value` |
 | `bin(<command>)` | Command is available in `$PATH` (detects installed runtimes/tools) |
 | `workdir(<pattern>)` | Current working directory path contains the pattern (substring) |
-| `session(<word>)` | Current session name contains the word (e.g. `session(rust)` matches `developer:rust`) |
+| `session(<word>)` | Current session name contains the word (e.g. `session(rust)` matches the tap-run session `tap-developer-rust-<hex>`; default `octomind run` names are `YYMMDD-<dir>-HHMM-<id>` and don't contain the role) |
 
 Logic: each list item is an **OR branch**; multiple expressions on the same line are **AND**.
 

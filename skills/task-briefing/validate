@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Validates task-briefing output at the end of an assistant turn.
+# argv[1] = event type (assistant); stdin = final assistant message.
+# Non-zero exit with stderr feeds the message back to the model.
+
+input="$(cat)"
+
+# 1. Every reply ends with the status line orchestrators branch on.
+last_line="$(printf '%s\n' "$input" | sed '/^[[:space:]]*$/d' | tail -n 1)"
+if ! printf '%s' "$last_line" | grep -qE '^BRIEF STATUS: (READY|NEEDS INPUT)[[:space:]]*$'; then
+  echo "Brief output is missing the closing status line. End with exactly one line: 'BRIEF STATUS: READY' or 'BRIEF STATUS: NEEDS INPUT'." >&2
+  exit 1
+fi
+
+# 2. READY is only valid when no input marker remains open.
+if printf '%s' "$last_line" | grep -q 'READY' &&
+  printf '%s' "$input" | grep -q '\[NEEDS INPUT'; then
+  echo "The brief says BRIEF STATUS: READY but still contains [NEEDS INPUT] markers. Resolve them or change the status line to NEEDS INPUT." >&2
+  exit 1
+fi
+
+exit 0

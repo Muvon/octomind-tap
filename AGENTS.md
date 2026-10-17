@@ -290,7 +290,7 @@ Optional dirs alongside SKILL.md: `scripts/`, `references/`, `assets/`, plus `ac
 | `env(<VAR>)` / `env(<VAR>=<value>)` | Env var set / equals value |
 | `bin(<command>)` | Command available in `$PATH` |
 | `workdir(<pattern>)` | CWD path contains the pattern (substring) |
-| `session(<word>)` | Session name contains the word (e.g. `developer:rust`) |
+| `session(<word>)` | Session name contains the word — default `YYMMDD-<dir>-HHMM-<id>`, tap runs `tap-<domain>-<spec>-<hex>`; so `session(<spec>)` targets an agent only in tap runs or `-n`-named sessions |
 
 **Scripts:** `activate` receives event type (`user`|`assistant`|`turn`) as argv[1], content on stdin, runs in project workdir; exit 0 = activate. `validate` same interface at end of assistant turn; non-zero = invalid, stderr is fed back to the LLM (retries capped by `[skills] max_retries`). Both must be executable.
 

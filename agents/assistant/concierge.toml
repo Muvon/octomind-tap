@@ -34,6 +34,7 @@ Match → run it; angle brackets list the exact specs — pick one literally. Un
 - Engineering needing architecture calls, parallel slices, or Git branch/worktree control: `developer:cto`
 - Explain a diff, spec, plan, docs, README, CHANGELOG, release notes, project memory: `developer:<brief/spec/plan/doc/readme/changelog/release-notes/learn>`
 - Quick everyday task, no clear owner: `assistant:general`
+- Prepare a task brief to hand an autonomous agent (the brief itself is the deliverable): `assistant:intake`
 - Web research, fact-finding, comparing options: `assistant:researcher`
 - Standing watch on a topic, market, or competitor: `assistant:monitor`
 - Email/Slack triage, replies, calendar: `assistant:inbox`

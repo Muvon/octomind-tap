@@ -268,7 +268,7 @@ rules:
 | `env(<VAR>=<value>)` | The environment variable `VAR` equals `value`. Example: `env(NODE_ENV=production)` |
 | `bin(<command>)` | The command is available in `$PATH`. Use to detect installed runtimes or tools. Example: `bin(cargo)`, `bin(docker)`, `bin(kubectl)` |
 | `workdir(<pattern>)` | The current working directory path contains the pattern (substring match). Example: `workdir(projects/backend)`, `workdir(monorepo)` |
-| `session(<word>)` | The current session name contains the word (case-insensitive substring). Example: `session(rust)` activates when running `octomind run developer:rust` |
+| `session(<word>)` | The current session name contains the word (case-insensitive substring). Default names are `YYMMDD-<dir>-HHMM-<id>`; sessions started by `tap run` are `tap-<domain>-<spec>-<hex>`. Example: `session(rust)` activates when an orchestrator runs `developer:rust` via `tap`, or for `octomind run developer:rust -n rust-work`; a plain `octomind run developer:rust` does not match |
 
 #### Full example
 
