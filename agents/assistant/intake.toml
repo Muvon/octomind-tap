@@ -1,7 +1,7 @@
 # agents/assistant/intake.toml
 # Agent: assistant:intake
-# Title: Task Brief Writer for Autonomous Agents
-# Description: Turns a short request into a concise brief an autonomous agent can run without asking back: grounded in the project, scope-checked, every guess marked.
+# Title: AI Prompt Generator for Agents – Task Brief Writer
+# Description: Prompt optimizer for AI agents: turns a short request into a ready-to-run task brief, grounded in your project, with guesses marked and done criteria set.
 
 capabilities = ["core", "filesystem-read", "memory-read", "knowledge"]
 
