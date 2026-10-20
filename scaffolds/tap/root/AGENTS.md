@@ -153,11 +153,19 @@ domains = ["developer"]
 Triggers belong in `config.toml`, not provider files. Use specific positive
 phrases and include enough varied examples for semantic matching.
 
-Current static agent resolution requires every declared capability to exist in
-this tap. The scaffold therefore includes `capabilities/core/default.toml`.
-Before declaring another community capability, add its provider definition and
-all dependency scripts it references. Do not silently assume another tap will
-supply static capabilities until the runtime explicitly supports that contract.
+Agents reference capabilities in three forms:
+
+| Reference | Resolves from |
+|-----------|---------------|
+| `<name>` | This tap first, then every connected tap |
+| `octomind/<name>` | The baseline community tap only |
+| `<org>/<name>` | The connected tap whose id starts with `<org>/` |
+
+A capability's dependency scripts run from the tap that provides it, so
+reference community capabilities as `octomind/<name>` instead of copying them.
+Ship a capability here only when this tap owns it, together with every
+dependency script it references. `scripts/check.sh` requires a local
+`default.toml` for bare names only.
 
 ## Dependency installers
 
@@ -241,7 +249,7 @@ Ensure the key exactly matches the variable read by the child process.
 - [ ] Agent paths match their `<domain>:<spec>` tags.
 - [ ] Every agent has capabilities and exactly one complete role.
 - [ ] Agent system prompts use canonical XML ordering and stable contents.
-- [ ] Every declared static capability exists locally and has `default.toml`.
+- [ ] Every bare capability exists locally with `default.toml`; community ones use `octomind/<name>`.
 - [ ] Every capability dependency has a matching shell script and document.
 - [ ] Every skill directory matches its frontmatter name.
 - [ ] Every workflow parses and references intentional roles.
@@ -252,9 +260,8 @@ Ensure the key exactly matches the variable read by the child process.
 
 - Write `[deps]`, `[roles.mcp]`, or `[[mcp.servers]]` in an agent manifest.
 - Set `name` inside `[[roles]]`.
-- Add a capability reference that cannot resolve from this tap.
+- Copy a community capability into this tap; reference it as `octomind/<name>`.
 - Add a non-built-in `server_ref` without a matching MCP server definition.
 - Reimplement the platform matrix inside individual dependency scripts.
 - Put dynamic runtime placeholders inside an agent's `system` prompt.
 - Commit credentials, tokens, private endpoints, or generated `.env` files.
-

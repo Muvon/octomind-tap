@@ -43,8 +43,7 @@ exist once here and are symlinked from the repository root.
 ## Design boundary
 
 The scaffold copies the tap architecture and authoring foundation, not the
-community catalog. It includes one local `core` capability so the starter
-agent works with the current source-tap-local static capability resolver.
-Public agents, skills, workflows, capabilities, and dependency installers are
-not copied.
-
+community catalog. It includes one local `core` capability for the starter
+agent; other agents reference community capabilities as `octomind/<name>`,
+which resolve from the baseline tap with their dependencies. Public agents,
+skills, workflows, capabilities, and dependency installers are not copied.

@@ -290,7 +290,32 @@ Git, and registers it as a local tap — the starter agent runs immediately:
 octomind run team:assistant
 ```
 
-`scaffolds/tap/` in this repository is the single source of truth for the
+Options:
+
+```bash
+octomind tap init acme/team --dir ../team-tap      # destination (default ./octomind-<name>; must be empty)
+octomind tap init acme/team --agent ops:triage     # starter agent tag (default <name>:assistant)
+```
+
+The tap id `owner/name` maps to the GitHub repository `owner/octomind-<name>`.
+Pick a name whose repository does not exist yet and that does not shadow an
+active tap (`octomind tap` lists them; `muvon/tap` is the built-in default).
+
+`init` creates no remote and pushes nothing. To publish, create the repository
+and push from the generated directory:
+
+```bash
+gh repo create acme/octomind-team --private --source . --remote origin
+git add -A && git commit -m "chore: scaffold tap"
+git push -u origin HEAD
+```
+
+On other machines, add it with `octomind tap acme/team`. That command clones
+`github.com/acme/octomind-team`, so a private repository needs Git access
+(SSH key or `gh auth login`).
+
+The scaffold is read from the installed default tap, not from a local checkout
+of this repository. `scaffolds/tap/` here is the single source of truth for the
 generated layout; any GitHub template repository is only a synchronized mirror.
 
 ### Placeholder variables

@@ -63,9 +63,19 @@ def validate_agent(path: Path, root: Path, errors: list[str]) -> None:
         if not isinstance(capability, str):
             errors.append(f"{path}: capability names must be strings")
             continue
+        prefix, _, name = capability.rpartition("/")
+        if prefix:
+            # `octomind/<name>` (baseline tap) or `<org>/<name>` (connected tap)
+            # resolves from that tap at runtime, together with its dependencies.
+            if "/" in prefix or not name:
+                errors.append(f"{path}: capability '{capability}' must be '<name>' or '<tap>/<name>'")
+            continue
         default = root / "capabilities" / capability / "default.toml"
         if not default.exists():
-            errors.append(f"{path}: capability '{capability}' has no local default.toml")
+            errors.append(
+                f"{path}: capability '{capability}' has no local default.toml "
+                f"(reference the baseline tap as 'octomind/{capability}')"
+            )
 
     if "deps" in data or "mcp" in data:
         errors.append(f"{path}: deps and MCP servers belong in capability files")
@@ -218,4 +228,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
