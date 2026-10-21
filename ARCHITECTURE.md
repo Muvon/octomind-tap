@@ -74,7 +74,7 @@ Symlinks are managed by `scripts/setup-symlinks.sh` which **always force-creates
 | `codesearch-graph`      | octocode               | `graphrag` (dependency-graph traversal)   |
 | `memory-read` / `memory-write` | octobrain | `remember` / `memorize`, `forget`              |
 | `webfetch`     | octobrain              | `knowledge` — fetch URLs and local documents          |
-| `websearch`    | duckduckgo (also brave, exa, tavily) | `search` — web search                     |
+| `websearch`    | duckduckgo (also brave, deepseek, exa, tavily) | `search` — web search                     |
 | `versioning`   | git                    | git operations                                        |
 | `programming-python`  | uv               | Python runtime (uv, uvx)                              |
 | `programming-rust`    | cargo            | Rust toolchain (cargo, rustc, clippy, rustfmt)        |

@@ -1,0 +1,24 @@
+# capabilities/websearch/deepseek.toml
+# Capability: websearch
+# Provider: DeepSeek — official Search API via the community deepseek-web-mcp server
+# Title: Web Search (DeepSeek)
+# Description: Web search via the DeepSeek Search API: ranked results, source URLs, summaries. Needs DEEPSEEK_API_KEY.
+# Provides tools: search
+# https://api-docs.deepseek.com/guides/search
+# The server also ships a fetch tool; it is left out so it never shadows the webfetch capability.
+
+[deps]
+require = ["habitssss/deepseek-web-mcp"]
+
+[roles.mcp]
+server_refs = ["deepseek-web"]
+allowed_tools = ["search"]
+
+[[mcp.servers]]
+name = "deepseek-web"
+type = "stdio"
+command = "npx"
+args = ["-y", "deepseek-web-mcp@0.1.0"]
+timeout_seconds = 60
+env = { DEEPSEEK_API_KEY = "{{ENV:DEEPSEEK_API_KEY}}" }
+tools = []
