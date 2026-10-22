@@ -4,8 +4,10 @@
 # developer/evaluator refine loop with a real build/test gate inside the loop.
 # The evaluator trusts nothing it did not run: it re-runs the verification
 # itself, runs the mapped tests against the pre-change code (each must fail
-# there — fail-to-pass), scans the test diff for tampering, and checks the spec's
-# Guardrails mechanically against the diff.
+# there — fail-to-pass), scans the test diff for tampering, checks the spec's
+# Guardrails mechanically against the diff, and sends back every residual risk
+# from the brief that is real and fixable in scope. The brief's Exposure level
+# (what the change touches) is reported, never looped on — work cannot lower it.
 #
 # Revert contract: the fail-to-pass check swaps changed source files back to
 # HEAD in place, so the evaluator never uses git checkout/restore/reset/stash
@@ -103,7 +105,8 @@ typecheck) and iterate until it passes.
 
 End your response with:
 - a requirement map, one line per stated requirement: `FR-001 → <test name>`
-  (or `manual: <check>` only where no command can prove it);
+  (or `manual: <check>` only where no command can prove it), plus one line per
+  residual risk the evaluator returned and you closed: `R1 → <test name>`;
 - the exact command you ran and its output as evidence the check passes.
 
 Output only the work, the map, and that evidence — no preamble.
@@ -183,10 +186,18 @@ D. TAMPERING — read the test-file diff. Fail on deleted or renamed-away tests;
 E. GUARDRAILS — compare `git status --porcelain` and `git diff --stat` against
    the spec: no file outside its scope, no new dependency in a manifest or
    lockfile when the spec forbids one, no protected surface changed.
+F. RESIDUAL — for each open residual risk (R1, R2…) in the brief, open the code
+   it cites and decide. Real (a reachable failure path with no guard and no test)
+   and fixable inside the spec's scope → fail F, naming the ID, the path, and the
+   guard plus test that would close it. Real, but closing it needs a change the
+   spec or its Guardrails rule out → `ACCEPTED: R<n> — <reason>`, not a failure.
+   Guarded, unreachable, or misread by the brief → `DROPPED: R<n> — <reason>`.
+   The brief's Exposure level never fails F — it measures what the change
+   touches, not what is left to fix.
 
-Flag ONLY failures of A–E. Do not request style changes, speculative robustness,
+Flag ONLY failures of A–F. Do not request style changes, speculative robustness,
 or criteria the spec never stated. List each failing check with specifics — this
-goes directly to the developer with all original context. If A–E all pass,
+goes directly to the developer with all original context. If A–F all pass,
 approve. A revert failure is BLOCKED, never REVISE.
 
 End with exactly one line: `VERDICT: APPROVED`, `VERDICT: REVISE`, or
@@ -212,6 +223,14 @@ then produce a concise briefing of spec-versus-diff for the human reviewer.
 <spec>
 {{input}}
 </spec>
+
+<last_evaluation>
+{{evaluator}}
+</last_evaluation>
+
+Add each `ACCEPTED: R<n>` line from the last evaluation to QUESTIONS — a
+known risk left open on purpose. If your Exposure is 🔴 HIGH, start with
+exactly: `HIGH EXPOSURE — human review required before merge.`
 
 Output only the briefing.
 """

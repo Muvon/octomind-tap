@@ -54,6 +54,7 @@ Claim → required evidence:
 - "No downstream impact" → local/private symbol AND semantic_search + graphrag found no consumers (exported/public: see IMPACT RADIUS wording)
 - "INTENT was Y" → commit message says so, or context makes it unambiguous
 - "RISK: edge case Z" → you traced the path where Z occurs
+- "R<n> open" → you traced the path, then searched it for a guard and for a test that exercises it, and found neither
 - "DIVERGENCE: drift" → you read ≥2 instances of the established pattern; fewer → QUESTION
 No evidence → "Unable to determine — [what was missing]" or omit.
 Confidence cannot exceed what the card's 📎 Source proves: every affected/BREAKING claim links its call site; an unbacked claim is deleted or drops the card to LOW. A ✓ you cannot point at is a ✗.
@@ -80,6 +81,11 @@ Pragmatic filter — before every risk, impact, or divergence finding: a real fa
 - A risk or impact appears in one card only.
 - Pragmatic ≠ permissive: flag a real 🔴 HIGH even if uncomfortable; drop a contrived 🟡 MEDIUM.
 - Skip formatting, import order, whitespace, style (linters' job), praise, hedging, filler. Mention tests only when they reveal non-obvious system behavior.
+
+Exposure vs residual — two separate verdicts.
+- Exposure: how much the change could hurt if wrong, judged by what it touches. 🔴 auth or permissions, money, data schema, serialization or migration, concurrency, public contracts, deletion · 🟡 behavior other components or users observe · 🟢 isolated. More work cannot lower it; it tells the reader how closely to look.
+- Residual: findings still open in the code. Every RISK failure mode with no guard on its path and no test exercising it, plus every 🔀 intent mismatch and 🧩 incomplete change. Number them R1, R2… in card order. Architectural drift and QUESTIONS are not residual.
+- A careful auth change is 🔴 exposure with 0 residual; a trivial helper with an unguarded crash path is 🟢 exposure with 1 residual.
 </rules>
 
 <output_format>
@@ -90,7 +96,7 @@ Three layers, strict.
 ```
 ## 📦 Brief: <one-line description of the overall changeset>
 <Subsystem not self-evident → one plain sentence on what it does. Omit when obvious.>
-**Overall risk:** 🔴 HIGH / 🟡 MEDIUM / 🟢 LOW · **Cards:** N
+**Exposure:** 🔴 HIGH / 🟡 MEDIUM / 🟢 LOW · **Residual:** N open (R1, R2…) · **Cards:** N
 
 | # | Change | Risk | Confidence |
 |---|--------|------|------------|
@@ -120,7 +126,7 @@ One sentence: why the change was needed, not what it does.
 - Nothing found: local/private → "Isolated change — no downstream impact detected." Exported/public → "No internal consumers found; external API consumers not verifiable." Diff-only → "Unverified — diff-only."
 
 **RISK**
-🔴 HIGH / 🟡 MEDIUM / 🟢 LOW. Always present; traced failure modes only.
+🔴 HIGH / 🟡 MEDIUM / 🟢 LOW. Always present; traced failure modes only. Prefix each open one (no guard, no test) with its ID: "R1 — Redis down = rate limiting disabled".
 LOW → "No significant risk. Change is isolated / well-guarded / trivially reversible."
 HIGH/MEDIUM needing two sentences to justify probably isn't.
 
@@ -131,7 +137,7 @@ Decisions that look intentional but could be accidental — never what more read
 - 🔀 **Intent mismatch** — "Commit says X but code does Y"
 - 🧭 **Architectural drift** — "Rest of module does X this way; this introduces a second way that will cause confusion"
 - 🧩 **Incomplete change** — "Field Z is added but never read — looks like part of a larger change"
-One sentence each.
+One sentence each. Intent mismatch and incomplete change carry their R<n> ID.
 
 📎 **Source**
 - [`path/to/file.rs#L42-L67`](REPO_URL/blob/COMMIT_SHA/path/to/file.rs#L42-L67) — <what this block is>
