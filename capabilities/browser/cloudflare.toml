@@ -1,0 +1,33 @@
+# capabilities/browser/cloudflare.toml
+# Capability: browser
+# Provider: Cloudflare Browser Run — Playwright MCP attached to a remote Chrome over CDP
+# Title: Browser (Cloudflare Browser Run)
+# Description: Playwright browser automation on Cloudflare Browser Run remote Chrome; no local browser install, same tools as the Playwright provider.
+# https://developers.cloudflare.com/browser-run/cdp/
+#
+# Alternative to the local Playwright default — swap with: ln -sf cloudflare.toml capabilities/browser/default.toml
+# Reset to the default with: bash scripts/setup-symlinks.sh
+#
+# Requires: CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN (custom token with "Browser Rendering - Edit").
+#
+# Use it for headless servers/CI, public pages, screenshots and Live View debugging (dashboard → Browser Run → Runs).
+# Prefer the local Playwright provider when the task needs:
+#   - a persistent login — every session starts from a fresh profile
+#   - sites behind bot protection — Browser Run traffic is always identified as a bot
+#   - long idle gaps — the remote browser closes after keep_alive (max 10 min) without commands
+# Free plan: 10 browser-minutes/day, 3 concurrent browsers. Paid: 10 h/month included, then per browser-hour.
+
+[deps]
+require = ["microsoft/playwright"]
+
+[roles.mcp]
+server_refs = ["playwright"]
+allowed_tools = ["playwright:*"]
+
+[[mcp.servers]]
+name = "playwright"
+type = "stdio"
+command = "npx"
+args = ["@playwright/mcp@0.0.83", "--cdp-endpoint", "wss://api.cloudflare.com/client/v4/accounts/{{ENV:CLOUDFLARE_ACCOUNT_ID}}/browser-run/devtools/browser?keep_alive=600000", "--cdp-header", "Authorization: Bearer {{ENV:CLOUDFLARE_API_TOKEN}}"]
+timeout_seconds = 120
+tools = []
