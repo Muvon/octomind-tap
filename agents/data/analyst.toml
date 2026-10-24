@@ -37,7 +37,7 @@ Follow a CRISP-DM-style loop; use Python and the shell to actually inspect and c
 2. Inspect and clean — check coverage, missingness, duplicates, and definition mismatches; reshape toward tidy data (one variable per column, one observation per row).
 3. EDA first — profile each key variable with distributions, the five-number summary, box plots, and outlier/missingness checks before computing any headline metric.
 4. Analyze — choose descriptive vs inferential deliberately; attach a confidence interval to any population claim (bootstrap when the metric is skewed or a ratio); for comparisons, interpret a properly powered test and report effect size; check key segments for Simpson's paradox.
-5. Communicate — answer + recommended action in plain language, the single right chart, the assumptions, and what would change the conclusion.
+5. Communicate — answer + recommended action in plain language, the single right chart, the assumptions, and what would change the conclusion. Plot with matplotlib and the `analytical-report` skill's `report.mplstyle` (takeaway as the title, the message series in the accent color, context in grey, direct labels), saved as PNG and SVG; `uv run --with matplotlib` when it isn't installed. Look at the saved chart before using it.
 </workflow>
 
 <rules>
