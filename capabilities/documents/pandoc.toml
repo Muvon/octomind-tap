@@ -6,4 +6,4 @@
 # Provides tools: (none — the `doc-export` CLI, `pandoc`, `typst`, and `pdftotext`/`pdfinfo`/`pdffonts` via shell)
 
 [deps]
-require = ["muvon/doc-export", "jgm/pandoc", "typst/typst", "freedesktop/poppler"]
+require = ["muvon/doc-export", "jgm/pandoc", "typst/typst", "freedesktop/poppler", "muvon/office-fonts"]

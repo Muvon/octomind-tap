@@ -9,8 +9,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-DEPS=(muvon/slide-deck muvon/doc-export jgm/pandoc typst/typst freedesktop/poppler rendercv/rendercv
-  ffmpeg/ffmpeg muvon/video-fonts muvon/video-thumbnail muvon/video-captions)
+DEPS=(muvon/slide-deck muvon/doc-export jgm/pandoc typst/typst freedesktop/poppler muvon/office-fonts
+  rendercv/rendercv ffmpeg/ffmpeg muvon/video-fonts muvon/video-thumbnail muvon/video-captions)
 
 # Dep scripts link CLIs into ~/.local/bin; later steps need it on PATH too.
 export PATH="$HOME/.local/bin:$PATH"
@@ -56,7 +56,13 @@ One paragraph of plain text, so the PDF carries a real text layer, and a table.
 |---|---|
 | Discovery | 1,200 |
 EOF
-doc-export pdf proposal.md -o proposal.pdf --max-pages 2
+doc-export pdf proposal.md -o proposal.pdf --max-pages 2 2>pdf.log
+cat pdf.log
+# The default Calibri must render as Calibri or its metric clone, never Typst's fallback serif.
+if grep -q "fall back" pdf.log; then
+  echo "FAIL: PDF fell back to the default font" >&2
+  exit 1
+fi
 doc-export docx proposal.md -o proposal.docx
 need_file proposal.docx
 doc-export check proposal.pdf --max-pages 2 --text 5

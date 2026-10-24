@@ -5,6 +5,8 @@
 # Description: Text-to-video and image-to-video AI with Luma Dream Machine (Ray models). Edit, extend, reframe clips via Luma's official MCP server.
 # Auth: OAuth 2.1 sign-in with a Luma account. The first session opens a browser;
 # octomind stores and refreshes the token. Generations spend the chosen team's credits.
+# The client registers through Dynamic Client Registration: a CIMD client_id must be an
+# HTTPS URL Luma can fetch, which a local octomind can't serve.
 
 [roles.mcp]
 server_refs = ["luma"]

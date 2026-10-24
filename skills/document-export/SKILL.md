@@ -58,7 +58,7 @@ doc-export pdf  proposal.md -o "Acme_RFP-2026-117_Vol1_Technical.pdf"  --font "T
 | House style reused across documents | `doc-export reference -o house.docx --font ... --heading-color 0B3D91`, then `--reference house.docx` |
 | Long proposal or report | `--toc`, and `--numbered` when the instructions number sections |
 
-Check the font exists before relying on it: `typst fonts` for PDF (the tool warns), and Word substitutes silently on the reader's machine when a font is missing, so prefer Calibri, Arial, Times New Roman, or Georgia for files that leave the organization.
+Check the font exists before relying on it: `typst fonts` for PDF. When Calibri, Cambria, Arial, Times New Roman, or Courier New is missing, the PDF uses its metric-compatible clone (Carlito, Caladea, Liberation), so line breaks and page counts hold; any other missing font gets a warning. Word substitutes silently on the reader's machine when a font is missing, so prefer Calibri, Arial, Times New Roman, or Georgia for files that leave the organization.
 
 ### Markdown that converts well
 

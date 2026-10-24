@@ -10,7 +10,8 @@
 # mcp-versions: hold @modelcontextprotocol/server-filesystem
 # Held at 2025.8.21: later releases repeat the base64 image in structuredContent,
 # which octomind also appends to the tool result as text (~6K extra tokens per
-# image after truncation).
+# image after truncation). Lift the hold once octomind replaces mirrored image
+# data in structured content.
 
 [deps]
 require = ["modelcontextprotocol/filesystem"]

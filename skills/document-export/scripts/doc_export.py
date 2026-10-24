@@ -23,6 +23,15 @@ import zipfile
 from pathlib import Path
 
 PAPER = {"us-letter": (12240, 15840), "a4": (11906, 16838)}  # twips
+# Open clones with the original's character widths, so line breaks and page counts stay the same.
+METRIC_CLONES = {
+    "calibri": "Carlito",
+    "cambria": "Caladea",
+    "arial": "Liberation Sans",
+    "helvetica": "Liberation Sans",
+    "times new roman": "Liberation Serif",
+    "courier new": "Liberation Mono",
+}
 
 
 def die(msg):
@@ -171,26 +180,36 @@ def cmd_docx(args):
     print(f"doc-export: {args.out} ({args.font} {args.size}pt, {args.margins} margins, {args.paper}){note}", file=sys.stderr)
 
 
-def typst_has_font(font):
+def typst_fonts():
     typst = shutil.which("typst")
-    if not typst:
-        return True
     out = subprocess.run([typst, "fonts"], capture_output=True, text=True).stdout
-    return font.lower() in {ln.strip().lower() for ln in out.splitlines()}
+    return {ln.strip().lower() for ln in out.splitlines()}
+
+
+def pdf_font(font):
+    """The requested font, its metric-compatible clone when only that is installed, or the request as is."""
+    available = typst_fonts()
+    if font.lower() in available:
+        return font
+    clone = METRIC_CLONES.get(font.lower())
+    if clone and clone.lower() in available:
+        print(f"doc-export: '{font}' is not installed; using its metric-compatible clone {clone}", file=sys.stderr)
+        return clone
+    warn(f"Typst can't find the font '{font}' (see `typst fonts`); it will fall back to its default")
+    return font
 
 
 def cmd_pdf(args):
     pandoc = need("pandoc", "install pandoc 3.1.2+")
     need("typst", "install typst")
-    if not typst_has_font(args.font):
-        warn(f"Typst can't find the font '{args.font}' (see `typst fonts`); it will fall back to its default")
+    font = pdf_font(args.font)
     with tempfile.TemporaryDirectory() as td:
         meta = Path(td) / "meta.yaml"
         meta.write_text(
             "---\n"
             f"margin:\n  x: {args.margins}\n  y: {args.margins}\n"
             f'papersize: "{args.paper}"\n'
-            f'mainfont: "{args.font}"\n'
+            f'mainfont: "{font}"\n'
             f"fontsize: {args.size}pt\n"
             f"linestretch: {args.line_spacing}\n"
             f"lang: {args.lang}\n"
