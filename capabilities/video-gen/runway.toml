@@ -1,8 +1,8 @@
 # capabilities/video-gen/runway.toml
 # Capability: video-gen
-# Provider: Runway Gen-4 — text-to-video and image-to-video generation
+# Provider: Runway Gen-4 Turbo and Gen-4 Aleph — image-to-video generation and video-to-video editing
 # Title: Video Generation
-# Description: Text-to-video and image-to-video via Runway Gen-4, with video upscaling and editing.
+# Description: Image-to-video via Runway Gen-4 Turbo, video editing with Gen-4 Aleph, Gen-4 reference images, and video upscaling.
 # Provides tools: runway_generateVideo, runway_generateImage, runway_upscaleVideo, runway_editVideo, runway_getTask
 
 [deps]

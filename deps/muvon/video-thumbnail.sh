@@ -42,7 +42,8 @@ if ! pkg_check python3; then
   esac
 fi
 
-chmod +x "$SCRIPT"
+# The script ships executable; chmod only if a checkout lost the bit (read-only mounts fail on chmod).
+[[ -x $SCRIPT ]] || chmod +x "$SCRIPT"
 mkdir -p "$BIN_DIR"
 ln -sf "$SCRIPT" "$LINK"
 export PATH="${BIN_DIR}:$PATH"

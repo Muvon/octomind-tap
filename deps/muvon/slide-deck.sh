@@ -16,7 +16,7 @@ source "$DEPS_LIB/platform.sh"
 SCRIPT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../skills/slide-decks/scripts" && pwd)/deck.py"
 BIN_DIR="${HOME}/.local/bin"
 LINK="${BIN_DIR}/slide-deck"
-BROWSERS_DIR="${HOME}/.cache/puppeteer"
+PLAYWRIGHT="playwright@1.64.1"
 
 have_browser() {
   [[ -n ${CHROME_PATH:-} && -x ${CHROME_PATH:-} ]] && return 0
@@ -25,15 +25,27 @@ have_browser() {
     "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge" \
     "/Applications/Chromium.app/Contents/MacOS/Chromium" \
     "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser" \
-    "/Applications/Firefox.app/Contents/MacOS/firefox"; do
+    "/Applications/Firefox.app/Contents/MacOS/firefox" \
+    "/c/Program Files/Google/Chrome/Application/chrome.exe" \
+    "/c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe" \
+    "/c/Program Files/Microsoft/Edge/Application/msedge.exe"; do
     [[ -x $p ]] && return 0
   done
   for p in google-chrome google-chrome-stable chromium chromium-browser microsoft-edge firefox; do
     pkg_check "$p" && return 0
   done
-  compgen -G "${BROWSERS_DIR}/chrome-headless-shell/*/*/chrome-headless-shell" >/dev/null && return 0
+  compgen -G "${HOME}/.cache/puppeteer/chrome-headless-shell/*/*/chrome-headless-shell" >/dev/null && return 0
   compgen -G "${HOME}/.cache/ms-playwright/chromium-*/chrome-*/chrome" >/dev/null && return 0
+  compgen -G "${HOME}/Library/Caches/ms-playwright/chromium-*/chrome-mac*/*.app/Contents/MacOS/*" >/dev/null && return 0
+  compgen -G "${LOCALAPPDATA:-/nonexistent}/ms-playwright/chromium-*/chrome-win*/chrome.exe" >/dev/null && return 0
   return 1
+}
+
+# Root or passwordless sudo: Playwright may also install Chromium's system libraries (Linux).
+can_install_system_deps() {
+  [[ $OS == "linux" ]] || return 1
+  [[ "$(id -u)" -eq 0 ]] && return 0
+  pkg_check sudo && sudo -n true 2>/dev/null
 }
 
 # Fast path — linked to this tap's script, Node available, a browser present
@@ -67,13 +79,21 @@ if ! pkg_check npx; then
 fi
 
 if ! have_browser; then
-  info "No Chrome, Edge, Chromium, or Firefox found — installing chrome-headless-shell for PDF/PNG export..."
-  mkdir -p "$BROWSERS_DIR"
-  npx -y @puppeteer/browsers@3.2.6 install chrome-headless-shell@stable --path "$BROWSERS_DIR" >/dev/null ||
-    warn "chrome-headless-shell install failed; install Chrome or Chromium, or set CHROME_PATH"
+  info "No Chrome, Edge, Chromium, or Firefox found — installing Playwright's Chromium for PDF/PNG export..."
+  if can_install_system_deps; then
+    npx -y "$PLAYWRIGHT" install --with-deps chromium >/dev/null ||
+      warn "Chromium install failed; install Chrome or Chromium, or set CHROME_PATH"
+  else
+    npx -y "$PLAYWRIGHT" install chromium >/dev/null ||
+      warn "Chromium install failed; install Chrome or Chromium, or set CHROME_PATH"
+    if [[ $OS == "linux" ]]; then
+      warn "If rendering fails on missing libraries, run: sudo npx $PLAYWRIGHT install-deps chromium"
+    fi
+  fi
 fi
 
-chmod +x "$SCRIPT"
+# The script ships executable; chmod only if a checkout lost the bit (read-only mounts fail on chmod).
+[[ -x $SCRIPT ]] || chmod +x "$SCRIPT"
 mkdir -p "$BIN_DIR"
 ln -sf "$SCRIPT" "$LINK"
 export PATH="${BIN_DIR}:$PATH"

@@ -1,6 +1,6 @@
 # capabilities/video-gen/sora.toml
 # Capability: video-gen
-# Provider: OpenAI Sora 2 — long coherent shots, brand-safe
+# Provider: OpenAI Sora 2 and Sora 2 Pro — long coherent shots, brand-safe
 # Title: Video Generation
 # Description: Text-to-video, image-to-video, and remix via OpenAI Sora 2 (long coherent shots).
 # Provides tools: generate_video, remix_video, get_video_status, list_videos

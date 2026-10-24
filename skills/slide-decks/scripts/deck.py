@@ -263,14 +263,23 @@ def find_browser():
         "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
         "/Applications/Chromium.app/Contents/MacOS/Chromium",
         "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
+        r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+        r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
+        r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
     ]
     for name in ("google-chrome", "google-chrome-stable", "chromium", "chromium-browser", "microsoft-edge"):
         p = shutil.which(name)
         if p:
             cands.append(p)
-    for base in (Path.home() / ".cache/puppeteer", Path.home() / ".cache/ms-playwright"):
+    caches = [
+        (Path.home() / ".cache/puppeteer", ("chrome-headless-shell/*/*/chrome-headless-shell", "chrome/*/*/chrome")),
+        (Path.home() / ".cache/ms-playwright", ("chromium-*/chrome-*/chrome",)),
+        (Path.home() / "Library/Caches/ms-playwright", ("chromium-*/chrome-mac*/*.app/Contents/MacOS/*",)),
+        (Path(os.environ.get("LOCALAPPDATA", "/nonexistent")) / "ms-playwright", ("chromium-*/chrome-win*/chrome.exe",)),
+    ]
+    for base, pats in caches:
         if base.is_dir():
-            for pat in ("chrome-headless-shell/*/*/chrome-headless-shell", "chrome/*/*/chrome", "chromium-*/chrome-*/chrome"):
+            for pat in pats:
                 cands += [str(p) for p in sorted(base.glob(pat), reverse=True)]
     cands += ["/Applications/Firefox.app/Contents/MacOS/firefox"]
     if shutil.which("firefox"):
@@ -386,7 +395,7 @@ def cmd_render(args):
     if not browser:
         die(
             "no Chrome, Edge, Chromium, or Firefox found for PDF/PNG export; install one, "
-            "or set CHROME_PATH (`npx @puppeteer/browsers install chrome-headless-shell@stable`)"
+            "or set CHROME_PATH (`npx playwright@1.64.1 install chromium`)"
         )
     out_dir = Path(args.out_dir).resolve() if args.out_dir else deck.parent
     out_dir.mkdir(parents=True, exist_ok=True)

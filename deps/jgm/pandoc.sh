@@ -10,10 +10,11 @@ set -euo pipefail
 DEPS_LIB="$(cd "$(dirname "${BASH_SOURCE[0]}")/../lib" && pwd)"
 source "$DEPS_LIB/platform.sh"
 
-# Release tarball pinned for Linux, where distro packages can predate the Typst PDF engine (3.1.2+).
+# Release archives pinned for Linux (distro packages can predate the Typst PDF engine, 3.1.2+) and Windows.
 VERSION="3.12.1"
 SHA_AMD64="d0c90410e90204c9ca83b8539fac5c7aed01fd537207e4585849f8abc5df20b8"
 SHA_ARM64="445d96fd08801fe636cab1158b4f017ee320ac3b7446328b4fe2f902117b19b9"
+SHA_WINDOWS="6ef431cb20b2c24a0371fc19200dc49d452be54b1b5c9239f3462841ef53e587"
 
 pandoc_ok() {
   pkg_check pandoc || return 1
@@ -59,6 +60,19 @@ install_release() {
   export PATH="$HOME/.local/bin:$PATH"
 }
 
+install_windows() {
+  local tmp
+  tmp="$(mktemp -d)"
+  curl -fsSL --retry 3 -o "$tmp/pandoc.zip" \
+    "https://github.com/jgm/pandoc/releases/download/${VERSION}/pandoc-${VERSION}-windows-x86_64.zip"
+  [[ "$(sha256_of "$tmp/pandoc.zip")" == "$SHA_WINDOWS" ]] || die "pandoc download failed its checksum"
+  unzip -qo "$tmp/pandoc.zip" -d "$tmp"
+  mkdir -p "$HOME/.local/bin"
+  cp "$tmp/pandoc-${VERSION}/pandoc.exe" "$HOME/.local/bin/pandoc.exe"
+  rm -rf "$tmp"
+  export PATH="$HOME/.local/bin:$PATH"
+}
+
 info "pandoc 3.1.2+ not found — installing..."
 case "$OS" in
   macos)
@@ -74,6 +88,9 @@ case "$OS" in
     ;;
   linux)
     install_release
+    ;;
+  windows)
+    install_windows
     ;;
   *)
     die "Unsupported OS. Install pandoc manually: https://pandoc.org/installing.html"

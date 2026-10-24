@@ -1,6 +1,6 @@
 # muvon/slide-deck
 
-slide-deck — the tap's presentation renderer. It writes starter decks, lints Marp Markdown (assertion titles, words and bullets per slide, alt text, speaker notes), and exports PDF, HTML, PowerPoint, speaker notes, and PNG previews through a pinned Marp CLI with the bundled `octo` theme. After export it renders small PNGs and flags slides whose content runs into the bottom margin, where Marp silently clips overflowing text. The installer links the `slide-decks` skill's `scripts/deck.py` onto PATH and, when no Chrome, Edge, Chromium, or Firefox is installed, fetches `chrome-headless-shell` for rendering. Python 3.9+ standard library plus Node.js.
+slide-deck — the tap's presentation renderer. It writes starter decks, lints Marp Markdown (assertion titles, words and bullets per slide, alt text, speaker notes), and exports PDF, HTML, PowerPoint, speaker notes, and PNG previews through a pinned Marp CLI with the bundled `octo` theme. After export it renders small PNGs and flags slides whose content runs into the bottom margin, where Marp silently clips overflowing text. The installer links the `slide-decks` skill's `scripts/deck.py` onto PATH and, when no Chrome, Edge, Chromium, or Firefox is installed, installs Playwright's Chromium for rendering (with its system libraries on Linux when it runs as root or with passwordless sudo). Python 3.9+ standard library plus Node.js.
 
 ## Key Commands
 
