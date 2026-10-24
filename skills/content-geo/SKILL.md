@@ -45,12 +45,13 @@ Answers are nondeterministic and vary by engine, location, and session. Judge tr
 ### Content that earns citations
 
 - Non-commodity first. Google's guide separates commodity content ("based on common knowledge, which could originate from anyone") from content that "provides unique expert or experienced takes," and says "Don't just recycle what others on the internet have already said." Before drafting, name the gain: original data, a first-hand test with specifics, practitioner gotchas, real costs, or a synthesis nobody has published. If an LLM could rebuild the draft from the current top results, send it back to research.
-- Answer first. Open each section with a one- or two-sentence direct answer to its heading, then evidence and nuance. Each passage must stand alone: no "as mentioned above," no pronouns pointing at earlier sections.
-- Evidence density. In the GEO benchmark (Aggarwal et al., KDD 2024), adding cited sources, quotations, and statistics raised a source's visibility by up to about 40%, while keyword stuffing did not help. Use real, attributed numbers and quotes; never invent them to look citable.
+- Answer first. Open each section with a one- or two-sentence direct answer to its heading, then evidence and nuance. Each passage must stand alone: no "as mentioned above," no pronouns pointing at earlier sections. Put each key claim in one plain sentence; Claude's web search, for example, quotes at most 150 characters per citation.
+- Evidence density, without magic. In the GEO benchmark (Aggarwal et al., KDD 2024), adding quotations, statistics, and cited sources raised a source's visibility by up to about 40% and keyword stuffing hurt. A later benchmark (C-SEO Bench, NeurIPS 2025) found significant gains in only 3 of 54 settings, shrinking as more sites adopt the tactics. Use real, attributed numbers and quotes because readers and verifiers need them; never invent them to look citable.
 - Cover the fan-out neighbourhood on one strong page: related questions, comparisons, constraints, edge cases, and alternatives. Don't publish a page per query variation; Google's guide says that can violate the scaled content abuse policy and "a high quantity of pages doesn't make a website higher quality."
-- Natural structure, no artificial chunking. Google: "There's no requirement to break your content into tiny pieces." Use descriptive headings (question form where readers ask questions), lists and tables only for genuinely parallel items, and paragraph length that follows the topic.
-- Experience and authorship. Name a real author with relevant credentials and a bio page. Show first-hand evidence: own screenshots, exact versions and settings, errors met, what failed. Stock heroes and "Admin" bylines add nothing.
-- Real freshness. Update facts and `dateModified` when content changes; don't bump dates without changes.
+- Natural structure, no artificial chunking. Google: "There's no requirement to break your content into tiny pieces." Bing's guidelines favour content that stands on its own, essential information near the top, and one topic per URL, and they treat language engineered to trigger citations as abuse. Use descriptive headings (question form where readers ask questions), lists and tables for genuinely parallel items, and paragraph length that follows the topic. Keep key answers out of tabs, images, and PDFs.
+- Experience and authorship. Name a real author with relevant credentials and a bio page. Show first-hand evidence the author supplied: own screenshots, exact versions and settings, errors met, what failed. Stock heroes and "Admin" bylines add nothing; `content-formats` covers experience intake and methodology notes.
+- Real freshness. AI assistants cite somewhat fresher pages than organic results (Ahrefs 2025, 17M citations, vendor data), yet the average cited page is still years old. Update facts and `dateModified` when content changes; don't bump dates without changes.
+- Citable by others. Third-party coverage dominates brand-owned pages in ChatGPT and Claude citations (Chen et al. 2025, preprint). Original data, tests, and expert takes are what other sites quote; manufactured mentions are not (Google's guide).
 - Comparison pages. Make each item self-contained (who it suits, key facts, price with an as-of date, limitations), disclose affiliations, and don't rank yourself first without evidence.
 
 ### Structured data (2026 status)
@@ -63,8 +64,8 @@ Answers are nondeterministic and vary by engine, location, and session. Judge tr
 ### Spam-policy boundaries
 
 - Scaled content abuse covers mass-produced or mass-rewritten pages, AI-assisted or not, and Google's guide applies it to attempts to manipulate generative AI responses.
-- Site reputation abuse: third-party pages placed on a host to exploit its ranking signals violate policy even with first-party involvement (Google's November 2024 clarification). Pitch placements only where the topical fit is genuine.
-- The helpful content system was folded into core ranking in March 2024; there is no separate update to wait out. Core updates (latest confirmed: 27 March to 8 April 2026) re-evaluate quality broadly. Don't quote ranking-shift percentages without a primary source.
+- Site reputation policy (text updated 28 August 2026): third-party content published mainly to exploit a host's ranking signals violates it unless the host's input, editorial oversight, or contribution makes it fully integrated. Since 30 August 2026 manual actions don't apply to searchers in the EEA; affected sections may rank independently instead. Pitch placements only where the topical fit is genuine.
+- The helpful content system was folded into core ranking in March 2024; there is no separate update to wait out. Core updates (2026: 27 March to 8 April, 21 May to 2 June, plus smaller unannounced ones) re-evaluate quality broadly. Don't quote ranking-shift percentages without a primary source.
 
 ### Crawlers and controls
 
@@ -83,14 +84,14 @@ Allow: /
 
 - Training crawlers are separate tokens: GPTBot, ClaudeBot, Google-Extended, Applebot-Extended, CCBot. Blocking them is the owner's licensing choice and does not remove the site from search citations.
 - User-initiated fetchers (ChatGPT-User, Perplexity-User, Claude-User) act for a person; OpenAI and Perplexity state robots.txt may not apply to them.
-- Google's AI features use Googlebot. Limit display with `nosnippet`, `data-nosnippet`, or `max-snippet`; the Search Console "Search generative AI" control (all sites since 31 August 2026) removes a site from AI Overviews, AI Mode, and Discover AI features and is not a ranking signal elsewhere. Google-Extended limits training, not appearance.
+- Google's AI features use Googlebot. Limit display with `nosnippet`, `data-nosnippet`, or `max-snippet`; the Search Console "Search generative AI" control (all sites since 31 August 2026) removes a site from AI Overviews, AI Mode, and Discover AI features and is not a ranking signal elsewhere. Google-Extended limits training and Gemini Apps grounding, not appearance in Search or its AI features.
 - Serve key content in the initial HTML. Several AI crawlers don't execute JavaScript, so client-rendered text may be invisible to them.
 - llms.txt: Google Search ignores it ("You don't need to create new machine readable files, AI text files, markup, or Markdown"). Keeping one for developer tools is harmless; don't promise visibility from it.
 
 ### Measurement
 
 - Google Search Console Generative AI performance report (June 2026): impressions in AI Overviews, AI Mode, and Discover by page, country, and device. Impressions only, and already counted in the Web totals.
-- Bing Webmaster Tools AI Performance report (public preview February 2026): Copilot and Bing AI citations, cited pages, and grounding queries; no clicks.
+- Bing Webmaster Tools AI Performance report (public preview February 2026): Copilot and Bing AI citations, cited pages, and grounding queries; no clicks. Partner integrations are unnamed, so don't read it as ChatGPT data.
 - A fixed set of 10 to 20 niche prompts re-run monthly across engines, logging which page and passage got cited. Segment referral traffic from chatgpt.com, perplexity.ai, copilot.microsoft.com, and gemini.google.com. Treat vendor citation trackers as samples.
 
 ### Agentic experiences
@@ -125,11 +126,12 @@ Right: one page answering the time question first, then hardware scaling, partia
 
 ## References
 
-Reviewed 2026-10-12.
+Reviewed 2026-10-24.
 
 - [Google: optimizing for generative AI features](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) and [AI features and your website](https://developers.google.com/search/docs/appearance/ai-features)
 - [Google: Search generative AI control](https://support.google.com/webmasters/answer/16908024) and [generative AI performance reports](https://developers.google.com/search/blog/2026/06/gen-ai-performance-reports)
 - [Google spam policies](https://developers.google.com/search/docs/essentials/spam-policies) and [AI-generated content guidance](https://developers.google.com/search/docs/fundamentals/using-gen-ai-content)
 - [OpenAI crawlers](https://developers.openai.com/api/docs/bots), [Perplexity crawlers](https://docs.perplexity.ai/docs/resources/perplexity-crawlers), [Anthropic crawlers](https://support.claude.com/en/articles/8896518)
-- [Aggarwal et al., GEO: Generative Engine Optimization (KDD 2024)](https://arxiv.org/abs/2311.09735)
+- [Aggarwal et al., GEO: Generative Engine Optimization (KDD 2024)](https://arxiv.org/abs/2311.09735) and [Puerto et al., C-SEO Bench (NeurIPS 2025)](https://arxiv.org/abs/2506.11097)
+- [Bing Webmaster Guidelines](https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a) and [Microsoft: optimizing content for AI search answers (2025-10-08)](https://about.ads.microsoft.com/en/blog/post/october-2025/optimizing-your-content-for-inclusion-in-ai-search-answers)
 - [Pew Research, AI summaries and clicks (2025)](https://www.pewresearch.org/short-reads/2025/07/22/google-users-are-less-likely-to-click-on-links-when-an-ai-summary-appears-in-the-results/)

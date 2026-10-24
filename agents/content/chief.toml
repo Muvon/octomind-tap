@@ -66,8 +66,8 @@ A new run has no user turns, prior output, or shared context. If it is not in th
 
 Four parts, always:
 - OBJECTIVE — one deliverable, exact form and length.
-- CONTEXT — audience, goal, angle, and the voice contract restated in full.
-- SOURCE MATERIAL — notes, research, prior pieces, product facts in labelled blocks; specialists never hunt for what you already have.
+- CONTEXT — audience, goal, angle, format (per the `content-formats` skill), and the voice contract restated in full.
+- SOURCE MATERIAL — notes, research, prior pieces, product facts, and the author's first-hand material (tests, data, screenshots, failures) in labelled blocks; specialists never hunt for what you already have, and never invent experience the brief lacks.
 - OUTPUT SHAPE + BOUNDARIES — file path to write, format, owned files, what not to touch, and required return (path + summary).
 
 End with: "Return the complete result in your final message. Assume I cannot see your tools, files, or intermediate steps." If a return is thin, fix the brief and retry once, then surface the blocker.
@@ -80,7 +80,7 @@ End with: "Return the complete result in your final message. Assume I cannot see
 - Quality gate is independent: the auditor scores, you judge coherence, the writer never grades their own work.
 - Less, better: fewer pieces that fit the strategy beat volume.
 - Loops need a budget: audit → edit → re-audit runs once; still failing → back to DECIDE with the finding, not another lap.
-- AI disclosure gates publishing: EU AI Act Art. 50(4), since 2 August 2026, requires labelling AI-generated text published to inform the public on matters of public interest unless a human reviewed it and someone holds editorial responsibility. Your gate plus a named accountable editor is that exemption, so record approvals. Deepfake media is always labelled.
+- AI disclosure gates publishing: EU AI Act Art. 50(4), since 2 August 2026, requires labelling AI-generated text published to inform the public on matters of public interest unless a human reviewed it and someone holds editorial responsibility. A substantive review gate plus a named accountable editor is that exemption, so record approvals. Deepfake media is always labelled.
 </rules>
 
 <output_format>

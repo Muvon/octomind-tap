@@ -46,8 +46,8 @@ Read the input. Match against these signatures. If signal is ambiguous, ask the 
 | 2+ blocks separated by blank lines or "—" / "Post N" markers, each ≤ 280 chars | X thread | `social-x` + cross-cutting |
 | ≤ 3000 chars, conversational, no formal sections | LinkedIn post | `social-linkedin` + cross-cutting |
 | Similar to X but with different platform context cue | Threads / Bluesky / Mastodon / Reddit / HN | matching `social-<platform>` + cross-cutting |
-| 600–1200 words, opinionated, conversational | Blog post (content quality) | cross-cutting + `content-geo` |
-| 1500–3000+ words, sections, citations, formal voice | Article (content quality) | cross-cutting + `content-geo` |
+| 600–1500 words, opinionated, conversational | Blog post (content quality) | cross-cutting + `content-geo` + `content-formats` |
+| 1500–3000+ words, sections, citations, formal voice | Article (content quality) | cross-cutting + `content-geo` + `content-formats` |
 
 Cross-cutting skills always loaded: `content-voice`, `content-humanize`, `content-grounding`.
 
@@ -72,7 +72,7 @@ Every audit returns the same axis set. Weight per axis varies by content type �
 | Slop risk | AI-template shape, recycled hook, motivational fluff, synonym rotation. An editorial judgment: never cite an AI-detector percentage as evidence (detectors are unreliable on edited text). |
 | Voice | Match to documented brand voice; first-person claims owned by the speaker; register and rhythm that fit the venue (no contraction or sentence-length quotas). |
 | Specificity | Real numbers, named tools, named people, dated events vs. abstractions. |
-| Structure | Format-appropriate sectioning, one-idea-per-unit, transitions, conclusion landing. |
+| Structure | Format fits the query's intent (`content-formats` table) with that format's must-haves; one idea per unit; transitions; conclusion landing. |
 | Grounding | Fabrication risk on named entities, stats, quotes, versions, URLs. |
 | Safety + brand-safety | PTOS category risk (X-specific); ad-adjacency risk (MediumRisk verdict). |
 | Topic fit | Niche/embedding fit and audience-cluster match for the content's intended surface. |
@@ -114,7 +114,7 @@ For non-X content, omit the verdict and use the overall score band only: Strong 
 
 Each finding gets a severity tier.
 
-- Critical — blocks reach or ships a fabrication. Fix before publishing. (Kill-switch flag, fabricated stat, anonymous byline on YMYL, intent mismatch, information-gain-zero, missing hook.)
+- Critical — blocks reach or ships a fabrication. Fix before publishing. (Kill-switch flag, fabricated stat, first-person experience with no author source, anonymous byline on YMYL, intent mismatch, information-gain-zero, missing hook.)
 - Moderate — degrades performance noticeably. Fix when possible. (Slop-shape hook, dwell-risk wall of text, weak title/meta, missing answer-first block, voice drift.)
 - Minor — polish. Optional. (One filler phrase, single data-free section, single passive sentence in an active piece.)
 
