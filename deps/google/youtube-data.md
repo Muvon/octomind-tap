@@ -1,22 +1,21 @@
 # google/youtube-data
 
-YouTube Data API v3 MCP server. Uploads Shorts and long-form video, edits metadata, manages playlists, fetches analytics.
+YouTube Studio MCP server on the YouTube Data and Analytics APIs: edits metadata of videos already on the channel (titles, descriptions, tags) and reads channel analytics. It has no upload tool; uploads go through the `publish-youtube` capability's default Upload-Post provider.
 
 ## MCP Server
 
-- **Package**: `youtube-studio-mcp` (community)
+- **Package**: `youtube-studio-mcp` (community, pinned in the capability file)
 - **Transport**: stdio
-- **Command**: `npx -y youtube-studio-mcp`
+- **Command**: `npx -y youtube-studio-mcp@2.1.0`
 
 ## Authentication
 
-OAuth 2.0 with `youtube.upload`, `youtube.readonly`, and (optional) `yt-analytics.readonly` scopes.
+OAuth 2.0 with your own Google Cloud OAuth client (`youtube.force-ssl`, `youtube.readonly`, `yt-analytics.readonly`). The package reads `credentials.json` and `tokens.json`, created with its `node auth.js` script, from its own install directory; it reads no environment variables. OAuth clients left in "Testing" status get refresh tokens that expire after 7 days.
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `GOOGLE_CLIENT_ID` | Yes | OAuth client ID from Google Cloud Console |
-| `GOOGLE_CLIENT_SECRET` | Yes | OAuth client secret |
-| `GOOGLE_REFRESH_TOKEN` | Yes | Long-lived refresh token for the channel owner |
+| File | Required | Description |
+|------|----------|-------------|
+| `credentials.json` | Yes | Desktop OAuth client from Google Cloud Console |
+| `tokens.json` | Yes | Token file written by the package's auth script |
 
 ## Available Tools
 
@@ -35,13 +34,12 @@ OAuth 2.0 with `youtube.upload`, `youtube.readonly`, and (optional) `yt-analytic
 name = "youtube-data"
 type = "stdio"
 command = "npx"
-args = ["-y", "youtube-studio-mcp"]
+args = ["-y", "youtube-studio-mcp@2.1.0"]
 timeout_seconds = 600
-env = { GOOGLE_CLIENT_ID = "{{INPUT:GOOGLE_CLIENT_ID}}", GOOGLE_CLIENT_SECRET = "{{INPUT:GOOGLE_CLIENT_SECRET}}", GOOGLE_REFRESH_TOKEN = "{{INPUT:GOOGLE_REFRESH_TOKEN}}" }
 tools = []
 ```
 
-**Notes:** Free quota is 10,000 units/day; an upload costs ~1,600 units, so practical limit is ~6 uploads/day per project. For Shorts: vertical (9:16) + ≤60s + `#shorts` in title or description.
+**Notes:** Default quota is 10,000 units/day per project; `videos.update` costs 50 units. Since 2026-06-01 `videos.insert` has its own bucket of 100 calls/day (YouTube API quota page).
 
 ## Links
 

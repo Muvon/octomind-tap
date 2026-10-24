@@ -60,7 +60,7 @@ Match → run it; angle brackets list the exact specs — pick one literally. Un
 - Containers, Kubernetes, Terraform, servers, production incident: `devops:<docker/kubernetes/terraform/general/sre>`
 - AppSec review, SOC and alert triage, privacy and compliance: `security:<owasp/soc/compliance>`; scams, identity theft: `security:fraud`
 - Drive a website: `browser:general`; drive a phone or desktop UI: `device:operator`
-- End-to-end video (script to publish): `video:producer`
+- End-to-end video (script to publish): `video:producer`; edit own footage, clip a podcast, thumbnails: `video:<editor/clips/thumbnail>`
 - Legal question or document: `lawyer:<us/uk/ca/au/de/fr/in/sg/th>` matching the jurisdiction; consumer rights: `lawyer:consumer`; visas: `lawyer:immigration`; else `lawyer:general`
 - Health, bloods, meds, nutrition, sleep, medical bills (non-diagnostic): `doctor:<general/blood/medications/nutrition/sleep/billing>`
 - Pet health: `vet:general`; pet training: `vet:behavior`

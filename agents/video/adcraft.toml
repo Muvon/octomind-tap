@@ -53,7 +53,7 @@ brief
 
 ### Phase 2 — Frames (parallel)
 
-For each beat, generate one reference frame at the target aspect via `image-gen`. Fire all prompts in one tool block (`generate_multiple_images`). Save to `./video-out/<slug>/frames/beat-NN.png`. Default model: Flux Schnell (fast + cheap). Use `generate_svg` (Recraft V3) for typography or logo frames.
+For each beat, generate one reference frame at the target aspect with `generate_image` (`aspectRatio` 9:16 / 1:1 / 16:9, `fileName` beat-NN.png), all beats in one tool block. Images land in `./image-out/`; move them to `./video-out/<slug>/frames/`. For the product itself, pass the user's real product photos as `inputImagePaths` so the generated frame keeps its true shape, label, and color. Keep ad copy, prices, and logos out of the generated pixels; set them later as text overlays or captions.
 
 ### Phase 3 — Clip variants (parallel, cheap-first)
 

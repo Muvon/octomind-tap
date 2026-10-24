@@ -1,0 +1,259 @@
+/* @theme octo */
+/*
+ * Octo — a clean presentation theme for Marp.
+ * Classes (per slide with <!-- _class: name -->, or deck-wide with `class:`):
+ *   lead     title slide          divider  section break (dark)
+ *   stat     one big number (## is the number)
+ *   quote    one large pull quote  cols     title + two columns (exactly two blocks;
+ *            for two lists, use - for the left one and * for the right one)
+ *   dark     dark variant of any slide
+ * Brand color: add `style: section { --octo-accent: #E11D48; }` to the front matter.
+ */
+
+@import 'default';
+
+:root {
+  --octo-bg: #ffffff;
+  --octo-fg: #0f172a;
+  --octo-muted: #475569;
+  --octo-accent: #2563eb;
+  --octo-surface: #f1f5f9;
+  --octo-rule: #e2e8f0;
+  --octo-font: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --octo-mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+}
+
+section {
+  background: var(--octo-bg);
+  color: var(--octo-fg);
+  font-family: var(--octo-font);
+  font-size: 30px;
+  line-height: 1.4;
+  padding: 64px 80px 80px;
+  place-content: start;
+}
+
+section h1 {
+  color: var(--octo-fg);
+  font-size: 46px;
+  font-weight: 750;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin: 0 0 32px;
+}
+
+section h2 {
+  color: var(--octo-fg);
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 20px;
+}
+
+section h3 {
+  color: var(--octo-muted);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+}
+
+section p {
+  margin: 0 0 18px;
+}
+
+section strong {
+  color: var(--octo-accent);
+  font-weight: 700;
+}
+
+section a {
+  color: var(--octo-accent);
+}
+
+section ul,
+section ol {
+  margin: 0;
+  padding-left: 1.1em;
+}
+
+section li {
+  margin: 0.35em 0;
+}
+
+section li::marker {
+  color: var(--octo-accent);
+}
+
+section code {
+  background: var(--octo-surface);
+  border-radius: 6px;
+  font-family: var(--octo-mono);
+  font-size: 0.85em;
+  padding: 0.1em 0.35em;
+}
+
+section pre {
+  background: #0f172a;
+  border-radius: 12px;
+  color: #e2e8f0;
+  font-size: 22px;
+  line-height: 1.5;
+  padding: 20px 24px;
+}
+
+section pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+section blockquote {
+  border-left: 6px solid var(--octo-accent);
+  color: var(--octo-muted);
+  margin: 0;
+  padding: 0 0 0 24px;
+}
+
+section table {
+  border-collapse: collapse;
+  font-size: 24px;
+}
+
+section th {
+  background: var(--octo-surface);
+  font-weight: 700;
+}
+
+section th,
+section td {
+  border-bottom: 1px solid var(--octo-rule);
+  padding: 10px 16px;
+  text-align: left;
+}
+
+section::after {
+  bottom: 28px;
+  color: var(--octo-muted);
+  font-size: 18px;
+  right: 40px;
+}
+
+section footer,
+section header {
+  color: var(--octo-muted);
+  font-size: 18px;
+  left: 80px;
+}
+
+section footer {
+  bottom: 28px;
+}
+
+/* Title slide */
+section.lead {
+  align-content: safe center;
+  padding: 80px 96px;
+}
+
+section.lead h1 {
+  font-size: 64px;
+  margin-bottom: 24px;
+}
+
+section.lead p {
+  color: var(--octo-muted);
+  font-size: 30px;
+}
+
+/* Section break */
+section.divider {
+  --octo-bg: #0f172a;
+  --octo-fg: #f8fafc;
+  --octo-muted: #94a3b8;
+  align-content: safe center;
+}
+
+section.divider h1 {
+  font-size: 60px;
+}
+
+/* One big number: ## carries the number, # the claim */
+section.stat {
+  align-content: safe center;
+}
+
+section.stat h2 {
+  color: var(--octo-accent);
+  font-size: 150px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin: 0 0 20px;
+}
+
+section.stat h1 {
+  font-size: 40px;
+  font-weight: 650;
+  margin: 0;
+}
+
+section.stat p {
+  color: var(--octo-muted);
+  font-size: 24px;
+  margin-top: 16px;
+}
+
+/* Pull quote */
+section.quote {
+  align-content: safe center;
+}
+
+section.quote blockquote {
+  border: none;
+  color: var(--octo-fg);
+  font-size: 44px;
+  font-weight: 600;
+  line-height: 1.3;
+  padding: 0;
+}
+
+section.quote blockquote p::before {
+  color: var(--octo-accent);
+  content: '\201C';
+}
+
+section.quote blockquote p::after {
+  color: var(--octo-accent);
+  content: '\201D';
+}
+
+section.quote blockquote + p {
+  color: var(--octo-muted);
+  font-size: 24px;
+  margin-top: 24px;
+}
+
+/* Title + two columns */
+section.cols {
+  align-content: start;
+  column-gap: 56px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+}
+
+section.cols > h1 {
+  grid-column: 1 / -1;
+}
+
+/* Dark variant */
+section.dark {
+  --octo-bg: #0b1120;
+  --octo-fg: #f8fafc;
+  --octo-muted: #94a3b8;
+  --octo-surface: #1e293b;
+  --octo-rule: #334155;
+  --octo-accent: #60a5fa;
+}

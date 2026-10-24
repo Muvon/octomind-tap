@@ -1,0 +1,26 @@
+# capabilities/publish-youtube/upload-post.toml
+# Capability: publish-youtube
+# Provider: Upload-Post gateway — YouTube uploads through a hosted posting API (channel connected once in the Upload-Post dashboard)
+# Title: YouTube Publishing
+# Description: YouTube video uploads and scheduling with title, description, tags, playlist, thumbnail, captions, and disclosure flags via Upload-Post.
+# Provides tools: upload_video, get_status, get_job_status, list_scheduled, edit_scheduled, cancel_scheduled, create_media_upload, complete_media_upload, get_media_upload, list_users, get_history, get_post_analytics
+# Requires: UPLOAD_POST_API_KEY
+#
+# Shares the `upload-post` server block with publish-tiktok; keep both blocks
+# identical so the merged manifest starts one server.
+
+[deps]
+require = ["upload-post/upload-post"]
+
+[roles.mcp]
+server_refs = ["upload-post"]
+allowed_tools = ["upload_video", "get_status", "get_job_status", "list_scheduled", "edit_scheduled", "cancel_scheduled", "create_media_upload", "complete_media_upload", "get_media_upload", "list_users", "get_history", "get_post_analytics"]
+
+[[mcp.servers]]
+name = "upload-post"
+type = "stdio"
+command = "npx"
+args = ["-y", "@upload-post/mcp@0.11.4"]
+timeout_seconds = 600
+env = { UPLOAD_POST_API_KEY = "{{ENV:UPLOAD_POST_API_KEY}}" }
+tools = []

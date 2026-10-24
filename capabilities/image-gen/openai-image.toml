@@ -1,8 +1,8 @@
 # capabilities/image-gen/openai-image.toml
 # Capability: image-gen
-# Provider: OpenAI gpt-image — text-to-image and image editing
+# Provider: OpenAI GPT Image 2 — generation, masked edits, character references, poses, and sprite sheets
 # Title: Image Generation
-# Description: Text-to-image generation and editing via the OpenAI gpt-image API.
+# Description: OpenAI GPT Image 2 generation and masked editing, plus character-reference, pose, and sprite-sheet tools for consistent game and story art.
 # Provides tools: gpt_image_generate, gpt_image_edit, gpt_image_create_variation, gpt_image_create_character_reference, gpt_image_generate_pose, gpt_image_generate_sprite_sheet
 #
 # Replaces the former DALL-E provider: OpenAI retired the DALL-E 2/3 API

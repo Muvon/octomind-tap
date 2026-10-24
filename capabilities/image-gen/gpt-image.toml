@@ -1,0 +1,26 @@
+# capabilities/image-gen/gpt-image.toml
+# Capability: image-gen
+# Provider: OpenAI GPT Image 2.5 (Flare by default, Sunburst at quality "quality") via mcp-image
+# Title: Image Generation
+# Description: Text-to-image and reference-image editing with OpenAI GPT Image 2.5, saved as files in ./image-out; strong in-image text.
+# Provides tools: generate_image
+# Requires: OPENAI_API_KEY (the 2.5 models may need a verified OpenAI organization)
+
+[deps]
+require = ["shinpr/mcp-image"]
+
+[roles.mcp]
+server_refs = ["image-gen"]
+allowed_tools = ["generate_image"]
+
+[[mcp.servers]]
+name = "image-gen"
+type = "stdio"
+command = "sh"
+# sh wrapper: octomind drops the env table at parse time, so constants and
+# derived paths must be exported by the launch command itself. Prompt
+# enhancement is off: agents write the full prompt themselves.
+args = ["-c", "mkdir -p \"$PWD/image-out\"; IMAGE_OUTPUT_DIR=\"$PWD/image-out\" IMAGE_PROVIDER=openai IMAGE_QUALITY=balanced SKIP_PROMPT_ENHANCEMENT=true exec npx -y mcp-image@0.18.2"]
+timeout_seconds = 300
+env = { OPENAI_API_KEY = "{{ENV:OPENAI_API_KEY}}" }
+tools = []

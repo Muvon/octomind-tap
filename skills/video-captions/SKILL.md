@@ -48,17 +48,17 @@ The renderer is the `video-captions` command, installed on PATH with the `captio
 2. Extract the speech: `ffmpeg -i cut.mp4 -vn -ar 16000 -ac 1 captions/vo.wav`.
 3. Get word timings (table below). Save the JSON under `./video-out/<slug>/captions/`.
 4. Proofread the words against the script or brief. Fix single-word misspellings with `--replace Wrong=Right` (repeatable); fix multi-word errors by editing the `word`/`text` fields in the JSON and keeping the timings.
-5. Fetch the font once (Fonts below).
+5. Check the font (Fonts below): the default family ships with the `captions` capability.
 6. Render and burn:
 
 ```bash
 video-captions captions/vo.json --video cut.mp4 -o captions/captions.ass \
-  --preset pop --fontsdir fonts --srt captions/captions.srt --burn cuts/master-9x16.mp4
+  --preset pop --srt captions/captions.srt --burn cuts/master-9x16.mp4
 ```
 
 7. Extract three frames at word-dense moments (`ffmpeg -ss 2.4 -i out.mp4 -frames:v 1 check-2.4.png`) and look at them: face clear, text inside the safe zone, highlight on the spoken word. Adjust `--y`, `--max-words`, or the preset and re-render. If your tools can't display images, rely on the script's font and safe-zone warnings, and tell the user which frame files to check and that placement is unverified.
 
-Without `--burn` the script prints the exact burn command with the right ffmpeg binary; use that when the burn joins a larger filter chain (`-vf "scale=...,ass=captions.ass:fontsdir=fonts"`).
+Without `--burn` the script prints the exact burn command with the right ffmpeg binary; use that when the burn joins a larger filter chain (`-vf "scale=...,ass=captions.ass:fontsdir=$HOME/.local/share/octomind/fonts"`).
 
 ### Word-timing sources
 
@@ -97,17 +97,17 @@ Keep the block out of the 9:16 UI bands: Meta Reels reserves the top 14% and bot
 
 ### Fonts
 
-The caption font must exist as a file; otherwise libass silently substitutes a plain fallback, the most common cause of ugly burns. Download it once into `./video-out/<slug>/fonts/` and pass `--fontsdir` (the script warns if it can't find the family):
+The caption font must exist as a file; otherwise libass silently substitutes a plain fallback, the most common cause of ugly burns. The `captions` capability installs five heavy display families into `~/.local/share/octomind/fonts`, and `video-captions` uses that directory by default, so `--font` works by family name:
 
-| Family (`--font`) | File |
+| Family (`--font`) | Character |
 |---|---|
-| Poppins Black (default) | `https://github.com/google/fonts/raw/main/ofl/poppins/Poppins-Black.ttf` |
-| Montserrat Black | `https://github.com/JulietaUla/Montserrat/raw/master/fonts/ttf/Montserrat-Black.ttf` |
-| Anton | `https://github.com/google/fonts/raw/main/ofl/anton/Anton-Regular.ttf` |
-| Archivo Black | `https://github.com/google/fonts/raw/main/ofl/archivoblack/ArchivoBlack-Regular.ttf` |
-| Bebas Neue | `https://github.com/google/fonts/raw/main/ofl/bebasneue/BebasNeue-Regular.ttf` |
+| Poppins Black (default) | Geometric, very heavy; the TikTok/Reels default look |
+| Poppins ExtraBold | One step lighter; `box` and `clean` presets |
+| Anton | Condensed caps; fits more letters per line |
+| Archivo Black | Wide grotesque; bold brand feel |
+| Bebas Neue | Tall condensed caps; headline look, caps only |
 
-All five are SIL Open Font License. A brand font the user supplies works the same way; `--font` takes the font's internal family name. Use `--bold` only for fonts without a heavy cut.
+All five are SIL Open Font License. For a brand font, put its `.ttf`/`.otf` in `./video-out/<slug>/fonts/` and pass `--fontsdir` plus `--font` with the font's internal family name; the script warns if it can't find the family. Use `--bold` only for fonts without a heavy cut.
 
 ### Sidecars and other renderers
 
@@ -122,7 +122,7 @@ All five are SIL Open Font License. A brand font the user supplies works the sam
 
 ❌ `ffmpeg -i ad.mp4 -vf "subtitles=captions.srt:force_style='Fontsize=44,Outline=2'" out.mp4` — one style for the whole file, sentence-length cues, no active-word highlight, and stock Homebrew ffmpeg fails outright (no libass).
 
-✅ `video-captions captions/vo.json --video ad.mp4 -o captions/captions.ass --preset pop --fontsdir fonts --burn cuts/ad-captioned.mp4`
+✅ `video-captions captions/vo.json --video ad.mp4 -o captions/captions.ass --preset pop --burn cuts/ad-captioned.mp4`
 
 ### Example 2: hand-rolled frame rendering
 
@@ -140,7 +140,7 @@ All five are SIL Open Font License. A brand font the user supplies works the sam
 
 - [ ] Captions rendered from word timings of the final cut's audio, not a draft and not interpolated SRT.
 - [ ] Words proofread against the script; brand names spelled right.
-- [ ] Font file downloaded into `fonts/` and passed with `--fontsdir`; no font warning from the script.
+- [ ] No font warning from the script (installed family, or a brand font passed with `--fontsdir`).
 - [ ] Preset matches the format; one accent color.
 - [ ] Three extracted frames checked (face clear, block inside the safe zone, highlight on the spoken word), or reported to the user as unchecked.
 - [ ] `captions.ass`, `captions.srt`, and `vo.json` saved under `./video-out/<slug>/captions/`.

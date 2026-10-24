@@ -1,0 +1,26 @@
+# capabilities/image-gen/nano-banana.toml
+# Capability: image-gen
+# Provider: Google Nano Banana 2.1 (Gemini image; Nano Banana Pro at quality "quality") via mcp-image
+# Title: Image Generation
+# Description: Text-to-image and multi-reference editing with Google Nano Banana 2.1, saved as files in ./image-out; up to 14 reference images.
+# Provides tools: generate_image
+# Requires: GEMINI_API_KEY
+
+[deps]
+require = ["shinpr/mcp-image"]
+
+[roles.mcp]
+server_refs = ["image-gen"]
+allowed_tools = ["generate_image"]
+
+[[mcp.servers]]
+name = "image-gen"
+type = "stdio"
+command = "sh"
+# sh wrapper: octomind drops the env table at parse time, so constants and
+# derived paths must be exported by the launch command itself. Prompt
+# enhancement is off: agents write the full prompt themselves.
+args = ["-c", "mkdir -p \"$PWD/image-out\"; IMAGE_OUTPUT_DIR=\"$PWD/image-out\" IMAGE_PROVIDER=gemini IMAGE_QUALITY=balanced SKIP_PROMPT_ENHANCEMENT=true exec npx -y mcp-image@0.18.2"]
+timeout_seconds = 300
+env = { GEMINI_API_KEY = "{{ENV:GEMINI_API_KEY}}" }
+tools = []

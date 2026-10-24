@@ -1,22 +1,26 @@
 # capabilities/publish-tiktok/tiktok-posting.toml
 # Capability: publish-tiktok
-# Provider: upload-post.com gateway — TikTok video publishing (no direct TikTok MCP exists)
+# Provider: Upload-Post gateway — TikTok video publishing (no direct TikTok MCP exists)
 # Title: TikTok Publishing
 # Description: TikTok video and photo uploads (direct post or inbox), scheduling, and status tracking via the @upload-post/mcp gateway (TikTok Content Posting API).
-# Provides tools: upload_video, upload_photos, get_status, get_job_status, list_scheduled, cancel_scheduled, edit_scheduled, retry_post, unpublish_post
+# Provides tools: upload_video, upload_photos, get_status, get_job_status, list_scheduled, cancel_scheduled, edit_scheduled, retry_post, unpublish_post, create_media_upload, complete_media_upload, get_media_upload
+# Requires: UPLOAD_POST_API_KEY
+#
+# Shares the `upload-post` server block with publish-youtube; keep both blocks
+# identical so the merged manifest starts one server.
 
 [deps]
-require = ["tiktok-posting/tiktok-posting"]
+require = ["upload-post/upload-post"]
 
 [roles.mcp]
-server_refs = ["tiktok-posting"]
-allowed_tools = ["upload_video", "upload_photos", "get_status", "get_job_status", "list_scheduled", "cancel_scheduled", "edit_scheduled", "retry_post", "unpublish_post"]
+server_refs = ["upload-post"]
+allowed_tools = ["upload_video", "upload_photos", "get_status", "get_job_status", "list_scheduled", "cancel_scheduled", "edit_scheduled", "retry_post", "unpublish_post", "create_media_upload", "complete_media_upload", "get_media_upload"]
 
 [[mcp.servers]]
-name = "tiktok-posting"
+name = "upload-post"
 type = "stdio"
 command = "npx"
 args = ["-y", "@upload-post/mcp@0.11.4"]
-timeout_seconds = 240
+timeout_seconds = 600
 env = { UPLOAD_POST_API_KEY = "{{ENV:UPLOAD_POST_API_KEY}}" }
 tools = []

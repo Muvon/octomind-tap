@@ -9,7 +9,7 @@
 # renderer is installed with every captions provider.
 
 [deps]
-require = ["assemblyai/assemblyai", "muvon/video-captions", "ffmpeg/ffmpeg"]
+require = ["assemblyai/assemblyai", "muvon/video-captions", "muvon/video-fonts", "ffmpeg/ffmpeg"]
 
 [roles.mcp]
 server_refs = ["assemblyai"]

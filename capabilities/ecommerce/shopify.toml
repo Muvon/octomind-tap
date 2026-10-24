@@ -1,20 +1,31 @@
 # capabilities/ecommerce/shopify.toml
 # Capability: ecommerce
-# Provider: Shopify — official Dev MCP server
+# Provider: Shopify Admin GraphQL API (2026-10) via @acodera/shopify-admin-mcp — community server; Shopify ships no Admin MCP
 # Title: E-Commerce (Shopify)
-# Description: Shopify store management via the Shopify Dev MCP server: products, orders, customers, inventory, and storefront.
+# Description: Shopify store operations via the Admin API: products, variants, collections, metafields, inventory, customers, orders, and discounts.
+# Provides tools: shopify_products_list, shopify_product_get/create/update, shopify_product_variants_create/update, shopify_collections_list, shopify_collection_get/create/update, shopify_metafields_list/set, shopify_metafield_definitions_list, shopify_customers_list, shopify_customer_get/update, shopify_orders_list, shopify_order_get, shopify_inventory_get_levels, shopify_inventory_adjust, shopify_discounts_list, shopify_discount_get, shopify_discount_*_create, shopify_discount_codes_add, shopify_graphql, shopify_schema_search, shopify_schema_details
+# Requires: SHOPIFY_STORE plus SHOPIFY_CLIENT_ID and SHOPIFY_CLIENT_SECRET of a Dev Dashboard app installed on the store
+# (legacy custom-app stores: export SHOPIFY_ACCESS_TOKEN instead of the client ID and secret).
+#
+# The app's scopes are the real permission boundary, because shopify_graphql can
+# reach anything they allow. Recommended scopes: read/write_products,
+# read/write_inventory, read_locations, read/write_customers, read_orders,
+# read/write_draft_orders, read/write_discounts (add read_all_orders for orders
+# older than 60 days). Without write_orders, refunds and order edits stay with a
+# human in Shopify admin. Delete tools and theme writes are not exposed.
 
 [deps]
 require = ["shopify/shopify"]
 
 [roles.mcp]
 server_refs = ["shopify"]
-allowed_tools = ["shopify:*"]
+allowed_tools = ["shopify_products_list", "shopify_product_get", "shopify_product_create", "shopify_product_update", "shopify_product_variants_create", "shopify_product_variants_update", "shopify_collections_list", "shopify_collection_get", "shopify_collection_create", "shopify_collection_update", "shopify_metafields_list", "shopify_metafields_set", "shopify_metafield_definitions_list", "shopify_customers_list", "shopify_customer_get", "shopify_customer_update", "shopify_orders_list", "shopify_order_get", "shopify_inventory_get_levels", "shopify_inventory_adjust", "shopify_discounts_list", "shopify_discount_get", "shopify_discount_amount_off_create", "shopify_discount_free_shipping_create", "shopify_discount_bxgy_create", "shopify_discount_codes_add", "shopify_graphql", "shopify_schema_search", "shopify_schema_details"]
 
 [[mcp.servers]]
 name = "shopify"
 type = "stdio"
 command = "npx"
-args = ["-y", "@shopify/dev-mcp@1.16.0"]
-timeout_seconds = 60
+args = ["-y", "@acodera/shopify-admin-mcp@1.11.0", "--toolsets", "products,collections,metafields,customers,orders,inventory,discounts", "--disable-theme-writes"]
+timeout_seconds = 120
+env = { SHOPIFY_STORE = "{{ENV:SHOPIFY_STORE}}", SHOPIFY_CLIENT_ID = "{{ENV:SHOPIFY_CLIENT_ID}}", SHOPIFY_CLIENT_SECRET = "{{ENV:SHOPIFY_CLIENT_SECRET}}" }
 tools = []

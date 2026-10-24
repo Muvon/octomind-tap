@@ -6,4 +6,4 @@
 # Provides tools: (none — `whisper-ctranslate2` and the `video-captions` renderer via shell; ffmpeg with libass burns the captions)
 
 [deps]
-require = ["softcatala/whisper-ctranslate2", "muvon/video-captions", "ffmpeg/ffmpeg"]
+require = ["softcatala/whisper-ctranslate2", "muvon/video-captions", "muvon/video-fonts", "ffmpeg/ffmpeg"]

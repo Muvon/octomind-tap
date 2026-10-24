@@ -15,6 +15,7 @@ Optional sidecars: --srt (platform upload / accessibility) and --remotion
 
 import argparse
 import json
+import os
 import re
 import shlex
 import shutil
@@ -586,7 +587,10 @@ def main():
     size_src.add_argument("--res", help="frame size WxH, e.g. 1080x1920")
     size_src.add_argument("--video", help="probe frame size from this video with ffprobe (and burn into it)")
     ap.add_argument("--font", default="Poppins Black", help="font family (default: Poppins Black)")
-    ap.add_argument("--fontsdir", help="directory with the font files (also pass it to ffmpeg)")
+    ap.add_argument(
+        "--fontsdir",
+        help="directory with the font files, also passed to ffmpeg (default: ~/.local/share/octomind/fonts if present)",
+    )
     ap.add_argument("--bold", action="store_true", help="faux-bold; only for fonts without a heavy cut")
     ap.add_argument("--size", type=int, help="font size in px (default: preset, scaled to frame)")
     ap.add_argument("--spacing", type=float, default=0, help="letter spacing px")
@@ -623,6 +627,10 @@ def main():
     args = ap.parse_args()
     if args.burn and not args.video:
         sys.exit("captions: --burn needs --video as the input")
+    if not args.fontsdir:
+        shared = Path(os.environ.get("OCTOMIND_FONTS_DIR") or Path.home() / ".local/share/octomind/fonts")
+        if shared.is_dir():
+            args.fontsdir = str(shared)
 
     p = dict(PRESETS[args.preset])
     for k in ("color", "highlight", "outline_color", "case", "punct", "max_words", "line_chars", "lines"):

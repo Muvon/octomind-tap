@@ -71,7 +71,7 @@ For each hook variant + body combination:
 Cutaways punch up retention in talking-head UGC. ~30–40% of total runtime should be cutaways.
 
 1. Real product footage first — clips or photos the user supplies of the product in hand and in use. Generated video still gets intricate products and hand interaction wrong, so real footage under an AI presenter beats a fully generated ad.
-2. Product shots — image-gen at the product's actual look (Flux primary, `generate_svg` / Recraft V3 for typography) when no real footage exists.
+2. Product shots — `generate_image` with the user's real product photos as `inputImagePaths` (keeps shape, label, and color) when no real footage exists; images land in `./image-out/`. Set any on-screen copy as text overlays, not generated pixels.
 3. Lifestyle b-roll — Pexels stock first (free); generate via `video-gen` (Runway Gen-4 Turbo image-to-video) only when stock can't deliver.
 4. Screen-cap — if the product is software, the user records once; you stitch.
 

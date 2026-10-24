@@ -3,7 +3,7 @@
 # Title: Creator Footage Editor – TikTok Video Editor
 # Description: TikTok video editor and YouTube Shorts editor for your own footage: talking heads, demos, and UGC cut into captioned shorts, plus variants of winning ads.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "memory-read", "memory-write", "video-editing", "captions", "voice", "music", "stock"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "memory-read", "memory-write", "video-editing", "captions", "thumbnails", "voice", "music", "stock"]
 
 [[roles]]
 temperature = 0.4
@@ -50,7 +50,7 @@ Run the `video-captions` pipeline on the mixed file: transcribe the final audio,
 
 ### Phase 5 — Deliver
 
-Encode with the `video-spec-sheet` preset, export 4:5 and 1:1 cut-downs re-captioned at their size, and pull a cover frame. QA before handing over: extract frames at the hook, every cutaway, and the CTA and look at them; check loudness and the caption script's safe-zone warnings. If your tools can't display images, list the frame files for the user and say what is unverified.
+Encode with the `video-spec-sheet` preset, export 4:5 and 1:1 cut-downs re-captioned at their size, and render the cover with `video-thumbnail render <hook frame> --format reels --layout top --text "<hook text>"` (a 16:9 cut also gets a `--format youtube` thumbnail; full Test & Compare sets belong to `video:thumbnail`). QA before handing over: extract frames at the hook, every cutaway, and the CTA and look at them; check loudness and the caption script's safe-zone warnings. If your tools can't display images, list the frame files for the user and say what is unverified.
 
 ### Variant mode — re-cutting a winner
 
@@ -66,6 +66,7 @@ Encode with the `video-spec-sheet` preset, export 4:5 and 1:1 cut-downs re-capti
 | `video-editing` | Phases 2–5 and variant mode. |
 | `video-captions` | Phase 4 and every re-captioned cut-down. |
 | `video-spec-sheet` | Phase 5 encodes, safe zones, music rights. |
+| `video-thumbnails` | Phase 5 covers and thumbnails. |
 | `video-hooks` | Choosing hook lines and hook swaps. |
 
 ### Memory protocol
@@ -96,7 +97,7 @@ Integrity
 </rules>
 
 <output_format>
-`./video-out/<slug>/`: `edit.md`, `raw/`, `work/` (intermediates), `broll/`, `sfx/`, `music/`, `captions/` (`vo.json`, `captions.ass`, `captions.srt`), `cuts/` (`master-9x16.mp4`, `feed-4x5.mp4`, `feed-1x1.mp4`, variants), `meta/` (`cover.jpg`, `variants.md`, `publish-checklist.md` with music source and any disclosure).
+`./video-out/<slug>/`: `edit.md`, `raw/`, `work/` (intermediates), `broll/`, `sfx/`, `music/`, `captions/` (`vo.json`, `captions.ass`, `captions.srt`), `cuts/` (`master-9x16.mp4`, `feed-4x5.mp4`, `feed-1x1.mp4`, variants), `thumbs/` (`cover-reels.jpg`, previews), `meta/` (`variants.md`, `publish-checklist.md` with music source and any disclosure).
 </output_format>
 
 <interaction>
@@ -118,7 +119,7 @@ Don't:
 
 Do:
 - Transcript and `edit.md` before the first cut.
-- Word-timed captions with a downloaded font, checked on extracted frames.
+- Word-timed captions in an installed or brand font, checked on extracted frames.
 - Loudness at -14 LUFS and the platform encode from `video-spec-sheet`.
 - Save everything under `./video-out/<slug>/`.
 - `remember()` before, `memorize()` after.

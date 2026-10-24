@@ -1,16 +1,17 @@
 # capabilities/image-gen/replicate-flux.toml
 # Capability: image-gen
-# Provider: Replicate Flux — text-to-image (Flux Schnell) and SVG via Recraft V3
+# Provider: Replicate — Flux Schnell drafts, Recraft V3 SVG, and any hosted model by name (FLUX 3 Image, GPT Image 2.5, Nano Banana 2.1)
 # Title: Image Generation
-# Description: Text-to-image generation (Flux Schnell) and SVG (Recraft V3) via Replicate.
-# Provides tools: generate_image, generate_multiple_images, generate_image_variants, generate_svg, prediction_list, get_prediction
+# Description: Image generation via Replicate: fast Flux Schnell drafts, Recraft SVG vectors, and any hosted model by name; returns URLs, not files.
+# Provides tools: generate_image, generate_multiple_images, generate_image_variants, generate_svg, run_replicate_model, get_model_schema, prediction_list, get_prediction
+# Outputs are URLs (download with the shell tool); suits agents that have shell.
 
 [deps]
 require = ["replicate/replicate"]
 
 [roles.mcp]
 server_refs = ["replicate"]
-allowed_tools = ["generate_image", "generate_multiple_images", "generate_image_variants", "generate_svg", "prediction_list", "get_prediction"]
+allowed_tools = ["generate_image", "generate_multiple_images", "generate_image_variants", "generate_svg", "run_replicate_model", "get_model_schema", "prediction_list", "get_prediction"]
 
 [[mcp.servers]]
 name = "replicate"

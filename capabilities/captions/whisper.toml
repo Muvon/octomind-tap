@@ -6,7 +6,7 @@
 # Provides tools: transcribe_audio, list_audio_files, convert_audio, compress_audio
 
 [deps]
-require = ["whisper/whisper", "muvon/video-captions", "ffmpeg/ffmpeg"]
+require = ["whisper/whisper", "muvon/video-captions", "muvon/video-fonts", "ffmpeg/ffmpeg"]
 
 [roles.mcp]
 server_refs = ["whisper"]

@@ -1,15 +1,14 @@
 # capabilities/publish-youtube/youtube-data.toml
 # Capability: publish-youtube
-# Provider: YouTube Studio — channel management via YouTube Data + Analytics API
+# Provider: YouTube Studio — metadata, SEO, and analytics via YouTube Data + Analytics API (no upload)
 # Title: YouTube Publishing
-# Description: YouTube video metadata, SEO, and channel analytics after upload, via the YouTube Studio MCP server (OAuth2).
+# Description: YouTube video metadata, SEO, and channel analytics after upload, via the YouTube Studio MCP server (OAuth2); no video upload.
 # Provides tools: get_video_details, search_my_videos, update_video_seo, get_channel_overview, get_all_videos, get_analytics_over_time, get_top_videos_analytics, get_audience_demographics, get_traffic_sources, analyze_and_suggest_topics
 #
-# No MCP server currently exposes raw video upload (resumable-upload flow);
-# this provider covers the post-upload publishing surface: metadata, SEO,
-# thumbnails via Studio, and performance analytics.
-# OAuth2 setup: place credentials.json and tokens.json (generated with the
-# package's `node auth.js`) in the project working directory.
+# Alternative to the default upload-post provider for channels that only need
+# post-upload metadata edits and analytics on their own Google OAuth app.
+# OAuth2 setup: the package reads credentials.json and tokens.json (created with
+# its `node auth.js`) from its own install directory; it reads no environment variables.
 
 [deps]
 require = ["google/youtube-data"]

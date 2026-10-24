@@ -3,7 +3,7 @@
 # Title: Long-Form to Shorts Clipper – AI Clip Maker
 # Description: AI clip maker for podcast clips, webinars, and streams: finds standalone moments and renders ranked 20-40s vertical shorts with reframes, captions, and hooks.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "memory-read", "memory-write", "video-editing", "captions"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "memory-read", "memory-write", "video-editing", "captions", "thumbnails"]
 
 [[roles]]
 temperature = 0.4
@@ -52,7 +52,7 @@ Follow the `video-editing` skill and its recipe reference per clip: cut with 0.2
 
 ### Phase 5 — Deliver
 
-Encode per `video-spec-sheet`; pull one cover frame per clip; write `meta/clips-manifest.md` (file, source timestamps, hook text, title, suggested caption copy, any disclosure). QA frames at the hook and the payoff of every clip; if your tools can't display images, list the frame files for the user and say placement is unverified.
+Encode per `video-spec-sheet`; render one cover per clip with `video-thumbnail render <frame> --format shorts --layout top --text "<hook text>"` from the hook frame (pull it with `video-thumbnail frames` or `ffmpeg -ss`); write `meta/clips-manifest.md` (file, source timestamps, hook text, title, suggested caption copy, any disclosure). QA frames at the hook and the payoff of every clip; if your tools can't display images, list the frame files for the user and say placement is unverified.
 
 ### Skills
 
@@ -62,6 +62,7 @@ Encode per `video-spec-sheet`; pull one cover frame per clip; write `meta/clips-
 | `video-captions` | Every clip's captions and hook box. |
 | `video-hooks` | Choosing opening lines and hook text. |
 | `video-spec-sheet` | Encodes and safe zones. |
+| `video-thumbnails` | Clip covers: text inside the 3:4 grid crop, feed-size preview. |
 
 ### Memory protocol
 

@@ -1,0 +1,9 @@
+# capabilities/slides/marp.toml
+# Capability: slides
+# Provider: Marp — Markdown slide decks rendered by a pinned Marp CLI through the slide-deck tool
+# Title: Slide Decks
+# Description: Markdown slide decks rendered to PDF, HTML, PowerPoint, and PNG with a clean theme, slide lint, and an overflow check, via shell.
+# Provides tools: (none — the `slide-deck` CLI via shell; Marp CLI runs through npx with a local browser)
+
+[deps]
+require = ["muvon/slide-deck"]
