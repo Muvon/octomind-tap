@@ -4,7 +4,7 @@ title: "Markdown Slides with Marp: Decks to PDF and PowerPoint"
 description: "Markdown slides with Marp, rendered and checked instead of handed over raw: one assertion per slide, speaker notes in comments, a clean bundled theme (title, divider, big-number, quote, two-column, and dark layouts), brand color in one line, a slide linter for word count, bullets, topic-label titles, alt text, and missing notes, and export to PDF, HTML, PowerPoint, notes, and PNG previews with an automatic check for text that overflows the slide. Use whenever a talk, pitch, board, sales, or training deck has to ship as a file."
 license: Apache-2.0
 compatibility: "Requires: python3, Node.js (npx), and Chrome, Edge, Chromium, or Firefox (the installer adds Playwright's Chromium when none is present). Editable PPTX also needs LibreOffice. macOS/Linux."
-capabilities: shell slides
+capabilities: shell slides image-view
 domains: content launch
 rules:
   - session(presentation)
@@ -40,7 +40,7 @@ A deck is finished when it renders, reads well at the back of the room, and noth
 3. Write the slides (syntax below), notes in `<!-- -->` comments.
 4. `slide-deck lint deck-<topic>.md` (`--mode read` for send-ahead decks). Fix every issue or keep it deliberately.
 5. `slide-deck render deck-<topic>.md --png --notes` (add `--pptx` and `--html` when asked). Fix every slide the overflow warning names.
-6. Look at the PNGs in `deck-<topic>-png/`: hierarchy, crowding, image crops. If your tools can't display images, rely on lint and the overflow check and tell the user which files to review.
+6. Look at the PNGs in `deck-<topic>-png/` with `read_media_file`: hierarchy, crowding, image crops. If an image can't be read, rely on lint and the overflow check and tell the user which files to review.
 
 ### Marp essentials
 

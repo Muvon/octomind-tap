@@ -21,7 +21,7 @@
 #
 # Usage:
 #   scripts/lint-capabilities.sh                  # lint all capabilities
-#   scripts/lint-capabilities.sh <dir> [<dir>]    # lint specific capability dirs
+#   scripts/lint-capabilities.sh <cap> [<cap>]    # lint specific capabilities (name or capabilities/<name>)
 
 set -euo pipefail
 
@@ -301,7 +301,9 @@ echo "Linting ${#DIRS[@]} capability(ies)..."
 echo ""
 
 for dir in "${DIRS[@]}"; do
-  [[ $dir == /* ]] || dir="$CAP_ROOT/$dir"
+  # Accept a bare name (video-gen) or a repo-relative path (capabilities/video-gen/).
+  [[ $dir == /* ]] || dir="$CAP_ROOT/${dir#capabilities/}"
+  dir="${dir%/}"
 
   if ! lint_capability "$dir"; then
     ERRORS=$((ERRORS + 1))

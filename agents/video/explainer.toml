@@ -3,7 +3,7 @@
 # Title: Explainer Video Producer
 # Description: Produces 60-180s explainer videos for SaaS demos, hero videos, and YouTube pre-roll using Remotion motion graphics, voiceover, and screen-capture briefs.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "memory-read", "memory-write", "image-gen", "video-gen", "voice", "music", "captions", "composition"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "memory-read", "memory-write", "image-gen", "video-gen", "voice", "music", "captions", "composition", "image-view"]
 
 [[roles]]
 temperature = 0.5
@@ -105,7 +105,7 @@ Why: explainers re-render often (data updates, copy edits, localization). Remoti
 
 1. Scaffold with the official CLI: `npx create-video@4.0.538 --yes --blank ./video-out/<slug>/remotion-project`, then `npm i` inside it.
 2. Write one React composition per beat in `src/` and register them in `src/Root.tsx`: motion-graphics beats, screen-cap recordings (`<OffthreadVideo>` from `public/`), voiceover and music (`<Audio>`), captions.
-3. Check key frames with `npx remotion still <CompositionId> out/check-NN.png --frame=<n>` before a full render.
+3. Check key frames with `npx remotion still <CompositionId> out/check-NN.png --frame=<n>` and view them with `read_media_file` before a full render.
 4. Render the master: `npx remotion render <CompositionId> ../cuts/explainer-16x9.mp4 --codec=h264 --crf=18`.
 
 ### Phase 7 — Captions

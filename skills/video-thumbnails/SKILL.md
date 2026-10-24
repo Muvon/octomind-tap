@@ -4,7 +4,7 @@ title: "YouTube Thumbnail Maker: Shorts, Reels, and TikTok Covers"
 description: "YouTube thumbnail maker workflow for marketing and creator videos: one clear promise per thumbnail, candidate frames pulled from the footage, cut-out faces and products, AI-generated backgrounds without baked-in text, 2-5 words of outlined text fitted and set by a libass renderer, feed-size previews with the duration badge, and three Test & Compare variants that change one variable. Covers 2026 specs for YouTube long-form and Shorts, TikTok and Reels covers with the 3:4 grid crop, and thumbnail policy. Use whenever a video needs a thumbnail, a cover image, or thumbnail A/B test variants."
 license: Apache-2.0
 compatibility: "Requires: python3 and an ffmpeg built with libass (macOS: Homebrew ffmpeg-full). Optional: uvx for rembg subject cut-outs. macOS/Linux."
-capabilities: shell thumbnails
+capabilities: shell thumbnails image-view
 domains: video
 rules:
   - session(thumbnail)
@@ -60,7 +60,7 @@ The renderer is the `video-thumbnail` command, installed on PATH with the `thumb
 
 1. Promise. Write the one-line promise and the title first. The thumbnail shows the payoff, stakes, or tension; the text adds one beat the title leaves out ("I quit" + title "Why I left Google after 8 years").
 2. Background, in order of preference:
-   - A real frame. `video-thumbnail frames master.mp4 -o thumbs/frames --count 12` writes 12 lossless candidates with timestamps and `sheet.jpg`. Pick the sharpest, most expressive frame; ask the user to choose when you can't view images.
+   - A real frame. `video-thumbnail frames master.mp4 -o thumbs/frames --count 12` writes 12 lossless candidates with timestamps and `sheet.jpg`. View `sheet.jpg` with `read_media_file`, then open the shortlisted frames at full size and pick the sharpest, most expressive one; ask the user to choose when an image can't be read.
    - A dedicated thumbnail photo from the shoot.
    - A generated scene: `generate_image` with `aspectRatio` 16:9 or 9:16, `imageSize` 2K or 4K, and "no text, no letters" in the prompt. Pass real product photos or the person's photo as `inputImagePaths` to keep identity and packaging true. Never generate a real person's face from scratch.
 3. Subject cut-out (optional, strong for faces and products): `uvx --python 3.12 --from "rembg[cpu,cli]==2.0.86" rembg i -m birefnet-portrait frame.png thumbs/subject.png` for people, `-m isnet-general-use` for products. The first run downloads the model, up to about 1 GB for BiRefNet. Check the edge on hair and fingers in the preview.
@@ -72,7 +72,7 @@ video-thumbnail render thumbs/frames/frame-07.png -o thumbs/a.jpg \
   --layout left --title "Why I left Google after 8 years" --preview thumbs/a-preview.png
 ```
 
-5. Check the preview (`--preview`): the image at 360 px and 168 px on dark and light UI with the duration badge drawn in. The text must read at 168 px. If your tools can't display images, rely on the warnings and tell the user which preview to check and that legibility is unverified.
+5. Check the preview (`--preview`): the image at 360 px and 168 px on dark and light UI with the duration badge drawn in. View it with `read_media_file`; the text must read at 168 px. If an image can't be read, rely on the warnings and tell the user which preview to check and that legibility is unverified.
 6. Variants. Make three for YouTube Test & Compare, each changing one variable: face vs object, text vs no text, or framing. Name them `a.jpg`, `b.jpg`, `c.jpg`.
 
 ### Renderer choices

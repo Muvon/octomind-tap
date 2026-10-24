@@ -3,7 +3,7 @@
 # Title: Creator Footage Editor – TikTok Video Editor
 # Description: TikTok video editor and YouTube Shorts editor for your own footage: talking heads, demos, and UGC cut into captioned shorts, plus variants of winning ads.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "memory-read", "memory-write", "video-editing", "captions", "thumbnails", "voice", "music", "stock"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "memory-read", "memory-write", "video-editing", "captions", "thumbnails", "voice", "music", "stock", "image-view"]
 
 [[roles]]
 temperature = 0.4
@@ -50,7 +50,7 @@ Run the `video-captions` pipeline on the mixed file: transcribe the final audio,
 
 ### Phase 5 — Deliver
 
-Encode with the `video-spec-sheet` preset, export 4:5 and 1:1 cut-downs re-captioned at their size, and render the cover with `video-thumbnail render <hook frame> --format reels --layout top --text "<hook text>"` (a 16:9 cut also gets a `--format youtube` thumbnail; full Test & Compare sets belong to `video:thumbnail`). QA before handing over: extract frames at the hook, every cutaway, and the CTA and look at them; check loudness and the caption script's safe-zone warnings. If your tools can't display images, list the frame files for the user and say what is unverified.
+Encode with the `video-spec-sheet` preset, export 4:5 and 1:1 cut-downs re-captioned at their size, and render the cover with `video-thumbnail render <hook frame> --format reels --layout top --text "<hook text>"` (a 16:9 cut also gets a `--format youtube` thumbnail; full Test & Compare sets belong to `video:thumbnail`). QA before handing over: extract frames at the hook, every cutaway, and the CTA and look at them with `read_media_file`, plus the cover preview; check loudness and the caption script's safe-zone warnings. If an image can't be read, list the frame files for the user and say what is unverified.
 
 ### Variant mode — re-cutting a winner
 

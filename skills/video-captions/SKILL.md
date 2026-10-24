@@ -4,7 +4,7 @@ title: "Add Captions to Video: Word-Timed TikTok-Style Subtitles"
 description: "Add captions to video that look edited, not hand-made: a word-timed video caption generator pipeline with word-level timestamps from local faster-whisper, TikTok/Reels caption presets (pop, karaoke, word, box, clean) with an active-word highlight, rendered to ASS and burned in with ffmpeg and libass, plus SRT sidecars and Remotion caption JSON. Use whenever a video needs auto captions, burned-in subtitles, a word-by-word highlight, or an on-screen hook line."
 license: Apache-2.0
 compatibility: "Requires: python3, an ffmpeg built with libass (macOS: Homebrew ffmpeg-full), and a word-timestamp source such as whisper-ctranslate2. macOS/Linux."
-capabilities: shell captions
+capabilities: shell captions image-view
 domains: video
 rules:
   - session(adcraft)
@@ -56,7 +56,7 @@ video-captions captions/vo.json --video cut.mp4 -o captions/captions.ass \
   --preset pop --srt captions/captions.srt --burn cuts/master-9x16.mp4
 ```
 
-7. Extract three frames at word-dense moments (`ffmpeg -ss 2.4 -i out.mp4 -frames:v 1 check-2.4.png`) and look at them: face clear, text inside the safe zone, highlight on the spoken word. Adjust `--y`, `--max-words`, or the preset and re-render. If your tools can't display images, rely on the script's font and safe-zone warnings, and tell the user which frame files to check and that placement is unverified.
+7. Extract three frames at word-dense moments (`ffmpeg -ss 2.4 -i out.mp4 -frames:v 1 check-2.4.png`) and look at them with `read_media_file`: face clear, text inside the safe zone, highlight on the spoken word. Adjust `--y`, `--max-words`, or the preset and re-render. If an image can't be read, rely on the script's font and safe-zone warnings, and tell the user which frame files to check and that placement is unverified.
 
 Without `--burn` the script prints the exact burn command with the right ffmpeg binary; use that when the burn joins a larger filter chain (`-vf "scale=...,ass=captions.ass:fontsdir=$HOME/.local/share/octomind/fonts"`).
 

@@ -85,7 +85,7 @@ env = { FOO_API_KEY = "{{ENV:FOO_API_KEY}}" }
 
 ### Version pins
 
-Every registry-launched server (`npx`, `uvx`, including inside `sh -c`) pins an exact version (`pkg@X.Y.Z`, `pkg==X.Y.Z`), so a registry publish never changes what users run. `lint-capabilities.sh` enforces presence offline; `scripts/mcp-versions.sh check|update|test` handles drift and live MCP handshakes.
+Every registry-launched server (`npx`, `uvx`, including inside `sh -c`) pins an exact version (`pkg@X.Y.Z`, `pkg==X.Y.Z`), so a registry publish never changes what users run. `lint-capabilities.sh` enforces presence offline; `scripts/mcp-versions.sh check|update|test` handles drift and live MCP handshakes. Keep a deliberate older pin with a `# mcp-versions: hold <package>` comment and the reason beside it; `update` leaves it alone.
 
 ### Registration
 

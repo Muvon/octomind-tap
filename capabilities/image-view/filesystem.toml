@@ -1,0 +1,28 @@
+# capabilities/image-view/filesystem.toml
+# Capability: image-view
+# Provider: MCP filesystem reference server — read_media_file only
+# Title: Image Viewer for AI Agents
+# Description: Let the AI see and analyze local images (PNG, JPEG, GIF, WebP) via MCP: check renders, charts, video frames, screenshots. Read-only.
+# Provides tools: read_media_file
+#
+# read_media_file returns the file as an MCP image block, which octomind hands to
+# the model as an image. Access is limited to the session's working directory.
+# mcp-versions: hold @modelcontextprotocol/server-filesystem
+# Held at 2025.8.21: later releases repeat the base64 image in structuredContent,
+# which octomind also appends to the tool result as text (~6K extra tokens per
+# image after truncation).
+
+[deps]
+require = ["modelcontextprotocol/filesystem"]
+
+[roles.mcp]
+server_refs = ["image-view"]
+allowed_tools = ["read_media_file"]
+
+[[mcp.servers]]
+name = "image-view"
+type = "stdio"
+command = "sh"
+args = ["-c", "exec npx -y @modelcontextprotocol/server-filesystem@2025.8.21 \"$PWD\""]
+timeout_seconds = 60
+tools = []

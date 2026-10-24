@@ -70,6 +70,16 @@ design:
     connections:
       show_icons: false
       phone_number_format: international
+  templates:
+    experience_entry:
+      main_column: "**POSITION**, COMPANY -- LOCATION\nDATE\nSUMMARY\nHIGHLIGHTS"
+      date_and_location_column: ""
+    education_entry:
+      main_column: "**INSTITUTION**, DEGREE_WITH_AREA -- LOCATION\nDATE\nSUMMARY\nHIGHLIGHTS"
+      date_and_location_column: ""
+    normal_entry:
+      main_column: "**NAME** -- **LOCATION**\nDATE\nSUMMARY\nHIGHLIGHTS"
+      date_and_location_column: ""
 ```
 
 Section titles are free text (`experience`, `Projects`, `Berufserfahrung`); Markdown `**bold**` works inside entries. Dates as `YYYY-MM` or `present`.
@@ -82,6 +92,7 @@ Section titles are free text (`experience`, `Projects`, `Berufserfahrung`); Mark
 | `header.connections.show_icons` | `false` | Icon fonts put private-use characters into the text layer |
 | `page.show_top_note`, `page.show_footer` | `false` | Otherwise "Last updated in ..." becomes the first line parsers read and "Name – 1/2" lands between sections |
 | `header.connections.phone_number_format` | `international` for cross-border applications | Prints +49 30 ... instead of a national 030 ... |
+| `templates.<entry>.main_column` | `DATE` on the line under the title, `date_and_location_column: ""` | A right-hand date column is a separate text box; parsers can read it after later sections, so a date ends up far from its job or degree |
 | `page.size` | `us-letter` for US/Canada, `a4` elsewhere | Market convention; prints without scaling |
 | Photo | Only where the market expects one | See the market's conventions |
 
@@ -94,7 +105,7 @@ rendercv render Jane_Doe_CV.yaml --pdf-path Jane_Doe_Resume.pdf --markdown-path 
 doc-export check Jane_Doe_Resume.pdf --max-pages 2 --text 40
 ```
 
-Read the text output: name and contact first, then sections in order, each job's title, company, and dates together, no junk characters, no lost bullets. Column layouts can push a date away from its entry, mostly on sparse pages; if any date lands elsewhere (often at the end of the page), switch the theme to `sb2nov` or `ember`, re-render, and re-check. Cut content rather than shrink fonts when the page count is over the market's norm.
+Read the text output: name and contact first, then sections in order, each job's title, company, and dates together, no junk characters, no lost bullets. With the templates above every date follows its entry's title line; if a date still lands elsewhere (a custom entry type without the template), add that entry type to `templates` the same way and re-render. Cut content rather than shrink fonts when the page count is over the market's norm.
 
 ### Word twin and cover letter
 

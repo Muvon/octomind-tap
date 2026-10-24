@@ -15,6 +15,8 @@
 #       Rewrite pins to the current registry latest (also pins anything
 #       unpinned or tagged @latest). Leaves changes uncommitted for review.
 #       Run `test` afterwards to smoke-test the updated servers.
+#       A capability file line `# mcp-versions: hold <package>` keeps that
+#       pin as is (check reports it as held); state the reason next to it.
 #
 #   scripts/mcp-versions.sh test [<capability> ...]
 #       Spawn each stdio server, perform the MCP initialize handshake and
@@ -209,6 +211,9 @@ def resolve_latest(pkgs):
     return results
 
 
+HOLD = re.compile(r"^#\s*mcp-versions:\s*hold\s+(\S+)", re.M)
+
+
 def collect(selectors=None):
     entries = filter_paths(list(iter_servers()), selectors)
     rows = []
@@ -217,6 +222,7 @@ def collect(selectors=None):
         rows.append({
             "path": path, "data": data, "srv": srv, "runner": runner,
             "token": token, "embedded": embedded, "name": name, "version": ver,
+            "held": name in HOLD.findall(path.read_text()),
         })
     return rows
 
@@ -233,7 +239,7 @@ def cmd_check(argv):
     latest = resolve_latest({(r["runner"], r["name"]) for r in rows})
 
     seen = set()
-    counts = {"ok": 0, "outdated": 0, "unpinned": 0, "error": 0}
+    counts = {"ok": 0, "outdated": 0, "unpinned": 0, "held": 0, "error": 0}
     width = max((len(r["name"]) for r in rows), default=20) + 2
     print(f"{'package':<{width}} {'type':<5} {'pinned':<14} {'latest':<14} status")
     for r in sorted(rows, key=lambda r: r["name"]):
@@ -249,12 +255,14 @@ def cmd_check(argv):
             status, latest_s = "unpinned", got
         elif r["version"] == got:
             status, latest_s = "ok", got
+        elif r["held"]:
+            status, latest_s = "held", got
         else:
             status, latest_s = "outdated", got
         counts[status.split(":")[0]] += 1
         print(f"{r['name']:<{width}} {kind:<5} {r['version'] or '-':<14} {latest_s:<14} {status}")
 
-    print(f"\n{counts['ok']} ok, {counts['outdated']} outdated, "
+    print(f"\n{counts['ok']} ok, {counts['outdated']} outdated, {counts['held']} held, "
           f"{counts['unpinned']} unpinned, {counts['error']} lookup errors")
     if counts["outdated"] or counts["unpinned"]:
         print("Run: scripts/mcp-versions.sh update --all   (then: scripts/mcp-versions.sh test)")
@@ -306,6 +314,9 @@ def cmd_update(argv):
             errors += 1
             continue
         if r["version"] == got:
+            continue
+        if r["held"] and is_exact(r["version"], r["runner"]):
+            print(f"  = {rel(r['path'])}: {r['token']} held (latest {got})")
             continue
         new_spec = make_spec(r["name"], got, r["runner"])
         by_file.setdefault(r["path"], []).append(

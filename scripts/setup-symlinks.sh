@@ -96,6 +96,7 @@ link "video-editing" "auto-editor.toml"
 link "thumbnails" "libass.toml"
 link "stock" "pexels.toml"
 link "image-gen" "gpt-image.toml"
+link "image-view" "filesystem.toml"
 link "slides" "marp.toml"
 link "documents" "pandoc.toml"
 link "resume-render" "rendercv.toml"
@@ -114,7 +115,7 @@ link "trading-crypto" "binance-futures.toml"
 
 # Detect capability dirs that have NO mapping declared above
 echo ""
-DECLARED=("filesystem-read" "filesystem-write" "shell" "codesearch-semantic" "codesearch-structural" "codesearch-graph" "memory-read" "memory-write" "websearch" "versioning" "core" "agent" "orchestration" "runtime" "programming-python" "programming-rust" "programming-nodejs" "programming-swift" "docker" "kubernetes" "svelte" "medical-reference" "market-data" "trading-crypto" "legal-ca" "legal-de" "legal-fr" "legal-uk" "legal-us" "octoweb" "browser" "messaging-slack" "messaging-discord" "messaging-telegram" "messaging-whatsapp" "messaging-instagram" "messaging-email" "messaging-sms" "calendar" "customer-management" "database-postgres" "database-sqlite" "devdocs" "ecommerce" "edge-hosting" "error-tracking" "highlights" "maps" "payments" "scraping" "task-management" "translation" "webfetch" "knowledge" "video-gen" "voice" "avatar" "lipsync" "music" "composition" "captions" "video-editing" "thumbnails" "stock" "image-gen" "slides" "documents" "resume-render" "publish-tiktok" "publish-instagram" "publish-youtube" "publish-x" "device-mobile" "device-computer")
+DECLARED=("filesystem-read" "filesystem-write" "shell" "codesearch-semantic" "codesearch-structural" "codesearch-graph" "memory-read" "memory-write" "websearch" "versioning" "core" "agent" "orchestration" "runtime" "programming-python" "programming-rust" "programming-nodejs" "programming-swift" "docker" "kubernetes" "svelte" "medical-reference" "market-data" "trading-crypto" "legal-ca" "legal-de" "legal-fr" "legal-uk" "legal-us" "octoweb" "browser" "messaging-slack" "messaging-discord" "messaging-telegram" "messaging-whatsapp" "messaging-instagram" "messaging-email" "messaging-sms" "calendar" "customer-management" "database-postgres" "database-sqlite" "devdocs" "ecommerce" "edge-hosting" "error-tracking" "highlights" "maps" "payments" "scraping" "task-management" "translation" "webfetch" "knowledge" "video-gen" "voice" "avatar" "lipsync" "music" "composition" "captions" "video-editing" "thumbnails" "stock" "image-gen" "image-view" "slides" "documents" "resume-render" "publish-tiktok" "publish-instagram" "publish-youtube" "publish-x" "device-mobile" "device-computer")
 for dir in "$CAP_ROOT"/*/; do
   cap="$(basename "$dir")"
   found=0

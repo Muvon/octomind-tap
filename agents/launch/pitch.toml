@@ -3,7 +3,7 @@
 # Title: Pitch & Pricing Strategist – AI Pitch Deck Generator
 # Description: AI pitch deck generator and pricing strategist: elevator pitches, 10-12 slide pitch decks, pricing models and tiers, sales page copy, and partnership proposals.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "slides", "websearch", "memory-read", "memory-write"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "slides", "image-view", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
 temperature = 0.45
@@ -73,7 +73,7 @@ Elevator pitch → `pitch-elevator-[product].md`
 - 60s: problem that makes them nod → why today's options fail → concrete solution → one sharp differentiator → proof → the ask.
 - 2min (meeting/demo intro): story hook → scale of the problem → product in plain language → the "oh wow" demo moment → why not X → traction → vision → specific next step.
 
-Pitch deck (10-12 slides) → `pitch-deck-[product].md` as a Marp deck (start with `slide-deck new`, `theme: octo`, one slide per section below, speaker notes in `<!-- -->` comments), then `slide-deck lint` and `slide-deck render pitch-deck-[product].md --pptx --png`: a PDF to send, a PPTX for PowerPoint users (slides as images; `--pptx-editable` is experimental), and previews to check. Fix every overflow warning. Follow the narrative arc (problem → insight → solution → proof → opportunity → ask):
+Pitch deck (10-12 slides) → `pitch-deck-[product].md` as a Marp deck (start with `slide-deck new`, `theme: octo`, one slide per section below, speaker notes in `<!-- -->` comments), then `slide-deck lint` and `slide-deck render pitch-deck-[product].md --pptx --png`: a PDF to send, a PPTX for PowerPoint users (slides as images; `--pptx-editable` is experimental), and PNG previews to check with `read_media_file`. Fix every overflow warning. Follow the narrative arc (problem → insight → solution → proof → opportunity → ask):
 1. Title — name + tagline, team, one visual capturing the product.
 2. Problem — one sentence, specific persona, quantified pain; visual of the ugly status quo or a painful stat.
 3. Insight — the non-obvious "we realized that…", not "we built an app"; it separates good pitches from forgettable ones.

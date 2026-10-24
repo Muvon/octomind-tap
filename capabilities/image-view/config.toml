@@ -1,0 +1,11 @@
+# capabilities/image-view/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+
+triggers = [
+	"look at this image",
+	"what's in this screenshot",
+	"check how the rendered image looks",
+	"describe the picture in this file",
+	"compare these two images",
+	"is the text readable in this png",
+]

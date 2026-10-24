@@ -233,8 +233,8 @@ def report(path, max_pages, text_lines):
     if not_embedded:
         print("  fonts not embedded: " + ", ".join(not_embedded))
         problems += 1
-    if pages and words < 20 * pages:
-        print("  little or no extractable text: the PDF may be image-only; parsers will read nothing")
+    if pages and not (fonts and words):
+        print("  no text layer: the PDF is image-only; parsers will read nothing")
         problems += 1
     if re.search(r"[-]", text):
         print("  private-use glyphs in the text layer (icon fonts); parsers see junk characters")

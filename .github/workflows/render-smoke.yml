@@ -1,0 +1,77 @@
+name: Render smoke test
+
+# Installs the artifact CLIs from their dep scripts and renders real output
+# (deck, PDF/DOCX, resume, thumbnail, captions) on the platforms the skills support.
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - 'skills/slide-decks/**'
+      - 'skills/document-export/**'
+      - 'skills/resume-rendering/**'
+      - 'skills/video-thumbnails/**'
+      - 'skills/video-captions/**'
+      - 'deps/lib/**'
+      - 'deps/muvon/**'
+      - 'deps/jgm/**'
+      - 'deps/typst/**'
+      - 'deps/freedesktop/**'
+      - 'deps/rendercv/**'
+      - 'deps/ffmpeg/**'
+      - 'scripts/smoke-render.sh'
+      - '.github/workflows/render-smoke.yml'
+  pull_request:
+    branches: [master, main]
+    paths:
+      - 'skills/slide-decks/**'
+      - 'skills/document-export/**'
+      - 'skills/resume-rendering/**'
+      - 'skills/video-thumbnails/**'
+      - 'skills/video-captions/**'
+      - 'deps/lib/**'
+      - 'deps/muvon/**'
+      - 'deps/jgm/**'
+      - 'deps/typst/**'
+      - 'deps/freedesktop/**'
+      - 'deps/rendercv/**'
+      - 'deps/ffmpeg/**'
+      - 'scripts/smoke-render.sh'
+      - '.github/workflows/render-smoke.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  linux:
+    name: Linux · clean Ubuntu 24.04
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Render in a clean container
+        run: |
+          docker run --rm \
+            --volume "$PWD:/tap:ro" \
+            --workdir /tap \
+            --env PATH="/root/.local/bin:/root/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
+            ubuntu:24.04 \
+            bash -c "
+              set -euo pipefail
+              apt-get update -qq
+              apt-get install -y -qq sudo curl wget bash
+              bash scripts/smoke-render.sh /work
+            "
+
+  macos:
+    name: macOS
+    runs-on: macos-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Render
+        run: bash scripts/smoke-render.sh "$RUNNER_TEMP/smoke"

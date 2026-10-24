@@ -46,13 +46,14 @@ scripts/mcp-versions.sh test [<capability> ...]             # spawn servers, MCP
 pre-commit run --all-files                   # local hooks: shfmt, whitespace, check-toml, 4 lints
 octomind run <domain>:<spec>                 # smoke-test an agent from repo root
 octomind workflow <name> --dry-run           # validate a workflow, run nothing
+bash scripts/smoke-render.sh [dir]           # install artifact CLIs, render deck/PDF/DOCX/resume/thumbnail/captions
 
 cd model && uv sync && bin/train             # embedding model full pipeline (--skip-export to skip ONNX)
 ```
 
 - All lint scripts and `mcp-versions.sh` need Python 3.11+ (or `pip install tomli`).
 - `pre-commit` runs `shfmt -w -s -i 2 -ci` on shell scripts — run it before committing dep scripts; `lint-deps.sh` is **not** in pre-commit, run it manually.
-- `[UNCONFIRMED]` ARCHITECTURE.md says the five lint scripts run in `.github/workflows/lint.yml` on every push/PR; no `.github/` exists in this checkout.
+- CI: `.github/workflows/lint.yml` runs setup-symlinks, lint-manifests, lint-capabilities, validate-capabilities, lint-skills, and lint-deps on every push/PR; `test-deps.yml` runs each changed dep script twice (install + idempotency) on clean Ubuntu, macOS, and Windows; `render-smoke.yml` runs `scripts/smoke-render.sh` on Linux and macOS when the artifact CLIs or their deps change.
 
 ## Where to Look
 
@@ -130,7 +131,7 @@ tools = []
 
 **Built-in server refs** (`core`, `octofs`, `agent`, `octocode`) do NOT need `[[mcp.servers]]` blocks. Every other server ref MUST have a matching `[[mcp.servers]]` block in its capability file.
 
-**Version pins** — every registry-launched server (npx/uvx, including inside `sh -c`) must pin an exact package version (`pkg@X.Y.Z` / `pkg==X.Y.Z`) so a registry publish can never change what users run. `lint-capabilities.sh` enforces pin presence offline; `scripts/mcp-versions.sh` handles drift, updates, and live smoke-tests.
+**Version pins** — every registry-launched server (npx/uvx, including inside `sh -c`) must pin an exact package version (`pkg@X.Y.Z` / `pkg==X.Y.Z`) so a registry publish can never change what users run. `lint-capabilities.sh` enforces pin presence offline; `scripts/mcp-versions.sh` handles drift, updates, and live smoke-tests. A deliberate older pin carries `# mcp-versions: hold <package>` plus the reason; `update` skips it and `check` reports it as held.
 
 ### Agent Manifest Rules
 
