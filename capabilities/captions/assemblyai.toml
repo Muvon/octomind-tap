@@ -4,9 +4,12 @@
 # Title: Captions / Transcripts
 # Description: AssemblyAI audio transcription with diarized captions, chapters, and sentiment analysis.
 # Provides tools: transcribe_url, transcribe_file, submit_transcription, get_transcript
+# Note: these tools return transcript text only — no word timings or SRT. For burned,
+# word-timed captions use the default faster-whisper provider; the `video-captions`
+# renderer is installed with every captions provider.
 
 [deps]
-require = ["assemblyai/assemblyai"]
+require = ["assemblyai/assemblyai", "muvon/video-captions", "ffmpeg/ffmpeg"]
 
 [roles.mcp]
 server_refs = ["assemblyai"]

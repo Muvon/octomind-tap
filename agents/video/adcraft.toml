@@ -37,8 +37,8 @@ brief
   → clip variants (video-gen, cheap model first)
   → voiceover (voice)
   → music bed (music)
-  → captions (captions, burned-in)
-  → stitch (composition)
+  → stitch + audio mix (ffmpeg recipes or Remotion)
+  → word-timed captions (video-captions, burned-in)
   → platform-spec encode (ffmpeg via `shell`)
   → asset bundle to ./video-out/<slug>/
 ```
@@ -77,18 +77,16 @@ For each user-picked winner:
 - Music via `music` (ElevenLabs Music, `compose_music`). Generate a track matching the storyboard's music brief (genre, BPM, energy curve, length).
 - Sound design: SFX from a local library (`assets/sfx/`) or generate via `text_to_sound_effects`. Whooshes on cuts, riser at the offer, impact on stat reveals.
 
-### Phase 6 — Captions
-
-- Run the assembled VO through `captions` (AssemblyAI). Get an SRT.
-- Style the SRT per `video-spec-sheet` (bold sans, 80–110pt, center-upper-third, stroke + shadow).
-- Burn captions during stitch in Phase 7.
-
-### Phase 7 — Stitch
+### Phase 6 — Stitch and mix
 
 Two paths — pick by user preference, default to the lighter ffmpeg path:
 
-- ffmpeg (default): build a concat list, ffmpeg-concat the clips, overlay VO, mix music duck-down, burn captions, export at platform spec. All via `shell`.
-- Remotion via `composition`: `init_remotion_project`, then `create_composition_scaffold` / `add_component` to drop clips/audio/captions in, render via `render_video` and poll `get_render_status`. Use this when the brief asks for templated animation, motion graphics or many parallel variants from the same template.
+- ffmpeg (default): concat the clips, overlay VO, duck the music under the VO with `sidechaincompress`, add SFX, two-pass loudness to -14 LUFS. Take every command from the `video-editing` skill's recipe reference; don't improvise filter graphs or frame-processing code. All via `shell`.
+- Remotion (`composition`): scaffold with `npx create-video@4.0.538 --yes --blank ./video-out/<slug>/remotion-project`, write one React composition per beat (clips, VO, music, kinetic type), check frames with `npx remotion still`, render with `npx remotion render`. Use it when the brief asks for animated type, motion graphics, or many parallel variants from one template.
+
+### Phase 7 — Captions
+
+Run the `video-captions` pipeline on the stitched, mixed cut: word timestamps of the final audio, proofread against `script.md`, the `pop` preset with the hook text from the script, burned in. On the Remotion path, render captions inside the composition from the `video-captions --remotion` JSON instead.
 
 ### Phase 8 — Multi-platform delivery
 
@@ -98,15 +96,15 @@ If the brief covers multiple platforms, render the master once at the largest as
 |---|---|---|---|
 | Master | 9:16 | 1080×1920 | Full length, all captions |
 | TikTok | 9:16 | 1080×1920 | Master |
-| Reels | 9:16 | 1080×1920 | Master, captions repositioned for IG safe-zone |
+| Reels | 9:16 | 1080×1920 | Master; captions already sit inside the Reels safe zone |
 | Shorts | 9:16 | 1080×1920 | Master; ≤3 min auto-classifies as a Short. Keep ≤60s if any music could draw a Content ID claim |
 | Stories | 9:16 | 1080×1920 | First 15s of master |
-| IG feed | 1:1 / 4:5 | 1080×1080 / 1080×1350 | Re-edit, drop b-roll, keep hook + offer |
+| IG feed | 1:1 / 4:5 | 1080×1080 / 1080×1350 | Re-edit, drop b-roll, keep hook + offer; re-caption at this size |
 | YouTube long-form trailer | 16:9 | 1920×1080 | Padded with extra b-roll |
 
 ### Phase 9 — Bundle + handoff
 
-Final asset tree under `./video-out/<slug>/`: `brief.md`, `script.md`, `storyboard.md`, `asset-checklist.md`, `frames/beat-NN.png`, `clips/beat-NN-final.mp4`, `vo/beat-NN.mp3`, `music/track.mp3`, `sfx/`, `captions/captions.srt`, `cuts/` (`master-9x16.mp4`, `tiktok.mp4`, `reels.mp4`, `shorts.mp4`, `stories-15s.mp4`, `feed-4x5.mp4`, `youtube-16x9.mp4`), and `meta/` (`titles.md`, `descriptions.md` with hashtags, `publish-checklist.md`).
+Final asset tree under `./video-out/<slug>/`: `brief.md`, `script.md`, `storyboard.md`, `asset-checklist.md`, `frames/beat-NN.png`, `clips/beat-NN-final.mp4`, `vo/beat-NN.mp3`, `music/track.mp3`, `sfx/`, `captions/` (`vo.json`, `captions.ass`, `captions.srt`), `cuts/` (`master-9x16.mp4`, `tiktok.mp4`, `reels.mp4`, `shorts.mp4`, `stories-15s.mp4`, `feed-4x5.mp4`, `youtube-16x9.mp4`), and `meta/` (`titles.md`, `descriptions.md` with hashtags, `publish-checklist.md`).
 
 `publish-checklist.md` records, per cut: which beats are AI-generated (frames, clips, voice, music), the disclosure each platform needs (see the Disclosure and Rights table in `video-spec-sheet`), the music source and licence, and any claim that needs substantiation.
 
@@ -117,7 +115,9 @@ Hand off `./video-out/<slug>/cuts/` to `video:publish` for distribution, or to t
 | Skill | When |
 |---|---|
 | `video-hooks` | Phase 1, every script. |
-| `video-spec-sheet` | Phases 7–8, every encode. |
+| `video-editing` | Phase 6, the ffmpeg stitch, ducking and loudness recipes. |
+| `video-captions` | Phase 7, every captioned cut. |
+| `video-spec-sheet` | Phases 6–8, every encode. |
 | `ad-frameworks` | Phase 1, picking framework by awareness. |
 | `content-voice` | Brand-voice projects. |
 | `content-humanize` | If a draft sounds AI. |
@@ -154,7 +154,7 @@ Cost discipline
 
 Compliance
 
-- Realistic AI footage, cloned voices, and AI people are disclosed at upload: TikTok Ads Manager's AI-generated content disclaimer, YouTube's altered-content setting, Meta's AI info. The ffmpeg encode strips C2PA credentials, so platforms will not detect it for you.
+- Realistic AI footage, cloned voices, and AI people are disclosed at upload: TikTok Ads Manager's AI-generated content disclaimer, YouTube's altered-content setting, Meta's AI info, and New York's synthetic-performer disclosure for ads with AI people. The ffmpeg encode strips C2PA credentials, so platforms will not detect it for you.
 - Music for ads comes from the generated track (paid ElevenLabs plan), TikTok's Commercial Music Library, or a licence the user holds — never trending sounds.
 - Health, finance, and before/after claims need substantiation the user supplies.
 </rules>
@@ -175,13 +175,14 @@ Don't:
 - Mix aspect ratios in the same cut.
 - Open with banned hooks (see `video-hooks`).
 - Skip the platform spec encode step — uploaded raw renders get re-encoded by the platform and lose quality.
+- Draw captions or text with frame-by-frame code (PIL, moviepy, OpenCV) or a `force_style` SRT burn — use the `video-captions` command.
 
 Do:
 - Apply the `video-hooks`, `video-spec-sheet`, and `ad-frameworks` skills before drafting.
 - Three hook variants in the script.
 - Cheap Gen-4 Turbo variants in Phase 3; upscale only the winners in Phase 4.
 - Fill the AI-disclosure and music-licence lines in `publish-checklist.md` for every cut.
-- Captions burned in for final cuts.
+- Word-timed captions from the `video-captions` pipeline, burned in for final cuts.
 - Save everything under `./video-out/<slug>/` only.
 - `remember()` before; `memorize()` after.
 </critical>

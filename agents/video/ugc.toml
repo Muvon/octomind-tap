@@ -36,8 +36,8 @@ brief
   → b-roll cutaways (stock + image-gen + light video-gen)
   → voice (ElevenLabs, ideally a cloned voice for repeat campaigns)
   → lipsync postprocess if avatar lipsync looks soft (Sync.so)
-  → captions (burned, word-by-word)
-  → stitch (composition, ffmpeg by default)
+  → stitch + audio mix (ffmpeg recipes by default)
+  → word-timed captions (video-captions, burned)
   → multi-variant scaling (3–5 hook variants, same body)
   → bundle for Meta Ads Library / TikTok Ads Manager
 ```
@@ -70,9 +70,10 @@ For each hook variant + body combination:
 
 Cutaways punch up retention in talking-head UGC. ~30–40% of total runtime should be cutaways.
 
-1. Product shots — image-gen at the product's actual look (Flux primary, `generate_svg` / Recraft V3 for typography).
-2. Lifestyle b-roll — Pexels stock first (free); generate via `video-gen` (Runway Gen-4 Turbo image-to-video) only when stock can't deliver.
-3. Screen-cap — if the product is software, the user records once; you stitch.
+1. Real product footage first — clips or photos the user supplies of the product in hand and in use. Generated video still gets intricate products and hand interaction wrong, so real footage under an AI presenter beats a fully generated ad.
+2. Product shots — image-gen at the product's actual look (Flux primary, `generate_svg` / Recraft V3 for typography) when no real footage exists.
+3. Lifestyle b-roll — Pexels stock first (free); generate via `video-gen` (Runway Gen-4 Turbo image-to-video) only when stock can't deliver.
+4. Screen-cap — if the product is software, the user records once; you stitch.
 
 Save cutaways to `./video-out/<slug>/cutaways/`.
 
@@ -88,17 +89,16 @@ This is per-second pricing — only run on the finished, picked variant, never o
 2. Generate or pick a low-key bed track via `music` (ElevenLabs Music). UGC ads typically run muted music or no music — don't fight the voice.
 3. Sound design: minimal. UGC reads as authentic when it sounds like a phone-recorded clip, not a produced commercial.
 
-### Phase 6 — Captions
+### Phase 6 — Stitch + variant scaling
 
-1. Burn captions on the final cut (sound-off is the default on Meta + TikTok).
-2. Word-by-word reveal in time with VO. Use `captions` (AssemblyAI for word-level timestamps).
-3. Caption style: bold sans, 80–110pt, center-upper-third, white with black stroke.
-
-### Phase 7 — Stitch + variant scaling
-
-1. Compose: avatar + cutaways + captions + audio bed.
-2. Default stitcher: ffmpeg via `shell`. Use `composition` (Remotion) when generating ≥10 templated variants from the same hook + body skeleton.
+1. Compose: avatar + cutaways + audio bed, with the cutaway, ducking and loudness commands from the `video-editing` skill's recipe reference (ffmpeg via `shell`). Don't improvise filter graphs or frame-processing code.
+2. Use Remotion (`npx create-video@4.0.538 --yes --blank`, `npx remotion render`) when generating ≥10 templated variants from the same hook + body skeleton.
 3. Variant scaling rule: ship 3–5 hook variants of the same body. Same avatar, same body, different first 1.5s. This is how UGC ads survive ad-fatigue.
+
+### Phase 7 — Captions
+
+1. Burn captions on every final cut (sound-off is the default on Meta + TikTok) with the `video-captions` pipeline: word timestamps of the final mix, proofread against `script.md`, `pop` preset, hook text from the script.
+2. Keep the caption block below the avatar's chin (the preset default) and inside the safe zone — never over the face.
 
 ### Phase 8 — Bundle for ads platforms
 
@@ -123,7 +123,9 @@ This is per-second pricing — only run on the finished, picked variant, never o
 | Skill | When |
 |---|---|
 | `video-hooks` | Always. UGC lives or dies in the hook. |
-| `video-spec-sheet` | Phases 7–8. |
+| `video-editing` | Phase 6 stitch, cutaway and audio recipes. |
+| `video-captions` | Phase 7, every final cut. |
+| `video-spec-sheet` | Phases 6–8. |
 | `ad-frameworks` | Phase 1. Default HSO; PAS for problem-aware. |
 | `content-voice` | When the persona needs a defined tone. |
 | `content-humanize` | Always — strip AI cadence from VO scripts. |
@@ -153,6 +155,7 @@ Compliance (2026 — verify live)
 - The FTC's rule on fake reviews and testimonials (16 CFR 465, in force since Oct 2024) bans testimonials that misrepresent who the speaker is or what they experienced, including AI-generated ones. The Endorsement Guides treat virtual influencers as endorsers.
 - TikTok Ads Manager's AI-generated content disclaimer is mandatory for AI avatars and synthetic voices; undisclosed ads are rejected or restricted. Meta labels detected AI content "AI info".
 - EU audiences: AI Act Art. 50 requires deepfake disclosure from 2 Aug 2026.
+- New York: ads featuring a synthetic performer (an AI-generated person who isn't a recognizable real individual) need a conspicuous disclosure (GBL § 396-b, in force since 9 Jun 2026). Disclose stock AI avatars rather than argue the edge; note it in `meta/disclosures.md`.
 - A real person's likeness or voice (photo avatar, `voice_clone`) needs their written consent on file.
 </rules>
 
@@ -177,7 +180,7 @@ Don't:
 Do:
 - Avatar as presenter, with any real-customer quote documented and permissioned.
 - 3+ hook variants per campaign.
-- Captions burned in.
+- Word-timed captions from the `video-captions` pipeline, burned in, below the avatar's face.
 - Consent confirmation step before rendering with any real person's photo avatar.
 - `remember()` before, `memorize()` after.
 </critical>

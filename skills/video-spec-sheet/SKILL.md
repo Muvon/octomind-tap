@@ -34,7 +34,7 @@ Each social platform has its own combination of aspect ratio, max duration, code
 ### Core Rules
 
 - Always pick the platform spec before generating frames — generation must match the export aspect ratio (don't generate 16:9 then crop to 9:16 unless intentional).
-- Burn captions on top of the base render, not as a sidecar. Meta feeds are watched largely muted and TikTok mostly with sound, so captions carry the message for the muted viewer and accessibility while the audio carries it for everyone else.
+- Burn captions on top of the base render, not as a sidecar. Meta feeds are watched largely muted and TikTok mostly with sound, so captions carry the message for the muted viewer and accessibility while the audio carries it for everyone else. Render them from word timings through libass with the `video-captions` skill; stock Homebrew ffmpeg has no libass.
 - Respect the safe zone — keep all critical text and faces away from where the platform's UI sits (top, bottom, right side for TikTok).
 - Final encode in H.264 / yuv420p, even if the source is HEVC / 10-bit. Universal compatibility beats marginal quality.
 - Audio: AAC-LC stereo, 48 kHz, 128 kbps minimum (YouTube recommends 384 kbps stereo for uploads). Mono audio reads as low-quality on most feeds.
@@ -72,12 +72,13 @@ Each social platform has its own combination of aspect ratio, max duration, code
 
 ### Captions / On-Screen Text Rules
 
-- Center caption block, never bottom-aligned (bottom is platform UI).
-- For 9:16: caption block sits roughly in the upper-center third (between Y=600 and Y=1200 of 1080×1920) — avoids both header and CTA bar.
-- Font: bold sans (Inter Bold, Helvetica Black, SF Pro Display Bold, Montserrat Black). 80–110 pt for headline hooks at 1080×1920.
-- Stroke + drop shadow: 2 px stroke, 1 px shadow, opacity 0.6 — preserves readability over any background.
+- Keep the caption block out of every UI band; never bottom-aligned (bottom is platform UI).
+- 9:16 talking head: block centered at about 58% of height (Y≈1110 of 1920), just below the chin and above the bottom band. Never over the face.
+- 9:16 product or screen demo with the subject mid-frame: upper third (about 30% of height), still below the top band.
+- Font: bold sans (Poppins Black, Montserrat Black, Anton, Inter Black). Caption text roughly 80–110 px at 1080×1920, hook text slightly smaller in a box.
+- Stroke + drop shadow: about 8% of font size stroke, soft shadow — preserves readability over any background.
 - One sentence per card max. Two-sentence cards get skipped.
-- Word-by-word reveal in time with VO outperforms full-sentence flat captions on TikTok / Reels.
+- Word-by-word reveal in time with VO outperforms full-sentence flat captions on TikTok / Reels. Keep on-screen text at or under 5–10 words per second (TikTok creative guidance).
 
 ### Output Presets (ffmpeg) — copy-paste ready
 
@@ -132,6 +133,7 @@ Each social platform has its own combination of aspect ratio, max duration, code
 | TikTok ads | Ads Manager's AI-generated content disclaimer is mandatory for AI-generated or AI-significantly-altered images, video or audio; undisclosed ads are rejected or restricted. |
 | Meta | Meta auto-applies "AI info" when it detects C2PA/IPTC signals or its own gen-AI tools; political and social-issue ads must self-disclose photorealistic AI. |
 | EU | AI Act Art. 50(4): deepfake content shown to EU audiences must be disclosed as AI-generated or manipulated from 2 Aug 2026. |
+| New York | GBL § 396-b (in force 9 Jun 2026): ads that include a synthetic performer (an AI-generated person not recognizable as a real individual, e.g. an AI avatar presenter) must conspicuously disclose it when the advertiser knows. $1,000 first violation, $5,000 each after. Audio-only ads and AI used solely to translate a human performer are not covered. |
 | Music | YouTube Shorts over 1 min with any active Content ID claim are blocked worldwide. Business TikTok accounts and all ads use the Commercial Music Library or owned/licensed music; trending sounds are not cleared for brand use. AI music (e.g. ElevenLabs) is commercially usable only on a paid plan per its terms. |
 
 ## Examples
@@ -179,3 +181,5 @@ Brief: One ad, ship to TikTok + IG Reels + IG feed + YT Shorts + YT long-form tr
 - [YouTube recommended upload encoding settings](https://support.google.com/youtube/answer/1722171)
 - [YouTube altered or synthetic content disclosure](https://support.google.com/youtube/answer/14328491)
 - [Meta Ads Guide](https://www.facebook.com/business/ads-guide)
+- [New York synthetic performer ad disclosure, GBL § 396-b (Cooley summary)](https://www.cooley.com/news/insight/2026/2026-01-29-new-york-enacts-synthetic-performer-disclosure-law-for-advertisements-including-those-using-generative-ai)
+- [TikTok creative best practices](https://ads.tiktok.com/help/article/creative-best-practices)

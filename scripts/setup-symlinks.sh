@@ -91,7 +91,8 @@ link "avatar" "heygen.toml"
 link "lipsync" "sync.toml"
 link "music" "elevenlabs-music.toml"
 link "composition" "remotion.toml"
-link "captions" "assemblyai.toml"
+link "captions" "faster-whisper.toml"
+link "video-editing" "auto-editor.toml"
 link "stock" "pexels.toml"
 link "image-gen" "replicate-flux.toml"
 link "publish-tiktok" "tiktok-posting.toml"
@@ -109,7 +110,7 @@ link "trading-crypto" "binance-futures.toml"
 
 # Detect capability dirs that have NO mapping declared above
 echo ""
-DECLARED=("filesystem-read" "filesystem-write" "shell" "codesearch-semantic" "codesearch-structural" "codesearch-graph" "memory-read" "memory-write" "websearch" "versioning" "core" "agent" "orchestration" "runtime" "programming-python" "programming-rust" "programming-nodejs" "programming-swift" "docker" "kubernetes" "svelte" "medical-reference" "market-data" "trading-crypto" "legal-ca" "legal-de" "legal-fr" "legal-uk" "legal-us" "octoweb" "browser" "messaging-slack" "messaging-discord" "messaging-telegram" "messaging-whatsapp" "messaging-instagram" "messaging-email" "messaging-sms" "calendar" "customer-management" "database-postgres" "database-sqlite" "devdocs" "ecommerce" "edge-hosting" "error-tracking" "highlights" "maps" "payments" "scraping" "task-management" "translation" "webfetch" "knowledge" "video-gen" "voice" "avatar" "lipsync" "music" "composition" "captions" "stock" "image-gen" "publish-tiktok" "publish-instagram" "publish-youtube" "publish-x" "device-mobile" "device-computer")
+DECLARED=("filesystem-read" "filesystem-write" "shell" "codesearch-semantic" "codesearch-structural" "codesearch-graph" "memory-read" "memory-write" "websearch" "versioning" "core" "agent" "orchestration" "runtime" "programming-python" "programming-rust" "programming-nodejs" "programming-swift" "docker" "kubernetes" "svelte" "medical-reference" "market-data" "trading-crypto" "legal-ca" "legal-de" "legal-fr" "legal-uk" "legal-us" "octoweb" "browser" "messaging-slack" "messaging-discord" "messaging-telegram" "messaging-whatsapp" "messaging-instagram" "messaging-email" "messaging-sms" "calendar" "customer-management" "database-postgres" "database-sqlite" "devdocs" "ecommerce" "edge-hosting" "error-tracking" "highlights" "maps" "payments" "scraping" "task-management" "translation" "webfetch" "knowledge" "video-gen" "voice" "avatar" "lipsync" "music" "composition" "captions" "video-editing" "stock" "image-gen" "publish-tiktok" "publish-instagram" "publish-youtube" "publish-x" "device-mobile" "device-computer")
 for dir in "$CAP_ROOT"/*/; do
   cap="$(basename "$dir")"
   found=0

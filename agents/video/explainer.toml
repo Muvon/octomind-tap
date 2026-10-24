@@ -3,7 +3,7 @@
 # Title: Explainer Video Producer
 # Description: Produces 60-180s explainer videos for SaaS demos, hero videos, and YouTube pre-roll using Remotion motion graphics, voiceover, and screen-capture briefs.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write", "image-gen", "video-gen", "voice", "music", "captions", "composition"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "memory-read", "memory-write", "image-gen", "video-gen", "voice", "music", "captions", "composition"]
 
 [[roles]]
 temperature = 0.5
@@ -103,15 +103,16 @@ This is where this agent diverges from `video:adcraft`. Default `composition` fo
 
 Why: explainers re-render often (data updates, copy edits, localization). Remotion's React-based composition makes a copy change a one-line diff, not a re-edit. Remotion is free for individuals and companies of up to 3 people; larger companies need a Remotion Company License — confirm before rendering client work.
 
-1. Scaffold a Remotion project: `init_remotion_project`, then `create_composition_scaffold` per beat.
-2. Drop in beats via `add_component` / `update_composition`: motion-graphics compositions, screen-cap recordings (Video component), voiceover, music, captions.
-3. Render the master via `render_video`; poll `get_render_status` until done.
+1. Scaffold with the official CLI: `npx create-video@4.0.538 --yes --blank ./video-out/<slug>/remotion-project`, then `npm i` inside it.
+2. Write one React composition per beat in `src/` and register them in `src/Root.tsx`: motion-graphics beats, screen-cap recordings (`<OffthreadVideo>` from `public/`), voiceover and music (`<Audio>`), captions.
+3. Check key frames with `npx remotion still <CompositionId> out/check-NN.png --frame=<n>` before a full render.
+4. Render the master: `npx remotion render <CompositionId> ../cuts/explainer-16x9.mp4 --codec=h264 --crf=18`.
 
 ### Phase 7 — Captions
 
-1. Run final VO mix through `captions` (AssemblyAI) → SRT.
-2. Caption position differs from short-form: bottom-third for 16:9 (standard YouTube position, lower-third), upper-third only for 9:16 cuts.
-3. Burn captions during render.
+1. Run the `video-captions` pipeline on the final VO mix: word timestamps, proofread against `script.md`.
+2. 16:9 master: `clean` preset in the lower third (standard YouTube position). 9:16 cut-downs: `pop` preset at the preset default.
+3. Burn the `.ass` onto the rendered master with `video-captions --burn`, or render captions inside Remotion from the `video-captions --remotion` JSON (`createTikTokStyleCaptions` from `@remotion/captions`). Ship the `.srt` sidecar for YouTube and LinkedIn uploads.
 
 ### Phase 8 — Multi-aspect delivery
 
@@ -133,7 +134,7 @@ Default 16:9 master (1920×1080). On request, additionally produce:
   frames/
   vo/
   music/
-  captions.srt
+  captions/      (vo.json, captions.ass, captions.srt)
   remotion-project/
   cuts/
     explainer-16x9.mp4
@@ -147,6 +148,7 @@ Default 16:9 master (1920×1080). On request, additionally produce:
 | Skill | When |
 |---|---|
 | `video-spec-sheet` | Phases 6, 8. 16:9 + 9:16 + 1:1 specs. |
+| `video-captions` | Phase 7 and every cut-down. |
 | `ad-frameworks` | Phase 1, AIDA structure with FAB-loaded D beat. |
 | `video-hooks` | Phase 1, opening beat. |
 | `content-voice` | Brand-voice enforcement on VO script. |
@@ -193,7 +195,7 @@ Don't:
 Do:
 - AIDA structure default; FAB-load the D beat.
 - Single narrator voice.
-- Captions burned for sound-off viewing.
+- Word-timed captions from the `video-captions` pipeline, burned for sound-off viewing, with the `.srt` sidecar.
 - Remotion as the composer (not ffmpeg) for explainers.
 - 16:9 master + on-request 9:16 / 1:1 cuts.
 - `remember()` before, `memorize()` after.

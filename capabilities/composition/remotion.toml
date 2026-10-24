@@ -1,22 +1,9 @@
 # capabilities/composition/remotion.toml
 # Capability: composition
-# Provider: Remotion — code-driven (React) video composition + Lambda render
+# Provider: Remotion — official CLI (`npx create-video`, `npx remotion render`) driven through the shell tool
 # Title: Video Composition
-# Description: Code-driven React video composition and rendering via the Remotion MCP server.
-# Provides tools: init_remotion_project, create_composition_scaffold, add_component, update_composition, get_composition_code, list_compositions, list_project_files, render_video, render_still, render_gif, get_render_status, query_remotion_docs
+# Description: Code-driven React video composition and local rendering with the official Remotion CLI, run through the shell tool.
+# Provides tools: (none — `npx create-video@4.0.538` / `npx remotion render` via shell; Remotion's own docs MCP is docs-only)
 
 [deps]
 require = ["remotion/remotion", "ffmpeg/ffmpeg"]
-
-[roles.mcp]
-server_refs = ["remotion"]
-allowed_tools = ["init_remotion_project", "create_composition_scaffold", "add_component", "update_composition", "get_composition_code", "list_compositions", "list_project_files", "render_video", "render_still", "render_gif", "get_render_status", "query_remotion_docs"]
-
-[[mcp.servers]]
-name = "remotion"
-type = "stdio"
-command = "npx"
-args = ["-y", "remotion-mcp@1.0.5"]
-timeout_seconds = 600
-env = { REMOTION_LICENSE_KEY = "{{ENV:REMOTION_LICENSE_KEY}}" }
-tools = []
