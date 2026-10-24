@@ -1,7 +1,7 @@
 ---
 name: video-editing
-title: "Video Editing: Footage to Platform-Ready Shorts"
-description: "Post-production pipeline for short-form marketing and creator video built on code-driven tools: transcript-first story selection, auto-editor silence and filler cuts, 9:16 reframes, punch-ins, b-roll cutaways, SFX, ducked music, loudness, word-timed captions, and platform encodes, plus long-form-to-clips selection and hook-swap iterations of winning ads. Use when editing footage someone shot, clipping a podcast or webinar, or re-cutting an existing ad."
+title: "Short-Form Video Editing: Footage to Platform-Ready Shorts"
+description: "Short-form video editing pipeline for marketing and creator footage, built on code-driven tools: transcript-first story selection, auto-editor silence cuts and jump cuts, horizontal-to-vertical 9:16 reframes, punch-ins, b-roll cutaways, SFX, audio ducking under the voice, loudness normalization, word-timed captions, and platform encodes, plus podcast and webinar clip selection and hook-swap variants of winning ads. Use when editing footage someone shot, clipping a podcast or webinar, or re-cutting an existing ad."
 license: Apache-2.0
 compatibility: "Requires: ffmpeg (libass build for captions and text), auto-editor, python3; Node.js for Remotion motion graphics. macOS/Linux."
 capabilities: shell video-editing captions

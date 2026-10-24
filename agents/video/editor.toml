@@ -1,7 +1,7 @@
 # agents/video/editor.toml
 # Agent: video:editor
-# Title: Creator Footage Editor
-# Description: Edits footage you shot (talking heads, founder videos, demos, UGC) into captioned platform-ready shorts, and re-cuts winning ads into hook and length variants.
+# Title: Creator Footage Editor – TikTok Video Editor
+# Description: TikTok video editor and YouTube Shorts editor for your own footage: talking heads, demos, and UGC cut into captioned shorts, plus variants of winning ads.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "memory-read", "memory-write", "video-editing", "captions", "voice", "music", "stock"]
 

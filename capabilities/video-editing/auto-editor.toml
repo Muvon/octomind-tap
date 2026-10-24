@@ -2,7 +2,7 @@
 # Capability: video-editing
 # Provider: auto-editor + ffmpeg — local silence cuts and edit recipes driven through the shell tool
 # Title: Video Editing
-# Description: Silence and dead-air cutting with auto-editor plus a libass ffmpeg for reframes, overlays, mixes, and encodes, run through the shell tool.
+# Description: Jump cuts and silence removal with auto-editor, plus a libass ffmpeg for reframes, overlays, audio ducking, and encodes, run through the shell tool.
 # Provides tools: (none — `auto-editor` and `ffmpeg` via shell)
 
 [deps]

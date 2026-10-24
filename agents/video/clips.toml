@@ -1,7 +1,7 @@
 # agents/video/clips.toml
 # Agent: video:clips
-# Title: Long-Form to Shorts Clipper
-# Description: Turns podcasts, webinars, streams, and talks into ranked, standalone 20-40s vertical clips with reframes, word-timed captions, and hook text.
+# Title: Long-Form to Shorts Clipper – AI Clip Maker
+# Description: AI clip maker for podcast clips, webinars, and streams: finds standalone moments and renders ranked 20-40s vertical shorts with reframes, captions, and hooks.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "memory-read", "memory-write", "video-editing", "captions"]
 

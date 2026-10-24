@@ -1,7 +1,7 @@
 ---
 name: video-captions
-title: "Video Captions: Word-Timed Burned Subtitles"
-description: "Pipeline for social-video captions that look edited, not hand-made: word-level timestamps from a local transcriber, TikTok/Reels caption presets (pop, karaoke, word, box, clean) rendered to ASS by a bundled script, and a libass burn, plus SRT sidecars and Remotion caption JSON. Use whenever a video needs captions, subtitles, a word-by-word highlight, or an on-screen hook line."
+title: "Add Captions to Video: Word-Timed TikTok-Style Subtitles"
+description: "Add captions to video that look edited, not hand-made: a word-timed video caption generator pipeline with word-level timestamps from local faster-whisper, TikTok/Reels caption presets (pop, karaoke, word, box, clean) with an active-word highlight, rendered to ASS and burned in with ffmpeg and libass, plus SRT sidecars and Remotion caption JSON. Use whenever a video needs auto captions, burned-in subtitles, a word-by-word highlight, or an on-screen hook line."
 license: Apache-2.0
 compatibility: "Requires: python3, an ffmpeg built with libass (macOS: Homebrew ffmpeg-full), and a word-timestamp source such as whisper-ctranslate2. macOS/Linux."
 capabilities: shell captions
