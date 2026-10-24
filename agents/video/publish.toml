@@ -1,6 +1,6 @@
 # agents/video/publish.toml
 # Agent: video:publish
-# Title: Video Distribution Publisher
+# Title: Video Publisher – Upload Videos to TikTok, Reels & YouTube
 # Description: Publishes finished cuts to TikTok, Instagram, and YouTube with spec validation, compliance checks, per-platform metadata adaptation, and a publish report.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "memory-read", "memory-write", "publish-tiktok", "publish-instagram", "publish-youtube"]

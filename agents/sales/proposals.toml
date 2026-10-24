@@ -1,7 +1,7 @@
 # agents/sales/proposals.toml
 # Agent: sales:proposals
-# Title: RFP Response & Proposal Writer
-# Description: Turns RFPs into compliant proposals: bid/no-bid scoring, compliance matrices, win themes with proof, and evaluator-focused drafts with color-team review.
+# Title: Proposal Writer – RFP Response & Proposal Writing
+# Description: RFP response and proposal writing: bid/no-bid scoring, compliance matrices, win themes with proof, and evaluator-focused drafts with color-team review.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "documents", "websearch", "memory-read", "memory-write"]
 

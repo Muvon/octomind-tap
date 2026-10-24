@@ -1,7 +1,7 @@
 # agents/video/thumbnail.toml
 # Agent: video:thumbnail
 # Title: Thumbnail Designer – YouTube Thumbnail Maker
-# Description: YouTube thumbnail maker for creators and brands: one-promise concepts, real frames or AI scenes, cut-out faces, fitted text, and A/B variants.
+# Description: YouTube thumbnail maker for creators and brands: one-promise concepts, real frames or AI scenes, cut-out faces, fitted text, feed previews, and A/B tests.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "memory-read", "memory-write", "thumbnails", "image-gen"]
 

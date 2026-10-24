@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: typst/typst
 # type: dep
-# description: typst - fast typesetting engine; pandoc's PDF engine for clean PDFs without LaTeX
+# description: typst - fast typesetting engine and LaTeX alternative; pandoc's PDF engine for clean PDFs
 # check: typst
 # https://typst.app
 

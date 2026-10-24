@@ -2,7 +2,7 @@
 # Capability: ecommerce
 # Provider: Shopify Dev MCP — official docs, GraphQL schema, and code validation for building Shopify apps and themes
 # Title: E-Commerce (Shopify Dev)
-# Description: Shopify developer docs, Admin GraphQL schema search, and validation of GraphQL, component, and theme code; no access to store data.
+# Description: Shopify Dev MCP: developer docs, Admin GraphQL schema search, and validation of GraphQL, component, and theme code; no access to store data.
 # Provides tools: learn_shopify_api, search_docs_chunks, validate_graphql_codeblocks, validate_component_codeblocks, validate_theme_codeblocks, validate_theme
 
 [deps]

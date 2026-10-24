@@ -2,7 +2,7 @@
 # Capability: publish-youtube
 # Provider: YouTube Studio — metadata, SEO, and analytics via YouTube Data + Analytics API (no upload)
 # Title: YouTube Publishing
-# Description: YouTube video metadata, SEO, and channel analytics after upload, via the YouTube Studio MCP server (OAuth2); no video upload.
+# Description: YouTube video metadata, SEO, and channel analytics via the YouTube Studio MCP server and the YouTube Data API (OAuth2); no video upload.
 # Provides tools: get_video_details, search_my_videos, update_video_seo, get_channel_overview, get_all_videos, get_analytics_over_time, get_top_videos_analytics, get_audience_demographics, get_traffic_sources, analyze_and_suggest_topics
 #
 # Alternative to the default upload-post provider for channels that only need

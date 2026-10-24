@@ -1,7 +1,7 @@
 ---
 name: resume-rendering
-title: "Resume PDF Builder: ATS-Friendly Resumes with RenderCV"
-description: "Build the resume file, not just the text: the tailored resume as RenderCV YAML, typeset to a clean single-column PDF with an ATS-safe theme (plain-text links, no icon fonts, no header note), paper size by market, a page-count check, a text-layer check that shows what an applicant tracking system will parse, a DOCX twin for portals that want Word, and a matching cover-letter PDF. Use whenever a resume or CV has to be delivered as a PDF or Word file."
+title: "ATS-Friendly Resume PDF: Typeset Resumes with RenderCV"
+description: "ATS-friendly resume PDF builder that ships the file, not just the text: the tailored resume as RenderCV YAML, typeset to a clean single-column PDF with an ATS-safe theme (plain-text links, no icon fonts, no header note), paper size by market, a page-count check, a text-layer check that shows what an applicant tracking system will parse, a DOCX twin for portals that want Word, and a matching cover-letter PDF. Use whenever a resume or CV has to be delivered as a PDF or Word file."
 license: Apache-2.0
 compatibility: "Requires: rendercv (installed with uv), poppler-utils; doc-export with pandoc and typst for the DOCX twin and cover letter. macOS/Linux."
 capabilities: shell resume-render documents

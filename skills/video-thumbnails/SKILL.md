@@ -1,7 +1,7 @@
 ---
 name: video-thumbnails
-title: "YouTube Thumbnail Maker: Thumbnails and Short-Form Covers"
-description: "YouTube thumbnail maker workflow for marketing and creator videos: one clear promise per thumbnail, candidate frames pulled from the footage, cut-out faces and products, AI-generated backgrounds without baked-in text, 2-5 words of outlined text fitted and set by a libass renderer, feed-size previews with the duration badge, and three Test & Compare variants that change one variable. Covers 2026 specs for YouTube long-form and Shorts, TikTok and Reels covers with the 3:4 grid crop, and thumbnail policy. Use whenever a video needs a thumbnail, a cover image, or thumbnail A/B variants."
+title: "YouTube Thumbnail Maker: Shorts, Reels, and TikTok Covers"
+description: "YouTube thumbnail maker workflow for marketing and creator videos: one clear promise per thumbnail, candidate frames pulled from the footage, cut-out faces and products, AI-generated backgrounds without baked-in text, 2-5 words of outlined text fitted and set by a libass renderer, feed-size previews with the duration badge, and three Test & Compare variants that change one variable. Covers 2026 specs for YouTube long-form and Shorts, TikTok and Reels covers with the 3:4 grid crop, and thumbnail policy. Use whenever a video needs a thumbnail, a cover image, or thumbnail A/B test variants."
 license: Apache-2.0
 compatibility: "Requires: python3 and an ffmpeg built with libass (macOS: Homebrew ffmpeg-full). Optional: uvx for rembg subject cut-outs. macOS/Linux."
 capabilities: shell thumbnails

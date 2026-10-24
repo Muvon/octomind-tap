@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: muvon/video-fonts
 # type: dep
-# description: video-fonts - heavy display fonts (Poppins, Anton, Bebas Neue, Archivo Black) for burned-in captions and thumbnails
+# description: video-fonts - bold YouTube thumbnail and caption fonts (Poppins, Anton, Bebas Neue, Archivo Black) for burned-in text
 # check: test -s "${OCTOMIND_FONTS_DIR:-$HOME/.local/share/octomind/fonts}/Poppins-Black.ttf"
 # https://github.com/google/fonts
 

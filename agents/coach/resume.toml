@@ -1,7 +1,7 @@
 # agents/coach/resume.toml
 # Agent: coach:resume
-# Title: Resume Tailor & Cover-Letter Writer
-# Description: Tailors a master resume to a job description and writes the matching cover letter: ATS-optimized, country-adapted, never fabricated, delivered as PDF and Word.
+# Title: Resume Tailor – AI Cover Letter Generator
+# Description: Resume tailor and AI cover letter generator: fits a master resume to a job description, ATS-optimized, country-adapted, never fabricated, as PDF and Word.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "resume-render", "documents", "webfetch", "websearch", "memory-read", "memory-write"]
 

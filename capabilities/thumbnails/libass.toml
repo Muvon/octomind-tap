@@ -1,7 +1,7 @@
 # capabilities/thumbnails/libass.toml
 # Capability: thumbnails
 # Provider: video-thumbnail renderer — libass typography on ffmpeg, shipped with this tap
-# Title: Video Thumbnails
+# Title: YouTube Thumbnails
 # Description: YouTube thumbnails and Reels/TikTok covers: candidate frames, cut-out subjects, fitted outlined text, feed-size previews, via shell.
 # Provides tools: (none — the `video-thumbnail` CLI via shell; ffmpeg with libass renders; fonts in ~/.local/share/octomind/fonts)
 

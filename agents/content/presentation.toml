@@ -1,7 +1,7 @@
 # agents/content/presentation.toml
 # Agent: content:presentation
-# Title: Presentation Designer – Slide Decks & Speaker Notes
-# Description: Turns ideas and documents into presentations: narrative structure, assertion-based slides, speaker notes, and Marp decks rendered to PDF and PPTX.
+# Title: Presentation Designer – AI Presentation Maker
+# Description: AI presentation maker that turns ideas and documents into slide decks: narrative, assertion-based slides, speaker notes, and Marp decks as PDF and PowerPoint.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "slides", "image-gen", "websearch", "memory-read", "memory-write"]
 

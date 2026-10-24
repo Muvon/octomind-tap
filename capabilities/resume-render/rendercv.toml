@@ -1,8 +1,8 @@
 # capabilities/resume-render/rendercv.toml
 # Capability: resume-render
 # Provider: RenderCV — resume YAML typeset to PDF through Typst
-# Title: Resume PDF Rendering
-# Description: Resume and CV PDFs from YAML with RenderCV: typeset single-column themes, a Markdown twin, and text-layer checks, via shell.
+# Title: ATS-Friendly Resume PDFs (RenderCV)
+# Description: ATS-friendly resume and CV PDFs from YAML with RenderCV: typeset single-column themes, a Markdown twin, and text-layer checks, via shell.
 # Provides tools: (none — the `rendercv` CLI and `pdftotext`/`pdfinfo` via shell)
 
 [deps]

@@ -1,8 +1,8 @@
 # capabilities/documents/pandoc.toml
 # Capability: documents
 # Provider: pandoc + Typst — Markdown to Word and PDF through the doc-export tool, checked with poppler
-# Title: Document Export (Word & PDF)
-# Description: Markdown to Word and PDF with exact fonts, sizes, and margins, plus page-limit, embedded-font, and text-layer checks, via shell.
+# Title: Markdown to Word & PDF (Pandoc)
+# Description: Markdown to Word and PDF with pandoc: exact fonts, sizes, and margins, plus page-limit, embedded-font, and text-layer checks, via shell.
 # Provides tools: (none — the `doc-export` CLI, `pandoc`, `typst`, and `pdftotext`/`pdfinfo`/`pdffonts` via shell)
 
 [deps]
