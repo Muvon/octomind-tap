@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # dep: stability-ai/stable-diffusion
 # type: mcp
-# description: Stable Diffusion MCP Server - local image generation and upscaling via SD WebUI
+# description: Stability AI MCP Server - Stable Diffusion 3.5 generation, background removal, outpainting, and upscaling via the Stability API
 # check: npx
-# https://mcpservers.org/servers/Ichigo3766/image-gen-mcp
+# https://github.com/tadasant/mcp-server-stability-ai
 
 set -euo pipefail
 
@@ -19,4 +19,4 @@ fi
 # Ensure node is available
 install_dep nodejs/node
 
-info "Stable Diffusion MCP Server requires Node.js — already available via npx"
+info "Stability AI MCP Server runs via npx (Node.js)"

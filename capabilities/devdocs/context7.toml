@@ -15,6 +15,6 @@ allowed_tools = ["context7:*"]
 name = "context7"
 type = "stdio"
 command = "npx"
-args = ["-y", "@upstash/context7-mcp@4.3.0"]
+args = ["-y", "@upstash/context7-mcp@4.4.4"]
 timeout_seconds = 60
 tools = []

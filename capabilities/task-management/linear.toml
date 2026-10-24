@@ -15,7 +15,7 @@ allowed_tools = ["linear:*"]
 name = "linear"
 type = "stdio"
 command = "npx"
-args = ["-y", "@tacticlaunch/mcp-linear@1.4.4"]
+args = ["-y", "@tacticlaunch/mcp-linear@1.4.5"]
 timeout_seconds = 60
 env = { LINEAR_API_KEY = "{{ENV:LINEAR_API_KEY}}" }
 tools = []

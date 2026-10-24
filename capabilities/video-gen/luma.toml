@@ -18,7 +18,7 @@ type = "stdio"
 command = "npx"
 # Third-party RunAPI gateway (RUNAPI_API_KEY): no direct-API Luma MCP is
 # published to any registry; lumalabs.ai credentials do not apply here.
-args = ["-y", "@runapi.ai/luma-mcp@0.2.0"]
+args = ["-y", "@runapi.ai/luma-mcp@0.3.1"]
 timeout_seconds = 120
 env = { RUNAPI_API_KEY = "{{ENV:RUNAPI_API_KEY}}" }
 tools = []
