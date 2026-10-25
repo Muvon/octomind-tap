@@ -75,7 +75,7 @@ Symlinks are managed by `scripts/setup-symlinks.sh` which **always force-creates
 | `memory-read` / `memory-write` | octobrain | `remember` / `memorize`, `forget`              |
 | `webfetch`     | octobrain              | `knowledge` — fetch URLs and local documents          |
 | `websearch`    | duckduckgo (also brave, deepseek, exa, tavily) | `search` — web search                     |
-| `versioning`   | git                    | git operations                                        |
+| `versioning`   | git (default: octofs shell; alternate: `git.toml` MCP git server) | git operations                                        |
 | `programming-python`  | uv               | Python runtime (uv, uvx)                              |
 | `programming-rust`    | cargo            | Rust toolchain (cargo, rustc, clippy, rustfmt)        |
 | `programming-nodejs`  | node             | Node.js runtime (node, npm, npx)                      |

@@ -1,0 +1,21 @@
+# capabilities/versioning/octofs.toml
+# Capability: versioning
+# Provider: octofs — git operations through the OctoFS native shell (octofs:shell)
+# Title: Version Control (Git) via Shell
+# Description: Git operations via the octofs shell tool; token-efficient default.
+# Default provider: fewer tokens per git call than the MCP git server (git.toml).
+
+[deps]
+require = ["muvon/octofs"]
+
+[roles.mcp]
+server_refs = ["octofs"]
+allowed_tools = ["octofs:shell"]
+
+[[mcp.servers]]
+name = "octofs"
+type = "stdio"
+command = "octofs"
+args = ["mcp"]
+timeout_seconds = 300
+tools = []

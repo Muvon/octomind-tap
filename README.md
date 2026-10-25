@@ -138,7 +138,7 @@ top_k = 0
 | `codesearch-semantic` / `-structural` / `-graph` | `semantic_search` / `structural_search`, `view_signatures` / `graphrag` | `octocode.toml` |
 | `memory-read` / `memory-write` | persistent memory tools | `octobrain.toml` |
 | `websearch` | web search | `duckduckgo.toml` |
-| `versioning` | git operations via shell | `git.toml` |
+| `versioning` | git operations via octofs shell (default); MCP git server as `git.toml` | `octofs.toml` |
 
 Beyond these, the registry ships 50+ domain capabilities — `legal-*`, `video-gen`, `image-gen`, `messaging-*`, `trading-crypto`, and more. See [ARCHITECTURE.md](ARCHITECTURE.md) for the full table.
 
