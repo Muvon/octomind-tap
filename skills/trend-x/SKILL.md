@@ -4,7 +4,7 @@ title: "X (Twitter) Trend Harvester Playbook"
 description: "Harvest X conversations into a sourced topic brief. Activate when asked to scan Twitter or X trends, buyer pains, launch reactions, or post formats; validate live surfaces, compare relevant accounts with explicit metric limits, and distinguish observed patterns from ranking hypotheses."
 license: Apache-2.0
 compatibility: "Browser and network access. Use an authorized signed-in X session where required; search availability must be checked in the current session."
-capabilities: octoweb memory-read memory-write
+capabilities: browser memory-read memory-write
 domains: browser
 rules:
   - session(trend) content(x)

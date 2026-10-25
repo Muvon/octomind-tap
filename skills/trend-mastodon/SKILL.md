@@ -3,8 +3,8 @@ name: trend-mastodon
 title: "Mastodon Trend Harvester Playbook"
 description: "Harvest Mastodon posts and topic conversations into a sourced, server-scoped brief. Activate for Mastodon or Fediverse trend scans and harvesting requests; verify accessible surfaces, preserve sampling limits, and distinguish observed participation from inferred spread or writing recommendations."
 license: Apache-2.0
-compatibility: "Octoweb browser access and network access. A signed-in session may be needed for restricted server surfaces."
-capabilities: octoweb memory-read memory-write
+compatibility: "Browser access and network access. A signed-in session may be needed for restricted server surfaces."
+capabilities: browser memory-read memory-write
 domains: browser
 rules:
   - session(trend) content(mastodon)

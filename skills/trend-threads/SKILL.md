@@ -3,8 +3,8 @@ name: trend-threads
 title: "Threads Trend Harvester Playbook"
 description: "Harvest current Meta Threads conversations into a source-backed brief with post URLs, visible metrics, audience questions, and reusable structures. Activate for Threads trend scans or campaign research; distinguish observed conversation from inferred reach and buying intent."
 license: Apache-2.0
-compatibility: "Octoweb browser access and network. Authorized signed-in access where a surface requires it."
-capabilities: octoweb memory-read memory-write
+compatibility: "Browser access and network. Authorized signed-in access where a surface requires it."
+capabilities: browser memory-read memory-write
 domains: browser
 rules:
   - session(trend) content(threads)

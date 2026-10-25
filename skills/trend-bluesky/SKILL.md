@@ -3,8 +3,8 @@ name: trend-bluesky
 title: "Bluesky Trend Harvester Playbook"
 description: "Harvest Bluesky conversations, formats, and launch evidence into a sourced brief. Activate when scanning Bluesky trends or researching post angles, custom feeds, and relevant community responses; record observed surfaces and account baselines without inventing amplification paths."
 license: Apache-2.0
-compatibility: "Octoweb browser access and network access. Use the available Bluesky session; record signed-in state and unavailable surfaces."
-capabilities: octoweb memory-read memory-write
+compatibility: "Browser access and network access. Use the available Bluesky session; record signed-in state and unavailable surfaces."
+capabilities: browser memory-read memory-write
 domains: browser
 rules:
   - session(trend) content(bluesky)

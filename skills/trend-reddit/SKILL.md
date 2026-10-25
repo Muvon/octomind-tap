@@ -3,8 +3,8 @@ name: trend-reddit
 title: "Reddit Trend Harvester Playbook"
 description: "Harvest Reddit conversations and community-specific opportunities with cited posts, current rule checks, and explicit coverage limits. Activate when researching Reddit trends, scanning subreddits, or preparing a Reddit evidence brief; return observed patterns and qualified angles for downstream drafting."
 license: Apache-2.0
-compatibility: "Requires Octoweb browser and network access; some Reddit surfaces require an authenticated session."
-capabilities: octoweb memory-read memory-write
+compatibility: "Requires browser and network access; some Reddit surfaces require an authenticated session."
+capabilities: browser memory-read memory-write
 domains: browser
 rules:
   - session(trend) content(reddit)
