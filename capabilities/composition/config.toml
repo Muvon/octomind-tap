@@ -1,0 +1,15 @@
+# capabilities/composition/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Programmatic video assembly: timelines, motion graphics, renders.
+
+triggers = [
+	"stitch these clips into one video",
+	"render the final video",
+	"build a motion graphics sequence",
+	"assemble the scenes with transitions",
+	"make an animated explainer with remotion",
+	"compose the timeline and export mp4",
+]
+
+domains = ["video", "content"]

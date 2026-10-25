@@ -1,0 +1,16 @@
+# capabilities/image-gen/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Generated images: text-to-image and reference edits, saved as files.
+
+triggers = [
+	"generate an image of",
+	"create an ai image for this",
+	"make a picture with ai",
+	"edit this photo with a prompt",
+	"generate a product shot",
+	"create an illustration for the post",
+	"make a hero image for the slide",
+]
+
+domains = ["content", "video", "design", "marketing", "launch"]

@@ -1,0 +1,15 @@
+# capabilities/slides/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Slide decks rendered from Markdown with Marp.
+
+triggers = [
+	"make a slide deck",
+	"turn this into a presentation",
+	"export the slides to pptx",
+	"render the deck as pdf",
+	"build a pitch deck",
+	"create slides for this talk",
+]
+
+domains = ["content", "launch"]

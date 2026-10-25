@@ -1,0 +1,15 @@
+# capabilities/avatar/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Talking-head AI avatar video from a script.
+
+triggers = [
+	"make an ai avatar video",
+	"create a talking head video from this script",
+	"generate a ugc avatar ad",
+	"pick an avatar presenter",
+	"render the script with a digital presenter",
+	"heygen avatar video",
+]
+
+domains = ["video", "marketing"]

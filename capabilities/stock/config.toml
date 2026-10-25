@@ -1,0 +1,15 @@
+# capabilities/stock/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Free stock photos and b-roll footage.
+
+triggers = [
+	"find stock footage of",
+	"search for b-roll clips",
+	"get a free stock photo of",
+	"download stock video for this scene",
+	"find royalty-free images",
+	"pexels photos for the post",
+]
+
+domains = ["video", "content", "marketing", "design"]

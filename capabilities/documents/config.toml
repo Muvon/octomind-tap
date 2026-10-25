@@ -1,0 +1,15 @@
+# capabilities/documents/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Markdown to Word and PDF with controlled fonts and margins.
+
+triggers = [
+	"export this to word",
+	"make a docx from this markdown",
+	"convert the proposal to pdf",
+	"render this document as a pdf",
+	"make a word document I can send",
+	"check the pdf page count",
+]
+
+domains = ["sales", "coach", "content"]

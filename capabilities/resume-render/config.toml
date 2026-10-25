@@ -1,0 +1,14 @@
+# capabilities/resume-render/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Resume and CV PDFs with RenderCV.
+
+triggers = [
+	"render my resume as a pdf",
+	"make an ats-friendly cv pdf",
+	"build my resume with rendercv",
+	"export the cv to pdf",
+	"typeset my resume",
+]
+
+domains = ["coach"]

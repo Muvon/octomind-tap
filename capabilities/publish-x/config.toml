@@ -1,0 +1,16 @@
+# capabilities/publish-x/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# X (Twitter) posting and post analytics.
+
+triggers = [
+	"post this on x",
+	"tweet this",
+	"publish a thread on twitter",
+	"post the video to x",
+	"check how my tweet performed",
+	"delete my last post on x",
+	"search recent posts on x",
+]
+
+domains = ["content", "video", "marketing"]

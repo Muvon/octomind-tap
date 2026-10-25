@@ -1,0 +1,14 @@
+# capabilities/octoweb/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# The user's own Octoweb browser and its logged-in sessions; generic browsing is `browser`.
+
+triggers = [
+	"use my octoweb browser",
+	"open this in octoweb",
+	"read the page in my logged-in browser",
+	"check my feed in octoweb",
+	"drive octoweb tabs",
+]
+
+domains = ["browser"]

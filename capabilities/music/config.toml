@@ -1,0 +1,15 @@
+# capabilities/music/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Generated music and sound effects, not speech.
+
+triggers = [
+	"compose background music for this video",
+	"generate a soundtrack",
+	"make a music bed for the ad",
+	"create a sound effect",
+	"score this clip with music",
+	"generate royalty-free music",
+]
+
+domains = ["video", "content", "marketing"]

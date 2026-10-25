@@ -1,0 +1,16 @@
+# capabilities/video-editing/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Editing your own footage: jump cuts, reframes, encodes.
+
+triggers = [
+	"cut the silences out of this video",
+	"make jump cuts",
+	"reframe this to vertical 9:16",
+	"trim this clip",
+	"remove dead air from the recording",
+	"edit my talking head footage",
+	"export for tiktok specs",
+]
+
+domains = ["video", "content"]

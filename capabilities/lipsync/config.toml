@@ -1,0 +1,14 @@
+# capabilities/lipsync/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Lip-sync existing footage to new audio.
+
+triggers = [
+	"lip sync this video to the new audio",
+	"match the mouth to the voiceover",
+	"dub this clip with lipsync",
+	"fix the lip sync",
+	"sync the avatar lips to this track",
+]
+
+domains = ["video", "marketing"]

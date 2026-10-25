@@ -1,0 +1,15 @@
+# capabilities/thumbnails/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# YouTube thumbnails and short-form covers rendered from frames.
+
+triggers = [
+	"make a youtube thumbnail",
+	"design a thumbnail for this video",
+	"pick a frame for the thumbnail",
+	"create a reels cover",
+	"add text to the thumbnail",
+	"make thumbnail variants for an a/b test",
+]
+
+domains = ["video", "content"]

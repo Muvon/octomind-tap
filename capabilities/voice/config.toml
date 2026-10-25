@@ -1,0 +1,16 @@
+# capabilities/voice/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Synthetic speech: text-to-speech, voice cloning, voiceover.
+
+triggers = [
+	"record a voiceover for this script",
+	"turn this script into speech",
+	"text to speech",
+	"clone my voice",
+	"pick a narrator voice",
+	"generate the voiceover audio",
+	"make an ai voice read this",
+]
+
+domains = ["video", "content", "marketing"]

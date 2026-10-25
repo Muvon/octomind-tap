@@ -1,0 +1,16 @@
+# capabilities/publish-instagram/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Instagram publishing via the Graph API: Reels, feed posts, carousels.
+
+triggers = [
+	"post this reel to instagram",
+	"publish an instagram carousel",
+	"upload the video to my instagram account",
+	"share this on instagram feed",
+	"check instagram post insights",
+	"how did my last instagram reel perform",
+	"publish to ig",
+]
+
+domains = ["content", "video", "marketing"]

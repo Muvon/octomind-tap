@@ -3,8 +3,8 @@
 #
 # Two file kinds, two rule sets:
 #
-#   capabilities/<cap>/config.toml        — capability-level metadata.
-#     Required: `triggers = [...]` (non-empty array of strings).
+#   capabilities/<cap>/config.toml        — capability-level metadata, required
+#     for every capability. Required: `triggers = [...]` (non-empty array of strings).
 #     No Title/Description required (file holds only routing metadata).
 #
 #   capabilities/<cap>/<provider>.toml    — provider-specific MCP wiring.
@@ -269,6 +269,14 @@ lint_capability() {
         ok=0
       fi
     fi
+  fi
+
+  # octomind refuses to resolve a capability without config.toml on every
+  # runtime path (auto-activation, enable, skill-declared), so only a manifest
+  # that lists it statically could ever load it.
+  if [[ ! -f "$dir/config.toml" ]]; then
+    echo "  ✗ $cap_name: MISSING_CONFIG: config.toml with 'triggers = [...]' is required"
+    ok=0
   fi
 
   # Lint config.toml (capability-level metadata) and provider TOMLs with

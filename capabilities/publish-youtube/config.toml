@@ -1,0 +1,17 @@
+# capabilities/publish-youtube/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# YouTube uploads only. Shorts and long-form share this capability.
+
+triggers = [
+	"upload this video to youtube",
+	"publish the video on my youtube channel",
+	"schedule a youtube upload",
+	"post this as a youtube short",
+	"set the youtube title, tags, and playlist",
+	"upload the thumbnail to youtube",
+	"check youtube video analytics",
+	"publish to my yt channel",
+]
+
+domains = ["content", "video", "marketing"]

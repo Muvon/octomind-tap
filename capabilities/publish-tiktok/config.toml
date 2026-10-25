@@ -1,0 +1,15 @@
+# capabilities/publish-tiktok/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# TikTok uploads: direct post or inbox draft, scheduling.
+
+triggers = [
+	"upload this video to tiktok",
+	"post to my tiktok account",
+	"schedule a tiktok post",
+	"send the clip to tiktok drafts",
+	"publish a tiktok photo carousel",
+	"check the tiktok upload status",
+]
+
+domains = ["content", "video", "marketing"]

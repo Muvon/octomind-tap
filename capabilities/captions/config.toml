@@ -1,0 +1,15 @@
+# capabilities/captions/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Speech-to-text transcripts with word timing for captions.
+
+triggers = [
+	"add captions to this video",
+	"transcribe this video",
+	"burn in subtitles",
+	"make word-by-word captions",
+	"generate an srt file",
+	"get a transcript with timestamps",
+]
+
+domains = ["video", "content"]

@@ -1,0 +1,14 @@
+# capabilities/runtime/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# High-trust runtime control; scoped to the octomind domain.
+
+triggers = [
+	"add an mcp server",
+	"register a new agent at runtime",
+	"enable a capability",
+	"list active skills",
+	"reload the mcp server config",
+]
+
+domains = ["octomind"]

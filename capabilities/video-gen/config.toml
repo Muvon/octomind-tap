@@ -1,0 +1,16 @@
+# capabilities/video-gen/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Generated video clips: text-to-video and image-to-video.
+
+triggers = [
+	"generate a video clip from this prompt",
+	"turn this image into a video",
+	"animate this still frame",
+	"create an ai video shot",
+	"make a b-roll clip with ai",
+	"generate a 5 second video",
+	"extend this generated clip",
+]
+
+domains = ["video", "content", "marketing"]

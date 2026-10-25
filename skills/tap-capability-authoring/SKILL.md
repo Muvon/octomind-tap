@@ -79,7 +79,7 @@ env = { FOO_API_KEY = "{{ENV:FOO_API_KEY}}" }
 - `allowed_tools`: `server:*` exposes everything; `server:tool` and trailing-`*` prefixes narrow it.
 - Built-in server refs (`core`, `octofs`, `agent`, `octocode`) need no `[[mcp.servers]]` block; every other `server_refs` entry must have one with the same `name`.
 - stdio servers take `env` (passed to the child) and optional `cwd`; http servers take `url` and optional `headers` (e.g. `Authorization = "Bearer {{ENV:TOKEN}}"`).
-- `{{ENV:KEY}}` in `env` or `headers` resolves from the environment at spawn time, and the capability is withheld from auto-activation (and refuses `enable`) while any such key is unset. Use the exact variable name the server reads. Literal values in `env` are passed through as-is.
+- `{{ENV:KEY}}` in `env` or `headers` resolves from the environment at spawn time. While any key the wiring references is unset, every load path skips the capability: an agent that lists it starts without its tools (no prompt), auto-activation passes it over, and `enable` refuses it. Use the exact variable name the server reads. Literal values in `env` are passed through as-is.
 - `{{INPUT:KEY}}` is a text substitution from the user's persistent input store at manifest load; prefer `{{ENV:KEY}}` for anything a server reads from its environment.
 - `bin/load` parses capability files with a simple regex TOML subset: keep arrays on one line and avoid inline nesting beyond what the examples show.
 
