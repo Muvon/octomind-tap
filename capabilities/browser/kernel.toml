@@ -1,0 +1,21 @@
+# capabilities/browser/kernel.toml
+# Capability: browser
+# Provider: Kernel official remote MCP — cloud Chromium sessions, Playwright, replays
+# Title: Browser (Kernel Cloud)
+# Description: Cloud browser automation via Kernel's official MCP: remote Chromium sessions, Playwright code, computer actions, and session replays.
+# https://github.com/kernel/kernel-mcp-server
+# Auth: OAuth 2.1 sign-in with a Kernel account (Dynamic Client Registration). The first
+# session opens a browser; octomind stores and refreshes the token. Browser time bills the
+# chosen Kernel organization or project.
+# Alternative to Playwright — swap with: ln -sf kernel.toml capabilities/browser/default.toml
+
+[roles.mcp]
+server_refs = ["kernel"]
+allowed_tools = ["kernel:*"]
+
+[[mcp.servers]]
+name = "kernel"
+type = "http"
+url = "https://mcp.onkernel.com/mcp"
+timeout_seconds = 300
+tools = []
