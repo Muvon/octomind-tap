@@ -21,7 +21,8 @@ Use it when a rule has to hold across models, when a model is seen misreading an
 ## Mental model
 
 - The test measures reading, not capability. A model sees the text and the questions and nothing else.
-- The instrument is the `assistant:plain` role: a one-line system prompt ("You are a helpful assistant."), so no persona shapes the answer.
+- The instrument is the `assistant:plain` role: a one-line system prompt ("You are a helpful assistant."), so no persona shapes the answer. `run_models.sh` runs it isolated: an empty working directory, no auto-activated tools, supervisor and learning off. Without that, a model can read the key, and the runtime's own injected rules can answer the questions for it.
+- One bias stays: octomind's built-in system-prompt rules reach every run. When the text under test is one of them, the run measures the installed binary's version alongside it; re-test such texts after the edited binary is installed.
 - Two signals: scenario letters are machine-scorable; the restatement catches omissions the letters miss.
 - A miss is evidence about the wording, unless the question is flawed or the provider failed. Rule those out first.
 - Edits stay small. A wholesale rewrite changes the text under test and makes iterations incomparable.
@@ -59,16 +60,17 @@ Per text, write three files and a core-item list:
 - `key-<id>.json`: question letter to correct option, `{"a": "B", "b": "A"}`.
 - Core items, 3-6: the atomic prohibitions, requirements and exceptions of the intended rule.
 
-Questions: 5-7 per text (a to g).
+Questions: 5-8 per text (a to h).
 - One behaviour per question; together they cover the main rule and every edge case and exception.
 - Exactly one correct option, derivable from the text alone. The two wrong options are realistic misreadings: an "only once" or "cheap" exception, a read-only check treated as allowed, the forbidden act in a narrower variant, the requirement met halfway.
 - Options of similar length, no giveaway words, no hints in the prompt.
 - No correct letter more than 3 times in 7.
+- A key built by a script is checked by hand against the questions before the first scoring.
 
 Layout of `tail-<id>.txt`:
 
 ```
-Part 1. Print the line RESTATE, then the rule in your own words, 3-5 bullets.
+Part 1. Print the line RESTATE, then the rule in your own words: one bullet per prohibition, requirement and exception (3-8 bullets).
 Part 2. Print the line SCENARIOS, then one line per scenario: letter, colon, option, dash, one-sentence reason. Example: a: B - reason
 Choose the option a reader who follows the text correctly would choose. Print nothing after the last answer line.
 
@@ -89,13 +91,14 @@ For iteration N, starting at 1:
 4. Append one line per output to `ledger.md`: text, iteration, model, score, verdict, wrong answers.
 5. Rule out non-wording failures (next section). Then diagnose each misreading: a wrong letter, or a restatement that omits or contradicts a core item. The model's one-line reason shows which words it leaned on; find that phrase.
 6. Revise (see Revision) into `texts/<id>.i<N+1>.txt`, then re-run every revised text on all models. A text that was not edited and passed fully is not re-run; its table cell shows "=".
-7. Stop when every text has full marks and OK verdicts on all reachable models, or iteration 3 is scored, or the cap is reached. Never start an iteration the remaining calls cannot finish.
+7. Stop when every text has full marks and OK verdicts on all reachable models, or iteration 3 is scored, or the cap is reached. Never start an iteration the remaining calls cannot finish. A text that every model passes in full at iteration 1 gets one harder realistic misreading in place of its easiest question before the pass is trusted.
 
 ### Failures that are not wording problems
 
 - Provider error (no answers parsed and the `.err` file shows 402, balance, 401, model_not_found, 429 or a timeout): on 429 or timeout retry the same id once; otherwise retry once on the alternate route `openrouter:<vendor>/<model>`. Still failing: mark the model UNREACHABLE and drop it. Record the route that worked.
-- Format failure (text but no parsable answer lines): if the answers are there in another shape, score by hand and write FORMAT in the ledger; do not edit the text for it. No answers at all: re-run once.
-- Flawed question (two defensible options, or a wrong key): repair the question and key, keep the text, re-run that text on all models in the same iteration, and write QFIX in the ledger.
+- Format failure (text but no parsable answer lines): if the answers are there in another shape, score by hand and write FORMAT in the ledger; do not edit the text for it. No answers at all: re-run once. A wrong letter whose one-line reason describes the keyed option is a FORMAT slip, scored by hand.
+- Contamination (the scorer prints CONTAM: a tool call or auto-activated capability in the output): the score is not evidence. Move the output aside, re-run that model, write CONTAM in the ledger.
+- Flawed question (two defensible options, or a wrong key): repair the question and key, keep the text, re-run that text on all models in the same iteration, and write QFIX in the ledger. All models giving the same wrong letter points to the key first.
 
 ### Revision
 

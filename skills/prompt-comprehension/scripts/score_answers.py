@@ -5,14 +5,18 @@ Usage: score_answers.py <key.json> <output.txt>...
 
 The key maps question letters to the correct option, e.g. {"a": "B", "b": "A"}.
 Only lines after the last SCENARIOS marker count, so the restatement cannot
-score by accident. The first answer given for a letter wins.
+score by accident. The first answer given for a letter wins. An output showing
+a tool call or an auto-activated capability is marked CONTAM: the model may have
+read the key or other outputs, so its score is not evidence.
 """
 import json
 import re
 import sys
 
 SCENARIOS_MARKER = "SCENARIOS"
-ANSWER_LINE = re.compile(r"^\W*([a-g])\s*[:.)]\s*\**\s*([ABC])\b")
+ANSWER_LINE = re.compile(r"^\W*([a-z])\s*[:.)]\s*\**\s*([ABC])\b")
+ANSI_ESCAPE = re.compile(r"\x1b\[[0-9;]*m")
+CONTAMINATION_TELLS = ("╭", "auto-activated")
 
 
 def parse_answers(text):
@@ -29,9 +33,11 @@ def main():
         key = json.load(key_file)
     for path in sys.argv[2:]:
         with open(path) as output_file:
-            answers = parse_answers(output_file.read())
+            text = ANSI_ESCAPE.sub("", output_file.read())
+        answers = parse_answers(text)
         wrong = [f"{q}:{answers.get(q, '-')}!={want}" for q, want in key.items() if answers.get(q) != want]
-        print(f"{path} {len(key) - len(wrong)}/{len(key)} wrong: {' '.join(wrong) or 'none'}")
+        contam = " CONTAM" if any(tell in text for tell in CONTAMINATION_TELLS) else ""
+        print(f"{path} {len(key) - len(wrong)}/{len(key)}{contam} wrong: {' '.join(wrong) or 'none'}")
 
 
 if __name__ == "__main__":
