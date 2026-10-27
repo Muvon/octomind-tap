@@ -1,0 +1,17 @@
+# agents/assistant/plain.toml
+# Agent: assistant:plain
+# Title: Plain AI Assistant — No System Prompt
+# Description: The bare model with no system prompt, persona, or rules — raw answers for quick chats, prompt testing, and comparing against tuned agents.
+
+capabilities = ["core"]
+
+[[roles]]
+temperature = 0.5
+top_p = 0.9
+top_k = 0
+welcome = """Plain model, no system prompt.
+<system>
+Working dir: {{CWD}}
+</system>"""
+
+system = ""
