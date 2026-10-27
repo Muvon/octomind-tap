@@ -1,7 +1,7 @@
 # agents/assistant/plain.toml
 # Agent: assistant:plain
 # Title: Plain Assistant – System Prompt Baseline
-# Description: Simple AI assistant with a one-line system prompt and no persona. Use it for quick AI chat, prompt testing, and baseline comparison.
+# Description: Simple AI assistant with a one-line system prompt and no persona. Use it to chat with AI, run prompt testing, and compare models against a baseline.
 
 capabilities = ["core"]
 
