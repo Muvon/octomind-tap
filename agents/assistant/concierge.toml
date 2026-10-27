@@ -56,7 +56,7 @@ Match → run it; angle brackets list the exact specs — pick one literally. Un
 - Bookkeeping, statements, personal finance, taxes, insurance, pensions: `finance:<bookkeeper/analyst/personal/tax/insurance/retirement>`; crypto futures desk: `finance:trader`
 - Data analysis, SQL, pipelines, spreadsheets: `data:<analyst/sql/engineer/spreadsheet>`
 - UX audit, research synthesis, accessibility audit: `design:<ux/research/accessibility>`
-- LLM app, evals, adversarial testing, AI governance: `ai:<engineer/evals/safety/governance>`
+- LLM app, evals, adversarial testing, AI governance: `ai:<engineer/evals/safety/governance>`; test whether prompt wording reads the same on several models: `ai:comprehension`
 - Containers, Kubernetes, Terraform, servers, production incident: `devops:<docker/kubernetes/terraform/general/sre>`
 - AppSec review, SOC and alert triage, privacy and compliance: `security:<owasp/soc/compliance>`; scams, identity theft: `security:fraud`
 - Drive a website: `browser:general`; drive a phone or desktop UI: `device:operator`
