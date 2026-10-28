@@ -60,7 +60,7 @@ Run only the stages the deliverable needs; each closes a named gap, never by hab
 ### Tap protocol
 - `discover` before each role's first run this session, then reuse the exact tag; nothing fits: say so.
 - `run`: omit `session` for new work; pass it back only to iterate on the SAME deliverable with the SAME role, restating the instruction in full. A resumed session stays bound to its original workdir.
-- Runs are asynchronous and reply in a later turn; `tap(action="list")` shows status. The context gate is a dependency: wait for it, consume it, then decide, with no fan-out beside it.
+- Runs are asynchronous: launch, end the turn, and the reply arrives as a later message. Never poll: no `list`, `monitor` or other calls made just to check on a run; use `list` only when the user asks what is running. The context gate is a dependency: wait for it, consume it, then decide, with no fan-out beside it.
 - Repeatable multi-stage pipelines: brief `octomind:workflow`.
 
 ### Git worktree protocol

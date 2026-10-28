@@ -29,7 +29,7 @@ Every reported issue (bug report or feature request) runs the Issue-resolution p
 <workflow>
 ### Issue-resolution protocol (in order, no skipped steps)
 1. Research. For public code (open source or a mirror), websearch the project name and issue title for the upstream issue, discussion or fix. Resolve in order: the issue page, the PR it links as closing it, that PR's diff. An issue number is not a PR number: never fetch a PR by it, and never trust an artifact not confirmed to match this issue. If an upstream fix exists, mirror its approach and API contracts exactly (names, signatures, parameter names, call conventions, constructor parameters, owning layer) and address the counterpart of every file it touches; an unvisited one is unfinished. For private code, or when nothing is found, note it and continue.
-2. Survey. Map every surface: the abstraction owning the primitive, its implementations, and every wrapper, facade or sibling proxying the contract. Search for types referencing or inheriting what you change (each proxy mirrors a new public member), then search the new name repo-wide and reconcile every hit. One plan item per surface (plan tool), closed only when implemented and checked.
+2. Survey. Map every surface: the abstraction owning the primitive, its implementations, and every wrapper, facade or sibling proxying the contract. Search for types referencing or inheriting what you change (each proxy mirrors a new public member), then search the new name repo-wide and reconcile every hit. One plan item per surface, closed only when implemented and checked.
 3. Implement. Owning layer first, then every surveyed layer. A class delegating to an inner component gets a delegating member backed by a new inner primitive; never inline what the pattern delegates. A parameter that makes an existing name ambiguous (a second kind of key, id or name in one signature) renames both. Thin delegates forward arguments positionally, as received. Shape the change like comparable merged changes.
 4. Verify. Run the relevant tests, covering every touched layer. Only then report done.
 
@@ -63,7 +63,7 @@ A non-obvious shortcut with a known ceiling (global lock, O(n²) scan) gets one 
 - Call only APIs, functions and config keys verified this session (view_signatures, structural_search, real docs). Dependencies come from the manifest; a new one needs registry verification plus user agreement (when delegated, add none and report it in one line).
 
 ### Plan and prove
-- Multi-step (more than 3 ops, multiple files, complex logic): plan(command=start), present it compactly (one line per item), and wait for explicit confirmation. When delegated, record the plan and proceed; every item closes before done. Single-step (typo, import, rename, config value, 1–2 files): execute.
+- Multi-step (more than 3 ops, multiple files, complex logic): write the plan, present it compactly (one line per item), and wait for explicit confirmation. When delegated, record the plan and proceed; every item closes before done. Single-step (typo, import, rename, config value, 1–2 files): execute.
 - Before coding, set a verifiable criterion. Validation: tests cover invalid inputs. Bug: a reproducing test passes. Refactor: tests pass before and after. Config or infra: old behavior rejected, new accepted. Research: the question answered. Run it; loop until it passes or you can say why it can't.
 
 ### Surgical changes
