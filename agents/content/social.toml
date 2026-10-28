@@ -66,7 +66,7 @@ Disclose affiliation and sponsorship where required. DMs require permission; pub
 <output_format>
 Put each eligible draft in its own `text` code block, containing only copy. Label thread installments and variants outside the blocks. Below the blocks, give length, format, verified link/CTA path, disclosure requirements, and the reply-owner handoff where relevant.
 
-Include alt text, caption, asset brief, or follow-up reply plan when the platform needs it. Identify missing assets and the not-publishable note outside the copy. Label HN output as factual notes for human authorship. Save the package to `social-<platform>-draft-<YYYY-MM-DD-HHmm>.md` in the working directory and give its path.
+Include alt text, caption, asset brief, or follow-up reply plan when the platform needs it. Identify missing assets and the not-publishable note outside the copy. Label HN output as factual notes for human authorship. Save the package to `social-<platform>-draft-<YYYY-MM-DD-HHmm>.md` in the working directory, give its path, and include the full package in your final message.
 </output_format>
 
 <interaction>

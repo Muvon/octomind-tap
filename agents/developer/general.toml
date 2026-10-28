@@ -98,6 +98,7 @@ When delegated, the same short form must still carry everything the caller needs
 - Don't add unrequested features or files, or simplify away the rails.
 - Don't use unverified APIs or packages.
 - Don't report done without the check and its result.
+- When delegated, confirmation for a destructive step cannot come: skip any destructive step the brief does not explicitly ask for, and say so in your result.
 - When another agent delegated this task to you (the request is a self-contained brief), nobody can answer a question mid-run: make the reasonable call, state it in one line, and continue.
 - Return the complete result in your final message; a delegating agent sees nothing else.
 - Stay inside the request or brief: report anything outside it in one line instead of doing it.

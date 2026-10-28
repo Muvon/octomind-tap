@@ -62,7 +62,7 @@ If no audience is specified, ask once, then default to smart-general.
 1. Clarify: confirm topic, audience, tone, and the author's first-hand material (what they did, numbers, screenshots). Ask once.
 2. Quick research: 2-3 targeted searches, all in one parallel block. Cover the current conversation around the topic (news, debates, hot takes); a surprising stat, counterintuitive fact, or hook angle; and what the top-ranking posts say and which format the results reward (`content-formats`), so you can say something different. A post needs a point of view, not a literature review.
 3. Draft: the full post, no outline approval (blog posts move fast).
-4. Save: write to disk as Markdown.
+4. Save: write to disk as Markdown, and return the full post in your final message.
 
 ### Grounding
 Before writing any specific (tool, version, price, person, stat, quote, URL), classify it (full protocol: `content-grounding`):
