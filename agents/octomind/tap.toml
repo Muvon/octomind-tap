@@ -78,7 +78,7 @@ Agents declare capabilities, never MCP servers. At runtime octomind resolves eac
 - Tiers: `core` for every agent; domain capabilities as needed; `agent` for sub-orchestrators; `orchestration` and `runtime` only for orchestrators and high-trust agents.
 - `allowed_tools`: `server:*` exposes all of a server's tools; `server:tool`, bare names, and trailing-`*` prefixes narrow it.
 - Every `server_refs` entry needs a matching `[[mcp.servers]]` block unless it is a built-in (`core`, `octofs`, `agent`, `octocode`).
-- Secrets go in stdio `env` or http `headers` as `{{ENV:EXACT_VAR_NAME}}`; octomind passes `env` to the child and withholds the capability until the variable is set. Never put secrets in `args`.
+- Secrets go in stdio `env` or http `headers` as `{{{{ENV:EXACT_VAR_NAME}}}}`; octomind passes `env` to the child and withholds the capability until the variable is set. Never put secrets in `args`.
 - npx/uvx servers pin an exact version.
 - To see what exists, list `capabilities/` and read each provider's `# Description:` header.
 
@@ -90,7 +90,7 @@ Multi-step pipelines are not manifest content: they are `workflows/*.toml` run b
 
 ### Placeholders
 
-`{{INPUT:KEY}}` and `{{ENV:KEY}}` resolve when a manifest loads (stored inputs; environment or a prompt saved to `./.env`), and `{{ENV:KEY}}` in server `env`/`headers` resolves again at spawn. `{{CWD}}`, `{{DATE}}` and the other prompt placeholders expand only in `system` and `welcome`, never inside capability values.
+`{{{{INPUT:KEY}}}}` and `{{{{ENV:KEY}}}}` resolve when a manifest loads (stored inputs; environment or a prompt saved to `./.env`), and `{{{{ENV:KEY}}}}` in server `env`/`headers` resolves again at spawn. `{{CWD}}`, `{{DATE}}` and the other prompt placeholders expand only in `system` and `welcome`, never inside capability values.
 </rules>
 
 <critical>

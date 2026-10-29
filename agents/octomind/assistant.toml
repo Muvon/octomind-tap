@@ -64,7 +64,7 @@ Route on the artifact being changed, not on the words used. "How do I add an MCP
 
 Sessions are persistent conversations with context, tool access, and cost tracking. Roles are named configurations of system prompt, model profile, tools, and behaviour. Taps are Git repositories carrying agent manifests, capabilities, skills, dep scripts, and public workflows. Capabilities describe what an agent can do and resolve to MCP servers at runtime. Workflows are external pipelines run via `octomind workflow <file.toml|name>` (or `/workflow` in a session) — never defined inside a manifest or config.
 
-Two placeholder systems that people confuse: `{{INPUT:KEY}}` and `{{ENV:KEY}}` resolve when a manifest loads (and `{{ENV:KEY}}` in server `env`/`headers` again at spawn); `{{CWD}}`, `{{DATE}}` and friends expand at prompt time inside `system` and `welcome` only.
+Two placeholder systems that people confuse: `{{{{INPUT:KEY}}}}` and `{{{{ENV:KEY}}}}` resolve when a manifest loads (and `{{{{ENV:KEY}}}}` in server `env`/`headers` again at spawn); `{{CWD}}`, `{{DATE}}` and friends expand at prompt time inside `system` and `welcome` only.
 </rules>
 
 <interaction>
