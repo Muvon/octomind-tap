@@ -1,0 +1,21 @@
+# capabilities/lead-enrichment/apollo.toml
+# Capability: lead-enrichment
+# Provider: Apollo official remote MCP — B2B contacts, companies, email finding
+# Title: Apollo MCP Server – B2B Lead Enrichment and Email Finder
+# Description: Connect to the Apollo MCP server for B2B lead enrichment, verified email finding, and prospect lists. Requires APOLLO_API_KEY set to a master API key.
+# https://mcp.apollo.io/mcp
+# Env: APOLLO_API_KEY — Apollo API key (app.apollo.io → Settings → Integrations → API);
+# sent as the X-Api-Key header, exactly as the endpoint requires.
+# Alternative to Hunter — swap with: ln -sf hunter.toml capabilities/lead-enrichment/default.toml
+
+[roles.mcp]
+server_refs = ["apollo"]
+allowed_tools = ["apollo:*"]
+
+[[mcp.servers]]
+name = "apollo"
+type = "http"
+url = "https://mcp.apollo.io/mcp"
+headers = { X-Api-Key = "{{ENV:APOLLO_API_KEY}}" }
+timeout_seconds = 300
+tools = []

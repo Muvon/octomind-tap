@@ -1,0 +1,108 @@
+# Title: Cold Email Sequence Workflow – Research, Draft, Review
+#
+# Public workflow: research one outreach target group from live sources, draft a
+# short multi-touch sequence that cites only that research, then have a SEPARATE
+# critic check every claim against the research, the length and ask rules, and
+# the compliance flags, sending the drafter back once if anything fails.
+# Drafts only; nothing is sent. Public roles only.
+
+name        = "outreach"
+description = "Builds a cold email sequence from live target research, then reviews drafts for sourced claims, brevity, one soft ask, and compliance flags in a bounded critique loop. Delivers follow-up email drafts with any unresolved findings. Never sends."
+
+# ── 1. Research ──────────────────────────────────────────────────────────────
+[[steps]]
+name    = "research"
+role    = "sales:outbound"
+session = "fresh"
+prompt  = """
+Research the outreach brief below using live web sources only.
+
+<brief>
+{{input}}
+</brief>
+
+Produce a research dossier:
+1. Target and goal, restated in one line. Note any missing input as a gap; do not guess it.
+2. For each target (up to 5): who they are, one specific recent, checkable signal, a source URL for every fact, and the best contact route they publish themselves.
+3. The strongest angle for each target and why it matters to them.
+4. Risks: jurisdiction of the recipient, consent or opt-out concerns, regulated-sector concerns, and anything unverified.
+
+Mark any fact you could not verify as Unverified. Never invent a name, number, quote, or source.
+
+Output only the dossier — no preamble.
+"""
+
+# ── 2. Draft and critique ────────────────────────────────────────────────────
+[[steps]]
+name           = "sequence"
+loop           = true
+max_iterations = 2
+exit_when      = { output = "critic", matches = '(?m)^VERDICT: APPROVED' }
+
+  [[steps.run]]
+  name    = "drafter"
+  role    = "sales:outbound"
+  session = "continue"
+  prompt  = """
+Draft the outreach sequence for each target in the dossier below.
+
+Rules:
+- Per target: 3 touches at most, each under 120 words, plain text, a subject line, one soft ask.
+- Line one of the first touch cites that target's specific signal from the dossier.
+- Every fact must come from the dossier. Anything marked Unverified is excluded or flagged.
+- Each follow-up adds a new angle; stop after the last touch.
+- Include an opt-out line and sender identity placeholder where the recipient jurisdiction requires it.
+- No spam trigger words, no false urgency, no invented mutual contacts.
+
+On a later iteration you will receive the critic's findings: fix exactly the flagged items and change nothing else.
+
+<dossier>
+{{research}}
+</dossier>
+
+Output only the sequence drafts — no preamble.
+"""
+
+  [[steps.run]]
+  name    = "critic"
+  role    = "sales:outbound"
+  session = "fresh"
+  prompt  = """
+You are an independent critic in a fresh session. You did not write these drafts. Check them against the dossier, never from memory.
+
+<dossier>
+{{research}}
+</dossier>
+
+<drafts>
+{{drafter}}
+</drafts>
+
+Rubric, in order:
+1. Every fact in a draft appears in the dossier with a source. Invented or Unverified facts are failures.
+2. Each touch is under 120 words, has one soft ask, and no spam trigger words or false urgency.
+3. First touch line one cites a real, specific signal for that target.
+4. Opt-out and identity are present where the dossier's jurisdiction notes require them.
+5. Each follow-up adds a new angle.
+
+List each failing item with the exact fix needed — this goes straight to the drafter. If every item passes, approve; do not invent new criteria.
+
+Critique first, then end with exactly one line: VERDICT: APPROVED or VERDICT: REVISE. Nothing after it.
+"""
+
+# ── 3. Deliver ───────────────────────────────────────────────────────────────
+[[steps]]
+name    = "deliver"
+role    = "sales:outbound"
+session = "fresh"
+prompt  = """
+The critique loop is finished. Output the drafts below verbatim and whole, with no edits of your own. If the final critique does not end in `VERDICT: APPROVED`, put one line above them — `Unverified: the critic still flagged items; recheck these before sending:` — followed by the critic's remaining findings as a short list. If it does, add nothing above the drafts. Add one closing line: `Drafts only — nothing has been sent; confirm recipient jurisdiction and consent with counsel before scaling.`
+
+<drafts>
+{{drafter}}
+</drafts>
+
+<final_critique>
+{{critic}}
+</final_critique>
+"""

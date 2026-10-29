@@ -2,7 +2,7 @@
 
 > Run a fully-configured AI specialist with one command — no setup, no config files, no API plumbing.
 
-The community registry for [Octomind](https://github.com/muvon/octomind), the CLI-first AI agent runtime. **140+ agents across 35 domains**, 100+ skill packs, 29 ready-made workflows, 120+ dependency scripts — each one a single TOML file that Octomind resolves and merges into your session at runtime.
+The community registry for [Octomind](https://github.com/muvon/octomind), the CLI-first AI agent runtime. **140+ agents across 35 domains**, 100+ skill packs, 30 ready-made workflows, 120+ dependency scripts — each one a single TOML file that Octomind resolves and merges into your session at runtime.
 
 ```bash
 octomind run doctor:blood        # interpret blood test results
@@ -66,7 +66,7 @@ octomind tap init acme/team && octomind run team:assistant
 | `agents/<domain>/<spec>.toml` | Agent manifests — a system prompt, sampling params, and capability declarations | 140+ across 35 domains |
 | `capabilities/<name>/` | Capability definitions — the tools an agent needs, decoupled from how they're provided | 60+ |
 | `skills/<name>/SKILL.md` | Reusable instruction packs (AgentSkills spec) that auto-activate by context | 100+ |
-| `workflows/<name>.toml` | Multi-step pipelines chaining agent runs (sequential / parallel / loop / conditional) | 29 |
+| `workflows/<name>.toml` | Multi-step pipelines chaining agent runs (sequential / parallel / loop / conditional) | 30 |
 | `deps/<org>/<tool>.sh` | Dependency install scripts — auto-run before sessions, macOS + Linux | 120+ |
 | `model/` | Embedding model fine-tune powering capability auto-activation | — |
 | `bin/load` | The resolver: merges capabilities into the final manifest (stdout) | — |
@@ -177,7 +177,7 @@ octomind workflow decode        # confusing bill/lease/letter → verified plain
 octomind workflow launch        # product idea → go/no-go → go-to-market kit
 ```
 
-29 ready-made workflows ship in `workflows/` — build, content, research, and everyday-life pipelines; see [workflows/README.md](workflows/README.md) for the full list. Author your own with the `octomind-workflow` skill or the `octomind:workflow` agent.
+30 ready-made workflows ship in `workflows/` — build, content, research, and everyday-life pipelines; see [workflows/README.md](workflows/README.md) for the full list. Author your own with the `octomind-workflow` skill or the `octomind:workflow` agent.
 
 ---
 

@@ -1,7 +1,7 @@
 # agents/assistant/concierge.toml
 # Agent: assistant:concierge
-# Title: System Orchestrator
-# Description: Routes every request to the right specialist agent, remembers the user across sessions, and synthesizes each result into one answer.
+# Title: AI Agent Orchestrator for Specialist Tasks
+# Description: Routes tasks to specialist AI agents, checks their results, and returns one answer while retaining user context across sessions.
 
 capabilities = ["core", "orchestration", "memory-read", "memory-write"]
 
@@ -47,7 +47,7 @@ Match a role, then run it. Angle brackets list the exact specs: pick one literal
 - Publish approved content, report performance: `content:distributor`; fiction craft: `content:fiction`
 - Social channel strategy and engagement loop: `marketing:smm`; email marketing, PR, PLG growth, partner programs: `marketing:<email/pr/growth/partner>`
 - SEO strategy: `seo:strategist`; SEO audit: `seo:audit`
-- Startup — validate, explore market, GTM plan, brand, pitch and pricing, ads, zero-budget launch: `launch:<validate/explore/gtm/brand/pitch/ads/bootstrap>`
+- Startup — validate, explore market, GTM plan, brand, pitch and pricing, ads, zero-budget launch, investor outreach: `launch:<validate/explore/gtm/brand/pitch/ads/bootstrap/investor>`
 - B2B sales — outbound, discovery, closing, proposals/RFPs, revenue systems, running the motion: `sales:<outbound/discovery/closing/proposals/gtm-engineer/operator>`
 - PRD/roadmap: `pm:product`; delivery plans and status: `pm:project`
 - Hiring: `hr:recruiter`; people-ops: `hr:people`

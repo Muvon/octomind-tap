@@ -1,0 +1,21 @@
+# capabilities/email-sequencer/instantly.toml
+# Capability: email-sequencer
+# Provider: Instantly official remote MCP — cold email campaigns, leads, warmup
+# Title: Instantly MCP Server – Cold Email Campaigns and Sequences
+# Description: Connect to the Instantly MCP server to manage cold email campaigns, lead lists, follow-up sequences, and mailbox warmup. Requires INSTANTLY_API_KEY.
+# https://developer.instantly.ai/mcp/quickstart
+# Env: INSTANTLY_API_KEY — Instantly API v2 key (app.instantly.ai → Settings → Integrations
+# → API Keys); sent as an Authorization Bearer header, the documented recommended form.
+# Alternative to Smartlead — swap with: ln -sf smartlead.toml capabilities/email-sequencer/default.toml
+
+[roles.mcp]
+server_refs = ["instantly"]
+allowed_tools = ["instantly:*"]
+
+[[mcp.servers]]
+name = "instantly"
+type = "http"
+url = "https://mcp.instantly.ai/mcp"
+headers = { Authorization = "Bearer {{ENV:INSTANTLY_API_KEY}}" }
+timeout_seconds = 300
+tools = []

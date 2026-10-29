@@ -1,0 +1,20 @@
+# capabilities/email-sequencer/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Sequencer-specific vocabulary: campaign, sequence, touch, cold outreach,
+# warmup, send window, reply rate, unsubscribe.
+
+triggers = [
+	"set up an email sequence for these leads",
+	"create a cold outreach campaign",
+	"add these leads to the campaign",
+	"pause this email campaign",
+	"resume sending to this lead",
+	"check our campaign analytics",
+	"how are our sequences performing",
+	"warm up these email accounts",
+	"unsubscribe this lead from all campaigns",
+	"schedule a five-touch follow-up sequence",
+]
+
+domains = ["sales", "marketing"]

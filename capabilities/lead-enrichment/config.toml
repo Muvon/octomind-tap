@@ -1,0 +1,20 @@
+# capabilities/lead-enrichment/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Enrichment-specific vocabulary: lead, prospect, ICP, decision maker,
+# email finder, deliverability, bounce, contact details, company research.
+
+triggers = [
+	"enrich this lead with contact details",
+	"find the email address for someone at this company",
+	"verify this email address is deliverable",
+	"check if these emails are valid before sending",
+	"look up decision makers at these companies",
+	"find prospects matching our ideal customer profile",
+	"build a prospect list from these domains",
+	"get contact information for this person",
+	"find leads for our outbound campaign",
+	"which of these emails will bounce",
+]
+
+domains = ["sales", "marketing"]

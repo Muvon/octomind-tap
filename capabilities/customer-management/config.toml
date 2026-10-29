@@ -9,4 +9,4 @@ triggers = [
 	"track a sales deal",
 ]
 
-domains = ["marketing", "finance"]
+domains = ["marketing", "finance", "sales", "support"]
