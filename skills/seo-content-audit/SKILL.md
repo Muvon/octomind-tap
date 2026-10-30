@@ -63,8 +63,8 @@ Run all four in one block. Don't serialize. The web search tool is not Google Se
 | # | Check | How to verify | Severity if failed |
 |---|---|---|---|
 | 1 | Intent match | Read the target keyword aloud — what does the searcher want? Compare to page intent. | Critical if format mismatches dominant SERP intent |
-| 2 | Title tag | 50–60 chars, primary keyword front-loaded, compelling (clear value, not generic) | Moderate per failed dimension |
-| 3 | Meta description | 150–160 chars, keyword present, answers "why click this result" | Moderate per failed dimension |
+| 2 | Title tag | Describes the page accurately and concisely; distinct from sibling pages; relevant terms read naturally | Flag a specific mismatch, missing title, or confusing boilerplate; length alone isn't a failure |
+| 3 | Meta description | A useful, page-specific summary consistent with the visible content; no keyword list or unsupported promise | Flag missing or misleading descriptions as appropriate; exact-match keywords and fixed lengths aren't requirements |
 | 4 | H1 | Present, unique, semantically related to title (not identical), describes the page's promise | Critical if missing or duplicate |
 | 5 | H2 structure | Headings describe what each section answers; question phrasing where it reads naturally | Minor if headings are vague labels that hide the content |
 | 6 | Answer placement | The direct answer to the section's question appears early, before supporting detail | Moderate per key section that buries its answer |
@@ -77,6 +77,15 @@ Run all four in one block. Don't serialize. The web search tool is not Google Se
 | 13 | Internal linking | 5–10 contextual links per piece; descriptive anchors (not exact-match); pillar/cluster pattern present where applicable | Moderate if under 3 internal links or all anchor text is generic |
 | 14 | Schema readiness for content | Article schema present with author/datePublished/dateModified; markup matches visible text | Moderate per invalid or contradicting markup; Google states AI features need no special schema |
 | 15 | Primary-source posture | Page presents primary data/experience/original synthesis OR cites primary sources where it relies on them | Critical if the page is an intermediary roundup of other rankers without added signal |
+
+### Title and description review
+
+- Read the page before choosing search wording; name the actual deliverable, not a broader product or service it doesn't provide.
+- Review query intent and competing results when selecting a keyword. A volume lookup alone doesn't establish fit, attainable rankings, or likely traffic; mark missing evidence rather than claiming a complete SEO pass.
+- Write concise, distinct titles and readable page-specific descriptions. Don't force the same phrase into every reference file or pad a description to a character target.
+- Google specifies no fixed title or meta-description length limit; display truncation depends on available width. Registry field limits are a separate contribution constraint.
+- Check the served HTML title, description, canonical, and applicable indexing/snippet directives when a public URL exists. Frontmatter validation isn't deployment or indexing verification.
+- Use an existing authorized SEO-data connection or supplied export when numbers are needed. Don't add a custom API client just to research metadata.
 
 ### Severity matrix
 
@@ -104,12 +113,12 @@ Google's May 2026 AI optimization guide says AI Overviews and AI Mode need no sp
 
 - Headings that say what the section answers ("How to set up FAQ schema" beats "Schema") help readers and passage extraction alike; don't flag a page for lacking question-form H2s.
 - If an AI Overview cites competitors but not this page, look first at information gain, answer clarity, and indexability — not at formatting tricks.
-- Measure AI visibility with Search Console's Generative AI performance report (impressions only, from June 2026) and third-party trackers (Otterly.ai, Semrush AI Toolkit, Ahrefs Brand Radar, Profound) as sampled estimates. Recommend monitoring setup as part of the hand-off.
+- Search Console Web performance includes AI Overviews and AI Mode; verify live dimensions rather than assuming a standalone AI-only report. Use actual answer captures for prompt-level visibility, scoped vendor observations as samples, and separate attributable activation data for business outcomes.
 
 ### Unverified checks — escalation rule
 
 - Top-10 fetch blocked or rate-limited → "Unverified: cannot fetch SERP competitors; information-gain scoring depends on this. Recommend manual SERP review or share top-3 page snapshots."
-- AI Overview check impossible (search tool isn't Google) → "Unverified: AIO presence unknown; share a screenshot of the live SERP or Search Console's Generative AI report."
+- AI Overview check impossible (search tool isn't Google) → "Unverified: AIO presence unknown; share a dated live-result capture with exact query, locale, and source links, or a documented SERP-data observation. Search Console Web aggregates don't establish query-level AIO presence."
 - Author identity unclear from the page → "Unverified: author byline ambiguous; confirm author name + credentials before scoring E-E-A-T."
 
 Never infer information gain from one source; never grade an anonymous byline before checking if there's an author bio page linked.
@@ -117,6 +126,8 @@ Never infer information gain from one source; never grade an anonymous byline be
 ### Output
 
 Use the canonical output structure from the agent that runs this skill. Every finding includes: severity, evidence (URL section, line, the missing element, the SERP comparison point), why it matters, fix direction. Save as `seo-audit-[slug]-[YYYY-MM-DD].md` in working directory.
+
+For an explicit GEO/AEO request, retain the host's focused `geo-visibility-audit` mode and report shape. Apply only content checks justified by the selected buyer question/finding; don't expand it into a full conventional audit or propose a new page without checking existing coverage.
 
 ## Checklist
 
@@ -141,6 +152,8 @@ Within-domain pairings:
 External authoritative sources:
 - [Google Search Central — Helpful Content guidance](https://developers.google.com/search/docs/fundamentals/creating-helpful-content)
 - [Google Search Central — E-E-A-T and quality rater guidelines](https://developers.google.com/search/blog/2022/12/google-raters-guidelines-e-e-a-t)
+- [Google Search Central — Title links](https://developers.google.com/search/docs/appearance/title-link)
+- [Google Search Central — Snippets and meta descriptions](https://developers.google.com/search/docs/appearance/snippet)
 - [Google Search Central — AI features and your website](https://developers.google.com/search/docs/appearance/ai-features)
 - [Google Search Central — Optimizing for generative AI features (May 2026)](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide)
 - [Search Engine Journal — Information gain patent analysis](https://www.searchenginejournal.com/google-information-gain-patent/)

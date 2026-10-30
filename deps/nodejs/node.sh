@@ -15,11 +15,12 @@ source "$DEPS_LIB/platform.sh"
 # they crash). An older Node counts as missing — like the 18.x Debian and Ubuntu
 # 24.04 ship, or that a distro package drags in as a dependency (Debian's novnc
 # does, without npm).
-NODE_MIN_MAJOR=20
+# Callers may request a higher minimum for a specific MCP package.
+NODE_MIN_MAJOR="${NODE_MIN_MAJOR:-20}"
 
 node_ok() {
-  pkg_check node && pkg_check npx \
-    && (($(node -p 'process.versions.node.split(".")[0]') >= NODE_MIN_MAJOR))
+  pkg_check node && pkg_check npx &&
+    (($(node -p 'process.versions.node.split(".")[0]') >= NODE_MIN_MAJOR))
 }
 
 ready() {
@@ -52,9 +53,9 @@ install_user_node() {
   pkg_check curl || die "curl not found. Install curl first, then re-run."
   # index.tab lists releases newest first; column 10 is the LTS codename, '-' if
   # none. awk reads to the end: an early exit would fail curl under pipefail.
-  version="$(curl -fsSL https://nodejs.org/dist/index.tab \
-    | awk -F'\t' 'NR > 1 && $10 != "-" && v == "" { v = $1 } END { print v }')"
-  [[ -n "$version" ]] || die "Could not find the current Node.js LTS release."
+  version="$(curl -fsSL https://nodejs.org/dist/index.tab |
+    awk -F'\t' 'NR > 1 && $10 != "-" && v == "" { v = $1 } END { print v }')"
+  [[ -n $version ]] || die "Could not find the current Node.js LTS release."
   name="node-${version}-${platform}"
   if [[ ! -x "$HOME/.local/lib/nodejs/$name/bin/node" ]]; then
     info "installing Node.js $version into ~/.local..."
@@ -90,7 +91,7 @@ else
 fi
 
 # A read-only root leaves only the home directory to install into.
-if [[ "$OS" == "linux" ]] && ! system_writable; then
+if [[ $OS == "linux" ]] && ! system_writable; then
   install_user_node
   ready
   exit 0

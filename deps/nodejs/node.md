@@ -20,6 +20,10 @@ node --version
 node --help
 ```
 
+The default minimum is Node.js 20. A dep that needs a newer runtime can call
+`NODE_MIN_MAJOR=22 install_dep nodejs/node`; the override applies to that invocation
+and prevents the fast path from accepting an older installation.
+
 ## Links
 
 - [Homepage](https://nodejs.org)

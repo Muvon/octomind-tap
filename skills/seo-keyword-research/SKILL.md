@@ -3,7 +3,8 @@ name: seo-keyword-research
 title: "Long-Tail Keyword Research: Low-Competition Discovery"
 description: "Operational funnel for discovering high-intent, low-competition long-tail keywords (4+ word phrases with weak SERP defenders), the keyword class that actually ranks for new and mid-authority sites without massive backlink spend. Encodes the discovery method (seed to modifier expansion to Google autocomplete + 'People Also Ask' + Reddit/forum mining + competitor SERP-gap), the qualification rubric that goes beyond KD scores (top-10 SERP authority profile, content-fit gap, intent match, traffic-potential vs ranking-realism, query freshness), the 2026 GEO overlay (definition + question + comparison queries that earn AI-search citations), and the kill-rules (head-term traps, fake-volume keywords, branded-SERPs, paid-ads-dominated SERPs). Use BEFORE writing any content brief, calendar, or pillar-cluster plan. Stays in the SEO lane: produces a keyword brief; content writing, on-page wrapping, and link-building are downstream concerns owned elsewhere."
 license: Apache-2.0
-compatibility: "Stack-agnostic. Free path requires websearch + webfetch (Google autocomplete, 'People Also Ask' scrape, Reddit search, competitor SERP review). Optional MCP data sources: Ahrefs, SE Ranking, Serpstat, Google Search Console for volume + KD numbers."
+compatibility: "Requires web search and page fetching. Optional DataForSEO MCP needs Node.js 22+, network access, DATAFORSEO_LOGIN, and DATAFORSEO_PASSWORD."
+capabilities: seo-data
 domains: seo
 rules:
   - session(seo)
@@ -46,7 +47,7 @@ Long-tail wins on four compounding axes that head-term chasing loses:
 |---|---|
 | Core updates: March 2026 (Mar 27–Apr 8), May 2026 (May 21–Jun 2); Helpful Content signals in core ranking since March 2024 | Google gave no specifics; third-party analyses saw aggregation-model sites (comparison, directory, job board) lose. Pick keywords where your unique angle, data, or experience fills a gap. |
 | Site reputation policy (enforced since May 2024; manual actions no longer apply to EEA searchers since Aug 30, 2026) | "Best [X] [year]" third-party sections on big publishers still rank in some markets. Score these SERPs conservatively unless DR ≥ 50 or a niche-brand-page play. |
-| AI Overviews / AI Mode on many informational SERPs (Pew 2025: traditional-result clicks fell from 15% to 8% of visits with an AI summary; Seer 2025: organic CTR on AIO queries fell from 1.76% to 0.61% over 15 months, vendor data) | Weight transactional intent higher or win on information gain. Track AI visibility in Search Console's Generative AI report (impressions only, from June 2026) and third-party trackers alongside rank. |
+| AI Overviews / AI Mode can change informational search journeys; published CTR studies describe their own samples, not this site's expected change | Search Console Web performance includes these features; verify live dimensions and don't assume an AI-only report. Keep actual engine captures and scoped vendor samples separate from search totals. |
 | Branded web mentions correlate with AI Overview visibility more than backlinks (Ahrefs 2025; correlation, not cause) | Long-term, brand + modifier keywords become a defensive cluster. Short-term, long-tails still convert. |
 | Reddit / forum threads hold many SERP slots and AI-answer citations (shares vary widely by study) | When the top 5 organic results are Reddit threads, the keyword is community-owned; engage there in parallel with publishing. |
 
@@ -61,13 +62,16 @@ Long-tail wins on four compounding axes that head-term chasing loses:
 - Intent must match the site's commercial position. Informational keywords on a transactional product page, or commercial-investigation keywords on a thin glossary page, neither rank nor convert. Classify intent before assigning content type.
 - Five+ candidates per sub-topic, not one. Single-keyword targeting anchors to whatever came first; even if four are dead ends, the comparison clarifies why the survivor wins.
 - Zero-volume keywords are a real 2026 category. AI search shifts demand to long-tails that tools mark "0"; one ranking for 12 related semantic queries can earn 200+ visits/month. Check related-keyword overlap instead of auto-striking.
-- GEO is the second axis of every keyword, not a separate discipline. Google's AI-feature visibility comes from the same ranking systems: no special phrasing, chunking, schema, or llms.txt (Google AI optimization guide, May 2026). ChatGPT, Perplexity, and Claude cite pages that answer definition, question, and comparison queries clearly. Note GEO potential per keyword; on-page execution belongs to another domain.
+- GEO requests start from buyer decisions, not a keyword score. Use the `geo-visibility-audit` skill for question discovery, observed citation gaps, or retests; DR and keyword volume aren't prerequisites. Conventional keywords may carry a provisional AI-answer relevance note, not a predicted citation score. Google AI-feature eligibility follows indexing and snippet eligibility, with no additional technical requirements.
 - Output a brief, not a verdict (see Stage 6); writing, schema, internal-link wiring, and outreach are downstream.
+- The optional `seo-data` capability supplies the official DataForSEO MCP: read endpoint documentation before requesting keyword, SERP, competitor, or backlink data; confirm scope/budget before billable calls. Record provider, endpoint, location/language, timestamp, and returned cost. Treat metrics as provider estimates, not Ahrefs DR or actual AI-answer captures; missing credentials leave the public-evidence path available.
 - Compound over spike. Trend keywords decay within 12 months; "how to [permanent task]" compounds for years.
 
 ### The funnel
 
 #### Stage 1 — Profile the site (kill or proceed)
+
+This funnel qualifies conventional Google keywords. For a GEO/AEO request, use the GEO skill's bounded mode instead of forcing this funnel or its DR gate; an overlapping activation doesn't change the requested deliverable.
 
 Get concrete answers before generating any list; if unclear, stop and ask.
 
@@ -114,7 +118,7 @@ This separates winnable keywords from KD-low-but-unwinnable ones. Walk top to bo
 | 4 | Top-10 content quality | Read 3–5 results: comprehensive, recent, structured? | Already definitive (a perfect Wikipedia page, official docs, a 5k-word evergreen pillar) |
 | 5 | Content-fit gap | Sub-angle the top 10 miss (audience, constraint, use case)? | Every angle covered well |
 | 6 | Paid ads dominance | Count ads above organic | 4 ads above organic; organic CTR drops below 20% |
-| 7 | AI Overview presence | Only from user screenshots, Search Console, or a SERP-data tool (the web search tool isn't Google); otherwise mark Unverified | AIO present AND informational AND no information-gain angle: expect a large CTR drop even at rank 1 |
+| 7 | AI Overview presence | Only from an actual dated capture or an explicitly documented SERP-data field; Search Console Web aggregates and ordinary web search don't establish query-level presence | Record observed presence or Unverified; don't forecast this site's CTR loss from another study |
 | 8 | Site reputation risk | Top 3 are third-party sections on Forbes/CNN-style publishers? | Yes AND user DR < 50: demote (outside the EEA these sections face manual actions, so re-check periodically) |
 | 9 | Branded SERP | Top 10 mostly one brand's pages? | Searcher wants a specific brand, not a category answer |
 | 10 | Featured snippet | Who holds it? | Holder DR 70+ with strong content; a weak holder is a snippet-steal opportunity |
@@ -133,7 +137,7 @@ Survive all 12 or strike. For zero-volume candidates, replace check 2 with "appe
    - Intent value: informational 1, navigational 1, commercial 2, transactional 3, multiplied by relevance to the site's commercial position.
    - GEO potential: definition / how-to / comparison / list, 1 each (max 4).
    - Cluster fit: pillar 5, primary cluster page 4, secondary 3, orphan 1.
-   - AIO discount: subtract 2 if an AI Overview is present (or unverified) on an informational keyword AND the page has no information-gain angle.
+   - AIO discount: subtract 2 only when an AI Overview is observed on an informational keyword AND the page has no information-gain angle. Unknown presence stays Unverified, not a negative observation.
 
    Composite priority = (realism × 3) + (intent × 2) + GEO + cluster_fit − AIO_discount. Range 9–35.
 5. Bucket: P0 quick wins (≥ 28, publish first month), P1 high-value (22–27, next sprint), P2 cluster fillers (16–21, batch with pillar), P3 monitor (< 16, not this quarter). Realism 1 forces P3 regardless of total.
@@ -209,6 +213,7 @@ In-skill references (load on demand):
 
 Within-domain pairings:
 - The sibling SEO skill that prospects backlinks for cluster pillar pages (priority for any P0 cluster lacking link equity).
+- `geo-visibility-audit` — buyer-question discovery, captured-answer diagnosis, and retests; its scope and no-DR gate take precedence for GEO requests.
 - The sibling SEO skill that validates free-tool ideas: a cluster surfacing a recurring user problem (calculator, checker, generator) is a tool-build trigger.
 
 Downstream concerns (other domains):
@@ -224,5 +229,6 @@ External authoritative sources:
 - [SparkToro — zero-volume keyword research framework](https://sparktoro.com/blog/keyword-research-in-2024-the-3-rules-i-follow/)
 - [Search Engine Journal — SERP analysis for keyword qualification](https://www.searchenginejournal.com/serp-analysis-seo/)
 - [Search Engine Land — AI Overviews CTR impact studies 2024–2026](https://searchengineland.com/google-ai-overviews-traffic-loss-440873)
+- [Google Search Central — AI features and your website](https://developers.google.com/search/docs/appearance/ai-features) — eligibility and AI-feature traffic within Search Console Web performance.
 - [Google Search Central — Optimizing for generative AI features (May 2026)](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) — query fan-out, scaled content abuse, mythbusting
 - [Princeton/Georgia Tech — GEO research paper (Aggarwal et al)](https://arxiv.org/abs/2311.09735) — original framework for AI-citation optimization

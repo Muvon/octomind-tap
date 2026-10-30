@@ -3,7 +3,7 @@ name: content-geo
 title: "GEO & AI Citation Optimization"
 description: "Generative Engine Optimization (GEO) and Answer Engine Optimization (AEO) patterns for getting content cited by AI search engines. Answer-first structure, schema markup, extractable passages, and crawler setup."
 license: Apache-2.0
-compatibility: "Octomind content agents."
+compatibility: "Network access for current engine documentation and public-page checks."
 domains: content
 rules:
   - content(seo)
@@ -20,7 +20,7 @@ rules:
 
 ## Overview
 
-AI answer surfaces (Google AI Overviews and AI Mode, ChatGPT search, Perplexity, Copilot, Claude, Gemini) retrieve passages, compose an answer, and cite a few sources. Use this skill when planning, writing, or auditing content that should be retrieved and cited there. Generative engine optimization (GEO, also sold as AEO) is not a separate discipline: Google's May 2026 AI optimization guide says its generative features are "rooted in our core Search ranking and quality systems." Crawlable, indexable, genuinely useful pages remain the foundation.
+AI answer surfaces (Google AI Overviews and AI Mode, ChatGPT search, Perplexity, Copilot, Claude, Gemini) retrieve passages, compose an answer, and cite sources. Use this skill for content readiness and evidence-backed writing, not as a substitute for a scoped buyer-question visibility audit. Google's AI-feature guidance places ordinary SEO underneath its search surfaces; that foundation alone doesn't diagnose why a particular brand is absent from an answer.
 
 ## Mental model
 
@@ -69,6 +69,7 @@ Answers are nondeterministic and vary by engine, location, and session. Judge tr
 
 ### Crawlers and controls
 
+These search-related tokens are illustrative, not a required configuration. Check current per-product documentation, existing rules, CDN/WAF access, and the owner's permissions before proposing changes; a spoofed user-agent request doesn't verify real crawler access.
 ```
 User-agent: OAI-SearchBot
 Allow: /
@@ -82,7 +83,7 @@ User-agent: Bingbot
 Allow: /
 ```
 
-- Training crawlers are separate tokens: GPTBot, ClaudeBot, Google-Extended, Applebot-Extended, CCBot. Blocking them is the owner's licensing choice and does not remove the site from search citations.
+- Search and training permissions are separate. GPTBot and ClaudeBot concern training; Google-Extended also affects Gemini Apps grounding, not Google Search AI-feature eligibility. Check each product's documented scope rather than treating training access as a universal citation requirement.
 - User-initiated fetchers (ChatGPT-User, Perplexity-User, Claude-User) act for a person; OpenAI and Perplexity state robots.txt may not apply to them.
 - Google's AI features use Googlebot. Limit display with `nosnippet`, `data-nosnippet`, or `max-snippet`; the Search Console "Search generative AI" control (all sites since 31 August 2026) removes a site from AI Overviews, AI Mode, and Discover AI features and is not a ranking signal elsewhere. Google-Extended limits training and Gemini Apps grounding, not appearance in Search or its AI features.
 - Serve key content in the initial HTML. Several AI crawlers don't execute JavaScript, so client-rendered text may be invisible to them.
@@ -90,9 +91,9 @@ Allow: /
 
 ### Measurement
 
-- Google Search Console Generative AI performance report (June 2026): impressions in AI Overviews, AI Mode, and Discover by page, country, and device. Impressions only, and already counted in the Web totals.
+- Google Search Console Web performance includes AI Overviews and AI Mode. Verify live report dimensions; don't assume a dedicated AI-only breakdown or sum overlapping reports. Actual dated answer captures and scoped publisher/vendor reports remain separate evidence, not an interchangeable measure.
 - Bing Webmaster Tools AI Performance report (public preview February 2026): Copilot and Bing AI citations, cited pages, and grounding queries; no clicks. Partner integrations are unnamed, so don't read it as ChatGPT data.
-- A fixed set of 10 to 20 niche prompts re-run monthly across engines, logging which page and passage got cited. Segment referral traffic from chatgpt.com, perplexity.ai, copilot.microsoft.com, and gemini.google.com. Treat vendor citation trackers as samples.
+- Agree a bounded, versioned buyer-question set and repeat comparable trials across named engine surfaces, locales, search modes, and windows. Ten to twenty prompts and monthly sampling are practitioner starting points, not requirements. Record actual dated answers, mentions, recommendations, cited URLs, and completed/planned counts; without captures, visibility is Unverified, not zero. UI/API runs remain separate; ordinary search isn't an engine-answer test. Referral segments from chatgpt.com, perplexity.ai, copilot.microsoft.com, and gemini.google.com are partial attribution evidence, not all AI traffic. Define the activation event/window and conversion denominator; missing analytics is Unverified. Treat vendor trackers as samples, not causal uplift evidence.
 
 ### Agentic experiences
 

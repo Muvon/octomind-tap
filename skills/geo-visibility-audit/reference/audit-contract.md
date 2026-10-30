@@ -1,9 +1,9 @@
 ---
-title: "AI Search Visibility Tracking: Audit Report Templates"
-description: "Defines AI search visibility tracking templates for buyer questions, citation evidence, audit findings, source actions, and repeatable activation measurement."
+title: "GEO Audit Report Templates"
+description: "Report templates for buyer questions, AI answer captures, citation findings, source actions, and before-and-after checks in a GEO audit."
 ---
 
-# AI Search Visibility Tracking: Audit Report Templates
+# GEO Audit Report Templates
 
 Use only the records needed for the selected mode; don't expand a one-question request into a full-site assessment. Use stable IDs to connect decisions, observations, findings, source actions, and retests. Blank or unavailable data is Unknown/Unverified, never an invented zero. Examples below are synthetic, not observed engine results.
 
@@ -43,6 +43,8 @@ Status is Completed, Error, or Missing. Completed includes a rendered result wit
 - Recommendation: the answer explicitly offers the brand as a suitable choice for the stated decision. A mere mention, exclusion, or quoted criticism isn't a recommendation.
 - Owned-domain citation: an actual displayed source link resolves to the declared owned-domain allowlist. A third-party page mentioning the brand is a separate source-representation record, not an owned citation.
 - Inspect exact cited pages, not just homepages. Store displayed URL and resolved canonical URL when verified, capture date, relevant short excerpt/section, claim supported, brand/competitor treatment, and fetch limitations. A URL appearing only in the auditor's discovery search isn't an observed engine citation.
+- A refusal is a completed generated response, not a missing capture or a feature-level no-answer result. Label it separately, score mention/recommendation only from its actual prose, and retain the original answer.
+- Citation quality is assessed per claim–citation mapping, not per domain reputation. Use Supported, Contradicted, Outdated, Irrelevant, or Unverified; every assessed mapping needs the claim, an inspected excerpt, and a dated evidence location. A source can support one claim and contradict another.
 
 ## Findings and source-action records
 
@@ -66,6 +68,8 @@ Critical means a demonstrated blocker or materially harmful error on an importan
 
 Source actions link finding/question/trial IDs, exact URL, source type, passage, observed competitor treatment, OWN/CLAIM/EARN/CONTEST class, specific proposed action, owner, required authorization, and success check. Factual correction needs a dated primary source; unfavorable accurate reviews aren't correction targets.
 
+Entity-consistency findings record entity/product and aliases; specific property (capability, price/plan, ownership, market availability, or policy); exact owned/cited statement; dated primary-source statement; applicable market/version; discrepancy or Unknown; linked question/trial IDs; owner; and permitted source-action class. Don't infer an error from a different legitimate product variant or missing listing, and don't promise a knowledge panel or profile correction will change recommendations.
+
 ## Metric definitions
 
 Report numerators and denominators per surface, prompt cohort/version, branded status, and window. Zero denominator means N/A. Preserve Unknown fields and report metric-specific coverage; don't treat missing source lists as no citations.
@@ -78,6 +82,8 @@ Report numerators and denominators per surface, prompt cohort/version, branded s
 | Recommendation rate | Trials explicitly recommending brand / completed trials with scorable recommendation outcomes |
 | Owned-domain citation rate | Trials with at least one owned-domain citation / completed trials with known citation outcomes |
 | Owned-domain citation share | Deduplicated owned cited URLs / all deduplicated cited URLs, deduplicating within each trial before summing; disclose this local counting rule |
+| Citation assessment coverage | Assessed claim–citation mappings / all captured mappings; Unverified mappings remain outside the assessed denominator |
+| Citation support rate | Supported mappings / assessed mappings (Supported + Contradicted + Outdated + Irrelevant); report the separate failure classes and coverage |
 | Activation conversion | Attributed unique users reaching the defined event within its window / eligible attributed unique users with a complete follow-up window; don't divide users by sessions |
 
 For a completed result with no AI answer, visibility outcomes are No and it remains in applicable denominators. Report answer availability alongside these rates so feature changes aren't confused with brand gains. When prose or source lists are incomplete, metric-specific denominators differ; show that missingness rather than pooling incomparable rates. Don't equate this local citation-share formula with a vendor's similarly named metric or with third-party brand references.
@@ -92,13 +98,6 @@ Example: after a verified consent section is added to an existing page, repeat Q
 
 End with a decision: retain, revise, stop, or collect more evidence, and why. Continued absence with an adequate, retrievable page does not justify endless content expansion. Never declare an intervention implemented or successful from its brief alone.
 
-## Metadata keyword evidence
+## Working format
 
-Titles and descriptions use distinct, relevant four-word phrases checked with DataForSEO on 2026-10-30. United States / English is the assumed discovery market, not a worldwide demand estimate. The Google Ads `keywords_data/google_ads/search_volume/live` response (task `10300839-2683-0367-0000-01de0057edd6`) reports the following monthly search-volume estimates, with search partners excluded and monthly history spanning October 2025–September 2026:
-
-| File | Phrase used in title and description | Reported monthly search volume |
-|---|---|---|
-| `SKILL.md` | ai search visibility audit | 110 |
-| `reference/audit-contract.md` | ai search visibility tracking | 50 |
-
-DataForSEO Google organic SERP title/snippet checks on the same date returned nine organic results per phrase: audit results mixed services, checkers, and diagnostic guides; tracking results leaned toward platforms and tool comparisons, with measurement guides also present. The titles explicitly identify diagnosis versus report templates; neither artifact claims to be tracking software. The original contribution is the evidence-linked record contract and separate visibility/activation denominators, not another tool roundup. These checks establish wording and broad intent fit, not organic ranking feasibility, forecast traffic, or guaranteed citations. Advertising competition is not organic keyword difficulty; unavailable volume is not zero.
+Use the records above in Markdown, a spreadsheet, or the user's existing reporting system. Keep original captures and exports linked alongside the report; no custom schema or conversion step is required.
