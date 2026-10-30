@@ -1,0 +1,21 @@
+# capabilities/seo-data/seranking.toml
+# Capability: seo-data
+# Provider: seranking
+# Title: SE Ranking Hosted SEO Data
+# Description: Official hosted SE Ranking MCP for keywords, SERPs, backlinks, and domain research. Requires SERANKING_API_KEY and API access.
+# https://seranking.com/api/integrations/mcp
+# Env: SERANKING_API_KEY — Data API key from the SE Ranking or SE Visible API Dashboard.
+# Header auth avoids interactive OAuth. Available tools depend on the subscription.
+# Confirm scope/budget before billable calls; changes to projects require explicit authorization.
+
+[roles.mcp]
+server_refs = ["seranking"]
+allowed_tools = ["seranking:*"]
+
+[[mcp.servers]]
+name = "seranking"
+type = "http"
+url = "https://api.seranking.com/mcp"
+headers = { X-Api-Key = "{{ENV:SERANKING_API_KEY}}" }
+timeout_seconds = 120
+tools = []

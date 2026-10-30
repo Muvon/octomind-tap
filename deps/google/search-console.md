@@ -1,16 +1,16 @@
 # google/search-console
 
-Google Search Console MCP server. Query search analytics, inspect URLs, and detect SEO optimization opportunities.
+Community Search Console MCP wrapper for authorized first-party search analytics and URL inspection; not a Google-published MCP server.
 
 ## MCP Server
 
 - **Package**: `mcp-server-gsc`
 - **Transport**: stdio
-- **Command**: `npx -y mcp-server-gsc`
+- **Command**: `npx -y mcp-server-gsc@0.3.0`
 
 ## Authentication
 
-Service Account
+Enable the Search Console API in a Google Cloud project, create a service-account JSON key, and grant its email access to the specific Search Console property. Keep the file private, outside the repository; use an absolute path. Authentication uses Google OAuth 2.0 service-account credentials and the `webmasters.readonly` scope; no interactive login is needed.
 
 | Variable | Required | Description |
 |----------|----------|-------------|
@@ -20,7 +20,14 @@ Service Account
 
 | Tool | Description |
 |------|-------------|
-| `search_analytics` | Query GSC data with dimensions/filters, up to 25,000 rows |
+| `list_sites` | Authorized properties |
+| `search_analytics` | Basic query/page performance |
+| `enhanced_search_analytics` | Up to 25,000 rows with filters |
+| `detect_quick_wins` | Heuristic opportunities, not ranking guarantees |
+| `index_inspect` | Index status for an authorized URL |
+| `list_sitemaps`, `get_sitemap` | Read submitted sitemap information |
+
+The upstream server also advertises `submit_sitemap`; the registry excludes it. Search Console Web performance may include AI features; verify available dimensions instead of claiming an AI-only report. This provider supplies neither competitor metrics nor captured AI answers.
 
 ## Configuration Example
 
@@ -29,10 +36,10 @@ Service Account
 name = "search-console"
 type = "stdio"
 command = "npx"
-args = ["-y", "mcp-server-gsc"]
-timeout_seconds = 60
-env = { GOOGLE_APPLICATION_CREDENTIALS = "your-value" }
-tools = []
+args = ["-y", "mcp-server-gsc@0.3.0"]
+timeout_seconds = 120
+env = { GOOGLE_APPLICATION_CREDENTIALS = "{{ENV:GOOGLE_APPLICATION_CREDENTIALS}}" }
+tools = ["list_sites", "search_analytics", "enhanced_search_analytics", "detect_quick_wins", "index_inspect", "list_sitemaps", "get_sitemap"]
 ```
 
 **Notes:** Supports regex filtering and automatic quick wins detection.

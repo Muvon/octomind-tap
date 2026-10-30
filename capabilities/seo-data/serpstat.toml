@@ -1,0 +1,24 @@
+# capabilities/seo-data/serpstat.toml
+# Capability: seo-data
+# Provider: serpstat
+# Title: Serpstat SEO Research
+# Description: Official Serpstat MCP for keyword, competitor, and backlink research. Requires SERPSTAT_API_TOKEN and a plan with API access.
+# https://github.com/SerpstatGlobal/serpstat-mcp-server-js
+# Env: SERPSTAT_API_TOKEN — API token, not SERPSTAT_API_KEY. Confirm scope/budget before calls.
+# Only research and credit categories are enabled; project/audit mutations are excluded.
+
+[deps]
+require = ["serpstat/serpstat"]
+
+[roles.mcp]
+server_refs = ["serpstat"]
+allowed_tools = ["serpstat:*"]
+
+[[mcp.servers]]
+name = "serpstat"
+type = "stdio"
+command = "npx"
+args = ["-y", "@serpstat/serpstat-mcp-server@1.1.5"]
+timeout_seconds = 120
+env = { SERPSTAT_API_TOKEN = "{{ENV:SERPSTAT_API_TOKEN}}", SERPSTAT_ENABLED_CATEGORIES = "domain,keywords,backlinks,url,credits" }
+tools = []

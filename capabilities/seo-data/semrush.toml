@@ -1,0 +1,20 @@
+# capabilities/seo-data/semrush.toml
+# Capability: seo-data
+# Provider: semrush
+# Title: Semrush Hosted SEO Data
+# Description: Official hosted Semrush MCP for keyword, domain, and backlink research. Requires SEMRUSH_API_KEY and eligible API access.
+# https://developer.semrush.com/api/introduction/semrush-mcp/
+# Env: SEMRUSH_API_KEY — API key with the subscription/API units needed for requested reports.
+# Header auth avoids an interactive OAuth flow. Confirm scope/budget before billable calls.
+
+[roles.mcp]
+server_refs = ["semrush"]
+allowed_tools = ["semrush:*"]
+
+[[mcp.servers]]
+name = "semrush"
+type = "http"
+url = "https://mcp.semrush.com/v2/mcp"
+headers = { Authorization = "Apikey {{ENV:SEMRUSH_API_KEY}}" }
+timeout_seconds = 120
+tools = []

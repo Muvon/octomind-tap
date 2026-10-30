@@ -1,0 +1,25 @@
+# capabilities/seo-data/free-seo.toml
+# Capability: seo-data
+# Provider: free-seo
+# Title: Free Keyword Discovery (Experimental)
+# Description: Keyless autocomplete and relative Trends via free-seo-mcp. Unofficial endpoints may fail; Bing metrics require a separate key.
+# https://github.com/JohnWayneeee/free-seo-mcp
+# Opt-in evaluation provider, not the default and not a substitute for paid volume/backlink data.
+# Full commit pin: upstream has no PyPI release. Requires Python 3.11+ (provisioned by uv).
+# No Bing credential placeholder: keyless discovery works without FREE_SEO_BING_API_KEY.
+# No estimates, Bing tools, disk-write helpers, or broad crawl tools are exposed.
+
+[deps]
+require = ["johnwayneeee/free-seo"]
+
+[roles.mcp]
+server_refs = ["free-seo"]
+allowed_tools = ["free-seo:suggest", "free-seo:trends_compare", "free-seo:trends_related"]
+
+[[mcp.servers]]
+name = "free-seo"
+type = "stdio"
+command = "uvx"
+args = ["--python", "3.11", "--from", "git+https://github.com/JohnWayneeee/free-seo-mcp@4d377bf6b7265ef2ea4c966c47546e9163b292e3", "free-seo-mcp"]
+timeout_seconds = 120
+tools = ["suggest", "trends_compare", "trends_related"]

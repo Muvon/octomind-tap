@@ -7,7 +7,7 @@ Resolves capabilities and outputs a merged, ready-to-use agent TOML to stdout.
 How it works:
   1. Read agents/<domain>/<spec>.toml
   2. Extract top-level `capabilities = [...]` list
-  3. For each capability, load capabilities/<name>/default.toml
+  3. Load capabilities/<name>/default.toml, or <provider>.toml for name:provider
   4. Merge:
        - [deps] require          → union of all arrays
        - [roles.mcp] server_refs → union of all arrays
@@ -141,7 +141,9 @@ def replace_array_field(text, field, new_items):
 
 def load_capability(cap_name, tap_root):
     """Load a capability file and return its parsed pieces."""
-    path = os.path.join(tap_root, "capabilities", cap_name, "default.toml")
+    name, sep, provider = cap_name.partition(":")
+    filename = f"{provider}.toml" if sep else "default.toml"
+    path = os.path.join(tap_root, "capabilities", name, filename)
     if not os.path.exists(path):
         print(f"ERROR: capability file not found: {path}", file=sys.stderr)
         sys.exit(1)

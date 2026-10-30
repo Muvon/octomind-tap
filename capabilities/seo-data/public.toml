@@ -1,0 +1,30 @@
+# capabilities/seo-data/public.toml
+# Capability: seo-data
+# Provider: public
+# Title: Public SEO Evidence (No Key)
+# Description: Keyless DuckDuckGo search and public-page inspection. No search-volume, difficulty, backlink metrics, or AI-answer measurements.
+# Baseline only; choose an authenticated provider for its own metrics.
+# Keep shared server definitions aligned with websearch/duckduckgo and webfetch/octobrain.
+
+[deps]
+require = ["aas-ee/open-websearch", "muvon/octobrain"]
+
+[roles.mcp]
+server_refs = ["open-websearch", "octobrain"]
+allowed_tools = ["search", "octobrain:knowledge"]
+
+[[mcp.servers]]
+name = "open-websearch"
+type = "stdio"
+command = "sh"
+args = ["-c", "MODE=stdio DEFAULT_SEARCH_ENGINE=duckduckgo ALLOWED_SEARCH_ENGINES=duckduckgo,bing,startpage,brave exec npx -y open-websearch@2.2.0"]
+timeout_seconds = 60
+tools = []
+
+[[mcp.servers]]
+name = "octobrain"
+type = "stdio"
+command = "octobrain"
+args = ["mcp"]
+timeout_seconds = 300
+tools = []
