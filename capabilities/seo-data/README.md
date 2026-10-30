@@ -1,4 +1,4 @@
-# SEO data providers
+# SEO MCP Providers: Keyword Data, Public Research and Search Console
 
 The default is `public.toml`: existing keyless DuckDuckGo search plus public-page inspection. It does not supply monthly volume, keyword difficulty, backlink metrics, DR, or observed AI answers. Both SEO agents and the GEO/keyword-research skills use this baseline without credentials. Shared websearch/webfetch servers are deduplicated during manifest resolution.
 
@@ -40,9 +40,13 @@ Run `bash scripts/setup-symlinks.sh`, `bash scripts/lint-capabilities.sh capabil
 
 MCP initialization and tools/list do not prove authenticated data access, current API entitlements, endpoint reliability, or successful paid calls. Hosted endpoints require an authorized native client smoke test with the user's credentials; do not issue billable requests just to validate wiring. No capability triggers or skill semantic phrases changed, so this provider-only update does not require model retraining.
 
+## Metadata SEO review
+
+The source-level review covers search intent, competing-result positioning, truthful feature scope, and distinct titles/descriptions; registry lint is a separate gate. See [the item-by-item review](seo-review.md) for retained and revised metadata, evidence, and deployment limits.
+
 ## Sources
 
-- Ahrefs: https://docs.ahrefs.com/mcp/docs/introduction and https://docs.ahrefs.com/mcp/docs/manus.md
+- Ahrefs: https://docs.ahrefs.com/mcp/docs/tool-categories.md and https://docs.ahrefs.com/mcp/docs/manus.md
 - Semrush: https://developer.semrush.com/api/introduction/semrush-mcp/
 - SE Ranking: https://seranking.com/api/integrations/mcp
 - Serpstat: https://github.com/SerpstatGlobal/serpstat-mcp-server-js

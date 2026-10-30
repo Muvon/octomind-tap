@@ -1,8 +1,8 @@
 # capabilities/seo-data/public.toml
 # Capability: seo-data
 # Provider: public
-# Title: Public SEO Evidence (No Key)
-# Description: Keyless DuckDuckGo search and public-page inspection. No search-volume, difficulty, backlink metrics, or AI-answer measurements.
+# Title: Keyless SEO Research and Page Inspection
+# Description: Research search intent and inspect public pages with keyless web search. No volume, difficulty, backlink metrics, or AI-answer tracking.
 # Baseline only; choose an authenticated provider for its own metrics.
 # Keep shared server definitions aligned with websearch/duckduckgo and webfetch/octobrain.
 

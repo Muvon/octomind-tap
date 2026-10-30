@@ -1,7 +1,7 @@
 # capabilities/seo-data/seranking.toml
 # Capability: seo-data
 # Provider: seranking
-# Title: SE Ranking Hosted SEO Data
+# Title: SE Ranking MCP: Keyword, SERP and Backlink Data
 # Description: Official hosted SE Ranking MCP for keywords, SERPs, backlinks, and domain research. Requires SERANKING_API_KEY and API access.
 # https://seranking.com/api/integrations/mcp
 # Env: SERANKING_API_KEY — Data API key from the SE Ranking or SE Visible API Dashboard.

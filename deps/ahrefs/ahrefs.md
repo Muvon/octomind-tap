@@ -1,6 +1,6 @@
 # ahrefs/ahrefs
 
-Ahrefs SEO toolset MCP server. Access backlink data, keyword research, rank tracking, and site audits.
+Legacy local Ahrefs MCP package documentation, retained for the existing dep script. The `seo-data:ahrefs` provider uses hosted HTTP MCP with `AHREFS_MCP_TOKEN`, not this package or `AHREFS_API_KEY`; use the hosted provider for new connections.
 
 ## MCP Server
 
@@ -35,7 +35,7 @@ env = { AHREFS_API_KEY = "your-value" }
 tools = []
 ```
 
-**Notes:** Official Ahrefs package. Paid API.
+Notes: This legacy dep is not used or validated by the hosted SEO integration; its package/API-key example above is not hosted MCP setup guidance.
 
 ## Links
 

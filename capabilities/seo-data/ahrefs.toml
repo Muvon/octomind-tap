@@ -1,8 +1,8 @@
 # capabilities/seo-data/ahrefs.toml
 # Capability: seo-data
 # Provider: ahrefs
-# Title: Ahrefs Hosted SEO Data
-# Description: Official hosted Ahrefs MCP for backlinks, DR, keywords, and competitors. Requires AHREFS_MCP_TOKEN and an eligible paid plan.
+# Title: Ahrefs MCP: Keywords, Backlinks and Domain Rating
+# Description: Research keywords, backlinks, competitors, and Ahrefs Domain Rating through hosted MCP. Requires AHREFS_MCP_TOKEN and eligible API access.
 # https://docs.ahrefs.com/mcp/docs/manus.md
 # Env: AHREFS_MCP_TOKEN — generate an MCP-scoped key in Ahrefs account settings.
 # Use the native MCP transport only; custom API bridges are not permitted by Ahrefs.

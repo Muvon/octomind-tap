@@ -1,7 +1,7 @@
 # capabilities/seo-data/serpstat.toml
 # Capability: seo-data
 # Provider: serpstat
-# Title: Serpstat SEO Research
+# Title: Serpstat MCP: Keyword and Competitor Research
 # Description: Official Serpstat MCP for keyword, competitor, and backlink research. Requires SERPSTAT_API_TOKEN and a plan with API access.
 # https://github.com/SerpstatGlobal/serpstat-mcp-server-js
 # Env: SERPSTAT_API_TOKEN — API token, not SERPSTAT_API_KEY. Confirm scope/budget before calls.

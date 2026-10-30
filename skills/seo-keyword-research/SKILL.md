@@ -1,7 +1,7 @@
 ---
 name: seo-keyword-research
 title: "Long-Tail Keyword Research: Low-Competition Discovery"
-description: "Operational funnel for discovering high-intent, low-competition long-tail keywords (4+ word phrases with weak SERP defenders), the keyword class that actually ranks for new and mid-authority sites without massive backlink spend. Encodes the discovery method (seed to modifier expansion to Google autocomplete + 'People Also Ask' + Reddit/forum mining + competitor SERP-gap), the qualification rubric that goes beyond KD scores (top-10 SERP authority profile, content-fit gap, intent match, traffic-potential vs ranking-realism, query freshness), the 2026 GEO overlay (definition + question + comparison queries that earn AI-search citations), and the kill-rules (head-term traps, fake-volume keywords, branded-SERPs, paid-ads-dominated SERPs). Use BEFORE writing any content brief, calendar, or pillar-cluster plan. Stays in the SEO lane: produces a keyword brief; content writing, on-page wrapping, and link-building are downstream concerns owned elsewhere."
+description: "Finds long-tail keywords through intent analysis, query expansion, and competitor-page review. Use for prioritized keyword briefs and content-gap research."
 license: Apache-2.0
 compatibility: "Requires web search and page fetching. Authenticated SEO providers additionally require their documented credentials and API access; Search Console needs a private service-account JSON file."
 capabilities: seo-data
@@ -51,7 +51,7 @@ Long-tail wins on four compounding axes that head-term chasing loses:
 | Branded web mentions correlate with AI Overview visibility more than backlinks (Ahrefs 2025; correlation, not cause) | Long-term, brand + modifier keywords become a defensive cluster. Short-term, long-tails still convert. |
 | Reddit / forum threads hold many SERP slots and AI-answer citations (shares vary widely by study) | When the top 5 organic results are Reddit threads, the keyword is community-owned; engage there in parallel with publishing. |
 
-## Instructions
+## Rules
 
 ### Core rules
 
@@ -77,12 +77,12 @@ Get concrete answers before generating any list; if unclear, stop and ask.
 
 1. Niche: one sentence, plus sub-niche.
 2. Audience: the specific segment that buys, not "small businesses."
-3. Current DR: rough estimate (Ahrefs free tool, Moz Link Explorer, or "we're new"). Sets the realism cap.
+3. Ahrefs DR if available: obtain Ahrefs data or a supplied export; label missing DR Unknown. Moz and other authority scores are separate metrics, not Ahrefs DR.
 4. Existing content: count and coverage. For an existing site, check what already ranks (Search Console queries) before generating overlap.
 5. Commercial position: informational, affiliate, SaaS, e-commerce, local services. Decides which intent classes to prioritize.
 6. Geo + language: global English, US-only, multi-region, non-English. Affects SERP review and modifier set.
 
-If the user can't name DR or commercial position, kill here; qualification would be blind: "I'd be guessing whether the top 10 are beatable. Get a DR estimate (Ahrefs free Backlink Checker takes 30 seconds) and tell me what conversion looks like, then I'll run the funnel."
+Ask one focused question if the buyer or conversion goal is unclear. Missing DR or Search Console does not block a provisional public-evidence brief; qualify intent and content gaps, leave numerical realism Unknown, and name the evidence needed before claiming ranking feasibility.
 
 #### Stage 2 — Generate seed keywords (parallel)
 
@@ -108,7 +108,7 @@ Output: 200–500 candidates, deduped at Stage 4.
 
 #### Stage 4 — Qualify each long-tail (SERP-first rubric)
 
-This separates winnable keywords from KD-low-but-unwinnable ones. Walk top to bottom and STRIKE on the first failure; it's a kill list, not a score.
+Walk the rubric top to bottom. Unavailable metrics stay Unknown, not 0 or a failed check; keep those candidates provisional and name the missing verification before calling them qualified.
 
 | # | Check | How to verify | Strike condition |
 |---|---|---|---|
@@ -125,7 +125,7 @@ This separates winnable keywords from KD-low-but-unwinnable ones. Walk top to bo
 | 11 | Trend direction | Google Trends 5-year view | Sharp decline |
 | 12 | Cluster fit | Fits a planned cluster? | Orphan with no internal-link path |
 
-Survive all 12 or strike. For zero-volume candidates, replace check 2 with "appears in 5+ Reddit threads OR in PAA / autocomplete?": yes means a real query with no tool data, keep; no means strike.
+A fully qualified candidate must pass the applicable checks. Missing evidence leaves it provisional, not struck. For reported zero-volume candidates, look for corroborating buyer questions, related queries, PAA, autocomplete, or relevant community examples; record the evidence without treating mention counts as demand volume.
 
 #### Stage 5 — Cluster, map entity coverage, prioritize
 
@@ -150,7 +150,7 @@ Fill every section of `references/brief-template.md` (P0–P3 tables with intent
 
 | Situation | Action |
 |---|---|
-| No DR estimate and no Search Console | Kill at Stage 1; ask for an Ahrefs free Backlink Checker number. |
+| No DR estimate and no Search Console | Proceed with public intent/content-gap evidence; mark DR, performance, and numerical realism Unknown, with verification as an open item. |
 | Top 10 includes Wikipedia | Strike; cluster around adjacent long-tails. |
 | Volume 0 but 12 Reddit threads on the question | Keep; score realism normally. |
 | User pushes a head term ("just give me 'project management software'") | Refuse and explain: a 24-month project at their DR. Offer P0 long-tails in the same cluster as the first target. |
@@ -162,7 +162,7 @@ Fill every section of `references/brief-template.md` (P0–P3 tables with intent
 
 ### Tools
 
-Free-vs-paid tool table: `references/modifier-library.md`. Use a connected SEO-data MCP (Ahrefs, SE Ranking, Serpstat, Search Console) for volume, KD, and SERP features if present; none is assumed. Paid tools never replace the manual Stage 4 SERP review.
+Free-vs-paid tool table: `references/modifier-library.md`. Use a connected metrics provider for its documented keyword, difficulty, or SERP data. Search Console supplies authorized first-party clicks, impressions, CTR, and position, not market-wide volume, KD, or competitor SERPs. No connection is assumed; paid tools never replace manual SERP review.
 
 ## Examples
 
@@ -187,12 +187,12 @@ For any site live ≥ 3 months with Search Console, run this first; it's the hig
 
 ## Checklist
 
-- [ ] Stage 1 profile captured: niche, audience, DR, existing coverage, commercial position, geo
-- [ ] DR and commercial position confirmed before any keyword generation (kill-gate)
+- [ ] Stage 1 profile captured: niche, audience, DR if available, existing coverage, commercial position, geo
+- [ ] Buyer/conversion goal confirmed; unavailable DR, performance, or volume left Unknown with a provisional qualification
 - [ ] Seeds from ≥ 4 of the 7 source categories, run in parallel
 - [ ] 5–15 variants per seed from the modifier library
 - [ ] Manual SERP review for every candidate surviving volume + intent (rubric check 3)
-- [ ] Realism rule applied: top-10 average DR within ~+15 of user DR, banded by content-quality gap
+- [ ] DR realism heuristic applied only with Ahrefs evidence; otherwise numerical realism remains Unknown
 - [ ] AIO presence recorded from real evidence or marked Unverified; informational AIO keywords without an information-gain angle demoted
 - [ ] Site Reputation Abuse risk flagged on "best [thing] [year]" keywords dominated by Forbes/CNN/Times brand pages
 - [ ] Information gain articulated per P0 keyword

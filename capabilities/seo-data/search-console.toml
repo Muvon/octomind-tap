@@ -1,8 +1,8 @@
 # capabilities/seo-data/search-console.toml
 # Capability: seo-data
 # Provider: search-console
-# Title: Google Search Console Evidence
-# Description: First-party search analytics and URL inspection via mcp-server-gsc. Requires GOOGLE_APPLICATION_CREDENTIALS and property access.
+# Title: Google Search Console MCP: Read-Only Analytics
+# Description: Read first-party search performance and inspect authorized URLs. Requires GOOGLE_APPLICATION_CREDENTIALS and Search Console property access.
 # https://www.npmjs.com/package/mcp-server-gsc
 # Env: GOOGLE_APPLICATION_CREDENTIALS — absolute path to a private service-account JSON file.
 # Enable Search Console API and grant the service account access to the authorized property.

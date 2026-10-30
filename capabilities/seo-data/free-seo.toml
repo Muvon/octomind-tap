@@ -1,8 +1,8 @@
 # capabilities/seo-data/free-seo.toml
 # Capability: seo-data
 # Provider: free-seo
-# Title: Free Keyword Discovery (Experimental)
-# Description: Keyless autocomplete and relative Trends via free-seo-mcp. Unofficial endpoints may fail; Bing metrics require a separate key.
+# Title: Free SEO MCP: Autocomplete and Google Trends
+# Description: Discover keywords with autocomplete and relative Google Trends interest. Experimental, keyless profile; no volume estimates or Bing tools.
 # https://github.com/JohnWayneeee/free-seo-mcp
 # Opt-in evaluation provider, not the default and not a substitute for paid volume/backlink data.
 # Full commit pin: upstream has no PyPI release. Requires Python 3.11+ (provisioned by uv).

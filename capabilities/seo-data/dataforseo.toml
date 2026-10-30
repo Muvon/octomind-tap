@@ -1,7 +1,7 @@
 # capabilities/seo-data/dataforseo.toml
 # Capability: seo-data
 # Provider: DataForSEO official MCP server
-# Title: DataForSEO SEO Data
+# Title: DataForSEO MCP: Keyword, SERP and Backlink Data
 # Description: Keyword metrics, Google SERPs, and backlink research via DataForSEO MCP. Requires DATAFORSEO_LOGIN and DATAFORSEO_PASSWORD.
 # https://github.com/dataforseo/mcp-server-typescript
 # Env: DATAFORSEO_LOGIN and DATAFORSEO_PASSWORD — API credentials from app.dataforseo.com/api-access, not the account password.
