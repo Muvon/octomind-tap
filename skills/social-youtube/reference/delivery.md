@@ -41,7 +41,7 @@ For monetized gaming footage, graphic content in the first seven seconds remains
 
 ## Views and monetization planning
 
-The performance Help page now dates playback-start view counting across Shorts, long-form, and live to August 24, 2026. It distinguishes these public views from engaged earnings metrics and qualified eligibility metrics (official, YouTube performance FAQ, checked 2026-09). Mark that definition change in historical comparisons rather than treating a larger counter as stronger writing or demand (directional).
+Shorts began counting plays and replays on March 31, 2025 (reported, TechCrunch, 2025-03-26). The performance Help page dates the same playback-start counting for long-form and live to August 24, 2026; CTR, average view duration, and retention stay anchored on engaged views, and YouTube stated there is no change to recommendations (official, YouTube engaged views, 2026-08-19). Public views remain distinct from engaged earnings metrics and qualified eligibility metrics (official, YouTube performance FAQ, checked 2026-09). Mark both definition changes in historical comparisons; a larger counter after either date does not mean stronger writing, better content, or higher demand (directional).
 
 Qualified Shorts views are engaged public-Short views excluding loops. Private, unlisted, deleted, ad-served, long-form and Shorts-feed image-post views don't qualify (official, YouTube qualified metrics, 2026-08). Use the correct metric in earnings-related copy; don't equate a looping edit or public-start counter with eligibility progress (directional).
 
@@ -57,6 +57,7 @@ Separate announced future requirements from current eligibility. Beginning Febru
 - [Performance FAQ](https://support.google.com/youtube/answer/12220281?co=GENIE.Platform%3DDesktop&hl=en), undated; checked 2026-09.
 - [Qualified metrics](https://blog.youtube/news-and-events/youtube-monetization-qualified-watch-hours-shorts-views/), 2026-08-12.
 - [YPP announcement](https://blog.youtube/news-and-events/youtube-partner-program-updates-2027-new-opportunities-earn/), 2026-08-10.
+- [Engaged views explained](https://blog.youtube/inside-youtube/engaged-views-youtube-explained), 2026-08-19; [TechCrunch Shorts view counting](https://techcrunch.com/2025/03/26/youtube-is-changing-how-youtube-shorts-views-are-counted/), 2025-03-26.
 
 Re-validate when:
 - Upload controls, optional formats, language support or disclosure tooling change.

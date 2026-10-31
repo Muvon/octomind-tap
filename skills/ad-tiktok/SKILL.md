@@ -42,14 +42,14 @@ This skill defines exactly what to produce for a TikTok ad. It is platform-spec 
 | TikTok Shop — Video Shopping Ads (VSA) | 9:16, ≤10 min. GMV Max became the default (and for most sellers only) campaign type for Shop ads in July 2025 — verify live. Product Card pops in bottom — safe zone bottom must be 450px |
 | TikTok Shop — LIVE Shopping Ads | Promote active livestream; ad asset = vertical thumbnail/clip + headline |
 | TikTok Shop — Product Shopping Ads (PSA) | Catalog-driven, product-image-led, no required video. Image: 1:1 or 4:5, ≥600×600. Served on Shop tab + search + For You |
-| TikTok Search Ads | Keyword-bid, served on the Search Results Page. Spec mirrors In-Feed; on-screen text that echoes the query helps relevance (practice, not a rule). Keyword minimums and match types change — verify in Ads Manager |
+| TikTok Search Ads | Keyword-bid, served on the Search Results Page. Spec mirrors In-Feed; show keywords as on-screen text or overlays and put keywords in the ad title and description (official, TikTok Search Ads creative tips, 2026-01). Keyword minimums and match types change — verify in Ads Manager |
 | Pulse Suite (Premiere/Core/Mentions/Tastemakers) | Contextual placement adjacent to premium content. Standard In-Feed video spec; copy/tone must match the lineup context |
 
 ### In-Feed Ad — Slots and Limits
 
 | Slot | Limit | Notes |
 |------|-------|-------|
-| Caption | 100 chars (incl. CTA) | Hard cap; overlays bottom-left on video |
+| Caption | No character cap on the specs page; Spark captions display max 4 lines | Overlays bottom-left on video; front-load the hook. Non-Spark ad captions don't support hashtags, @mentions or clickable links (official, TikTok video ads specifications, 2026-06) |
 | Display name | 2–20 chars | The advertiser name shown |
 | Profile image | 1:1, ≥98×98 px | Round-cropped on display |
 | Video | 9:16, 5–60s (up to 3 min available) | MP4 or MOV; 540×960 minimum, 1080×1920 recommended |
@@ -60,10 +60,10 @@ This skill defines exactly what to produce for a TikTok ad. It is platform-spec 
 
 | Spec | Value | Notes |
 |------|-------|-------|
-| Aspect ratio | 9:16 recommended; 1:1 and 16:9 supported but visibly down-weighted in feed | Use 9:16 unless you have a specific reason |
+| Aspect ratio | 9:16 recommended; 1:1 and 16:9 supported | Use 9:16 unless you have a specific reason |
 | Resolution | ≥540×960 (9:16); ≥640×640 (1:1); ≥960×540 (16:9). 1080×1920 production target | Higher quality preferred |
 | File format | MP4, MOV, MPEG, AVI | MP4 strongly recommended. GIF dropped. |
-| Duration | 5–60s sweet spot, up to 10 minutes allowed | 15–30s outperforms longer |
+| Duration | 5–60s typical, up to 10 minutes allowed | Choose length by payoff; the proposition lands in the first 3s |
 | File size | ≤500 MB | Compress without losing motion |
 | Bitrate | ≥516 kbps | Higher recommended |
 | Audio | Required — sound-on platform | Music + voiceover + captions (all three) |
@@ -103,18 +103,18 @@ The TikTok UI overlays the bottom and right edges. Critical copy must stay in th
 
 ### Caption Rules
 
-- 100 chars hard cap including the CTA — every char counts
+- Front-load the hook and CTA; the specs page lists no character cap, so keep it short and test truncation in the Ads Manager preview
 - Lead with the hook, not the brand
 - Specificity wins — "5 mins to set up" beats "easy to use"
-- Avoid hashtag spam — 1–3 hashtags max
+- No hashtags, @mentions or links in non-Spark ad captions (unsupported); Spark captions inherit from the organic post
 - Avoid "link in bio" copy — the CTA button is right there
 - Use vowel-light shorthand only if it reads natural on TikTok (e.g., "POV:", "tell me you…")
 
 ### Native-Feel Rules — What Wins on TikTok
 
 - Founder voice or UGC creator > polished studio voice. Selfie-cam outperforms tripod cinematography.
-- Hook in first 1–3 seconds. The skip rate is brutal. Visual + text overlay + spoken word must all hit in second 0.
-- Sound-on platform but caption everything anyway — accessibility + watch-time signal.
+- Put the proposition in the first 3 seconds and test creatives that differ visually from each other (official, TikTok creative best practices, 2025-06). Visual + text overlay + spoken word all hit in second 0.
+- Sound-on platform; caption everything anyway for accessibility and clarity.
 - Show, don't pitch. The product must appear and demonstrate value, not be described.
 - Use trending audio when it fits — but only via Spark Ads or with proper licensing. Stolen trending audio = take-down.
 - Avoid HD studio polish, drone shots, brand-jingle outro. They scream "ad."
@@ -127,7 +127,7 @@ Spark Ads boost an existing organic post — either yours or a creator's (with p
 
 - Always seek creator permission via the Branded Content Toggle or paid arrangement before boosting
 - Disclose the partnership via the Branded Content Toggle (TikTok's #ad equivalent)
-- A Spark Ad pulling 3× the CPM/CTR of a fresh In-Feed Ad is normal — the social proof matters
+- Engagement accumulates on the original post, so social proof builds there; don't promise a cost or click advantage over In-Feed
 
 ### Branded Mission Rules
 
@@ -160,7 +160,7 @@ Brand briefs creators to produce videos under a campaign tag. The brand pays a f
 ## Landing URL
 [URL]
 
-## Caption (≤100 char incl. CTA)
+## Caption (front-loaded, no hashtags/@mentions/links for non-Spark)
 > [Caption text] — [chars]
 
 ## Display Name (2–20 char)
@@ -171,7 +171,7 @@ Brand briefs creators to produce videos under a campaign tag. The brand pays a f
 
 ## Video Spec
 - Ratio: 9:16
-- Duration: [Xs — 15–30s sweet spot]
+- Duration: [Xs]
 - Resolution: 1080×1920
 - Audio: [music + VO / VO only / native sound]
 - Captions: yes (every spoken line)
@@ -192,7 +192,7 @@ Brand briefs creators to produce videos under a campaign tag. The brand pays a f
 ## Variant Set
 | # | Angle | Hook (first 2s) | Caption | CTA | Aesthetic |
 |---|-------|-----------------|---------|-----|-----------|
-| 1 | [angle] | "[opening]" | [≤100] | [enum] | [founder POV / UGC / native] |
+| 1 | [angle] | "[opening]" | [caption] | [enum] | [founder POV / UGC / native] |
 | 2 | ... | ... | ... | ... | ... |
 
 ## Pre-Submit Checklist
@@ -200,7 +200,7 @@ Brand briefs creators to produce videos under a campaign tag. The brand pays a f
 - [ ] Hook in first 1–3 seconds
 - [ ] Sound-on with captions
 - [ ] Native feel — no studio polish, no jingle outro
-- [ ] Caption ≤100 char incl. CTA
+- [ ] Caption front-loaded; no hashtags, @mentions or links (non-Spark)
 - [ ] CTA from enum
 - [ ] Safe zone respected
 - [ ] Music licensed (or Spark Ad with permissions)
@@ -214,3 +214,7 @@ Brand briefs creators to produce videos under a campaign tag. The brand pays a f
 - Audience setup, custom audiences → out of scope
 - Pixel events, conversion tracking → out of scope
 - Branded content disclosure rules → covered briefly, full compliance review separate
+
+## References
+
+- [Video ads specifications](https://ads.tiktok.com/help/article/video-ads-specifications), official, 2026-06; [Creative best practices](https://ads.tiktok.com/help/article/creative-best-practices), official, 2025-06; [Search Ads creative tips](https://ads.tiktok.com/help/article/search-ads-creative), official, updated 2026-01.

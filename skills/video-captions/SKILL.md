@@ -28,7 +28,7 @@ rules:
 
 ## Overview
 
-Captions carry the message for the muted viewer and decide whether a short looks edited or amateur. This skill is the one caption pipeline for the video domain: real word timings, a vetted renderer with platform-tuned presets, and a libass burn. It replaces hand-written frame-by-frame text drawing (PIL, moviepy, OpenCV) and plain `force_style` SRT burns, which produce the flat, mistimed captions viewers read as low effort.
+Captions support the audio and decide whether a short looks edited or amateur. Audio leads: most Reels views are sound-on, so captions serve the sound-off minority, noisy settings, accessibility, and search. This skill is the one caption pipeline for the video domain: real word timings, a vetted renderer with platform-tuned presets, and a libass burn. It replaces hand-written frame-by-frame text drawing (PIL, moviepy, OpenCV) and plain `force_style` SRT burns, which produce the flat, mistimed captions viewers read as low effort.
 
 ## Mental model
 
@@ -95,6 +95,12 @@ Override per brand with `--highlight "#RRGGBB"`, `--color`, `--outline-color`, `
 
 Keep the block out of the 9:16 UI bands: Meta Reels reserves the top 14% and bottom 35%, TikTok the right-side action rail and a caption area that grows from the bottom. The script warns when a page reaches into those bands.
 
+### Captions and audio
+
+- Audio leads, captions support. Over 75% of Reels views are sound-on (Meta, 2024-11, official), so the script must work when heard; captions mirror it for the sound-off minority.
+- Don't write a hook that only works silently, and don't rely on the caption to deliver the hook the voice misses.
+- For TikTok Search Ads, show keywords as on-screen text or overlays and put keywords in the title and description (TikTok Search Ads creative tips, 2026-01, official, ads-scoped). When the claim allows it, put the searchable topic keyword in the `--hook` line.
+
 ### Fonts
 
 The caption font must exist as a file; otherwise libass silently substitutes a plain fallback, the most common cause of ugly burns. The `captions` capability installs five heavy display families into `~/.local/share/octomind/fonts`, and `video-captions` uses that directory by default, so `--font` works by family name:
@@ -144,6 +150,8 @@ All five are SIL Open Font License. For a brand font, put its `.ttf`/`.otf` in `
 - [ ] Preset matches the format; one accent color.
 - [ ] Three extracted frames checked (face clear, block inside the safe zone, highlight on the spoken word), or reported to the user as unchecked.
 - [ ] `captions.ass`, `captions.srt`, and `vo.json` saved under `./video-out/<slug>/captions/`.
+- [ ] Script works heard; captions mirror the voice rather than carry the hook alone.
+- [ ] Searchable topic keyword in the on-screen hook text when the claim allows it.
 
 ## Composition / References
 
@@ -154,3 +162,5 @@ All five are SIL Open Font License. For a brand font, put its `.ttf`/`.otf` in `
 - [ffmpeg `ass` and `subtitles` filters](https://ffmpeg.org/ffmpeg-filters.html#ass)
 - [TikTok creative best practices](https://ads.tiktok.com/help/article/creative-best-practices)
 - [Remotion captions](https://www.remotion.dev/docs/captions/)
+- [Meta for Developers: Reel ads](https://developers.facebook.com/blog/post/2024/11/07/unlock-the-power-of-reel-ads) — over 75% of Reels views sound-on (official, 2024-11).
+- [TikTok Search Ads creative tips](https://ads.tiktok.com/help/article/search-ads-creative) — keywords as on-screen text or overlays; keywords in title and description (official, ads-scoped, 2026-01).

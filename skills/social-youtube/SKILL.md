@@ -20,9 +20,9 @@ Produce a package with an identifiable author and an honest next step. Drafting 
 
 Work backward from the viewer's task and the evidence you can show. Choose packaging before scripting, then revise it if the footage cannot keep the promise (directional; Galloway). Treat retention graphs as diagnostic evidence for that upload. Don't prescribe universal opening deadlines, re-hook intervals, or a guaranteed format-transfer effect (directional).
 
-Views, attention, and commercial outcomes answer different questions. Metricool observed rising views alongside falling viewing duration and interaction measures across both formats (measured, Metricool, n=799,718 videos, 2026-07). Keep format and traffic-source comparisons separate; don't infer qualified demand from starts alone (directional).
+Views, attention, and commercial outcomes answer different questions. Metricool observed rising views alongside falling viewing duration and interaction measures across both formats (measured, Metricool, n=799,718 videos, 2026-07). Keep format and traffic-source comparisons separate; don't infer qualified demand from starts alone (directional). Public view counters also changed definition: Shorts count plays and replays from 2025-03-31 and long-form followed on 2026-08-24, so a higher count after those dates is not better content (see the delivery reference).
 
-Open [reference/evidence.md](reference/evidence.md) when choosing cadence, interpreting benchmarks, estimating revenue, or using a case study. Open [reference/delivery.md](reference/delivery.md) when preparing assets, optional formats, disclosures, or monetization-dependent copy. Open [reference/launch.md](reference/launch.md) when planning a launch campaign or creator collaboration.
+Open [reference/evidence.md](reference/evidence.md) when choosing cadence, interpreting benchmarks, estimating revenue, using a case study, or checking a growth claim against its myths list. Open [reference/delivery.md](reference/delivery.md) when preparing assets, optional formats, disclosures, or monetization-dependent copy. Open [reference/launch.md](reference/launch.md) when planning a launch campaign or creator collaboration.
 
 ## Format and packaging decisions
 
@@ -41,6 +41,8 @@ Square/vertical uploads up to three minutes classify as Shorts under the current
 
 The Shorts player update includes Clear Screen, accelerated playback and mute controls; hearts replace thumbs-up, with “Not Interested” and “Don't recommend this channel” replacing dislike (official, YouTube Shorts experience, 2026-06). Make the meaning legible in the footage and captions even with sound muted or interface overlays hidden; test accelerated playback for comprehension (directional).
 
+Shorts can be organized into seasons and episodes, live since 2026-09-23 (official, YouTube, 2026-09-23); use it for serial content where each episode still works for a newcomer. The same announcement lists Studio video A/B testing of up to three cuts for which holds attention best, available now in YouTube Studio. The evidence reference holds a measured retention sample and a length median for Shorts; treat both as context, not targets.
+
 ### Match packaging to the entry point
 
 | Intended entry point | Title | Thumbnail and opening |
@@ -52,7 +54,7 @@ The Shorts player update includes Clear Screen, accelerated playback and mute co
 
 These packaging choices are craft hypotheses, not traffic-source ranking formulas (directional). Front-load the essential promise and preview truncation on the intended screens. Don't force a fixed character band (directional).
 
-Choose a readable thumbnail concept that complements the title. Use the fewest words needed, including none; a relevant natural expression is optional (directional). The breakout-thumbnail sample included text-free images and rarely used exaggerated expressions (measured, vidIQ thumbnails, n=500 thumbnails across 30 niches, 2026-07). Preview at small size and against light and dark interfaces (directional).
+Choose a readable thumbnail concept that complements the title. Use the fewest words needed, including none; a relevant natural expression is optional (directional). The breakout-thumbnail sample included text-free images and rarely used exaggerated expressions (measured, vidIQ thumbnails, n=500 thumbnails across 30 niches, 2026-07). Preview at small size and against light and dark interfaces (directional). For Shorts, custom thumbnails are rolling out to Partner Program creators, who otherwise choose from three suggested frames (reported, Tubefilter, 2026-07-24); without access, make the chosen frame carry the promise.
 
 Where available, native A/B testing supports up to three titles, thumbnails, or combinations. Results use watch-time share and the labels “Winner,” “Performed Same,” and “Inconclusive” (official, YouTube A/B testing, 2026-09). Keep variants honest and meaningfully different; don't declare victory from a tiny CTR change or stop a test to manufacture a winner (directional).
 
@@ -127,7 +129,7 @@ Recut a Short from the actual explanation, preserving any qualifier that changes
 
 ## Cadence and engagement
 
-Choose a sustainable publishing pace that leaves time for evidence gathering and replies. Test modest Shorts support for a deeper video before increasing volume; the observed association with long-form views is correlational (measured, Metricool Shorts, n=799,718 videos, 2026-08). Use the evidence reference before quoting frequency benchmarks.
+Choose a sustainable publishing pace that leaves time for evidence gathering and replies. Test modest Shorts support for a deeper video before increasing volume; the observed association with long-form views is correlational (measured, Metricool Shorts, n=799,718 videos, 2026-08). YouTube said Shorts are not optimized for posting time and hashtags are not required (official, Creator Insider with Todd Sherman, 2023-08-23); publish when replies can be staffed. Use the evidence reference before quoting frequency benchmarks.
 
 Assign a responder for launch hours and later coverage, including audience-active evenings or weekends when needed. Answer the actual question in ordinary prose; distinguish a confirmed limitation from a workaround. Remove scam links and abuse while preserving fair criticism (directional). Cross-platform moderation and reply studies motivate staffing, but don't establish a YouTube-specific reply uplift; see the launch reference.
 
@@ -136,6 +138,10 @@ Assign a responder for launch hours and later coverage, including audience-activ
 Separate removal, monetization eligibility, and editorial weakness. The egregious-clickbait announcement described undelivered packaging promises and removal initially without strikes, with rollout starting in India (official, Google India, 2024-12). Don't extend that announcement's geographic scope.
 
 Repetitive or mass-produced content was already ineligible for monetization when “inauthentic content” terminology was clarified; reused-content policy was unchanged (official, YouTube monetization policies, 2025-07). Avoid cosmetic remixes of others' work; add substantive original explanation and secure necessary rights (directional).
+
+Shorts recommendations now favor original content. From 2026-10-01 YouTube reduces the reach of content re-uploaded from other creators without adding anything of your own, and channels that primarily aggregate or re-upload others' videos without significant changes lose Shorts-feed distribution (official, YouTube Help community, 2026-10-01; reported, Social Media Today, 2026-10-01). Name a transformation for every Short built on another creator's footage: original commentary, a unique edit, or a story. YouTube drew no clear line on a voiceover over someone else's clip, so don't rely on one as the only addition. Export from a clean master as craft; no official source says YouTube demotes other apps' watermarks.
+
+Don't delete and re-upload a Short that flopped; YouTube warned it risks a spam flag (official, Creator Insider with Todd Sherman, 2023-08-23). Revise the next one from its retention graph.
 
 Disclose realistic generated or meaningfully altered media as required. Script/title/caption assistance and cloning the creator's own voice for voiceovers/dubs are listed exceptions; fabricated realistic events and AI-generated music require disclosure. The label alone doesn't limit audience or monetization eligibility (official, YouTube AI disclosure, checked 2026-09). A label doesn't validate the claim. See the delivery reference for automatic labels; don't infer an AI-narration penalty.
 
@@ -187,6 +193,7 @@ Why it works: the booking path preserves the condition instead of promising an u
 
 - [ ] Hook and first line deliver the packaging promise; the upload holds a single central idea.
 - [ ] Format classification and current asset limits checked; thumbnail and opening previewed on intended surfaces.
+- [ ] Each Short or trend adaptation names its own transformation; no re-upload of another creator's clip without added commentary, edit, or story.
 - [ ] Description, verified CTA/link path, pinned comment and chapter labels prepared where applicable.
 - [ ] Caption/subtitle copy checked; asset brief includes visual descriptions and alt text where supported; end-screen timing checked in the editor.
 - [ ] Every specific is supplied or placeholder-marked; unresolved factual placeholders block publication.
@@ -208,6 +215,9 @@ Dates on undated Help pages denote validation month. Benchmarks and case-study l
 - [Monetization policies](https://support.google.com/youtube/answer/1311392?hl=en), clarification 2025-07-15.
 - [Spam Policy](https://support.google.com/youtube/answer/2801973?hl=en), undated; checked 2026-09.
 - [Clickbait announcement](https://blog.google/intl/en-in/products/platforms/strengthening-enforcement-against-egregious-clickbait-on-youtube/), 2024-12-18.
+- [Shorts originality announcement](https://support.google.com/youtube/thread/470890423/prioritizing-original-content-on-shorts?hl=en), 2026-10-01; [Social Media Today](https://www.socialmediatoday.com/news/youtube-updates-shorts-algorithm-to-put-more-focus-on-original-content/831976/), 2026-10-01.
+- [Shorts seasons and A/B cuts](https://blog.youtube/news-and-events/innovation-youtube-era-made-on-viewers-creators/), 2026-09-23; [Shorts custom thumbnails](https://www.tubefilter.com/2026/07/24/youtube-shorts-custom-thumbnails-neal-mohan-feature-update/), 2026-07-24.
+- [Creator Insider with Todd Sherman](https://www.youtube.com/watch?v=n3jsYK_-aRU), 2023-08-23.
 - [Evidence sources](reference/evidence.md#references), [delivery sources](reference/delivery.md#references), [launch and voice sources](reference/launch.md#references), dated individually.
 
 Re-validate when:

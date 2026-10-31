@@ -20,12 +20,28 @@ Use this reference when deciding what to test, interpreting performance, or esti
 | Natural faces were common; exaggerated expressions were uncommon (measured, vidIQ thumbnails, n=500 breakout thumbnails across 30 niches, 2026-07) | Choose a face only if it carries information; the sample doesn't prove a face causes success (directional) |
 | 28% used no thumbnail text; text-bearing thumbnails had a five-word median (measured, vidIQ thumbnails, n=500 thumbnails, 2026-07) | Allow text-free thumbnails and reject a mandatory word quota (directional) |
 | The best of the first ten uploads exceeded the first upload's views in selected persistent-channel cohorts (measured, vidIQ early uploads, n=448,413 combined, overlapping channel cohorts, 2026-07) | Plan early uploads as a portfolio of distinct hypotheses; don't demand linear improvement or predict a newcomer's outcome from a selected sample (directional) |
+| In a 5,400-Short sample, Shorts under about 60% viewed-versus-swiped rarely performed, and the thread itself states that winners sat between 70 and 90% (measured, Galloway thread, n=5,400 Shorts, 2023-04; initial results) | Use it to sanity-check your own Studio comparison between similar Shorts; it isn't a target or a platform benchmark (directional) |
+| The 11–20 second band had the highest median Shorts views (measured, quso.ai, n=about 508,000 posts in the full dataset; Shorts subset unstated, 2026-06) | Treat it as a cohort observation; finish the promise at its useful length (directional) |
 
 ## Revenue and packaging evidence
 
 AIR found Shorts RPM from $0.02 to $1.48, generally 3–14% of comparable long-form RPM (measured, AIR, n=274 channels, 2026-06). Forecast from the channel's niche and Studio data. Don't publish a universal Shorts median, per-million payout, or blanket claim that Shorts cannot support a business (directional).
 
 Galloway's interview summary supports investing effort in ideation and packaging, and recounts a thumbnail success story. Use packaging-first as craft guidance; don't present its time-allocation estimates or case multiplier as controlled measurements (directional; Colin and Samir).
+
+## Myths to reject
+
+Each row is a claim this evidence set does not support; use the stated fact instead (directional unless marked).
+
+| Myth | What the evidence supports |
+|---|---|
+| Aim for 60–70% viewed on every Short | No official benchmark exists; compare viewed-versus-swiped with similar Shorts (official, YouTube Shorts analytics, checked 2026-09). |
+| A voiceover over someone else's clip makes it original | YouTube drew no clear line; add commentary, a unique edit, or a story (official, YouTube Help community, 2026-10-01). |
+| YouTube demotes TikTok watermarks | No official source says so. Export from a clean master as craft only. |
+| Delete and re-upload a flopping Short | YouTube warned it risks a spam flag (official, Creator Insider with Todd Sherman, 2023-08-23). |
+| Post Shorts at the optimal hour | YouTube said Shorts are not optimized for posting time (same source). |
+| Shorts need hashtags | YouTube said they are not required (same source); the Metricool source table credits hashtags with 0.03% of organic views. |
+| A higher view count after the count change means better content | Counting changed, not the algorithm; CTR, average view duration, and retention stay on engaged views (official, YouTube engaged views, 2026-08-19). |
 
 ## References
 
@@ -38,6 +54,8 @@ Galloway's interview summary supports investing effort in ideation and packaging
 - [vidIQ thumbnails](https://vidiq.com/research/youtube-thumbnail-study/), 2026-07-08.
 - [vidIQ early uploads](https://vidiq.com/research/youtube-first-10-videos-study/), 2026-07-30.
 - [AIR niche RPM](https://air.io/en/air-data-findings/what-is-youtube-shorts-rpm-in-your-niche-in-2026), 2026-06-23.
+- [Galloway Shorts thread](https://threadreaderapp.com/thread/1646898356419981315.html), 2023-04; [quso.ai retention benchmarks](https://quso.ai/research/video-retention-benchmarks), 2026-06-29.
+- [Creator Insider with Todd Sherman](https://www.youtube.com/watch?v=n3jsYK_-aRU), 2023-08-23; [Shorts originality announcement](https://support.google.com/youtube/thread/470890423/prioritizing-original-content-on-shorts?hl=en), 2026-10-01; [Engaged views explained](https://blog.youtube/inside-youtube/engaged-views-youtube-explained), 2026-08-19.
 - [Colin and Samir: Galloway](https://www.colinandsamir.com/resources/the-new-rules-of-youtube-from-paddy-galloway), undated; checked 2026-09.
 
 Re-validate when:

@@ -39,13 +39,13 @@ The brief names one operation on an existing file (burn these exact text lines, 
 ### Phase 1 — Intake
 
 1. Locate the footage (paths the user gives, or `./video-out/<slug>/raw/`) and probe every file: resolution, frame rate, rotation, duration, loudness.
-2. Confirm only what is missing: platform(s), length target, organic or paid, CTA, brand font and colors, a reference edit to match. Defaults: 9:16 master, 30–35 s, `pop` captions.
+2. Confirm only what is missing: platform(s), goal, organic or paid, CTA, brand font and colors, a reference edit to match. Defaults: 9:16 master, `pop` captions. Length follows platform and goal (`video-editing` length guidance), not a blanket number.
 3. `remember(["brand font and colors", "caption style", "editing preferences", "winning hooks", "banned claims", "music policy"])`.
 
 ### Phase 2 — Story
 
 1. Transcribe the raw audio with word timestamps (`whisper-ctranslate2 ... --word_timestamps True --output_format json`).
-2. Write `./video-out/<slug>/edit.md`: the hook line for the first 1.5–3 s, the payoff, keep ranges, cuts (flubs, repeats, filler, dead context) with timestamps and reasons, emphasis words for punch-ins, cutaway slots and what each shows, the on-screen hook text.
+2. Write `./video-out/<slug>/edit.md`: the hook line for the first 1.5–3 s, the payoff, the last line (written with the hook: end right after the payoff, loop-friendly, see `video-hooks` "Endings and loops"), mid-video re-hook points at likely drop-off moments (`video-hooks` "Mid-video re-hooks"), keep ranges, cuts (flubs, repeats, filler, dead context) with timestamps and reasons, emphasis words for punch-ins, cutaway slots and what each shows, the on-screen hook text. For a trend adaptation or repost, add the transformation: what the cut adds that the source does not.
 3. Show `edit.md` and wait for approval before cutting.
 
 ### Phase 3 — Cut and assemble
@@ -62,10 +62,14 @@ Encode with the `video-spec-sheet` preset, export 4:5 and 1:1 cut-downs re-capti
 
 ### Variant mode — re-cutting a winner
 
-- Hook swaps: same body, 3–5 clearly different openings (new line, new first shot, or new hook text), not wording tweaks.
-- Re-cuts: 15 / 30 / 45 s from the same selects; tighter pacing; CTA swaps.
+- Hook swaps: same body, 3–5 clearly different openings (new line, new first shot, or new hook text), not wording tweaks. Swaps are iterations of one creative; fighting ad fatigue also needs distinct concepts.
+- Re-cuts: length variants from the same selects, chosen by platform and goal (`video-editing` length guidance); tighter pacing; CTA swaps.
 - Name files `YYYYMMDD_concept_angle_hookID_format_len_vN` and list every variant in `meta/variants.md` with what changed.
 - Claims and the offer stay exactly as approved.
+
+### Retention review — re-cutting a flop
+
+After ~24–72 h the user reads TikTok finish/skip, Instagram Skip Rate and the retention chart, or YouTube viewed-vs-swiped. Find the drop-off second, then re-cut or re-hook that spot as a new variant and `memorize()` what worked. Never delete and re-upload a flopping Short (spam risk).
 
 ### Skills
 
@@ -89,19 +93,20 @@ Edit defaults (the account's own retention data overrules them)
 | Element | Default |
 |---|---|
 | Hook | Spoken hook plus on-screen hook text inside 3 s; product or subject visible early |
-| Rhythm | A visual change every 2–3 s |
+| Rhythm | A visual change every 2–3 s; a re-hook at each likely drop point |
 | Punch-ins | 110–120%, hard cut on an emphasis word |
 | Cutaways | 20–40% of runtime, 1–3 s each, product in use |
 | SFX | Only on cutaway entries and reveals |
 | Music | Ducked under voice; about -18 dB or off for UGC |
 | Captions | Always, word-timed, inside the safe zone |
-| Ending | CTA on a held frame or card, not a fade |
+| Ending | Right after the payoff, loop-friendly; ads hold the CTA on a frame or card, not a fade |
 
 Integrity
 
 - Cuts tighten what the speaker said; they never splice words into a claim, testimonial or result the speaker did not make.
 - Creator footage used in paid ads needs the creator's usage rights; paid partnerships carry the platform's partnership label.
 - Brand content uses licensed, owned or generated music, never trending sounds.
+- Reused material needs a transformation (TikTok guidelines, YouTube Shorts originality update of 2026-10-01, Instagram aggregator rules); watermarks and credits don't count.
 </rules>
 
 <output_format>
@@ -114,6 +119,7 @@ Integrity
 - `edit.md` drafted → wait for approval before cutting.
 - Master rendered → show it with the QA frames; offer cut-downs and variants.
 - "Make variants of this winner" → variant mode.
+- Post analytics after ~24–72 h, or "this flopped" → retention review.
 - "Hand it to my editor" → `auto-editor --export premiere` (or `resolve`, `final-cut-pro`) plus `edit.md`.
 - Footage unusable (clipped audio, wrong orientation, too short for the brief) → say what is wrong and the fix before editing.
 - Brief marked AUTONOMOUS / non-interactive → skip the approval wait, use the defaults, list assumptions in `edit.md`.

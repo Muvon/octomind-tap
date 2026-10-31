@@ -34,7 +34,7 @@ Each social platform has its own combination of aspect ratio, max duration, code
 ### Core Rules
 
 - Always pick the platform spec before generating frames — generation must match the export aspect ratio (don't generate 16:9 then crop to 9:16 unless intentional).
-- Burn captions on top of the base render, not as a sidecar. Meta feeds are watched largely muted and TikTok mostly with sound, so captions carry the message for the muted viewer and accessibility while the audio carries it for everyone else. Render them from word timings through libass with the `video-captions` skill; stock Homebrew ffmpeg has no libass.
+- Burn captions on top of the base render, not as a sidecar. Don't assume Reels are watched sound-off: Meta reports over 75% of Reels views are sound-on (official, Meta for Developers, 2024-11-07). Captions carry the message for the muted viewer and accessibility while the audio carries it for everyone else; in TikTok's Kantar survey 88% of TikTok users said sound is essential (self-reported; official, TikTok for Business blog, 2021-06). Render them from word timings through libass with the `video-captions` skill; stock Homebrew ffmpeg has no libass.
 - Respect the safe zone — keep all critical text and faces away from where the platform's UI sits (top, bottom, right side for TikTok).
 - Final encode in H.264 / yuv420p, even if the source is HEVC / 10-bit. Universal compatibility beats marginal quality.
 - Audio: AAC-LC stereo, 48 kHz, 128 kbps minimum (YouTube recommends 384 kbps stereo for uploads). Mono audio reads as low-quality on most feeds.
@@ -48,7 +48,7 @@ Each social platform has its own combination of aspect ratio, max duration, code
 |---|---|---|---|---|---|---|---|
 | TikTok organic | 9:16 | 1080×1920 | 10 min recorded in-app, 60 min uploaded | 30 / 60 | H.264 | 8–10 Mbps | AAC 128k+ 48kHz |
 | TikTok in-feed ad (non-Spark) | 9:16 (16:9, 1:1 accepted) | 1080×1920 (min 540×960) | 10 min, 500 MB | 30 | H.264 | ≥516 kbps (aim 8 Mbps) | AAC 128k+ 48kHz |
-| Instagram Reels | 9:16 | 1080×1920 (Meta ads guide recommends 1440×2560) | 3 min organic; Reels ads up to 15 min, 4 GB | 30 | H.264 | 5–8 Mbps | AAC 128k+ 48kHz |
+| Instagram Reels | 9:16 | 1080×1920 (Meta ads guide recommends 1440×2560) | Organic up to 20 min since late 2025, but Reels over 3 min aren't recommended to non-followers (reported, Instagram Help via Socialinsider, 2026-07); Reels ads up to 15 min, 4 GB | 30 | H.264 | 5–8 Mbps | AAC 128k+ 48kHz |
 | YouTube Shorts | 9:16 or 1:1 | 1080×1920 | 3 min; any square/vertical upload ≤3 min is classified as a Short automatically | 30 / 60 | H.264 | 8–12 Mbps | AAC 384k 48kHz |
 | Facebook video | 9:16 or 4:5 | 1080×1920 / 1080×1350 | All Facebook video uploads publish as Reels since 2025; feed ads 1s–241 min, 4 GB | 30 | H.264 | 5–8 Mbps | AAC 128k+ 48kHz |
 | IG / FB Stories | 9:16 | 1080×1920 | 60s per card | 30 | H.264 | 5–8 Mbps | AAC 128k+ 48kHz |
@@ -78,7 +78,8 @@ Each social platform has its own combination of aspect ratio, max duration, code
 - Font: bold sans (Poppins Black, Montserrat Black, Anton, Inter Black). Caption text roughly 80–110 px at 1080×1920, hook text slightly smaller in a box.
 - Stroke + drop shadow: about 8% of font size stroke, soft shadow — preserves readability over any background.
 - One sentence per card max. Two-sentence cards get skipped.
-- Word-by-word reveal in time with VO outperforms full-sentence flat captions on TikTok / Reels. Keep on-screen text at or under 5–10 words per second (TikTok creative guidance).
+- Word-by-word reveal in time with VO is the common preset look; test it against flat full-sentence captions on the account's own data (no measured source). Keep on-screen text at or under 5–10 words per second (TikTok creative guidance).
+- Instagram captions hold at most 2,200 characters (official, Meta developer docs, Instagram Graph API media reference). Instagram posts allow at most 5 hashtags (reported, Business Today, 2025-12-19; newer than the API reference, which may lag). Put the hook and topic words in the first line, before the "more" truncation.
 
 ### Output Presets (ffmpeg) — copy-paste ready
 
@@ -113,7 +114,7 @@ Each social platform has its own combination of aspect ratio, max duration, code
 | Brief says | Output |
 |---|---|
 | "TikTok ad" | 9:16, 1080×1920, 30fps, H.264 8 Mbps; length is a creative choice (allowed up to 10 min) |
-| "Instagram Reel" | 9:16, 1080×1920, 30fps, ≤3 min, H.264 6 Mbps |
+| "Instagram Reel" | 9:16, 1080×1920, 30fps, ≤3 min when the goal is non-follower discovery (up to 20 min is allowed but mostly reaches followers), H.264 6 Mbps |
 | "YouTube Short" | 9:16, 1080×1920, 60fps if motion-heavy else 30, ≤3 min; keep ≤60s if it uses any claimable music |
 | "Story (any platform)" | 9:16, 1080×1920, 30fps, ≤60s per card |
 | "IG feed" | 4:5, 1080×1350, 30fps |
@@ -183,3 +184,8 @@ Brief: One ad, ship to TikTok + IG Reels + IG feed + YT Shorts + YT long-form tr
 - [Meta Ads Guide](https://www.facebook.com/business/ads-guide)
 - [New York synthetic performer ad disclosure, GBL § 396-b (Cooley summary)](https://www.cooley.com/news/insight/2026/2026-01-29-new-york-enacts-synthetic-performer-disclosure-law-for-advertisements-including-those-using-generative-ai)
 - [TikTok creative best practices](https://ads.tiktok.com/help/article/creative-best-practices)
+- [Instagram Reels length (Instagram Help via Socialinsider)](https://www.socialinsider.io/blog/instagram-reels-length/), 2026-07, reported.
+- [Meta Reels ads, sound-on share](https://developers.facebook.com/blog/post/2024/11/07/unlock-the-power-of-reel-ads), 2024-11-07, official.
+- [Instagram five-hashtag cap (Business Today)](https://www.businesstoday.in/technology/news/story/no-more-hashtag-stuffing-instagram-limits-hashtag-usage-to-just-5-per-reel-and-post-507444-2025-12-19), 2025-12-19, reported.
+- [Instagram Graph API: IG User media](https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/media), official — caption maximum 2,200 characters.
+- [TikTok for Business: Kantar report on sound](https://ads.tiktok.com/business/en-US/blog/kantar-report-how-brands-are-making-noise-and-driving-impact-with-sound-on-tiktok), 2021-06, official — 88% of TikTok users say sound is essential (self-reported).

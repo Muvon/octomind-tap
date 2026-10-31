@@ -21,7 +21,7 @@ Collect inspectable TikTok evidence for a specific audience and buying situation
 
 Separate observed posts, commercial examples and generated suggestions. A popular post is evidence of attention; it does not establish retention, conversions or the cause of its distribution.
 
-TikTok's historical explainer says follower count and prior hits are not direct recommendation factors (official, TikTok recommendation explainer, 2020-06). That does not make views divided by followers a pure algorithm score. Account history and outside exposure remain possible explanations; don't infer current launch-pool rules from that old explainer.
+TikTok's recommendation page lists finished and skipped videos, soundtrack, post time, region and hashtags among its signals, and says top-ranked items that are too similar (for example the same sound) are swapped out for diversity (official, TikTok recommendation system page, undated; checked 2026-10). An older explainer says follower count and prior hits are not direct factors (official, TikTok recommendation explainer, 2020-06). That does not make views divided by followers a pure algorithm score. Account history and outside exposure remain possible explanations; don't infer launch-pool rules or numeric weights from either source.
 
 Use chart changes and new relevant executions to assess momentum. A post-level reach window does not establish a trend's expiration date. Classify sound-dependent versus reusable-format candidates to decide what needs rechecking before production (directional).
 
@@ -84,15 +84,15 @@ Use ordinal decisions: recommend, watch, or reject. Recommend when relevant evid
 
 Compare observed chart direction with recent independent executions. Explain disagreements instead of forcing a verdict. A falling chart with fresh niche-specific examples may still support a useful post; a high rank without recent evidence may need another observation (directional).
 
-Call a candidate crowded when the sampled executions repeat the same device without a useful new angle. Report that as a sample-bound judgment. Don't convert it into a platform saturation penalty, use a fixed age cutoff, or claim the feed reserves a fixed number of same-sound slots (directional).
+Call a candidate crowded when the sampled executions repeat the same device without a useful new angle. Report that as a sample-bound judgment. The diversity swap on near-identical items supports a distinct sound or angle for a crowded candidate; it doesn't establish a platform saturation penalty, a fixed age cutoff, or a fixed number of same-sound slots (directional).
 
 ### Apply originality and commercial gates
 
-Name the author's proposed original layer and any missing asset permission. Reused material without creative edits can be For You-ineligible (official, Integrity and Authenticity, 2025-08). Re-verify the current regional rule when a recommendation depends on it.
+Name the author's proposed original layer as a named transformation (a new demonstration, evidence, or response), and any missing asset permission. Reused material that adds nothing new can be For You-ineligible, as can content that pushes viewers to artificially inflate likes or follows (engagement bait); a trend adaptation without a named transformation is exposed to the first rule (official, Integrity and Authenticity, released 2026-08-25, effective 2026-09-24). Re-verify the current regional rule when a recommendation depends on it.
 
 Capture disclosures and possible rights issues as observations, not enforcement verdicts. Distinguish public visibility from eligibility to republish, advertise or monetize. Don't fill the harvest with duplicated penalty lists or infer an AI-label reach effect from high or low views.
 
-For campaign seeding, prioritize relevant existing creator contributions over a scripted wave of identical comments (directional). Fake engagement and repetitive irrelevant posting are covered by TikTok's authenticity rules (official, Integrity and Authenticity, 2025-08).
+For campaign seeding, prioritize relevant existing creator contributions over a scripted wave of identical comments (directional). Fake engagement and repetitive irrelevant posting are covered by TikTok's authenticity rules (official, Integrity and Authenticity, 2026-08-25).
 
 ### Return a usable brief
 
@@ -168,7 +168,7 @@ Illustrative judgment, not live observations; placeholders require verification 
 - [TikTok One Creative Suite](https://ads.tiktok.com/creative/creativeCenter), undated, verified 2026-09.
 - [SMB Playbook](https://ads.tiktok.com/business/library/Global_SMB_Creative_Playbook.pdf), undated, verified 2026-09.
 - [Content Suite announcement](https://ads.tiktok.com/business/en/blog/content-suite-creator-ugc-library?redirected=1), 2026-06-22; [Product Preview](https://ads.tiktok.com/business/en/blog/tiktok-product-preview), 2026-07-28.
-- [TikTok recommendation explainer](https://newsroom.tiktok.com/how-tiktok-recommends-videos-for-you?lang=en), 2020-06-18; [Integrity and Authenticity](https://www.tiktok.com/community-guidelines/en/integrity-authenticity), 2025-08-14.
+- [TikTok recommendation system](https://www.tiktok.com/transparency/en/recommendation-system), undated, checked 2026-10; [TikTok recommendation explainer](https://newsroom.tiktok.com/how-tiktok-recommends-videos-for-you?lang=en), 2020-06-18; [Integrity and Authenticity](https://www.tiktok.com/community-guidelines/en/integrity-authenticity), released 2026-08-25, effective 2026-09-24.
 
 Re-validate when: URLs redirect or navigation/filter labels change; login or regional access changes; music permissions change; recommendation or authenticity guidance changes.
-Validated: 2026-09
+Validated: 2026-10

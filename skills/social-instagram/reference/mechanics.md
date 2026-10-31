@@ -17,13 +17,13 @@ Use official labels for first-party platform documents; label secondary coverage
 
 Use the measured narrative band in the main skill as a starting test, then inspect the account's actual retention and task completion. Don't enforce the former unsupported average-watch-time budget. Don't turn replay-inclusive total watch time into a guaranteed ranking comparison.
 
-Meta announced Trial Reels available to everyone and sharing to non-followers first (official, Meta Creativity, 2025-06). Check for the control on the publishing account. Use it for exploratory hook testing, record audience and timing differences, and don't describe it as randomized A/B testing. No verified follower gate, exclusive audience guarantee, fixed insights window, grid behavior, or auto-sharing threshold is established here.
+Trial Reels are shown to non-followers first. With auto-share enabled, Instagram can share a trial Reel with followers when it performs well in the first 72 hours, and insights appear about 24 hours after sharing (official, Instagram Creators, 2024-12-10); Meta later announced availability to everyone (official, Meta Creativity, 2025-06). Check for the control on the publishing account. Use it as the organic hook-testing method: publish a different hook on the same idea, compare skip rate and retention, and keep the stronger opening for the main release (directional). Record audience and timing differences, and don't describe it as randomized A/B testing. The performance bar for auto-sharing is unpublished, so don't state a view count; no follower gate or exclusive-audience guarantee is established here.
 
 Series was testing with selected creators as an ordered profile hub for existing or new Reels that viewers can save and resume (reported platform guidance, Meta via TechCrunch Series, 2026-06). When available, package an episodic tutorial with independent entry points; otherwise make each Reel self-contained (directional).
 
 Instagram expanded television availability to Samsung TVs in the US and enabled Reel casting on Google TV and Fire TV; Stories and a horizontal-video home remained tests (official, Meta TV, 2026-06). For likely communal viewing, check text at viewing distance and preserve meaning outside small overlays; don't impose horizontal delivery on ordinary Reels (directional).
 
-Your Algorithm controls were testing additional Feed and Reels entry points and more-or-less preferences; some tests might not ship (reported platform guidance, Mosseri via TechCrunch Controls, 2026-06). Don't promise that a format guarantees distribution, or infer a niche-coherence ranking rule from this announcement.
+Your Algorithm is live globally in English across Reels, Explore, and Feed (Reels first, Explore 2026-04, Feed 2026-06). Posts recommended from a chosen interest carry a topic label such as "From Running"; tapping it shows related content and lets the viewer adjust preferences (official, Instagram, 2026-06-10). Make the Reel's topic legible in the first frames, caption, and on-screen text so the label and the viewer's interest can match. Don't promise that a format guarantees distribution, or infer a niche-coherence ranking rule from this announcement.
 
 First Draft was announced as a starting cut assembled from selected clips, with provisional availability details (reported platform guidance, Instagram via NapoleonCat, 2026-08). If present, use it for assembly and inspect the opening, sequence, subtitle accuracy, and author voice before publication (directional).
 
@@ -39,7 +39,7 @@ Record the actual audio-page URL reached from the Reel and the displayed title o
 
 Hashtag following ended in December 2024, and the verified report describes the five-hashtag cap (reported platform guidance, Instagram via Metricool Trends, 2026-06). Hashtagged posts had about 31% fewer views and 33% fewer interactions, correlationally (measured, Metricool, n=24,364,803 posts, 2026-06). Use literal classification tags when useful; don't infer a hashtag penalty or repeat an unsupported Mosseri quotation.
 
-Write product nouns and use-case language that an interested visitor recognizes. Social search and product-review intent support useful explanations, not keyword stuffing. Google indexing eligibility, exact caption-search matching, on-screen-text matching, and caption-link rollout aren't established by this evidence set. Check live account controls before promising those paths (directional).
+Since 2025-07-10, public professional (Business and Creator, 18+) posts, Reels, and captions are indexed by Google and Bing by default (reported, The Week, 2025-07-12), so write product nouns and use-case language an interested visitor would type, as literal captions rather than keyword stuffing. Social search and product-review intent support useful explanations. Exact caption-search matching, on-screen-text matching, and caption-link rollout aren't established by this evidence set. Check live account controls before promising those paths (directional).
 
 Retain metric names exactly as provided by the account export. Distinguish views, reach, and actions; calculate a rate only with a supplied numerator and denominator. Don't declare impressions or plays universally extinct, or rename aggregate shares as private sends (directional).
 
@@ -67,6 +67,19 @@ Instagram's branded-content definition includes payment, gifts, and loaned produ
 
 Write alt text from the actual image: identify the meaningful object, action, comparison, and essential embedded wording without inventing an emotion or repeating a promotional caption. For a chart or proof export, make the result and its conditions available in readable text; “a chart” is not an equivalent description. Check generated descriptions rather than assuming object recognition captures the point (directional; Meta Accessibility). Automatic description, faithful evidence, and authorship are separate questions.
 
+### Myths to reject
+
+Each row is a claim this evidence set does not support; use the stated fact instead (directional unless marked).
+
+| Myth | What the evidence supports |
+|---|---|
+| Sends count 3–5 times a like; watch time is 35% of ranking | Watch time, likes per reach, and sends per reach are the named top signals; Mosseri said sends are slightly more important than likes for unconnected (non-follower) reach; no weights are published (reported, Mosseri via Social Media Today, 2025-01). |
+| A healthy skip rate is 30–40%; aim for 60–70% viewed | Skip Rate and the retention chart exist (reported, Social Media Today, 2025-08-24); no official benchmark does. Compare against the account's own Reels. |
+| An aggregator posts 10+ reposts in 30 days, or 70% similarity | Instagram assesses accounts on a rolling 30-day basis (official, Instagram Creators, 2026-04-30) and publishes no repost count or similarity percentage (reported, Social Media Today, 2026-04-30). |
+| More than five hashtags reduces reach | Five is the cap; no penalty for using many is documented, and the Metricool hashtag gap above is a correlation. |
+| A watermark, speed change, or credit makes a repost original | Adding a border, watermark, subtitles, or a credit doesn't make a repost original (official, Instagram Creators, 2026-04-30); a speed change doesn't either (reported, TechCrunch, 2026-04-30). Sanctioned reuse is Collabs, Remix, Reposts, and Stories (reported, Social Media Today, 2026-04-30). |
+| Reels are watched sound-off | Over 75% of Reels views are sound-on (official, Meta for Developers, 2024-11-07). Design for both. |
+
 ## References
 
 - [Metricool study](https://metricool.com/press-release-instagram-study-2026/), 2026-06-16; [Trends](https://metricool.com/instagram-trends/), 2026-06-16.
@@ -82,5 +95,9 @@ Write alt text from the actual image: identify the meaningful object, action, co
 - [Editing preprint](https://arxiv.org/abs/2608.26710), 2026-08-27; [StoryScope](https://arxiv.org/abs/2604.03136), revision 2026-08-10; [MIDI](https://arxiv.org/abs/2606.02147), 2026-06-01.
 - [Branded Content Help](https://www.facebook.com/help/instagram/616901995832907), indexed policy text checked 2026-09; [Meta Accessibility](https://about.fb.com/news/2021/01/using-ai-to-improve-photo-descriptions-for-blind-and-visually-impaired-people/), 2021-01-19.
 - [Instagram Content Publishing docs](https://developers.facebook.com/docs/instagram-platform/content-publishing), reviewed 2026-10.
+- [Instagram Trial Reels](https://creators.instagram.com/blog/instagram-trial-reels), 2024-12-10; [Your Algorithm](https://about.instagram.com/blog/announcements/reels-algorithm-control), updated 2026-06-10.
+- [Instagram Creators: rewarding original creators](https://creators.instagram.com/blog/rewarding-original-creators-on-instagram), 2026-04-30; [TechCrunch on the aggregator crackdown](https://techcrunch.com/2026/04/30/instagram-restricts-reach-of-content-aggregators-in-new-crackdown/), 2026-04-30.
+- [Social Media Today originality](https://www.socialmediatoday.com/news/instagram-updates-algorithm-to-benefit-original-creators/819016/), 2026-04-30; [Skip Rate](https://www.socialmediatoday.com/news/instagram-adds-retention-insights-reels/758464/), 2025-08-24.
+- [Meta Reels ads, sound-on share](https://developers.facebook.com/blog/post/2024/11/07/unlock-the-power-of-reel-ads), 2024-11-07; [Instagram indexing by Google and Bing, The Week](https://www.theweek.in/news/sci-tech/2025/07/12/social-media-instagram-posts-and-reels-will-now-pop-up-on-google-and-bing-searches-how-to-enable-disable-this-setting.html), 2025-07-12.
 - Re-validate when: runtime limits or feature names change; API fields or authentication change; disclosure rules change; benchmark editions update.
 Validated: 2026-10

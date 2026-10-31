@@ -59,27 +59,37 @@ Defaults, with the strength of their evidence. Let the account's own retention a
 | Convention | Default | Evidence |
 |---|---|---|
 | Hook | Spoken hook and on-screen hook text in the first 1–3 s; product or brand visible by 3 s | TikTok creative guidance |
-| Captions | Always, word-timed | Platform guidance (muted viewing) |
+| Captions | Always, word-timed; audio leads, captions support | Platform guidance (most views sound-on; captions serve the rest and search) |
 | On-screen text pace | 5–10 words per second at most | TikTok creative guidance |
-| Ending | CTA on a held frame or card, not a fade | TikTok-cited recall data |
-| Length | 15–35 s for ads and organic shorts | Practitioner |
+| Ending | Ads: CTA on a held frame or card, not a fade. Organic: end right after the payoff, last frame flows back into the hook | TikTok-cited recall data; practitioner |
+| Length | By platform and goal (next section); ad length follows the platform's ad spec and the creative test | Measured, per platform |
 | Visual change | Every 2–3 s | Practitioner |
 | Punch-ins | 110–120%, hard cut on an emphasis word | Practitioner |
 | B-roll | 20–40% of runtime, 1–3 s each, product in use | Practitioner and vendor |
 | Music | Ducked under voice; about -18 dB or off for UGC | Practitioner |
 | Look | Native, lo-fi framing beats studio gloss on TikTok | TikTok creative guidance |
 
+### Length by platform and goal
+
+Descriptive data, not targets; let the account's own retention overrule it, and let the story set the length.
+
+- TikTok organic: videos over 60 s got 43.2% more reach (Buffer, 1.1M videos, 2025-03, measured). US TikTok Creator Rewards needs videos of at least 1 min (official terms, 2026-07-20).
+- YouTube Shorts: 11–20 s had the highest median views (quso.ai, 508k posts in the full dataset; Shorts subset size unstated, 2026-06, measured).
+- Instagram Reels: videos up to 3 min can reach non-followers (reported platform guidance, Instagram Help via Socialinsider, 2026-07).
+- Paid ads: length follows the platform's ad spec and the creative test; put the hook and proposition in the first 3 s.
+- Don't pad to hit a length, and don't cut a payoff to fit one.
+
 ### Long-form → clips
 
 1. Transcribe the full episode with word timestamps (`--model medium` or larger for multi-speaker audio).
-2. Find 20–40 s candidates that stand alone: they open on a strong self-contained line and hold the payoff to the end. Never end before the punchline; never open on context the viewer lacks.
+2. Find candidates that stand alone, with length per the platform section above: they open on a strong self-contained line and hold the payoff to the end. Never end before the punchline; never open on context the viewer lacks.
 3. Score each candidate 1–5 on hook strength, standalone clarity, payoff, and quotability. Write `clips.md`: rank, start–end, first line, payoff line, score, suggested on-screen hook.
 4. Cut each pick with a little padding, reframe (track the active speaker per segment), caption with a `--hook` line, and render as `cuts/clip-NN-9x16.mp4`.
 5. Ship the full ranked set; the user's tests pick winners. Automated virality scores are not evidence.
 
 ### Iterating a winning ad
 
-- Hook swaps: same body, new first 1.5–3 s (new spoken line, new opening shot, or new hook text). Ship 3–5 clearly different hooks, not wording tweaks.
+- Hook swaps: same body, new first 1.5–3 s (new spoken line, new opening shot, or new hook text). Ship 3–5 clearly different hooks, not wording tweaks, plus distinct concepts (different angle, format, or opening scene): Jon Loomer's Meta Andromeda guidance says ad variations should differ significantly, not subtly, so concept variety is what widens the test (directional).
 - Re-cuts: 15 / 30 / 45 s lengths from the same selects; tighter pacing; a different CTA.
 - Resizes: 9:16 master, then 4:5 and 1:1 for feeds, re-captioned at each size.
 - Name every file `YYYYMMDD_concept_angle_hookID_format_len_vN` (e.g. `20261024_founder_pain_h3_9x16_30s_v1.mp4`) and list each variant in `meta/variants.md` with what changed.
@@ -126,6 +136,9 @@ Keep generation loss low: intermediates at `-crf 16 -preset veryfast`, one final
 - [ ] Word-timed captions on the final mix, inside the safe zone.
 - [ ] Platform encode per `video-spec-sheet`; cut-downs re-captioned; cover frame saved.
 - [ ] Variants named by the convention and listed in `meta/variants.md`.
+- [ ] Length chosen for the platform and goal; organic ends right after the payoff and loops into the hook.
+- [ ] Variants include distinct concepts, not only hook swaps.
+- [ ] After posting: retention drop-off second found and re-cut or re-hook done (`video-hooks`).
 
 ## Composition / References
 
@@ -136,3 +149,8 @@ Keep generation loss low: intermediates at `-crf 16 -preset veryfast`, one final
 - [auto-editor options](https://auto-editor.com/ref/options)
 - [TikTok creative best practices](https://ads.tiktok.com/help/article/creative-best-practices)
 - [ffmpeg filters](https://ffmpeg.org/ffmpeg-filters.html)
+- [Buffer: longer TikToks get more views](https://buffer.com/resources/longer-tiktoks-get-more-views-data) — 1.1M videos, over 60 s +43.2% reach (measured, 2025-03).
+- [quso.ai video retention benchmarks](https://quso.ai/research/video-retention-benchmarks) — 508k posts in the full dataset (Shorts subset size unstated), Shorts 11–20 s highest median views (measured, 2026-06).
+- [TikTok Creator Rewards program terms (US)](https://www.tiktok.com/legal/page/global/creator-rewards-program-us/en) — US eligibility needs videos of at least 1 min (official, 2026-07-20).
+- [Instagram Reels length (Instagram Help via Socialinsider)](https://www.socialinsider.io/blog/instagram-reels-length/) — non-follower reach for videos up to 3 min (reported, 2026-07).
+- [Jon Loomer: Meta Andromeda creative diversification](https://www.jonloomer.com/meta-andromeda-creative-diversification/) — variations should differ significantly, not subtly (directional, 2025-10-20).

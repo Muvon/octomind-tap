@@ -35,7 +35,8 @@ Strong ads aren't written from scratch — they're written into a framework that
 ### Core Rules
 
 - Pick the framework before writing the script. Trying to pick mid-draft means the writer reverts to default narration.
-- Every framework needs an explicit CTA. Implicit "the offer is the rest of the video" loses ~30% conversion.
+- Every framework needs an explicit CTA. In Meta/Toluna's analysis of 100 short-form ads (correlational), direct-response ads with a CTA were 1.9× likelier to land in the top 20% for purchase intent (measured). Implicit "the offer is the rest of the video" leaves that on the table.
+- Put the product and the proposition on screen early, then show them again. In the same correlational analysis, brand plus message in the first 5 s scored 1.7× for brand ads, and showing the product more than once scored 2.7× for direct-response ads (top 20% for purchase intent). Adding context that supports the main message, such as USPs or features ("Tell your story"), scored 5.3× for direct-response ads (measured; top 20% for purchase intent). TikTok's guidance: put the proposition in the first 3 s (official). Never hold the product reveal for the last third.
 - Match framework to audience awareness, not your preference. A cold audience can't follow PAS — they don't yet feel the problem.
 - One framework per piece. Mixing AIDA + PAS halfway through makes the piece muddled.
 - Specifics, not adjectives. "47% faster" beats "much faster". Numbers, names, time spans.
@@ -63,9 +64,9 @@ The workhorse of direct-response. Works when the audience already has the pain.
 
 | Beat | Job | Time in 30s ad |
 |---|---|---|
-| Problem | Name the pain, mirror the audience's frustration | 0–6s |
-| Agitation | Twist the knife — show what happens if it's not solved | 6–18s |
-| Solution | Reveal the fix, demo, prove | 18–26s |
+| Problem + proposition | Name the pain, mirror the frustration, and put the product or proposition on screen | 0–5s |
+| Agitation | Twist the knife — show what happens if it's not solved, with the product still on screen | 5–16s |
+| Solution | Demo the product already introduced, prove it, show it again in use | 16–26s |
 | CTA | One specific action | 26–30s |
 
 When to use: Performance ads, problem-aware to most-aware audiences, B2B.
@@ -116,8 +117,8 @@ The dominant short-form social structure.
 | Beat | Job |
 |---|---|
 | Hook | First 1.5s (see `video-hooks`) |
-| Story | One specific narrative — first-person, real or composite. ~70% of total runtime. |
-| Offer | Product reveal + CTA, ~20% of runtime |
+| Story | One specific narrative — first-person, real or composite. ~70% of total runtime. Product visible from the first 3–5 s and shown again in use. |
+| Offer | Offer details + CTA, ~20% of runtime. The product is already on screen; this beat names the deal. |
 
 When to use: TikTok / Reels / Shorts UGC and creator-style ads. Default for short-form.
 Avoid for: B2B explainer, anything where a story would feel forced.
@@ -141,6 +142,7 @@ Avoid for: B2B explainer, anything where a story would feel forced.
 5. Run every claim through the 4Us check.
 6. Read aloud at 1.5x speed. If it sounds AI / scripted at speed, rewrite for natural cadence.
 7. Show the script with timestamps, not just lines. Time is the unit, not paragraphs.
+8. Check the product and proposition are on screen in the first 3–5 s and shown more than once, and that a CTA is present.
 
 ### Decision Guide
 
@@ -163,10 +165,10 @@ Avoid for: B2B explainer, anything where a story would feel forced.
 Product: An on-call alerting tool. Audience: backend engineers, problem-aware (their team uses PagerDuty + duct tape).
 
 ```
-0–2  P  Hook: "Your on-call rotation is broken and your team knows it."
-       (visual: phone going off at 3am, hand smacking the snooze)
+0–3  P  Hook: "Your on-call rotation is broken. [Product] fixes the noise."
+       (visual: phone going off at 3am, hand smacking the snooze, the product's alert card on screen)
 
-2–8  P  "67% of pages last quarter were noise — the kind that wakes you up
+3–8  P  "67% of pages last quarter were noise — the kind that wakes you up
        for a flapping check that auto-resolves before you log in."
        (visual: fast-cut alerts spamming a dashboard)
 
@@ -190,7 +192,7 @@ Product: A teeth-whitening pen. Audience: cold, scrolling.
 ```
 0–1.5  Hook: "I tested 11 whitening pens for my wedding. Only one didn't
               wreck my enamel."
-              (visual: line-up of pens, hand pushing 10 off-screen)
+              (visual: line-up of pens, hand pushing 10 off-screen, the winner stays in frame)
 
 1.5–14 Story: "I'm 4 weeks out, panicking, and Sephora is full of strips
               that bleed at the gums. This one [show product] — bamboo
@@ -213,9 +215,18 @@ Product: A teeth-whitening pen. Audience: cold, scrolling.
 11–15 A "Free calculator at link. 60 seconds, no signup."
 ```
 
+## Checklist
+
+- [ ] Framework picked from the audience awareness stage before drafting; one framework per piece.
+- [ ] Product and proposition on screen in the first 3–5 s, shown more than once, with USPs or features supporting the main message.
+- [ ] Explicit single CTA; no claim without proof; every line through the 4Us.
+
 ## References
 
 - Eugene Schwartz, Breakthrough Advertising (1966) — the awareness-level model.
 - David Ogilvy, Ogilvy on Advertising — the canonical book on long-form direct-response.
 - [Meta Ads Library](https://www.facebook.com/ads/library/) — to study current top-spending ads.
 - [TikTok Top Ads](https://ads.tiktok.com/business/creativecenter/topads) — by vertical and region.
+- [TikTok creative best practices](https://ads.tiktok.com/help/article/creative-best-practices) — proposition in the first 3 s (official, 2025-06).
+- [Meta: Reels creative strategies](https://www.facebook.com/business/news/reels-creative-strategies) — Meta x Toluna analysis of 100 short-form video ads, correlational: CTA 1.9× (direct-response), brand plus message in first 5 s 1.7× (brand ads), product shown more than once 2.7× (direct-response, top 20% purchase intent), "Tell your story" (USPs or features supporting the main message) 5.3× (direct-response) (official, measured, 2025-12-02).
+- [ppc.land write-up of the Meta/Toluna study](https://ppc.land/meta-and-toluna-study-finds-emojis-lift-reels-purchase-intent-2-5x/) — secondary coverage (reported, 2026-05-18).

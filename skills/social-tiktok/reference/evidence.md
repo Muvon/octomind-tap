@@ -15,7 +15,8 @@ Open this reference when quoting benchmarks, explaining recommendation or AI mec
 | Short videos of 15–30 seconds led engagement at 6.00%; videos of 120–180 seconds led median views at 11,136 (measured, Socialinsider, n=6M brand videos posted January–June, 2026-07). | Choose the goal before choosing length; neither result establishes conversion or search superiority. |
 | Posts accumulated 96% of reach and nearly 98% of interactions within the first 10 days (measured, Metricool, n=2,314,756 posts, 2026-05). | Use the window for a review, never a trend expiration or instruction to delete old posts. |
 | Evenings from 6–11 p.m. performed broadly well, Saturday led by day, and Sunday at 9 a.m. led individual slots; no universal best time exists (measured, Buffer Timing, n=7.1M posts, 2026-07). | Test against audience-local analytics; don't impose a global clock. |
-| Higher frequency was associated with better breakout odds while median views stayed flat (measured, Buffer Frequency, n=TikTok posting-frequency analysis; sample not established in cited guide, 2026-01). | Raise cadence only when fresh evidence and reply capacity permit; don't promise an improved typical post. |
+| Median views stayed flat (459–506) across posting frequencies while top-10% views rose from 3,722 (1 post/week) to 14,401 (11+/week); 2–5 posts/week were the most efficient (measured, Buffer Frequency, n=11.4M posts from 150k accounts, 2025-10). | Frame volume as raising breakout odds, not the typical post. Raise cadence only when fresh evidence and reply capacity permit. |
+| Videos over 60 seconds got 43.2% more reach (measured, Buffer Length, n=1.1M videos, 2025-03). | Supports 60s+ for monetizing creators; for reach-only goals still choose length by payoff, since reach isn't retention or conversion. |
 
 Buffer's top-performer cadence gap was narrower on TikTok than on text-led networks, with resources and momentum unresolved as explanations (measured, Buffer Engagement, n=52M+ cross-platform posts, 2026-03). Budget production time before promising output. The same report's reply-lift analysis excluded TikTok; don't attach a TikTok reply multiplier.
 
@@ -23,9 +24,9 @@ Formats performed differently across Instagram and TikTok in Metricool's compari
 
 Reported TikTok daily-use depth came from Android usage, not viewing time for a particular brand or post (measured, The Star usage report, n=February Android usage summary, 2026-08). Test related episodes only when the audience has continuing questions (directional); time spent on the app doesn't establish demand for your series.
 
-## Historical mechanisms and production
+## Mechanisms and production
 
-The recommendation explainer lists interactions, video information and device/account settings, describes completion of a longer video as stronger than shared geography, and says consecutive recommendations generally avoid the same creator or sound (official, TikTok recommendation explainer, 2020-06). These are historical descriptions, not verified current model invariants. Don't infer a universal follower-first test, fixed initial pool, current numeric weights, or saturation penalty from them.
+The current recommendation page lists finished and skipped videos, follows, post time, post region, author language, soundtrack, video length and hashtags as signals; it says per-interaction prediction scores are combined, top-ranked items that are too similar (for example the same sound) are swapped out for diversity, and regional creators are mixed in (official, TikTok recommendation system page, undated; checked 2026-10). Treat first-frame retention and skip-avoidance as the primary creative lever, and advise a distinct audio layer rather than only the same trending sound. The page gives no weights; don't infer numeric weights or a fixed test batch. The 2020 explainer says follower count and prior hits are not direct factors and describes completion of a longer video as a strong signal (official, TikTok recommendation explainer, 2020-06); it is a historical description, not a verified current invariant. Since the USDS joint venture "will retrain, test, and update" the US algorithm with no published completion date (official, USDS joint venture announcement, 2026-01-23), tell US users to re-validate. Local Feed (US) ranks by location, topic and post time and excludes under-18 accounts, private accounts, and Friends/Only-you posts (official, TikTok Local Feed announcement, 2026-02-11).
 
 The playbook calls the opening 3–6 seconds critical and recommends a hook followed by selling points and a CTA (official, SMB Playbook, undated; verified 2026-09). Treat the structure as a creative scaffold; it isn't an organic ranking threshold.
 
@@ -35,15 +36,15 @@ The production recommendation is full-screen 9:16, no lower than 720p, and sound
 
 ## Earnings and search
 
-Ask whether the author is actually pursuing Creator Rewards. Obtain current account and regional terms before giving eligibility, duration or qualified-view advice. The retained sources do not establish current follower/view thresholds, the duration floor, qualified-view seconds or exclusions; don't recycle them as current facts.
+Ask whether the author is actually pursuing Creator Rewards. US terms require videos of at least 1 minute, at least 10,000 genuine followers and at least 100,000 views in the last 30 days; Business accounts are excluded and unauthorized music can make a video ineligible (official, US Creator Rewards terms, updated 2026-07-20). A monetizing creator scripts to 60 seconds or more; a reach-only post sets length by payoff. Terms are regional and change, so check the account's market before quoting them outside the US. The retained sources do not establish qualified-view seconds.
 
-TikTok's historical announcement named originality, play duration, search value and audience engagement as program priorities (official, Creator format announcement, 2024-03). That isn't a current RPM equation. Don't promise higher earnings from searchable copy or state a current program formula without re-verifying it.
+TikTok defines play duration as watch time plus finish rate and search value as matching popular search terms, alongside originality and audience engagement (official, Creator Rewards announcement, 2024-03-18). That isn't a published RPM equation. Don't promise higher earnings from searchable copy or state a payout formula.
 
-Use buyer vocabulary in speech and captions for clarity (directional). The evidence does not verify organic spoken-keyword indexing, current Keyword Insights search-demand coverage, or the old Adobe survey attribution. Leave those claims out. Confirm the live search surface before promising a specific search workflow.
+Use buyer vocabulary in speech and captions for clarity (directional). The evidence does not verify organic spoken-keyword indexing, current Keyword Insights search-demand coverage, or the old Adobe survey attribution. Leave those claims out. The Search Ads creative tips say to show keywords as on-screen text or overlays and put keywords in the title and description (official, TikTok Search Ads creative tips, ads-scoped, 2026-01); apply it as clarity practice, not a proven organic ranking effect. Confirm the live search surface before promising a specific search workflow.
 
 ## AI and regional scope
 
-TikTok's general guidelines distinguish realistic synthetic people/scenes and meaning-changing edits from minor aesthetic edits or generic TTS that does not imitate a known person's voice. They require disclosure for the former, while some harmful fabrications remain prohibited even with disclosure (official, Integrity and Authenticity, 2025-08; rechecked 2026-09). Use the finished asset's actual construction, not a detector score or a claim that every synthetic voice is forbidden. A source-backed script read by TTS and a fabricated first-person testimonial are different cases.
+TikTok's general guidelines distinguish realistic synthetic people/scenes and meaning-changing edits from minor aesthetic edits or generic TTS that does not imitate a known person's voice. They require disclosure for the former, while some harmful fabrications remain prohibited even with disclosure (official, Integrity and Authenticity, released 2026-08-25, effective 2026-09-24). The same version makes content that pushes viewers to artificially inflate likes or follows (engagement bait) ineligible for For You. Use the finished asset's actual construction, not a detector score or a claim that every synthetic voice is forbidden. A source-backed script read by TTS and a fabricated first-person testimonial are different cases.
 
 TikTok reported over 3 billion AIGC-labeled videos, creator labels, Content Credentials and invisible watermarking; it also reported joining the C2PA Steering Committee (official, TikTok AI Update, 2026-07). Retain provenance metadata and don't infer a launch date for watermarking from this announcement.
 
@@ -55,14 +56,28 @@ Symphony Creative Studio is available to logged-in TikTok for Business marketers
 
 Don't generalize US Shop, UK case studies or the New Zealand newsroom announcement into identical global/US operating rules. Obtain applicable market guidance for the finished asset, including commercial and synthetic-media disclosures. No verified EU-law or ownership-specific algorithm conclusion is supplied here.
 
+## Claims to reject
+
+None of these traces to an official or measured source in this evidence set. Don't repeat them as fact:
+
+- Watch time weighted about 30% more since a January 2026 update.
+- The US For You feed switched to an Oracle-rebuilt model in April 2026.
+- A fixed follower-first test batch (community testing only, unconfirmed).
+- Trending sounds give +98.31% views or +47% reach; original audio gets 20–35% more saves.
+- Duets give +127% views.
+- A qualified view is more than 5 seconds from For You (not in the US terms).
+- 1:1 and 16:9 ads are down-weighted.
+- TikTok and Reels are watched sound-off (the ad playbook recommends sound).
+- 63% of successful TikTok ads deliver the message in 3 seconds (untraced).
+
 ## References
 
 - [Metricool press release](https://metricool.com/press-release-tiktok-study-2026/), 2026-05-12; [study landing page](https://metricool.com/tiktok-study/), 2026-05-12; [CTA analysis](https://metricool.com/tiktok-trends/), 2026-05-13.
-- [Buffer Formats](https://buffer.com/resources/data-best-content-format-social-media/), 2026-03-19; [Engagement](https://buffer.com/resources/state-of-social-media-engagement-2026/), 2026-03-05; [Timing](https://buffer.com/resources/best-time-to-post-on-tiktok/), 2026-07-20; [Frequency](https://buffer.com/resources/social-media-frequency-guide/), 2026-01-13.
+- [Buffer Formats](https://buffer.com/resources/data-best-content-format-social-media/), 2026-03-19; [Engagement](https://buffer.com/resources/state-of-social-media-engagement-2026/), 2026-03-05; [Timing](https://buffer.com/resources/best-time-to-post-on-tiktok/), 2026-07-20; [Frequency](https://buffer.com/resources/how-often-should-you-post-on-tiktok), 2025-10-08; [Length](https://buffer.com/resources/longer-tiktoks-get-more-views-data), 2025-03.
 - [Socialinsider](https://www.socialinsider.io/blog/how-long-are-tiktok-videos/), 2026-07-10; [Metricool Instagram](https://metricool.com/press-release-instagram-study-2026/), 2026-06-16; [The Star usage report](https://www.the-star.co.ke/news/infographics/2026-08-19-how-much-time-people-spend-on-social-media-apps), 2026-08-19.
-- [Recommendation explainer](https://newsroom.tiktok.com/how-tiktok-recommends-videos-for-you?lang=en), 2020-06-18; [SMB Playbook](https://ads.tiktok.com/business/library/Global_SMB_Creative_Playbook.pdf), undated, verified 2026-09; [Creator format announcement](https://newsroom.tiktok.com/for-creators-future-format-summit?lang=en), 2024-03-05.
+- [Recommendation system](https://www.tiktok.com/transparency/en/recommendation-system), undated, checked 2026-10; [Recommendation explainer](https://newsroom.tiktok.com/how-tiktok-recommends-videos-for-you?lang=en), 2020-06-18; [SMB Playbook](https://ads.tiktok.com/business/library/Global_SMB_Creative_Playbook.pdf), undated, verified 2026-09; [Creator Rewards announcement](https://newsroom.tiktok.com/introducing-the-new-creator-rewards-program), 2024-03-18; [US Creator Rewards terms](https://www.tiktok.com/legal/page/global/creator-rewards-program-us/en), updated 2026-07-20.
 - [TikTok AI Update](https://newsroom.tiktok.com/helping-people-spot-and-understand-ai-generated-content-on-tiktok-nz?lang=en-NZ), 2026-07-10; [US Shop AIGC Rules](https://seller-us.tiktok.com/university/essay?knowledge_id=491489038501663&lang=en), 2026-07-31; [Symphony announcement](https://ads.tiktok.com/business/en/blog/tiktok-symphony-ai-creative-suite/), 2026-06-22.
-- [Integrity and Authenticity](https://www.tiktok.com/community-guidelines/en/integrity-authenticity), 2025-08-14, effective 2025-09-13; rechecked 2026-09.
+- [Integrity and Authenticity](https://www.tiktok.com/community-guidelines/en/integrity-authenticity), released 2026-08-25, effective 2026-09-24; [USDS joint venture](https://newsroom.tiktok.com/announcement-from-the-new-tiktok-usds-joint-venture-llc), 2026-01-23; [Local Feed](https://newsroom.tiktok.com/introducing-the-local-feed), 2026-02-11; [Search Ads creative tips](https://ads.tiktok.com/help/article/search-ads-creative), updated 2026-01.
 
 Re-validate when: new benchmark editions appear; recommendation documentation changes; program or regional terms change; AI labeling or music rights change.
-Validated: 2026-09
+Validated: 2026-10

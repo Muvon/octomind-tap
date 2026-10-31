@@ -15,11 +15,13 @@ rules:
 
 Draft from supplied facts and proof, then the author's documented voice, then platform conventions. Use `content-voice` for generic editing; this playbook adds Instagram packaging and conversion decisions. Never invent experience or results to make a caption sound personal. Writing a package doesn't authorize publication, outreach, or DMs.
 
-Open reference/mechanics.md when choosing runtime, interpreting benchmarks, using audio or experimental features, or preparing AI disclosure. Open reference/launch.md when drafting any launch or proof package, planning creator participation, or measuring a conversion path.
+Open reference/mechanics.md when choosing runtime, interpreting benchmarks, using audio or experimental features, preparing AI disclosure, or checking a growth claim against its myths list. Open reference/launch.md when drafting any launch or proof package, planning creator participation, or measuring a conversion path.
 
 ## Mental model
 
-Monitor average watch time, likes per reach, and sends per reach. Mosseri named watch time, likes, and sends as leading signals, with likes more relevant to connected reach and sends to unconnected reach; average watch time isn't a per-reach ratio (reported platform guidance, Mosseri via Social Media Today, 2025-01). This dated statement isn't a complete current ranking formula.
+Monitor average watch time, likes per reach, and sends per reach. Mosseri named watch time, likes, and sends as leading signals and said sends are slightly more important than likes for unconnected (non-follower) reach; average watch time isn't a per-reach ratio (reported platform guidance, Mosseri via Social Media Today, 2025-01). This dated statement isn't a complete current ranking formula.
+
+Reels Insights reports Skip Rate, the share of views that left within the first 3 seconds, plus a per-Reel retention chart showing where viewers stop; a flatter line means a more engaged audience (reported platform guidance, Instagram via Social Media Today, 2025-08). Write the hook to lower skip rate and use the retention chart to find the beat that loses people. Weights between watch time, likes per reach, and sends per reach are unpublished, so don't state a ratio such as sends counting several times a like, and no official skip-rate benchmark exists; compare against the account's own Reels (directional).
 
 Treat Feed, Explore, Reels, and Stories separately. Don't infer distribution weights from a visible post. For Feed, design for time worth spending, substantive comments, and a clear reason to visit the profile; these are editorial objectives, not verified current signal weights (directional). Use Stories for relationship follow-up (directional).
 
@@ -36,7 +38,7 @@ Choose a format by its job. Reels led discovery in Metricool's sample; carousels
 
 Reels accept up to 20 minutes, but those over 3 minutes aren't recommended to non-followers through Explore or the Reels tab, according to the cited Help Center summary (reported platform guidance, Instagram Help via Socialinsider, 2026-07). Keep discovery explainers within that ceiling; don't pad a simple visual to the measured narrative band.
 
-Open with the action or evidence instead of a logo card. Script hook, on-screen text, voiceover, shot changes, and last frame separately. Make meaning understandable without hearing; check subtitle accuracy, contrast, and whether overlays obscure the demonstration. Choose original speech or licensed music for the idea; a trending track needs both relevance and suitable rights (directional).
+Open with the action or evidence instead of a logo card. Test hooks with Trial Reels, which show to non-followers first (official, Instagram Creators, 2024-12); see the mechanics reference for the follower auto-share and insights timing. Script hook, on-screen text, voiceover, shot changes, and last frame separately. Make meaning understandable without hearing, but don't assume sound is off: Meta reports over 75% of Reels views are sound-on (official, Meta for Developers, 2024-11). Check subtitle accuracy, contrast, and whether overlays obscure the demonstration. Choose original speech or licensed music for the idea; a trending track needs both relevance and suitable rights (directional).
 
 Total watch time includes replay time (official, Meta Reels Insights, 2023-04). A natural loop can be useful; it doesn't guarantee a ranking advantage (directional).
 
@@ -44,7 +46,7 @@ Carousels can be resurfaced on another frame after an unengaged exposure (report
 
 ### Caption, cover, and profile
 
-Use these caption bands as editorial shapes, without a universal character cutoff (directional):
+The maximum caption length is 2,200 characters (official, Meta developer docs, Instagram Graph API media reference). Within it, use these caption bands as editorial shapes, without a universal visible cutoff (directional):
 
 | Band | Use | Shape |
 |---|---|---|
@@ -54,9 +56,9 @@ Use these caption bands as editorial shapes, without a universal character cutof
 
 Put the specific subject and reason to care in the first line. Preview the actual collapsed caption and move the payoff above “more”; don't assume a fixed truncation count. Use blank lines between changes of thought, not after every sentence. Place the CTA after value, unless access instructions are needed immediately. Use emojis only when they match the author and carry meaning; don't replace words or bullets with them (directional).
 
-Use literal topic language early for clarity and search intent; don't call captions a confirmed Reels ranking factor. Write alt text describing the actual image and essential embedded text; don't stuff keywords into accessibility copy. Supply an accessible visual description alongside video captions when needed (directional).
+Use literal topic language early for clarity and search intent. Public professional (18+) posts have been indexed by Google and Bing by default since 2025-07-10, so keyword-literal captions can serve outside search too (reported, The Week, 2025-07-12). With Your Algorithm topic labels (such as "From Running") now across Feed, Reels, and Explore, make the Reel's topic legible in the first frames, caption, and on-screen text (official, Instagram, 2026-06-10). Don't call captions a confirmed Reels ranking factor. Write alt text describing the actual image and essential embedded text; don't stuff keywords into accessibility copy. Supply an accessible visual description alongside video captions when needed (directional).
 
-Posts and Reels have a five-hashtag cap in the verified feature report (reported platform guidance, Instagram via Metricool Trends, 2026-06). Use fewer when no additional descriptive tag helps. Preview cover crops in both feed and profile views; keep the central subject and title readable. Align bio wording, destination link, pinned posts, and Highlights with the visitor's buying question, and remove obsolete launch promises (directional).
+Posts and Reels have a five-hashtag cap (reported platform guidance, Business Today, 2025-12-19; Instagram via Metricool Trends, 2026-06); it is newer than the Graph API reference, which may lag. Use fewer when no additional descriptive tag helps; a cap is not evidence that more tags reduced reach. Preview cover crops in both feed and profile views; keep the central subject and title readable. Align bio wording, destination link, pinned posts, and Highlights with the visitor's buying question, and remove obsolete launch promises (directional).
 
 Live, Broadcast Channels, and Notes are optional support formats: propose Live for a staffed demonstration, Channels for opted-in updates, and Notes for a brief prompt only after checking account availability. Feature eligibility and limits aren't established here. Threads cross-posting requires a separate destination edit; don't assume the Instagram caption and CTA transfer unchanged (directional).
 
@@ -116,7 +118,7 @@ Assign reply coverage at publication and during the following days. Remove spam 
 
 ## What gets suppressed
 
-Accounts primarily reposting unoriginal Reels, photos, or carousels can lose recommendation distribution. Material additions matter; watermark changes, speed changes, and credited screenshots are insufficient. Followers may still see content; the report describes an exception for licensed publishers. This doesn't mean non-followers can never encounter it (reported platform guidance, Instagram via TechCrunch, 2026-04). Meta's first-party originality announcement separately distinguishes recommendation treatment from intellectual-property rules: credit or permission alone doesn't establish every distribution claim (official, Meta Originality, 2024-04).
+Accounts primarily reposting unoriginal Reels, photos, or carousels can lose recommendation distribution. Instagram assesses accounts on a rolling 30-day basis, and adding a border, watermark, subtitles, or a credit doesn't make a repost original (official, Instagram Creators, 2026-04-30); a speed change doesn't either (reported, TechCrunch, 2026-04-30). Followers may still see the content, and the report describes an exception for licensed publishers. The sanctioned routes for another creator's work are Collabs, Remix, Reposts, and Stories, so add material of your own. No repost-count or similarity threshold is published (reported platform guidance, Instagram via Social Media Today, 2026-04-30). This doesn't mean non-followers can never encounter it. Meta's first-party originality announcement separately distinguishes recommendation treatment from intellectual-property rules: credit or permission alone doesn't establish every distribution claim (official, Meta Originality, 2024-04).
 
 Other-app logos can limit Reel recommendations; your own logo is allowed (reported platform guidance, Mosseri via Social Media Today, 2024-10). Export a clean master. Keep video legible and avoid borders or text that hides the subject as production craft; don't claim a verified current muted-video penalty (directional).
 
@@ -198,13 +200,16 @@ The voice rule answers a buying concern without inventing a successful treatment
 ## References
 
 - [Mosseri signals](https://www.socialmediatoday.com/news/instagram-shares-algorithm-insights-2025/738034/), 2025-01; [logos](https://www.socialmediatoday.com/news/instagram-clarifies-including-your-own-logo-on-a-reel-is-ok/730852/), 2024-10.
+- [Reels Insights Skip Rate and retention](https://www.socialmediatoday.com/news/instagram-adds-retention-insights-reels/758464/), 2025-08-24; [Trial Reels](https://creators.instagram.com/blog/instagram-trial-reels), 2024-12-10; [Your Algorithm](https://about.instagram.com/blog/announcements/reels-algorithm-control), updated 2026-06-10.
+- [Instagram Google/Bing indexing, The Week](https://www.theweek.in/news/sci-tech/2025/07/12/social-media-instagram-posts-and-reels-will-now-pop-up-on-google-and-bing-searches-how-to-enable-disable-this-setting.html), 2025-07-12; [five-hashtag cap, Business Today](https://www.businesstoday.in/technology/news/story/no-more-hashtag-stuffing-instagram-limits-hashtag-usage-to-just-5-per-reel-and-post-507444-2025-12-19), 2025-12-19; [Meta Reels ads, sound-on share](https://developers.facebook.com/blog/post/2024/11/07/unlock-the-power-of-reel-ads), 2024-11-07.
 - [Metricool study](https://metricool.com/press-release-instagram-study-2026/) and [Trends](https://metricool.com/instagram-trends/), 2026-06.
 - [Socialinsider benchmark](https://www.socialinsider.io/social-media-benchmarks/instagram), 2026-02, Q2 update; [Reel length](https://www.socialinsider.io/blog/instagram-reels-length/), 2026-07.
 - [Meta Reels Insights](https://about.fb.com/news/2023/04/instagram-reels-trending-audio-and-gifts-updates/), 2023-04.
 - [Buffer frequency](https://buffer.com/resources/how-often-to-post-on-instagram/), 2025-08; [timing](https://buffer.com/resources/when-is-the-best-time-to-post-on-instagram/), 2026-07.
-- [Originality](https://techcrunch.com/2026/04/30/instagram-restricts-reach-of-content-aggregators-in-new-crackdown/), 2026-04; [AI profiles](https://techcrunch.com/2026/08/31/instagram-puts-new-limits-on-undisclosed-ai-profiles/), 2026-08.
+- Originality: [Instagram Creators](https://creators.instagram.com/blog/rewarding-original-creators-on-instagram), 2026-04-30; [TechCrunch](https://techcrunch.com/2026/04/30/instagram-restricts-reach-of-content-aggregators-in-new-crackdown/), 2026-04-30; [Social Media Today](https://www.socialmediatoday.com/news/instagram-updates-algorithm-to-benefit-original-creators/819016/), 2026-04-30; [AI profiles](https://techcrunch.com/2026/08/31/instagram-puts-new-limits-on-undisclosed-ai-profiles/), 2026-08.
 - [Meta Midterms disclosure](https://about.fb.com/news/2026/02/meta-prepares-for-2026-us-midterms/), updated 2026-06.
 - [Instagram Content Publishing docs](https://developers.facebook.com/docs/instagram-platform/content-publishing), reviewed 2026-10.
+- [Instagram Graph API: IG User media](https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/media), official — caption maximum 2,200 characters.
 - [Meta Originality](https://about.fb.com/br/news/2024/04/ajudando-o-criador-de-conteudo-a-encontrar-novos-publicos/), 2024-04-30; [branded-content definition](https://www.facebook.com/help/instagram/616901995832907), Help Center indexed text checked 2026-09.
 - [Aborn](https://emilyaborn.com/ai-writing-tells-what-they-cost-you/), 2026-07; [Cox](https://huntingthemuse.net/library/how-to-tell-if-writing-is-ai), 2026-06; [Gichigi](https://tahigichigi.substack.com/p/12-red-flags-of-ai-writing-and-how), 2026-02.
 - Re-validate when: feature names or limits change; policy or ranking guidance changes; new vendor reports arrive; account eligibility or link controls differ.

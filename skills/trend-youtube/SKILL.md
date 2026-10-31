@@ -26,7 +26,7 @@ Treat channel-relative performance as a useful comparison, not a transferable gu
 
 Use separate Shorts and long-form baselines. Metricool found format, channel-size and frequency associations that differed across cohorts (measured, Metricool Shorts, n=799,718 videos, 2026-08). Don't infer that Shorts subscribers convert at a known rate or that adopting Shorts causes long-form decline.
 
-Public views count playback starts; they don't establish qualified demand (official, YouTube performance FAQ, 2026-09). Qualified Shorts views exclude loops and require engaged views on public Shorts (official, YouTube qualified metrics, 2026-08). Keep public counts separate from private engagement and eligibility metrics.
+Public views count playback starts; they don't establish qualified demand (official, YouTube performance FAQ, 2026-09). Shorts counted plays and replays from 2025-03-31 (reported, TechCrunch, 2025-03-26), and long-form followed on 2026-08-24; CTR, average view duration, and retention stay on engaged views, and YouTube said the algorithm did not change (official, YouTube engaged views, 2026-08-19). Higher counts after those dates don't mean better content. Qualified Shorts views exclude loops and require engaged views on public Shorts (official, YouTube qualified metrics, 2026-08). Keep public counts separate from private engagement and eligibility metrics.
 
 ## Harvest procedure
 
@@ -65,7 +65,7 @@ Compute the baseline as the median of a declared set of comparable uploads. Reco
 
 Prefer comparable time-since-upload windows. If only current totals exist, state the age mismatch. Exclude dissimilar formats and label selection rules before comparing. Public counts do not reveal traffic source, paid support, private retention or unique buyers; treat these as unknown unless source evidence supplies them.
 
-For historical comparisons, record the metric definition at each observation. Separate observations across a verified definition change; if comparable counts cannot be established, report the multiple as unavailable rather than pooling them (directional).
+For historical comparisons, record the metric definition at each observation. Split baselines at the Shorts counting change (2025-03-31) and the long-form change (2026-08-24); separate observations across a verified definition change, and if comparable counts cannot be established, report the multiple as unavailable rather than pooling them (directional).
 
 | Finding | Decision |
 |---|---|
@@ -76,6 +76,8 @@ For historical comparisons, record the metric definition at each observation. Se
 | High views with irrelevant audience or uncheckable promise | Exclude from recommendations and state the reason |
 
 These classification decisions are craft judgments (directional). Rank candidates by evidence quality and audience fit, with production feasibility as a gate. Don't assign precise scores that imply validated thresholds.
+
+Shorts recommendations now favor original content: from 2026-10-01 YouTube reduces the reach of content re-uploaded from other creators without adding anything of your own, and aggregator channels lose Shorts-feed distribution (official, YouTube Help community, 2026-10-01; reported, Social Media Today, 2026-10-01). A re-upload outlier is not a transferable pattern. Require a named transformation for every adaptation: original commentary, a unique edit, or a story built on the user's own proof. YouTube drew no clear line on a voiceover over someone else's clip, and no official source says it demotes other apps' watermarks; don't recommend either as a workaround. Keep clean masters as craft only.
 
 ### Return an actionable brief
 
@@ -149,6 +151,7 @@ Original proof needed: the user's local site assessment, applicable seasonal con
 - [ ] Public observations separated from private metrics; unknown retention and conversion remain unknown.
 - [ ] Calculation reproducible; no arbitrary universal outlier or swipe-away cutoff.
 - [ ] Recommendation includes corroboration, timing dependency, buyer fit and original transformation.
+- [ ] Re-upload or clip-channel outliers excluded; every Shorts adaptation names its transformation.
 - [ ] Launch monitoring includes verified CTA paths and unresolved buyer objections when relevant.
 - [ ] No copied personal claims; examples and missing fields explicitly marked.
 - [ ] Permitted observations saved; research-created tabs closed.
@@ -162,6 +165,8 @@ Dates on undated Help pages denote validation month.
 - [YouTube Shorts analytics](https://support.google.com/youtube/answer/12942217?co=YOUTUBE._YTVideoType%3Dshorts&hl=en), undated; checked 2026-09.
 - [Shorts player update](https://blog.youtube/news-and-events/youtube-shorts-experience-updates-features/), 2026-06-25.
 - [Metricool Shorts study](https://metricool.com/youtube-shorts-algorithm/), 2026-08-05; observational comparisons.
+- [Shorts originality announcement](https://support.google.com/youtube/thread/470890423/prioritizing-original-content-on-shorts?hl=en), 2026-10-01; [Social Media Today](https://www.socialmediatoday.com/news/youtube-updates-shorts-algorithm-to-put-more-focus-on-original-content/831976/), 2026-10-01.
+- [Engaged views explained](https://blog.youtube/inside-youtube/engaged-views-youtube-explained), 2026-08-19; [TechCrunch Shorts view counting](https://techcrunch.com/2025/03/26/youtube-is-changing-how-youtube-shorts-views-are-counted/), 2025-03-26.
 
 Re-validate when:
 - Harvest surfaces, category coverage, URLs, account access or feature names change.
