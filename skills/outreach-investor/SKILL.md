@@ -95,6 +95,8 @@ Investor, firm, tier, fit score, source URLs, path in (warm or cold), connector,
 
 Fundraising messages are securities communications. Don't promise or imply returns, don't use guarantee language, don't claim a round is oversubscribed unless it is, and keep forward-looking statements clearly labelled as plans. Terms, instruments, and the way offers are made vary by jurisdiction; send them to the founder's counsel for review. This is drafting help, not legal or investment advice.
 
+In the US, a Rule 506(b) offering bars general solicitation, and cold messages about a raise to investors with no pre-existing substantive relationship can count as one. Rule 506(c) permits general solicitation but requires reasonable steps to verify every purchaser is accredited. Have counsel confirm which exemption applies before cold investor outreach.
+
 ## Examples
 
 Bad subject: "Revolutionary AI startup seeking investment!!!"

@@ -169,11 +169,11 @@ bash scripts/setup-symlinks.sh
 1. Create `capabilities/<name>/<provider>.toml` with `[deps]`, `[roles.mcp]`, optional `[[mcp.servers]]`
 2. Add a `link "<name>" "<provider>.toml"` line to `scripts/setup-symlinks.sh`
 3. Run `bash scripts/setup-symlinks.sh` to create the default symlink
-4. Use `"<name>"` (default provider) or `"<name>:<provider>"` (explicit) in any agent
+4. Use `"<name>"` in any agent
 
 To add an alternative provider to an existing capability:
 1. Create `capabilities/<name>/<new-provider>.toml`
-2. Use `"<name>:<new-provider>"` in agents that need it
+2. Users select it with `[capabilities] <name> = "<new-provider>"` in their Octomind config; manifests never name a provider
 
 ---
 
@@ -183,9 +183,7 @@ To add an alternative provider to an existing capability:
 
 1. Reads `agents/<domain>/<spec>.toml`
 2. Extracts `capabilities = [...]`
-3. For each capability reference, resolves provider:
-   - `"name"` → `capabilities/<name>/default.toml`
-   - `"name:provider"` → `capabilities/<name>/<provider>.toml`
+3. For each capability, loads `capabilities/<name>/default.toml` (users switch providers in their own `[capabilities]` config, which `bin/load` does not read)
 4. Merges: `[deps].require`, `server_refs`, `allowed_tools`, `[[mcp.servers]]` (deduplicated by name)
 5. Strips `capabilities =` line from agent file
 6. Injects merged `[roles.mcp]` (creates section if absent)

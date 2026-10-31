@@ -7,7 +7,7 @@
 # Env: GOOGLE_APPLICATION_CREDENTIALS — absolute path to a private service-account JSON file.
 # Enable Search Console API and grant the service account access to the authorized property.
 # Community MCP wrapper, not a Google-published server. Read-only tools; no sitemap submission.
-# Search Console Web totals may include AI features; this is not an AI-only visibility report.
+# Web totals include AI features; Search Console's Generative AI report (impressions only) is separate.
 
 [deps]
 require = ["google/search-console"]

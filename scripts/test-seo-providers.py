@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 """Offline provider/resolver regression checks; no credentials or network calls."""
 from pathlib import Path
-from contextlib import redirect_stderr
-from io import StringIO
 import runpy
 import shutil
 import subprocess
@@ -33,20 +31,31 @@ class ProviderTests(unittest.TestCase):
                          [s for p in expected for s in p["mcp"]["servers"]])
         self.assertNotIn("{{ENV:", (CAP / "public.toml").read_text())
 
-    def test_explicit_providers_resolve_and_deduplicate_end_to_end(self):
-        # Run the actual CLI with a minimal temporary tap, leaving repo agents untouched.
+    def test_each_provider_resolves_and_deduplicates_end_to_end(self):
+        # Users pick a provider by overriding default.toml, so swap that link in a
+        # temporary tap and run the actual CLI, leaving the repo untouched.
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             (root / "bin").mkdir()
             shutil.copy(ROOT / "bin/load", root / "bin/load")
-            (root / "capabilities").symlink_to(ROOT / "capabilities", target_is_directory=True)
+            (root / "capabilities").mkdir()
+            for cap in (ROOT / "capabilities").iterdir():
+                if cap.name != "seo-data":
+                    (root / "capabilities" / cap.name).symlink_to(cap, target_is_directory=True)
+            seo = root / "capabilities/seo-data"
+            seo.mkdir()
+            for path in CAP.glob("*.toml"):
+                if path.name != "default.toml":
+                    (seo / path.name).symlink_to(path)
             (root / "agents/seo").mkdir(parents=True)
+            (root / "agents/seo/test.toml").write_text(
+                'capabilities = ["core", "websearch", "webfetch", "seo-data"]\n'
+                '[[roles]]\nsystem = "fixture"\nwelcome = "fixture"\n')
             for provider in sorted(PROVIDERS):
                 with self.subTest(provider=provider):
-                    (root / "agents/seo/test.toml").write_text(
-                        'capabilities = ["core", "websearch", "webfetch", '
-                        f'"seo-data:{provider}"]\n'
-                        '[[roles]]\nsystem = "fixture"\nwelcome = "fixture"\n')
+                    default = seo / "default.toml"
+                    default.unlink(missing_ok=True)
+                    default.symlink_to(f"{provider}.toml")
                     p = subprocess.run(["python3", str(root / "bin/load"), "seo:test"],
                                        capture_output=True, text=True, check=True)
                     merged = tomllib.loads(p.stdout)
@@ -58,15 +67,10 @@ class ProviderTests(unittest.TestCase):
                     for server in load(provider)["mcp"]["servers"]:
                         self.assertIn(server, merged["mcp"]["servers"])
 
-    def test_default_and_missing_provider_resolution(self):
+    def test_default_resolution(self):
         resolver = runpy.run_path(str(ROOT / "bin/load"))["load_capability"]
         self.assertEqual(resolver("seo-data", str(ROOT))["server_refs"],
                          load("public")["roles"]["mcp"]["server_refs"])
-        errors = StringIO()
-        with redirect_stderr(errors), self.assertRaises(SystemExit) as raised:
-            resolver("seo-data:missing-test-provider", str(ROOT))
-        self.assertEqual(raised.exception.code, 1)
-        self.assertIn("seo-data/missing-test-provider.toml", errors.getvalue())
 
     def test_hosted_auth_headers_are_exact(self):
         specs = {

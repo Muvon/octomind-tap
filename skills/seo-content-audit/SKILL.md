@@ -113,7 +113,7 @@ Google's May 2026 AI optimization guide says AI Overviews and AI Mode need no sp
 
 - Headings that say what the section answers ("How to set up FAQ schema" beats "Schema") help readers and passage extraction alike; don't flag a page for lacking question-form H2s.
 - If an AI Overview cites competitors but not this page, look first at information gain, answer clarity, and indexability — not at formatting tricks.
-- Search Console Web performance includes AI Overviews and AI Mode; verify live dimensions rather than assuming a standalone AI-only report. Use actual answer captures for prompt-level visibility, scoped vendor observations as samples, and separate attributable activation data for business outcomes.
+- Search Console's Generative AI performance report shows impressions, not clicks, for AI Overviews and AI Mode, and Web performance totals also include them; verify live dimensions before claiming query-level presence. Use actual answer captures for prompt-level visibility, scoped vendor observations as samples, and separate attributable activation data for business outcomes.
 
 ### Unverified checks — escalation rule
 

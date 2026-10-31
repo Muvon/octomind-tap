@@ -1,21 +1,25 @@
 # capabilities/email-sequencer/instantly.toml
 # Capability: email-sequencer
-# Provider: Instantly official remote MCP — cold email campaigns, leads, warmup
-# Title: Instantly MCP Server – Cold Email Campaigns and Sequences
-# Description: Connect to the Instantly MCP server to manage cold email campaigns, lead lists, follow-up sequences, and mailbox warmup. Requires INSTANTLY_API_KEY.
+# Provider: Instantly official remote MCP — read-only campaign, lead, and warmup reporting
+# Title: Instantly MCP – Cold Email Campaign Analytics (Read-Only)
+# Description: Read Instantly cold email campaign analytics, lead status, and mailbox warmup stats via the official MCP server. Read-only. Requires INSTANTLY_API_KEY.
 # https://developer.instantly.ai/mcp/quickstart
-# Env: INSTANTLY_API_KEY — Instantly API v2 key (app.instantly.ai → Settings → Integrations
-# → API Keys); sent as an Authorization Bearer header, the documented recommended form.
+# Env: INSTANTLY_API_KEY — Instantly API v2 key created with only the `all:read` scope
+# (app.instantly.ai → Settings → Integrations → API Keys), sent as the raw Authorization
+# value the MCP docs recommend. Every V2 endpoint requires a scope (activate needs
+# campaigns:update), so writes fail even if a write tool is reached.
+# allowed_tools is the second gate: the server exposes one tool per V2 endpoint named
+# {action}_{resource} (list_campaigns, get_campaign_analytics), so list_*/get_* are the reads.
 # Alternative to Smartlead — swap with: ln -sf smartlead.toml capabilities/email-sequencer/default.toml
 
 [roles.mcp]
 server_refs = ["instantly"]
-allowed_tools = ["instantly:*"]
+allowed_tools = ["instantly:list_*", "instantly:get_*"]
 
 [[mcp.servers]]
 name = "instantly"
 type = "http"
 url = "https://mcp.instantly.ai/mcp"
-headers = { Authorization = "Bearer {{ENV:INSTANTLY_API_KEY}}" }
+headers = { Authorization = "{{ENV:INSTANTLY_API_KEY}}" }
 timeout_seconds = 300
 tools = []

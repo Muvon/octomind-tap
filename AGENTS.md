@@ -53,7 +53,7 @@ cd model && uv sync && bin/train             # embedding model full pipeline (--
 
 - All lint scripts and `mcp-versions.sh` need Python 3.11+ (or `pip install tomli`).
 - `pre-commit` runs `shfmt -w -s -i 2 -ci` on shell scripts — run it before committing dep scripts; `lint-deps.sh` is **not** in pre-commit, run it manually.
-- CI: `.github/workflows/lint.yml` runs setup-symlinks, lint-manifests, lint-capabilities, validate-capabilities, lint-skills, and lint-deps on every push/PR; `test-deps.yml` runs each changed dep script twice (install + idempotency) on clean Ubuntu, macOS, and Windows; `render-smoke.yml` runs `scripts/smoke-render.sh` on Linux and macOS when the artifact CLIs or their deps change.
+- CI: `.github/workflows/lint.yml` runs setup-symlinks, lint-manifests, lint-capabilities, validate-capabilities, lint-skills, lint-deps, and `scripts/test-seo-providers.py` on every push/PR; `test-deps.yml` runs each changed dep script twice (install + idempotency) on clean Ubuntu, macOS, and Windows; `render-smoke.yml` runs `scripts/smoke-render.sh` on Linux and macOS when the artifact CLIs or their deps change.
 
 ## Where to Look
 
@@ -103,7 +103,7 @@ allowed_tools = [...]
 name = "..."
 ```
 
-`bin/load <domain>:<spec>` resolves each capability → reads `capabilities/<name>/default.toml` (or `<name>:<provider>` for an explicit provider) → merges `[deps]`, `[roles.mcp]`, and `[[mcp.servers]]` into the final manifest at runtime.
+`bin/load <domain>:<spec>` resolves each capability → reads `capabilities/<name>/default.toml` → merges `[deps]`, `[roles.mcp]`, and `[[mcp.servers]]` into the final manifest at runtime. Manifests name capabilities only; users switch providers with `[capabilities] <name> = "<provider>"` in their Octomind config, never in a manifest.
 
 ### Capability Files (two kinds per capability)
 
@@ -308,7 +308,7 @@ Optional dirs alongside SKILL.md: `scripts/`, `references/`, `assets/`, plus `ac
 3. Add `link "<name>" "<provider>.toml"` **and** `"<name>"` to the `DECLARED` array in `scripts/setup-symlinks.sh`
 4. Run `bash scripts/setup-symlinks.sh` (exits 1 on MISSING, warns on undeclared dirs)
 5. Create any `deps/<org>/<tool>.sh` + `.md` referenced in `[deps] require`
-6. Reference `"<name>"` (default provider) or `"<name>:<provider>"` in agent `capabilities = [...]`
+6. Reference `"<name>"` in agent `capabilities = [...]` — `default.toml` picks the provider; users override it in their own `[capabilities]` config
 7. Adding capability triggers changes `model/` training data — see `skills/tap-model-training/SKILL.md` for retraining
 
 ### Placeholders

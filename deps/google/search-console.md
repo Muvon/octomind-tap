@@ -27,7 +27,7 @@ Enable the Search Console API in a Google Cloud project, create a service-accoun
 | `index_inspect` | Index status for an authorized URL |
 | `list_sitemaps`, `get_sitemap` | Read submitted sitemap information |
 
-The upstream server also advertises `submit_sitemap`; the registry excludes it. Search Console Web performance may include AI features; verify available dimensions instead of claiming an AI-only report. This provider supplies neither competitor metrics nor captured AI answers.
+The upstream server also advertises `submit_sitemap`; the registry excludes it. Search Console Web performance totals include AI features, and its separate Generative AI performance report shows AI Overviews and AI Mode impressions, not clicks; verify which report this server's tools actually query. This provider supplies neither competitor metrics nor captured AI answers.
 
 ## Configuration Example
 

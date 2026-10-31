@@ -1,11 +1,12 @@
 # capabilities/seo-data/config.toml
 triggers = [
-  "get keyword search volumes from DataForSEO",
-  "check Google SERP results with DataForSEO",
+  "get keyword search volume for these terms",
+  "check Google SERP results for this keyword",
   "research keyword difficulty and related keywords",
   "compare competitor ranking keywords with SEO data",
-  "look up backlinks and referring domains with DataForSEO",
+  "look up backlinks and referring domains",
   "get keyword metrics for this location and language",
-  "connect the DataForSEO MCP server",
+  "show Search Console clicks and impressions for my site",
+  "connect an SEO data provider like Ahrefs, Semrush, or DataForSEO",
 ]
 domains = ["seo"]

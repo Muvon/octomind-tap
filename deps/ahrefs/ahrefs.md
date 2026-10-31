@@ -1,6 +1,6 @@
 # ahrefs/ahrefs
 
-Legacy local Ahrefs MCP package documentation, retained for the existing dep script. The `seo-data:ahrefs` provider uses hosted HTTP MCP with `AHREFS_MCP_TOKEN`, not this package or `AHREFS_API_KEY`; use the hosted provider for new connections.
+Legacy local Ahrefs MCP package documentation, retained for the existing dep script. The seo-data `ahrefs` provider uses hosted HTTP MCP with `AHREFS_MCP_TOKEN`, not this package or `AHREFS_API_KEY`; use the hosted provider for new connections.
 
 ## MCP Server
 

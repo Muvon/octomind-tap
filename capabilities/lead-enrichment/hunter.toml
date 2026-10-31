@@ -1,15 +1,12 @@
 # capabilities/lead-enrichment/hunter.toml
 # Capability: lead-enrichment
-# Provider: Hunter MCP (scalably-io) — domain search, email finder, email verifier
-# Title: Hunter Email Finder and Verifier – MCP Server
-# Description: Use Hunter email finder and email verifier tools via MCP to find professional addresses by domain or name and check deliverability. Requires HUNTER_API_KEY.
-# https://github.com/scalably-io/hunter-mcp
+# Provider: Hunter official remote MCP — domain search, email finder, email verifier
+# Title: Hunter MCP – Email Finder and Verifier
+# Description: Hunter email finder and email verifier via the official MCP server: domain search, find addresses by name, check deliverability. Requires HUNTER_API_KEY.
+# https://hunter.io/api-documentation#mcp
 # Env: HUNTER_API_KEY — Hunter.io API key (app.hunter.io → Settings → API Keys);
-# the server reads it from the HUNTER_API_KEY environment variable.
+# sent as the X-API-KEY header the hosted Streamable HTTP endpoint documents.
 # Alternative to Apollo — swap with: ln -sf hunter.toml capabilities/lead-enrichment/default.toml
-
-[deps]
-require = ["nodejs/node"]
 
 [roles.mcp]
 server_refs = ["hunter"]
@@ -17,9 +14,8 @@ allowed_tools = ["hunter:*"]
 
 [[mcp.servers]]
 name = "hunter"
-type = "stdio"
-command = "npx"
-args = ["-y", "@scalably-io/hunter-mcp@1.0.0"]
-env = { HUNTER_API_KEY = "{{ENV:HUNTER_API_KEY}}" }
+type = "http"
+url = "https://mcp.hunter.io/mcp"
+headers = { X-API-KEY = "{{ENV:HUNTER_API_KEY}}" }
 timeout_seconds = 300
 tools = []

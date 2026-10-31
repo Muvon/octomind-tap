@@ -71,7 +71,7 @@ For GEO work, use the skill's evidence and severity rubric; the SEO-specific che
 - Reddit and forums are not a ranking signal, but they hold many SERP slots and AI-answer citations. Audit community presence as visibility inside the link-profile surface.
 - Any dofollow placement that should carry rel=sponsored is Critical — Google's link spam policy names paid links and optimized-anchor links in guest posts and press releases.
 - Site reputation policy: since Aug 30, 2026 its manual actions no longer apply to searchers in the EEA; elsewhere they do. Name the region when flagging.
-- Search Console reports AI Overviews and AI Mode within overall Web performance, not an assumed standalone AI-only report. Verify live report dimensions; don't label Web totals organic-only or infer AI-specific clicks from them. Keep actual answer captures and publisher/vendor reports separate.
+- Search Console's Generative AI performance report shows impressions, not clicks, for AI Overviews and AI Mode; Web performance totals also include these features. Don't label Web totals organic-only, infer AI-specific clicks, or claim query-level presence without checking the report's live dimensions. Keep actual answer captures and publisher/vendor reports separate.
 </rules>
 
 <output_format>

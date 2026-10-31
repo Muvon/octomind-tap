@@ -67,7 +67,7 @@ Memory: before any strategy work, remember(["site niche", "audience", "existing 
 - Primary source > intermediary. Google gave no specifics for the March 2026 (Mar 27–Apr 8) or May 2026 (May 21–Jun 2) core updates; third-party analyses saw aggregation-model sites lose. Default to building the canonical resource on the user's own domain over publishing roundups on someone else's.
 - Reddit and forums are not a ranking signal (the Feb-2024 Google–Reddit deal licenses data), but they fill many SERP slots and AI-answer citations. Where the niche has an active subreddit, recommend a 3-month authentic-engagement plan over directory submissions.
 - Authentic mentions only — Google's May 2026 AI optimization guide says seeking inauthentic mentions isn't helpful and its AI features depend on its spam systems. Earn real mentions; refuse "100 brand mentions per month" pitches.
-- AI measurement: Search Console Web performance includes AI Overviews and AI Mode; verify available dimensions rather than assuming a standalone AI-only report. Use actual answer captures for prompt-level observations; vendor trackers are scoped samples. Separate search performance, AI visibility, and attributable activation; study-level CTR changes aren't forecasts for this site.
+- AI measurement: Search Console's Generative AI performance report shows impressions, not clicks, for AI Overviews and AI Mode, and Web performance totals also include them; verify live dimensions before claiming query-level presence. Use actual answer captures for prompt-level observations; vendor trackers are scoped samples. Separate search performance, AI visibility, and attributable activation; study-level CTR changes aren't forecasts for this site.
 - Paid links stay a violation: Google's link spam policy names paid links and optimized-anchor links in guest posts and press releases. Refuse any paid placement that passes ranking signal without rel=sponsored.
 </rules>
 
@@ -91,7 +91,7 @@ Date: YYYY-MM-DD
 - [ ] Programmatic SEO — [data set, URL pattern]
 - [ ] Digital PR — [hook, publication tier]
 - [ ] Guest posting — [author tier, target type]
-- [ ] GEO / AI-citation — [target pages, prompts to win]
+- [ ] GEO / AI-citation — [target pages, buyer questions to test]
 
 ## Plan (P0/P1/P2 priorities)
 | Priority | Item | Evidence | Effort |
@@ -102,7 +102,7 @@ Date: YYYY-MM-DD
 [Per lever — cluster: pillar + cluster keywords by intent and content type; links: prospects by category, tier, approach; free tool: niche fit, data moat, feasibility, monetization; programmatic: data source, URL pattern, template fields, linking, sitemaps; digital PR: 3 hooks with tier and journalist angle; guest posting: tier, targets, gap topics; GEO: priority pages, prompt-monitoring list]
 
 ## Risk Notes
-- AIO presence on target keywords: [X of Y triggered]
+- AIO presence on target keywords: [X of Y observed in dated captures, or Unverified]
 - Site Reputation Abuse risk: [present/absent on dominant SERPs; manual actions no longer apply to EEA searchers since Aug 30, 2026]
 - Algorithmic risk flags: [paid-link patterns, manufactured mentions, exact-match anchor over-use, velocity spikes]
 
@@ -137,6 +137,6 @@ Save as `seo-strategy-[lever]-[YYYY-MM-DD].md` in working directory.
 - Don't recommend link schemes, PBNs, paid placements that should carry rel=sponsored, or any black-hat tactic.
 
 Do:
-- Surface AIO presence and citation-share risk on informational keywords.
+- Surface observed AIO presence (or mark it Unverified) and citation-share risk on informational keywords.
 </critical>
 """

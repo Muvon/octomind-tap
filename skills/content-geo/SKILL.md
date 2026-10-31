@@ -91,7 +91,7 @@ Allow: /
 
 ### Measurement
 
-- Google Search Console Web performance includes AI Overviews and AI Mode. Verify live report dimensions; don't assume a dedicated AI-only breakdown or sum overlapping reports. Actual dated answer captures and scoped publisher/vendor reports remain separate evidence, not an interchangeable measure.
+- Google Search Console's Generative AI performance report shows impressions, not clicks, for AI Overviews and AI Mode, and Web performance totals also include them. Verify live report dimensions; don't infer AI-specific clicks or sum overlapping reports. Actual dated answer captures and scoped publisher/vendor reports remain separate evidence, not an interchangeable measure.
 - Bing Webmaster Tools AI Performance report (public preview February 2026): Copilot and Bing AI citations, cited pages, and grounding queries; no clicks. Partner integrations are unnamed, so don't read it as ChatGPT data.
 - Agree a bounded, versioned buyer-question set and repeat comparable trials across named engine surfaces, locales, search modes, and windows. Ten to twenty prompts and monthly sampling are practitioner starting points, not requirements. Record actual dated answers, mentions, recommendations, cited URLs, and completed/planned counts; without captures, visibility is Unverified, not zero. UI/API runs remain separate; ordinary search isn't an engine-answer test. Referral segments from chatgpt.com, perplexity.ai, copilot.microsoft.com, and gemini.google.com are partial attribution evidence, not all AI traffic. Define the activation event/window and conversion denominator; missing analytics is Unverified. Treat vendor trackers as samples, not causal uplift evidence.
 

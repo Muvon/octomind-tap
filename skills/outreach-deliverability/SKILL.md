@@ -29,7 +29,8 @@ Mailbox providers score sender reputation from authentication, complaint rate, b
 - Separate sending domains for outreach, never the primary company domain. Close variants of the brand are common practice.
 - Each sending domain has SPF, DKIM, and a DMARC record. Start DMARC at `p=none` with reporting, aligned with the From domain.
 - A few mailboxes per domain, each with a real name and signature. Do not spread volume across dozens of throwaway domains.
-- Add a one-click unsubscribe header on anything that is bulk or marketing in nature.
+- Bulk-sender rules: Google applies them at about 5,000 messages a day to personal Gmail accounts, Yahoo to bulk senders without a published number, and Microsoft at 5,000+ a day to Outlook.com since 5 May 2025. All three require SPF and DKIM passing plus an aligned DMARC record.
+- Gmail and Yahoo also require one-click unsubscribe on marketing mail, and cold outreach counts: RFC 8058 `List-Unsubscribe` plus `List-Unsubscribe-Post: List-Unsubscribe=One-Click`, honoured within 2 days.
 
 ### Warmup and volume
 

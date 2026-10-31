@@ -41,7 +41,7 @@ top_k = 0
 | Field | Rule |
 |-------|------|
 | `# Agent:`, `# Title:`, `# Description:` | Required header comments; title 5–60 chars, description 20–160 |
-| `capabilities` | Required at top level; the only way to wire tools. Bare name = default provider, `name:provider` = explicit |
+| `capabilities` | Required at top level; the only way to wire tools. Bare names only — `default.toml` picks the provider; users override it in their own `[capabilities]` config |
 | `system` | Required; XML blocks in canonical order |
 | `welcome` | Required; first message shown; emoji plus `{{CWD}}` |
 | `temperature`, `top_p`, `top_k` | Required by lint; see Sampling below |

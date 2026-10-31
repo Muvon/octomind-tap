@@ -29,4 +29,4 @@ timeout_seconds = 120
 tools = ["suggest", "trends_compare", "trends_related"]
 ```
 
-Use `seo-data:free-seo` explicitly. The registry default stays public web search and page inspection.
+Select it with `[capabilities] seo-data = "free-seo"` in your Octomind config. The registry default stays public web search and page inspection.

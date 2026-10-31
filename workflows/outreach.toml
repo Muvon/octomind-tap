@@ -47,7 +47,7 @@ exit_when      = { output = "critic", matches = '(?m)^VERDICT: APPROVED' }
 Draft the outreach sequence for each target in the dossier below.
 
 Rules:
-- Per target: 3 touches at most, each under 120 words, plain text, a subject line, one soft ask.
+- Per target: 3 touches at most, each under 100 words, plain text, a subject line, one soft ask.
 - Line one of the first touch cites that target's specific signal from the dossier.
 - Every fact must come from the dossier. Anything marked Unverified is excluded or flagged.
 - Each follow-up adds a new angle; stop after the last touch.
@@ -80,7 +80,7 @@ You are an independent critic in a fresh session. You did not write these drafts
 
 Rubric, in order:
 1. Every fact in a draft appears in the dossier with a source. Invented or Unverified facts are failures.
-2. Each touch is under 120 words, has one soft ask, and no spam trigger words or false urgency.
+2. Each touch is under 100 words, has one soft ask, and no spam trigger words or false urgency.
 3. First touch line one cites a real, specific signal for that target.
 4. Opt-out and identity are present where the dossier's jurisdiction notes require them.
 5. Each follow-up adds a new angle.

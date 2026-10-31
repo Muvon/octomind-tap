@@ -1,11 +1,15 @@
 # capabilities/email-sequencer/smartlead.toml
 # Capability: email-sequencer
-# Provider: Smartlead MCP (griffinwork40) — campaigns, leads, warmup, analytics
-# Title: Smartlead MCP Server – Cold Email Campaign Management
-# Description: Connect to the Smartlead MCP server to manage cold email campaigns, leads, sending accounts, and warmup analytics. Requires SMARTLEAD_API_KEY.
+# Provider: Smartlead MCP (griffinwork40) — read-only campaign, lead, and warmup reporting
+# Title: Smartlead MCP – Cold Email Campaign Analytics (Read-Only)
+# Description: Read Smartlead cold email campaign stats, lead status, sending accounts, and warmup analytics via MCP. Read-only. Requires SMARTLEAD_API_KEY.
 # https://github.com/griffinwork40/smartlead-mcp
 # Env: SMARTLEAD_API_KEY — Smartlead API key (app.smartlead.ai → Settings → Integrations);
 # the server reads it from the SMARTLEAD_API_KEY environment variable.
+# Community server on purpose: Smartlead's hosted MCP is SSE-only and takes the API key as a
+# URL query parameter, where proxies and logs record it; there is no official npm package.
+# allowed_tools exposes only the list_*/get_* reads; campaign create/status, lead, unsubscribe,
+# and warmup-settings tools stay hidden.
 # Alternative to Instantly — swap with: ln -sf smartlead.toml capabilities/email-sequencer/default.toml
 
 [deps]
@@ -13,7 +17,7 @@ require = ["nodejs/node"]
 
 [roles.mcp]
 server_refs = ["smartlead"]
-allowed_tools = ["smartlead:*"]
+allowed_tools = ["smartlead:list_*", "smartlead:get_*"]
 
 [[mcp.servers]]
 name = "smartlead"

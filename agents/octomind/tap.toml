@@ -73,7 +73,7 @@ Tapping or clicking a native app → `device`; a web page → `browser`; writing
 
 ### Capabilities
 
-Agents declare capabilities, never MCP servers. At runtime octomind resolves each name to `capabilities/<name>/default.toml` (or the provider chosen in the user's `[capabilities]` config) and merges `[deps] require`, `server_refs`, `allowed_tools`, and `[[mcp.servers]]` (deduplicated by name); `bin/load` mirrors this for local checks. `capability:provider` pins a provider.
+Agents declare capabilities, never MCP servers. At runtime octomind resolves each name to `capabilities/<name>/default.toml` (or the provider chosen in the user's `[capabilities]` config) and merges `[deps] require`, `server_refs`, `allowed_tools`, and `[[mcp.servers]]` (deduplicated by name); `bin/load` mirrors this for local checks. Manifests never name a provider.
 
 - Tiers: `core` for every agent; domain capabilities as needed; `agent` for sub-orchestrators; `orchestration` and `runtime` only for orchestrators and high-trust agents.
 - `allowed_tools`: `server:*` exposes all of a server's tools; `server:tool`, bare names, and trailing-`*` prefixes narrow it.

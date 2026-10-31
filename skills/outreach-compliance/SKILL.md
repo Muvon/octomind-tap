@@ -28,7 +28,7 @@ Four questions decide the guardrails: where is the recipient, is the address a c
 
 | Region | Commonly applicable position for B2B cold email | Flag |
 |--------|-----------------------------------------------|------|
-| US (CAN-SPAM) | Permitted without prior consent if truthful | Accurate sender and subject, physical postal address, working opt-out honoured within 10 business days |
+| US (CAN-SPAM) | Permitted without prior consent if truthful | Accurate sender and subject, clear identification as an ad or solicitation unless the recipient gave prior affirmative consent, physical postal address, working opt-out honoured within 10 business days |
 | Canada (CASL) | Consent required; implied consent is narrow | Conspicuously published address plus message relevant to the recipient's role; identification and unsubscribe |
 | Germany | Prior consent generally needed even for B2B email | Do not cold-email without counsel sign-off |
 | UK (PECR/UK GDPR) | Corporate subscribers may be emailed with identification and an opt-out | Sole traders and personal addresses are treated differently |

@@ -45,6 +45,9 @@ jobs:
       - name: Lint all dep scripts
         run: bash scripts/lint-deps.sh
 
+      - name: Test SEO provider wiring
+        run: python3 scripts/test-seo-providers.py
+
   brief:
     uses: muvon/ci-workflow/.github/workflows/brief.yml@master
     secrets: inherit
