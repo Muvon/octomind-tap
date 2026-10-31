@@ -1,0 +1,9 @@
+# capabilities/social-preview/typst.toml
+# Capability: social-preview
+# Provider: social-preview renderer — Typst layout with pinned fonts, shipped with this tap
+# Title: GitHub Social Preview Cards
+# Description: GitHub social preview cards (1280x640 PNG) in a repository's own brand: wordmark, badge, fitted tagline, logo, feed-size preview, via shell.
+# Provides tools: (none — the `social-preview` CLI via shell; typst renders; fonts in ~/.local/share/octomind/fonts)
+
+[deps]
+require = ["muvon/social-preview", "muvon/ui-fonts", "typst/typst"]

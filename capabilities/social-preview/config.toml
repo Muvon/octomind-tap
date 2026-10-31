@@ -1,0 +1,15 @@
+# capabilities/social-preview/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# GitHub repository social preview cards rendered in the project's brand.
+
+triggers = [
+	"make a social preview for this repo",
+	"create a github social preview image",
+	"design the open graph card for our repository",
+	"our repo links show a generic card on x and slack",
+	"render a 1280x640 preview image for github",
+	"add a custom social preview to the repository",
+]
+
+domains = ["developer"]

@@ -1,7 +1,7 @@
 name: Render smoke test
 
 # Installs the artifact CLIs from their dep scripts and renders real output
-# (deck, PDF/DOCX, resume, thumbnail, captions) on the platforms the skills support.
+# (deck, PDF/DOCX, resume, thumbnail, captions, social preview) on the platforms the skills support.
 
 on:
   push:
@@ -12,6 +12,7 @@ on:
       - 'skills/resume-rendering/**'
       - 'skills/video-thumbnails/**'
       - 'skills/video-captions/**'
+      - 'skills/repo-social-preview/**'
       - 'deps/lib/**'
       - 'deps/muvon/**'
       - 'deps/jgm/**'
@@ -29,6 +30,7 @@ on:
       - 'skills/resume-rendering/**'
       - 'skills/video-thumbnails/**'
       - 'skills/video-captions/**'
+      - 'skills/repo-social-preview/**'
       - 'deps/lib/**'
       - 'deps/muvon/**'
       - 'deps/jgm/**'

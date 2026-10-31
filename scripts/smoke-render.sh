@@ -2,7 +2,7 @@
 # scripts/smoke-render.sh
 # End-to-end check of the artifact CLIs the tap ships. Installs their deps with
 # the dep scripts, then renders a slide deck, a PDF and DOCX, an ATS resume, a
-# thumbnail, and burned-in captions. Fails on any missing output or failed check.
+# thumbnail, burned-in captions, and a GitHub social preview. Fails on any missing output or failed check.
 #
 # Usage: bash scripts/smoke-render.sh [workdir]   # default: a fresh temp dir
 
@@ -10,7 +10,8 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DEPS=(muvon/slide-deck muvon/doc-export jgm/pandoc typst/typst freedesktop/poppler muvon/office-fonts
-  rendercv/rendercv ffmpeg/ffmpeg muvon/video-fonts muvon/video-thumbnail muvon/video-captions)
+  rendercv/rendercv ffmpeg/ffmpeg muvon/video-fonts muvon/video-thumbnail muvon/video-captions
+  muvon/ui-fonts muvon/social-preview)
 
 # Dep scripts link CLIs into ~/.local/bin; later steps need it on PATH too.
 export PATH="$HOME/.local/bin:$PATH"
@@ -145,5 +146,14 @@ EOF
 video-captions words.json -o captions.ass --video clip.mp4 --burn captioned.mp4
 need_file captioned.mp4
 
+echo "== social-preview"
+cat >mark.svg <<'EOF'
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><rect width="10" height="10" fill="#0969da"/></svg>
+EOF
+social-preview -o card.png --preview card-preview.png --name acme --tagline "Two-way sync for Postgres" \
+  --badge "Open source · Go · MIT" --install "go install acme.dev/acme@latest" --url github.com/acme/acme \
+  --logo mark.svg --accent "#0969da"
+need_file card.png
+need_file card-preview.png
 echo
 echo "ALL RENDERS OK"
