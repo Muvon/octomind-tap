@@ -1,0 +1,27 @@
+# capabilities/image-view/octofs.toml
+# Capability: image-view
+# Provider: octofs — Octomind's native filesystem MCP server (`view` only)
+# Title: Image Viewer for AI Agents
+# Description: Let the AI see and analyze local images (PNG, JPEG, GIF, WebP): check renders, charts, video frames, screenshots. Read-only, via octofs `view`.
+# Provides tools: view
+#
+# `view` on a png/jpg/gif/webp path returns the file as an MCP image block, which
+# octomind hands to the model as an image (octofs >= 0.21.1).
+# The same tool reads text files and lists directories, so an agent that already
+# has filesystem-read gains nothing new here. The filesystem.toml alternative
+# (reference MCP server, read_media_file only) stays for setups without octofs.
+
+[deps]
+require = ["muvon/octofs"]
+
+[roles.mcp]
+server_refs = ["octofs"]
+allowed_tools = ["octofs:view"]
+
+[[mcp.servers]]
+name = "octofs"
+type = "stdio"
+command = "octofs"
+args = ["mcp"]
+timeout_seconds = 300
+tools = []
