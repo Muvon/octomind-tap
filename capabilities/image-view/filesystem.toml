@@ -12,6 +12,10 @@
 # which octomind also appends to the tool result as text (~6K extra tokens per
 # image after truncation). Lift the hold once octomind replaces mirrored image
 # data in structured content.
+# zod is pinned to 3: the server takes zod through the MCP SDK ("^3.25 || ^4.0"),
+# npm picks 4, and zod-to-json-schema 3.x then emits every tool schema as a bare
+# `$schema` with no `type`/`properties` — Anthropic rejects the whole request
+# (`tools.N.custom.input_schema.type: Field required`).
 
 [deps]
 require = ["modelcontextprotocol/filesystem"]
@@ -24,6 +28,6 @@ allowed_tools = ["read_media_file"]
 name = "image-view"
 type = "stdio"
 command = "sh"
-args = ["-c", "exec npx -y @modelcontextprotocol/server-filesystem@2025.8.21 \"$PWD\""]
+args = ["-c", "exec npx -y -p @modelcontextprotocol/server-filesystem@2025.8.21 -p zod@3.25.76 mcp-server-filesystem \"$PWD\""]
 timeout_seconds = 60
 tools = []

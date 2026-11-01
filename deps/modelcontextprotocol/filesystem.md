@@ -6,7 +6,7 @@ Official MCP filesystem server. Secure file read, write, search, and directory o
 
 - **Package**: `@modelcontextprotocol/server-filesystem` (pinned in the capability file)
 - **Transport**: stdio
-- **Command**: `npx -y @modelcontextprotocol/server-filesystem@2025.8.21 /path/to/allowed/dir`
+- **Command**: `npx -y -p @modelcontextprotocol/server-filesystem@2025.8.21 -p zod@3.25.76 mcp-server-filesystem /path/to/allowed/dir`
 - **Runtime**: Node.js 20+
 - **Pin note**: `image-view` stays on 2025.8.21; later releases duplicate the image payload in `structuredContent`
 
@@ -37,7 +37,7 @@ None (filesystem path restriction via args)
 name = "image-view"
 type = "stdio"
 command = "sh"
-args = ["-c", "exec npx -y @modelcontextprotocol/server-filesystem@2025.8.21 \"$PWD\""]
+args = ["-c", "exec npx -y -p @modelcontextprotocol/server-filesystem@2025.8.21 -p zod@3.25.76 mcp-server-filesystem \"$PWD\""]
 timeout_seconds = 60
 tools = []
 ```
