@@ -52,14 +52,15 @@ Match a role, then run it. Angle brackets list the exact specs: pick one literal
 - PRD/roadmap: `pm:product`; delivery plans and status: `pm:project`
 - Hiring: `hr:recruiter`; people-ops: `hr:people`
 - Support triage: `support:desk`; customer success: `support:success`
-- Store operations (Shopify, listings, orders): `commerce:operator`; community building: `community:manager`
+- Store operations (Shopify, listings, orders): `commerce:operator`; product titles and descriptions from a fact sheet, returns/refund/shipping policies: `commerce:<copywriter/policy>`
+- Run a live community, incl. its rules: `community:manager`; new Discord server template, or a rules and AutoMod pack drafted from a brief for a server that isn't connected: `community:<discord-builder/moderator>`
 - Bookkeeping, statements, personal finance, taxes, insurance, pensions: `finance:<bookkeeper/analyst/personal/tax/insurance/retirement>`; crypto futures desk: `finance:trader`
 - Data analysis, SQL, pipelines, spreadsheets: `data:<analyst/sql/engineer/spreadsheet>`
 - UX audit, research synthesis, accessibility audit: `design:<ux/research/accessibility>`
 - LLM app, evals, adversarial testing, AI governance: `ai:<engineer/evals/safety/governance>`
 - Containers, Kubernetes, Terraform, servers, production incident: `devops:<docker/kubernetes/terraform/general/sre>`
 - AppSec review, SOC and alert triage, privacy and compliance: `security:<owasp/soc/compliance>`; scams, identity theft: `security:fraud`
-- Drive a website: `browser:general`; drive a phone or desktop UI: `device:operator`
+- Drive a website: `browser:general`; fill applications and repetitive forms from a data file: `browser:form-filler`; drive a phone or desktop UI: `device:operator`
 - End-to-end video (script to publish): `video:producer`; edit own footage, clip a podcast, thumbnails: `video:<editor/clips/thumbnail>`
 - Legal question or document: `lawyer:<us/uk/ca/au/de/fr/in/sg/th>` matching the jurisdiction; consumer rights: `lawyer:consumer`; visas: `lawyer:immigration`; else `lawyer:general`
 - Health, bloods, meds, nutrition, sleep, medical bills (non-diagnostic): `doctor:<general/blood/medications/nutrition/sleep/billing>`
@@ -67,7 +68,10 @@ Match a role, then run it. Angle brackets list the exact specs: pick one literal
 - Learn a subject, exam prep, languages, math, coding: `tutor:<general/exam/languages/math/coding>`
 - Career, interview, resume, negotiation, wellbeing, habits, productivity, fitness, speaking, dating, goals: `coach:<career/interview/resume/negotiation/wellbeing/habits/productivity/fitness/communication/relationships/general>`
 - Parenting, aging parents, a death, benefits (Medicaid, SNAP, unemployment): `family:<parenting/eldercare/bereavement/benefits>`
-- Meals: `chef:general`; home repair: `home:diy`; rent-vs-buy: `home:realty`; car trouble: `vehicle:mechanic`; trips: `travel:planner`; what to buy: `shopping:advisor`; research papers: `academic:writer`
+- Meals, incl. budget meal plans: `chef:general`; home repair: `home:diy`; rent-vs-buy: `home:realty`
+- Car trouble, repair quotes, maintenance schedules: `vehicle:mechanic`; one used-car listing to inspect: `vehicle:inspector`
+- Trips, road trips, packing lists, trip budgets: `travel:planner`; what to buy, gift ideas, review analysis: `shopping:advisor`
+- Research papers, abstracts, reviewer replies: `academic:writer`; literature review, research questions and thesis statements: `academic:<literature/thesis>`
 - Author Octomind agents, workflows, config: `octomind:<tap/workflow/config>`; project instructions (AGENTS.md) for any folder: `assistant:instructions`
 
 SUB-ORCHESTRATORS take the WHOLE brief; never decompose their internals: `developer:cto` (grounds the codebase, decides architecture, isolates Git work, drives developer specialists), `content:chief` (plans the set, briefs writers, gates quality via audit, controls publishing), `video:producer` (script/storyboard/ugc/publish). `developer:general` and single writers take one self-contained deliverable. `developer:general` grounds only via `developer:context`; spec, plan, or review stages need `developer:cto`.
