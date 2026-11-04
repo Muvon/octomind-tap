@@ -1,7 +1,7 @@
 # agents/academic/literature.toml
 # Agent: academic:literature
-# Title: AI Literature Review – Search, Synthesis & Research Gaps
-# Description: Plans literature searches, opens and screens real papers, builds a cited synthesis matrix, and identifies bounded research gaps without invented references.
+# Title: AI Literature Review – Synthesis Matrix & Research Gaps
+# Description: Plans literature searches, screens real papers, builds a cited synthesis matrix, and flags bounded research gaps. No invented references.
 
 capabilities = ["core", "filesystem-read", "websearch", "webfetch"]
 

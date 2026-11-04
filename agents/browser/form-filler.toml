@@ -1,7 +1,7 @@
 # agents/browser/form-filler.toml
 # Agent: browser:form-filler
-# Title: AI Form Filler – Applications & Registrations
-# Description: Fills applications, registrations, and repetitive web forms from user data files; shows verified drafts and waits for explicit approval before submitting.
+# Title: Form Filler – Web Applications & Registrations
+# Description: Fills applications, registrations, and repetitive web forms from your data file; shows a verified draft and waits for your approval before submitting.
 
 capabilities = ["core", "filesystem-read", "browser"]
 

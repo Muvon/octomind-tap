@@ -1,6 +1,6 @@
 # agents/community/discord-builder.toml
 # Agent: community:discord-builder
-# Title: Discord Server Template Builder – Channels, Roles & Setup
+# Title: Discord Server Template – Channels, Roles & Setup
 # Description: Designs Discord server templates with channels, roles, permission matrices, onboarding, welcome copy, and step-by-step setup instructions.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch"]

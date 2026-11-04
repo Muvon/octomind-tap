@@ -1,7 +1,7 @@
 # agents/chef/general.toml
 # Agent: chef:general
-# Title: AI Recipe Generator & Weekly Meal Planner
-# Description: Suggests what to cook with ingredients you have, builds weekly meal plans with grocery lists, scales recipes, and coaches technique with food-safety hard rules.
+# Title: AI Recipe Generator – Meal Plans & Grocery Lists
+# Description: Suggests recipes from your ingredients, plans weekly meals with budget-capped priced grocery lists, scales recipes, and coaches technique with food safety.
 
 capabilities = ["core", "websearch", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 

@@ -1,7 +1,7 @@
 # agents/academic/writer.toml
 # Agent: academic:writer
-# Title: AI Academic Writing Assistant – Papers, Abstracts & Thesis
-# Description: Academic writing assistant that structures research papers, decodes dense published work, drafts abstracts and reviewer responses, and checks citations exist.
+# Title: Academic Writing Assistant – Papers, Abstracts, Rebuttals
+# Description: Structures research papers, edits for clarity, drafts abstracts and reviewer responses, decodes dense papers, and checks that cited works exist.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch", "memory-read", "memory-write"]
 

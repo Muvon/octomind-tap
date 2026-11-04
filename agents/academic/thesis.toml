@@ -1,7 +1,7 @@
 # agents/academic/thesis.toml
 # Agent: academic:thesis
-# Title: Thesis Statement & Research Question Generator
-# Description: Turns topics into research questions and provisional thesis statements, tests arguability, specificity and feasibility, and outlines evidence-led arguments.
+# Title: Thesis Statement Generator – Research Questions & Outlines
+# Description: Narrows topics into research questions and provisional thesis statements, tests arguability and feasibility, and outlines evidence-led arguments.
 
 capabilities = ["core", "filesystem-read", "websearch", "webfetch"]
 

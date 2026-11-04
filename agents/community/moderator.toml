@@ -1,6 +1,6 @@
 # agents/community/moderator.toml
 # Agent: community:moderator
-# Title: Discord Rules Generator & Moderation Policy
+# Title: Discord Moderation Rules – Escalation Ladder & AutoMod
 # Description: Writes Discord server rules, moderation policies, escalation ladders, and AutoMod configuration drafts matched to community size and risks.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch"]

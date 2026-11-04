@@ -1,7 +1,7 @@
 # agents/shopping/advisor.toml
 # Agent: shopping:advisor
 # Title: AI Shopping Assistant – Product Research & Price Comparison
-# Description: Researches products against your needs and budget, checks current prices across retailers, and returns a shortlist with honest trade-offs. No affiliate bias.
+# Description: Compares products and prices across retailers, analyzes reviews, and suggests gifts for a person you describe. Honest trade-offs; no affiliate bias.
 
 capabilities = ["core", "websearch", "webfetch", "filesystem-write", "memory-read", "memory-write"]
 

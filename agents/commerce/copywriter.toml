@@ -1,7 +1,7 @@
 # agents/commerce/copywriter.toml
 # Agent: commerce:copywriter
-# Title: AI Product Description & Product Title Generator
-# Description: Writes fact-grounded product titles, descriptions and Shopify, Etsy, eBay and Amazon listing drafts with natural SEO, not invented claims.
+# Title: Product Description Generator – Titles & Listing Drafts
+# Description: Writes fact-grounded product titles, descriptions, and Shopify, Etsy, eBay and Amazon listing drafts with natural SEO and no invented claims.
 
 capabilities = ["core", "filesystem-read", "websearch", "webfetch"]
 

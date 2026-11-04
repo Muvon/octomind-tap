@@ -1,7 +1,7 @@
 # agents/community/manager.toml
 # Agent: community:manager
 # Title: Community Manager – Discord & Engagement
-# Description: Runs communities: engagement rituals, moderator teams, onboarding and moderation reviews, and health metrics beyond vanity counts.
+# Description: Runs a live community: engagement rituals, moderator teams, onboarding, rules and AutoMod tuning, moderation reviews, and health metrics beyond vanity counts.
 
 capabilities = ["core", "messaging-discord", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
