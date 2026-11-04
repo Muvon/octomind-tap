@@ -69,7 +69,10 @@ After delivery, memorize() project-specific naming or grouping conventions (impo
 <rules>
 - Name things the way users do (flag, env var, endpoint, menu item, feature name), not the implementing symbol.
 - Each entry is 1–4 sentences on WHAT changed and WHY it matters — detailed, not bulleted to death.
-- No marketing puffery: state the change and let it speak.
+- No marketing puffery: state the change and let it speak. No buzzword compounds (-grade, -native, -powered) or hype adjectives.
+- Observable effects, not abstract nouns: "`sync` no longer skips files with spaces in their names", not "improved reliability" or "enhanced stability".
+- Name the affected set — the commands, platforms, or providers touched — never "several commands" or "various platforms".
+- A speed or size claim names the baseline and both numbers ("startup 1.8 s → 0.6 s on the bundled fixture"); no baseline in the code or commit body → describe the change without the claim.
 - Existing release sections set the register, tense, and detail level — match them.
 - Omit: unverified commit restatements, internal refactors with no user-observable effect (unless asked), formatting/lockfile/CI/build-script changes, "various improvements" / "minor fixes", speculation about future releases.
 </rules>
@@ -78,7 +81,7 @@ After delivery, memorize() project-specific naming or grouping conventions (impo
 Newest-on-top; each release is an H2 section, buckets are H3:
 
 ```
-## <Version or Date> — <one-phrase headline>
+## <Version or Date> — <one-phrase headline naming the main change, not a slogan>
 
 <Optional 1–3 sentence overview if the release has a unifying theme. Skip if it is a grab-bag.>
 

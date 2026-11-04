@@ -45,6 +45,13 @@ Professional voice comes from a definite point, credible detail, and respect for
 - Lead with the useful fact, observation, answer, or decision. A hook should tell readers why the content matters and be paid off by the content; don't manufacture suspense around an ordinary fact.
 - Give enough context to understand the point without the planning brief. Explain unfamiliar terms once; preserve precise domain vocabulary when the audience needs it.
 - Prefer concrete verbs and identifiable actors. Replace “a transformative solution” with what it actually does, if known. If specifics are unavailable, narrow the claim instead of supplying plausible details.
+- Literal before clever: a headline, tagline, or opener must make sense to a stranger without context. A slogan or wordplay can sit beside a literal line, not replace it.
+- A comparison names the alternative and the measure ("imports 1M rows in 40 s; Tool B takes 95 s on the same machine"). "Faster than alternatives" or "the closest competitor" needs both filled in from the source, or it goes. Prefer the like-for-like comparison (same model, hardware, or input) and state the condition.
+- Name the members of a set when the source does ("PostgreSQL, MySQL, and SQLite"), instead of "major databases"; mark a partial list ("including", "such as") so it doesn't read as complete. Replace abstract nouns with the observable effect ("resumes the upload after the connection drops", not "ensures robust connectivity").
+- Use the reader's standard term over a coined one; if the subject has its own term, map it once to the known one. Call the product by name, not "the engine" or "the platform".
+- Define a term before you reuse it; don't make the reader meet an insider noun cold. Internal names (config keys, module or class names) appear only in code formatting where the reader needs them to find something; elsewhere use the plain word.
+- Outcome before mechanism: what the reader gets, then how it works. Evidence goes near the top, next to the claim it supports, not in a closing section.
+- Cut filler adverbs that assert ease or speed without measuring it: easily, simply, just, quickly, very, effectively (Google and Microsoft style guides).
 - Remove throat-clearing, repeated claims, unsupported superlatives, and abstract modifiers. Words such as “innovative,” “seamless,” or “leverage” invite a meaning check, not a mechanical ban. Literal or technical uses may be correct.
 - Keep terminology consistent. Don't rotate “users,” “customers,” and “buyers” for variety when they name different people.
 - State an evidenced position clearly; keep real qualifications. “May,” “in this sample,” and “under these conditions” can be essential to accuracy, not weakness.
@@ -54,7 +61,7 @@ Professional voice comes from a definite point, credible detail, and respect for
 - Read for comprehension and natural emphasis. Split an overloaded sentence or join choppy ones when it improves the logic. Don't enforce sentence-length alternation, contraction percentages, fragments, or punctuation quotas.
 - Contractions, fragments, lowercase, and slang should fit the author's register and venue. Correct accidental errors; never add typos, fake edit notes, broken grammar, or invented dialect as camouflage.
 - Use active voice when it clarifies responsibility; passive voice is useful when the actor is unknown or the process/result deserves focus.
-- Treat these as review prompts, not bans: repeated "not just X, but Y" contrasts, forced groups of three, padded adjective lists, staccato paragraph stacks, compulsory morals, inflated significance ("pivotal," "testament to"), vague attributions ("experts say"), trailing "-ing" clauses that assert significance ("..., highlighting its importance"), "serves as" or "boasts" in place of "is" or "has," and bold inline headers on every bullet. Keep a real comparison, a meaningful list of three, or a useful summary.
+- Treat these as review prompts, not bans: repeated "not just X, but Y" contrasts, forced groups of three, padded adjective lists, staccato paragraph stacks, compulsory morals, inflated significance ("pivotal," "testament to"), vague attributions ("experts say"), trailing "-ing" clauses that assert significance ("..., highlighting its importance"), "serves as" or "boasts" in place of "is" or "has," buzzword compounds ("-grade," "-native," "-first," "-powered"), outline-style "challenges and future outlook" endings, title-case headings, emoji bullets, bold scattered through running prose, bold inline headers on every bullet, and chatbot residue ("I hope this helps," "it's important to note"). Keep a real comparison, a meaningful list of three, or a useful summary.
 - Use questions when their answers matter, not as automatic openers or “Agree?” endings. End after the point, a useful next action, or an unresolved question grounded in the subject; no mandatory twist or inspirational closer.
 - Use headings, lists, and tables when they help readers navigate or compare. A technical reply may need steps or code; a brief conversational reply usually needs prose. Length and formatting follow the task, not an authorship stereotype.
 
@@ -87,11 +94,20 @@ Avoid:
 Use:
 > We tested this on one repository. We haven't measured runtime yet.
 
+Illustrative source: a 1M-row import benchmark on one laptop; the product took 40 s; Tool B took 95 s.
+
+Avoid:
+> Blazing-fast imports that leave the competition behind.
+
+Use:
+> Imports 1M rows in 40 s on a laptop; Tool B takes 95 s on the same machine.
+
 ## Checklist
 
 - [ ] The opening delivers a specific point for the intended reader.
 - [ ] Every experience, result, and quotation belongs to the stated speaker and source.
 - [ ] Edits preserve scope, uncertainty, and technical meaning.
+- [ ] Headlines and openers are literal; every comparison names the alternative and the measure; sets name their members.
 - [ ] Rhythm, formatting, and vocabulary serve comprehension without artificial quotas.
 - [ ] Platform participation, disclosure, accessibility, and publication conditions are satisfied.
 - [ ] The final copy is separate from internal source notes and unresolved questions.
@@ -100,7 +116,9 @@ Use:
 
 Reviewed 2026-10-12. Apply source principles within their stated scope; they do not establish social-platform ranking factors. This is a review date, not a publication/update date for the sources below.
 
-- [GOV.UK clear-language guidance](https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/writing-guidelines/clear-language/) — a public-service style guide supporting audience-focused clarity, not a universal brand voice.
+- [GOV.UK clear-language guidance](https://guidance.publishing.service.gov.uk/writing-to-gov-uk-standards/writing-guidelines/clear-language/) — a public-service style guide supporting audience-focused clarity, not a universal brand voice; its A–Z "words to avoid" entry lists terms such as drive, robust, leverage, and deliver used for abstract things.
+- [NN/g: concise, scannable, and objective writing](https://www.nngroup.com/articles/concise-scannable-and-objective-how-to-write-for-the-web/) — in a 51-user study, objective copy measured 27% more usable than promotional copy, and concise + scannable + objective 124%.
+- [Google developer style word list](https://developers.google.com/style/word-list) and [Microsoft: simple words, concise sentences](https://learn.microsoft.com/en-us/style-guide/word-choice/use-simple-words-concise-sentences) — filler adverbs, "use" over "utilize/leverage", one term per concept.
 - [FTC endorsement disclosures](https://www.ftc.gov/business-guidance/resources/disclosures-101-social-media-influencers) — US-facing endorsements and truthful experience.
 - [W3C image alternatives](https://www.w3.org/WAI/tutorials/images/decision-tree/) — communicate an image's purpose and relevant information.
 - [Google's AI-content guidance](https://developers.google.com/search/docs/fundamentals/using-gen-ai-content) — accuracy and reader value, not guaranteed traffic from “human” style.

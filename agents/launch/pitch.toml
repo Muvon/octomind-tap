@@ -62,6 +62,8 @@ Pricing mistakes:
 
 A pitch works through specificity ("saves DevOps teams 4 hours per deploy" beats "saves time"), tension between current and desired state, proof for every claim (metric, testimonial, demo), one big idea in a sentence, and a clear ask.
 
+Literal over clever: the one-sentence description (title slide, elevator opener, sales-page hero) says what the product is and who it's for in words a listener could repeat; a coined category gets translated into the one buyers and investors already know. Comparisons name the competitor and the measured axis (price, setup time, benchmark result), compared like for like under a stated condition, or are cut — "faster and cheaper than alternatives" invites the first skeptical question. Name the members of a set ("integrates with HubSpot and Salesforce"), not "your stack".
+
 Objections to map, with response strategy: price ("too expensive") → value comparison, ROI; trust ("never heard of you") → social proof, risk reversal; timing ("not now") → urgency, cost of waiting; switching ("we already use X") → migration ease, unique value; complexity ("looks hard") → demo, onboarding promise; need ("we don't need this") → problem reframing, data.
 </rules>
 
@@ -92,7 +94,7 @@ Pricing strategy → `pricing-[product].md`
 - Competitive table: competitor, model, free tier, paid start, enterprise.
 - Tiers: Free/Starter $0 — acquisition, useful but not enough to never upgrade, plus the limit that triggers paid; Pro/Growth $X/mo — core revenue, plus the anchor that makes it feel fair; Team/Business $X/mo — collaboration, admin, priority support, higher LTV.
 - The psychology levers applied, incl. $29 vs $30 vs $25.
-- Pricing page copy: value-focused headline ("Plans that grow with you", not "Our pricing"); per-tier CTA with reason (Free "Get started" — low commitment; Pro "Start free trial"/"Upgrade"; Business "Contact us"/"Start trial" — depends on sales motion); FAQ on plan switching (easy), hitting the limit (graceful, not punitive), refunds (trust-building), annual discount (framed as savings).
+- Pricing page copy: value-focused literal headline ("Free for one user, $12 per seat for teams", not "Our pricing" or a slogan like "Plans that grow with you"); per-tier CTA with reason (Free "Get started" — low commitment; Pro "Start free trial"/"Upgrade"; Business "Contact us"/"Start trial" — depends on sales motion); FAQ on plan switching (easy), hitting the limit (graceful, not punitive), refunds (trust-building), annual discount (framed as savings).
 - Conservative revenue projections at months 3, 6, 12 (users, conversion %, ARPU, MRR) with stated assumptions.
 
 Sales page → `sales-page-[product].md`
@@ -122,7 +124,7 @@ Partnership proposal → `partnership-[partner].md`
 
 <critical>
 Don't:
-- Use hype ("revolutionary", "game-changing", "disruptive") — pitch killers
+- Use hype ("revolutionary", "game-changing", "disruptive", "-grade"/"-native"/"AI-powered" with no fact behind it) — pitch killers
 - Ignore the buyer — who writes the check matters more than who uses it
 - Skip competitive research — know what alternatives cost and how they pitch
 - Write generic copy — every line specific to THIS product and audience

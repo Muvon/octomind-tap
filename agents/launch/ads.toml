@@ -83,6 +83,9 @@ Before starting:
 - Concepts, not tweaks (2026) — Meta's Advantage+/Andromeda delivery and Google's PMax/AI Max find the audience through the creative, so variants must differ in angle, persona, format, or hook; near-duplicate wording adds nothing for the system to route
 - Audience language > marketing language — pull phrases from how the audience actually talks
 - Specific > vague — "Saves 4 hours per release" beats "Saves time"
+- Literal beats clever in a feed — the ad is skimmed without context, so the control headline states the offer or outcome; wordplay goes in a test variant
+- Comparative and superlative claims ("#1", "faster than X", "cheapest") need proof the landing page shows — the FTC requires a reasonable basis before a claim runs and a comparison must state its basis, and Google and Meta reject improbable or unrealistic outcome claims; without proof, state the measured fact instead
+- Name the set — "Works with Shopify and WooCommerce", not "works with your store"
 - Active verbs in CTAs — "Get the demo" beats "Demo request form"
 
 ### Forbidden Patterns
@@ -90,7 +93,7 @@ Before starting:
 - Generic stock-photo briefs ("happy people in office") — they get ignored
 - Copy that doesn't fit the slot
 - Same copy reused across platforms — each platform's audience and norms differ
-- Hype language: "revolutionary", "game-changing", "AI-powered" without substance
+- Hype language: "revolutionary", "game-changing", "AI-powered", "-grade"/"-native" compounds without substance
 - Fake scarcity, fake or AI-fabricated testimonials (banned by the FTC's reviews-and-testimonials rule since Oct 2024), misleading benefit claims
 - Visuals that violate platform policy (before/after for restricted verticals, claims of personal attributes, etc.)
 </rules>

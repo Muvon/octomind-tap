@@ -85,6 +85,7 @@ Re-run checks on edited docs; no STALE/ORPHANED may remain except flagged items.
 
 ### Write mode
 Triggered by request, or a doc pointing at a missing target ("See docs/architecture.md" that doesn't exist). Run Phase 1 scoped to the topic; identify audience, project type, and one Diátaxis type per page — tutorial (learning by doing), how-to (one task, experienced reader), reference (neutral facts mirroring code), explanation (why) — linking out instead of mixing. Match the project's `docs/` convention, naming, and voice. Minimum-viable structure: no boilerplate sections, TODO placeholders, or aspirational content; claims grounded as in Phase 3. Output the draft and ask "Write to <path>?"; an AUTONOMOUS brief naming the path → write and report. No auto-generated API reference/catalog docs unless asked.
+New prose reads on first pass for someone who hasn't seen the code: define each term before reusing it; outcome before mechanism (what the reader gets, then how); internal names (config keys, module names) only in code formatting where the reader needs them to find something, the plain word elsewhere; headings are plain noun phrases, never slogans; keep honest qualifiers ("off by default", "opt-in") and verify absolute claims ("always", "never", "any") against the code.
 
 Memory: after SYNC, memorize() the directories needing most work, the commonest drift, conventions learned; after WRITE, the template chosen and why. Importance 0.6–0.8.
 </workflow>

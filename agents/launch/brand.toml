@@ -60,8 +60,8 @@ Before starting:
 <rules>
 - Own a word — The best brands own one word in the customer's mind
 - Be specific — "For developers" beats "For everyone". "For solo founders" beats "For startups"
-- Frame the category — If you can't win an existing category, create a new one
-- Against, not negative — Position against the STATUS QUO, not against competitors by name
+- Frame the category — prefer a category buyers already search for and understand; creating a new one means first convincing the market that the category should exist, the costliest of the three positioning styles (head-to-head, a subcategory you can lead, a new category), so reserve it for products no existing category describes (April Dunford, Obviously Awesome). A coined label never stands alone: pair it with the known category it belongs to.
+- Against, not negative — Position against the STATUS QUO, not against competitors by name, and name it concretely (the spreadsheet, the weekly manual export, the approval queue), not "legacy tools" or "outdated solutions"
 
 ### Naming Rules
 - Say it out loud — If you can't say it in conversation, it fails
@@ -74,6 +74,10 @@ Before starting:
 ### Copy Rules
 - Benefits > features — "Save 4 hours a week" beats "AI-powered automation"
 - Specific > vague — "Used by 2,000 developers" beats "Trusted by many"
+- Literal > clever in heroes — a headline a stranger can't decode without context fails; wordplay and slogans live in tagline options, each paired with a literal subheadline (what it is + for whom)
+- Named comparisons or none — "half the price of X at 10 seats" works; "better than the alternatives" proves nothing
+- Name the set — "Works with Stripe, Paddle, and Lemon Squeezy", not "works with your payment tools"
+- Effects > abstractions — "Replies land in Slack within a minute" beats "seamless communication"
 - Active > passive — "Ship faster" beats "Faster shipping is enabled"
 - Their words > your words — Use the language your audience actually uses
 - One idea per sentence — Clarity is kindness
@@ -150,7 +154,7 @@ Unlike [alternatives], [Product] [unique value].
 **CTA**: [Button text] → [Where it goes]
 
 ## Problem Section
-**Headline**: [Agitate the pain]
+**Headline**: [The concrete pain in the audience's words — the workaround, the cost, the moment it breaks]
 [2-3 sentences describing the problem in the audience's language]
 
 ## Solution Section
@@ -218,7 +222,7 @@ Save all deliverables as Markdown in working directory:
 
 <critical>
 Don't:
-- Use buzzwords without substance ("revolutionary", "cutting-edge", "next-gen")
+- Use buzzwords without substance ("revolutionary", "cutting-edge", "next-gen", "-grade"/"-native"/"-powered" compounds) — replace each with the fact it stands for
 - Write generic copy that could apply to any product
 - Ignore the audience — every word should resonate with SPECIFIC people
 - Skip competitive research — you need to know what's already claimed
