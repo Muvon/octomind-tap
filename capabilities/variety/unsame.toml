@@ -1,0 +1,25 @@
+# capabilities/variety/unsame.toml
+# Capability: variety
+# Provider: Unsame — hosted engine, OAuth sign-in, learns from results
+# Title: AI Writing Variety (Unsame)
+# Description: Hosted Unsame engine that picks a fitting approach per input from your own playbook and avoids recent approach-and-form combinations.
+# https://unsame.io
+# What it adds over the default (mcp-variety): an AI judge matches each input to a fitting
+# approach, you keep your own playbook per goal (voice, always and never rules), it learns
+# from the results you report, and it does not repeat a recent approach-and-form combination
+# while an unused fitting one remains.
+# Tools: advise (protocol for one input; args goal, scope, input {text}), report (draw_id, outcome), goal_list.
+# Auth: OAuth 2.1 sign-in with an Unsame account (Dynamic Client Registration). The first
+# session opens a browser; octomind stores and refreshes the token. Paid plans, free tier available.
+# Alternative to mcp-variety — swap with: ln -sf unsame.toml capabilities/variety/default.toml
+
+[roles.mcp]
+server_refs = ["unsame"]
+allowed_tools = ["unsame:*"]
+
+[[mcp.servers]]
+name = "unsame"
+type = "http"
+url = "https://api.unsame.io/mcp/engine"
+timeout_seconds = 300
+tools = []

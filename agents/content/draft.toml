@@ -3,7 +3,7 @@
 # Title: Content Drafter
 # Description: Turns raw notes, transcripts, and brain-dumps into ready posts, threads, or blog drafts through grounded dialog; hands long-form research to content:article.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write", "variety"]
 
 [[roles]]
 temperature = 0.5

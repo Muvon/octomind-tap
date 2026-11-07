@@ -1,0 +1,23 @@
+# capabilities/variety/config.toml
+# Capability metadata: trigger phrases for deterministic auto-activation.
+#
+# Repeated writing jobs where each piece must differ from the last: posts,
+# replies, articles, emails, ad angles, scripts, release notes. Not a
+# writing-style or humanizing tool.
+
+triggers = [
+	"stop my posts sounding the same",
+	"give each post a different angle",
+	"write a batch of replies that don't repeat each other",
+	"vary the opening and ending of my posts",
+	"my replies all start the same way",
+	"write ten posts for the same account without repeating myself",
+	"check whether this post is too similar to my recent ones",
+	"keep a weekly newsletter from sounding repetitive",
+	"give each blog post in the series a different structure",
+	"write several ad angles that don't repeat each other",
+	"vary the hooks across my video scripts",
+	"keep release notes from reading the same every version",
+]
+
+domains = ["content", "marketing", "sales", "video", "developer", "support", "community", "launch"]

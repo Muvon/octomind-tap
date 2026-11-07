@@ -3,7 +3,7 @@
 # Title: Content Distribution Manager
 # Description: Publishes approved content to YouTube, Instagram, TikTok, and X with platform-native metadata, then reports performance against account baselines.
 
-capabilities = ["core", "filesystem-read", "memory-read", "memory-write", "publish-youtube", "publish-instagram", "publish-tiktok", "publish-x", "stock", "image-gen"]
+capabilities = ["core", "filesystem-read", "memory-read", "memory-write", "publish-youtube", "publish-instagram", "publish-tiktok", "publish-x", "stock", "image-gen", "variety"]
 
 [[roles]]
 temperature = 0.3

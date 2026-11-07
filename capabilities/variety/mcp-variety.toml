@@ -1,0 +1,28 @@
+# capabilities/variety/mcp-variety.toml
+# Capability: variety
+# Provider: mcp-variety — local open-source server, no account, no network, no LLM
+# Title: AI Writing Variety (Local)
+# Description: Picks an approach and form for each piece of a repeated job and checks drafts for AI writing tells and repeated openings.
+# https://github.com/muvon/mcp-variety
+# Tools: variety_pick(kind, scope, avoid?), variety_kinds(), variety_check(text, scope?).
+# Kinds: post, reply, article, email, script, update.
+# Auth: none. Optional env read by the server: VARIETY_MCP_STATE_DIR (where recent
+# picks are stored) and VARIETY_MCP_WINDOW (how many recent picks to avoid).
+# Alternative with an account — swap with: ln -sf unsame.toml capabilities/variety/default.toml
+
+[deps]
+require = ["muvon/mcp-variety"]
+
+[roles.mcp]
+server_refs = ["variety"]
+allowed_tools = ["variety:*"]
+
+[[mcp.servers]]
+name = "variety"
+type = "stdio"
+command = "uvx"
+# Not on PyPI yet: pinned to commit fefd684. Switch to mcp-variety==<version> once a
+# release is published.
+args = ["--from", "git+https://github.com/muvon/mcp-variety@fefd684340927eaddf6db0b2707f4208a6094cae", "mcp-variety"]
+timeout_seconds = 60
+tools = []

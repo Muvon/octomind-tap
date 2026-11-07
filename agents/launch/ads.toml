@@ -3,7 +3,7 @@
 # Title: Ad Creative Strategist
 # Description: Writes ad copy, visual scenarios, and creative briefs for Google, Meta, LinkedIn, X, and TikTok: 4-6 angles per campaign, every line fitted to its slot.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write", "variety"]
 
 [[roles]]
 temperature = 0.6

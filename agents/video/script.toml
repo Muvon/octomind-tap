@@ -3,7 +3,7 @@
 # Title: Video Script Writer
 # Description: Writes video scripts for short-form and long-form: hook variants, timestamped beats, voiceover lines, on-screen text, and b-roll cues. Text artifacts only.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write", "variety"]
 
 [[roles]]
 temperature = 0.75
