@@ -79,10 +79,6 @@ else:
         errors.append(f"HEADER_DESC_LONG: description must be <= 155 chars ({len(desc_val)})")
     if ' - ' not in desc_val:
         errors.append("HEADER_DESC_NAME: description must read '<Name> - <what it does>'")
-    # octomind.run uses the lead (everything before the first ;) as the page title.
-    lead = desc_val.split(';')[0]
-    if ';' not in desc_val or not 30 <= len(lead) <= 65:
-        errors.append(f"HEADER_DESC_LEAD: description must read '<Name> - <what it does>; <details>' with 30-65 chars before the first ';' ({len(lead)}) — the lead is the web page title")
 
 # Line 5: # check: <command>
 check_match = re.match(r'^# check:\s*(.+)$', lines[4])

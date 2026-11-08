@@ -41,7 +41,7 @@ Every dep script starts with these header comments, exactly on lines 1–6 in th
 - `# dep:` — must equal the file path (`deps/<org>/<tool>.sh` → `<org>/<tool>`) and the `require` entry in the capability file
 - `# type: mcp` — script ensures an MCP server runtime is runnable (e.g. `npx`, `uvx`, `docker`)
 - `# type: dep` — script installs a standalone CLI tool used directly (e.g. `cargo`, `kubectl`, `octofs`)
-- `# description:` — `<Name> - <what it does>; <details>`, 120–155 chars. octomind.run uses the whole line as its search snippet, so name the concrete actions and data, the runtime, and any required API key env var in the details. The part before the first `;` must be 30–65 chars and is shown alone as the web page title, so it must read as a complete title, not a fragment
+- `# description:` — `<Name> - <what it does>; <details>`, 120–155 chars. octomind.run uses the whole line as its search snippet, so name the concrete actions and data, the runtime, and any required API key env var in the details
 - `# check:` — the command that proves the tool is installed
 - line 6 — homepage URL starting with `# https://`
 
