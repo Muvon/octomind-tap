@@ -11,6 +11,8 @@
 #   8. Comment metadata: # Title: (5–60 chars) and # Description: (20–160 chars) required
 #   9. Prompts must not cite tap-relative paths (skills/…, capabilities/…, deps/…) — octomind domain exempt
 #  10. Every `name` skill mentioned in prompts must exist at skills/<name>/SKILL.md
+#  11. Optional agents/<domain>/README.md: a "# <domain name>" line, a blank line, then
+#      one description paragraph of 120–155 chars (octomind.run shows them on the domain page)
 #
 # Usage:
 #   scripts/lint-manifests.sh                  # lint all manifests
@@ -274,6 +276,28 @@ for file in "${FILES[@]}"; do
 
   if ! lint_file "$file"; then
     ERRORS=$((ERRORS + 1))
+  fi
+done
+
+# Domain READMEs: octomind.run uses the H1 as the domain name and the paragraph as
+# its description, so the shape is fixed.
+for readme in "$REPO_ROOT"/agents/*/README.md; do
+  [[ -e $readme ]] || continue
+  rel="${readme#"$REPO_ROOT/"}"
+  if ! py_err=$(python3 -c '
+import sys, re
+m = re.fullmatch(r"# (\S[^\n]*)\n\n([^\n]+)\n", open(sys.argv[1]).read())
+if not m:
+    sys.exit("README_SHAPE: want \"# <domain name>\", a blank line, then one description line")
+n = len(m.group(2))
+if not 120 <= n <= 155:
+    sys.exit(f"README_DESC: description must be 120-155 chars ({n})")
+' "$readme" 2>&1); then
+    echo "  ✗ $py_err"
+    echo "    file: $rel"
+    ERRORS=$((ERRORS + 1))
+  else
+    echo "  ✓ $rel"
   fi
 done
 
