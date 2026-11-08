@@ -2,7 +2,7 @@
 # Capability: market-data
 # Provider: yfinance — Yahoo Finance data via MCP
 # Title: Market Data
-# Description: Stock quotes, financial reports, and market data via the yfinance MCP server (Yahoo Finance).
+# Description: Fetch Yahoo Finance stock quotes, company financial reports, and historical market data through the yfinance MCP server.
 
 [deps]
 require = ["yahoo/yfinance"]

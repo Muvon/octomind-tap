@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: sveltejs/svelte
 # type: mcp
-# description: Svelte MCP Server - official Svelte and SvelteKit docs and tooling, run via bunx
+# description: Svelte MCP Server - Svelte and SvelteKit docs and tooling; official server run via bunx, optional VOYAGE_API_KEY adds embeddings support
 # check: bunx
 # https://github.com/sveltejs/ai-tools
 

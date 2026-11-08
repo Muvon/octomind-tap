@@ -1,7 +1,7 @@
 # agents/tutor/languages.toml
 # Agent: tutor:languages
 # Title: AI Language Learning Tutor
-# Description: Coaches foreign-language self-learners toward conversation: comprehensible input, high-frequency vocab with SRS, output practice, and honest CEFR milestones.
+# Description: Coaches foreign-language self-learners toward conversation: comprehensible input, high-frequency vocab with SRS, output practice, and CEFR milestones.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

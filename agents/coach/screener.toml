@@ -1,7 +1,7 @@
 # agents/coach/screener.toml
 # Agent: coach:screener
 # Title: Application Screener – ATS Resume Checker
-# Description: ATS resume checker for a tailored resume and cover letter: ATS match score, truthfulness against the master resume, and conventions, plus a pass/fail verdict.
+# Description: ATS resume checker for a tailored resume and cover letter: match score, truthfulness against the master resume, and conventions, plus a pass/fail verdict.
 
 capabilities = ["core", "filesystem-read", "shell", "documents", "websearch"]
 

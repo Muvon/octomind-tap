@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: modelcontextprotocol/filesystem
 # type: mcp
-# description: MCP Filesystem Server - secure file operations (read, write, search)
+# description: MCP Filesystem Server - read and write files in allowed folders; also lists and searches them, runs on Node.js 20+ with npx, no API key
 # check: npx
 # https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem
 

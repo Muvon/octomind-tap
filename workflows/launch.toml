@@ -7,7 +7,7 @@
 # Note: chains several specialist runs — token/time-heavy by design.
 
 name        = "launch"
-description = "Takes a product idea from market exploration to an honest go/no-go, then, only if viable, produces a go-to-market plan with GTM strategy, brand, pitch, ads, and a zero-budget launch plan."
+description = "Takes a product idea through market exploration to a go/no-go, then, only if viable, a go-to-market plan with strategy, brand, pitch, ads and launch plan."
 max_cost    = 10.0   # runaway guard, not a target: checked after each step
 
 # ── 1. Explore the market ────────────────────────────────────────────────────

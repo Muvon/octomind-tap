@@ -6,8 +6,7 @@
 # Public roles only.
 
 name        = "document"
-description = "Classifies the current changes into a SemVer bump and change buckets, drafts README, changelog, and release notes in parallel, then reconciles them into one consistent plan via a validating gate."
-
+description = "Classifies current changes into a SemVer bump, drafts the README, changelog and release notes in parallel, then reconciles them into one consistent plan."
 # -- 1. Classify the diff (shared contract) ---------------------------------
 [[steps]]
 name    = "classify"

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: tiktok/tiktok-shop
 # type: mcp
-# description: TikTok Shop MCP Server - products, orders, inventory
+# description: TikTok Shop MCP Server - manage orders and reviews; includes conversations, runs via npx, needs app key, app secret and OAuth access token
 # check: npx
 # https://www.npmjs.com/package/@aisar-labs/tiktok-shop-mcp
 

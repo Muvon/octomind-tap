@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: freedesktop/poppler
 # type: dep
-# description: poppler-utils - pdftotext, pdfinfo, and pdffonts for checking a PDF's pages, fonts, and text layer
+# description: poppler-utils - PDF text extraction and inspection; pdftotext, pdfinfo and pdffonts read a PDF's text layer, page count and size and check embedded fonts
 # check: pdftotext
 # https://poppler.freedesktop.org
 

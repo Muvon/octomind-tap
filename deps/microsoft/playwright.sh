@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: microsoft/playwright
 # type: mcp
-# description: Playwright MCP Server - browser automation, screenshots, web scraping
+# description: Playwright MCP Server - drive a browser to navigate and click; fill forms and take screenshots, runs with npx, no API key needed
 # check: npx
 # https://github.com/microsoft/playwright-mcp
 

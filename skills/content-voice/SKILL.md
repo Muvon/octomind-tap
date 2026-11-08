@@ -1,7 +1,7 @@
 ---
 name: content-voice
 title: "Human Writing Voice"
-description: "Professional voice, clear prose, and context-aware editing for posts, replies, articles, and scripts. Preserve author facts and register without formulaic rhetoric or fabricated experience."
+description: "Clear professional prose and context-aware editing for posts, replies, articles and scripts, keeping author facts. Use when editing in an author's voice."
 license: Apache-2.0
 compatibility: "Text editing and source material; network access for current policy or factual checks."
 domains: content

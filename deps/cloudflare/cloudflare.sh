@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: cloudflare/cloudflare
 # type: mcp
-# description: Cloudflare MCP Server - Workers, KV, R2, D1, DNS management
+# description: Cloudflare MCP Server - manage Cloudflare Workers and storage; KV namespaces, R2 buckets, D1 databases and DNS records, run via npx with an API token
 # check: npx
 # https://github.com/cloudflare/mcp-server-cloudflare
 

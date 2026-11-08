@@ -6,8 +6,7 @@
 # fix list. Public roles only.
 
 name        = "review"
-description = "Runs a code review of the current unstaged changes against the request, independently verifies each finding, then branches on a deterministic verdict to an approval note or a prioritized fix list."
-
+description = "Reviews the current unstaged changes against the request, verifies each finding, then branches on a verdict to an approval note or a prioritized fix list."
 # ── 1. Review ────────────────────────────────────────────────────────────────
 [[steps]]
 name    = "review"

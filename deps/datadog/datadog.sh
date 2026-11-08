@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: datadog/datadog
 # type: mcp
-# description: Datadog MCP Server - monitoring and observability
+# description: Datadog MCP Server - query Datadog metrics, logs and incidents; hosts, downtimes and RUM data via npx, needs a Datadog API key and Application key
 # check: npx
 # https://www.npmjs.com/package/@winor30/mcp-server-datadog
 

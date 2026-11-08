@@ -2,7 +2,7 @@
 # Capability: docker
 # Provider: Docker CLI (docker, docker-compose)
 # Title: Docker
-# Description: Docker container management via docker and docker-compose CLI.
+# Description: Build, run, and inspect Docker containers and images, and manage multi-container stacks, using the docker and docker-compose CLIs.
 
 [deps]
 require = ["docker/docker"]

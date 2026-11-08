@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: alexlock1/macos-system
 # type: mcp
-# description: macOS System MCP Server - file dialogs, clipboard, notifications
+# description: macOS System MCP Server - drive Finder, Notes and the clipboard; open file dialogs, send notifications, take screenshots; built from GitHub source
 # check: npx
 # https://github.com/alexlock1/macos-mcp
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: e2b/e2b
 # type: mcp
-# description: E2B MCP Server - secure code execution sandbox for Python/JS
+# description: E2B MCP Server - run Python and JavaScript in cloud sandboxes; isolated runs through @e2b/mcp-server on npx, needs an E2B API key
 # check: npx
 # https://www.npmjs.com/package/@e2b/mcp-server
 

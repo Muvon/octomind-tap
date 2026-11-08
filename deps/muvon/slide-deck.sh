@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: muvon/slide-deck
 # type: dep
-# description: slide-deck - Marp slide deck CLI (lint, PDF/HTML/PPTX/PNG export, overflow check, octo theme) shipped with this tap
+# description: slide-deck - Marp slide deck CLI with PDF, HTML and PPTX export; PNG export, lint, overflow check, octo theme, shipped with this tap, runs Marp via npx
 # check: slide-deck
 # https://github.com/muvon/octomind-tap
 

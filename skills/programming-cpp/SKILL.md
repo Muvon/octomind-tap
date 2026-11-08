@@ -1,7 +1,7 @@
 ---
 name: programming-cpp
 title: "C++ Development Best Practices"
-description: "Modern C++ best practices for AI coding agents: architecture, RAII, value semantics, and reproducible dependency and library selection guidance. Auto-activates in C++ projects."
+description: "Modern C++ practices for AI coding agents: architecture, RAII, value semantics, dependency and library selection. Use when writing or reviewing C++ code."
 license: Apache-2.0
 compatibility: "Requires the project's C++ compiler, standard library, and build system."
 domains: developer

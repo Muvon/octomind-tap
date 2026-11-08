@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: steipete/macos-automator
 # type: mcp
-# description: macOS Automator MCP Server - AppleScript, JXA execution
+# description: macOS Automator MCP Server - run AppleScript and JXA scripts; 200+ scripting recipes and UI accessibility queries, runs via npx, needs macOS permissions
 # check: npx
 # https://www.npmjs.com/package/@steipete/macos-automator-mcp
 

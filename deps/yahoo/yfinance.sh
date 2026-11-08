@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: yahoo/yfinance
 # type: mcp
-# description: Yahoo Finance MCP Server - stock prices and historical market data
+# description: Yahoo Finance MCP Server - get stock quotes and price history; charts and financial instrument search, runs via npx, no API key needed
 # check: npx
 # https://www.npmjs.com/package/@szemeng76/yfinance-mcp-server
 

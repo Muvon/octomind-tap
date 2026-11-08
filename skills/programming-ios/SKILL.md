@@ -1,7 +1,7 @@
 ---
 name: programming-ios
 title: "iOS Development Best Practices"
-description: "iOS app best practices for AI coding agents: state ownership, SwiftUI/UIKit integration, persistence, lifecycle, and platform services. Auto-activates for iOS projects."
+description: "iOS app practices: state ownership, SwiftUI and UIKit integration, persistence, lifecycle, platform services. Use when building or reviewing iPhone apps."
 license: Apache-2.0
 compatibility: "Requires Xcode and the project's supported iOS SDK/deployment target; newer frameworks require availability checks."
 capabilities: programming-swift

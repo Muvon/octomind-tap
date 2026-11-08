@@ -1,7 +1,7 @@
 ---
 name: content-grounding
 title: "Fact Grounding & Anti-Hallucination"
-description: "Verify factual claims, preserve source meaning during edits, and separate publishable copy from evidence notes. Use for product, technical, customer-proof, and current-event content."
+description: "Verify factual claims, keep source meaning in edits, separate publishable copy from evidence notes. Use for product, technical and news content."
 license: Apache-2.0
 compatibility: "Source documents or text; websearch and webfetch for live checks when required."
 capabilities: websearch webfetch

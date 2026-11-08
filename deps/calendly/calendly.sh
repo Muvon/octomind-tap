@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: calendly/calendly
 # type: mcp
-# description: Calendly MCP Server - scheduling, events, invitees, and availability
+# description: Calendly MCP Server - manage Calendly events and event types; invitees and availability, authenticates with a Personal Access Token or OAuth 2.0
 # check: npx
 # https://github.com/meAmitPatil/calendly-mcp-server
 

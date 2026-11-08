@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: assemblyai/assemblyai
 # type: mcp
-# description: AssemblyAI MCP Server - diarized captions, chapters, speaker labels, sentiment
+# description: AssemblyAI MCP Server - speech-to-text with speaker diarization; auto-chapters, sentiment and SRT/VTT caption output, run via npx with an API key
 # check: npx
 # https://www.assemblyai.com/docs
 

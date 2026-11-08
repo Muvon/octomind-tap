@@ -1,7 +1,7 @@
 ---
 name: ai-evals-design
 title: "AI Evals Design: Golden Sets, Metrics, Significance, CI"
-description: "Operational playbook for designing production LLM evaluation in 2026. Covers eval framework selection (Promptfoo, DeepEval, Inspect, LangSmith, Braintrust, Phoenix, Galileo), golden dataset construction (size, stratification, versioning, contamination), synthetic data generation, LLM-as-judge design and calibration (G-Eval, human agreement, position/length bias, preference leakage), statistical significance (standard errors, clustering, paired differences, power analysis), RAG metrics (RAGAS, TruLens RAG Triad), agent evaluation (outcome grading, pass@k vs pass^k, transcripts), drift detection, eval-driven development and CI regression gates, and benchmark literacy (saturation and contamination of MMLU, GPQA, SWE-bench Verified; SWE-bench Pro, HLE, tau2-bench, BFCL, GAIA). Use when designing an eval suite, validating a prompt or model change, gating a deploy, or diagnosing production quality drift. Output: eval verdicts with statistical evidence, not vibe judgments."
+description: "Designing LLM evals: golden datasets, LLM-as-judge calibration, statistics, RAG and agent metrics. Use when building an eval suite or gating a deploy."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Production eval stacks typically need: an LLM provider SDK, a framework (Promptfoo / DeepEval / Braintrust / LangSmith), and a tracing backend for production drift monitoring (Phoenix / Langfuse / Helicone / Galileo)."
 domains: ai

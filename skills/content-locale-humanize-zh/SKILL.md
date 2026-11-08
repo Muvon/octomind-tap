@@ -1,7 +1,7 @@
 ---
 name: content-locale-humanize-zh
 title: "Chinese Native-Fluency Calibration"
-description: "Per-language calibration anchors for detecting AI-slop and translationese in Chinese (zh) target text; auto-loads alongside content-locale-humanize when the target language is Chinese."
+description: "Calibration anchors for AI-slop and translationese in Chinese (zh) text. Use alongside content-locale-humanize when the target is Chinese."
 license: Apache-2.0
 compatibility: "Calibration data only; no tools required. Network access helps for usage checks."
 domains: content

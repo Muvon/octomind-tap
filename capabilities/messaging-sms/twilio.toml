@@ -2,7 +2,7 @@
 # Capability: messaging-sms
 # Provider: Twilio — SMS and voice messaging
 # Title: SMS Messaging (Twilio)
-# Description: SMS and voice messaging via the Twilio MCP server (@twilio-alpha/mcp, twilio_api_v2010 service).
+# Description: Send SMS and place voice calls via the Twilio MCP server (twilio_api_v2010). Needs TWILIO_ACCOUNT_SID, TWILIO_API_KEY, TWILIO_API_SECRET.
 
 [deps]
 require = ["twilio/twilio"]

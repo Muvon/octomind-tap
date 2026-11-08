@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: macos-tools/contacts
 # type: mcp
-# description: macOS Contacts MCP Server - access the macOS Contacts database
+# description: macOS Contacts MCP Server - list and search macOS Contacts; look up people by phone or email, runs with npx, needs Full Disk Access
 # check: npx
 # https://www.npmjs.com/package/@macos-tools/mcp-server
 

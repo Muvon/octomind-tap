@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: freepik/freepik
 # type: mcp
-# description: Freepik MCP Server - AI generation + stock images, vectors, video templates
+# description: Freepik MCP Server - search stock photos, vectors and templates; generate AI images and video through one Freepik API key, run via npx
 # check: npx
 # https://www.freepik.com/api
 

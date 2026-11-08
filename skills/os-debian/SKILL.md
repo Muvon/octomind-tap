@@ -1,7 +1,7 @@
 ---
 name: os-debian
 title: "Debian Operations"
-description: "Diagnose and maintain Debian systems: release support, APT sources, package failures, service persistence, networking, and supported upgrades. Use for Debian hosts and Debian-based images."
+description: "Diagnose and maintain Debian systems: release support, APT sources, package failures, services, networking, upgrades. Use for Debian hosts and images."
 license: Apache-2.0
 compatibility: "Debian userspace; commands depend on installed tools and privileges."
 domains: devops

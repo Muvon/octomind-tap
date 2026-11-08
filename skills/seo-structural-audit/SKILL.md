@@ -1,7 +1,7 @@
 ---
 name: seo-structural-audit
 title: "Structural / Technical SEO Audit"
-description: "Operational playbook for diagnosing the structural and technical layer of a site or page: crawlability (robots.txt), indexability (meta robots, canonicals), sitemap.xml validity, redirect chains, JSON-LD schema validation, Core Web Vitals interpretation, hreflang, JS-render parity, URL architecture, and internal-link topology. Encodes the fetch protocol (parallel webfetch + shell curl), the per-surface check rubric, the severity matrix (Critical / Moderate / Minor), and the unverified-check escalation rule. Use when auditing the technical layer of a URL, sitemap, or site. Output: prioritized structural findings with evidence and fix direction."
+description: "Technical SEO audit: robots.txt, canonicals, sitemap, redirects, JSON-LD, Core Web Vitals, hreflang. Use when auditing the technical layer of a site."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Requires webfetch (for HTML/JSON-LD/page response) and shell (for curl, sitemap parsing, optional Lighthouse/PSI). Optional: GSC and crawler-tool MCPs for richer signal."
 domains: seo

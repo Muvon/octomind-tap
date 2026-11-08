@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: azure/azure
 # type: mcp
-# description: Azure MCP Server - Azure cloud services management
+# description: Azure MCP Server - manage Azure AI Search, Cosmos DB, Key Vault; Monitor, Redis and RBAC through @azure/mcp, uses a service principal or managed identity
 # check: npx
 # https://learn.microsoft.com/en-us/azure/developer/azure-mcp-server/
 

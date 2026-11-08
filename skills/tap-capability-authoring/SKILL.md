@@ -1,7 +1,7 @@
 ---
 name: tap-capability-authoring
 title: "Capability Authoring"
-description: "Guide for creating Octomind capabilities: the config.toml triggers file, provider files and the default.toml symlink, MCP server wiring with env and headers, version pins, setup-symlinks.sh registration, and the validation checklist. Activate when creating or editing capabilities/<name>/ files."
+description: "Create Octomind capabilities: config.toml triggers, provider files, MCP server wiring, version pins, symlinks. Use when editing capabilities/<name>/ files."
 license: Apache-2.0
 compatibility: "Requires: an Octomind tap checkout with scripts/lint-capabilities.sh and scripts/setup-symlinks.sh."
 domains: octomind
@@ -75,7 +75,7 @@ env = { FOO_API_KEY = "{{ENV:FOO_API_KEY}}" }
 ```
 
 - Sections are optional per kind: deps-only (toolchains like `programming-python`), MCP-only, or both.
-- The `# Title:`/`# Description:` header is what `capability list` and `discover` show; mention required env vars there.
+- The `# Title:`/`# Description:` header is what `capability list` and `discover` show; mention required env vars there. The default provider's description (the file `default.toml` points to) is also the capability page's search snippet on octomind.run, so it must be 120–155 chars (`lint-capabilities.sh` checks it).
 - `allowed_tools`: `server:*` exposes everything; `server:tool` and trailing-`*` prefixes narrow it.
 - Built-in server refs (`core`, `octofs`, `agent`, `octocode`) need no `[[mcp.servers]]` block; every other `server_refs` entry must have one with the same `name`.
 - stdio servers take `env` (passed to the child) and optional `cwd`; http servers take `url` and optional `headers` (e.g. `Authorization = "Bearer {{ENV:TOKEN}}"`).

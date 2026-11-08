@@ -1,7 +1,7 @@
 ---
 name: trend-bluesky
 title: "Bluesky Trend Harvester Playbook"
-description: "Harvest Bluesky conversations, formats, and launch evidence into a sourced brief. Activate when scanning Bluesky trends or researching post angles, custom feeds, and relevant community responses; record observed surfaces and account baselines without inventing amplification paths."
+description: "Harvest Bluesky conversations, formats and feeds into a sourced trend brief with observed surfaces. Use when scanning Bluesky trends or post angles."
 license: Apache-2.0
 compatibility: "Browser access and network access. Use the available Bluesky session; record signed-in state and unavailable surfaces."
 capabilities: browser memory-read memory-write

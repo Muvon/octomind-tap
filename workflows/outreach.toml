@@ -7,8 +7,7 @@
 # Drafts only; nothing is sent. Public roles only.
 
 name        = "outreach"
-description = "Builds a cold email sequence from live target research, then reviews drafts for sourced claims, brevity, one soft ask, and compliance flags in a bounded critique loop. Delivers follow-up email drafts with any unresolved findings. Never sends."
-
+description = "Builds a cold email sequence from live target research, then reviews drafts for sourced claims, brevity, one soft ask and compliance; never sends."
 # ── 1. Research ──────────────────────────────────────────────────────────────
 [[steps]]
 name    = "research"

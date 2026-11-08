@@ -1,7 +1,7 @@
 ---
 name: ai-cost-finops
 title: "AI Cost & FinOps: Caching, Batching, Model Routing"
-description: "Operational playbook for cutting LLM application cost in 2026. Covers the current price book (Anthropic Claude Fable/Opus/Sonnet/Haiku, OpenAI GPT-6 Astra/Sol/Luna, Google Gemini Pro/Flash/Flash-Lite), prompt caching mechanics (Anthropic write/read multipliers and TTLs, OpenAI and Gemini automatic caching), Batch and Flex tiers (50% off), effort and reasoning-depth controls, model routing vs effort tuning, output-length discipline, the RAG cost stack (embeddings, rerank, vector DBs), and FinOps attribution (provider usage APIs, Helicone, Langfuse, Phoenix, Vantage). Use when projecting LLM cost, hunting waste in an existing pipeline, picking a model or effort level, or setting up per-feature attribution. Output: cost-per-task projections with cited, dated prices and quantified optimization levers."
+description: "Cutting LLM cost: model price book, prompt caching, Batch tiers, routing, attribution. Use when projecting LLM cost or hunting pipeline waste."
 license: Apache-2.0
 compatibility: "Stack-agnostic. FinOps observability typically needs a proxy (Helicone) or instrumented SDK (Langfuse / Phoenix / OpenLLMetry / Vantage). All major providers expose Batch APIs and prompt caching."
 domains: ai

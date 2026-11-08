@@ -1,7 +1,7 @@
 ---
 name: programming-react
 title: "React Development Best Practices"
-description: "React best practices for AI coding agents: architecture, hooks, state boundaries, server components, and library choices that scale. Auto-activates in React projects."
+description: "React practices: hooks, state boundaries, pure rendering, server components, library choices. Use when writing or reviewing React components and apps."
 license: Apache-2.0
 compatibility: "Requires Node.js and a package manager."
 capabilities: programming-nodejs

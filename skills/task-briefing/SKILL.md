@@ -1,7 +1,7 @@
 ---
 name: task-briefing
 title: "Task Briefing – Prompt Optimizer for AI Agents"
-description: "Prompt optimizer and prompt improver for autonomous AI agents: turns a short or vague request into a concise task brief the agent can run end to end without asking back. Grounds it in project context and memory, fills only outcome-changing slots, asks at most three multiple-choice questions where readings diverge, records every assumption, names stop-and-report conditions, and checks scope fit. Activate when preparing or sharpening a task or prompt before handing it to an agent."
+description: "Turn a short or vague request into a task brief an autonomous agent can run without asking back. Use when sharpening a prompt before agent handoff."
 license: Apache-2.0
 compatibility: "Domain-agnostic. Reads project files and memory when available; works from the request alone otherwise."
 domains: assistant

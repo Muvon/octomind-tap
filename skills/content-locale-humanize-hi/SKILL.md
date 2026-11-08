@@ -1,7 +1,7 @@
 ---
 name: content-locale-humanize-hi
 title: "Hindi Native-Fluency Calibration"
-description: "Per-language calibration anchors for detecting AI-slop and translationese in Hindi (hi) target text; auto-loads alongside content-locale-humanize when the target language is Hindi."
+description: "Calibration anchors for AI-slop and translationese in Hindi (hi) text. Use alongside content-locale-humanize when the target is Hindi."
 license: Apache-2.0
 compatibility: "Calibration data only; no tools required. Network access helps for usage checks."
 domains: content

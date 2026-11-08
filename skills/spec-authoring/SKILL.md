@@ -1,7 +1,7 @@
 ---
 name: spec-authoring
 title: "Behavioral Spec Authoring"
-description: "How to write a behavioral spec an autonomous agent can implement with zero unstated assumptions: EARS requirement patterns, the requirements/constraints/verification triple, proof forms (scenario, property, check), wording discipline, spec layering and split rules (repo/feature/task, parent-child), divergence-based clarification for interactive and autonomous runs, and the scratchpad rewrite discipline. Activate when writing, revising, or reviewing a feature spec or acceptance criteria."
+description: "Write behavioral specs an agent can implement without guessing: EARS requirements, verification proofs, layering. Use when writing or reviewing a spec."
 license: Apache-2.0
 compatibility: "Language-agnostic. Needs a codebase to ground the spec in and filesystem/search access to verify every cited path."
 domains: developer

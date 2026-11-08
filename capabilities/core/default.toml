@@ -2,7 +2,7 @@
 # Capability: core
 # Provider: Octomind built-in core server
 # Title: Core Built-ins
-# Description: Octomind built-in core server: recall of folded context blocks. Planning is supervisor-owned, not a tool.
+# Description: Recall folded context blocks with the recall tool of Octomind's built-in core server; active only when compression attention is enabled.
 # Provides tools: recall — only when [compression.attention] or its governance is enabled
 
 [roles.mcp]

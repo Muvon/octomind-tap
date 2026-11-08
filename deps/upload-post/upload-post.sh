@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: upload-post/upload-post
 # type: mcp
-# description: Upload-Post MCP Server - publish and schedule videos to YouTube, TikTok and more through one hosted posting API
+# description: Upload-Post MCP Server - publish and schedule videos; posts to YouTube, TikTok and more through one hosted posting API, needs UPLOAD_POST_API_KEY
 # check: npx
 # https://github.com/Upload-Post/upload-post-mcp
 

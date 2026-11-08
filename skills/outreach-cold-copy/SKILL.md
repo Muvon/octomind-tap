@@ -1,7 +1,7 @@
 ---
 name: outreach-cold-copy
 title: "Cold Email Copywriting and Follow-Up Templates"
-description: "Cold email copywriting and follow-up templates: subject lines, personalized openers, short bodies, soft asks, and outreach cadence. Use when drafting or rewriting cold emails, LinkedIn messages, or follow-ups."
+description: "Cold email copy and follow-up templates: subject lines, openers, short bodies, soft asks, cadence. Use when drafting cold emails or LinkedIn messages."
 license: Apache-2.0
 compatibility: "Environment-independent; web search helps personalization research. Any OS."
 domains: marketing sales launch

@@ -1,7 +1,7 @@
 ---
 name: content-geo
 title: "GEO & AI Citation Optimization"
-description: "Generative Engine Optimization (GEO) and Answer Engine Optimization (AEO) patterns for getting content cited by AI search engines. Answer-first structure, schema markup, extractable passages, and crawler setup."
+description: "GEO/AEO patterns for AI search citations: answer-first structure, schema markup, extractable passages, crawler setup. Use to get content cited."
 license: Apache-2.0
 compatibility: "Network access for current engine documentation and public-page checks."
 domains: content

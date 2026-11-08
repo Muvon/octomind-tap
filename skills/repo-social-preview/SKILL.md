@@ -1,7 +1,7 @@
 ---
 name: repo-social-preview
 title: "GitHub Social Preview Card in the Repo's Brand"
-description: "Designs and renders a custom GitHub social preview (the 1280x640 card shown when a repository link is shared on X, Slack, LinkedIn, Reddit, Hacker News, or Discord) from the repository's own brand: logo, colors, fonts, tagline, install command, and open-source facts discovered in the repo and its website. Renders deterministically with the social-preview CLI, checks it at feed size, and hands over the web-only upload plus a gh check that it took. Use when a repo shows GitHub's generic card, when a visibility audit flags a missing social preview, or when asked for an Open Graph image for a repository."
+description: "Design and render a 1280x640 GitHub social preview card from the repo's brand and check the upload. Use when a repo shows GitHub's generic card."
 license: Apache-2.0
 compatibility: "Requires: python3 and typst (installed with the social-preview capability); gh, authenticated, for reading the repo and checking the upload. macOS/Linux."
 capabilities: shell social-preview image-view

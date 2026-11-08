@@ -2,7 +2,7 @@
 # Capability: lipsync
 # Provider: Sync.so — official MCP server (@sync.so/mcp-server)
 # Title: Lipsync
-# Description: Lip-sync video generation and postprocessing via the Sync.so MCP server (sync-1.9 / sync-2 models).
+# Description: Generate lip-synced video from a clip plus audio or text-to-speech with Sync.so sync-1.9 and sync-2, and manage assets. Needs SYNC_API_KEY.
 # Provides tools: generate_create-generation, generate_get-generation, generations_*, assets_*, tts_create, voices_* (33 tools)
 
 [deps]

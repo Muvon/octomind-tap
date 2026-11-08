@@ -1,7 +1,7 @@
 ---
 name: trend-linkedin
 title: "LinkedIn Trend Harvester Playbook"
-description: "Harvest LinkedIn posts and conversations into a sourced brief for a specific audience. Activate for LinkedIn trend scans or research briefs; capture current surfaces, buyer questions, format patterns, and evidence limitations without inventing ranking weights."
+description: "Harvest LinkedIn posts and conversations into a sourced brief: buyer questions, format patterns, evidence limits. Use when scanning LinkedIn trends."
 license: Apache-2.0
 compatibility: "Browser access and network. Signed-in LinkedIn session for personalized feed and search."
 capabilities: browser memory-read memory-write

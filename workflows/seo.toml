@@ -7,8 +7,7 @@
 # send the strategist back once if any is orphaned or KPI-less. Public roles only.
 
 name        = "seo"
-description = "Runs an SEO audit of a site or page across technical, on-page, off-page, and GEO (generative engine optimization) lenses, then turns the evidence-bound findings into a tiered, finding-traceable, KPI-tagged SEO strategy brief."
-
+description = "Audits a site or page for technical, on-page, off-page and GEO issues, then writes a tiered, KPI-tagged SEO strategy brief tracing each finding."
 # ── 1. Audit ─────────────────────────────────────────────────────────────────
 [[steps]]
 name    = "audit"

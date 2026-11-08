@@ -1,7 +1,7 @@
 ---
 name: tap-skill-authoring
 title: "Tap Skill Authoring"
-description: "Guide for creating AgentSkills-compliant SKILL.md packs in an Octomind tap: frontmatter fields, auto-activation rules and domains, bundled resources, validate scripts, body structure, tone, and the lint gates. Activate when creating or editing skills/<name>/SKILL.md files."
+description: "Create AgentSkills-compliant SKILL.md packs: frontmatter, auto-activation rules, domains, bundled resources, lint gates. Use when editing a SKILL.md."
 license: Apache-2.0
 compatibility: "Requires: an Octomind tap checkout with scripts/lint-skills.sh."
 domains: octomind

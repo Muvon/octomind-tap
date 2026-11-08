@@ -78,10 +78,11 @@ if not desc_match:
     errors.append("MISSING_DESCRIPTION: '# Description: ...' comment is required")
 else:
     desc_val = desc_match.group(1).strip()
-    if len(desc_val) < 20:
-        errors.append(f"DESC_SHORT: description must be at least 20 characters ({len(desc_val)} chars)")
-    elif len(desc_val) > 160:
-        errors.append(f"DESC_LONG: description must be at most 160 characters ({len(desc_val)} chars)")
+    # Also the agent page's search snippet on octomind.run: 120–155 chars.
+    if len(desc_val) < 120:
+        errors.append(f"DESC_SHORT: description must be at least 120 characters ({len(desc_val)} chars)")
+    elif len(desc_val) > 155:
+        errors.append(f"DESC_LONG: description must be at most 155 characters ({len(desc_val)} chars)")
 
 roles = data.get("roles", [])
 

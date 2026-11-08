@@ -2,7 +2,7 @@
 # Capability: messaging-slack
 # Provider: Slack — official MCP Slack server
 # Title: Slack Messaging MCP Server
-# Description: Slack messaging - channels, messages, threads, and users - via the official Slack MCP server.
+# Description: Read and post Slack channel messages and threads and look up users via the official Slack MCP server. Needs SLACK_BOT_TOKEN, SLACK_TEAM_ID.
 
 [deps]
 require = ["modelcontextprotocol/slack"]

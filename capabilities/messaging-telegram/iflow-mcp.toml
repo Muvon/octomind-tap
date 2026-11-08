@@ -2,7 +2,7 @@
 # Capability: messaging-telegram
 # Provider: @iflow-mcp/telegram-mcp-server — Telegram bot messaging
 # Title: Telegram Bot Messaging
-# Description: Telegram bot messaging - messages, channels, and groups - via the @iflow-mcp/telegram-mcp-server.
+# Description: Send and read Telegram messages in chats, channels, and groups as a bot via @iflow-mcp/telegram-mcp-server. Needs TELEGRAM_BOT_TOKEN.
 
 [deps]
 require = ["iflow-mcp/telegram"]

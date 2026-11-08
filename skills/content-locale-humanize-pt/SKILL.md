@@ -1,7 +1,7 @@
 ---
 name: content-locale-humanize-pt
 title: "Portuguese Native-Fluency Calibration"
-description: "Per-language calibration anchors for detecting AI-slop and translationese in Portuguese (pt) target text; auto-loads alongside content-locale-humanize when the target language is Portuguese."
+description: "Calibration anchors for AI-slop and translationese in Portuguese (pt) text. Use alongside content-locale-humanize when the target is Portuguese."
 license: Apache-2.0
 compatibility: "Calibration data only; no tools required. Network access helps for usage checks."
 domains: content

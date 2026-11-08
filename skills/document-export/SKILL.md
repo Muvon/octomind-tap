@@ -1,7 +1,7 @@
 ---
 name: document-export
 title: "Markdown to Word and PDF: Submission-Ready Documents"
-description: "Markdown to Word and PDF that meets submission rules: write the document once in Markdown, export DOCX with a generated reference document (exact font, size, heading style, line spacing, page size, margins) and PDF through pandoc's Typst engine with the same settings, then check the PDF's page count against the limit, embedded fonts, and the text layer before sending. Covers RFP and proposal formatting instructions, cover letters, reports, page breaks, tables of contents, and using a client's Word template. Use whenever a deliverable must leave as a .docx or .pdf rather than Markdown."
+description: "Export Markdown to DOCX and PDF that meets submission rules: reference styles, pandoc Typst, page and font checks. Use for .docx or .pdf deliverables."
 license: Apache-2.0
 compatibility: "Requires: python3, pandoc 3.1.2+, typst, and poppler-utils (pdftotext, pdfinfo, pdffonts). Optional: LibreOffice for DOCX page counts. macOS/Linux."
 capabilities: shell documents

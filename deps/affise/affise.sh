@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: affise/affise
 # type: mcp
-# description: Affise MCP Server - affiliate marketing campaigns, analytics
+# description: Affise MCP Server - manage Affise affiliate campaigns and offers; search offers, run performance analytics, cloned from GitHub, needs an Affise API key
 # check: npx
 # https://github.com/affise/mcp-affise
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: mongodb/mongodb
 # type: mcp
-# description: MongoDB MCP Server - official MongoDB Atlas and database operations
+# description: MongoDB MCP Server - manage Atlas clusters and collections; runs queries on databases, set MDB_MCP_CONNECTION_STRING or Atlas API credentials
 # check: npx
 # https://www.npmjs.com/package/@mongodb-js/mongodb-mcp-server
 

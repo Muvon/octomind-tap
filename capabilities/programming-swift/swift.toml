@@ -2,7 +2,7 @@
 # Capability: programming-swift
 # Provider: swift — Swift toolchain (swift, swiftc, Swift Package Manager)
 # Title: Swift Toolchain
-# Description: Swift toolchain for iOS, macOS, and server development: swiftc compiler, REPL, and Swift Package Manager.
+# Description: Compile Swift with swiftc, try snippets in the REPL, and build packages with Swift Package Manager for iOS, macOS, and server code.
 
 [deps]
 require = ["swiftlang/swift"]

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: codefuturist/email
 # type: mcp
-# description: Email MCP Server - SMTP/IMAP email via standard protocols
+# description: Email MCP Server - send and read email over SMTP and IMAP; works with Gmail, Outlook or self-hosted servers, password login or experimental OAuth2
 # check: npx
 # https://github.com/codefuturist/email-mcp
 

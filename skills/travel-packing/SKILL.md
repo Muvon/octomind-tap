@@ -1,7 +1,7 @@
 ---
 name: travel-packing
 title: "Packing List Generator – Weather-Based Trip Checklist"
-description: "Packing list generator that writes a packing checklist for one trip from the itinerary, live destination forecast, planned activities, laundry access and the verified baggage allowance of each leg, then saves it as a checkbox file. Use when the user asks what to pack, for a packing list or packing checklist, or about carry-on and baggage limits."
+description: "Packing list from itinerary, destination forecast, activities, laundry and baggage allowance, saved as a checkbox file. Use when asked what to pack."
 license: Apache-2.0
 compatibility: "Requires: web search, web page fetching and file writing."
 capabilities: webfetch

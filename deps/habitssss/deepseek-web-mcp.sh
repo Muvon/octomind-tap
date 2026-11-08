@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: habitssss/deepseek-web-mcp
 # type: mcp
-# description: DeepSeek Web MCP Server - DeepSeek Search and Fetch APIs as MCP tools
+# description: DeepSeek Web MCP Server - call DeepSeek's Search and Fetch APIs; get raw results and page Markdown, runs with npx, needs DEEPSEEK_API_KEY
 # check: npx
 # https://github.com/habitssss/deepseek-web-mcp
 

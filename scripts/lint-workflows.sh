@@ -66,8 +66,9 @@ if name != path.stem:
     errors.append(f"NAME_MISMATCH: name = {name!r} must equal the file stem {path.stem!r}")
 
 desc = data.get("description", "")
-if not isinstance(desc, str) or not 20 <= len(desc) <= 400:
-    errors.append(f"DESCRIPTION_LENGTH: description must be 20–400 chars (got {len(str(desc))})")
+# Also the workflow page's search snippet on octomind.run.
+if not isinstance(desc, str) or not 120 <= len(desc) <= 155:
+    errors.append(f"DESCRIPTION_LENGTH: description must be 120–155 chars (got {len(str(desc))})")
 
 m = re.search(r"^# Title:\s*(.+?)\s*$", raw, re.MULTILINE)
 if not m:

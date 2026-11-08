@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: muvon/social-preview
 # type: dep
-# description: social-preview - GitHub social preview card renderer CLI (1280x640 PNG in the repo's brand, via Typst)
+# description: social-preview - renders a 1280x640 GitHub social preview PNG; built with Typst from a repo's name, tagline, logo and accent colour
 # check: social-preview
 # https://github.com/muvon/octomind-tap
 

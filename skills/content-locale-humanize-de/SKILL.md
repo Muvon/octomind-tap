@@ -1,7 +1,7 @@
 ---
 name: content-locale-humanize-de
 title: "German Native-Fluency Calibration"
-description: "Per-language calibration anchors for detecting AI-slop and translationese in German (de) target text; auto-loads alongside content-locale-humanize when the target language is German."
+description: "Calibration anchors for AI-slop and translationese in German (de) text. Use alongside content-locale-humanize when the target is German."
 license: Apache-2.0
 compatibility: "Calibration data only; no tools required. Network access helps for usage checks."
 domains: content

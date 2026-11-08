@@ -2,7 +2,7 @@
 # Capability: composition
 # Provider: Remotion — official CLI (`npx create-video`, `npx remotion render`) driven through the shell tool
 # Title: Video Composition
-# Description: Code-driven React video composition and local rendering with the official Remotion CLI, run through the shell tool.
+# Description: Code-driven React video composition and local rendering with the official Remotion CLI (npx remotion render), run through the shell tool.
 # Provides tools: (none — `npx create-video@4.0.538` / `npx remotion render` via shell; Remotion's own docs MCP is docs-only)
 
 [deps]

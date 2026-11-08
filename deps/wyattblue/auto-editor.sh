@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: wyattblue/auto-editor
 # type: dep
-# description: auto-editor - cuts silence and dead air from video, exports trimmed media or NLE timelines
+# description: auto-editor - cut silence and dead air from video; exports trimmed media or timelines for Premiere, DaVinci Resolve, Final Cut Pro, Shotcut, Kdenlive
 # check: auto-editor
 # https://auto-editor.com
 

@@ -1,7 +1,7 @@
 # agents/video/editor.toml
 # Agent: video:editor
 # Title: Creator Footage Editor – TikTok Video Editor
-# Description: TikTok video editor and YouTube Shorts editor for your footage or generated clips: captioned shorts, ad variants, burned-in text, trims, joins, frame grabs.
+# Description: TikTok video editor and YouTube Shorts editor for footage or generated clips: captioned shorts, ad variants, burned-in text, trims, joins, frame grabs.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "memory-read", "memory-write", "video-editing", "captions", "thumbnails", "voice", "music", "stock", "image-view"]
 

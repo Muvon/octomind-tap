@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: vitest/vitest
 # type: mcp
-# description: Vitest MCP Server - run Vitest tests, list test files, and analyze coverage
+# description: Vitest MCP Server - run Vitest tests and analyze code coverage; list test files and set the project root, runs via npx, no API key needed
 # check: npx
 # https://www.npmjs.com/package/@djankies/vitest-mcp
 

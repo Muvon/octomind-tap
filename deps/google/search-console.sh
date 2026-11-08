@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: google/search-console
 # type: mcp
-# description: Google Search Console MCP - search analytics, URL inspection
+# description: Google Search Console MCP - search analytics and URL inspection; community wrapper for your own properties, needs a service-account JSON key
 # check: npx
 # https://www.npmjs.com/package/mcp-server-gsc
 

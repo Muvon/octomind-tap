@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: burntsushi/ripgrep
 # type: dep
-# description: ripgrep (rg) - fast recursive regex search tool for code and text
+# description: ripgrep (rg) - fast recursive regex search of code and text files; installs the rg binary via brew, cargo, or a Windows zip download
 # check: rg
 # https://github.com/BurntSushi/ripgrep
 

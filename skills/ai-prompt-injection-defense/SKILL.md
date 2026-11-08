@@ -1,7 +1,7 @@
 ---
 name: ai-prompt-injection-defense
 title: "Prompt Injection Defense and AI Red-Teaming"
-description: "Operational playbook for defending LLM applications and agents against prompt injection (direct + indirect) and red-teaming them in 2026. Covers the OWASP Top 10 for LLM Applications (2026 edition, with 2025 ID mapping), the OWASP Top 10 for Agentic Applications (ASI01-ASI10), foundational research (Greshake et al., Many-Shot Jailbreaking, Crescendo), documented exploits (EchoLeak CVE-2025-32711, GitHub Copilot CVE-2025-53773, ForcedLeak, Slack AI), architectural defenses (lethal trifecta / Rule of Two, CaMeL, injection-resistant design patterns), defense layers (tagging and spotlighting, structured outputs, guard models such as Llama Guard 4 / Prompt Guard 2 / gpt-oss-safeguard, NeMo Guardrails, least agency, MCP hardening), and red-team tooling (garak, PyRIT, Promptfoo). Use when auditing an LLM app for injection, designing defense-in-depth, mapping OWASP risks, or building a red-team suite. Output: red-team findings + defense recommendations with reproducible payloads."
+description: "Defending LLM apps against prompt injection: OWASP Top 10s, guard models, red-team tools. Use when auditing an LLM app or designing defenses."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Red-team tooling typically needs Python (garak, PyRIT) or Node (Promptfoo). Defense layers integrate at the SDK level (Anthropic / OpenAI / Google) and at the orchestration layer (NeMo Guardrails, custom rails)."
 domains: ai

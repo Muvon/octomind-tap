@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: firecrawl/firecrawl
 # type: mcp
-# description: Firecrawl MCP Server - web scraping, crawling, and data extraction
+# description: Firecrawl MCP Server - scrape pages, crawl sites, search the web; extract structured data through firecrawl-mcp on npx, needs an API key
 # check: npx
 # https://github.com/firecrawl/firecrawl-mcp-server
 

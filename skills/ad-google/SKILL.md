@@ -1,7 +1,7 @@
 ---
 name: ad-google
 title: "Google Ads Production Spec"
-description: "Specifies what to produce for a Google Ads creative: Search RSA, Performance Max, and Display, with the exact slots (headlines, descriptions, paths, long headline, long description), character limits, pinning rules, asset ratios, and policy constraints so copy fits before it is pasted into Google Ads Editor. Use whenever the task is producing Google Ads ad copy or assets; strictly platform-specific, so it does not cover bidding, keywords selection, audience setup, or attribution."
+description: "Google Ads creative specs: Search RSA, Performance Max and Display slots, character limits, pinning rules, asset ratios. Use when writing Google Ads copy."
 license: Apache-2.0
 compatibility: "Octomind launch agents. Platform-specific to Google Ads."
 domains: launch

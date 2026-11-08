@@ -1,7 +1,7 @@
 ---
 name: content-locale-humanize
 title: "Locale-Native Humanization & Translationese Elimination"
-description: "MQM-informed, structural-pattern diagnostic for making translated/localized content read as if a native speaker wrote it from scratch, in any target language. Detects translationese and AI-slop by pattern (interference, frequency outliers, rhythm, templating), not by a per-language word list."
+description: "Make translated text read as native: pattern-based diagnostic for translationese and AI-slop in any language. Use when polishing localized content."
 license: Apache-2.0
 compatibility: "Language-agnostic; works on any target locale. Network access helps for exact-phrase usage checks."
 domains: content

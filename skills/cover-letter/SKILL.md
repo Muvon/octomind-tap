@@ -1,7 +1,7 @@
 ---
 name: cover-letter
 title: "Cover Letter Craft"
-description: "Write a cover letter that a hiring manager actually reads: grounded in the candidate's real experience, tailored to the specific posting and company, structured for a hiring-manager skim, and free of the generic AI-template phrasing that gets letters discarded. Truthful, specific, and human."
+description: "Write a truthful cover letter tailored to the posting and grounded in the candidate's real experience, without AI-template phrasing. Use when applying."
 license: Apache-2.0
 compatibility: "No external tools required. Works from a resume plus a job posting (file, URL text, or pasted)."
 domains: coach

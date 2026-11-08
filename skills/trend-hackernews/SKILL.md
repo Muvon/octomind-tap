@@ -1,7 +1,7 @@
 ---
 name: trend-hackernews
 title: "Hacker News Trend Harvester Playbook"
-description: "Harvest Hacker News discussions and inspectable artifacts into a dated, source-linked brief. Activate when researching HN trends, prior submissions, launch examples, or audience objections; separate observed attention from ranking hypotheses and product demand."
+description: "Harvest Hacker News discussions and prior submissions into a dated, source-linked brief. Use when researching HN trends, launches or audience objections."
 license: Apache-2.0
 compatibility: "Requires browser access to Hacker News and Algolia. Inspect removed items with a logged-in profile configured for showdead."
 capabilities: browser memory-read memory-write

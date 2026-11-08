@@ -1,7 +1,7 @@
 # agents/developer/release-notes.toml
 # Agent: developer:release-notes
 # Title: Release Notes Writer
-# Description: Generates detailed, user-facing release notes from a commit/version range by reading code, not commit messages.
+# Description: Generates detailed, user-facing release notes from a commit/version range by reading code, not commit messages; prepends the section to a target file.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory-read", "memory-write", "variety"]
 

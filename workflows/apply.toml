@@ -46,8 +46,7 @@
 # Public roles only.
 
 name        = "apply"
-description = "Tailors your resume to a job description: turns a master resume and a job posting into an ATS-optimized resume, a cover letter, and an honest match-gap report, refined by a screen/fix loop. Produces documents; never auto-submits."
-
+description = "Turns a master resume and a job posting into a tailored ATS resume, a cover letter and a match-and-gap report; it never submits anything."
 # ── 1. Intake — read resume + posting, capture both, detect target market ───
 [[steps]]
 name    = "intake"

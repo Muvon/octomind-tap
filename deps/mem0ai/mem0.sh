@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: mem0ai/mem0
 # type: mcp
-# description: Mem0 MCP Server - persistent memory storage and retrieval for AI agents
+# description: Mem0 MCP Server - store and search persistent memories on Mem0; update and delete them, graph support, runs through uvx, needs MEM0_API_KEY
 # check: uvx
 # https://github.com/mem0ai/mem0-mcp
 

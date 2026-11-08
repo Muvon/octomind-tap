@@ -2,7 +2,7 @@
 # Capability: trading-crypto
 # Provider: binance-futures — Muvon Binance USDT-M Futures MCP
 # Title: Crypto Futures Trading
-# Description: Binance USDT-M futures trading: candles, order book, funding, positions, orders, leverage, and margin.
+# Description: Read Binance USDT-M futures candles, order book, and funding; place orders; set leverage and margin. Needs BINANCE_API_KEY, BINANCE_API_SECRET.
 # Requires env: BINANCE_API_KEY, BINANCE_API_SECRET (signed tools only; market data is public).
 # https://github.com/muvon/mcp-binance-futures
 

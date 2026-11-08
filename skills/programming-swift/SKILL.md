@@ -1,7 +1,7 @@
 ---
 name: programming-swift
 title: "Swift Development Best Practices"
-description: "Modern Swift best practices for AI coding agents: value semantics, API design, isolation, task ownership, and package compatibility. Auto-activates in Swift projects."
+description: "Swift practices: value semantics, API design, actor isolation, task ownership, package compatibility. Use when writing or reviewing Swift code."
 license: Apache-2.0
 compatibility: "Requires the project's Swift toolchain; newer features are gated by compiler, language mode, and target platform."
 capabilities: programming-swift

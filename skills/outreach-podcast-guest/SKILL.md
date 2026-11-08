@@ -1,7 +1,7 @@
 ---
 name: outreach-podcast-guest
 title: "Podcast Guest Pitch Templates and Speaker Outreach"
-description: "Podcast guest pitch templates, show research, speaker pitches, one-sheets, and follow-up guidance. Use when pitching yourself or a founder for podcast interviews, webinars, or conference talks."
+description: "Podcast guest pitching: pitch templates, show research, one-sheets, follow-ups. Use when pitching a founder for podcasts, webinars or conference talks."
 license: Apache-2.0
 compatibility: "Needs web search and page fetch for show research. Any OS."
 domains: marketing launch

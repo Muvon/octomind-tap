@@ -13,8 +13,7 @@
 # Note: chains several specialist runs — token/time-heavy by design.
 
 name        = "content"
-description = "Turns a brief into a researched, publish-ready article in the current directory, refined by an edit/audit loop until it passes. Chain the promote workflow for social adaptation."
-
+description = "Turns a brief into a researched, publish-ready article in the current directory, refined by an edit and audit loop until it passes."
 # ── 1. Draft ─────────────────────────────────────────────────────────────────
 [[steps]]
 name    = "draft"

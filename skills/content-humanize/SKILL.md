@@ -1,7 +1,7 @@
 ---
 name: content-humanize
 title: "Content Humanization"
-description: "Review and revise stiff or formulaic writing with an evidence-based eight-dimension editorial diagnostic and seven-pass edit. Preserve facts, author voice, and platform authorship rules; no detector-evasion promises."
+description: "Revise stiff or formulaic writing with an eight-dimension diagnostic and seven-pass edit, keeping facts and voice. Use when copy reads machine-written."
 license: Apache-2.0
 compatibility: "A draft and its intended audience/platform; source records and author samples when available."
 domains: content

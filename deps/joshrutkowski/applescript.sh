@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: joshrutkowski/applescript
 # type: mcp
-# description: AppleScript MCP Server - macOS automation and control via AppleScript
+# description: AppleScript MCP Server - control macOS with 100+ tools; covers calendar, clipboard, Finder, system and iTerm, runs on Node.js, needs macOS permissions
 # check: npx
 # https://github.com/joshrutkowski/applescript-mcp
 

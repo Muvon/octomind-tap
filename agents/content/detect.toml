@@ -1,7 +1,7 @@
 # agents/content/detect.toml
 # Agent: content:detect
 # Title: AI Text Detector
-# Description: Read-only AI-authorship check: flags AI-typical writing patterns and hard artifacts with evidence and a calibrated band, never a fake percentage or verdict.
+# Description: Read-only AI-authorship check: flags AI-typical writing patterns and hard artifacts with evidence and a calibrated band, no fake percentage or verdict.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch"]
 

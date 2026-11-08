@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: ahrefs/ahrefs
 # type: mcp
-# description: Ahrefs MCP Server - SEO, backlinks, keywords, rank tracking
+# description: Ahrefs MCP Server - Ahrefs SEO, backlink, keyword and rank data; legacy local @ahrefs/mcp package, run via npx with an API key
 # check: npx
 # https://www.npmjs.com/package/@ahrefs/mcp
 

@@ -1,7 +1,7 @@
 ---
 name: content-locale-humanize-th
 title: "Thai Native-Fluency Calibration"
-description: "Per-language calibration anchors for detecting AI-slop and translationese in Thai (th) target text; auto-loads alongside content-locale-humanize when the target language is Thai."
+description: "Calibration anchors for AI-slop and translationese in Thai (th) text. Use alongside content-locale-humanize when the target is Thai."
 license: Apache-2.0
 compatibility: "Calibration data only; no tools required. Network access helps for usage checks."
 domains: content

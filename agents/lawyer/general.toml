@@ -1,7 +1,7 @@
 # agents/lawyer/general.toml
 # Agent: lawyer:general
 # Title: General Legal Assistant
-# Description: Explains rights, obligations, legal concepts across legal systems worldwide, reviews documents, researches law via web search. Information, not legal advice.
+# Description: Explains rights, obligations, legal concepts across legal systems, reviews documents, researches law via web search. Information, not legal advice.
 
 capabilities = ["core", "filesystem-read", "websearch"]
 

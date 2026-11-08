@@ -2,7 +2,7 @@
 # Capability: svelte
 # Provider: @sveltejs/mcp — official Svelte/SvelteKit documentation
 # Title: Svelte
-# Description: Official Svelte and SvelteKit documentation via the @sveltejs/mcp server.
+# Description: Look up official Svelte and SvelteKit documentation from the @sveltejs/mcp server, launched with bunx, while writing components and routes.
 
 [deps]
 require = ["oven-sh/bun"]

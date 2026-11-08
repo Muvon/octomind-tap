@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: modelcontextprotocol/puppeteer
 # type: mcp
-# description: MCP Puppeteer Server - browser automation and web scraping
+# description: MCP Puppeteer Server - automate a browser to take screenshots; fill forms and run JavaScript on pages, runs with npx, no API key needed
 # check: npx
 # https://github.com/modelcontextprotocol/servers/tree/main/src/puppeteer
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: readwise/readwise
 # type: mcp
-# description: Readwise MCP Server - reading highlights, books, and document access
+# description: Readwise MCP Server - search your Readwise reading highlights; browse saved books, articles and documents, npx, needs READWISE_API_KEY
 # check: npx
 # https://github.com/IAmAlexander/readwise-mcp
 

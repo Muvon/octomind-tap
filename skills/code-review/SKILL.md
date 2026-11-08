@@ -1,7 +1,7 @@
 ---
 name: code-review
 title: "Code Review Checklist for Pull Requests"
-description: "Code review checklist and guidelines for giving and receiving constructive feedback on pull requests. Activate when reviewing a PR, preparing code for review, or establishing review standards."
+description: "Code review checklist and feedback guidelines for pull requests. Use when reviewing a PR, preparing code for review, or setting review standards."
 license: Apache-2.0
 compatibility: "Language-agnostic. Applicable to any software project using pull requests."
 ---

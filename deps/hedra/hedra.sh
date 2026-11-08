@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: hedra/hedra
 # type: mcp
-# description: Hedra Character-3 MCP Server - image-to-talking-character video
+# description: Hedra MCP Server - talking-character video from image and audio; Character-3 model, generate_video tool, runs with npx, needs HEDRA_API_KEY
 # check: npx
 # https://www.hedra.com/docs
 

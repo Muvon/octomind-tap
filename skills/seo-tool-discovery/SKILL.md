@@ -1,7 +1,7 @@
 ---
 name: seo-tool-discovery
 title: "Free-Tool Discovery for Backlinks & Traffic"
-description: "Validation funnel for deciding which free tool to build for backlinks, embeds, and AI-search citation, encoding the data-moat-first methodology: niche-fit gate, data inventory, 5-candidate scoring across niche/moat/SEO/feasibility/monetization, alignment checklist, and a strategy brief. Use before any tool-build work to avoid commodity tools that earn nothing; skip if the user has already validated the concept and just wants to build, since the deliverable is the brief and the build itself is downstream."
+description: "Pick which free tool to build for backlinks and AI-search citations: niche fit, data moat, candidate scoring, brief. Use before starting any tool build."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Requires websearch and webfetch for competitor and SERP scans."
 domains: seo

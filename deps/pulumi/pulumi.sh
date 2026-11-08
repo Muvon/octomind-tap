@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: pulumi/pulumi
 # type: mcp
-# description: Pulumi MCP Server - Infrastructure as Code
+# description: Pulumi MCP Server - manage Pulumi stacks, search cloud resources; enforce policies and deploy to AWS via the remote mcp.ai.pulumi.com endpoint
 # check: npx
 # https://www.pulumi.com/docs/ai/mcp-server/
 

@@ -1,7 +1,7 @@
 ---
 name: seo-guest-posting
 title: "Guest Posting: Editorial Pitches & Safe Link Strategy"
-description: "Operational skill for landing genuine editorial guest posts that earn high-quality contextual links without tripping Google's link spam and scaled content abuse policies. Encodes the 7-stage workflow (author tier-mapping, discovery operators, 11-point site qualification, content-gap topic ideation, 80-150-word pitch architecture, post writing standards by tier, internal-link strategy, anchor distribution, follow-up). Bakes in Google's hard kill-rules (paid placements, optimized anchors in guest posts, duplicate content, AI-content farms), a practitioner anchor-distribution heuristic (branded majority, exact-match minority), and link-placement rules (1-2 contextual body links + 1 bio). Use BEFORE writing any pitch. Stays in the SEO lane: produces strategy, target list, topics, pitch brief; does not write the email or post itself."
+description: "Guest posting strategy for contextual links without spam: target qualification, pitch brief, anchor mix, link placement. Use before writing a pitch."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Requires websearch and webfetch for discovery and qualification."
 domains: seo

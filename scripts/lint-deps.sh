@@ -3,7 +3,8 @@
 # Checks:
 #   1. Header: # dep: <org>/<tool> matches file path
 #   2. Header: # type: mcp|dep
-#   3. Header: # description: (10–160 chars)
+#   3. Header: # description: <Name> - <what it does> (120–155 chars; octomind.run
+#      shows the name as the page title and the whole line as the search snippet)
 #   4. Header: # check: <command>
 #   5. Header: # https://... URL
 #   6. Companion .md file exists alongside .sh
@@ -72,10 +73,16 @@ if not desc_match:
     errors.append("HEADER_DESC: line 4 must be '# description: <text>'")
 else:
     desc_val = desc_match.group(1).strip()
-    if len(desc_val) < 10:
-        errors.append(f"HEADER_DESC_SHORT: description must be >= 10 chars ({len(desc_val)})")
-    elif len(desc_val) > 160:
-        errors.append(f"HEADER_DESC_LONG: description must be <= 160 chars ({len(desc_val)})")
+    if len(desc_val) < 120:
+        errors.append(f"HEADER_DESC_SHORT: description must be >= 120 chars ({len(desc_val)}) — say what it does, what it needs")
+    elif len(desc_val) > 155:
+        errors.append(f"HEADER_DESC_LONG: description must be <= 155 chars ({len(desc_val)})")
+    if ' - ' not in desc_val:
+        errors.append("HEADER_DESC_NAME: description must read '<Name> - <what it does>'")
+    # octomind.run uses the lead (everything before the first ;) as the page title.
+    lead = desc_val.split(';')[0]
+    if ';' not in desc_val or not 30 <= len(lead) <= 65:
+        errors.append(f"HEADER_DESC_LEAD: description must read '<Name> - <what it does>; <details>' with 30-65 chars before the first ';' ({len(lead)}) — the lead is the web page title")
 
 # Line 5: # check: <command>
 check_match = re.match(r'^# check:\s*(.+)$', lines[4])

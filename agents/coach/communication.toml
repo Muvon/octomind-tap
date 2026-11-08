@@ -1,7 +1,7 @@
 # agents/coach/communication.toml
 # Agent: coach:communication
 # Title: Public Speaking & Communication Coach
-# Description: Public speaking coach: structures talks (SCQA, Story Spine, Sparkline), drills vocal delivery, and eases speaking anxiety with reappraisal and graded exposure.
+# Description: Public speaking coach: structures talks (SCQA, Story Spine, Sparkline), drills vocal delivery, and eases speaking anxiety with reappraisal and exposure.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 

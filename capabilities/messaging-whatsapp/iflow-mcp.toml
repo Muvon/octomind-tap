@@ -2,7 +2,7 @@
 # Capability: messaging-whatsapp
 # Provider: @iflow-mcp/mcp-whatsapp-web — WhatsApp Web messaging
 # Title: WhatsApp Web Messaging
-# Description: WhatsApp Web messaging, contacts, and media sharing via the @iflow-mcp/mcp-whatsapp-web MCP server.
+# Description: Send and read WhatsApp messages through WhatsApp Web, look up contacts, and share media via the @iflow-mcp/mcp-whatsapp-web server.
 # Auth: QR code scan via get_qr_code tool on first run; session persists locally.
 
 [deps]

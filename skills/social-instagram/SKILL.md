@@ -1,7 +1,7 @@
 ---
 name: social-instagram
 title: "Instagram Publishing Playbook"
-description: "Write and revise Instagram captions, Reels, carousels, Stories, and launch or proof posts in the supplied author's voice. Activate when drafting for Instagram; choose formats, build a usable publishing package, and connect attention to a relevant next action with evidence-backed platform guidance."
+description: "Write and revise Instagram captions, Reels, carousels and Stories in the author's voice, with a publishing package. Use when drafting for Instagram."
 license: Apache-2.0
 compatibility: "Network access for current platform checks; Instagram account access for composer previews and account-level Insights."
 domains: content

@@ -113,6 +113,11 @@ else:
             errors.append(f"DESC_SHORT: description must be at least 20 characters ({len(desc_val)} chars)")
         elif len(desc_val) > 160:
             errors.append(f"DESC_LONG: description must be at most 160 characters ({len(desc_val)} chars)")
+        # The default provider's description is the capability page's search
+        # snippet on octomind.run, so it must say what the capability does.
+        default = path.parent / "default.toml"
+        if default.exists() and default.resolve() == path.resolve() and not 120 <= len(desc_val) <= 155:
+            errors.append(f"DESC_DEFAULT_RANGE: the default provider's description must be 120–155 characters ({len(desc_val)} chars)")
 
     # Validate [deps] require
     deps = data.get("deps", {})

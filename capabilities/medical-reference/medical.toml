@@ -2,7 +2,7 @@
 # Capability: medical-reference
 # Provider: medical-mcp-server — medical references (PubMed, FDA, WHO, RxNorm)
 # Title: Medical Reference
-# Description: Drug information, clinical data, and guidelines from PubMed, FDA, WHO, and RxNorm via the medical MCP server.
+# Description: Look up drug information, clinical data, and guidelines from PubMed, FDA, WHO, and RxNorm through the medical MCP server.
 
 [deps]
 require = ["medical/medical"]

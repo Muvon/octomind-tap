@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: pinecone/pinecone
 # type: mcp
-# description: Pinecone MCP Server - vector database for AI/ML
+# description: Pinecone MCP Server - create vector indexes and upsert records; search with auto-embedding and rerank results, runs via npx, needs PINECONE_API_KEY
 # check: npx
 # https://www.npmjs.com/package/@pinecone-database/mcp
 

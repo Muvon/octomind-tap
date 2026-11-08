@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: modelcontextprotocol/memory
 # type: mcp
-# description: MCP Memory Server - persistent key-value store for context
+# description: MCP Memory Server - knowledge-graph memory kept across chats; stores and retrieves context, runs with npx, no authentication needed
 # check: npx
 # https://github.com/modelcontextprotocol/servers/tree/main/src/memory
 

@@ -1,7 +1,7 @@
 ---
 name: shopping-gifts
 title: "Gift Idea Generator – Shortlist Within Your Budget"
-description: "Gift idea generator for a person the user describes: recipient intake, a few distinct directions, live price, delivery and return checks, and a shortlist of up to three gift ideas with honest weaknesses. Use when the user asks for gift ideas, a gift finder, a present for someone, or what to give for an occasion."
+description: "Gift idea finder: recipient intake, distinct directions, live price, delivery and return checks, up to three picks. Use when asked for a gift for someone."
 license: Apache-2.0
 compatibility: "Requires: web search and web page fetching."
 domains: shopping

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: muvon/mcp-variety
 # type: mcp
-# description: Variety MCP Server - picks an approach and form for each piece of a repeated job, flags AI writing tells
+# description: Variety MCP Server - vary openings, lengths and endings; picks them per item in a repeated job, avoids recent combinations and flags AI writing tells
 # check: uvx
 # https://github.com/muvon/mcp-variety
 

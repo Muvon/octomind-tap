@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: shopify/shopify
 # type: mcp
-# description: Shopify Admin MCP Server - products, collections, inventory, customers, orders, and discounts via the Admin API
+# description: Shopify Admin MCP Server - manage products, orders and customers; also collections, inventory and discounts via the Admin API, needs Node.js 22.12+
 # check: npx
 # https://github.com/acoderacom/shopify-admin-mcp
 

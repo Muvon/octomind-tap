@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: cybeleri/social-scheduler
 # type: mcp
-# description: Social Media Scheduler MCP Server - multi-platform content scheduling
+# description: Social Media Scheduler MCP Server - schedule and publish posts; covers Twitter/X, LinkedIn, Bluesky and Mastodon and needs a token for each platform
 # check: npx
 # https://www.npmjs.com/package/@cybeleri/social-media-scheduler-mcp
 

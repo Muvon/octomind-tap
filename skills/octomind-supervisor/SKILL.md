@@ -1,7 +1,7 @@
 ---
 name: octomind-supervisor
 title: "Octomind Supervisor & Learning"
-description: "Reference for octomind's out-of-band control plane: the self-report token, deterministic loop/no-progress/recovery detectors, the verify-gate on every turn stop, the supervisor-owned plan manager, condense, steer, recite, the optional tool authorizer, calibrated evaluation gates and hindsight, and cross-session lessons, orientation, and experience memory with optional evolution, together with the strict [supervisor] config sections. Activate when a user asks why a turn was re-run or gated, how the detectors work, why a tool call was blocked, how lessons are stored and recalled, why tool output was condensed, or how to tune any [supervisor.*] section."
+description: "Octomind supervisor reference: loop detectors, verify gate, plan manager, condense, authorizer, lessons. Use when a turn was re-run, gated or blocked."
 license: Apache-2.0
 compatibility: "Requires: octomind binary. macOS/Linux/Windows."
 domains: octomind

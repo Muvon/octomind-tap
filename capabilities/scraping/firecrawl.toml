@@ -2,7 +2,7 @@
 # Capability: scraping
 # Provider: Firecrawl — web scraping, crawling, and site mapping
 # Title: Web Scraping
-# Description: Deep web scraping, crawling, and site mapping via Firecrawl.
+# Description: Scrape single pages, crawl whole sites, and map a site's URLs into clean content with Firecrawl. Needs FIRECRAWL_API_KEY.
 
 [deps]
 require = ["firecrawl/firecrawl"]

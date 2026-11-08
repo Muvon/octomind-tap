@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: airtable/airtable
 # type: mcp
-# description: Airtable MCP Server - read and write Airtable bases, tables, and records
+# description: Airtable MCP Server - read and write bases, tables and records; batch changes, comments and webhooks, needs a Personal Access Token
 # check: npx
 # https://www.npmjs.com/package/@rashidazarang/airtable-mcp
 

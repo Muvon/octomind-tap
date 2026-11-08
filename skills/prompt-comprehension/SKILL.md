@@ -1,7 +1,7 @@
 ---
 name: prompt-comprehension
 title: "Prompt Testing: Comprehension Across Models"
-description: "Prompt testing across LLMs: checks that instruction or prompt wording is read the same, correct way by a list of models, and tunes it with minimal edits until all agree. Builds a multiple-choice scenario test plus a restatement step per text, runs it on every model through a plain no-persona role with octomind run, scores the answers against a key, and revises only where a model misreads. Use when a rule in a system prompt, skill, AGENTS.md or tool description must hold across models, when a model misreads or ignores an instruction, or before wording ships to cheaper or weaker models."
+description: "Test that prompt wording is read the same by a list of models with multiple-choice checks, then tune it. Use when a model misreads a prompt rule."
 license: Apache-2.0
 compatibility: "Requires: octomind on PATH with credentials for every model under test, bash, python3. Every test run is a billed model call; the procedure caps a session at 60 runs."
 capabilities: shell filesystem-read filesystem-write

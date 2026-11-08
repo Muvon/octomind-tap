@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: tanob/desktop-automation
 # type: mcp
-# description: Desktop Automation MCP Server - mouse, keyboard, screenshots
+# description: Desktop Automation MCP Server - control mouse and keyboard; takes screenshots on macOS, Linux or Windows via RobotJS, npx, needs accessibility access
 # check: npx
 # https://mcp.so/server/desktop-automation/tanob
 

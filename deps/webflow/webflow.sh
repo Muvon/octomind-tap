@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: webflow/webflow
 # type: mcp
-# description: Webflow MCP Server - manage Webflow sites, pages, and CMS collections
+# description: Webflow MCP Server - manage Webflow sites, pages and collections; includes CMS content, runs via npx, needs a WEBFLOW_TOKEN from the Webflow API Playground
 # check: npx
 # https://www.npmjs.com/package/webflow-mcp-server
 

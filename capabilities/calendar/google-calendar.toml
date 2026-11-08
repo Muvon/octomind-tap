@@ -2,7 +2,7 @@
 # Capability: calendar
 # Provider: Google Calendar — community MCP server (@cocal/google-calendar-mcp)
 # Title: Google Calendar
-# Description: Google Calendar event and schedule management via the @cocal/google-calendar-mcp server.
+# Description: Create, list, and edit Google Calendar events and check your schedule via @cocal/google-calendar-mcp. Needs GOOGLE_OAUTH_CREDENTIALS.
 
 [deps]
 require = ["google/calendar"]

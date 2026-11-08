@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: stripe/stripe
 # type: mcp
-# description: Stripe MCP Server - payments, customers, subscriptions, invoices
+# description: Stripe MCP Server - manage payments, customers and subscriptions; includes invoices through auto-discovered tools, runs via npx, needs STRIPE_SECRET_KEY
 # check: npx
 # https://www.npmjs.com/package/@stripe/mcp
 

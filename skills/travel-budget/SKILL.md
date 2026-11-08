@@ -1,7 +1,7 @@
 ---
 name: travel-budget
 title: "Trip Budget Planner – Per-Day and Per-Person Costs"
-description: "Trip budget planner that builds a full trip budget in one stated currency: live fares, stays, food, activities and fees, quantity times unit price, cited exchange rates, per-day and per-person totals, and a visible contingency. Use when the user gives a trip budget, asks what a trip will cost, wants a travel cost calculator, or asks to make a trip cheaper."
+description: "Trip budget planner in one currency: fares, stays, food, activities, fees, exchange rates, per-day totals, contingency. Use when asked what a trip costs."
 license: Apache-2.0
 compatibility: "Requires: web search and web page fetching."
 capabilities: webfetch

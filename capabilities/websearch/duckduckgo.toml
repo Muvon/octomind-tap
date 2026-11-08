@@ -2,7 +2,7 @@
 # Capability: websearch
 # Provider: Open-WebSearch — keyless multi-engine web search, DuckDuckGo default
 # Title: Web Search (DuckDuckGo)
-# Description: Keyless DuckDuckGo web search via the Open-WebSearch MCP server, with Bing, Startpage, and Brave fallback.
+# Description: Search the web with DuckDuckGo and no API key through the Open-WebSearch MCP server, with Bing, Startpage, and Brave as fallbacks.
 # Provides tools: search
 # https://github.com/Aas-ee/open-webSearch
 

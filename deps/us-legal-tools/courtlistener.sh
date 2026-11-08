@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: us-legal-tools/courtlistener
 # type: mcp
-# description: CourtListener SDK - US court cases, legal research, and opinions
+# description: CourtListener SDK - search US court opinions and case law; legal research via npx (stare-mcp), needs a COURTLISTENER_API_KEY
 # check: npx
 # https://www.npmjs.com/package/@us-legal-tools/courtlistener-sdk
 

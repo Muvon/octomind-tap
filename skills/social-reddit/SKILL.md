@@ -1,7 +1,7 @@
 ---
 name: social-reddit
 title: "Reddit Publishing Playbook"
-description: "Draft and revise Reddit posts, comments, AMAs, and product launches in the author's documented voice. Use when preparing content for a subreddit: check community rules, choose a native format, ground claims in supplied proof, disclose affiliations and AI use, and plan useful replies and outcome measurement."
+description: "Draft Reddit posts, comments, AMAs and launches that follow subreddit rules, with disclosure and proof. Use when preparing content for a subreddit."
 license: Apache-2.0
 compatibility: "Requires network access to current Reddit rules and post pages; some research requires an authenticated session."
 domains: content

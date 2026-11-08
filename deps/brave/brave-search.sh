@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: brave/brave-search
 # type: mcp
-# description: Brave Search MCP Server - web search via Brave Search API
+# description: Brave Search MCP Server - web and news search via Brave; also local, video and image search with AI summaries, needs a Brave Search API key
 # check: npx
 # https://github.com/brave/brave-search-mcp-server
 

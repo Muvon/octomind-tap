@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: ffmpeg/ffmpeg
 # type: dep
-# description: ffmpeg with libass + freetype - stitching, transcoding, burning styled captions and text overlays
+# description: ffmpeg with libass + freetype - clip stitching and ASS captions; transcode to platform specs, burn drawtext overlays, Homebrew's default build lacks libass
 # check: ffmpeg
 # https://ffmpeg.org/
 

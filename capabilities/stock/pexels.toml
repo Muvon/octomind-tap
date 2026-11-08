@@ -2,7 +2,7 @@
 # Capability: stock
 # Provider: Pexels — free b-roll video and photos
 # Title: Stock Media
-# Description: Free stock photos and b-roll videos - search, download, and curated collections - via the Pexels API.
+# Description: Search and download free Pexels stock photos and b-roll videos, and browse curated photos and collections. Needs PEXELS_API_KEY.
 # Provides tools: searchPhotos, searchVideos, getPhoto, getVideo, downloadPhoto, downloadVideo, getCuratedPhotos, getPopularVideos, getFeaturedCollections, getCollectionMedia
 
 [deps]

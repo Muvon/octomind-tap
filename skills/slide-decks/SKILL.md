@@ -1,7 +1,7 @@
 ---
 name: slide-decks
 title: "Markdown Slides with Marp: Decks to PDF and PowerPoint"
-description: "Markdown slides with Marp, rendered and checked instead of handed over raw: one assertion per slide, speaker notes in comments, a clean bundled theme (title, divider, big-number, quote, two-column, and dark layouts), brand color in one line, a slide linter for word count, bullets, topic-label titles, alt text, and missing notes, and export to PDF, HTML, PowerPoint, notes, and PNG previews with an automatic check for text that overflows the slide. Use whenever a talk, pitch, board, sales, or training deck has to ship as a file."
+description: "Marp markdown slide decks with a bundled theme, linter and overflow check, exported to PDF, HTML or PowerPoint. Use when a deck must ship as a file."
 license: Apache-2.0
 compatibility: "Requires: python3, Node.js (npx), and Chrome, Edge, Chromium, or Firefox (the installer adds Playwright's Chromium when none is present). Editable PPTX also needs LibreOffice. macOS/Linux."
 capabilities: shell slides image-view

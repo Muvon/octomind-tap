@@ -1,7 +1,7 @@
 ---
 name: social-bluesky
 title: "Bluesky Publishing Playbook"
-description: "Write and revise Bluesky posts, replies, threads, launches, and proof posts in the author's own voice. Activate for Bluesky drafting, format selection, community participation, or a publishing package with sourced claims and an explicit next step."
+description: "Write and revise Bluesky posts, replies, threads and launch posts in the author's voice with sourced claims. Use when drafting for Bluesky."
 license: Apache-2.0
 compatibility: "Bluesky app or browser access for composer checks; network access for source and destination verification."
 domains: content

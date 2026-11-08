@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: huggingface/huggingface
 # type: mcp
-# description: Hugging Face MCP Server - ML models, datasets, Spaces discovery
+# description: Hugging Face MCP Server - search Hub models, datasets and Spaces; also Gradio apps, runs with npx, the HF token is optional
 # check: npx
 # https://github.com/huggingface/hf-mcp-server
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: refersion/refersion
 # type: mcp
-# description: Refersion MCP Server - influencer, affiliate marketing tracking
+# description: Refersion MCP Server - track Refersion affiliate programs; influencer marketing too, no verified npm package or tools are listed yet, unverified
 # check: npx
 # https://github.com/PipedreamHQ/awesome-mcp-servers
 

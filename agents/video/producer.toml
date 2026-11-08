@@ -1,7 +1,7 @@
 # agents/video/producer.toml
 # Agent: video:producer
 # Title: Video Production Orchestrator – AI Video Agent
-# Description: AI video agent that runs the video production workflow: routes briefs to script, storyboard, ad, UGC, explainer, edit, clips, thumbnail, and publish agents.
+# Description: AI video agent that runs video production: routes briefs to script, storyboard, ad, UGC, explainer, edit, clips, thumbnail, and publish agents.
 
 capabilities = ["core", "agent", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 

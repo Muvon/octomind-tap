@@ -30,7 +30,7 @@
 # search the web for prices and local services. Public roles only.
 
 name            = "fixit"
-description     = "Triages a broken thing at home, in the car, or with a pet; stops immediately on danger signs, otherwise routes to a specialist for a ranked diagnosis, DIY-vs-pro call, and fix plan checked by an independent safety auditor."
+description     = "Triages a home, car or pet problem, stops on danger signs, else gives a ranked diagnosis, a DIY-or-pro call and a safety-audited fix plan."
 max_cost        = 2.5 # ceiling for the whole run; checked after each step
 entry           = "classify"
 max_transitions = 8

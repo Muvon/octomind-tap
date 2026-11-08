@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: medical/medical
 # type: mcp
-# description: Medical MCP Server - FDA, WHO, PubMed, RxNorm medical data
+# description: Medical MCP Server - search FDA drug data and PubMed articles; also WHO statistics, RxNorm names and clinical guidelines, needs Node.js, no API key
 # check: node
 # https://github.com/JamesANZ/medical-mcp
 

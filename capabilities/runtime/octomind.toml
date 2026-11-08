@@ -2,7 +2,7 @@
 # Capability: runtime
 # Provider: octomind
 # Title: Octomind Runtime Control
-# Description: High-trust Octomind runtime controls: MCP server management, dynamic agents, and skill/capability activation.
+# Description: Add and remove MCP servers, spawn dynamic agents, and activate skills and capabilities mid-session through Octomind's built-in runtime server.
 
 [roles.mcp]
 server_refs = ["runtime"]

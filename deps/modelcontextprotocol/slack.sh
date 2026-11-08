@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: modelcontextprotocol/slack
 # type: mcp
-# description: MCP Slack Server - interact with Slack workspaces (channels, messages, users)
+# description: MCP Slack Server - list channels, post and reply to messages; also threads, reactions and user profiles, needs SLACK_BOT_TOKEN and SLACK_TEAM_ID
 # check: npx
 # https://github.com/modelcontextprotocol/servers/tree/main/src/slack
 

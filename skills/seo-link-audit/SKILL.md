@@ -1,7 +1,7 @@
 ---
 name: seo-link-audit
 title: "Link Profile SEO Audit"
-description: "Operational playbook for diagnosing the off-page link surface of a site: referring-domain quality distribution, unique-root-domain count, anchor-text distribution and over-optimization risk, toxic-neighborhood detection, paid-link risk patterns, link gap vs named competitors, and community/forum presence (Reddit and niche communities, which hold many SERP and AI-answer citations). Encodes the fetch protocol (parallel web search + page reads + competitor backlink discovery), the per-check rubric, the severity matrix, and the unverified-check escalation rule. Use when auditing the link profile of a site or a specific URL. Output: prioritized link-profile findings with cited evidence and fix direction."
+description: "Off-page link audit: referring domains, anchor-text mix, toxic links, paid-link risk, link gap vs competitors. Use when auditing a site's backlinks."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Requires websearch + webfetch. Free path covers 80% via SERP operators, site: queries, and competitor public-link discovery. Paid path (Ahrefs / SEMrush / Majestic / Moz Link Explorer) provides referring-domain census and anchor-distribution data at scale."
 domains: seo

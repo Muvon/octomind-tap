@@ -1,7 +1,7 @@
 ---
 name: octomind-config
 title: "Octomind Configuration Reference"
-description: "Field-by-field reference for octomind's config.toml: the [model] profile and its per-boundary overrides, limits and spending caps, [capabilities] and [taps] overrides, [[roles]] with [roles.model] and [roles.mcp], [mcp] servers (builtin, http, stdio), [[hooks]], [[layers]], [[commands]], [[agents]], [[prompts]], [skills], [timing], [compression], [registry], multi-file merge, project guardrails, and template variables. Activate when a user asks how to configure, tune, validate, or upgrade octomind, add a role or MCP server, set limits or spending caps, or debug a config parse error."
+description: "Reference for octomind config.toml: model profile, roles, MCP servers, hooks, limits, spending caps. Use when configuring octomind or fixing a parse error."
 license: Apache-2.0
 compatibility: "Requires: octomind binary for `octomind config --validate`. macOS/Linux/Windows."
 domains: octomind

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: google/calendar
 # type: mcp
-# description: Google Calendar MCP Server - create events, manage calendars, check availability
+# description: Google Calendar MCP Server - create events and manage calendars; check availability and set vacation auto-replies, signs in with OAuth 2.0
 # check: npx
 # https://www.npmjs.com/package/@cocal/google-calendar-mcp
 

@@ -32,7 +32,7 @@
 # Public roles only.
 
 name        = "money-checkup"
-description = "Turns a bank or card statement export into a subscription and fee audit with every figure computed from the transactions, independently recomputed by an auditor loop, and ranked by annualized savings."
+description = "Turns a bank or card statement export into a subscription and fee audit, with figures recomputed by an auditor loop and ranked by annualized savings."
 # Ceiling for the whole run in USD; checked after each step.
 max_cost    = 3.0
 

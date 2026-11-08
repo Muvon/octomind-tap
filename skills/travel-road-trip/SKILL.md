@@ -1,7 +1,7 @@
 ---
 name: travel-road-trip
 title: "EV Road Trip Planner – Daily Legs, Fuel & Charging Stops"
-description: "Road trip planner that splits a trip into drivable days: map-checked legs, rest and sightseeing stops, overnight towns, and a fuel or EV charging plan with reserve and backups for the exact vehicle. Use when the user plans a road trip or an EV road trip, a drive between places, a campervan trip, or charging stops."
+description: "Road trip planner: drivable daily legs, rest stops, overnight towns, fuel or EV charging plan for the exact vehicle. Use when planning a road or EV trip."
 license: Apache-2.0
 compatibility: "Requires: web search, web page fetching and a maps service."
 capabilities: webfetch

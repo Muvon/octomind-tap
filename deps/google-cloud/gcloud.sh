@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: google-cloud/gcloud
 # type: mcp
-# description: Google Cloud MCP Server - GCP services management
+# description: Google Cloud MCP Server - manage Google Cloud Platform resources; services and operations via @google-cloud/gcloud-mcp, uses a service account JSON file
 # check: npx
 # https://www.npmjs.com/package/@google-cloud/gcloud-mcp
 

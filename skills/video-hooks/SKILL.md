@@ -1,7 +1,7 @@
 ---
 name: video-hooks
 title: "Video Hooks: TikTok, Reels, Shorts Retention Guide"
-description: "Evidence-graded video hooks playbook for TikTok, Reels, and Shorts: an 11-pattern opening hook catalog (pattern-interrupt, contrarian, curiosity-gap, stat punch, identity bait), visual hook devices, banned opens, sound-on audio hooks, endings and loops built for rewatch, mid-video re-hooks, share triggers, organic hook testing (Instagram Trial Reels, distinct concepts), and an originality and engagement-bait guard. Includes post-publish retention review: TikTok finish and skip rates, Instagram Skip Rate and retention chart, YouTube viewed-vs-swiped, and what to re-cut. Use when drafting an ad or social-video script, or when a posted clip loses viewers early."
+description: "Video hook playbook for TikTok, Reels and Shorts: opening patterns, loops, re-hooks, retention review. Use when drafting a script or fixing early drop-off."
 license: Apache-2.0
 compatibility: "Stack-agnostic."
 domains: video

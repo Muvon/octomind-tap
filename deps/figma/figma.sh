@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: figma/figma
 # type: mcp
-# description: Figma MCP Server - design-to-code integration, read Figma files
+# description: Figma MCP Server - read Figma files, components and variables; design tokens for design-to-code work, needs a Figma Personal Access Token
 # check: npx
 # https://www.npmjs.com/package/figma-developer-mcp
 

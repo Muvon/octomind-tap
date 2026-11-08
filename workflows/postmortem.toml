@@ -13,8 +13,7 @@
 #   recovered 14:55. Slack thread and deploy log follow: ...
 
 name        = "postmortem"
-description = "Writes a blameless incident postmortem report from pasted evidence: builds a timestamped timeline, analyzes contributing factors and response metrics in parallel, and loops an independent judge until it is traceable, blameless, and arithmetically correct."
-
+description = "Writes a blameless incident postmortem from pasted evidence: a timestamped timeline, contributing factors and response metrics, checked by a judge loop."
 # Hard ceiling for the whole run (USD); checked after each step.
 max_cost = 3.0
 

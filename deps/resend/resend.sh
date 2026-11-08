@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: resend/resend
 # type: mcp
-# description: Resend MCP Server - transactional email sending
+# description: Resend MCP Server - send transactional email via Resend; manage contacts, broadcasts, domains and webhooks, runs via npx, needs RESEND_API_KEY
 # check: npx
 # https://github.com/resend/mcp-send-email
 

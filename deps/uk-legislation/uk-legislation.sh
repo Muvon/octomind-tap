@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: uk-legislation/uk-legislation
 # type: mcp
-# description: UK Legislation MCP Server - official legislation.gov.uk API
+# description: UK Legislation MCP Server - search and read UK law; Acts and statutory instruments via the official legislation.gov.uk API, runs via npx, no API key needed
 # check: npx
 # https://www.npmjs.com/package/legislation-gov-uk-mcp
 

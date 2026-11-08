@@ -2,7 +2,7 @@
 # Capability: devdocs
 # Provider: Context7 — library and framework documentation lookup
 # Title: Developer Docs
-# Description: Version-specific library and framework documentation lookup via Context7.
+# Description: Pull current, version-specific documentation and code examples for libraries and frameworks into the prompt via the Context7 MCP server.
 
 [deps]
 require = ["upstash/context7"]

@@ -1,7 +1,7 @@
 ---
 name: octomind-runtime
 title: "Octomind Runtime & Tool Surface"
-description: "Explains how octomind assembles a session at runtime: tap resolution of domain:spec tags, manifest placeholders, built-in tool servers, capability activation and the deterministic embedding auto-activator, domain and env gating, LRU eviction of the tool surface, skill discovery and activation, Agent Plugins, local .agents/tools scripts, and sandbox mode. Activate when a user asks why a tool or skill did or did not appear, how a tag resolves, how capability auto-activation decides, why a capability was evicted or refused, or where skills and taps live on disk."
+description: "How octomind assembles a session: tap tag resolution, capability auto-activation, skills, gating, sandbox. Use when a tool or skill did or did not appear."
 license: Apache-2.0
 compatibility: "Requires: octomind binary. macOS/Linux/Windows."
 domains: octomind

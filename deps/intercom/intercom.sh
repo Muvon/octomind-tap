@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: intercom/intercom
 # type: mcp
-# description: Intercom MCP Server - customer support tickets
+# description: Intercom MCP Server - manage Intercom support tickets and chats; customer conversations too, runs with npx, needs an INTERCOM_ACCESS_TOKEN
 # check: npx
 # https://www.npmjs.com/package/@iflow-mcp/mcp-intercom
 

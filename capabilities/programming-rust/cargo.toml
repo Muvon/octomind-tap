@@ -2,7 +2,7 @@
 # Capability: programming-rust
 # Provider: rustup — Rust toolchain (cargo, rustc, clippy, rustfmt)
 # Title: Rust Toolchain
-# Description: Rust toolchain with cargo, rustc, clippy, and rustfmt.
+# Description: Build, test, lint, and format Rust code with cargo, rustc, clippy, and rustfmt, and manage crate dependencies, run through the shell.
 
 [deps]
 require = ["rust/cargo"]

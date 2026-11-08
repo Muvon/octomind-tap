@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: dataforseo/mcp-server
 # type: mcp
-# description: Ensures Node.js 22+ and npx for the official DataForSEO MCP server
+# description: DataForSEO MCP Server - keyword, SERP and backlink data; official server, competitor research, installer ensures Node.js 22+ and npx
 # check: npx
 # https://github.com/dataforseo/mcp-server-typescript
 

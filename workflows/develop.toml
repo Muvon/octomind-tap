@@ -21,8 +21,7 @@
 # Public roles only.
 
 name        = "develop"
-description = "Spec-driven development loop for an existing feature spec: gathers context, then iterates a developer/evaluator loop whose independent evaluator re-runs the build/test gate, proves every requirement's test fails on the old code and passes on the new, and rejects tampered tests until it approves, then summarizes the change."
-
+description = "Implements an existing feature spec in a developer/evaluator loop: the evaluator re-runs build and tests, checks tests fail on old code, then summarizes."
 # ── 1. Spec → context ────────────────────────────────────────────────────────
 [[steps]]
 name    = "context"

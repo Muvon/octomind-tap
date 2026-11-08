@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: mseep/apple-notifier
 # type: mcp
-# description: macOS Notifier MCP Server - send native macOS notifications
+# description: macOS Notifier MCP Server - send native macOS notifications; shows dialogs, speaks text, takes screenshots and picks files, runs with npx
 # check: npx
 # https://npmjs.com/package/@mseep/apple-notifier-mcp
 

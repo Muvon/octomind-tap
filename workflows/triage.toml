@@ -12,8 +12,7 @@
 #   Issue: `export --json` crashes with a traceback when the CSV has no rows (v2.3.1, Linux).
 
 name        = "triage"
-description = "Checks an issue report against the current repo, verifies every code anchor, then produces a CONFIRMED / NEEDS_INFO / NOT_A_BUG verdict with labels, priority, and a maintainer reply draft; never posts."
-
+description = "Checks an issue report against the repo, then gives a CONFIRMED, NEEDS_INFO or NOT_A_BUG verdict with labels, priority and a reply draft; never posts."
 # Hard ceiling for the whole run (USD); checked after each step.
 max_cost = 3.0
 

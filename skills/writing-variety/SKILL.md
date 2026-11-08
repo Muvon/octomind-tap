@@ -1,7 +1,7 @@
 ---
 name: writing-variety
 title: "Avoid Repeated AI Writing Patterns"
-description: "Keep a run of posts, replies, articles, emails, ad angles, scripts, or release notes for one account from sounding the same. Get an approach and form from the variety tools before each piece, then check the draft for AI writing tells and repeated openings. Activate for batches and recurring writing jobs."
+description: "Keep batches of posts, replies, emails, ad angles or scripts from sounding alike, with AI-tell checks. Use for recurring writing jobs and batches."
 license: Apache-2.0
 compatibility: "Needs the variety capability: either the local variety server or the hosted unsame server. Network access only for unsame."
 domains: content marketing sales video developer support community launch

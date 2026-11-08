@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: shopify/dev-mcp
 # type: mcp
-# description: Shopify Dev MCP - official Shopify docs, GraphQL schema, and code validation server
+# description: Shopify Dev MCP - search docs and the Admin GraphQL schema; validate GraphQL operations, UI extensions and Liquid theme code, runs via npx
 # check: npx
 # https://shopify.dev/docs/apps/build/devmcp
 

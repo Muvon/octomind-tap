@@ -1,7 +1,7 @@
 ---
 name: ai-rag-patterns
 title: "RAG Patterns: Chunking, Retrieval, Reranking, Evaluation"
-description: "Operational playbook for designing and tuning production RAG (Retrieval-Augmented Generation) systems in 2026. Covers chunking strategies (fixed/recursive, semantic, late chunking, Anthropic Contextual Retrieval), retrieval (BM25, dense, hybrid with reciprocal rank fusion, ColBERT late-interaction), query rewriting (HyDE, multi-query, decomposition), reranking (Cohere Rerank 4, cross-encoders, BGE-Reranker), evaluation (RAGAS metrics, TruLens RAG Triad, DeepEval), the seven failure modes (Barnett et al.), agentic RAG and agentic search, multi-modal RAG (ColPali), and the long-context-vs-RAG trade-off including context rot. Use when designing a new RAG pipeline, diagnosing why an existing one underperforms, or evaluating retrieval quality. Output: architecture decisions with cited numbers, not vibes."
+description: "Production RAG design: chunking, hybrid retrieval, reranking, query rewriting, RAGAS evaluation. Use when building or debugging a RAG pipeline."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Requires webfetch (for accessing docs and APIs) and a vector store. Many sub-techniques (Cohere Rerank, voyage embeddings, Anthropic Contextual Retrieval) require external API keys."
 domains: ai

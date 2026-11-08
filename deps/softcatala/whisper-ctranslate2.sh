@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: softcatala/whisper-ctranslate2
 # type: dep
-# description: whisper-ctranslate2 - local faster-whisper transcription CLI with word-level timestamps
+# description: whisper-ctranslate2 - local faster-whisper transcription CLI; word-level timestamps in JSON, runs on CPU or CUDA, no API key, installed via uv
 # check: whisper-ctranslate2
 # https://github.com/Softcatala/whisper-ctranslate2
 

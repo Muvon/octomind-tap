@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: hubspot/hubspot
 # type: mcp
-# description: HubSpot MCP Server - CRM contacts, deals, companies
+# description: HubSpot MCP Server - manage CRM contacts, deals and companies; also custom objects, runs with npx, needs a private app token in HUBSPOT_API_KEY
 # check: npx
 # https://www.npmjs.com/package/@hubspot/mcp-server
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: supabase/supabase
 # type: mcp
-# description: Supabase MCP Server - Postgres database, auth, and storage
+# description: Supabase MCP Server - manage projects and Postgres databases; migrations, Edge Functions, storage and docs search, remote endpoint with OAuth 2.1
 # check: npx
 # https://www.npmjs.com/package/@supabase/mcp-server-supabase
 

@@ -2,7 +2,7 @@
 # Capability: shell
 # Provider: octofs — Octomind's native shell execution MCP server
 # Title: Shell
-# Description: Shell command execution via the octofs MCP server (octofs:shell tool).
+# Description: Run shell commands in the project directory with the octofs shell tool: builds, tests, git, and other project command-line tools.
 
 [deps]
 require = ["muvon/octofs"]

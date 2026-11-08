@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: hashicorp/terraform
 # type: mcp
-# description: Terraform MCP Server - Infrastructure as Code
+# description: Terraform MCP Server - look up provider docs and module info; also workspaces and Sentinel policies, needs a TERRAFORM_API_TOKEN
 # check: npx
 # https://developer.hashicorp.com/terraform/mcp-server
 

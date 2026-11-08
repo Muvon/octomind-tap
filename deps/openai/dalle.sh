@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: openai/dalle
 # type: mcp
-# description: DALL-E MCP Server - OpenAI DALL-E image generation
+# description: DALL-E MCP Server - generate images from text prompts with DALL-E; uses OpenAI's generate_image tool, runs via npx, needs OPENAI_API_KEY
 # check: npx
 # https://www.npmjs.com/package/@microagents/mcp-server-dalle
 

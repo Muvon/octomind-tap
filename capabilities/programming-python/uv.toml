@@ -2,7 +2,7 @@
 # Capability: programming-python
 # Provider: uv — Python package and project manager (uv, uvx)
 # Title: Python Toolchain
-# Description: Python package and project management via uv and uvx.
+# Description: Manage Python projects, virtual environments, and dependencies with uv, and run one-off Python command-line tools with uvx.
 
 [deps]
 require = ["astral-sh/uv"]

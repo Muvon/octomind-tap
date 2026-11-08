@@ -2,7 +2,7 @@
 # Capability: programming-nodejs
 # Provider: Bun (oven-sh/bun) — modern all-in-one JS/TS runtime
 # Title: Node.js Toolchain
-# Description: Bun all-in-one JS/TS runtime (bun, bunx) - drop-in for node, npm, npx, yarn, pnpm, and vite.
+# Description: Run JS/TS with Bun: bun and bunx replace node, npm, npx, yarn, pnpm, and vite for installs, scripts, tests, and dev servers.
 
 [deps]
 require = ["oven-sh/bun"]

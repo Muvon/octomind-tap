@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: muvon/video-thumbnail
 # type: dep
-# description: video-thumbnail - YouTube thumbnail and Reels/TikTok cover renderer CLI (fitted text, subject cut-outs, feed preview)
+# description: video-thumbnail - YouTube thumbnail and TikTok cover renderer CLI; fitted text, subject cut-outs and feed preview, needs python3 3.9+
 # check: video-thumbnail
 # https://github.com/muvon/octomind-tap
 

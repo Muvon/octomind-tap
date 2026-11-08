@@ -2,7 +2,7 @@
 # Capability: edge-hosting
 # Provider: Cloudflare — official MCP server
 # Title: Edge Hosting (Cloudflare)
-# Description: Cloudflare Workers, KV, R2, D1, and DNS management via the Cloudflare MCP server.
+# Description: Manage Cloudflare Workers, KV, R2, D1, and DNS records via the Cloudflare MCP server. Needs CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN.
 
 [deps]
 require = ["cloudflare/cloudflare"]

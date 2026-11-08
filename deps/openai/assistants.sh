@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: openai/assistants
 # type: mcp
-# description: OpenAI Assistants MCP Server - use the OpenAI Assistants API from AI tools
+# description: OpenAI Assistants MCP Server - call the Assistants API from MCP; runs with npx (openai-assistants-mcp) and needs an OPENAI_API_KEY
 # check: npx
 # https://www.npmjs.com/package/openai-assistants-mcp
 

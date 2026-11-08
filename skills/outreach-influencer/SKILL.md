@@ -1,7 +1,7 @@
 ---
 name: outreach-influencer
 title: "Influencer Outreach Email Templates and Creator Briefs"
-description: "Influencer outreach email templates, creator vetting, collaboration briefs, rate research, and FTC disclosure checks. Use when pitching influencers, creators, or ambassadors and planning paid, gifted, or affiliate partnerships."
+description: "Influencer outreach: email templates, creator vetting, collaboration briefs, rate research, FTC disclosure. Use when pitching creators or paid deals."
 license: Apache-2.0
 compatibility: "Needs web search for creator research. Any OS."
 domains: marketing launch

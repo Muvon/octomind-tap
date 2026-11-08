@@ -15,8 +15,7 @@
 #   Decode this: ./hospital-bill.pdf — I'm in Ontario, Canada.
 
 name        = "decode"
-description = "Routes a confusing letter, bill, contract, lease, or notice to the right specialist, composes a plain-language decode with red flags, deadlines, next steps, and a draft reply when warranted, and verifies every figure and date against the source."
-
+description = "Turns a confusing letter, bill, contract, lease or notice into a plain-language decode with red flags, deadlines, next steps and a checked draft reply."
 # Ceiling for the whole run in USD, checked after each step.
 max_cost = 3.0
 

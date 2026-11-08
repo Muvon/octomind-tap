@@ -33,7 +33,7 @@
 # — LLM judges favor output from their own model. Public roles only.
 
 name            = "plan-and-build"
-description     = "Turns a feature request into an EARS behavioral spec with testable requirements, stops with clarifying questions when anything is unresolved, then implements it in a developer/evaluator loop whose independent evaluator re-runs the checks, proves every requirement's test fails on the old code and passes on the new, and rejects tampered tests before summarizing the change."
+description     = "Turns a feature request into an EARS spec, asks questions if anything is unresolved, then builds it in a developer/evaluator loop with proven tests."
 entry           = "spec"
 max_transitions = 4
 

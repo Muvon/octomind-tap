@@ -1,7 +1,7 @@
 # agents/video/storyboard.toml
 # Agent: video:storyboard
 # Title: Video Storyboard Planner
-# Description: Plans beat-by-beat storyboards: shot list, framing, motion, transitions, music brief, and asset checklist, with optional generated reference frames per beat.
+# Description: Plans beat-by-beat storyboards: shot list, framing, motion, transitions, music brief, asset checklist, with optional generated reference frames per beat.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write", "image-gen"]
 

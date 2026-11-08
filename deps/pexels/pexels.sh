@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: pexels/pexels
 # type: mcp
-# description: Pexels MCP Server - free b-roll video and photo stock
+# description: Pexels MCP Server - search free Pexels stock video and photos; b-roll for ad creative, runs via npx and needs a PEXELS_API_KEY
 # check: npx
 # https://www.pexels.com/api/
 

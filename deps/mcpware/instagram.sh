@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: mcpware/instagram
 # type: mcp
-# description: Instagram MCP Server - posts, comments, DMs, stories via Graph API
+# description: Instagram MCP Server - manage posts, comments, DMs and stories; also reels, hashtags and analytics through the Graph API, needs INSTAGRAM_ACCESS_TOKEN
 # check: npx
 # https://www.npmjs.com/package/@mcpware/instagram-mcp
 

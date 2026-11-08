@@ -1,7 +1,7 @@
 ---
 name: chef-budget-meals
 title: "Budget Meal Planner – Weekly Meals & Priced Grocery List"
-description: "Budget meal planner for a week of meals under a stated grocery budget: local sale and seasonal price research, a grocery list priced by whole packs, a contingency, and a leftovers ledger that never double-allocates portions. Use when the user gives a food budget, wants a budget meal plan, or asks for cheap, affordable or frugal meal plans."
+description: "Weekly budget meal planner: sale and seasonal price research, grocery list by whole packs, leftovers ledger. Use for a meal plan on a food budget."
 license: Apache-2.0
 compatibility: "Requires: web search and web page fetching."
 capabilities: webfetch

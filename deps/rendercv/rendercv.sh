@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: rendercv/rendercv
 # type: dep
-# description: RenderCV - resume and CV generator from YAML to a typeset Typst PDF, with ATS-friendly single-column themes
+# description: RenderCV - turn YAML into resume and CV PDFs; typeset with Typst and ATS-friendly single-column themes, also exports Markdown, HTML and PNG copies
 # check: rendercv
 # https://rendercv.com
 

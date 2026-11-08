@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: muvon/video-captions
 # type: dep
-# description: video-captions - word-timed TikTok-style video caption generator CLI (ASS + SRT, ffmpeg burn) shipped with this tap
+# description: video-captions - word-timed TikTok-style video caption CLI; outputs ASS + SRT with ffmpeg burn, shipped with this tap, needs python3 3.9+
 # check: video-captions
 # https://github.com/muvon/octomind-tap
 

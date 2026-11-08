@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: rust/cargo
 # type: dep
-# description: Installs Rust toolchain via rustup (provides cargo, rustc)
+# description: Rust - installs the Rust toolchain through rustup; provides the cargo build tool and the rustc compiler, check with cargo --version
 # check: cargo
 # https://rustup.rs
 

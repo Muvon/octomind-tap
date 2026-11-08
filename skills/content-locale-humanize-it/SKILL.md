@@ -1,7 +1,7 @@
 ---
 name: content-locale-humanize-it
 title: "Italian Native-Fluency Calibration"
-description: "Per-language calibration anchors for detecting AI-slop and translationese in Italian (it) target text; auto-loads alongside content-locale-humanize when the target language is Italian."
+description: "Calibration anchors for AI-slop and translationese in Italian (it) text. Use alongside content-locale-humanize when the target is Italian."
 license: Apache-2.0
 compatibility: "Calibration data only; no tools required. Network access helps for usage checks."
 domains: content

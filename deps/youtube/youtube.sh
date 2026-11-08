@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: youtube/youtube
 # type: mcp
-# description: YouTube MCP Server - video subtitles, transcripts, channel info
+# description: YouTube MCP Server - download video subtitles and transcripts; read channel information using yt-dlp, runs via npx, no API key needed
 # check: npx
 # https://www.npmjs.com/package/@anaisbetts/mcp-youtube
 

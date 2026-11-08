@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: modelcontextprotocol/fetch
 # type: mcp
-# description: MCP Fetch Server - retrieve web content and convert to markdown
+# description: MCP Fetch Server - fetch a URL and return its content as markdown; official Python server run with uvx, no authentication needed
 # check: npx
 # https://github.com/modelcontextprotocol/servers/tree/main/src/fetch
 

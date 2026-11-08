@@ -6,8 +6,7 @@
 # Operates on the current directory. Public roles only.
 
 name        = "upgrade"
-description = "Upgrades dependencies (named packages, or safe patch/minor by default), fixes breakages in a bump/verify loop until the project's checks pass, then writes upgrade notes."
-
+description = "Upgrades named dependencies, or safe patch and minor ones by default, fixes breakages in a bump and verify loop, then writes upgrade notes."
 # ── 1. Inventory & plan ──────────────────────────────────────────────────────
 [[steps]]
 name    = "inventory"

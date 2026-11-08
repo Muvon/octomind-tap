@@ -1,7 +1,7 @@
 ---
 name: content-translate
 title: "Content Translation & Localization"
-description: "Translate and localize documents, code comments, UI strings, and structured content while preserving formatting, adapting to domain-specific terminology, and maintaining consistency across large files via batching."
+description: "Translate documents, code comments, UI strings and structured content, keeping formatting and terms consistent. Use for localizing large files."
 license: Apache-2.0
 compatibility: "Requires text_editor, view, shell tools. Works with any LLM model. Supports markdown, code, TOML, YAML, JSON, and plain text."
 domains: content

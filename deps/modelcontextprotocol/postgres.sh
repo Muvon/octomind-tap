@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: modelcontextprotocol/postgres
 # type: mcp
-# description: MCP PostgreSQL Server - query PostgreSQL databases
+# description: MCP PostgreSQL Server - run read-only SQL queries on PostgreSQL; the database is given as a connection string, runs with npx
 # check: npx
 # https://github.com/modelcontextprotocol/servers/tree/main/src/postgres
 

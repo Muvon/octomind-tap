@@ -1,7 +1,7 @@
 ---
 name: tap-agent-authoring
 title: "Agent Manifest Authoring"
-description: "Guide for writing Octomind agent manifests: TOML format, required and forbidden fields, capability tiers, system prompt structure and tone for current models, sampling and model settings, placeholders, lint rules, and the pre-write checklist. Activate when creating or editing agents/<domain>/<spec>.toml files."
+description: "Write Octomind agent manifests: TOML fields, capability tiers, system prompt structure, model settings, lint rules. Use when editing agents/*/*.toml."
 license: Apache-2.0
 compatibility: "Requires: an Octomind tap checkout with scripts/lint-manifests.sh and bin/load."
 domains: octomind

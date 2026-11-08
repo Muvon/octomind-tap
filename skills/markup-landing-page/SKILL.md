@@ -1,7 +1,7 @@
 ---
 name: markup-landing-page
 title: "Landing Page Craft: UI, Conversion, and System Patterns"
-description: "Production playbook for building modern lightweight landing pages that sell. Covers automatic dark/light theming via CSS custom properties, system-font Apple-style typography, opinionated section anatomy (hero, features, comparison, pricing, FAQ, footer CTA), conversion-focused copy hierarchy, SEO/OG/JSON-LD baseline, and the structural patterns that move visitors to purchase. Activate whenever drafting, designing, or implementing a marketing or product landing page."
+description: "Build lightweight landing pages: dark/light theming via CSS variables, section anatomy, conversion copy, SEO and JSON-LD. Use when drafting a landing page."
 license: Apache-2.0
 compatibility: "Stack-agnostic — examples use SvelteKit + plain CSS but rules apply to any HTML/CSS framework."
 domains: developer

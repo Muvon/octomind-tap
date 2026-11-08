@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: prometheus/prometheus
 # type: mcp
-# description: Prometheus MCP Server - query Prometheus metrics, targets, and labels
+# description: Prometheus MCP Server - run PromQL metric queries; read server status, list scrape targets and explore labels, runs via npx, needs PROMETHEUS_URL
 # check: npx
 # https://www.npmjs.com/package/@wkronmiller/prometheus-mcp-server
 

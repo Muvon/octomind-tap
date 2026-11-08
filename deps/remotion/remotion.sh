@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: remotion/remotion
 # type: dep
-# description: Remotion CLI - code-driven (React) video composition, run with npx (needs Node.js)
+# description: Remotion CLI - build videos as React components; scaffold with create-video, render with npx remotion render or Remotion Lambda, needs Node.js
 # check: npx
 # https://www.remotion.dev/docs/
 

@@ -1,7 +1,7 @@
 ---
 name: ad-bing
 title: "Microsoft Advertising (Bing) Production Spec"
-description: "Specifies what to produce for a Microsoft Advertising (Bing) creative: Responsive Search Ads, Multimedia Ads (with 90-char long headlines), Audience Ads (MSN, Outlook.com, Edge), Performance Max, Shopping, and Lodging/Travel verticals, with exact slots, char limits, asset ratios, CTA enum, the AI Max and Copilot creative controls, a LinkedIn Profile Targeting note, and the trademark/political/regional policy differences from Google. Use whenever the task is producing Microsoft Ads / Bing copy or assets; strictly platform-specific, so it does not cover keyword strategy, bidding, audience setup, or UET pixel."
+description: "Bing ad specs: RSA, Multimedia, Audience, Performance Max and Shopping slots, character limits and ratios. Use when producing Microsoft Ads copy or assets."
 license: Apache-2.0
 compatibility: "Octomind launch agents. Platform-specific to Microsoft Advertising (Bing, Yahoo/AOL syndication, MSN, Outlook.com, Edge, Copilot)."
 domains: launch

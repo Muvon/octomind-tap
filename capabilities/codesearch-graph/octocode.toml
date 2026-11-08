@@ -2,7 +2,7 @@
 # Capability: codesearch-graph
 # Provider: octocode — code dependency graph search
 # Title: Code Search (Graph)
-# Description: Code relationship and dependency-graph traversal via octocode: graphrag.
+# Description: Trace callers, imports, inheritance, and dependency paths between symbols and files with octocode's graphrag code-graph tool.
 #
 # Always available: graphrag answers from a live Tree-sitter symbol graph built
 # directly from source — no index and no graphrag.enabled required. When the

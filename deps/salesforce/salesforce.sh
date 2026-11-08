@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: salesforce/salesforce
 # type: mcp
-# description: Salesforce MCP Server - CRM objects, records, queries
+# description: Salesforce MCP Server - query CRM objects and manage records; runs Apex code, handles triggers and debug logs, via npx, auth by CLI, password or OAuth
 # check: npx
 # https://www.npmjs.com/package/@tsmztech/mcp-server-salesforce
 

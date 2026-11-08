@@ -1,7 +1,7 @@
 ---
 name: programming-rust
 title: "Rust Development Best Practices"
-description: "Idiomatic Rust best practices for AI coding agents: architecture, ownership patterns, and ecosystem choices that survive long-term maintenance. Auto-activates in Rust projects."
+description: "Rust practices: ownership patterns, meaningful errors, small APIs, edition and MSRV awareness. Use when writing or reviewing Rust code in cargo projects."
 license: Apache-2.0
 compatibility: "Requires cargo and rustc toolchain."
 capabilities: programming-rust

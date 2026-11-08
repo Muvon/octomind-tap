@@ -2,7 +2,7 @@
 # Capability: filesystem-write
 # Provider: octofs — Octomind's native filesystem MCP server (write subset)
 # Title: Filesystem (Write)
-# Description: File editing via octofs: text_editor, batch_edit, and extract_lines; pairs with filesystem-read.
+# Description: Create and edit files with octofs text_editor, apply multi-line changes with batch_edit, and copy line ranges with extract_lines.
 
 [deps]
 require = ["muvon/octofs"]

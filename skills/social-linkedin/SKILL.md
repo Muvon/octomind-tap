@@ -1,7 +1,7 @@
 ---
 name: social-linkedin
 title: "LinkedIn Publishing Playbook"
-description: "Write and revise LinkedIn posts, launch copy, comments, and supporting profile or long-form copy in the author's documented voice. Activate for LinkedIn drafting, with evidence-led format selection, customer-proof handling, and a complete publishing package."
+description: "Write and revise LinkedIn posts, launch copy and comments in the author's voice, with customer-proof handling. Use when drafting for LinkedIn."
 license: Apache-2.0
 compatibility: "Browser and network access for source checks and LinkedIn previews."
 domains: content

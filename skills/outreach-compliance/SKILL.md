@@ -1,7 +1,7 @@
 ---
 name: outreach-compliance
 title: "Cold Email Compliance – CAN-SPAM, GDPR and CASL"
-description: "Cold email laws and CAN-SPAM Act compliance flags, plus GDPR, PECR, and CASL consent, identification, and opt-out checks. Use when preparing email, call, or message outreach to US, EU, UK, or Canadian recipients. Not legal advice."
+description: "Cold email law checks: CAN-SPAM, GDPR, PECR and CASL consent and opt-out. Use before outreach to US, EU, UK or Canadian recipients. Not legal advice."
 license: Apache-2.0
 compatibility: "Environment-independent. Any OS."
 domains: marketing sales launch

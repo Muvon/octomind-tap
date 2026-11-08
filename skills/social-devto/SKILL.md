@@ -1,7 +1,7 @@
 ---
 name: social-devto
 title: "DEV Community (dev.to) Publishing Playbook"
-description: "Write and revise DEV articles, discussions, comments, and launch or proof material in the author's documented voice. Activate for dev.to drafts, publishing packages, series, challenge entries, or company cross-posts; apply current disclosure and promotion rules before preparing copy for publication."
+description: "Write and revise DEV articles, discussions, comments and launch posts in the author's voice, with disclosure rules. Use when drafting for dev.to."
 license: Apache-2.0
 compatibility: "Markdown editor; network access for DEV policy, editor, and tag checks."
 domains: content

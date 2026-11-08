@@ -2,7 +2,7 @@
 # Capability: messaging-discord
 # Provider: mcp-discord — Discord bot integration
 # Title: Discord Messaging MCP Server
-# Description: Discord messaging - channels, messages, moderation, and voice - via the mcp-discord server.
+# Description: Read and send Discord channel messages, moderate members, and join voice channels via the mcp-discord server. Needs DISCORD_TOKEN.
 
 [deps]
 require = ["discord/discord"]

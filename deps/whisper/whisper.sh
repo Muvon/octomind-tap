@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: whisper/whisper
 # type: mcp
-# description: Whisper MCP Server - audio transcription with OpenAI Whisper
+# description: Whisper MCP Server - transcribe audio and generate speech; also converts audio formats, uses OpenAI's models, runs via uvx, needs OPENAI_API_KEY
 # check: npx
 # https://www.npmjs.com/package/whisper-mcp
 

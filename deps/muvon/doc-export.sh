@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: muvon/doc-export
 # type: dep
-# description: doc-export - Markdown to Word and PDF with set fonts, sizes, and margins, plus PDF page, font, and text-layer checks
+# description: doc-export - convert Markdown to Word and PDF; sets fonts, sizes and margins, plus PDF page, font and text-layer checks, needs python3 3.9+
 # check: doc-export
 # https://github.com/muvon/octomind-tap
 

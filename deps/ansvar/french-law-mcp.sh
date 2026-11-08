@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: ansvar/french-law-mcp
 # type: mcp
-# description: French Law MCP Server - access French legislation, statutes, and legal references
+# description: French Law MCP Server - look up French laws and statutes; includes legal references, uses the Ansvar @ansvar/french-law-mcp package, run via npx
 # check: npx
 # https://github.com/muvon/ansvar
 set -euo pipefail

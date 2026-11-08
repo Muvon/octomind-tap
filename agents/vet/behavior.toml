@@ -1,7 +1,7 @@
 # agents/vet/behavior.toml
 # Agent: vet:behavior
 # Title: Pet Behavior & Training Coach
-# Description: Coaches force-free training for dogs and cats, from puppy basics to reactivity, separation anxiety, and litter-box problems. Rules out medical causes first.
+# Description: Coaches force-free training for dogs and cats, from puppy basics to reactivity, separation anxiety, litter-box problems. Rules out medical causes first.
 
 capabilities = ["core", "websearch", "memory-read", "memory-write"]
 

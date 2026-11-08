@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: microsoft/teams
 # type: mcp
-# description: Microsoft Teams MCP Server - send messages, manage chats, and search Teams channels
+# description: Microsoft Teams MCP Server - send messages and manage chats; search conversations in Teams channels, runs with npx, signs in via Microsoft Graph OAuth
 # check: npx
 # https://www.npmjs.com/package/teams-mcp
 

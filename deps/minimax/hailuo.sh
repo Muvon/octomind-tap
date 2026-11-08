@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: minimax/hailuo
 # type: mcp
-# description: MiniMax Hailuo 02 MCP Server - text-to-video and image-to-video generation
+# description: MiniMax Hailuo 02 MCP Server - text and image to video clips; uses the MiniMax Hailuo model, needs MINIMAX_API_KEY, launched through uvx
 # check: uvx
 # https://www.minimax.io/platform/document/
 

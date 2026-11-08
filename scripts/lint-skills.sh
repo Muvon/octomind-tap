@@ -115,12 +115,14 @@ if "description" not in fields or not fields["description"].strip():
     sys.exit(1)
 
 desc = fields["description"]
-if len(desc) < 20:
-    print(f"DESCRIPTION_TOO_SHORT: description must be at least 20 characters ({len(desc)} chars)", file=sys.stderr)
+# The description is also the skill page's search snippet on octomind.run:
+# 120–155 chars says what it covers and when to use it without being cut off.
+if len(desc) < 120:
+    print(f"DESCRIPTION_TOO_SHORT: description must be at least 120 characters ({len(desc)} chars)", file=sys.stderr)
     sys.exit(1)
 
-if len(desc) > 1024:
-    print(f"DESCRIPTION_TOO_LONG: description exceeds 1024 characters ({len(desc)} chars)", file=sys.stderr)
+if len(desc) > 155:
+    print(f"DESCRIPTION_TOO_LONG: description must be at most 155 characters ({len(desc)} chars)", file=sys.stderr)
     sys.exit(1)
 
 # ── Optional: compatibility ───────────────────────────────────────────────────

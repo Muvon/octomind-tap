@@ -2,7 +2,7 @@
 # Capability: database-postgres
 # Provider: PostgreSQL — official MCP reference server
 # Title: PostgreSQL Database
-# Description: PostgreSQL database querying and inspection via the official MCP reference server.
+# Description: Query a PostgreSQL database and inspect its tables and schemas via the MCP reference server. Needs POSTGRES_CONNECTION_STRING.
 
 [deps]
 require = ["modelcontextprotocol/postgres"]

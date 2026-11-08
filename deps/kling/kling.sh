@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: kling/kling
 # type: mcp
-# description: Kling AI MCP Server - text-to-video and image-to-video generation
+# description: Kling AI MCP Server - text-to-video and image-to-video with Kling; runs with npx, needs KLING_ACCESS_KEY and KLING_SECRET_KEY env variables
 # check: npx
 # https://app.klingai.com/global/dev/document-api/
 

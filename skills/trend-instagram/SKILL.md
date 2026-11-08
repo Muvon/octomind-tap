@@ -1,7 +1,7 @@
 ---
 name: trend-instagram
 title: "Instagram Trend Harvester Playbook"
-description: "Harvest Instagram post, carousel, Reel, and audio patterns into a sourced trend brief with observed metrics, original adaptation angles, and uncertainty. Activate in trend sessions mentioning Instagram or Reels, or on explicit Instagram trend, scan, analysis, or harvest requests."
+description: "Harvest Instagram post, carousel, Reel and audio patterns into a sourced brief with observed metrics. Use when scanning Instagram or Reels trends."
 license: Apache-2.0
 compatibility: "Browser and network access. An authorized Instagram session may be needed; app-only observations require supplied evidence."
 capabilities: browser memory-read memory-write

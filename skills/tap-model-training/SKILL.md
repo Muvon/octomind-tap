@@ -1,7 +1,7 @@
 ---
 name: tap-model-training
 title: "Octomind-Tap Embed Model Training and Publishing"
-description: "Operational playbook for training, evaluating, and publishing muvon/octomind-embed, the granite-embedding-30m WiSE-FT soup that powers octomind's capability auto-activation and skill semantic() rules. Covers when to retrain (any change to capabilities/*/config.toml triggers or skills/*/SKILL.md semantic phrases), the bin/train pipeline (LLM augmentation, dataset build, hard-negative re-mining, CachedMNRL + Matryoshka fine-tune, soup sweep, holdout and eval_real evaluation, int8 ONNX export and calibration), resuming an interrupted run, calibrating the runtime threshold and margin, publishing behind the regression gate, and recording the baseline. Use when triggers or semantic rules change, when retraining or republishing the tap model, or when auto-activation picks the wrong capability."
+description: "Train, evaluate and publish the octomind-embed model behind capability auto-activation. Use when capability triggers or skill semantic() phrases change."
 license: Apache-2.0
 compatibility: "octomind-tap repo with the model/ subdirectory. Requires Python 3.11+, uv, ANTHROPIC_API_KEY for LLM augmentation, HF_TOKEN with write scope for publishing. GPU optional."
 capabilities: core

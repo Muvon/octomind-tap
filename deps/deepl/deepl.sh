@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: deepl/deepl
 # type: mcp
-# description: DeepL MCP Server - text and document translation via DeepL API
+# description: DeepL MCP Server - translate text and documents with DeepL; 30+ languages through the DeepL API, runs via npx, needs a DeepL API key
 # check: npx
 # https://github.com/DeepLcom/deepl-mcp-server
 

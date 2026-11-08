@@ -1,7 +1,7 @@
 ---
 name: ai-agent-design
 title: "AI Agent Design: Loops, Tools, Schemas, Orchestration"
-description: "Operational playbook for designing production LLM agents in 2026. Covers agent loop patterns (ReAct, Reflexion, Plan-and-Execute, native tool use), tool schema engineering (descriptions, strict mode, input examples, tool search, anti-patterns), the Agent Skills open standard, Model Context Protocol (spec 2026-07-28) integration and security, multi-agent orchestration (LangGraph, CrewAI, AutoGen, vendor agent SDKs) with cost trade-offs, error handling, loop prevention and unattended-run termination, observability via OpenTelemetry GenAI semantic conventions, OWASP LLM and Agentic Top 10 mapping, and context engineering (just-in-time retrieval, compaction, memory, sub-agent isolation, caching). Use when designing a new agent, picking an orchestration framework, debugging a misbehaving agent, or hardening tool exposure. Output: agent specs with named patterns, cost projections, observability hooks, and OWASP-mapped risk surfaces."
+description: "Designing production LLM agents: loop patterns, tool schemas, MCP, multi-agent setups, observability. Use when designing or debugging an agent."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Production agent stacks typically need: LLM provider SDK (Anthropic / OpenAI / Google), an orchestration framework or hand-rolled loop, a tracing backend (Langfuse / Phoenix / OpenTelemetry collector), MCP servers or REST tools."
 domains: ai

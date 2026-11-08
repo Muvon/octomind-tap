@@ -1,7 +1,7 @@
 ---
 name: programming-typescript
 title: "TypeScript Development Best Practices"
-description: "Type-first TypeScript best practices for AI coding agents: architecture, module boundaries, and pragmatic library choices. Auto-activates in TypeScript projects."
+description: "TypeScript practices: types that match runtime guarantees, module boundaries, tsconfig and version choices. Use when writing or reviewing TypeScript code."
 license: Apache-2.0
 compatibility: "Requires Node.js and a package manager (npm/pnpm/yarn)."
 capabilities: programming-nodejs

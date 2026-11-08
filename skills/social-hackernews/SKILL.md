@@ -1,7 +1,7 @@
 ---
 name: social-hackernews
 title: "Hacker News Publishing Playbook"
-description: "Prepare source-grounded Hacker News submission briefs, human-authorship handoffs, and launch response plans. Activate for Show HN, Ask HN, Tell HN, Launch HN, linked articles, or HN comments; choose the right format, preserve author voice, and connect useful discussion to product evaluation."
+description: "Prepare Hacker News submissions: Show HN, Ask HN, Tell HN and Launch HN briefs, comment replies, author voice kept. Use when posting or replying on HN."
 license: Apache-2.0
 compatibility: "Requires web access to Hacker News and linked source material."
 domains: content

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: grafana/grafana
 # type: mcp
-# description: Grafana MCP Server - dashboards and data visualization
+# description: Grafana MCP Server - query Grafana dashboards, metrics and logs; Prometheus, Loki, alerts and incidents, needs GRAFANA_URL and a service account token
 # check: npx
 # https://www.npmjs.com/package/@leval/mcp-grafana
 

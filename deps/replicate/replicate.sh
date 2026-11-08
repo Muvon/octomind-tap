@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: replicate/replicate
 # type: mcp
-# description: Replicate MCP Server - image generation with Flux
+# description: Replicate MCP Server - generate images and SVGs on Replicate; uses Flux Schnell and Recraft V3 models, npx, needs REPLICATE_API_TOKEN
 # check: npx
 # https://www.npmjs.com/package/replicate-flux-mcp
 

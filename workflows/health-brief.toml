@@ -15,8 +15,7 @@
 #   mIU/L (0.4-4.0), ferritin 9 ng/mL (15-150). Meds: sertraline 50 mg daily.
 
 name        = "health-brief"
-description = "Extracts structured health facts and gates on red flags first, then analyzes lab results, medications, and symptom context in parallel and delivers a judge-checked, non-diagnostic doctor visit prep brief with ranked questions for your clinician."
-
+description = "Turns lab results, medications and symptoms into a judge-checked, non-diagnostic doctor visit prep brief with ranked questions, after a red-flag check."
 # Ceiling for the whole run in USD, checked after each step.
 max_cost = 2.5
 

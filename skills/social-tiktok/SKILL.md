@@ -1,7 +1,7 @@
 ---
 name: social-tiktok
 title: "TikTok Publishing Playbook"
-description: "Draft and revise TikTok scripts, captions, and publishing packages in an identifiable author's voice. Activate for TikTok posts, product demos, launches, customer proof, and creator collaborations; choose formats by audience intent and separate verified platform guidance from editorial judgment."
+description: "Draft TikTok scripts, captions and publishing packages in the author's voice for demos, launches and proof. Use when writing for TikTok."
 license: Apache-2.0
 compatibility: "Text and media editing; browser and TikTok account access for current publishing controls."
 domains: content

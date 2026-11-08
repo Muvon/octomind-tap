@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: trello/trello
 # type: mcp
-# description: Trello MCP Server - boards, cards, lists
+# description: Trello MCP Server - manage Trello boards, lists and cards; members, labels, checklists and comments, runs via npx, needs TRELLO_API_KEY and TRELLO_TOKEN
 # check: npx
 # https://www.npmjs.com/package/@iflow-mcp/trello-mcp-server
 

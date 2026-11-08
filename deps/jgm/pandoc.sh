@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: jgm/pandoc
 # type: dep
-# description: pandoc - universal document converter for Markdown to Word (DOCX) and, with the Typst engine, to PDF
+# description: pandoc - converts Markdown to Word (.docx), PDF and HTML; typesets PDFs with the Typst engine and turns .docx files back into Markdown
 # check: pandoc
 # https://pandoc.org
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: runwayml/runway
 # type: mcp
-# description: RunwayML MCP Server - Gen-4 video/image generation
+# description: RunwayML MCP Server - Runway Gen-4 video and image generation; also edits and upscales from text and images, built from GitHub, needs RUNWAYML_API_SECRET
 # check: npx
 # https://github.com/runwayml/runway-api-mcp-server
 

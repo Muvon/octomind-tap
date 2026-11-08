@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: paypal/paypal
 # type: mcp
-# description: PayPal MCP Server - payments, transactions
+# description: PayPal MCP Server - manage invoices, payments and refunds; disputes, subscriptions, shipments and catalog products via npx, needs a PayPal OAuth token
 # check: npx
 # https://github.com/paypal/paypal-mcp-server
 

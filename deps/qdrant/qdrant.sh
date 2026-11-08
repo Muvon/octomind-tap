@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: qdrant/qdrant
 # type: mcp
-# description: Qdrant MCP Server - vector search engine for semantic search and retrieval
+# description: Qdrant MCP Server - store and search information in Qdrant; semantic vector search via uvx, set QDRANT_URL or QDRANT_LOCAL_PATH
 # check: npx
 # https://github.com/punkpeye/awesome-mcp-servers
 

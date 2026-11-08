@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: muvon/ui-fonts
 # type: dep
-# description: ui-fonts - Inter and JetBrains Mono variable fonts for rendered cards, previews, and UI mockups
+# description: ui-fonts - installs Inter and JetBrains Mono variable fonts; Inter (sans) goes into the octomind fonts directory for cards, previews and UI mockups
 # check: test -s "${OCTOMIND_FONTS_DIR:-$HOME/.local/share/octomind/fonts}/Inter.ttf"
 # https://github.com/google/fonts
 

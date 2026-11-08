@@ -48,8 +48,7 @@
 # Public roles only.
 
 name        = "promote"
-description = "Turns an existing article into grounded, platform-native social media drafts for each network requested, polished by a fix/audit loop until all pass, then delivered to files or inline. Chain after content."
-
+description = "Turns an existing article into platform-native social media drafts for each requested network, polished by a fix and audit loop; chain it after content."
 # ── 1. Brief — resolve the source (read file / use pasted text) once ────────
 # Role note: content:draft carries filesystem-read + websearch, so it reads a
 # file source directly and structures raw input into a brief — its native job.

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: vercel/vercel
 # type: mcp
-# description: Vercel MCP Server - deployment and project management
+# description: Vercel MCP Server - manage Vercel deployments and projects; auto-discovered tools, runs via npx, needs a VERCEL_TOKEN API token
 # check: npx
 # https://www.npmjs.com/package/vercel-mcp
 

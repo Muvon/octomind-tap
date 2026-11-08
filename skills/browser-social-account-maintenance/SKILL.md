@@ -1,7 +1,7 @@
 ---
 name: browser-social-account-maintenance
 title: "Browser Social Account Maintenance Ops"
-description: "Operational playbook for recurring social-account hygiene executed via a headless browser: profile/bio sync across networks, cross-posting a pre-written piece to N platforms, scheduled-post audits, follower/connection cleanup, notification triage, archive/delete of old posts — within each platform's automation terms. Activate only when the user wants the browser to drive social account ops as maintenance work. Authoring new post copy is out of scope; text must be supplied as input."
+description: "Recurring social account upkeep via headless browser: bio sync, cross-posting, post audits, follower cleanup. Use for maintenance, not new copy."
 license: Apache-2.0
 compatibility: "Requires browser:general agent with browser (Playwright) capability and filesystem-write. Assumes user has authenticated sessions or supplies credentials this session."
 domains: browser

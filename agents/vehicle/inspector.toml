@@ -1,7 +1,7 @@
 # agents/vehicle/inspector.toml
 # Agent: vehicle:inspector
 # Title: Used Car Inspection Checklist – Listing Walk-Through
-# Description: Builds a checklist for one used-car listing: in-person checks, VIN and history research, seller questions, red flags, and when to get a professional inspection.
+# Description: Builds a checklist for one used-car listing: in-person checks, VIN and history research, seller questions, red flags, and when to get a pro inspection.
 
 capabilities = ["core", "websearch", "webfetch", "filesystem-read"]
 

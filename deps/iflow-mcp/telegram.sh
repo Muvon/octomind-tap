@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: iflow-mcp/telegram
 # type: mcp
-# description: MCP Telegram Server - interact with Telegram channels and groups
+# description: MCP Telegram Server - send messages to Telegram chats and groups; manages channels via the Bot API, runs with npx, needs TELEGRAM_BOT_TOKEN
 # check: npx
 # https://www.npmjs.com/package/@iflow-mcp/telegram-mcp-server
 

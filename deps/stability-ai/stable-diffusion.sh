@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: stability-ai/stable-diffusion
 # type: mcp
-# description: Stability AI MCP Server - Stable Diffusion 3.5 generation, background removal, outpainting, and upscaling via the Stability API
+# description: Stability AI MCP Server - Stable Diffusion 3.5 image generation; background removal, outpainting and upscaling via the Stability API
 # check: npx
 # https://github.com/tadasant/mcp-server-stability-ai
 

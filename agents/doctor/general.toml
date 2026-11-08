@@ -1,7 +1,7 @@
 # agents/doctor/general.toml
 # Agent: doctor:general
 # Title: Medical Information Assistant
-# Description: Answers health questions from current medical literature, explaining conditions and treatments in plain language. Information, not a substitute for a clinician.
+# Description: Answers health questions from current medical literature, explaining conditions and treatments in plain language. Information, not clinical advice.
 
 capabilities = ["core", "filesystem-read", "websearch", "medical-reference"]
 

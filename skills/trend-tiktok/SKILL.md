@@ -1,7 +1,7 @@
 ---
 name: trend-tiktok
 title: "TikTok Trend Harvester Playbook"
-description: "Harvest TikTok trend evidence into a source-linked brief with audience fit, observed momentum, original angles, and commercial-use constraints. Activate for TikTok trend scans, Creative Center research, and browser-based campaign discovery; separate observed posts from ad examples and generated suggestions."
+description: "Harvest TikTok trend evidence into a source-linked brief: audience fit, momentum, original angles, commercial-use limits. Use for TikTok trend research."
 license: Apache-2.0
 compatibility: "Requires browser and network access; authenticated TikTok business or publishing account access when a surface requires it."
 capabilities: browser memory-read memory-write

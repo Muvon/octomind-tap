@@ -1,7 +1,7 @@
 ---
 name: social-youtube
 title: "YouTube Publishing Playbook"
-description: "Write YouTube scripts and publishing packages in the author's documented voice, covering format choice, honest packaging, spoken delivery, and qualified next steps. Activate for titles, thumbnails, descriptions, Shorts, channel posts, product launches, demonstrations, customer proof, or revisions using audience feedback."
+description: "Write YouTube scripts and publishing packages: titles, thumbnails, descriptions, Shorts, in the author's voice. Use when drafting for YouTube."
 license: Apache-2.0
 compatibility: "Text and media editing; network and YouTube Studio access for account-specific publishing checks."
 domains: content

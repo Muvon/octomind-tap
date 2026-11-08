@@ -1,7 +1,7 @@
 ---
 name: content-formats
 title: "Blog Formats: Choosing by Search Intent"
-description: "Blog post formats by search intent: a playbook for articles and blog posts. Read the live results page, classify intent, and pick the format: how-to, best-of list, X vs Y comparison, alternatives page, single review, guide or pillar, glossary entry, original data study, case study, FAQ page, template or checklist, calculator-style page, news update, or opinion piece. Each format comes with its required elements and failure modes. Also covers collecting first-hand experience from the author instead of inventing it, methodology and disclosure notes, depth without word-count targets, titles and intros, honest dates, and refreshes. Use when planning, outlining, drafting, or refreshing a piece meant to rank in Google and Bing and be cited by AI answer engines."
+description: "Blog post formats by search intent: how-to, listicle, comparison, review, guide, case study. Use when planning or drafting a post meant to rank."
 license: Apache-2.0
 compatibility: "Web search and page fetch for competitor and source pages; Google-only results features need a user screenshot, Search Console data, or a SERP-data tool."
 domains: content

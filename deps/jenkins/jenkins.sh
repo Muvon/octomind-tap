@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: jenkins/jenkins
 # type: mcp
-# description: Jenkins MCP Server - CI/CD pipeline management
+# description: Jenkins MCP Server - manage Jenkins jobs, builds and pipelines; also nodes and plugins, needs JENKINS_URL, JENKINS_USERNAME and JENKINS_API_TOKEN
 # check: npx
 # https://github.com/LokiMCPUniverse/jenkins-mcp-server
 

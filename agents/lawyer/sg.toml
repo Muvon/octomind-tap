@@ -1,7 +1,7 @@
 # agents/lawyer/sg.toml
 # Agent: lawyer:sg
 # Title: Singapore Law Specialist
-# Description: Covers Singapore law from Singapore Statutes Online, read at the source: contracts, employment, criminal, company, and property. Information, not legal advice.
+# Description: Covers Singapore law from Singapore Statutes Online, read at source: contracts, employment, criminal, company, property. Information, not legal advice.
 
 capabilities = ["core", "filesystem-read", "websearch", "webfetch"]
 

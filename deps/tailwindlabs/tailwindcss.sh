@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: tailwindlabs/tailwindcss
 # type: mcp
-# description: TailwindCSS MCP Server - utility classes, colors, CSS conversion
+# description: TailwindCSS MCP Server - search Tailwind docs and utilities; looks up colors, converts plain CSS to Tailwind and generates component templates, via npx
 # check: npx
 # https://www.npmjs.com/package/tailwindcss-mcp-server
 

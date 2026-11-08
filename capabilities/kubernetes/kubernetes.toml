@@ -2,7 +2,7 @@
 # Capability: kubernetes
 # Provider: kubectl/helm — Kubernetes CLI tools
 # Title: Kubernetes
-# Description: Kubernetes cluster management via kubectl and helm CLI tools.
+# Description: Inspect and change Kubernetes clusters with kubectl, and install or upgrade Helm charts, by running the kubectl and helm CLIs.
 
 [deps]
 require = ["containers/kubernetes"]

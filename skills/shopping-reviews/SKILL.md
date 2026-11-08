@@ -1,7 +1,7 @@
 ---
 name: shopping-reviews
 title: "Amazon Review Analyzer – Cross-Retailer Review Summary"
-description: "Amazon review analyzer for one exact product across Amazon and other retailers: samples positive, middling and negative reviews, separates variants and seller issues, finds recurring praise and failures, and weighs fake-review signals without accusations. Use when the user asks what owners say, whether reviews are fake, to check reviews, or for a review summary of a product."
+description: "Amazon review analyzer for one exact product: samples good and bad reviews, finds recurring issues, weighs fake-review signals. Use to check owners' views."
 license: Apache-2.0
 compatibility: "Requires: web search and web page fetching."
 domains: shopping

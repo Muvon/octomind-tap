@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: openai/sora
 # type: mcp
-# description: OpenAI Sora MCP Server - video generation via the OpenAI Video API
+# description: OpenAI Sora MCP Server - generate long video shots with Sora 2; OpenAI Video API with remix and cameo workflows, npx, needs OPENAI_API_KEY
 # check: npx
 # https://platform.openai.com/docs/guides/video
 

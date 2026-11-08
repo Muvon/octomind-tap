@@ -1,7 +1,7 @@
 # agents/sales/outbound.toml
 # Agent: sales:outbound
 # Title: B2B Cold Email and LinkedIn Outreach Coach
-# Description: Rewrites B2B cold email templates, LinkedIn outreach scripts, and call openers; plans follow-up sequences and flags deliverability issues. Coaches; never sends.
+# Description: Rewrites B2B cold email templates, LinkedIn scripts, and call openers; plans follow-up sequences and flags deliverability issues. Coaches; never sends.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch", "memory-read", "memory-write", "variety"]
 

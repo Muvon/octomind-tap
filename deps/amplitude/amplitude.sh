@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: amplitude/amplitude
 # type: mcp
-# description: Amplitude MCP Server - product analytics charts, dashboards, cohorts, and experiments
+# description: Amplitude MCP Server - query Amplitude product analytics data; charts, dashboards, cohorts, experiments and user feedback; remote server with OAuth 2.0
 # check: npx
 # https://amplitude.com/docs/amplitude-ai/amplitude-mcp
 

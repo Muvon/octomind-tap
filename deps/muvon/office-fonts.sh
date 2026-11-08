@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: muvon/office-fonts
 # type: dep
-# description: office-fonts - Carlito, Caladea, and Liberation fonts, metric-compatible with Calibri, Cambria, Arial, Times New Roman, and Courier New
+# description: office-fonts - metric-compatible Office fonts; Carlito, Caladea, and Liberation match Calibri, Cambria, Arial, Times New Roman, and Courier New
 # check: fc-list
 # https://github.com/liberationfonts/liberation-fonts
 

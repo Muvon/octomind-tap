@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: asana/asana
 # type: mcp
-# description: Asana MCP Server - projects, tasks, workspaces
+# description: Asana MCP Server - manage Asana tasks, subtasks and projects; covers sections and dependencies, cloned from GitHub, needs an Asana Personal Access Token
 # check: npx
 # https://www.npmjs.com/package/mcp-server-asana
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: ast-grep/ast-grep
 # type: dep
-# description: ast-grep (sg) - structural code search and rewrite tool
+# description: ast-grep (sg) - structural code search and rewrite; matches code by syntax patterns instead of plain text; installs the sg binary
 # check: sg
 # https://ast-grep.github.io
 

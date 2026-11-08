@@ -2,7 +2,7 @@
 # Capability: task-management
 # Provider: Linear — issue tracking and project management via MCP
 # Title: Task Management (Linear)
-# Description: Issue tracking and project management via the Linear MCP server.
+# Description: Create, search, and update Linear issues, projects, and teams via the @tacticlaunch/mcp-linear server. Needs LINEAR_API_KEY.
 
 [deps]
 require = ["linear-app/linear"]

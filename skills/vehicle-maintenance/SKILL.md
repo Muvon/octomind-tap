@@ -1,7 +1,7 @@
 ---
 name: vehicle-maintenance
 title: "Car Maintenance Schedule – Service Due Dates & Log"
-description: "Car maintenance schedule builder that works from the manufacturer's documents for one exact car, picks normal or severe service, calculates next due by time and distance, reconciles service records, and keeps car-maintenance.md up to date. Use when the user asks what service is due, for a car maintenance schedule or service intervals, or to log completed work."
+description: "Car maintenance schedule from the manufacturer's documents: normal or severe service, next due by time and distance, log. Use to see what service is due."
 license: Apache-2.0
 compatibility: "Requires: web search, web page fetching and file writing."
 capabilities: webfetch

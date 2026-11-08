@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: spotify/spotify
 # type: mcp
-# description: Spotify MCP Server - music playback, playlists, library
+# description: Spotify MCP Server - control playback and manage playlists; search music, view your library, via uvx, needs Spotify client ID, secret and redirect URI
 # check: npx
 # https://www.npmjs.com/package/@darrenjaws/spotify-mcp
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: johnwayneeee/free-seo
 # type: mcp
-# description: Ensures uvx is available for the experimental free-seo-mcp keyword discovery server
+# description: free-seo-mcp - experimental keyword discovery server; uses autocomplete suggestions and relative Trends interest, launched with uvx, no key needed
 # check: uvx
 # https://github.com/JohnWayneeee/free-seo-mcp
 

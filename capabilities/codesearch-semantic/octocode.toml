@@ -2,7 +2,7 @@
 # Capability: codesearch-semantic
 # Provider: octocode — semantic (natural-language) code search
 # Title: Code Search (Semantic)
-# Description: Natural-language code search via octocode: semantic_search.
+# Description: Find code by concept or behavior in plain English, even when you do not know the symbol names, with octocode's semantic_search tool.
 
 [deps]
 require = ["muvon/octocode"]

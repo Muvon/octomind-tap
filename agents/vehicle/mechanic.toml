@@ -1,7 +1,7 @@
 # agents/vehicle/mechanic.toml
 # Agent: vehicle:mechanic
 # Title: Car Repair Help – Warning Lights, Quotes & Maintenance
-# Description: Triages car symptoms and lights, calls DIY versus mechanic, checks repair quotes, tracks maintenance schedules; safety gates on brakes, SRS, EV high voltage.
+# Description: Triages car symptoms and lights, calls DIY vs mechanic, checks repair quotes, tracks maintenance schedules; safety gates on brakes, SRS, EV high voltage.
 
 capabilities = ["core", "websearch", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: nodejs/node
 # type: dep
-# description: Installs Node.js and npx for running npx-based MCP servers
+# description: Node.js - installs Node.js LTS (minimum version 20) with npx; every npx-based MCP server in the tap needs it, uses ~/.local if /usr is read-only
 # check: node
 # https://nodejs.org
 

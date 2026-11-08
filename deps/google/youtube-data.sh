@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: google/youtube-data
 # type: mcp
-# description: YouTube Studio MCP Server - video metadata and SEO edits plus channel analytics via the YouTube Data API (no upload)
+# description: YouTube Studio MCP Server - edit YouTube video metadata and SEO; channel analytics via the YouTube Data API v3 (no upload), runs via npx
 # check: npx
 # https://developers.google.com/youtube/v3
 

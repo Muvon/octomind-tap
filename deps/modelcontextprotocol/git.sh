@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: modelcontextprotocol/git
 # type: mcp
-# description: MCP Git Server - read, search, and manipulate local Git repositories
+# description: MCP Git Server - read, search and change local Git repositories; works over MCP, runs through uvx, no environment variables needed
 # check: uvx
 # https://github.com/modelcontextprotocol/servers/tree/main/src/git
 

@@ -1,7 +1,7 @@
 ---
 name: outreach-investor
 title: "Investor Email Templates – Warm Intros and Follow-Ups"
-description: "Investor email templates for startup fundraising: cold emails to investors, warm intro requests, forwardable blurbs, follow-ups, and investor updates, plus fit scoring and a tracker. Use when planning investor outreach or drafting fundraising messages."
+description: "Investor outreach for fundraising: cold emails, warm intros, forwardable blurbs, follow-ups, updates, fit scoring. Use when drafting investor messages."
 license: Apache-2.0
 compatibility: "Needs web search for investor research. Any OS."
 domains: launch

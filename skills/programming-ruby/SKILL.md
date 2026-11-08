@@ -1,7 +1,7 @@
 ---
 name: programming-ruby
 title: "Ruby and Rails Development Best Practices"
-description: "Idiomatic Ruby and Rails best practices for AI coding agents: objects, services, ActiveRecord persistence, transactions, and Active Job boundaries. Auto-activates in Ruby projects."
+description: "Ruby and Rails practices: objects, services, ActiveRecord persistence, transactions, Active Job boundaries. Use when writing or reviewing Ruby or Rails."
 license: Apache-2.0
 compatibility: "Requires a supported Ruby and Bundler; Rails guidance applies only to Rails projects."
 domains: developer

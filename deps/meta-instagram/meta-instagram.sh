@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: meta-instagram/meta-instagram
 # type: mcp
-# description: Meta Instagram Graph API MCP Server - Reels and feed video publishing
+# description: Meta Instagram Graph API MCP Server - publish Reels and Stories; also feed video and carousels from a Business or Creator account, needs META_ACCESS_TOKEN
 # check: npx
 # https://developers.facebook.com/docs/instagram-api/
 

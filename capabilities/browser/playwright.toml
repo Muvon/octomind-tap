@@ -2,7 +2,7 @@
 # Capability: browser
 # Provider: Playwright — browser automation, navigation, screenshots, scraping
 # Title: Browser (Playwright)
-# Description: Browser automation, navigation, screenshots, and web scraping via Playwright.
+# Description: Headless Chromium control through the Playwright MCP server: open pages, click and type, take screenshots, and scrape page content.
 # https://github.com/microsoft/playwright-mcp
 
 [deps]

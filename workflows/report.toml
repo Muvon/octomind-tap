@@ -42,8 +42,7 @@
 # Public roles only.
 
 name        = "report"
-description = "Turns a data source into a decision-ready data analysis report with every number computed from the data and inline-SVG charts, refined by an accuracy loop, delivered as self-contained HTML that prints to PDF."
-
+description = "Turns a data source into a decision-ready analysis report with computed numbers and inline-SVG charts, checked in an accuracy loop, as self-contained HTML."
 # ── 1. Analyze — load the data, compute the real numbers, extract findings ──
 [[steps]]
 name    = "analyze"

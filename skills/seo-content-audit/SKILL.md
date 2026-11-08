@@ -1,7 +1,7 @@
 ---
 name: seo-content-audit
 title: "On-Page Content SEO Audit"
-description: "Operational playbook for diagnosing the on-page content layer of a page or page set: title and meta description optimization, heading structure, search-intent match, answer placement and AI-search visibility per Google's 2026 guidance, E-E-A-T proof (author byline, experience signals, named specifics), and information-gain vs the top 10 SERP results. Encodes the per-check rubric, the severity matrix, and the unverified-check escalation rule. Use when auditing the on-page content surface of one or more URLs. Output: prioritized content findings with cited evidence and fix direction."
+description: "On-page SEO content audit: titles, meta descriptions, headings, search intent, answer placement, E-E-A-T. Use when auditing the content of URLs."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Requires webfetch (target page + top-10 SERP pages) and websearch (SERP for the target keyword + competitor pages)."
 domains: seo

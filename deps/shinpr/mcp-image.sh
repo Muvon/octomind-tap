@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: shinpr/mcp-image
 # type: mcp
-# description: mcp-image - image generation MCP server for OpenAI GPT Image 2.5 and Google Nano Banana, saving files to disk
+# description: mcp-image - image generation MCP server; supports OpenAI GPT Image 2.5 and Google Nano Banana, saves files to disk, generate_image accepts reference images
 # check: npx
 # https://github.com/shinpr/mcp-image
 

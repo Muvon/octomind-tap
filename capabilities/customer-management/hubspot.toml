@@ -2,7 +2,7 @@
 # Capability: customer-management
 # Provider: HubSpot — official MCP server
 # Title: HubSpot CRM Customer Management
-# Description: HubSpot CRM customer management - contacts, deals, and campaigns - via the official HubSpot MCP server.
+# Description: Look up and update HubSpot CRM contacts, deals, and marketing campaigns via the official HubSpot MCP server. Needs PRIVATE_APP_ACCESS_TOKEN.
 
 [deps]
 require = ["hubspot/hubspot"]

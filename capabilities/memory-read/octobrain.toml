@@ -2,7 +2,7 @@
 # Capability: memory-read
 # Provider: octobrain — read-only memory subset
 # Title: Memory (Read)
-# Description: Semantic memory recall via the octobrain MCP server (remember tool, with 1-hop graph neighbors).
+# Description: Recall stored memories by meaning with octobrain's remember tool, which also returns related memories one hop away in the memory graph.
 
 [deps]
 require = ["muvon/octobrain"]

@@ -1,7 +1,7 @@
 ---
 name: device-computer-automation
 title: "Desktop Device UI Automation"
-description: "Operate the local computer's native UI (macOS, Linux, or Windows) via the desktop-automation MCP server. Covers OS accessibility and screen-recording permissions, pixel-anchor targeting (no semantic UI tree), full-screen capture limits under the MCP response cap, HiDPI coordinate mapping, window focus and multi-monitor handling, keyboard and mouse sequencing, and the safety boundary around destructive desktop actions and screen-lock or biometric bypass. Activate when the user wants to drive a native desktop app or the OS shell at the GUI layer. Pairs with the device:operator agent, which carries the shared snapshot, verify, and record discipline; this skill carries the desktop-specific tooling and rules and pulls the device-computer capability automatically."
+description: "Drive native desktop apps on macOS, Linux or Windows via desktop-automation MCP: permissions, coordinates, input, safety. Use for GUI-level tasks."
 license: Apache-2.0
 compatibility: "Requires the device:operator agent. The host OS must grant Accessibility and Screen Recording permissions (macOS), or the equivalent input-monitoring permission (Linux / Windows), to the process running the MCP server."
 domains: device

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: muvon/octobrain
 # type: dep
-# description: Installs the octobrain CLI (memory and knowledge tool by Muvon)
+# description: octobrain - Muvon CLI and MCP server for persistent memory; remember, memorize, forget and a searchable project knowledge base, installed via brew
 # check: octobrain
 # https://github.com/muvon/octobrain
 
