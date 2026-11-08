@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: docker/docker
 # type: dep
-# description: Docker - Docker CLI and daemon for containerized MCP servers; installs both, does nothing when the docker command already exists
+# description: Docker Engine - Docker CLI and daemon for containerized MCP servers; installs both, does nothing when the docker command already exists
 # check: docker
 # https://docs.docker.com/engine/install/
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # dep: ansvar/german-law-mcp
 # type: mcp
-# description: German Law MCP Server - look up German laws and statutes; includes legal references, uses the Ansvar @ansvar/german-law-mcp package, run via npx
+# description: Ansvar German Law MCP Server - look up German laws and statutes; includes legal references, uses the Ansvar @ansvar/german-law-mcp package, run via npx
 # check: npx
 # https://github.com/muvon/ansvar
 set -euo pipefail
