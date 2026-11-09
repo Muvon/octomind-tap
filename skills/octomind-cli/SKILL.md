@@ -41,7 +41,7 @@ Bare `octomind` behaves like `octomind run` with the default role.
 |---------|---------|
 | `run [TAG]` | Interactive or non-interactive session — the main command |
 | `server [TAG]` | WebSocket server for remote sessions (`--host` default `127.0.0.1`, `--port`/`-p` default `8080`, `--sandbox`, repeatable `--allow-origin`) |
-| `acp [TAG]` | Agent Client Protocol agent over stdio for editors (`-n`, `-r`, `--resume-recent`, `-m`, `--sandbox`, `--hook`) |
+| `acp [TAG]` | Agent Client Protocol agent over stdio for editors (`-n`, `-r`, `--resume-recent`, `-m`, `--sandbox`) |
 | `login [chatgpt]` | Sign in to an Octomind account (stores the hub key as `OCTOHUB_API_KEY`); `login chatgpt` lets `chatgpt:<model>` run on a ChatGPT plan |
 | `config` | Create, validate, display, or upgrade configuration |
 | `tap [TAP] [PATH]` | Add a tap (`user/repo` clones `github.com/user/octomind-repo`; with PATH it links a local directory); bare lists taps |
