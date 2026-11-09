@@ -1,0 +1,191 @@
+import sys, pathlib, re, shlex
+
+try:
+    import tomllib
+except ImportError:
+    try:
+        import tomli as tomllib
+    except ImportError:
+        print("ERROR: need python 3.11+ or 'pip install tomli'", file=sys.stderr)
+        sys.exit(2)
+
+path = pathlib.Path(sys.argv[1])
+deps_root = pathlib.Path(sys.argv[2])
+# Third arg is the file kind: "config" for capability-level metadata
+# (capabilities/<cap>/config.toml), "provider" for provider files
+# (capabilities/<cap>/<provider>.toml).
+file_kind = sys.argv[3] if len(sys.argv) > 3 else "provider"
+
+raw_text = path.read_text()
+
+try:
+    data = tomllib.loads(raw_text)
+except Exception as e:
+    print(f"INVALID_TOML: {e}", file=sys.stderr)
+    sys.exit(1)
+
+errors = []
+
+if file_kind == "config":
+    # Capability metadata: only require non-empty triggers array. No
+    # Title/Description (this file is routing data, not a provider doc).
+    triggers = data.get("triggers")
+    if triggers is None:
+        errors.append("MISSING_TRIGGERS: 'triggers = [...]' field is required in config.toml")
+    elif not isinstance(triggers, list):
+        errors.append("TRIGGERS_INVALID: 'triggers' must be an array of strings")
+    else:
+        non_empty = [t for t in triggers if isinstance(t, str) and t.strip()]
+        if not non_empty:
+            errors.append("TRIGGERS_EMPTY: 'triggers' array must contain at least one non-empty string")
+        for t in triggers:
+            if not isinstance(t, str):
+                errors.append(f"TRIGGERS_INVALID: trigger entries must be strings, got {type(t).__name__}")
+        if len(non_empty) < 3:
+            errors.append(f"TRIGGERS_FEW: capabilities should have at least 3 trigger phrases for reliable embedding routing ({len(non_empty)} present)")
+else:
+    # Provider file: require Title/Description comment headers and full
+    # MCP wiring validation.
+    title_match = re.search(r'^# Title:\s*(.+)$', raw_text, re.MULTILINE)
+    desc_match = re.search(r'^# Description:\s*(.+)$', raw_text, re.MULTILINE)
+
+    if not title_match:
+        errors.append("MISSING_TITLE: '# Title: ...' comment is required")
+    else:
+        title_val = title_match.group(1).strip()
+        if len(title_val) < 5:
+            errors.append(f"TITLE_SHORT: title must be at least 5 characters ({len(title_val)} chars)")
+        elif len(title_val) > 60:
+            errors.append(f"TITLE_LONG: title must be at most 60 characters ({len(title_val)} chars)")
+
+    if not desc_match:
+        errors.append("MISSING_DESCRIPTION: '# Description: ...' comment is required")
+    else:
+        desc_val = desc_match.group(1).strip()
+        if len(desc_val) < 20:
+            errors.append(f"DESC_SHORT: description must be at least 20 characters ({len(desc_val)} chars)")
+        elif len(desc_val) > 160:
+            errors.append(f"DESC_LONG: description must be at most 160 characters ({len(desc_val)} chars)")
+        # The default provider's description is the capability page's search
+        # snippet on octomind.run, so it must say what the capability does.
+        default = path.parent / "default.toml"
+        if default.exists() and default.resolve() == path.resolve() and not 120 <= len(desc_val) <= 155:
+            errors.append(f"DESC_DEFAULT_RANGE: the default provider's description must be 120–155 characters ({len(desc_val)} chars)")
+
+    # Validate [deps] require
+    deps = data.get("deps", {})
+    require = deps.get("require", [])
+    if require:
+        if not isinstance(require, list):
+            errors.append("DEPS_INVALID: [deps] require must be an array")
+        else:
+            pattern = re.compile(r'^[a-zA-Z0-9_.-]+/[a-zA-Z0-9_.-]+$')
+            for entry in require:
+                if not isinstance(entry, str):
+                    errors.append(f"DEPS_INVALID: require entries must be strings, got {type(entry).__name__}")
+                elif not pattern.match(entry):
+                    errors.append(f"DEPS_INVALID: '{entry}' must match <org>/<tool>")
+                else:
+                    # Check dep script exists
+                    org, tool = entry.split("/", 1)
+                    dep_script = deps_root / org / f"{tool}.sh"
+                    if not dep_script.exists():
+                        errors.append(f"DEPS_MISSING_SCRIPT: dep '{entry}' has no script at deps/{org}/{tool}.sh")
+
+    # Validate server_refs have matching [[mcp.servers]] declarations
+    roles_mcp = data.get("roles", {}).get("mcp", {})
+    server_refs = roles_mcp.get("server_refs", [])
+    mcp_section = data.get("mcp", {})
+    defined_servers = {s["name"] for s in mcp_section.get("servers", []) if "name" in s}
+
+    for ref in server_refs:
+        if ref not in defined_servers:
+            errors.append(f"MCP_MISSING_SERVER: server_ref '{ref}' has no matching [[mcp.servers]] name='{ref}' declaration")
+
+    # Validate [[mcp.servers]] entries have required fields
+    for server in mcp_section.get("servers", []):
+        name = server.get("name", "<unnamed>")
+        if "name" not in server:
+            errors.append(f"MCP_NO_NAME: [[mcp.servers]] entry missing 'name' field")
+        if "type" not in server:
+            errors.append(f"MCP_NO_TYPE: [[mcp.servers]] name='{name}' missing 'type' field")
+        stype = server.get("type", "")
+        if stype == "stdio" and "command" not in server:
+            errors.append(f"MCP_NO_COMMAND: [[mcp.servers]] name='{name}' type='stdio' missing 'command' field")
+        if stype == "http" and "url" not in server:
+            errors.append(f"MCP_NO_URL: [[mcp.servers]] name='{name}' type='http' missing 'url' field")
+
+    # Registry-launched servers must pin an exact version. Offline check
+    # only — drift against the registry is scripts/mcp-versions.sh's job.
+    FLAG_WITH_VALUE = {"--with", "--from", "--python", "-p", "--package", "--node-options", "-c", "--constraints"}
+
+    def first_package(tokens):
+        skip = False
+        for i, t in enumerate(tokens):
+            if skip:
+                skip = False
+                continue
+            if t in ("-p", "--package"):
+                # npx -p <pkg> <bin>: the flag value IS the package spec
+                return tokens[i + 1] if i + 1 < len(tokens) else None
+            if t == "--from" and i + 1 < len(tokens) and tokens[i + 1].startswith("git+"):
+                # uvx --from git+<url>@<sha> <bin>: the source IS the package spec
+                return tokens[i + 1]
+            if t in FLAG_WITH_VALUE:
+                skip = True
+                continue
+            if t.startswith("-") or "{{" in t or t.startswith("$"):
+                continue
+            return t
+        return None
+
+    def package_launches(server):
+        cmd = server.get("command", "")
+        args = server.get("args") or []
+        if cmd in ("npx", "uvx"):
+            tok = first_package(args)
+            return [(cmd, tok)] if tok else []
+        found = []
+        if cmd in ("sh", "bash"):
+            for a in args:
+                if not isinstance(a, str):
+                    continue
+                try:
+                    toks = shlex.split(a)
+                except ValueError:
+                    toks = a.split()
+                for i, t in enumerate(toks):
+                    if t in ("npx", "uvx"):
+                        tok = first_package(toks[i + 1:])
+                        if tok:
+                            found.append((t, tok))
+        return found
+
+    def is_exact_pin(runner, token):
+        if runner == "npx":
+            m = re.match(r"^(@[^/]+/[^@]+?|[^@]+?)@(.+)$", token)
+            return bool(m and re.fullmatch(r"\d+\.\d+\.\d+([-+][0-9A-Za-z.-]+)?", m.group(2)))
+        if token.startswith("git+"):
+            # Only a full commit SHA is immutable; branches and tags can move.
+            return re.fullmatch(r"git\+https://\S+@[0-9a-f]{40}", token) is not None
+        if "==" not in token:
+            return False
+        ver = token.split("==", 1)[1]
+        return bool(ver) and ver[0].isdigit() and not any(c in ver for c in "*<>=!,")
+
+    for server in mcp_section.get("servers", []):
+        if server.get("type") != "stdio":
+            continue
+        sname = server.get("name", "<unnamed>")
+        for runner, token in package_launches(server):
+            if not is_exact_pin(runner, token):
+                want = "pkg@X.Y.Z" if runner == "npx" else "pkg==X.Y.Z"
+                errors.append(
+                    f"MCP_UNPINNED: server '{sname}' launches '{token}' via {runner} without an exact "
+                    f"version pin ({want}); run scripts/mcp-versions.sh update")
+
+if errors:
+    print("\n".join(errors), file=sys.stderr)
+    sys.exit(1)
+
+sys.exit(0)

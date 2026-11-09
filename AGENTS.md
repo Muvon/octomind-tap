@@ -350,6 +350,7 @@ octomind workflow <name> --dry-run    # touched workflow
 ## Gotchas
 
 - `bin/load` uses a regex-based TOML-subset parser (no external deps) — keep capability files simple: no multi-line arrays or complex TOML features.
+- Don't put a heredoc or here-string over 512 bytes in a shell script: bash 5.1+ writes it into a pipe before anything reads it, and macOS pipes can hold only 512 bytes, so the script hangs. Python goes in `scripts/<name>.py`, test data in `scripts/fixtures/`.
 - `setup-symlinks.sh` uses `ln -sf` (force) — safe to re-run; the `DECLARED` array must be updated manually or the script emits `WARN` for undeclared dirs.
 - `capabilities/core/`, `capabilities/agent/`, and `capabilities/orchestration/` have **real** `default.toml` files — no provider variants, no `link` entries for them.
 - Default providers live in `setup-symlinks.sh` — e.g. `websearch` currently defaults to `duckduckgo.toml` (not tavily; ARCHITECTURE.md's example is stale). Switch a provider with `ln -sf <provider>.toml capabilities/<name>/default.toml`; reset all with `setup-symlinks.sh`.

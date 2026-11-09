@@ -1,0 +1,46 @@
+cv:
+  name: Jane Doe
+  location: Berlin, Germany
+  email: jane@example.com
+  phone: "+49 30 1234567"
+  website: https://janedoe.dev/
+  social_networks:
+    - network: LinkedIn
+      username: janedoe
+  sections:
+    summary:
+      - Backend engineer, 7 years in payments; led the PSD3 migration at a 40-person fintech.
+    experience:
+      - company: Finly
+        position: Senior Backend Engineer
+        location: Berlin
+        start_date: 2022-03
+        end_date: present
+        highlights:
+          - Cut payment failure rate from 2.1% to 0.6% by redesigning retry logic (Go, Kafka)
+    education:
+      - institution: TU Munich
+        area: Computer Science
+        degree: MSc
+        start_date: 2014-10
+        end_date: 2017-03
+    skills:
+      - label: Languages
+        details: Go, Python, SQL
+design:
+  theme: engineeringresumes
+  page:
+    size: a4
+    show_top_note: false
+    show_footer: false
+  header:
+    connections:
+      show_icons: false
+      phone_number_format: international
+  templates:
+    experience_entry:
+      main_column: "**POSITION**, COMPANY -- LOCATION\nDATE\nSUMMARY\nHIGHLIGHTS"
+      date_and_location_column: ""
+    education_entry:
+      main_column: "**INSTITUTION**, DEGREE_WITH_AREA -- LOCATION\nDATE\nSUMMARY\nHIGHLIGHTS"
+      date_and_location_column: ""
