@@ -37,7 +37,7 @@ Ranking helps but no longer guarantees a citation. Ahrefs' 2026 study (863k keyw
 | Google AI Overviews / AI Mode | Google index and core ranking, fan-out | Normal SEO; stay included in the Search Console "Search generative AI" control (default on) |
 | ChatGPT search | OAI-SearchBot index plus external providers; OpenAI doesn't publish the mix | Allow OAI-SearchBot; submit to Bing Webmaster Tools and IndexNow; don't assume Google rank transfers |
 | Perplexity | Own index (PerplexityBot) plus live fetches | Allow PerplexityBot |
-| Copilot | Bing index | Bing Webmaster Tools; read its AI Performance report |
+| Copilot | Bing index; for shopping, also product feeds and live-site data (Microsoft retail guide) | Bing Webmaster Tools; read its AI Performance report; keep feed, schema, and visible page in agreement |
 | Claude | Claude-SearchBot index plus Claude-User fetches | Allow both |
 
 Answers are nondeterministic and vary by engine, location, and session. Judge trends over repeated runs, never a single screenshot.
@@ -56,7 +56,7 @@ Answers are nondeterministic and vary by engine, location, and session. Judge tr
 
 ### Structured data (2026 status)
 
-- Not required for AI features: "Structured data isn't required for generative AI search." It still drives rich-result eligibility and entity disambiguation, and other engines may parse it.
+- Not required for AI features: "Structured data isn't required for generative AI search." It still drives rich-result eligibility and entity disambiguation, and other engines may parse it. Microsoft's retail guide recommends `Product`, `Offer`, `AggregateRating`, `Review`, `Brand`, `ItemList`, and `FAQ` markup for Copilot and Bing shopping, so keep it accurate where those surfaces matter.
 - Use JSON-LD that matches visible content: `Article`/`BlogPosting` (headline, author as `Person` with `url`/`sameAs`, `datePublished`, `dateModified`), `Organization` (logo, `sameAs`), `Product`/`Offer`, `BreadcrumbList`.
 - Google stopped showing FAQ rich results on 7 May 2026; HowTo rich results went in 2023. Keep a visible FAQ when it helps readers; leftover markup is harmless but no longer a Google lever.
 - Review and `AggregateRating` markup about your own business on your own site is not eligible for review snippets. Mark up genuine third-party reviews only.
@@ -97,7 +97,7 @@ Allow: /
 
 ### Agentic experiences
 
-Google's guide flags agents that act for users (book, compare, buy). Browser agents read screenshots, the DOM, and the accessibility tree, so semantic HTML, labelled controls, and accessible forms matter. For commerce, track the Universal Commerce Protocol (UCP) as it matures. No new markup is required.
+Google's guide flags agents that act for users (book, compare, buy). Browser agents read screenshots, the DOM, and the accessibility tree, so semantic HTML, labelled controls, and accessible forms matter. Microsoft's retail guide adds that an agent can add to cart, apply promotions, and pay on the live site, so a broken flow loses the sale whatever the feed says. Keep the rendered DOM identical to what people see, on mobile too, and never serve different HTML to bots. For commerce, track the Universal Commerce Protocol (UCP) as it matures. No new markup is required.
 
 ## Examples
 
@@ -134,5 +134,5 @@ Reviewed 2026-10-24.
 - [Google spam policies](https://developers.google.com/search/docs/essentials/spam-policies) and [AI-generated content guidance](https://developers.google.com/search/docs/fundamentals/using-gen-ai-content)
 - [OpenAI crawlers](https://developers.openai.com/api/docs/bots), [Perplexity crawlers](https://docs.perplexity.ai/docs/resources/perplexity-crawlers), [Anthropic crawlers](https://support.claude.com/en/articles/8896518)
 - [Aggarwal et al., GEO: Generative Engine Optimization (KDD 2024)](https://arxiv.org/abs/2311.09735) and [Puerto et al., C-SEO Bench (NeurIPS 2025)](https://arxiv.org/abs/2506.11097)
-- [Bing Webmaster Guidelines](https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a) and [Microsoft: optimizing content for AI search answers (2025-10-08)](https://about.ads.microsoft.com/en/blog/post/october-2025/optimizing-your-content-for-inclusion-in-ai-search-answers)
+- [Bing Webmaster Guidelines](https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a), [Microsoft: optimizing content for AI search answers (2025-10-08)](https://about.ads.microsoft.com/en/blog/post/october-2025/optimizing-your-content-for-inclusion-in-ai-search-answers), and [Microsoft Advertising: From discovery to influence, a retail guide to AEO and GEO (2026-01-06)](https://aka.ms/ads/AeoGeo), which publishes no test data
 - [Pew Research, AI summaries and clicks (2025)](https://www.pewresearch.org/short-reads/2025/07/22/google-users-are-less-likely-to-click-on-links-when-an-ai-summary-appears-in-the-results/)

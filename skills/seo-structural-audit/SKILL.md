@@ -98,7 +98,7 @@ Never infer a finding from absence of evidence. "Could not fetch" is its own fin
 
 ### Schema validation notes
 
-- Google states AI Overviews and AI Mode need no special schema, llms.txt, or content chunking (AI optimization guide, May 2026). Score schema for rich-result eligibility and entity clarity, not as an AI-citation lever.
+- Google states AI Overviews and AI Mode need no special schema, llms.txt, or content chunking (AI optimization guide, May 2026). Score schema for rich-result eligibility and entity clarity, not as a Google AI-citation lever. Microsoft's retail guide (January 2026) does recommend `Product`, `Offer`, `AggregateRating`, `Review`, `Brand`, and `ItemList` markup for Copilot and Bing shopping; on retail pages with that scope, report missing types as a Copilot/Bing readiness gap and name the source.
 - Retired rich results — don't report missing markup as lost visibility: FAQ (ended May 7, 2026), HowTo (2023), Practice problem (Jan 2026), and ClaimReview, Course info, Estimated salary, Learning video, Special announcement, Vehicle listing (2025–26). Leaving the markup in place is harmless. Check Google's search gallery live before citing a type.
 - Article schema → `headline`, `author` (Person with name + sameAs/url), `datePublished`, `dateModified`, `image`. Missing author identity on a YMYL page is Critical-tier as an E-E-A-T gap, schema or not.
 - Person / Organization schema → anchors entity recognition. Missing `sameAs` to LinkedIn / publication / org bio is Moderate.
