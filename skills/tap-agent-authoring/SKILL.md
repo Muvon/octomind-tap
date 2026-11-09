@@ -141,7 +141,7 @@ Medical, legal, and financial agents state their limits plainly in `<critical>` 
 
 ### Multi-step pipelines
 
-Manifests do not define pipelines. Multi-step orchestration is the external `octomind workflow <file.toml>` CLI (sequential, parallel, loop, conditional, graph); load the `octomind-workflow` skill for its syntax. `[[layers]]` and `[[commands]]` exist only in a user's local config, delegating to a role via `command = "octomind acp <role>"`.
+Manifests do not define pipelines. Multi-step orchestration is the external `octomind workflow <file.toml>` CLI (sequential, parallel, loop, conditional, graph); load the `octomind-workflow` skill for its syntax. `[[commands]]` exists only in a user's local config, delegating to a role via `command = "octomind acp <role>"`.
 
 ## Examples
 

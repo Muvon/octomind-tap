@@ -86,7 +86,7 @@ Agents declare capabilities, never MCP servers. At runtime octomind resolves eac
 
 Required: `# Agent:`/`# Title:`/`# Description:` headers, top-level `capabilities`, one `[[roles]]` with `system`, `welcome`, `temperature`, `top_p`, `top_k`. Forbidden: `name`, `[deps]`, `[roles.mcp]`, `[[mcp.servers]]`. The system prompt uses XML blocks in canonical order with no `{{CWD}}`, `{{DATE}}`, or `{{SYSTEM}}`; those belong in `welcome`. Sampling values are dropped for models that reject them (current Claude models, thinking-enabled requests, OpenAI reasoning models), so behaviour comes from the prompt. Full spec in the `tap-agent-authoring` skill.
 
-Multi-step pipelines are not manifest content: they are `workflows/*.toml` run by `octomind workflow`. `[[layers]]` and `[[commands]]` exist only in a user's local config.
+Multi-step pipelines are not manifest content: they are `workflows/*.toml` run by `octomind workflow`. `[[commands]]` exists only in a user's local config.
 
 ### Placeholders
 

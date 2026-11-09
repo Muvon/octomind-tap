@@ -27,7 +27,7 @@ The file is strict. Octomind owns the schema and fails loudly instead of degradi
 
 - Required sections — `[model]`, `[skills]`, `[timing]`, `[compression]`, `[supervisor]` and its mechanic tables, plus the root scalars. A missing one is a parse error; `octomind config --upgrade` migrates older files (the template is at `version = 21`; never edit `version` by hand).
 - One model contract — `[model]` is the complete baseline profile. Roles (`[roles.model]`), `[compression.model]`, and `[supervisor.model]` are partial overrides: omitted fields inherit from `[model]`.
-- Required-field tables — `[[layers]]` and `[[commands]]` require `name`, `description`, `command`, `input_mode`, `output_mode`, `output_role`; only `workdir` is optional.
+- Required-field tables — `[[commands]]` requires `name`, `description`, `command`, `input_mode`, `output_mode`, `output_role`; only `workdir` is optional.
 
 So a config error is usually a missing key, not a wrong value. Validate after every edit: `octomind config --validate`.
 
@@ -116,9 +116,9 @@ Authentication: a static `Authorization` header carries a bearer token and disab
 
 Webhook listeners: `name`, `bind` (e.g. `"0.0.0.0:9876"`, unique per hook), `script` (stdin = HTTP body, stdout = message to inject), `timeout` (default 30, 1–3600). Activate with `octomind run --daemon --format jsonl --hook <name>`.
 
-### `[[layers]]`, `[[commands]]`, `[[agents]]`, `[[prompts]]`
+### `[[commands]]`, `[[agents]]`, `[[prompts]]`
 
-`[[layers]]` and `[[commands]]` share one schema: `name`, `description`, `command` (`"octomind acp <role>"`), `input_mode` (`last`|`all`|`summary`), `output_mode` (`none`|`append`|`replace`|`last`|`restart`), `output_role` (`assistant`|`user`), optional `workdir`. Model and prompt live in the referenced role, never in the layer. Commands run as `/run <name>`.
+`[[commands]]` fields: `name`, `description`, `command` (`"octomind acp <role>"`), `input_mode` (`last`|`all`|`summary`), `output_mode` (`none`|`append`|`replace`|`last`|`restart`), `output_role` (`assistant`|`user`), optional `workdir`. Model and prompt live in the referenced role, never in the command. Commands run as `/run <name>`.
 
 `[[agents]]`: `name`, `description`, `command` (any ACP server command), optional `workdir` (default `.`). Each becomes an MCP tool `agent_<name>` on the `agent` server.
 
@@ -158,11 +158,11 @@ Expanded in role `system` and `welcome`: `{{CWD}}`, `{{ROLE}}`, `{{DATE}}`, `{{S
 
 ## Examples
 
-### Example 1: layer missing required modes
+### Example 1: command missing required modes
 
 ❌ Bad:
 ```toml
-[[layers]]
+[[commands]]
 name = "task_refiner"
 description = "Refines requests"
 command = "octomind acp task_refiner"
@@ -170,7 +170,7 @@ command = "octomind acp task_refiner"
 
 ✅ Good:
 ```toml
-[[layers]]
+[[commands]]
 name = "task_refiner"
 description = "Refines requests"
 command = "octomind acp task_refiner"
@@ -208,7 +208,7 @@ Put the override in `mcp-github.toml`, not `zz-github.toml`. Only the `mcp-*.tom
 - [ ] `octomind config --validate` run after the edit and passing?
 - [ ] `version` untouched; older layouts migrated with `--upgrade` rather than by hand?
 - [ ] Model settings in `[model]`, `[roles.model]`, `[compression.model]`, or `[supervisor.model]` — not at the root?
-- [ ] Every `[[layers]]`/`[[commands]]` entry has `description` and all three modes?
+- [ ] Every `[[commands]]` entry has `description` and all three modes?
 - [ ] Every `[[mcp.servers]]` has `timeout_seconds` and `tools`, plus `url` for http or `command` for stdio?
 - [ ] Secrets referenced as `{{ENV:KEY}}` or set in `.env`, never written into the file?
 - [ ] Override files that must win named `mcp-*.toml`?

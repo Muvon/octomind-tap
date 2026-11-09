@@ -202,7 +202,7 @@ Orchestration is an external CLI: `octomind workflow <file.toml|name>` — porta
 - Driving input arrives on stdin; validate with `--dry-run` before running.
 - Author with `templates/workflow.toml`, the `octomind-workflow` skill, or the `octomind:workflow` agent; catalogue: `workflows/README.md`.
 
-`[[commands]]` in Octomind config (not tap manifests) define the slash commands run with `/run <name>`; they delegate via `command = "octomind acp <role>"`. `[[layers]]` uses the same schema and is still parsed and validated, but nothing runs it.
+`[[commands]]` in Octomind config (not tap manifests) define the slash commands run with `/run <name>`; they delegate via `command = "octomind acp <role>"`.
 
 ### Naming Conventions
 
