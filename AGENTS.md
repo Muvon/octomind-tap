@@ -14,7 +14,7 @@ deps/<org>/<tool>.sh            # Dependency install scripts (auto-run before se
 deps/<org>/<tool>.md            # Required companion doc for every dep script
 deps/lib/platform.sh            # Shared platform detection (source in all dep scripts)
 skills/<name>/SKILL.md          # Reusable instruction packs (AgentSkills spec)
-skills/<name>/activate|validate # Optional scripts (exit 0 = activate / valid)
+skills/<name>/validate          # Optional script (exit 0 = valid)
 workflows/<name>.toml           # Public multi-step workflows — `octomind workflow <name>`
 model/                          # Embedding fine-tune powering capability auto-activation
 bin/load                        # Python resolver: merges capabilities → manifest on stdout
@@ -202,7 +202,7 @@ Orchestration is an external CLI: `octomind workflow <file.toml|name>` — porta
 - Driving input arrives on stdin; validate with `--dry-run` before running.
 - Author with `templates/workflow.toml`, the `octomind-workflow` skill, or the `octomind:workflow` agent; catalogue: `workflows/README.md`.
 
-`[[layers]]` still exist in Octomind config (not tap manifests): they back `[[commands]]` slash commands (`/run <name>`) and delegate via `command = "octomind acp <role>"`.
+`[[commands]]` in Octomind config (not tap manifests) define the slash commands run with `/run <name>`; they delegate via `command = "octomind acp <role>"`. `[[layers]]` uses the same schema and is still parsed and validated, but nothing runs it.
 
 ### Naming Conventions
 
@@ -272,7 +272,7 @@ rules:                      # auto-activation expressions; omit for manual-only
 ---
 ```
 
-Optional dirs alongside SKILL.md: `scripts/`, `references/`, `assets/`, plus `activate` and `validate` executables.
+Optional dirs alongside SKILL.md: `scripts/`, `references/`, `assets/`, plus a `validate` executable.
 
 **Activation — three methods:**
 
@@ -293,7 +293,7 @@ Optional dirs alongside SKILL.md: `scripts/`, `references/`, `assets/`, plus `ac
 | `workdir(<pattern>)` | CWD path contains the pattern (substring) |
 | `session(<word>)` | Session name contains the word — default `YYMMDD-<dir>-HHMM-<id>`, tap runs `tap-<domain>-<spec>-<hex>`; so `session(<spec>)` targets an agent only in tap runs or `-n`-named sessions |
 
-**Scripts:** `activate` receives event type (`user`|`assistant`|`turn`) as argv[1], content on stdin, runs in project workdir; exit 0 = activate. `validate` same interface at end of assistant turn; non-zero = invalid, stderr is fed back to the LLM (retries capped by `[skills] max_retries`). Both must be executable.
+**Script:** `validate` runs in the project workdir at the end of an assistant turn. It receives `assistant` as argv[1] and the assistant message on stdin; non-zero = invalid, and its stderr (stdout if stderr is empty) is fed back to the LLM (retries capped by `[skills] max_retries`). It must be executable. Octomind never runs a file named `activate`; `/skill` only lists it. Auto-activation works through `rules` only.
 
 **Body — U-shape section order:** Overview (top) → Mental model → Rules → Examples → Checklist (near the end — final gate) → Composition / References. Under ~2000 words; beyond that, context rot hits skill recall.
 
