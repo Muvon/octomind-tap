@@ -9,7 +9,7 @@ Users select one provider with `[capabilities] seo-data = "<provider>"` in their
 | Provider | Evidence | Required environment | Access |
 |---|---|---|---|
 | `public` (default) | Public pages and search discovery | None | Keyless; upstream search may rate-limit |
-| `dataforseo` | Keyword, SERP, competitor, backlink API data | `DATAFORSEO_LOGIN`, `DATAFORSEO_PASSWORD` | API credentials, Node.js 22+, pay-per-use |
+| `dataforseo` | Keyword, SERP, competitor, backlink API data, and API-captured AI answers with citations | `DATAFORSEO_LOGIN`, `DATAFORSEO_PASSWORD` | API credentials, Node.js 22+, pay-per-use |
 | `ahrefs` | Ahrefs keywords, backlinks and actual Ahrefs DR | `AHREFS_MCP_TOKEN` | Hosted MCP, MCP-scoped key, eligible paid plan/units; check client eligibility |
 | `semrush` | Keyword, domain and backlink reports | `SEMRUSH_API_KEY` | Hosted MCP, eligible subscription and API units |
 | `seranking` | Keywords, SERPs, backlinks and domain data | `SERANKING_API_KEY` | Hosted MCP, SE Ranking/SE Visible API Dashboard key and entitlement |

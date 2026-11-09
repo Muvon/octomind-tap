@@ -15,6 +15,7 @@ Use only the records needed for the selected mode; don't expand a one-question r
 | Visibility audit | Scope and coverage; baseline observations; question-to-page map; prioritized findings; cited-source actions; retest conditions; unverified checks | `geo-audit-[slug]-[YYYY-MM-DD].md` |
 | Experiment brief | Referenced findings; selected interventions; owners/dependencies; separate visibility/business metrics; acceptance criteria; review dates | `geo-plan-[slug]-[YYYY-MM-DD].md` |
 | Retest | Matched cohort and conditions; before/after counts; change log; concurrent changes; outcome/uncertainty; next decision | `geo-retest-[slug]-[YYYY-MM-DD].md` |
+| Monitoring run | Matched question version and surfaces; run-over-run counts; new, lost, and unchanged cited URLs; changed answers; comparability breaks; unverified checks | `geo-monitor-[slug]-[YYYY-MM-DD].md`, with its ledger in `geo-ledger-[slug]-[YYYY-MM-DD].md` |
 
 Follow the host agent's save policy, but use this mode-specific shape instead of its generic SEO template for a GEO request. Don't alter site/content source files. Link supporting captures/exports by stable artifact location and capture time; retain an untouched source version, redact personal data from reports, and keep credentials out of artifacts.
 
@@ -38,6 +39,8 @@ One row per planned prompt × surface × replicate, including failures:
 |---|---|---|---|---|---|---|---|---|---|---|---|
 
 Status is Completed, Error, or Missing. Completed includes a rendered result with no AI answer; label refusals separately. Error/Missing boolean outcomes are Unknown, not No. Where an answer artifact omits its source list, citation outcomes remain Unknown even if mention/recommendation outcomes are scorable. Don't overwrite failed attempts with successful retries; link retries and declare which attempt is used in comparisons.
+
+For API captures, also record the endpoint, `model_name`, web-search settings, provider task ID, and returned cost.
 
 - Mention: an unambiguous brand alias appears in answer prose, including negative or neutral mentions; record sentiment/incorrect claims separately. A source-list label alone isn't a prose mention.
 - Recommendation: the answer explicitly offers the brand as a suitable choice for the stated decision. A mere mention, exclusion, or quoted criticism isn't a recommendation.
@@ -98,6 +101,17 @@ Example: after a verified consent section is added to an existing page, repeat Q
 
 End with a decision: retain, revise, stop, or collect more evidence, and why. Continued absence with an adequate, retrievable page does not justify endless content expansion. Never declare an intervention implemented or successful from its brief alone.
 
+## Monitoring run
+
+Compare only trials that match the previous run on question version, surface, search mode, locale, and run count. List excluded trials and why. Keep the previous ledger untouched and write a new one for each run.
+
+| Metric | Last run (count/denominator) | This run (count/denominator) | Comparable? |
+|---|---|---|---|
+
+| Cited URL | Source type | Question IDs | Last run | This run | Status: New, Lost, Unchanged | Brand named on page: Yes, No, Unknown |
+|---|---|---|---|---|---|---|
+
+Show counts, not percentage change, on small samples or a zero baseline. A URL counts as Lost only when the matching trial completed and its source list was available. Changed answers go in the report as observations; name a cause only with the evidence the retest contract requires. Pass new and unchanged third-party URLs to source-action planning.
 ## Working format
 
 Use the records above in Markdown, a spreadsheet, or the user's existing reporting system. Keep original captures and exports linked alongside the report; no custom schema or conversion step is required.

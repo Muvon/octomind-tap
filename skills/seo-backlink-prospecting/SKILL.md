@@ -80,7 +80,7 @@ Pages that exist to host links to good content.
 - Broken link building — find 404 outbound links on niche resource pages and roundups (free broken-link checker), pitch your URL as replacement.
 - Niche aggregators — Hacker News (tech), Product Hunt (products), Indie Hackers, Designer News, Lobsters, niche subreddits; usually nofollow but drive traffic and mentions.
 - Industry-specific directories — human-curated, one vertical (SaaS directories, lawyer directories per jurisdiction, dev-tool catalogs). NOT generic web directories.
-- Best-of listicles — `[topic] "best [thing]" 2026 OR 2025`; email the author a fit case.
+- Best-of listicles — `[topic] "best [thing]" 2026 OR 2025`; email the author a fit case. Start with lists cited in captured AI answers when those exist; `geo-source-actions` records what to check on each.
 
 ##### C. Earned via outreach (high effort, highest authority)
 

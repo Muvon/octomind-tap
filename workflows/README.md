@@ -41,6 +41,7 @@ Build / market / write / research (driven by a single stdin goal):
 | [`apply`](./apply.toml) | Turns a master resume and a job posting into a tailored, ATS-optimized resume, a cover letter, and an honest match-gap report, refined by a screen/fix loop. Produces documents; never auto-submits. | `loop` |
 | [`report`](./report.toml) | Turns a data source into a decision-ready report with every number computed from the data and inline-SVG charts, refined by an accuracy loop, delivered as self-contained HTML that prints to PDF. | `loop` |
 | [`seo`](./seo.toml) | Audits a site or page across technical, on-page, off-page, and GEO lenses, then turns the evidence-bound findings into a tiered, finding-traceable, KPI-tagged SEO strategy brief. | sequential |
+| [`ai-visibility`](./ai-visibility.toml) | Checks how AI engines answer a fixed set of buyer questions, compares the result with the last run, ranks the cited sources worth working on, and drafts disclosed replies and editor pitches for review. Never posts or sends. | graph + `parallel` + `loop` |
 | [`outreach`](./outreach.toml) | Builds a cold email sequence from live target research, then reviews drafts for sourced claims, brevity, one soft ask, and compliance flags in a bounded critique loop. Delivers follow-up email drafts with any unresolved findings. Never sends. | `loop` |
 
 Everyday life (paste or point at the thing; get a checked document back — you act, nothing is sent or submitted for you):

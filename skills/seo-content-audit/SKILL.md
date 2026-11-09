@@ -77,6 +77,7 @@ Run all four in one block. Don't serialize. The web search tool is not Google Se
 | 13 | Internal linking | 5–10 contextual links per piece; descriptive anchors (not exact-match); pillar/cluster pattern present where applicable | Moderate if under 3 internal links or all anchor text is generic |
 | 14 | Schema readiness for content | Article schema present with author/datePublished/dateModified; markup matches visible text | Moderate per invalid or contradicting markup; Google states AI features need no special schema |
 | 15 | Primary-source posture | Page presents primary data/experience/original synthesis OR cites primary sources where it relies on them | Critical if the page is an intermediary roundup of other rankers without added signal |
+| 16 | Content currency | Dated statistics, prices, versions, policies, and screenshots still match a current primary source; displayed and schema dates change only with real edits | Critical if a wrong fact affects money, health, legal, or security decisions; otherwise Moderate per stale claim. Queue decayed pages through `seo-content-refresh` |
 
 ### Title and description review
 
