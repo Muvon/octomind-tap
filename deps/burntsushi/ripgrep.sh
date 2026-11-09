@@ -33,7 +33,7 @@ case "$OS" in
     # the unauthenticated API is rate-limited per IP and returns 403 on shared CI runners.
     VERSION=$(curl -fsSL -o /dev/null -w '%{url_effective}' "https://github.com/BurntSushi/ripgrep/releases/latest")
     VERSION="${VERSION##*/}"
-    [[ -n "$VERSION" ]] || die "Failed to resolve latest ripgrep version"
+    [[ -n $VERSION ]] || die "Failed to resolve latest ripgrep version"
     TMP_DIR=$(mktemp -d)
     trap "rm -rf '$TMP_DIR'" EXIT
     FILENAME="ripgrep-${VERSION}-x86_64-pc-windows-msvc.zip"

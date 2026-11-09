@@ -73,4 +73,3 @@ does not pass — withhold the pass token and list the prioritized fixes instead
 End with exactly one line: AUDIT-PASS (every axis clears the bar, no critical
 findings) or AUDIT-FAIL (anything outstanding). Nothing after it.
 """
-

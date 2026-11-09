@@ -13,4 +13,3 @@ name = "core"
 type = "builtin"
 timeout_seconds = 30
 tools = []
-

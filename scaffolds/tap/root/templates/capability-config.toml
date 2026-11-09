@@ -11,4 +11,3 @@ triggers = [
 
 # Optional hard domain gate. Omit to make the capability available everywhere.
 # domains = ["developer"]
-

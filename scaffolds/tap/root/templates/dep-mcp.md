@@ -36,4 +36,3 @@ tools = []
 
 - [Homepage](https://example.com)
 - [Documentation](https://example.com/docs)
-

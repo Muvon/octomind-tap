@@ -47,7 +47,7 @@ case "$(uname -m)" in
     ;;
 esac
 
-if [[ "$IS_MACOS" == "1" ]]; then
+if [[ $IS_MACOS == "1" ]]; then
   PKG_MANAGER="brew"
   if ! command -v brew &>/dev/null; then
     if [[ -x /opt/homebrew/bin/brew ]]; then
@@ -56,7 +56,7 @@ if [[ "$IS_MACOS" == "1" ]]; then
       eval "$(/usr/local/bin/brew shellenv)"
     fi
   fi
-elif [[ "$IS_LINUX" == "1" ]]; then
+elif [[ $IS_LINUX == "1" ]]; then
   if command -v apt-get &>/dev/null; then
     PKG_MANAGER="apt"
   elif command -v dnf &>/dev/null; then
@@ -118,15 +118,15 @@ pkg_install() {
 }
 
 brew_install() {
-  [[ "$IS_MACOS" == "1" ]] && brew install "$1" || true
+  [[ $IS_MACOS == "1" ]] && brew install "$1" || true
 }
 
 apt_install() {
-  [[ "$PKG_MANAGER" == "apt" ]] && as_root apt-get install -y "$1" || true
+  [[ $PKG_MANAGER == "apt" ]] && as_root apt-get install -y "$1" || true
 }
 
 dnf_install() {
-  [[ "$PKG_MANAGER" == "dnf" ]] && as_root dnf install -y "$1" || true
+  [[ $PKG_MANAGER == "dnf" ]] && as_root dnf install -y "$1" || true
 }
 
 install_dep() {
@@ -134,11 +134,11 @@ install_dep() {
   local deps_root
   deps_root="$(cd "$(dirname "${BASH_SOURCE[1]}")/.." && pwd)"
 
-  [[ -f "$deps_root/$dependency.sh" ]] || \
+  [[ -f "$deps_root/$dependency.sh" ]] ||
     die "Dependency script not found: $deps_root/$dependency.sh"
 
   info "Installing dependency: $dependency"
-  bash "$deps_root/$dependency.sh" || \
+  bash "$deps_root/$dependency.sh" ||
     die "Dependency installer failed: $dependency"
 
   if [[ -f "$HOME/.cargo/env" ]]; then
@@ -149,4 +149,3 @@ install_dep() {
     export PATH="$HOME/.local/bin:$PATH"
   fi
 }
-

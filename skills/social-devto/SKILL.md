@@ -142,7 +142,7 @@ These are illustrative drafting fragments, not reported outcomes or publication-
 >
 > I maintain [tool]. Its report marks static imports that it can't trace to an entry point. In [fixture], [observed output] made the candidates easier to inspect, but dynamic imports still needed manual review. The annotated terminal capture shows where that review starts. You can reproduce it with [fixture link]; [unsupported resolver] remains outside the test coverage.
 
-Why it works: the demo anatomy makes the result inspectable without a sales preamble.  
+Why it works: the demo anatomy makes the result inspectable without a sales preamble.
 The provenance rule leaves outcome and coverage unclaimed until sourced.
 
 ### B2B SaaS: customer proof
@@ -151,7 +151,7 @@ The provenance rule leaves outcome and coverage unclaimed until sourced.
 >
 > I work on [service]. With [customer's permission], we compared [metric and unit]: [before value] against [after value], using [sample size; numerator and denominator for rates] on [same workload] over [window]. [Source record] shows the change, including the retries excluded from the headline result. We haven't repeated the comparison under [unmeasured condition], so this result only supports [bounded conclusion]. The reproduction notes are at [source link].
 
-Why it works: the proof anatomy keeps conditions and exclusions beside the result.  
+Why it works: the proof anatomy keeps conditions and exclusions beside the result.
 The link rule gives the reader evidence before any conversion request.
 
 ### Creator product: series
@@ -162,7 +162,7 @@ The link rule gives the reader evidence before any conversion request.
 >
 > Follow-up entry: Conflicting edits after reconnect. The fixture now shows [new evidence]. I kept [documented merge rule] because [author's reason], accepting [known cost]. The original decision is at [entry link]; concurrent edits remain unresolved.
 
-Why it works: each installment has its own reader job and new evidence.  
+Why it works: each installment has its own reader job and new evidence.
 The voice rule preserves the author's decision without inventing a transformation.
 
 ### Local service: discussion and reply
@@ -173,7 +173,7 @@ The voice rule preserves the author's decision without inventing a transformatio
 
 Private reply notes for the human: identify the reported focus destination; distinguish focus movement from the announcement of changed availability; state only tests actually performed. Do not convert these notes into a generated DEV comment.
 
-Why it works: the discussion question follows a concrete technical situation.  
+Why it works: the discussion question follows a concrete technical situation.
 The reply handoff distinguishes an inspection suggestion from a test result and respects the comment-authorship rule.
 
 ## Checklist

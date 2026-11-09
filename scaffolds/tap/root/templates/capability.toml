@@ -22,4 +22,3 @@ tools = []
 
 # Use exact environment variable names read by the child process.
 # env = { API_KEY = "{{ENV:API_KEY}}" }
-

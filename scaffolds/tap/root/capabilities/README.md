@@ -12,4 +12,3 @@ provider with a relative symlink. Start from `templates/capability.toml`.
 
 The scaffold includes only `core`, which is sufficient for the starter agent.
 It intentionally does not copy the community capability catalog.
-

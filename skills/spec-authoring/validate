@@ -21,8 +21,8 @@ if ! printf '%s' "$input" | grep -qE '^SPEC STATUS: (READY|NEEDS CLARIFICATION)[
 fi
 
 # 2. READY is only valid when no clarification marker remains.
-if printf '%s' "$input" | grep -qE '^SPEC STATUS: READY[[:space:]]*$' \
-   && printf '%s' "$input" | grep -q '\[NEEDS CLARIFICATION'; then
+if printf '%s' "$input" | grep -qE '^SPEC STATUS: READY[[:space:]]*$' &&
+  printf '%s' "$input" | grep -q '\[NEEDS CLARIFICATION'; then
   echo "The spec says SPEC STATUS: READY but still contains [NEEDS CLARIFICATION] markers. Either resolve them or change the status line to NEEDS CLARIFICATION." >&2
   fail=1
 fi
@@ -30,10 +30,10 @@ fi
 # 3. Vague terms inside requirement lines. Only lines carrying 'shall' or an FR id
 #    are inspected, so ordinary prose elsewhere is not flagged.
 vague='robust|gracefully|user-friendly|properly|appropriately|as needed|efficiently|quickly|reasonable|etc\.|and so on|various|several|some'
-bad="$(printf '%s' "$input" \
-  | grep -E '(shall|FR-[0-9]+)' \
-  | grep -inE "(^|[^a-zA-Z-])($vague)([^a-zA-Z-]|$)" \
-  || true)"
+bad="$(printf '%s' "$input" |
+  grep -E '(shall|FR-[0-9]+)' |
+  grep -inE "(^|[^a-zA-Z-])($vague)([^a-zA-Z-]|$)" ||
+  true)"
 
 if [[ -n $bad ]]; then
   echo "Vague terms in requirement statements — each must become a number, threshold, or enumerated list:" >&2
@@ -42,10 +42,10 @@ if [[ -n $bad ]]; then
 fi
 
 # 4. Requirements must be single statements, not compounds.
-compound="$(printf '%s' "$input" \
-  | grep -E '(shall|FR-[0-9]+)' \
-  | grep -inE '\b(and|or)\b\s+(the system|it)\b' \
-  || true)"
+compound="$(printf '%s' "$input" |
+  grep -E '(shall|FR-[0-9]+)' |
+  grep -inE '\b(and|or)\b\s+(the system|it)\b' ||
+  true)"
 
 if [[ -n $compound ]]; then
   echo "Compound requirement detected — split on 'and'/'or' so each statement maps 1:1 to a test:" >&2
@@ -56,9 +56,9 @@ fi
 # 5. A saved spec is a folder: specs/<NNN>-<slug>/spec.md, not a bare file.
 #    Only inspects lines that announce the save target, so a Context reference to an
 #    existing flat spec path in the repo is not flagged.
-flat="$(printf '%s' "$input" \
-  | grep -iE '(sav(e|ed|ing)|wrote|written|output to)[^ ]* .*specs/[0-9]+-[a-z0-9-]+\.md' \
-  || true)"
+flat="$(printf '%s' "$input" |
+  grep -iE '(sav(e|ed|ing)|wrote|written|output to)[^ ]* .*specs/[0-9]+-[a-z0-9-]+\.md' ||
+  true)"
 
 if [[ -n $flat ]]; then
   echo "Spec path is missing its folder — save to specs/<NNN>-<slug>/spec.md so tasks.md (and design.md when risky) can sit alongside it:" >&2

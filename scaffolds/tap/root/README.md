@@ -84,4 +84,3 @@ octomind tap __TAP_ID__
 
 Change `--private` to `--public` only when every included artifact and secret
 reference is safe to publish.
-

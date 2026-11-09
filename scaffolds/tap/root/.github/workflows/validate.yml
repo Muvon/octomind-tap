@@ -18,4 +18,3 @@ jobs:
 
       - name: Validate tap structure and artifacts
         run: bash scripts/check.sh
-

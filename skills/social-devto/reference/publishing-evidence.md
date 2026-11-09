@@ -87,7 +87,7 @@ All examples below are illustrative. Brackets require the author's supplied evid
 >
 > I maintain [venue's timetable] and can discuss the keyboard testing documented at [record]. [Observed behavior] is the part we can reproduce so far; we haven't validated [untested setup]. I'll be here during [actual availability and timezone] to answer implementation questions. I can't speak for users we haven't interviewed.
 
-Why it works: the AMA format declares a verifiable remit and real availability.  
+Why it works: the AMA format declares a verifiable remit and real availability.
 The provenance rule keeps the author from claiming to represent unconsulted users.
 
 ### Challenge entry
@@ -102,7 +102,7 @@ Read the current announcement and use its required template, tags, and eligibili
 >
 > The supplied schedule fixture shows [observed behavior] when someone changes a shift without a pointer. [Required technology] handles [specific responsibility]. The build record covers [eligible window]; [README note] identifies work after the deadline. Mobile screen-reader behavior remains untested.
 
-Why it works: the entry exposes eligibility and reproducible work directly.  
+Why it works: the entry exposes eligibility and reproducible work directly.
 The limitation rule avoids presenting a desktop fixture as complete accessibility evidence.
 
 ### Replacing a vague body with sourced scope
@@ -115,7 +115,7 @@ Revised fragment, illustrative:
 
 > This note covers the focus return described in [test record]. Start with [fixture link] and compare the highlighted control before and after the slot disappears. Validation messages remain outside this test, so the result doesn't establish that the whole form is accessible.
 
-Why it works: the revision replaces an unsupported completeness claim with an inspectable task.  
+Why it works: the revision replaces an unsupported completeness claim with an inspectable task.
 The proof rule names what the check cannot establish without fabricating a result.
 
 ## Voice evidence boundaries

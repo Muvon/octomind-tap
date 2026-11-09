@@ -41,4 +41,3 @@ Show at least one concrete bad-to-good transformation for non-trivial rules.
 ## Composition / References
 
 - Link authoritative specifications and same-domain companion skills.
-

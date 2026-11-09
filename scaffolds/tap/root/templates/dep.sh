@@ -46,4 +46,3 @@ fi
 
 pkg_check "<command>" || die "<tool> was installed but <command> is not in PATH."
 info "<tool> installed successfully."
-

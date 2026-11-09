@@ -7,4 +7,3 @@ triggers = [
   "track progress across several steps of work",
   "show the current task plan and completion state",
 ]
-
