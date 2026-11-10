@@ -69,7 +69,7 @@ octomind tap init acme/team && octomind run team
 
 ## Domains and Orchestrators
 
-Agents are grouped into domains: `developer`, `doctor`, `content`, and so on. A domain with several agents has an orchestrator named `chief` (the `assistant` domain uses `assistant:concierge` instead), which knows every specialist in the domain and hands work to them. You only need to remember the domain name.
+Agents are grouped into domains: `developer`, `doctor`, `content`, and so on. A domain with several agents has an orchestrator named `chief`, which knows every specialist in the domain and hands work to them. You only need to remember the domain name.
 
 | Command | Runs |
 |---------|------|
@@ -80,7 +80,7 @@ Agents are grouped into domains: `developer`, `doctor`, `content`, and so on. A 
 ```mermaid
 flowchart TD
     user([You])
-    global["Global assistant<br/>assistant:concierge"]
+    global["Global assistant<br/>assistant:chief"]
     dev["Developer orchestrator<br/>developer:chief"]
     doc["Doctor orchestrator<br/>doctor:chief"]
     devs["Developer specialists<br/>tester, spec, plan, ..."]

@@ -178,8 +178,8 @@ Reserve all-caps for one or two genuine safety hard-stops (e.g. `Never force-pus
 - Target 200–1000 words; beyond ~1500, context rot degrades recall
 - No tap-relative paths (`skills/…`, `capabilities/…`, `deps/…`) in `system` or `welcome` — agents run in the project workdir, not the tap checkout; name the skill instead (`octomind` domain exempt)
 - Every `` `name` skill `` mentioned must exist at `skills/<name>/SKILL.md`
-- Every domain with two or more agents has a `chief` (`DOMAIN_NO_CHIEF`), except `assistant`, whose orchestrator is `assistant:concierge`; a `chief` declares `orchestration` (`CHIEF_NO_ORCHESTRATION`), also when it has a `# Uses:` header; no manifest carries a `# Default:` header (`DEFAULT_HEADER_REMOVED`)
-- `{{SPECIALISTS}}` allowed in a `chief` and in `assistant:concierge`, required once its domain has other agents, an error in any other agent (`SPECIALISTS_MISSING`, `SPECIALISTS_MISPLACED`); `{{DOMAINS}}` only in `assistant:concierge` (`DOMAINS_MISPLACED`); a `chief`'s `system`/`welcome` may not name another domain's agent tag (`FOREIGN_DOMAIN_TAG`); a `# Uses:` header and `{{USES}}` belong together and only in a `chief` (`USES_MISPLACED`, `USES_MISSING`); entries must be valid, unique, outside the chief's own domain and written as a bare domain or a non-chief tag (`USES_INVALID`), must exist (`USES_UNKNOWN`) and must not loop back (`USES_CYCLE`)
+- Every domain with two or more agents has a `chief` (`DOMAIN_NO_CHIEF`); a `chief` declares `orchestration` (`CHIEF_NO_ORCHESTRATION`), also when it has a `# Uses:` header; no manifest carries a `# Default:` header (`DEFAULT_HEADER_REMOVED`)
+- `{{SPECIALISTS}}` allowed in a `chief`, required once its domain has other agents, an error in any other agent (`SPECIALISTS_MISSING`, `SPECIALISTS_MISPLACED`); `{{DOMAINS}}` no longer exists (`DOMAINS_REMOVED`: use `# Uses: *` with `{{USES}}`); a `chief`'s `system`/`welcome` may not name another domain's agent tag (`FOREIGN_DOMAIN_TAG`); a `# Uses:` header and `{{USES}}` belong together and only in a `chief` (`USES_MISPLACED`, `USES_MISSING`); entries must be valid, unique, outside the chief's own domain and written as a bare domain or a non-chief tag, or as `*` in `assistant:chief` only (`USES_INVALID`), must exist (`USES_UNKNOWN`) and must not loop back (`USES_CYCLE`)
 
 Full authoring spec, rationale, anti-patterns: `skills/tap-agent-authoring/SKILL.md`.
 
@@ -190,7 +190,7 @@ Full authoring spec, rationale, anti-patterns: `skills/tap-agent-authoring/SKILL
 | self-management | `core` | `recall` (planning is supervisor-owned, not a tool) | **every** agent |
 | do the work | domain caps | `shell`, `filesystem-*`, `codesearch-*`, `legal-*`, … | per agent |
 | intra-domain team | `agent` | `agent_*` | sub-orchestrators |
-| orchestration | `orchestration` | `tap`, `schedule` | `assistant:concierge` and each domain's `chief` (e.g. `developer:chief`); one exception, `developer:general`, which uses `tap` to run `developer:context` before it writes code |
+| orchestration | `orchestration` | `tap`, `schedule` | each domain's `chief` (e.g. `developer:chief`, `assistant:chief`); one exception, `developer:general`, which uses `tap` to run `developer:context` before it writes code |
 | runtime config | `runtime` | `mcp`, `agent`-register, `skill`, `capability` | high-trust only |
 
 A narrow specialist declares `core` + domain capabilities and never `orchestration`/`runtime` — enforced structurally: the unwanted server never enters the tool surface. `orchestration`/`runtime` may still auto-activate on intent via their `config.toml` triggers; that is temporary, never a standing grant.
@@ -199,13 +199,13 @@ A narrow specialist declares `core` + domain capabilities and never `orchestrati
 
 A domain is a directory under `agents/`. Its orchestrator, the agent that hands work to the other agents of the domain, is named `chief`: `agents/<domain>/chief.toml`, tag `<domain>:chief`. Three ways to run:
 
-- `octomind run` starts `assistant:concierge`, the global assistant.
+- `octomind run` starts `assistant:chief`, the global assistant. (`octomind run assistant` starts a local config role named `assistant` when one exists; only without such a role does it start `assistant:chief`.)
 - `octomind run <domain>` starts `<domain>:chief`. A domain without a `chief` gives an error that lists its agents. The sole agent of a single-agent domain (`chef`, `device`, `shopping`, `travel`) is named `chief` too, so the bare domain works; it needs neither `orchestration` nor `{{SPECIALISTS}}` until the domain gains a second agent.
 - `octomind run <domain>:<spec>` starts one exact agent.
 
-`general` is a generalist that does the work itself (`developer:general`, `assistant:general`), never the orchestrator. A `chief` delegates with the `tap` tool to agents of its own domain, plus the domains and agents it declares in a `# Uses:` header, and declares `orchestration`. Only `assistant:concierge` routes across all domains. For a request outside its domain, the `chief` points the user to the global assistant.
+`general` is a generalist that does the work itself (`developer:general`, `assistant:general`), never the orchestrator. A `chief` delegates with the `tap` tool to agents of its own domain, plus the domains and agents it declares in a `# Uses:` header, and declares `orchestration`. Only `assistant:chief` routes across all domains: it declares `# Uses: *`. For a request outside its domain, the `chief` points the user to the global assistant.
 
-Two placeholders in `system` list the agents, built from their `# Description:` lines: `{{SPECIALISTS}}` (other agents of the same domain; allowed in a `chief` and in `assistant:concierge`, required once the domain has other agents, an error in any other agent) and `{{DOMAINS}}` (the `chief` of each other domain; `assistant:concierge` only). A `chief` that needs other domains or single agents declares them in a header comment, with a bare domain (`content`) or a full tag (`seo:audit`) per entry, and puts `{{USES}}` in `system`; it expands to one line per entry (`- <entry> — <Description>`, sorted), taken from the domain's `chief` or from the agent. The chief calls a domain by its bare name and that domain's lead picks the agent; it calls a listed tag directly. Only a `chief` may carry the header or the placeholder.
+Two placeholders in `system` list the agents, built from their `# Description:` lines: `{{SPECIALISTS}}` (other agents of the same domain; allowed in a `chief`, required once the domain has other agents, an error in any other agent) and `{{USES}}`. A `chief` that needs other domains or single agents declares them in a header comment, with a bare domain (`content`) or a full tag (`seo:audit`) per entry, and puts `{{USES}}` in `system`; it expands to one line per entry (`- <entry> — <Description>`, sorted), taken from the domain's `chief` or from the agent. The chief calls a domain by its bare name and that domain's lead picks the agent; it calls a listed tag directly. Only a `chief` may carry the header or the placeholder. The entry `*` means every other domain that has a `chief`; only `assistant:chief` may use it, alone or together with exact tags. `{{DOMAINS}}`, the former placeholder for that list, is an error (`DOMAINS_REMOVED`).
 
 ```toml
 # agents/marketing/chief.toml
@@ -341,8 +341,7 @@ Optional dirs alongside SKILL.md: `scripts/`, `references/`, `assets/`, plus a `
 | `{{DATE}}` | Session | Current date — same caching rule |
 | `{{ENV:KEY}}` | Project env | Injects environment variable (e.g. API keys) in capability files; document required vars in the capability header comment |
 | `{{INPUT:KEY}}` | User-global secret | API tokens, credentials (e.g. in `[[mcp.servers]] env`) |
-| `{{SPECIALISTS}}` | Load time | `system` of a `chief` or `assistant:concierge`: the other agents of the domain, one line each from `# Description:` |
-| `{{DOMAINS}}` | Load time | `system` of `assistant:concierge` only: the `chief` of every other domain |
+| `{{SPECIALISTS}}` | Load time | `system` of a `chief`: the other agents of the domain, one line each from `# Description:` |
 | `{{USES}}` | Load time | `system` of a `chief` with a `# Uses:` header: the declared domains and agents, one line each |
 
 ## Done
@@ -362,7 +361,7 @@ scripts/mcp-versions.sh test <capability>  # touched npx/uvx server wiring
 octomind workflow <name> --dry-run    # touched workflow
 ```
 
-**Agent done** — lints pass (incl. markdown/cache guardrails); XML blocks in canonical order; every capability has `capabilities/<name>/default.toml`; all `require` entries exist under `deps/`; `welcome` is descriptive and includes `{{CWD}}`; a domain with two or more agents has a `chief` (`assistant` is the exception: `assistant:concierge` is its orchestrator); `octomind run <domain>:<spec>` starts clean.
+**Agent done** — lints pass (incl. markdown/cache guardrails); XML blocks in canonical order; every capability has `capabilities/<name>/default.toml`; all `require` entries exist under `deps/`; `welcome` is descriptive and includes `{{CWD}}`; a domain with two or more agents has a `chief`; `octomind run <domain>:<spec>` starts clean.
 
 **Skill done** — lints pass; `name` matches directory; canonical section order with Checklist near the end; instructions actionable (what to DO); domain-isolated.
 
@@ -376,6 +375,7 @@ octomind workflow <name> --dry-run    # touched workflow
 
 - `bin/load` uses a regex-based TOML-subset parser (no external deps) — keep capability files simple: no multi-line arrays or complex TOML features.
 - Don't put a heredoc or here-string over 512 bytes in a shell script: bash 5.1+ writes it into a pipe before anything reads it, and macOS pipes can hold only 512 bytes, so the script hangs. Python goes in `scripts/<name>.py`, test data in `scripts/fixtures/`.
+- A symlink `agents/<domain>/<old>.toml` pointing to `chief.toml` (or another agent in the same directory) is an alias: it keeps the old name of a renamed agent working for Octomind releases that predate the rename. Aliases resolve by name and are left out of listings, counts and lint; make one with `ln -s chief.toml agents/<domain>/<old>.toml`.
 - `setup-symlinks.sh` uses `ln -sf` (force) — safe to re-run; the `DECLARED` array must be updated manually or the script emits `WARN` for undeclared dirs.
 - `capabilities/core/`, `capabilities/agent/`, and `capabilities/orchestration/` have **real** `default.toml` files — no provider variants, no `link` entries for them.
 - Default providers live in `setup-symlinks.sh` — e.g. `websearch` currently defaults to `duckduckgo.toml` (not tavily; ARCHITECTURE.md's example is stale). Switch a provider with `ln -sf <provider>.toml capabilities/<name>/default.toml`; reset all with `setup-symlinks.sh`.
@@ -394,7 +394,7 @@ octomind workflow <name> --dry-run    # touched workflow
 - Create a capability directory without adding it to both the `link` calls and the `DECLARED` array in `setup-symlinks.sh`
 - Nest agents deeper than `agents/<domain>/<spec>.toml` or skills deeper than `skills/<name>/SKILL.md`
 - Reference tap-relative paths or cross-domain agent tags in `system`/`welcome`/skill bodies — agents run in the user's project, not the tap checkout
-- Leave a domain with two or more agents without a `chief` (except `assistant`, ruled by `assistant:concierge`), give a `chief` no `orchestration`, or name another domain's agent tag in a `chief`'s `system`/`welcome`
+- Leave a domain with two or more agents without a `chief`, give a `chief` no `orchestration`, or name another domain's agent tag in a `chief`'s `system`/`welcome`
 
 ## References
 

@@ -10,7 +10,7 @@ except ImportError:
         sys.exit(2)
 
 CHIEF_SPEC = "chief"
-GLOBAL_AGENT_TAG = "assistant:concierge"
+GLOBAL_AGENT_TAG = "assistant:chief"
 ORCHESTRATION_CAPABILITY = "orchestration"
 SPECIALISTS_PATTERN = r'\{\{\s*SPECIALISTS\s*\}\}'
 DOMAINS_PATTERN = r'\{\{\s*DOMAINS\s*\}\}'
@@ -18,6 +18,8 @@ TAG_PATTERN = r'(?<![\w:-])[a-z0-9-]+:[a-z0-9-]+(?![\w:-])'
 USES_PATTERN = r'\{\{\s*USES\s*\}\}'
 USES_HEADER = "# Uses:"
 USES_ENTRY_PATTERN = r'[a-z0-9-]+(?::[a-z0-9-]+)?'
+# Entry for "every other domain that has a chief"; only the global assistant may use it.
+USES_ALL = "*"
 CYCLE_SEPARATOR = " → "
 
 
@@ -31,13 +33,32 @@ def read_uses_header(text):
     return None
 
 
+def is_agent_file(path):
+    """A symlinked manifest is an alias for an old name: it resolves by name but is never an agent of its own."""
+    return path.is_file() and not path.is_symlink()
+
+
+def agent_files(domain_dir):
+    return sorted(p for p in domain_dir.glob("*.toml") if is_agent_file(p))
+
+
+def domains_with_chief(repo_root):
+    return sorted(d.name for d in (repo_root / "agents").iterdir() if is_agent_file(d / f"{CHIEF_SPEC}.toml"))
+
+
 def find_uses_cycle(start, repo_root):
     """Loop of domain entries from lead to lead that returns to `start`, or None. Tag entries end the walk."""
     def walk(current, trail):
         chief_path = repo_root / "agents" / current / f"{CHIEF_SPEC}.toml"
-        if not chief_path.is_file():
+        if not is_agent_file(chief_path):
             return None
+        entries = []
         for entry in read_uses_header(chief_path.read_text()) or []:
+            if entry == USES_ALL:
+                entries.extend(d for d in domains_with_chief(repo_root) if d != current)
+            else:
+                entries.append(entry)
+        for entry in entries:
             if ":" in entry or not re.fullmatch(USES_ENTRY_PATTERN, entry):
                 continue
             if entry == start and len(trail) > 1:
@@ -58,6 +79,13 @@ def check_uses_entries(entries, domain, repo_root):
         if not entry:
             problems.append("USES_INVALID: empty entry in '# Uses:' (stray comma or no value)")
             continue
+        if entry == USES_ALL:
+            if f"{domain}:{CHIEF_SPEC}" != GLOBAL_AGENT_TAG:
+                problems.append(f"USES_INVALID: '{USES_ALL}' (every other domain) is only for {GLOBAL_AGENT_TAG} — list the domains by name")
+            elif entry in seen:
+                problems.append(f"USES_INVALID: '{entry}' is listed more than once")
+            seen.add(entry)
+            continue
         if not re.fullmatch(USES_ENTRY_PATTERN, entry):
             problems.append(f"USES_INVALID: '{entry}' is malformed — write a bare domain ('content') or a full tag ('seo:audit')")
             continue
@@ -70,9 +98,9 @@ def check_uses_entries(entries, domain, repo_root):
             problems.append(f"USES_INVALID: '{entry}' is in the agent's own domain — use {{{{SPECIALISTS}}}} for it")
         elif entry_spec == CHIEF_SPEC:
             problems.append(f"USES_INVALID: '{entry}' — write the bare domain '{entry_domain}' instead of '{entry_domain}:{CHIEF_SPEC}'")
-        elif not entry_spec and not (repo_root / "agents" / entry_domain / f"{CHIEF_SPEC}.toml").is_file():
+        elif not entry_spec and not is_agent_file(repo_root / "agents" / entry_domain / f"{CHIEF_SPEC}.toml"):
             problems.append(f"USES_UNKNOWN: domain '{entry}' has no agents/{entry_domain}/{CHIEF_SPEC}.toml")
-        elif entry_spec and not (repo_root / "agents" / entry_domain / f"{entry_spec}.toml").is_file():
+        elif entry_spec and not is_agent_file(repo_root / "agents" / entry_domain / f"{entry_spec}.toml"):
             problems.append(f"USES_UNKNOWN: agent '{entry}' has no agents/{entry_domain}/{entry_spec}.toml")
     if not problems:
         cycle = find_uses_cycle(domain, repo_root)
@@ -84,8 +112,8 @@ def check_uses_entries(entries, domain, repo_root):
 if sys.argv[1] == "--domain":
     domain = sys.argv[2]
     domain_dir = pathlib.Path(sys.argv[3]) / "agents" / domain
-    agent_count = len(list(domain_dir.glob("*.toml")))
-    if agent_count >= 2 and domain != GLOBAL_AGENT_TAG.split(":")[0] and not (domain_dir / f"{CHIEF_SPEC}.toml").is_file():
+    agent_count = len(agent_files(domain_dir))
+    if agent_count >= 2 and not (domain_dir / f"{CHIEF_SPEC}.toml").is_file():
         print(f"DOMAIN_NO_CHIEF: domain '{domain}' has {agent_count} agents but no {CHIEF_SPEC}.toml — add agents/{domain}/{CHIEF_SPEC}.toml as the domain's orchestrator", file=sys.stderr)
         sys.exit(1)
     sys.exit(0)
@@ -217,9 +245,8 @@ for m in re.finditer(r'((?:`[a-z0-9<>-]+`(?:,\s*|\s+(?:and|or)\s+|\s+))+)skills?
             errors.append(f"SKILL_REF_UNKNOWN: '{skill_name}' skill has no skills/{skill_name}/SKILL.md")
 
 # ── Domain orchestrator (the agent named chief) and delegation placeholders ──
-agent_tag = f"{domain}:{path.stem}"
-sibling_count = len([p for p in path.parent.glob("*.toml") if p != path])
-is_orchestrator = path.stem == CHIEF_SPEC or agent_tag == GLOBAL_AGENT_TAG
+sibling_count = len([p for p in agent_files(path.parent) if p != path])
+is_orchestrator = path.stem == CHIEF_SPEC
 
 for line in raw_text.splitlines():
     if not line.startswith("#"):
@@ -234,8 +261,8 @@ if is_orchestrator and sibling_count > 0 and not has_specialists:
 elif has_specialists and not is_orchestrator:
     errors.append(f"SPECIALISTS_MISPLACED: '{{{{SPECIALISTS}}}}' is only for a domain's orchestrator ('{CHIEF_SPEC}')")
 
-if re.search(DOMAINS_PATTERN, system_content) and agent_tag != GLOBAL_AGENT_TAG:
-    errors.append(f"DOMAINS_MISPLACED: '{{{{DOMAINS}}}}' in system is only allowed for {GLOBAL_AGENT_TAG}")
+if re.search(DOMAINS_PATTERN, system_content):
+    errors.append(f"DOMAINS_REMOVED: '{{{{DOMAINS}}}}' no longer exists — the global assistant ({GLOBAL_AGENT_TAG}) declares '# Uses: {USES_ALL}' and puts '{{{{USES}}}}' in system")
 
 uses_entries = read_uses_header(raw_text)
 has_uses_placeholder = bool(re.search(USES_PATTERN, system_content))
@@ -256,9 +283,9 @@ if path.stem == CHIEF_SPEC and (sibling_count > 0 or uses_entries is not None):
         reason = "leads a domain with other agents" if sibling_count > 0 else "declares '# Uses:'"
         errors.append(f"CHIEF_NO_ORCHESTRATION: '{CHIEF_SPEC}' {reason} and must declare the '{ORCHESTRATION_CAPABILITY}' capability")
 
-# An orchestrator hands work off inside its own domain only; cross-domain routing is the concierge's job.
+# An orchestrator hands work off inside its own domain only; cross-domain routing goes through '# Uses:'.
 if is_orchestrator:
-    all_tags = {f"{p.parent.name}:{p.stem}" for p in (repo_root / "agents").glob("*/*.toml")}
+    all_tags = {f"{p.parent.name}:{p.stem}" for p in (repo_root / "agents").glob("*/*.toml") if is_agent_file(p)}
     foreign_tags = sorted({t for t in re.findall(TAG_PATTERN, prompt_text) if t in all_tags and t.split(":")[0] != domain})
     if foreign_tags:
         errors.append(f"FOREIGN_DOMAIN_TAG: orchestrator names agents from other domains: {', '.join(foreign_tags)}")

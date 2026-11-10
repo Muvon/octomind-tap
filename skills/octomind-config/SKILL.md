@@ -38,7 +38,7 @@ So a config error is usually a missing key, not a wrong value. Validate after ev
 | Field | Default | Meaning |
 |-------|---------|---------|
 | `log_level` | `"info"` | `none`, `info`, `debug` |
-| `default` | `"assistant:concierge"` | Tag used when `run`/`acp`/`server` get none |
+| `default` | `"assistant:chief"` | Tag used when `run`/`acp`/`server` get none |
 | `sandbox` | `false` | Restrict writes to CWD; Linux Landlock 5.13+, macOS Seatbelt |
 | `telemetry` | `true` | Anonymous usage counts; never code, prompts, paths, or env values |
 | `auto_capabilities` | `true` | Capability auto-activation on fresh user messages |
@@ -51,7 +51,7 @@ So a config error is usually a missing key, not a wrong value. Validate after ev
 | `max_request_spending_threshold` | `0.0` | USD; stops the current request when exceeded |
 | `system` | unset | Legacy global prompt fallback; prefer per-role `system` |
 
-`default = "assistant:concierge"` is a tap agent, not a role in this file. A name without a colon is looked up in `[[roles]]` first; if no role has that name, it is read as a domain and runs `<domain>:chief` (the domain's orchestrator, the agent that hands work to the other agents of the domain). `domain:spec` resolves against taps and runs that exact agent.
+`default = "assistant:chief"` is a tap agent, not a role in this file. A name without a colon is looked up in `[[roles]]` first; if no role has that name, it is read as a domain and runs `<domain>:chief` (the domain's orchestrator, the agent that hands work to the other agents of the domain). `domain:spec` resolves against taps and runs that exact agent.
 
 ### `[model]`
 

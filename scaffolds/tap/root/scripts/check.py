@@ -15,7 +15,7 @@ except ModuleNotFoundError:  # pragma: no cover - Python 3.11+ is the contract
     raise SystemExit(2)
 
 CHIEF_SPEC = "chief"
-GLOBAL_AGENT_TAG = "assistant:concierge"
+GLOBAL_AGENT_TAG = "assistant:chief"
 ORCHESTRATION_CAPABILITY = "orchestration"
 STARTER_SPEC_TOKEN = "__AGENT_SPEC__"
 SPECIALISTS_PATTERN = re.compile(r"\{\{\s*SPECIALISTS\s*\}\}")
@@ -24,6 +24,8 @@ AGENT_TAG = re.compile(r"(?<![\w:-])[a-z0-9-]+:[a-z0-9-]+(?![\w:-])")
 USES_PATTERN = re.compile(r"\{\{\s*USES\s*\}\}")
 USES_HEADER = "# Uses:"
 USES_ENTRY = re.compile(r"[a-z0-9-]+(?::[a-z0-9-]+)?")
+# Entry for "every other domain that has a chief"; only the global assistant may use it.
+USES_ALL = "*"
 CYCLE_SEPARATOR = " → "
 
 BUILTIN_SERVERS = {"core", "octofs", "agent", "octocode"}
@@ -59,14 +61,33 @@ def read_uses_header(raw: str) -> list[str] | None:
     return None
 
 
+def is_agent_file(path: Path) -> bool:
+    """A symlinked manifest is an alias for an old name: it resolves by name but is never an agent of its own."""
+    return path.is_file() and not path.is_symlink()
+
+
+def agent_files(domain_dir: Path) -> list[Path]:
+    return sorted(path for path in domain_dir.glob("*.toml") if is_agent_file(path))
+
+
+def domains_with_chief(root: Path) -> list[str]:
+    return sorted(d.name for d in (root / "agents").iterdir() if is_agent_file(d / f"{CHIEF_SPEC}.toml"))
+
+
 def find_uses_cycle(start: str, root: Path) -> list[str] | None:
     """Loop of local domain entries from lead to lead that returns to `start`, or None. Tag entries end the walk."""
 
     def walk(current: str, trail: list[str]) -> list[str] | None:
         chief_path = root / "agents" / current / f"{CHIEF_SPEC}.toml"
-        if not chief_path.is_file():
+        if not is_agent_file(chief_path):
             return None
+        entries: list[str] = []
         for entry in read_uses_header(chief_path.read_text(encoding="utf-8")) or []:
+            if entry == USES_ALL:
+                entries.extend(d for d in domains_with_chief(root) if d != current)
+            else:
+                entries.append(entry)
+        for entry in entries:
             if ":" in entry or not USES_ENTRY.fullmatch(entry):
                 continue
             if entry == start and len(trail) > 1:
@@ -90,6 +111,13 @@ def check_uses_entries(entries: list[str], domain: str, root: Path) -> list[str]
         if not entry:
             problems.append("USES_INVALID: empty entry in '# Uses:' (stray comma or no value)")
             continue
+        if entry == USES_ALL:
+            if f"{domain}:{CHIEF_SPEC}" != GLOBAL_AGENT_TAG:
+                problems.append(f"USES_INVALID: '{USES_ALL}' (every other domain) is only for {GLOBAL_AGENT_TAG} — list the domains by name")
+            elif entry in seen:
+                problems.append(f"USES_INVALID: '{entry}' is listed more than once")
+            seen.add(entry)
+            continue
         if not USES_ENTRY.fullmatch(entry):
             problems.append(f"USES_INVALID: '{entry}' is malformed — write a bare domain ('content') or a full tag ('seo:audit')")
             continue
@@ -104,9 +132,9 @@ def check_uses_entries(entries: list[str], domain: str, root: Path) -> list[str]
             problems.append(f"USES_INVALID: '{entry}' — write the bare domain '{entry_domain}' instead of '{entry_domain}:{CHIEF_SPEC}'")
         elif not (root / "agents" / entry_domain).is_dir():
             continue
-        elif not entry_spec and not (root / "agents" / entry_domain / f"{CHIEF_SPEC}.toml").is_file():
+        elif not entry_spec and not is_agent_file(root / "agents" / entry_domain / f"{CHIEF_SPEC}.toml"):
             problems.append(f"USES_UNKNOWN: domain '{entry}' has no agents/{entry_domain}/{CHIEF_SPEC}.toml")
-        elif entry_spec and not (root / "agents" / entry_domain / f"{entry_spec}.toml").is_file():
+        elif entry_spec and not is_agent_file(root / "agents" / entry_domain / f"{entry_spec}.toml"):
             problems.append(f"USES_UNKNOWN: agent '{entry}' has no agents/{entry_domain}/{entry_spec}.toml")
     if not problems:
         cycle = find_uses_cycle(domain, root)
@@ -201,21 +229,22 @@ def validate_agent(path: Path, root: Path, errors: list[str]) -> None:
         errors.append(f"{path}: system XML blocks are not in canonical order")
 
     domain = path.parent.name
-    tag = f"{domain}:{path.stem}"
     # The unrendered starter is generated as chief.toml, so --template treats its token as chief.
-    is_chief = path.stem in (CHIEF_SPEC, STARTER_SPEC_TOKEN)
-    is_orchestrator = is_chief or tag == GLOBAL_AGENT_TAG
+    is_orchestrator = path.stem in (CHIEF_SPEC, STARTER_SPEC_TOKEN)
     has_specialists = bool(SPECIALISTS_PATTERN.search(system))
-    has_siblings = any(sibling != path for sibling in path.parent.glob("*.toml"))
+    has_siblings = any(sibling != path for sibling in agent_files(path.parent))
     if is_orchestrator and has_siblings and not has_specialists:
         errors.append(f"{path}: SPECIALISTS_MISSING: orchestrator must put '{{{{SPECIALISTS}}}}' in system to delegate to the other agents of its domain")
     if has_specialists and not is_orchestrator:
         errors.append(f"{path}: SPECIALISTS_MISPLACED: '{{{{SPECIALISTS}}}}' in system is only for a domain's orchestrator ('{CHIEF_SPEC}')")
-    if DOMAINS_PATTERN.search(system) and tag != GLOBAL_AGENT_TAG:
-        errors.append(f"{path}: DOMAINS_MISPLACED: '{{{{DOMAINS}}}}' in system is only allowed for {GLOBAL_AGENT_TAG}")
+    if DOMAINS_PATTERN.search(system):
+        errors.append(
+            f"{path}: DOMAINS_REMOVED: '{{{{DOMAINS}}}}' no longer exists; the global assistant "
+            f"({GLOBAL_AGENT_TAG}) declares '# Uses: {USES_ALL}' and puts '{{{{USES}}}}' in system"
+        )
     uses_entries = read_uses_header(raw)
     has_uses_placeholder = bool(USES_PATTERN.search(system))
-    if not is_chief:
+    if not is_orchestrator:
         if uses_entries is not None or has_uses_placeholder:
             errors.append(f"{path}: USES_MISPLACED: '# Uses:' header and '{{{{USES}}}}' in system are only for a domain's orchestrator ('{CHIEF_SPEC}')")
     else:
@@ -225,14 +254,14 @@ def validate_agent(path: Path, root: Path, errors: list[str]) -> None:
             errors.append(f"{path}: USES_MISSING: '{{{{USES}}}}' in system needs a '# Uses: <entry>[, <entry>…]' header comment")
         if uses_entries is not None:
             errors.extend(f"{path}: {problem}" for problem in check_uses_entries(uses_entries, domain, root))
-    if is_chief and (has_siblings or uses_entries is not None) and not any(
+    if is_orchestrator and (has_siblings or uses_entries is not None) and not any(
         isinstance(capability, str) and capability.rpartition("/")[2] == ORCHESTRATION_CAPABILITY
         for capability in capabilities
     ):
         reason = "leads a domain with other agents" if has_siblings else "declares '# Uses:'"
         errors.append(f"{path}: CHIEF_NO_ORCHESTRATION: '{CHIEF_SPEC}' {reason} and must declare the '{ORCHESTRATION_CAPABILITY}' capability")
     if is_orchestrator:
-        local_tags = {f"{other.parent.name}:{other.stem}" for other in (root / "agents").glob("*/*.toml")}
+        local_tags = {f"{other.parent.name}:{other.stem}" for other in (root / "agents").glob("*/*.toml") if is_agent_file(other)}
         prompt_text = f"{system}\n{role.get('welcome', '')}"
         foreign = sorted(
             found for found in set(AGENT_TAG.findall(prompt_text)) if found in local_tags and found.split(":")[0] != domain
@@ -244,8 +273,8 @@ def validate_agent(path: Path, root: Path, errors: list[str]) -> None:
 def validate_domain_chief(domain_dir: Path, errors: list[str]) -> None:
     # Inside a user tap every domain, including one extending a base-tap domain,
     # needs its own chief once it has two or more agents.
-    agents = sorted(path.name for path in domain_dir.glob("*.toml"))
-    if len(agents) >= 2 and domain_dir.name != GLOBAL_AGENT_TAG.split(":")[0] and not {f"{CHIEF_SPEC}.toml", f"{STARTER_SPEC_TOKEN}.toml"} & set(agents):
+    agents = [path.name for path in agent_files(domain_dir)]
+    if len(agents) >= 2 and not {f"{CHIEF_SPEC}.toml", f"{STARTER_SPEC_TOKEN}.toml"} & set(agents):
         errors.append(
             f"{domain_dir}: DOMAIN_NO_CHIEF: a domain with {len(agents)} agents needs {CHIEF_SPEC}.toml "
             f"as its orchestrator, found: {', '.join(agents)}"
@@ -339,7 +368,7 @@ def main() -> int:
                 if RENDER_TOKEN.search(raw):
                     errors.append(f"{path}: unresolved render token in contents")
 
-    for path in sorted((root / "agents").glob("**/*.toml")):
+    for path in sorted(p for p in (root / "agents").glob("**/*.toml") if not p.is_symlink()):
         validate_agent(path, root, errors)
     agents_dir = root / "agents"
     for domain_dir in sorted(agents_dir.iterdir() if agents_dir.is_dir() else []):

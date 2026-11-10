@@ -94,7 +94,9 @@ for s in leaves:
         errors.append(f"ROLE_FORMAT: step {sname!r} role {role!r} must be a public category:variant tag")
     else:
         domain, spec = role.split(":")
-        if not (repo_root / "agents" / domain / f"{spec}.toml").exists():
+        agent_file = repo_root / "agents" / domain / f"{spec}.toml"
+        # A symlink is an alias for a renamed agent; workflows must name the real one.
+        if not agent_file.is_file() or agent_file.is_symlink():
             errors.append(f"ROLE_NOT_FOUND: step {sname!r} role {role!r} has no agents/{domain}/{spec}.toml")
 
 placeholder_re = re.compile(r"\{\{\s*([A-Za-z_][A-Za-z0-9_-]*)(?::[^}]*)?\s*\}\}")

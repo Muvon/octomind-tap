@@ -58,7 +58,7 @@ The `# Description:` line is also the entry the domain's `chief` shows for this 
 - `core` — every agent.
 - Domain capabilities (`shell`, `filesystem-*`, `codesearch-*`, `websearch`, ...) — what the role actually needs, nothing speculative.
 - `agent` — sub-orchestrators delegating to their own configured agents.
-- `orchestration` (`tap`, `schedule`, `monitor`) — `assistant:concierge` and each domain's `chief`, which delegates inside its own domain.
+- `orchestration` (`tap`, `schedule`, `monitor`) — each domain's `chief`, which delegates inside its own domain (`assistant:chief`, the global assistant, reaches every domain).
 - `runtime` (`mcp`, `agent`, `skill`, `capability`) — high-trust agents that reconfigure the tool surface.
 
 A narrow specialist never declares `orchestration` or `runtime`; the unwanted server is then physically absent from its context. Domain capabilities beyond the manifest can still auto-activate on intent at runtime.
@@ -90,9 +90,9 @@ Block rules:
 
 Chief agent blocks:
 
-- Put `{{SPECIALISTS}}` in `<scope>` or `<rules>` of the `chief`. It expands to one line per other agent of the domain: its tag and `# Description:` (`(none)` when the agent is alone). It is allowed in a `chief` and in `assistant:concierge`, required once the domain has other agents, and an error in any other agent.
+- Put `{{SPECIALISTS}}` in `<scope>` or `<rules>` of the `chief`. It expands to one line per other agent of the domain: its tag and `# Description:` (`(none)` when the agent is alone). It is allowed in a `chief`, required once the domain has other agents, and an error in any other agent.
 - Delegate with the `tap` tool to agents of the same domain, plus the domains and agents the chief declares in a `# Uses:` header. Anything else outside the domain gets one answer: out of scope, use the global assistant (`octomind run` with no agent).
-- Name no other domain's agent tag in `system` or `welcome`. Only `assistant:concierge` uses `{{DOMAINS}}` and routes across all domains.
+- Name no other domain's agent tag in `system` or `welcome`. Only `assistant:chief` routes across all domains: it declares `# Uses: *`, which stands for every other domain that has a `chief`.
 
 A chief can call other domains or single agents it declares. Put one header comment next to `# Title:` and `# Description:`: `# Uses: <entry>[, <entry>…]`, where an entry is a bare domain (`content`) or a full tag (`seo:audit`). Add `{{USES}}` to `system`; it expands to one line per entry, `- <entry> — <Description>`, sorted. A domain entry takes the description of that domain's `chief`; the chief calls the domain by its bare name and that domain's lead picks the agent. A tag entry is called directly. Only a `chief` may carry the header or the placeholder, it needs `orchestration`, and it must not list its own domain (`{{SPECIALISTS}}` covers that), write `<domain>:chief` (write the bare domain), or form a loop with another lead.
 
@@ -134,8 +134,7 @@ The system prompt must be identical run to run so the provider can cache it (cac
 | Placeholder | Where |
 |-------------|-------|
 | `{{CWD}}`, `{{DATE}}`, `{{SYSTEM}}` | `welcome` only — lint fails if they appear in `system` |
-| `{{SPECIALISTS}}` | `system` of a `chief` or `assistant:concierge`; required once the domain has other agents, an error in any other agent; expands at load time and is stable until a tap changes |
-| `{{DOMAINS}}` | `system` of `assistant:concierge` only |
+| `{{SPECIALISTS}}` | `system` of a `chief`; required once the domain has other agents, an error in any other agent; expands at load time and is stable until a tap changes |
 | `{{USES}}` | `system` of a `chief` with a `# Uses:` header, required with the header, an error in any other agent; expands at load time and is stable until a tap changes |
 | `{{ROLE}}`, `{{SHELL}}`, `{{OS}}`, `{{GIT_STATUS}}`, `{{README}}`, ... | Expand in both, but anything that changes per session or project breaks caching in `system` |
 | `{{INPUT:KEY}}`, `{{ENV:KEY}}` | Capability files, not prompts — credentials and env vars |
@@ -161,7 +160,7 @@ So the fields are required, but on current Claude models behaviour comes from th
 - No tap-relative paths (`skills/…`, `capabilities/…`, `deps/…`) in `system` or `welcome` — agents run in the user's project, not the tap checkout. The `octomind` domain is exempt.
 - Every `` `name` skill `` mention must exist at `skills/<name>/SKILL.md`.
 - Every capability needs `capabilities/<name>/default.toml`.
-- Every domain with two or more agents has a `chief` that declares `orchestration` (`assistant` is the exception: `assistant:concierge` is its orchestrator); `{{SPECIALISTS}}` required in a `chief` with siblings, an error in any other agent; no foreign domain tag in a `chief`; no `# Default:` header. `# Uses:` and `{{USES}}` go together and only in a `chief` (`USES_MISPLACED`, `USES_MISSING`); entries are valid, unique, outside the chief's own domain, not `<domain>:chief` (`USES_INVALID`), exist (`USES_UNKNOWN`) and form no loop between leads (`USES_CYCLE`).
+- Every domain with two or more agents has a `chief` that declares `orchestration`; `{{SPECIALISTS}}` required in a `chief` with siblings, an error in any other agent; no foreign domain tag in a `chief`; no `# Default:` header; `{{DOMAINS}}` no longer exists (`DOMAINS_REMOVED`: use `# Uses: *` with `{{USES}}`). `# Uses:` and `{{USES}}` go together and only in a `chief` (`USES_MISPLACED`, `USES_MISSING`); entries are valid, unique, outside the chief's own domain, not `<domain>:chief`, and `*` only in `assistant:chief` (`USES_INVALID`), exist (`USES_UNKNOWN`) and form no loop between leads (`USES_CYCLE`).
 
 ### Required disclaimers
 
@@ -245,7 +244,7 @@ What changed: the system prompt is cacheable again and lint passes.
 
 - [ ] Header comments present with valid lengths; path matches tag?
 - [ ] Every needed capability exists; tiers respected (no `orchestration`/`runtime` on a specialist)?
-- [ ] A domain with two or more agents (other than `assistant`) has a `chief` that declares `orchestration`, has `{{SPECIALISTS}}`, delegates inside its domain, names no other domain's tag?
+- [ ] A domain with two or more agents has a `chief` that declares `orchestration`, has `{{SPECIALISTS}}`, delegates inside its domain, names no other domain's tag?
 - [ ] XML blocks in canonical order, `<identity>` first, `<critical>` last and short?
 - [ ] Tone calibrated: plain `Use X when …`, explicit asks, all-caps only for real hard-stops?
 - [ ] No `{{CWD}}`/`{{DATE}}`/`{{SYSTEM}}`, headers, or bold in `system`; under ~1500 words?
