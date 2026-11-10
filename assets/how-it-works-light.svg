@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 624" width="1200" height="624" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace">
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#57606a"/></marker>
+<marker id="d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7c3aed"/></marker>
+</defs>
+<rect width="1200" height="624" fill="#ffffff"/>
+<rect x="16" y="16" width="1168" height="236" fill="#7c3aed" fill-opacity="0.05" stroke="#c9b5ea" stroke-width="1"/>
+<text x="1172" y="244" font-size="11" letter-spacing="1.5" fill="#6b21a8" text-anchor="end" font-weight="600">WHO TAKES THE REQUEST</text>
+<rect x="16" y="288" width="1168" height="150" fill="#7c3aed" fill-opacity="0.05" stroke="#c9b5ea" stroke-width="1"/>
+<text x="28" y="304" font-size="11" letter-spacing="1.5" fill="#6b21a8" font-weight="600">WHAT ONE AGENT IS MADE OF</text>
+<rect x="16" y="480" width="340" height="124" fill="#7c3aed" fill-opacity="0.05" stroke="#c9b5ea" stroke-width="1"/>
+<text x="28" y="496" font-size="11" letter-spacing="1.5" fill="#6b21a8" font-weight="600">LOADED ON DEMAND</text>
+<path d="M282 74 L350 74" fill="none" stroke="#57606a" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M570 74 L640 74" fill="none" stroke="#57606a" stroke-width="1.5" marker-end="url(#a)"/>
+<text x="605" y="124" text-anchor="middle" font-size="11" fill="#0e7490">picks a domain</text>
+<path d="M860 74 L930 74" fill="none" stroke="#57606a" stroke-width="1.5" marker-end="url(#a)"/>
+<text x="895" y="124" text-anchor="middle" font-size="11" fill="#0e7490">delegates</text>
+<path d="M282 142 L750 142 L750 106" fill="none" stroke="#57606a" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M282 210 L1040 210 L1040 106" fill="none" stroke="#57606a" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M246 252 L246 318" fill="none" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#d)"/>
+<text x="258" y="274" font-size="11" fill="#0e7490">every agent above is one file</text>
+<path d="M262 350 L332 350" fill="none" stroke="#57606a" stroke-width="1.5" marker-end="url(#a)"/>
+<text x="297" y="400" text-anchor="middle" font-size="11" fill="#0e7490">names</text>
+<path d="M562 350 L632 350" fill="none" stroke="#57606a" stroke-width="1.5" marker-end="url(#a)"/>
+<text x="597" y="400" text-anchor="middle" font-size="11" fill="#0e7490">resolved to</text>
+<path d="M862 350 L897 350 L897 334 L932 334" fill="none" stroke="#57606a" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M897 350 L897 396 L932 396" fill="none" stroke="#57606a" stroke-width="1.5" marker-end="url(#a)"/>
+<path d="M1050 420 L1050 506" fill="none" stroke="#57606a" stroke-width="1.5" marker-end="url(#a)"/>
+<text x="1062" y="468" font-size="11" fill="#0e7490">tools ready</text>
+<path d="M186 506 L186 462 L447 462 L447 382" fill="none" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#d)"/>
+<text x="316" y="456" text-anchor="middle" font-size="11" fill="#0e7490">can switch on more capabilities</text>
+<path d="M340 538 L820 538" fill="none" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#d)"/>
+<text x="580" y="530" text-anchor="middle" font-size="11" fill="#0e7490">adds instructions for the task</text>
+<rect x="32" y="48" width="250" height="52" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+<text x="157.0" y="70.5" text-anchor="middle" font-size="13" fill="#1f2328" font-weight="600">octomind run</text>
+<text x="157.0" y="87.5" text-anchor="middle" font-size="11" fill="#57606a">no agent named</text>
+<rect x="32" y="116" width="250" height="52" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+<text x="157.0" y="138.5" text-anchor="middle" font-size="13" fill="#1f2328" font-weight="600">octomind run developer</text>
+<text x="157.0" y="155.5" text-anchor="middle" font-size="11" fill="#57606a">a domain</text>
+<rect x="32" y="184" width="250" height="52" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+<text x="157.0" y="206.5" text-anchor="middle" font-size="13" fill="#1f2328" font-weight="600">octomind run doctor:blood</text>
+<text x="157.0" y="223.5" text-anchor="middle" font-size="11" fill="#57606a">one exact agent</text>
+<rect x="350" y="42" width="220" height="64" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+<text x="460.0" y="62.0" text-anchor="middle" font-size="13" fill="#1f2328" font-weight="600">Global assistant</text>
+<text x="460.0" y="79.0" text-anchor="middle" font-size="11" fill="#57606a">assistant:concierge</text>
+<text x="460.0" y="96.0" text-anchor="middle" font-size="11" fill="#57606a">routes across domains</text>
+<rect x="640" y="42" width="220" height="64" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+<text x="750.0" y="62.0" text-anchor="middle" font-size="13" fill="#1f2328" font-weight="600">Domain lead</text>
+<text x="750.0" y="79.0" text-anchor="middle" font-size="11" fill="#57606a">&lt;domain&gt;:chief</text>
+<text x="750.0" y="96.0" text-anchor="middle" font-size="11" fill="#57606a">answers or hands work on</text>
+<rect x="930" y="42" width="220" height="64" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+<text x="1040.0" y="62.0" text-anchor="middle" font-size="13" fill="#1f2328" font-weight="600">Specialist</text>
+<text x="1040.0" y="79.0" text-anchor="middle" font-size="11" fill="#57606a">&lt;domain&gt;:&lt;spec&gt;</text>
+<text x="1040.0" y="96.0" text-anchor="middle" font-size="11" fill="#57606a">does one kind of job</text>
+<rect x="32" y="318" width="230" height="64" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+<text x="147.0" y="338.0" text-anchor="middle" font-size="13" fill="#1f2328" font-weight="600">Agent manifest</text>
+<text x="147.0" y="355.0" text-anchor="middle" font-size="11" fill="#57606a">one TOML file: a prompt and</text>
+<text x="147.0" y="372.0" text-anchor="middle" font-size="11" fill="#57606a">a list of capabilities</text>
+<rect x="332" y="318" width="230" height="64" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+<text x="447.0" y="338.0" text-anchor="middle" font-size="13" fill="#1f2328" font-weight="600">Capability</text>
+<text x="447.0" y="355.0" text-anchor="middle" font-size="11" fill="#57606a">what the agent may use:</text>
+<text x="447.0" y="372.0" text-anchor="middle" font-size="11" fill="#57606a">files · shell · web search</text>
+<rect x="632" y="318" width="230" height="64" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+<text x="747.0" y="338.0" text-anchor="middle" font-size="13" fill="#1f2328" font-weight="600">Provider</text>
+<text x="747.0" y="355.0" text-anchor="middle" font-size="11" fill="#57606a">the tool server behind it;</text>
+<text x="747.0" y="372.0" text-anchor="middle" font-size="11" fill="#57606a">swap it in your config</text>
+<rect x="932" y="310" width="236" height="48" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+<text x="1050.0" y="330.0" text-anchor="middle" font-size="13" fill="#1f2328" font-weight="600">Tool servers (MCP)</text>
+<text x="1050.0" y="347.0" text-anchor="middle" font-size="11" fill="#57606a">start with the session</text>
+<rect x="932" y="372" width="236" height="48" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+<text x="1050.0" y="392.0" text-anchor="middle" font-size="13" fill="#1f2328" font-weight="600">Install scripts</text>
+<text x="1050.0" y="409.0" text-anchor="middle" font-size="11" fill="#57606a">add missing tools first</text>
+<rect x="32" y="506" width="308" height="64" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+<text x="186.0" y="526.0" text-anchor="middle" font-size="13" fill="#1f2328" font-weight="600">Skill</text>
+<text x="186.0" y="543.0" text-anchor="middle" font-size="11" fill="#57606a">instructions for one kind of task;</text>
+<text x="186.0" y="560.0" text-anchor="middle" font-size="11" fill="#57606a">loads when its rules match</text>
+<text x="32" y="590" font-size="11" fill="#57606a">rules: a project file, a word in your message</text>
+<rect x="820" y="506" width="348" height="64" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+<text x="994.0" y="526.0" text-anchor="middle" font-size="13" fill="#1f2328" font-weight="600">Running session</text>
+<text x="994.0" y="543.0" text-anchor="middle" font-size="11" fill="#57606a">the agent's prompt, its tools,</text>
+<text x="994.0" y="560.0" text-anchor="middle" font-size="11" fill="#57606a">and the skills that matched</text>
+</svg>
