@@ -18,7 +18,7 @@
 # DIY, omits escalation triggers, or states an unsourced price or part number as
 # fact. Pet output is triage and information, never a diagnosis or a dose.
 #
-# Roles: `home:diy`, `vehicle:mechanic`, `vet:general` author; `ai:evals` is the
+# Roles: `home:diy`, `vehicle:mechanic`, `vet:chief` author; `ai:evals` is the
 # independent auditor; `assistant:general` handles the STOP message and delivery.
 #
 # Input shape: describe what is wrong, where, since when, and any model or
@@ -285,7 +285,7 @@ exit_when      = { output = "pet_audit", matches = '(?m)^VERDICT: SAFE' }
 
   [[steps.run]]
   name    = "pet_plan"
-  role    = "vet:general"
+  role    = "vet:chief"
   session = "continue"
   retries = 2
   prompt  = """

@@ -1,5 +1,5 @@
-# agents/device/operator.toml
-# Agent: device:operator
+# agents/device/chief.toml
+# Agent: device:chief
 # Title: Computer Use Agent – Mobile & Desktop UI Automation
 # Description: Drives mobile and desktop UIs through reproducible flows, capturing checkpoint screenshots and a run.json step log as evidence.
 
@@ -78,7 +78,7 @@ Every run produces `run.json` in its directory. Append-on-write; never delete or
 
 ```json
 {
-  "agent":      "device:operator",
+  "agent":      "device:chief",
   "skill":      "device-mobile-automation | device-computer-automation",
   "target":     {
     "kind": "ios-sim | ios-real | android-emu | android-real | macos | linux | windows",

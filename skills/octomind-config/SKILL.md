@@ -51,7 +51,7 @@ So a config error is usually a missing key, not a wrong value. Validate after ev
 | `max_request_spending_threshold` | `0.0` | USD; stops the current request when exceeded |
 | `system` | unset | Legacy global prompt fallback; prefer per-role `system` |
 
-`default = "assistant:concierge"` is a tap agent, not a role in this file. A tag without a colon resolves against `[[roles]]`; `domain:spec` resolves against taps.
+`default = "assistant:concierge"` is a tap agent, not a role in this file. A name without a colon is looked up in `[[roles]]` first; if no role has that name, it is read as a domain and runs `<domain>:chief` (the domain's orchestrator, the agent that hands work to the other agents of the domain). `domain:spec` resolves against taps and runs that exact agent.
 
 ### `[model]`
 
@@ -77,10 +77,11 @@ These fields used to be root scalars (`model`, `max_tokens`, `reasoning_effort`,
 websearch = "brave"          # use capabilities/websearch/brave.toml instead of default.toml
 
 [taps]
-"developer:general" = "ollama:glm-5"   # model name only
+"developer:general" = "ollama:glm-5"   # model name only, one agent
+developer = "ollama:glm-5"             # bare domain: every agent of the domain
 ```
 
-Model priority, highest first: runtime override (`--model`, `/model`), the role's model, the `[taps]` entry, then `[model].name`. A `[taps]` value replaces only the model name; the rest of the profile is inherited.
+Model priority, highest first: runtime override (`--model`, `/model`), the role's model, the `[taps]` entry, then `[model].name`. A `[taps]` value replaces only the model name; the rest of the profile is inherited. Within `[taps]`, an exact tag key beats the bare domain key, so `"developer:general"` overrides `developer` for that one agent.
 
 ### `[[roles]]`
 

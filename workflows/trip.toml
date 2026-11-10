@@ -21,7 +21,7 @@ max_cost    = 3.0
 # ── 1. Intake — one shared frame so the parallel slices agree ────────────────
 [[steps]]
 name    = "intake"
-role    = "travel:planner"
+role    = "travel:chief"
 session = "fresh"
 prompt  = """
 <request>
@@ -56,7 +56,7 @@ parallel = true
 
   [[steps.run]]
   name    = "logistics"
-  role    = "travel:planner"
+  role    = "travel:chief"
   session = "fresh"
   retries = 2
   prompt  = """
@@ -81,7 +81,7 @@ cover lodging or activities. Output a structured fact list — no prose.
 
   [[steps.run]]
   name    = "lodging"
-  role    = "travel:planner"
+  role    = "travel:chief"
   session = "fresh"
   retries = 2
   prompt  = """
@@ -105,7 +105,7 @@ activities. Output a structured fact list — no prose.
 
   [[steps.run]]
   name    = "activities"
-  role    = "travel:planner"
+  role    = "travel:chief"
   session = "fresh"
   retries = 2
   prompt  = """
@@ -130,7 +130,7 @@ no prose.
 # ── 3. Synthesis — one itinerary from the three fact lists ───────────────────
 [[steps]]
 name    = "itinerary"
-role    = "travel:planner"
+role    = "travel:chief"
 session = "fresh"
 retries = 2
 prompt  = """
@@ -169,7 +169,7 @@ Output only the itinerary — no preamble, no commentary.
 """
 
 # ── 4. Feasibility loop — fix <-> audit until the plan holds up ──────────────
-# Author (travel:planner) and auditor (ai:evals) are distinct roles; the auditor
+# Author (travel:chief) and auditor (ai:evals) are distinct roles; the auditor
 # runs fresh each round. Capped at 2: a self-review round, then one targeted fix.
 [[steps]]
 name           = "check"
@@ -179,7 +179,7 @@ exit_when      = { output = "audit", matches = '(?m)^VERDICT: FEASIBLE' }
 
   [[steps.run]]
   name    = "fix"
-  role    = "travel:planner"
+  role    = "travel:chief"
   session = "continue"
   retries = 2
   prompt  = """
@@ -256,7 +256,7 @@ and zero MAJOR) or `VERDICT: REVISE`. Nothing after it.
 # ── 5. Deliver — itinerary plus the verify-before-you-book list ──────────────
 [[steps]]
 name    = "deliver"
-role    = "travel:planner"
+role    = "travel:chief"
 session = "fresh"
 prompt  = """
 <final_itinerary>

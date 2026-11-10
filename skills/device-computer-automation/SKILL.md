@@ -3,7 +3,7 @@ name: device-computer-automation
 title: "Desktop Device UI Automation"
 description: "Drive native desktop apps on macOS, Linux or Windows via desktop-automation MCP: permissions, coordinates, input, safety. Use for GUI-level tasks."
 license: Apache-2.0
-compatibility: "Requires the device:operator agent. The host OS must grant Accessibility and Screen Recording permissions (macOS), or the equivalent input-monitoring permission (Linux / Windows), to the process running the MCP server."
+compatibility: "Requires the device:chief agent. The host OS must grant Accessibility and Screen Recording permissions (macOS), or the equivalent input-monitoring permission (Linux / Windows), to the process running the MCP server."
 domains: device
 capabilities: device-computer
 rules:
@@ -24,7 +24,7 @@ metadata:
 
 ## Overview
 
-This skill turns the `device:operator` agent into a desktop-UI driver. It activates when the user talks about controlling their local computer (macOS, Linux, Windows) at the GUI layer and brings in the `device-computer` capability — the `desktop-automation` MCP server, RobotJS-backed — so the agent has tools to move and click the mouse, type keys, and capture the screen.
+This skill turns the `device:chief` agent into a desktop-UI driver. It activates when the user talks about controlling their local computer (macOS, Linux, Windows) at the GUI layer and brings in the `device-computer` capability — the `desktop-automation` MCP server, RobotJS-backed — so the agent has tools to move and click the mouse, type keys, and capture the screen.
 
 The agent already carries the universal discipline (snapshot → locate → act → verify → record, `run.json` schema, checkpoint policy, secret redaction, output directory layout). This skill carries only what is desktop-specific: which tools exist on `desktop-automation`, how to target without a semantic UI tree, how to live within the response-size cap, how to handle OS permissions and multi-monitor setups, and which desktop-specific safety boundaries cannot be crossed.
 

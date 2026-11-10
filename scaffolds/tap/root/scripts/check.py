@@ -14,6 +14,13 @@ except ModuleNotFoundError:  # pragma: no cover - Python 3.11+ is the contract
     print("ERROR: validation requires Python 3.11 or newer", file=sys.stderr)
     raise SystemExit(2)
 
+CHIEF_SPEC = "chief"
+GLOBAL_AGENT_TAG = "assistant:concierge"
+ORCHESTRATION_CAPABILITY = "orchestration"
+STARTER_SPEC_TOKEN = "__AGENT_SPEC__"
+SPECIALISTS_PATTERN = re.compile(r"\{\{\s*SPECIALISTS\s*\}\}")
+DOMAINS_PATTERN = re.compile(r"\{\{\s*DOMAINS\s*\}\}")
+AGENT_TAG = re.compile(r"(?<![\w:-])[a-z0-9-]+:[a-z0-9-]+(?![\w:-])")
 
 BUILTIN_SERVERS = {"core", "octofs", "agent", "octocode"}
 SYSTEM_TAGS = [
@@ -54,6 +61,15 @@ def validate_agent(path: Path, root: Path, errors: list[str]) -> None:
         errors.append(f"{path}: # Title must contain 5–60 characters")
     if not description or not 20 <= len(description.group(1).strip()) <= 160:
         errors.append(f"{path}: # Description must contain 20–160 characters")
+    for line in raw.splitlines():
+        if not line.startswith("#"):
+            break
+        if line.startswith("# Default:"):
+            errors.append(
+                f"{path}: DEFAULT_HEADER_REMOVED: '# Default:' is no longer used; "
+                f"a domain's orchestrator is the agent named '{CHIEF_SPEC}'"
+            )
+            break
 
     capabilities = data.get("capabilities")
     if not isinstance(capabilities, list) or not capabilities:
@@ -114,6 +130,44 @@ def validate_agent(path: Path, root: Path, errors: list[str]) -> None:
             positions.append((tag, position))
     if positions != sorted(positions, key=lambda item: item[1]):
         errors.append(f"{path}: system XML blocks are not in canonical order")
+
+    domain = path.parent.name
+    tag = f"{domain}:{path.stem}"
+    # The unrendered starter is generated as chief.toml, so --template treats its token as chief.
+    is_chief = path.stem in (CHIEF_SPEC, STARTER_SPEC_TOKEN)
+    is_orchestrator = is_chief or tag == GLOBAL_AGENT_TAG
+    has_specialists = bool(SPECIALISTS_PATTERN.search(system))
+    has_siblings = any(sibling != path for sibling in path.parent.glob("*.toml"))
+    if is_orchestrator and has_siblings and not has_specialists:
+        errors.append(f"{path}: SPECIALISTS_MISSING: orchestrator must put '{{{{SPECIALISTS}}}}' in system to delegate to the other agents of its domain")
+    if has_specialists and not is_orchestrator:
+        errors.append(f"{path}: SPECIALISTS_MISPLACED: '{{{{SPECIALISTS}}}}' in system is only for a domain's orchestrator ('{CHIEF_SPEC}')")
+    if DOMAINS_PATTERN.search(system) and tag != GLOBAL_AGENT_TAG:
+        errors.append(f"{path}: DOMAINS_MISPLACED: '{{{{DOMAINS}}}}' in system is only allowed for {GLOBAL_AGENT_TAG}")
+    if is_chief and has_siblings and not any(
+        isinstance(capability, str) and capability.rpartition("/")[2] == ORCHESTRATION_CAPABILITY
+        for capability in capabilities
+    ):
+        errors.append(f"{path}: CHIEF_NO_ORCHESTRATION: '{CHIEF_SPEC}' leads a domain with other agents and must declare the '{ORCHESTRATION_CAPABILITY}' capability")
+    if is_orchestrator:
+        local_tags = {f"{other.parent.name}:{other.stem}" for other in (root / "agents").glob("*/*.toml")}
+        prompt_text = f"{system}\n{role.get('welcome', '')}"
+        foreign = sorted(
+            found for found in set(AGENT_TAG.findall(prompt_text)) if found in local_tags and found.split(":")[0] != domain
+        )
+        if foreign:
+            errors.append(f"{path}: FOREIGN_DOMAIN_TAG: orchestrator names agents from other domains: {', '.join(foreign)}")
+
+
+def validate_domain_chief(domain_dir: Path, errors: list[str]) -> None:
+    # Inside a user tap every domain, including one extending a base-tap domain,
+    # needs its own chief once it has two or more agents.
+    agents = sorted(path.name for path in domain_dir.glob("*.toml"))
+    if len(agents) >= 2 and domain_dir.name != GLOBAL_AGENT_TAG.split(":")[0] and not {f"{CHIEF_SPEC}.toml", f"{STARTER_SPEC_TOKEN}.toml"} & set(agents):
+        errors.append(
+            f"{domain_dir}: DOMAIN_NO_CHIEF: a domain with {len(agents)} agents needs {CHIEF_SPEC}.toml "
+            f"as its orchestrator, found: {', '.join(agents)}"
+        )
 
 
 def validate_capability(cap_dir: Path, root: Path, errors: list[str]) -> None:
@@ -205,6 +259,10 @@ def main() -> int:
 
     for path in sorted((root / "agents").glob("**/*.toml")):
         validate_agent(path, root, errors)
+    agents_dir = root / "agents"
+    for domain_dir in sorted(agents_dir.iterdir() if agents_dir.is_dir() else []):
+        if domain_dir.is_dir():
+            validate_domain_chief(domain_dir, errors)
     for cap_dir in sorted((root / "capabilities").iterdir() if (root / "capabilities").is_dir() else []):
         if cap_dir.is_dir():
             validate_capability(cap_dir, root, errors)

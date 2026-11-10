@@ -9,6 +9,7 @@
 #   6. Capability-driven agents must NOT have [deps], [roles.mcp], or [[mcp.servers]]
 #   7. Every capability reference must have a matching capabilities/<name>/default.toml
 #   8. Comment metadata: # Title: (5–60 chars) and # Description: (20–160 chars) required
+#      Orchestrator is the agent named `chief` (agents/<domain>/chief.toml); {{SPECIALISTS}} / {{DOMAINS}} placement
 #   9. Prompts must not cite tap-relative paths (skills/…, capabilities/…, deps/…) — octomind domain exempt
 #  10. Every `name` skill mentioned in prompts must exist at skills/<name>/SKILL.md
 #  11. Optional agents/<domain>/README.md: a "# <domain name>" line, a blank line, then
@@ -69,14 +70,27 @@ lint_file() {
 echo "Linting ${#FILES[@]} manifest(s)..."
 echo ""
 
+DOMAINS_SEEN=""
 for file in "${FILES[@]}"; do
   # Normalise to absolute path
   [[ $file == /* ]] || file="$REPO_ROOT/$file"
+
+  inner="${file#"$REPO_ROOT/agents/"}"
+  DOMAINS_SEEN+="${inner%%/*}"$'\n'
 
   if ! lint_file "$file"; then
     ERRORS=$((ERRORS + 1))
   fi
 done
+
+# A domain with two or more agents needs a chief.toml; checked once per domain, not per file.
+while IFS= read -r domain; do
+  [[ -n $domain ]] || continue
+  if ! py_err=$(python3 "$REPO_ROOT/scripts/lint-manifests.py" --domain "$domain" "$REPO_ROOT" 2>&1); then
+    echo "  ✗ $py_err"
+    ERRORS=$((ERRORS + 1))
+  fi
+done < <(printf '%s' "$DOMAINS_SEEN" | sort -u)
 
 # Domain READMEs: octomind.run uses the H1 as the domain name and the paragraph as
 # its description, so the shape is fixed.

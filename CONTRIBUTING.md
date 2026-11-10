@@ -40,6 +40,11 @@ Examples:
 - `security:owasp` — OWASP security review
 - `finance:analyst` — Financial statement analysis
 
+A domain with two or more agents has an orchestrator named `chief` (`agents/<domain>/chief.toml`); the exception is `assistant`, whose orchestrator is `assistant:concierge`. It is the agent that `octomind run <domain>` starts, and it hands work to the other agents of its domain.
+
+- A new domain with two or more agents needs a `chief` (only `assistant` is exempt).
+- An agent added to an existing domain needs no edit elsewhere: the domain's `chief` lists it automatically from its `# Description:` line, so the description must say what the agent takes in and what it returns.
+
 ### 2. Copy the Template
 
 ```bash
@@ -73,12 +78,13 @@ server_refs = ["core", "octofs", "medical"]
 allowed_tools = ["core:plan", "octofs:*", "search-medical-literature"]
 ```
 
-> **Grant `core:plan`, not `core:*`.** The core server also hosts `tap` (cross-domain delegation) and `schedule` (session loops), but those are **orchestrator-tier** — they belong to the `orchestration` capability, not to every agent. A normal domain specialist gets `core:plan` plus its domain tools and nothing else. Only declare `orchestration` if the agent genuinely routes work to *other* agents. See [ARCHITECTURE.md](ARCHITECTURE.md#capability-access-tiers-least-privilege).
+> **Grant `core:plan`, not `core:*`.** The core server also hosts `tap` (delegation to other agents) and `schedule` (session loops), but those are **orchestrator-tier** — they belong to the `orchestration` capability, not to every agent. A normal domain specialist gets `core:plan` plus its domain tools and nothing else. Declare `orchestration` only when the agent is its domain's `chief`. See [ARCHITECTURE.md](ARCHITECTURE.md#capability-access-tiers-least-privilege).
 
 ### 4. Test Locally
 
 ```bash
-octomind run doctor:blood
+octomind run doctor:blood    # one exact agent
+octomind run doctor          # the doctor domain's chief (doctor:chief)
 ```
 
 ### 5. Submit a Pull Request

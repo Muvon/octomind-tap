@@ -24,7 +24,7 @@ max_cost    = 2.0
 # ── 1. Intake — normalize constraints, stop only on unsafe gaps ──────────────
 [[steps]]
 name    = "intake"
-role    = "chef:general"
+role    = "chef:chief"
 session = "fresh"
 prompt  = """
 <request>
@@ -59,7 +59,7 @@ commentary.
 # ── 2. Plan — week grid, recipes, grocery list, prep schedule ────────────────
 [[steps]]
 name    = "plan"
-role    = "chef:general"
+role    = "chef:chief"
 session = "fresh"
 retries = 2
 prompt  = """
@@ -90,7 +90,7 @@ Output only the plan — no preamble, no commentary.
 """
 
 # ── 3. Audit loop — fix <-> audit until every constraint verifies ────────────
-# Author (chef:general) and auditor (ai:evals) are distinct roles; the auditor
+# Author (chef:chief) and auditor (ai:evals) are distinct roles; the auditor
 # runs fresh each round and never sees the author's reasoning. Capped at 3.
 [[steps]]
 name           = "check"
@@ -100,7 +100,7 @@ exit_when      = { output = "audit", matches = '(?m)^VERDICT: PASS' }
 
   [[steps.run]]
   name    = "fix"
-  role    = "chef:general"
+  role    = "chef:chief"
   session = "continue"
   retries = 2
   prompt  = """
@@ -176,7 +176,7 @@ zero MAJOR) or `VERDICT: REVISE`. Nothing after it.
 # ── 4. Deliver — final plan plus what was and was not checked ────────────────
 [[steps]]
 name    = "deliver"
-role    = "chef:general"
+role    = "chef:chief"
 session = "fresh"
 prompt  = """
 <intake>

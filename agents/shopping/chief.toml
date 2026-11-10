@@ -1,5 +1,5 @@
-# agents/shopping/advisor.toml
-# Agent: shopping:advisor
+# agents/shopping/chief.toml
+# Agent: shopping:chief
 # Title: AI Shopping Assistant – Product Research & Price Comparison
 # Description: Compares products and prices across retailers, analyzes reviews, and suggests gifts for a person you describe. Honest trade-offs; no affiliate bias.
 

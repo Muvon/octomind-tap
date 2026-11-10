@@ -3,7 +3,7 @@ name: browser-social-account-maintenance
 title: "Browser Social Account Maintenance Ops"
 description: "Recurring social account upkeep via headless browser: bio sync, cross-posting, post audits, follower cleanup. Use for maintenance, not new copy."
 license: Apache-2.0
-compatibility: "Requires browser:general agent with browser (Playwright) capability and filesystem-write. Assumes user has authenticated sessions or supplies credentials this session."
+compatibility: "Requires browser:chief agent with browser (Playwright) capability and filesystem-write. Assumes user has authenticated sessions or supplies credentials this session."
 domains: browser
 rules:
   - session(browser) content(profile)

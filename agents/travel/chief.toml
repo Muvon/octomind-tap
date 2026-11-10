@@ -1,5 +1,5 @@
-# agents/travel/planner.toml
-# Agent: travel:planner
+# agents/travel/chief.toml
+# Agent: travel:chief
 # Title: AI Travel Planner – Day-by-Day Itineraries & Road Trips
 # Description: Builds day-by-day itineraries, road trips, budgets, transport logistics and packing lists, verifying prices and hours online. You book; it plans.
 

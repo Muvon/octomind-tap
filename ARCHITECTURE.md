@@ -99,13 +99,105 @@ Capabilities are grouped by **who needs the tool**. Each tier is its own built-i
 | **orchestration** | `orchestration` | `tap`, `schedule` | **orchestrators only** |
 | runtime config | `runtime` | `mcp`, `agent`-register, `skill`, `capability` | **high-trust only** |
 
-**The rule — orchestration is for those who intend to orchestrate.** A narrow domain specialist (`lawyer:us`, `doctor:general`, `content:editor`) declares `core` + its domain tools and **never** `orchestration` or `runtime`. It does its job with domain tools, it does not route across domains, and it does not reconfigure the tool surface. This is enforced **structurally** — the unwanted tool is physically absent from the agent's context, not merely discouraged in the prompt. `tap` and `schedule` live on a separate built-in **`orchestration` server**, so an orchestrator that declares `core` + `orchestration` resolves to `core:*` (`recall`) + `orchestration:*` (`tap`, `schedule`), while a leaf agent that declares only `core` resolves to `core:*` (`recall`) alone — the orchestration server never enters its tool surface.
+**The rule — orchestration is for those who intend to orchestrate.** A narrow domain specialist (`lawyer:us`, `doctor:blood`, `content:editor`) declares `core` + its domain tools and **never** `orchestration` or `runtime`. It does its job with domain tools, it does not route across domains, and it does not reconfigure the tool surface. This is enforced **structurally** — the unwanted tool is physically absent from the agent's context, not merely discouraged in the prompt. `tap` and `schedule` live on a separate built-in **`orchestration` server**, so an orchestrator that declares `core` + `orchestration` resolves to `core:*` (`recall`) + `orchestration:*` (`tap`, `schedule`), while a leaf agent that declares only `core` resolves to `core:*` (`recall`) alone — the orchestration server never enters its tool surface.
 
 Only agents that genuinely orchestrate carry `orchestration`:
-- `assistant:concierge` — the global system orchestrator (routes every domain).
-- `developer:general` — a domain orchestrator (runs `developer:context` and its engineering team).
+- `assistant:concierge` — the global assistant (routes every domain).
+- Each domain's `chief` (the orchestrator), for example `developer:chief` and `content:chief` (see [Domains and Orchestrators](#domains-and-orchestrators)).
+- `developer:general` — runs `developer:context` to ground a task before it writes code.
 
 > `orchestration` (and `runtime`) may still **auto-activate** on intent — e.g. a request that clearly needs cross-domain delegation or a recurring loop — via `capabilities/orchestration/config.toml` triggers. Auto-activation is request-driven and temporary; it never becomes part of a domain agent's standing grant.
+
+---
+
+## Domains and Orchestrators
+
+A domain is a directory under `agents/`: `developer`, `doctor`, `content`. An orchestrator is the agent that knows every other agent of its domain and hands work to them. In a domain that has one, the orchestrator is named `chief`, and a user reaches it by the domain name alone:
+
+| Command | Runs |
+|---------|------|
+| `octomind run` | `assistant:concierge`, the global assistant that routes work across all domains |
+| `octomind run developer` | `developer:chief`, the orchestrator of the `developer` domain |
+| `octomind run developer:tester` | that exact agent |
+
+The domain name is what users are expected to remember. Full tags keep working, and workflows use only full tags.
+
+```mermaid
+flowchart TD
+    user([You])
+    global["Global assistant<br/>assistant:concierge"]
+    dev["Developer orchestrator<br/>developer:chief"]
+    doc["Doctor orchestrator<br/>doctor:chief"]
+    devs["Developer specialists<br/>tester, spec, plan, ..."]
+    docs["Doctor specialists<br/>blood, sleep, nutrition, ..."]
+
+    user -->|octomind run| global
+    user -->|octomind run developer| dev
+    user -->|octomind run doctor| doc
+    user -.->|octomind run doctor:blood| docs
+    global -->|hands a task to a domain| dev
+    global -->|hands a task to a domain| doc
+    dev -->|hands a task to a specialist| devs
+    doc -->|hands a task to a specialist| docs
+```
+
+### The chief agent
+
+The orchestrator of a domain is the agent named `chief`: `agents/<domain>/chief.toml`, tag `<domain>:chief`. It declares the `orchestration` capability and delegates through the `tap` tool, only inside its own domain. No header comment marks it; the file name is the rule.
+
+`octomind run <domain>` starts `<domain>:chief`, and `octomind run <domain>:<spec>` starts that exact agent. If a domain has no `chief`, the bare domain name is an error that lists the domain's agents. In this registry every domain with two or more agents has a `chief`, except `assistant` (twelve agents), whose orchestrator is `assistant:concierge`, the global assistant. The sole agent of a single-agent domain (`chef`, `device`, `shopping`, `travel`) is named `chief` too, so the bare domain name works and the global assistant can reach it. It has no one to delegate to, so it needs neither `orchestration` nor `{{SPECIALISTS}}` until the domain gains a second agent.
+
+`general` means something different: a generalist that does the work itself (`developer:general`, `assistant:general`). It is never the orchestrator. `DEFAULT_HEADER_REMOVED` fails any manifest that still carries a `# Default:` comment.
+
+A name with no `:` is looked up as a role in the user's local Octomind config first, so a local role named like a domain keeps its old meaning.
+
+These rules hold in every tap, not only this registry. `octomind tap init` generates its starter agent as `agents/<domain>/chief.toml`, and the generated tap's own check enforces the same rules.
+
+### Who delegates to whom
+
+| Agent | Delegates to | Gets the list from |
+|-------|--------------|--------------------|
+| `assistant:concierge` | any other domain, by its bare name; agents of its own `assistant` domain | `{{DOMAINS}}`, `{{SPECIALISTS}}` |
+| a domain's `chief` | agents of its own domain only | `{{SPECIALISTS}}` |
+
+A `chief` never hands work to another domain. A request outside its domain gets one answer: this is out of scope, use the global assistant (`octomind run` with no agent). Work that spans domains belongs to the global assistant alone.
+
+### Roster placeholders
+
+A `chief` does not list its specialists by hand. Octomind fills two placeholders in `system` when it loads the manifest:
+
+| Placeholder | Expands to | Where it is allowed |
+|-------------|------------|---------------------|
+| `{{SPECIALISTS}}` | every other agent of the same domain, one line each, sorted: `- <tag> — <Description>`; `(none)` when the agent is alone | a `chief` and `assistant:concierge`; required once the domain has other agents; an error in any other agent |
+| `{{DOMAINS}}` | every other domain that has a `chief`, one line each: `- <domain> — <Description of its chief>` | `assistant:concierge` only |
+
+The list is built from the header comments of every installed tap, so an agent that a user adds in their own tap appears without any edit to this registry. Lines are sorted, so the prompt changes only when a tap changes and prompt caching keeps working. `{{CWD}}` and `{{DATE}}` change every session, which is why they stay banned from `system`.
+
+Because each line is the agent's `# Description:`, that header must say what the agent takes in and what it returns. Hand-written routing notes in a `chief` cover only what the descriptions cannot settle, and they name tags from the agent's own domain only.
+
+An Octomind version older than these placeholders leaves them in the prompt as literal text. A `chief`'s prompt therefore also tells it to call `tap(action="discover")` before the first run of a role.
+
+### Model per domain
+
+In the user's Octomind config, `[taps]` sets the model for a whole domain or for one agent. The exact tag wins:
+
+```toml
+[taps]
+"developer" = "openai:gpt-4o"          # every agent of the domain
+"developer:tester" = "ollama:glm-5"    # this one agent
+```
+
+### Lint rules for domains
+
+| Code | Fails when |
+|------|------------|
+| `DEFAULT_HEADER_REMOVED` | a manifest still carries a `# Default:` header comment |
+| `DOMAIN_NO_CHIEF` | a domain other than `assistant` with two or more agents has no `chief.toml` |
+| `SPECIALISTS_MISSING` | a `chief` whose domain has other agents lacks `{{SPECIALISTS}}` in `system` |
+| `SPECIALISTS_MISPLACED` | `{{SPECIALISTS}}` appears in an agent that is neither a `chief` nor `assistant:concierge` |
+| `DOMAINS_MISPLACED` | `{{DOMAINS}}` appears outside `assistant:concierge` |
+| `FOREIGN_DOMAIN_TAG` | a `chief`'s `system` or `welcome` names an agent of another domain |
+| `CHIEF_NO_ORCHESTRATION` | a `chief` does not declare the `orchestration` capability |
 
 ---
 
@@ -144,6 +236,7 @@ args = ["mcp"]
 5. **Never set `name`** in `[[roles]]` — injected from the tag at runtime.
 6. **One `[[roles]]` per file** — no multi-role manifests.
 7. **File path must match tag** — `developer:rust` → `agents/developer/rust.toml`.
+8. **One chief per multi-agent domain** — every `agents/<domain>/` with two or more agents has `agents/<domain>/chief.toml`, the domain's orchestrator. The exception is `assistant`, whose orchestrator is `assistant:concierge`.
 
 ---
 
