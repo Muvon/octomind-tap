@@ -2,12 +2,12 @@
 
 > Run a fully-configured AI specialist with one command — no setup, no config files, no API plumbing.
 
-The community registry for [Octomind](https://github.com/muvon/octomind), the CLI-first AI agent runtime. **140+ agents across 35 domains**, 100+ skill packs, 31 ready-made workflows, 120+ dependency scripts — each one a single TOML file that Octomind resolves and merges into your session at runtime.
+The community registry for [Octomind](https://github.com/muvon/octomind), the CLI-first AI agent runtime. **140+ agents across 34 domains**, 100+ skill packs, 31 ready-made workflows, 120+ dependency scripts — each one a single TOML file that Octomind resolves and merges into your session at runtime.
 
 ```bash
-octomind run doctor:blood        # interpret blood test results
-octomind run developer:general   # senior full-stack developer
-octomind run devops:kubernetes   # Kubernetes expert
+octomind run developer           # the developer domain
+octomind run doctor              # the doctor domain
+octomind run doctor:blood        # one specialist: interpret blood test results
 ```
 
 Browse the catalog: [octomind.run/tap](https://octomind.run/tap/)
@@ -17,6 +17,7 @@ Browse the catalog: [octomind.run/tap](https://octomind.run/tap/)
 ## Table of Contents
 
 - [Quick Start](#quick-start)
+- [Domains and Orchestrators](#domains-and-orchestrators)
 - [What's in the Registry](#whats-in-the-registry)
 - [Tag Format](#tag-format)
 - [Capability System](#capability-system)
@@ -40,8 +41,8 @@ curl -fsSL https://raw.githubusercontent.com/muvon/octomind/master/install.sh | 
 # 2. Sign in — models included, no API keys to manage
 octomind login
 
-# 3. Run a specialist
-octomind run doctor:blood
+# 3. Run a domain
+octomind run doctor
 ```
 
 The default tap is cloned automatically on first use and updated on every run.
@@ -54,8 +55,41 @@ octomind run developer:general@1.0
 octomind workflow develop
 
 # Bootstrap your own tap (private or team) — rendered, validated, ready to run
-octomind tap init acme/team && octomind run team:assistant
+octomind tap init acme/team && octomind run team
 ```
+
+---
+
+## Domains and Orchestrators
+
+Agents are grouped into domains: `developer`, `doctor`, `content`, and so on. A domain with several agents has an orchestrator named `chief` (the `assistant` domain uses `assistant:concierge` instead), which knows every specialist in the domain and hands work to them. You only need to remember the domain name.
+
+| Command | Runs |
+|---------|------|
+| `octomind run` | the global assistant, which routes work across all domains |
+| `octomind run developer` | `developer:chief`, the orchestrator of the `developer` domain |
+| `octomind run developer:tester` | that exact agent |
+
+```mermaid
+flowchart TD
+    user([You])
+    global["Global assistant<br/>assistant:concierge"]
+    dev["Developer orchestrator<br/>developer:chief"]
+    doc["Doctor orchestrator<br/>doctor:chief"]
+    devs["Developer specialists<br/>tester, spec, plan, ..."]
+    docs["Doctor specialists<br/>blood, sleep, nutrition, ..."]
+
+    user -->|octomind run| global
+    user -->|octomind run developer| dev
+    user -->|octomind run doctor| doc
+    user -.->|octomind run doctor:blood| docs
+    global -->|hands a task to a domain| dev
+    global -->|hands a task to a domain| doc
+    dev -->|hands a task to a specialist| devs
+    doc -->|hands a task to a specialist| docs
+```
+
+An orchestrator stays inside its own domain. Work that spans domains goes through the global assistant. The rules, the `chief` naming, and per-domain model settings are in [ARCHITECTURE.md](ARCHITECTURE.md#domains-and-orchestrators).
 
 ---
 
@@ -63,7 +97,7 @@ octomind tap init acme/team && octomind run team:assistant
 
 | Directory | What it holds | Count |
 |-----------|---------------|-------|
-| `agents/<domain>/<spec>.toml` | Agent manifests — a system prompt, sampling params, and capability declarations | 140+ across 35 domains |
+| `agents/<domain>/<spec>.toml` | Agent manifests — a system prompt, sampling params, and capability declarations | 140+ across 34 domains |
 | `capabilities/<name>/` | Capability definitions — the tools an agent needs, decoupled from how they're provided | 60+ |
 | `skills/<name>/SKILL.md` | Reusable instruction packs (AgentSkills spec) that auto-activate by context | 100+ |
 | `workflows/<name>.toml` | Multi-step pipelines chaining agent runs (sequential / parallel / loop / conditional) | 31 |
@@ -78,19 +112,21 @@ Agents span domains like `developer`, `doctor`, `lawyer`, `finance`, `security`,
 ## Tag Format
 
 ```
-domain:spec[-sub-spec][@version]
+domain                             # the domain's chief (<domain>:chief)
+domain:spec[-sub-spec][@version]   # one agent
 ```
 
 | Part | Required | Description |
 |------|----------|-------------|
 | `domain` | ✅ | Top-level category (e.g. `developer`, `doctor`, `devops`) |
-| `spec` | ✅ | Primary specialisation (e.g. `general`, `blood`, `kubernetes`) |
+| `spec` | optional | Primary specialisation (e.g. `general`, `blood`, `kubernetes`). Omit it to run the domain's `chief`. |
 | `-sub-spec` | optional | Variant of the spec (e.g. `rust-nightly`, `python-ml`) |
 | `@version` | optional | Pinned version tag (e.g. `@1.0`). Omit for latest. |
 
 **Examples:**
 
 ```
+developer                        → agents/developer/chief.toml (the domain's orchestrator)
 developer:general                → agents/developer/general.toml
 devops:kubernetes                → agents/devops/kubernetes.toml
 data:sql                         → agents/data/sql.toml
@@ -287,14 +323,14 @@ This renders the scaffold into `./octomind-team/`, validates it, initializes
 Git, and registers it as a local tap — the starter agent runs immediately:
 
 ```bash
-octomind run team:assistant
+octomind run team
 ```
 
 Options:
 
 ```bash
 octomind tap init acme/team --dir ../team-tap      # destination (default ./octomind-<name>; must be empty)
-octomind tap init acme/team --agent ops:triage     # starter agent tag (default <name>:assistant)
+octomind tap init acme/team --agent ops            # starter agent's domain (default: the tap name); the agent is always <domain>:chief
 ```
 
 The tap id `owner/name` maps to the GitHub repository `owner/octomind-<name>`.

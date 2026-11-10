@@ -37,7 +37,8 @@ bash scripts/lint-deps.sh [deps/<org>/<tool>.sh]                   # lint dep sc
 bash scripts/lint-workflows.sh [workflows/<name>.toml]             # lint workflows (+ octomind --dry-run)
 bash scripts/validate-capabilities.sh                              # resolution check, all agents
 bash scripts/setup-symlinks.sh                                     # create/refresh default.toml links
-bin/load <domain>:<spec>                                           # debug: print resolved manifest
+bin/load <domain>[:<spec>]                                         # debug: print resolved manifest
+                                                                   # (a bare domain loads <domain>:chief)
 
 scripts/mcp-versions.sh check [--strict]     # pin drift vs npm/PyPI latest (strict → exit 1)
 scripts/mcp-versions.sh update [--all | <capability> ...]   # rewrite pins; leaves changes uncommitted
@@ -137,7 +138,7 @@ tools = []
 
 | Field | Rule |
 |-------|------|
-| Header comments | `# Agent: <domain>:<spec>`, `# Title:` (5–60 chars), `# Description:` (20–160 chars) — required, linted |
+| Header comments | `# Agent: <domain>:<spec>`, `# Title:` (5–60 chars), `# Description:` (20–160 chars) — required, linted; no `# Default:` header exists |
 | `capabilities = [...]` | Required at top level; drives everything |
 | `[[roles]]` | Exactly one entry |
 | `name` | Must NOT be set — injected at runtime from the tag |
@@ -177,6 +178,8 @@ Reserve all-caps for one or two genuine safety hard-stops (e.g. `Never force-pus
 - Target 200–1000 words; beyond ~1500, context rot degrades recall
 - No tap-relative paths (`skills/…`, `capabilities/…`, `deps/…`) in `system` or `welcome` — agents run in the project workdir, not the tap checkout; name the skill instead (`octomind` domain exempt)
 - Every `` `name` skill `` mentioned must exist at `skills/<name>/SKILL.md`
+- Every domain with two or more agents has a `chief` (`DOMAIN_NO_CHIEF`), except `assistant`, whose orchestrator is `assistant:concierge`; a `chief` declares `orchestration` (`CHIEF_NO_ORCHESTRATION`); no manifest carries a `# Default:` header (`DEFAULT_HEADER_REMOVED`)
+- `{{SPECIALISTS}}` allowed in a `chief` and in `assistant:concierge`, required once its domain has other agents, an error in any other agent (`SPECIALISTS_MISSING`, `SPECIALISTS_MISPLACED`); `{{DOMAINS}}` only in `assistant:concierge` (`DOMAINS_MISPLACED`); a `chief`'s `system`/`welcome` may not name another domain's agent tag (`FOREIGN_DOMAIN_TAG`)
 
 Full authoring spec, rationale, anti-patterns: `skills/tap-agent-authoring/SKILL.md`.
 
@@ -187,10 +190,22 @@ Full authoring spec, rationale, anti-patterns: `skills/tap-agent-authoring/SKILL
 | self-management | `core` | `recall` (planning is supervisor-owned, not a tool) | **every** agent |
 | do the work | domain caps | `shell`, `filesystem-*`, `codesearch-*`, `legal-*`, … | per agent |
 | intra-domain team | `agent` | `agent_*` | sub-orchestrators |
-| orchestration | `orchestration` | `tap`, `schedule` | orchestrators only (e.g. `assistant:concierge`, `developer:general`) |
+| orchestration | `orchestration` | `tap`, `schedule` | `assistant:concierge` and each domain's `chief` (e.g. `developer:chief`); one exception, `developer:general`, which uses `tap` to run `developer:context` before it writes code |
 | runtime config | `runtime` | `mcp`, `agent`-register, `skill`, `capability` | high-trust only |
 
 A narrow specialist declares `core` + domain capabilities and never `orchestration`/`runtime` — enforced structurally: the unwanted server never enters the tool surface. `orchestration`/`runtime` may still auto-activate on intent via their `config.toml` triggers; that is temporary, never a standing grant.
+
+### Domains and Orchestrators
+
+A domain is a directory under `agents/`. Its orchestrator, the agent that hands work to the other agents of the domain, is named `chief`: `agents/<domain>/chief.toml`, tag `<domain>:chief`. Three ways to run:
+
+- `octomind run` starts `assistant:concierge`, the global assistant.
+- `octomind run <domain>` starts `<domain>:chief`. A domain without a `chief` gives an error that lists its agents. The sole agent of a single-agent domain (`chef`, `device`, `shopping`, `travel`) is named `chief` too, so the bare domain works; it needs neither `orchestration` nor `{{SPECIALISTS}}` until the domain gains a second agent.
+- `octomind run <domain>:<spec>` starts one exact agent.
+
+`general` is a generalist that does the work itself (`developer:general`, `assistant:general`), never the orchestrator. A `chief` delegates with the `tap` tool, only to agents of its own domain, and declares `orchestration`. Only `assistant:concierge` routes across domains. For a request outside its domain, the `chief` points the user to the global assistant.
+
+Two placeholders in `system` list the agents, built from their `# Description:` lines: `{{SPECIALISTS}}` (other agents of the same domain; allowed in a `chief` and in `assistant:concierge`, required once the domain has other agents, an error in any other agent) and `{{DOMAINS}}` (the `chief` of each other domain; `assistant:concierge` only). Detail: `ARCHITECTURE.md`, "Domains and Orchestrators". The same domain rules apply to every tap, and `octomind tap init` generates the starter agent as `agents/<domain>/chief.toml`.
 
 ### Multi-Step Pipelines (external)
 
@@ -319,6 +334,8 @@ Optional dirs alongside SKILL.md: `scripts/`, `references/`, `assets/`, plus a `
 | `{{DATE}}` | Session | Current date — same caching rule |
 | `{{ENV:KEY}}` | Project env | Injects environment variable (e.g. API keys) in capability files; document required vars in the capability header comment |
 | `{{INPUT:KEY}}` | User-global secret | API tokens, credentials (e.g. in `[[mcp.servers]] env`) |
+| `{{SPECIALISTS}}` | Load time | `system` of a `chief` or `assistant:concierge`: the other agents of the domain, one line each from `# Description:` |
+| `{{DOMAINS}}` | Load time | `system` of `assistant:concierge` only: the `chief` of every other domain |
 
 ## Done
 
@@ -337,7 +354,7 @@ scripts/mcp-versions.sh test <capability>  # touched npx/uvx server wiring
 octomind workflow <name> --dry-run    # touched workflow
 ```
 
-**Agent done** — lints pass (incl. markdown/cache guardrails); XML blocks in canonical order; every capability has `capabilities/<name>/default.toml`; all `require` entries exist under `deps/`; `welcome` is descriptive and includes `{{CWD}}`; `octomind run <domain>:<spec>` starts clean.
+**Agent done** — lints pass (incl. markdown/cache guardrails); XML blocks in canonical order; every capability has `capabilities/<name>/default.toml`; all `require` entries exist under `deps/`; `welcome` is descriptive and includes `{{CWD}}`; a domain with two or more agents has a `chief` (`assistant` is the exception: `assistant:concierge` is its orchestrator); `octomind run <domain>:<spec>` starts clean.
 
 **Skill done** — lints pass; `name` matches directory; canonical section order with Checklist near the end; instructions actionable (what to DO); domain-isolated.
 
@@ -355,7 +372,7 @@ octomind workflow <name> --dry-run    # touched workflow
 - `capabilities/core/`, `capabilities/agent/`, and `capabilities/orchestration/` have **real** `default.toml` files — no provider variants, no `link` entries for them.
 - Default providers live in `setup-symlinks.sh` — e.g. `websearch` currently defaults to `duckduckgo.toml` (not tavily; ARCHITECTURE.md's example is stale). Switch a provider with `ln -sf <provider>.toml capabilities/<name>/default.toml`; reset all with `setup-symlinks.sh`.
 - `templates/` and `deps/lib/platform.sh` are symlinks into `scaffolds/tap/root/` — single source of truth so generated taps never drift; edit at the scaffold source.
-- The `octomind/` agent domain is special — its agents operate on the tap itself. Run `octomind run octomind:tap` in this repo root for the tap-authoring assistant (`octomind:workflow`, `octomind:config`, `octomind:assistant` alongside).
+- The `octomind/` agent domain is special — its agents operate on the tap itself. Run `octomind run octomind:tap` in this repo root for the tap-authoring assistant (`octomind:workflow`, `octomind:config`, `octomind:chief` alongside).
 - `mcp-versions.sh test` may report missing-key errors for servers needing credentials — judge by whether the process starts and speaks MCP at all.
 - CONTRIBUTING.md quick-start examples still write `[roles.mcp]`/`[deps]` directly (pre-capability style) — this file and ARCHITECTURE.md are authoritative when they conflict.
 
@@ -369,6 +386,7 @@ octomind workflow <name> --dry-run    # touched workflow
 - Create a capability directory without adding it to both the `link` calls and the `DECLARED` array in `setup-symlinks.sh`
 - Nest agents deeper than `agents/<domain>/<spec>.toml` or skills deeper than `skills/<name>/SKILL.md`
 - Reference tap-relative paths or cross-domain agent tags in `system`/`welcome`/skill bodies — agents run in the user's project, not the tap checkout
+- Leave a domain with two or more agents without a `chief` (except `assistant`, ruled by `assistant:concierge`), give a `chief` no `orchestration`, or name another domain's agent tag in a `chief`'s `system`/`welcome`
 
 ## References
 

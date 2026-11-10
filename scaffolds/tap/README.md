@@ -17,8 +17,8 @@ repository after tokens are replaced in both paths and file contents.
 | `__TAP_OWNER__` | `acme` |
 | `__TAP_NAME__` | `team` |
 | `__TAP_REPOSITORY__` | `octomind-team` |
-| `__AGENT_DOMAIN__` | `team` unless overridden with `--agent` |
-| `__AGENT_SPEC__` | `assistant` unless overridden with `--agent` |
+| `__AGENT_DOMAIN__` | `team` unless overridden with `--agent <domain>` |
+| `__AGENT_SPEC__` | `chief`, always: the starter agent is its domain's orchestrator |
 | `__YEAR__` | Current four-digit year |
 
 The renderer must fail if any `__TOKEN__` remains after rendering. It must

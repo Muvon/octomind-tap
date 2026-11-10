@@ -3,7 +3,7 @@ name: browser-backlink-submission
 title: "Browser Backlink Submission Execution"
 description: "Submit backlinks via a headless browser (Playwright): directory forms, email verification, throttling, submission log. Use with a qualified prospect list."
 license: Apache-2.0
-compatibility: "Requires browser:general agent with browser (Playwright) capability and filesystem-write. Assumes a prospect list already qualified for safety and topical fit."
+compatibility: "Requires browser:chief agent with browser (Playwright) capability and filesystem-write. Assumes a prospect list already qualified for safety and topical fit."
 domains: browser
 rules:
   - session(browser) content(backlink)

@@ -38,6 +38,12 @@ Priority: user taps in the order added, then the built-in tap. The first tap pro
 
 Running a `domain:spec` tag: fetch the manifest (cached per `[registry].cache_ttl_hours`), expand `capabilities = [...]`, resolve `{{INPUT:KEY}}` (persistent store `inputs.toml`, prompted once) and `{{ENV:KEY}}` (environment, else prompted and saved to `./.env`), run `[deps] require` scripts before MCP init, inject the tag as the role name, merge into config, start the session. In non-interactive child runs a missing value is an error, not a prompt.
 
+### Bare domains and the chief
+
+A domain's orchestrator is the agent that knows the other agents of its domain and hands work to them. It is named `chief`, so its tag is `<domain>:chief`. A TAG with no colon is looked up as a local `[[roles]]` entry first, so a local role always wins over a domain of the same name. If no role matches, the name is read as a domain and runs `<domain>:chief`: `octomind run developer` starts `developer:chief`. If the domain has no `chief`, the run fails with an error that lists the domain's agents. `domain:spec` always runs that exact agent, and plain `octomind run` starts `assistant:concierge`, the global assistant. The same rules apply to `octomind acp`, `octomind server`, `/role`, and the `role` parameter of the `tap` tool. Workflows still need full two-part tags.
+
+Two placeholders in a tap manifest's `system` are expanded when the manifest loads: `{{SPECIALISTS}}` lists the other agents of the same domain (`- <tag> — <Description>`, sorted, `(none)` when empty), and `{{DOMAINS}}` lists every other domain that has a `chief` (`- <domain> — <Description of its chief>`). They change only when a tap changes, so `system` may hold them. `{{CWD}}` and `{{DATE}}` change every session, so tap manifests put them in `welcome` only.
+
 ### Built-in tools
 
 | Server | Tools | Granted by |
@@ -50,7 +56,7 @@ Running a `domain:spec` tag: fetch the manifest (cached per `[registry].cache_tt
 
 There is no plan tool: planning is supervisor-owned and only displayed via `/plan`.
 
-`tap` actions: `discover` (match an intent against agents' `# Title:`/`# Description:` headers), `run` (background child; `role` + `prompt`, optional `workdir`; pass `session=<id>` to continue a run, otherwise the child starts with zero context), `list`, `stop`, `capability` (push an intent through the auto-activation path), and `workflow` (list, show, or run a tap workflow in the background). Run ids look like `tap-developer-general-a3f1c2`; results arrive in a later turn.
+`tap` actions: `discover` (match an intent against agents' `# Title:`/`# Description:` headers), `run` (background child; `role` + `prompt`, optional `workdir`; `role` is a `domain:spec` tag or a bare domain, which runs that domain's `chief`; pass `session=<id>` to continue a run, otherwise the child starts with zero context), `list`, `stop`, `capability` (push an intent through the auto-activation path), and `workflow` (list, show, or run a tap workflow in the background). Run ids look like `tap-developer-general-a3f1c2`; results arrive in a later turn.
 
 ### Capability anatomy
 

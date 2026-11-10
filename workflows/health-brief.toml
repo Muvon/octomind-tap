@@ -27,7 +27,7 @@ max_transitions = 8
 # ── 1. Intake + red-flag triage ──────────────────────────────────────────────
 [[steps]]
 name    = "intake"
-role    = "doctor:general"
+role    = "doctor:chief"
 session = "fresh"
 retries = 2
 prompt  = """
@@ -72,7 +72,7 @@ Output only the intake — no commentary.
 # ── 2a. Blocked — nothing to work with ───────────────────────────────────────
 [[steps]]
 name    = "blocked"
-role    = "doctor:general"
+role    = "doctor:chief"
 session = "fresh"
 prompt  = """
 Nothing readable was provided. Tell the user in two sentences what to provide
@@ -87,7 +87,7 @@ age and sex) and that no brief was produced. Output only that message.
 # ── 2b. Urgent — stop, no analysis ───────────────────────────────────────────
 [[steps]]
 name    = "urgent"
-role    = "doctor:general"
+role    = "doctor:chief"
 session = "fresh"
 prompt  = """
 The intake could not clear this as routine. Write a short, calm, direct message
@@ -153,7 +153,7 @@ quote and grade the evidence. Output only the review.
 
   [[steps.run]]
   name    = "context"
-  role    = "doctor:general"
+  role    = "doctor:chief"
   session = "fresh"
   retries = 2
   prompt  = """
@@ -172,7 +172,7 @@ only the context.
 """
 
 # ── 4. Synthesize + safety gate ──────────────────────────────────────────────
-# Synthesizer (doctor:general) and judge (ai:evals) are distinct roles so the
+# Synthesizer (doctor:chief) and judge (ai:evals) are distinct roles so the
 # writer never grades its own brief.
 [[steps]]
 name           = "brief"
@@ -182,7 +182,7 @@ exit_when      = { output = "judge", matches = '(?m)^VERDICT: SAFE' }
 
   [[steps.run]]
   name    = "synthesizer"
-  role    = "doctor:general"
+  role    = "doctor:chief"
   session = "continue"
   prompt  = """
 Synthesize the three analyses below into ONE visit-prep brief for the user, in
@@ -275,7 +275,7 @@ Critique first, then end with exactly one line: VERDICT: SAFE or VERDICT: REVISE
 # ── 5. Deliver ───────────────────────────────────────────────────────────────
 [[steps]]
 name    = "deliver"
-role    = "doctor:general"
+role    = "doctor:chief"
 session = "fresh"
 prompt  = """
 The loop is finished. Output the final brief below verbatim and whole — make no

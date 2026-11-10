@@ -9,6 +9,23 @@ except ImportError:
         print("ERROR: need python 3.11+ or 'pip install tomli'", file=sys.stderr)
         sys.exit(2)
 
+CHIEF_SPEC = "chief"
+GLOBAL_AGENT_TAG = "assistant:concierge"
+ORCHESTRATION_CAPABILITY = "orchestration"
+SPECIALISTS_PATTERN = r'\{\{\s*SPECIALISTS\s*\}\}'
+DOMAINS_PATTERN = r'\{\{\s*DOMAINS\s*\}\}'
+TAG_PATTERN = r'(?<![\w:-])[a-z0-9-]+:[a-z0-9-]+(?![\w:-])'
+
+
+if sys.argv[1] == "--domain":
+    domain = sys.argv[2]
+    domain_dir = pathlib.Path(sys.argv[3]) / "agents" / domain
+    agent_count = len(list(domain_dir.glob("*.toml")))
+    if agent_count >= 2 and domain != GLOBAL_AGENT_TAG.split(":")[0] and not (domain_dir / f"{CHIEF_SPEC}.toml").is_file():
+        print(f"DOMAIN_NO_CHIEF: domain '{domain}' has {agent_count} agents but no {CHIEF_SPEC}.toml — add agents/{domain}/{CHIEF_SPEC}.toml as the domain's orchestrator", file=sys.stderr)
+        sys.exit(1)
+    sys.exit(0)
+
 path = pathlib.Path(sys.argv[1])
 repo_root = pathlib.Path(sys.argv[2])
 
@@ -134,6 +151,39 @@ for m in re.finditer(r'((?:`[a-z0-9<>-]+`(?:,\s*|\s+(?:and|or)\s+|\s+))+)skills?
             continue
         if not (repo_root / "skills" / skill_name / "SKILL.md").is_file():
             errors.append(f"SKILL_REF_UNKNOWN: '{skill_name}' skill has no skills/{skill_name}/SKILL.md")
+
+# ── Domain orchestrator (the agent named chief) and delegation placeholders ──
+agent_tag = f"{domain}:{path.stem}"
+sibling_count = len([p for p in path.parent.glob("*.toml") if p != path])
+is_orchestrator = path.stem == CHIEF_SPEC or agent_tag == GLOBAL_AGENT_TAG
+
+for line in raw_text.splitlines():
+    if not line.startswith("#"):
+        break
+    if line.startswith("# Default:"):
+        errors.append(f"DEFAULT_HEADER_REMOVED: '# Default:' is no longer used — a domain's orchestrator is the agent named '{CHIEF_SPEC}' (agents/<domain>/{CHIEF_SPEC}.toml)")
+        break
+
+has_specialists = bool(re.search(SPECIALISTS_PATTERN, system_content))
+if is_orchestrator and sibling_count > 0 and not has_specialists:
+    errors.append("SPECIALISTS_MISSING: orchestrator must put '{{SPECIALISTS}}' in system so it can delegate to the other agents in its domain")
+elif has_specialists and not is_orchestrator:
+    errors.append(f"SPECIALISTS_MISPLACED: '{{{{SPECIALISTS}}}}' is only for a domain's orchestrator ('{CHIEF_SPEC}')")
+
+if re.search(DOMAINS_PATTERN, system_content) and agent_tag != GLOBAL_AGENT_TAG:
+    errors.append(f"DOMAINS_MISPLACED: '{{{{DOMAINS}}}}' in system is only allowed for {GLOBAL_AGENT_TAG}")
+
+if path.stem == CHIEF_SPEC and sibling_count > 0:
+    chief_caps = [c.rpartition("/")[2] for c in data.get("capabilities", [])]
+    if ORCHESTRATION_CAPABILITY not in chief_caps:
+        errors.append(f"CHIEF_NO_ORCHESTRATION: '{CHIEF_SPEC}' leads a domain with other agents and must declare the '{ORCHESTRATION_CAPABILITY}' capability")
+
+# An orchestrator hands work off inside its own domain only; cross-domain routing is the concierge's job.
+if is_orchestrator:
+    all_tags = {f"{p.parent.name}:{p.stem}" for p in (repo_root / "agents").glob("*/*.toml")}
+    foreign_tags = sorted({t for t in re.findall(TAG_PATTERN, prompt_text) if t in all_tags and t.split(":")[0] != domain})
+    if foreign_tags:
+        errors.append(f"FOREIGN_DOMAIN_TAG: orchestrator names agents from other domains: {', '.join(foreign_tags)}")
 
 # Check for capabilities declaration
 has_capabilities = bool(re.search(r'^capabilities\s*=\s*\[', raw_text, re.MULTILINE))

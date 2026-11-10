@@ -15,8 +15,10 @@ required_tokens = [
   "__YEAR__",
 ]
 
+# Octomind releases that let `--agent` choose the starter's spec read this default.
+# Current releases always name the starter `chief` and ignore it.
 [defaults]
-agent_spec = "assistant"
+agent_spec = "chief"
 
 [post_create]
 executable = [

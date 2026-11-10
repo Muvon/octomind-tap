@@ -51,6 +51,13 @@ The path defines the runtime tag `<domain>:<spec>`. Each manifest requires a
 top-level `capabilities = [...]` array followed by exactly one `[[roles]]`.
 Do not set `name`; Octomind injects it from the tag.
 
+A domain's orchestrator is the agent named `chief`: `agents/<domain>/chief.toml`.
+`octomind run <domain>` starts `<domain>:chief`. A domain with two or more
+agents needs a `chief.toml`; a domain with a single agent does not. The chief
+declares the `orchestration` capability (`octomind/orchestration`) and its
+`system` carries `{{SPECIALISTS}}`, which lists the other agents of the domain.
+The placeholder is required once the domain has other agents.
+
 Required role fields:
 
 ```toml
@@ -239,6 +246,11 @@ steps may reference earlier outputs by name.
 - `{{INPUT:KEY}}` is for user-global secrets stored by Octomind.
 - `{{ENV:KEY}}` is for project-scoped environment values.
 - `{{CWD}}` and `{{DATE}}` are prompt-time values and belong in `welcome` only.
+- `{{SPECIALISTS}}` in a `chief` agent's `system` expands to the other agents
+  of its domain, one line each, taken from their `# Description:`; `(none)` when
+  the agent is alone. It is required once the domain has other agents and is
+  an error in any other agent. It changes only when a tap changes, so it is
+  allowed in `system`.
 - Commit only placeholder names, never secret values or a populated `.env`.
 
 Capability `env` tables primarily carry and document `{{ENV:KEY}}` values.

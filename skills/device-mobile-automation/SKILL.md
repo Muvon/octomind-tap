@@ -3,7 +3,7 @@ name: device-mobile-automation
 title: "Mobile Device UI Automation"
 description: "Drive iOS and Android devices, simulators and emulators via mobile-mcp: app install, taps, swipes, typing, safety limits. Use for phone UI flows."
 license: Apache-2.0
-compatibility: "Requires the device:operator agent. iOS work needs Xcode + Xcode CLT and a paired developer-mode device or simulator. Android work needs platform-tools (adb) on PATH and an emulator or USB-debug-enabled device."
+compatibility: "Requires the device:chief agent. iOS work needs Xcode + Xcode CLT and a paired developer-mode device or simulator. Android work needs platform-tools (adb) on PATH and an emulator or USB-debug-enabled device."
 domains: device
 capabilities: device-mobile
 rules:
@@ -24,7 +24,7 @@ metadata:
 
 ## Overview
 
-This skill turns the `device:operator` agent into a mobile-device driver. It activates when the user talks about a phone or tablet (real or simulated) and brings in the `device-mobile` capability — the `mobile-mcp` MCP server — so the agent has tools to list devices, manage apps, list on-screen elements with their coordinates, tap, type, swipe, press device buttons, rotate the screen, save screenshots, record the screen, and read crash reports.
+This skill turns the `device:chief` agent into a mobile-device driver. It activates when the user talks about a phone or tablet (real or simulated) and brings in the `device-mobile` capability — the `mobile-mcp` MCP server — so the agent has tools to list devices, manage apps, list on-screen elements with their coordinates, tap, type, swipe, press device buttons, rotate the screen, save screenshots, record the screen, and read crash reports.
 
 The agent already carries the universal discipline (snapshot → locate → act → verify → record, `run.json` schema, checkpoint policy, secret redaction, output directory layout). This skill carries only what is mobile-specific: which tools exist on `mobile-mcp`, how to target elements on a mobile UI tree, how to handle iOS/Android prerequisites and dialogs, and which mobile-specific safety boundaries cannot be crossed.
 

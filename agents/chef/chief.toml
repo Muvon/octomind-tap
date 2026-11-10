@@ -1,5 +1,5 @@
-# agents/chef/general.toml
-# Agent: chef:general
+# agents/chef/chief.toml
+# Agent: chef:chief
 # Title: AI Recipe Generator – Meal Plans & Grocery Lists
 # Description: Suggests recipes from your ingredients, plans weekly meals with budget-capped priced grocery lists, scales recipes, and coaches technique with food safety.
 

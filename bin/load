@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-bin/load <domain>:<spec>
+bin/load <domain>[:<spec>]   (<domain> alone loads <domain>:chief)
 
 Resolves capabilities and outputs a merged, ready-to-use agent TOML to stdout.
 
@@ -19,6 +19,8 @@ How it works:
 import sys
 import re
 import os
+
+CHIEF_SPEC = "chief"
 
 # ---------------------------------------------------------------------------
 # Tiny TOML-subset parser — only what we need, no external deps
@@ -167,16 +169,34 @@ def merge_unique(base, additions):
     return result
 
 
-def main():
-    if len(sys.argv) != 2 or ":" not in sys.argv[1]:
-        print("Usage: bin/load <domain>:<spec>", file=sys.stderr)
+def find_chief_spec(domain, tap_root):
+    """Return CHIEF_SPEC if the domain has a chief.toml; error and exit otherwise."""
+    domain_dir = os.path.join(tap_root, "agents", domain)
+    if not os.path.isdir(domain_dir):
+        print(f"ERROR: unknown domain: {domain}", file=sys.stderr)
         sys.exit(1)
+    specs = sorted(f[:-len(".toml")] for f in os.listdir(domain_dir) if f.endswith(".toml"))
+    if CHIEF_SPEC not in specs:
+        listed = ", ".join(f"{domain}:{s}" for s in specs) or "none"
+        print(f"ERROR: domain '{domain}' has no {CHIEF_SPEC}.toml; its agents: {listed}", file=sys.stderr)
+        sys.exit(1)
+    return CHIEF_SPEC
 
-    tag = sys.argv[1]
-    domain, spec = tag.split(":", 1)
+
+
+def main():
+    if len(sys.argv) != 2:
+        print("Usage: bin/load <domain>[:<spec>]", file=sys.stderr)
+        sys.exit(1)
 
     # Resolve tap root (directory containing this script's parent)
     tap_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    if ":" in sys.argv[1]:
+        domain, spec = sys.argv[1].split(":", 1)
+    else:
+        domain = sys.argv[1]
+        spec = find_chief_spec(domain, tap_root)
 
     agent_path = os.path.join(tap_root, "agents", domain, f"{spec}.toml")
     if not os.path.exists(agent_path):

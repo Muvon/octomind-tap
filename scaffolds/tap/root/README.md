@@ -47,8 +47,8 @@ working in this repository.
 Create an agent:
 
 ```bash
-mkdir -p agents/developer
-cp templates/agent.toml agents/developer/backend.toml
+mkdir -p agents/__AGENT_DOMAIN__
+cp templates/agent.toml agents/__AGENT_DOMAIN__/backend.toml
 ```
 
 Create a skill:

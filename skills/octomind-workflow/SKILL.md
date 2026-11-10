@@ -131,7 +131,7 @@ Setting `entry = "<step>"` or any `[[edges]]` switches to explicit routing. Edge
 
 Checked before any step runs: valid TOML with at least one step; unique, non-empty step names; every `{{var}}` is a builtin, `input`, or an earlier step; parallel ≥2 sub-steps (or one template with `source`+`match`); loop has `exit_when`; conditional branches name existing sub-steps; regexes compile; `model`/`workdir` non-empty when set; `count` only on parallel sub-steps; `max_cost` positive; graph constraints above. Not checked: role existence for local files (a bad role fails when its subprocess spawns) and workdir existence.
 
-Workflows fetched from a tap are additionally restricted to public `domain:spec` tap roles, so they stay portable.
+Workflows fetched from a tap are additionally restricted to public `domain:spec` tap roles, so they stay portable. Workflow roles stay full two-part tags: a bare domain such as `developer` is not accepted in a `role` field.
 
 ## CLI
 
