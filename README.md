@@ -96,7 +96,7 @@ flowchart TD
     doc -->|hands a task to a specialist| docs
 ```
 
-An orchestrator stays inside its own domain. Work that spans domains goes through the global assistant. The rules, the `chief` naming, and per-domain model settings are in [ARCHITECTURE.md](ARCHITECTURE.md#domains-and-orchestrators).
+An orchestrator stays inside its own domain, plus any other domains or single agents it declares in a header comment (`# Uses: content, seo:audit` in `agents/marketing/chief.toml`). Open-ended work across domains goes through the global assistant. The rules, the `chief` naming, and per-domain model settings are in [ARCHITECTURE.md](ARCHITECTURE.md#domains-and-orchestrators).
 
 ---
 

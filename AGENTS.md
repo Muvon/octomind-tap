@@ -178,8 +178,8 @@ Reserve all-caps for one or two genuine safety hard-stops (e.g. `Never force-pus
 - Target 200–1000 words; beyond ~1500, context rot degrades recall
 - No tap-relative paths (`skills/…`, `capabilities/…`, `deps/…`) in `system` or `welcome` — agents run in the project workdir, not the tap checkout; name the skill instead (`octomind` domain exempt)
 - Every `` `name` skill `` mentioned must exist at `skills/<name>/SKILL.md`
-- Every domain with two or more agents has a `chief` (`DOMAIN_NO_CHIEF`), except `assistant`, whose orchestrator is `assistant:concierge`; a `chief` declares `orchestration` (`CHIEF_NO_ORCHESTRATION`); no manifest carries a `# Default:` header (`DEFAULT_HEADER_REMOVED`)
-- `{{SPECIALISTS}}` allowed in a `chief` and in `assistant:concierge`, required once its domain has other agents, an error in any other agent (`SPECIALISTS_MISSING`, `SPECIALISTS_MISPLACED`); `{{DOMAINS}}` only in `assistant:concierge` (`DOMAINS_MISPLACED`); a `chief`'s `system`/`welcome` may not name another domain's agent tag (`FOREIGN_DOMAIN_TAG`)
+- Every domain with two or more agents has a `chief` (`DOMAIN_NO_CHIEF`), except `assistant`, whose orchestrator is `assistant:concierge`; a `chief` declares `orchestration` (`CHIEF_NO_ORCHESTRATION`), also when it has a `# Uses:` header; no manifest carries a `# Default:` header (`DEFAULT_HEADER_REMOVED`)
+- `{{SPECIALISTS}}` allowed in a `chief` and in `assistant:concierge`, required once its domain has other agents, an error in any other agent (`SPECIALISTS_MISSING`, `SPECIALISTS_MISPLACED`); `{{DOMAINS}}` only in `assistant:concierge` (`DOMAINS_MISPLACED`); a `chief`'s `system`/`welcome` may not name another domain's agent tag (`FOREIGN_DOMAIN_TAG`); a `# Uses:` header and `{{USES}}` belong together and only in a `chief` (`USES_MISPLACED`, `USES_MISSING`); entries must be valid, unique, outside the chief's own domain and written as a bare domain or a non-chief tag (`USES_INVALID`), must exist (`USES_UNKNOWN`) and must not loop back (`USES_CYCLE`)
 
 Full authoring spec, rationale, anti-patterns: `skills/tap-agent-authoring/SKILL.md`.
 
@@ -203,9 +203,16 @@ A domain is a directory under `agents/`. Its orchestrator, the agent that hands 
 - `octomind run <domain>` starts `<domain>:chief`. A domain without a `chief` gives an error that lists its agents. The sole agent of a single-agent domain (`chef`, `device`, `shopping`, `travel`) is named `chief` too, so the bare domain works; it needs neither `orchestration` nor `{{SPECIALISTS}}` until the domain gains a second agent.
 - `octomind run <domain>:<spec>` starts one exact agent.
 
-`general` is a generalist that does the work itself (`developer:general`, `assistant:general`), never the orchestrator. A `chief` delegates with the `tap` tool, only to agents of its own domain, and declares `orchestration`. Only `assistant:concierge` routes across domains. For a request outside its domain, the `chief` points the user to the global assistant.
+`general` is a generalist that does the work itself (`developer:general`, `assistant:general`), never the orchestrator. A `chief` delegates with the `tap` tool to agents of its own domain, plus the domains and agents it declares in a `# Uses:` header, and declares `orchestration`. Only `assistant:concierge` routes across all domains. For a request outside its domain, the `chief` points the user to the global assistant.
 
-Two placeholders in `system` list the agents, built from their `# Description:` lines: `{{SPECIALISTS}}` (other agents of the same domain; allowed in a `chief` and in `assistant:concierge`, required once the domain has other agents, an error in any other agent) and `{{DOMAINS}}` (the `chief` of each other domain; `assistant:concierge` only). Detail: `ARCHITECTURE.md`, "Domains and Orchestrators". The same domain rules apply to every tap, and `octomind tap init` generates the starter agent as `agents/<domain>/chief.toml`.
+Two placeholders in `system` list the agents, built from their `# Description:` lines: `{{SPECIALISTS}}` (other agents of the same domain; allowed in a `chief` and in `assistant:concierge`, required once the domain has other agents, an error in any other agent) and `{{DOMAINS}}` (the `chief` of each other domain; `assistant:concierge` only). A `chief` that needs other domains or single agents declares them in a header comment, with a bare domain (`content`) or a full tag (`seo:audit`) per entry, and puts `{{USES}}` in `system`; it expands to one line per entry (`- <entry> — <Description>`, sorted), taken from the domain's `chief` or from the agent. The chief calls a domain by its bare name and that domain's lead picks the agent; it calls a listed tag directly. Only a `chief` may carry the header or the placeholder.
+
+```toml
+# agents/marketing/chief.toml
+# Uses: content, seo:audit
+```
+
+Detail: `ARCHITECTURE.md`, "Domains and Orchestrators". The same domain rules apply to every tap, and `octomind tap init` generates the starter agent as `agents/<domain>/chief.toml`.
 
 ### Multi-Step Pipelines (external)
 
@@ -336,6 +343,7 @@ Optional dirs alongside SKILL.md: `scripts/`, `references/`, `assets/`, plus a `
 | `{{INPUT:KEY}}` | User-global secret | API tokens, credentials (e.g. in `[[mcp.servers]] env`) |
 | `{{SPECIALISTS}}` | Load time | `system` of a `chief` or `assistant:concierge`: the other agents of the domain, one line each from `# Description:` |
 | `{{DOMAINS}}` | Load time | `system` of `assistant:concierge` only: the `chief` of every other domain |
+| `{{USES}}` | Load time | `system` of a `chief` with a `# Uses:` header: the declared domains and agents, one line each |
 
 ## Done
 

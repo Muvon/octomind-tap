@@ -9,7 +9,7 @@
 #   6. Capability-driven agents must NOT have [deps], [roles.mcp], or [[mcp.servers]]
 #   7. Every capability reference must have a matching capabilities/<name>/default.toml
 #   8. Comment metadata: # Title: (5–60 chars) and # Description: (20–160 chars) required
-#      Orchestrator is the agent named `chief` (agents/<domain>/chief.toml); {{SPECIALISTS}} / {{DOMAINS}} placement
+#      Orchestrator is the agent named `chief` (agents/<domain>/chief.toml); {{SPECIALISTS}} / {{DOMAINS}} / {{USES}} placement
 #   9. Prompts must not cite tap-relative paths (skills/…, capabilities/…, deps/…) — octomind domain exempt
 #  10. Every `name` skill mentioned in prompts must exist at skills/<name>/SKILL.md
 #  11. Optional agents/<domain>/README.md: a "# <domain name>" line, a blank line, then
