@@ -40,9 +40,9 @@ Examples:
 - `security:owasp` — OWASP security review
 - `finance:analyst` — Financial statement analysis
 
-A domain with two or more agents has an orchestrator named `chief` (`agents/<domain>/chief.toml`); the exception is `assistant`, whose orchestrator is `assistant:concierge`. It is the agent that `octomind run <domain>` starts, and it hands work to the other agents of its domain.
+A domain with two or more agents has an orchestrator named `chief` (`agents/<domain>/chief.toml`). It is the agent that `octomind run <domain>` starts, and it hands work to the other agents of its domain.
 
-- A new domain with two or more agents needs a `chief` (only `assistant` is exempt).
+- A new domain with two or more agents needs a `chief`.
 - An agent added to an existing domain needs no edit elsewhere: the domain's `chief` lists it automatically from its `# Description:` line, so the description must say what the agent takes in and what it returns.
 - A `chief` can also call other domains or single agents by declaring them in a header comment, a bare domain or a full tag per entry, and putting `{{USES}}` in `system`. Only a `chief` may do this.
 

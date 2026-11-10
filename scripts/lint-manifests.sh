@@ -9,7 +9,8 @@
 #   6. Capability-driven agents must NOT have [deps], [roles.mcp], or [[mcp.servers]]
 #   7. Every capability reference must have a matching capabilities/<name>/default.toml
 #   8. Comment metadata: # Title: (5–60 chars) and # Description: (20–160 chars) required
-#      Orchestrator is the agent named `chief` (agents/<domain>/chief.toml); {{SPECIALISTS}} / {{DOMAINS}} / {{USES}} placement
+#      Orchestrator is the agent named `chief` (agents/<domain>/chief.toml); {{SPECIALISTS}} / {{USES}} placement
+#      Symlinked manifests are aliases of renamed agents and are skipped
 #   9. Prompts must not cite tap-relative paths (skills/…, capabilities/…, deps/…) — octomind domain exempt
 #  10. Every `name` skill mentioned in prompts must exist at skills/<name>/SKILL.md
 #  11. Optional agents/<domain>/README.md: a "# <domain name>" line, a blank line, then
@@ -30,7 +31,7 @@ if [[ $# -gt 0 ]]; then
 else
   while IFS= read -r found; do
     FILES+=("$found")
-  done < <(find "$REPO_ROOT/agents" -name "*.toml" | sort)
+  done < <(find "$REPO_ROOT/agents" -name "*.toml" -type f | sort)
 fi
 
 if [[ ${#FILES[@]} -eq 0 ]]; then
@@ -74,6 +75,9 @@ DOMAINS_SEEN=""
 for file in "${FILES[@]}"; do
   # Normalise to absolute path
   [[ $file == /* ]] || file="$REPO_ROOT/$file"
+
+  # An alias (symlink) is the same agent under an old name; linting it again would double-count.
+  [[ -L $file ]] && continue
 
   inner="${file#"$REPO_ROOT/agents/"}"
   DOMAINS_SEEN+="${inner%%/*}"$'\n'

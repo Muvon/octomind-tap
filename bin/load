@@ -175,7 +175,11 @@ def find_chief_spec(domain, tap_root):
     if not os.path.isdir(domain_dir):
         print(f"ERROR: unknown domain: {domain}", file=sys.stderr)
         sys.exit(1)
-    specs = sorted(f[:-len(".toml")] for f in os.listdir(domain_dir) if f.endswith(".toml"))
+    # A symlinked manifest is an alias for a renamed agent: loadable by name, never listed.
+    specs = sorted(
+        f[:-len(".toml")] for f in os.listdir(domain_dir)
+        if f.endswith(".toml") and not os.path.islink(os.path.join(domain_dir, f))
+    )
     if CHIEF_SPEC not in specs:
         listed = ", ".join(f"{domain}:{s}" for s in specs) or "none"
         print(f"ERROR: domain '{domain}' has no {CHIEF_SPEC}.toml; its agents: {listed}", file=sys.stderr)

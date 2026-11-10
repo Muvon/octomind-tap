@@ -30,6 +30,8 @@ echo "Validating agent manifests..."
 echo ""
 
 for toml in "$AGENTS_DIR"/**/*.toml; do
+  # An alias (symlink) resolves to an agent that is validated under its own name.
+  [[ -L $toml ]] && continue
   # Derive domain:spec from path
   rel="${toml#$AGENTS_DIR/}" # developer/rust.toml
   domain="${rel%%/*}"        # developer
