@@ -58,6 +58,17 @@ declares the `orchestration` capability (`octomind/orchestration`) and its
 `system` carries `{{SPECIALISTS}}`, which lists the other agents of the domain.
 The placeholder is required once the domain has other agents.
 
+A chief can also call other domains or single agents it declares in a header
+comment: a bare domain (`content`) or a full tag (`seo:audit`) per entry. It
+puts `{{USES}}` in `system`, which expands to one line per entry. Only a chief
+may carry the header or the placeholder, and it needs `orchestration`. Entries
+may name domains of another tap; local ones are checked.
+
+```toml
+# agents/marketing/chief.toml
+# Uses: content, seo:audit
+```
+
 Required role fields:
 
 ```toml
@@ -251,6 +262,9 @@ steps may reference earlier outputs by name.
   the agent is alone. It is required once the domain has other agents and is
   an error in any other agent. It changes only when a tap changes, so it is
   allowed in `system`.
+- `{{USES}}` in a `chief` agent's `system` expands to the entries of its
+  `# Uses:` header, one line each. It goes with the header and is an error in
+  any other agent.
 - Commit only placeholder names, never secret values or a populated `.env`.
 
 Capability `env` tables primarily carry and document `{{ENV:KEY}}` values.

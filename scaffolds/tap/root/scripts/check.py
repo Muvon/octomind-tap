@@ -21,6 +21,10 @@ STARTER_SPEC_TOKEN = "__AGENT_SPEC__"
 SPECIALISTS_PATTERN = re.compile(r"\{\{\s*SPECIALISTS\s*\}\}")
 DOMAINS_PATTERN = re.compile(r"\{\{\s*DOMAINS\s*\}\}")
 AGENT_TAG = re.compile(r"(?<![\w:-])[a-z0-9-]+:[a-z0-9-]+(?![\w:-])")
+USES_PATTERN = re.compile(r"\{\{\s*USES\s*\}\}")
+USES_HEADER = "# Uses:"
+USES_ENTRY = re.compile(r"[a-z0-9-]+(?::[a-z0-9-]+)?")
+CYCLE_SEPARATOR = " → "
 
 BUILTIN_SERVERS = {"core", "octofs", "agent", "octocode"}
 SYSTEM_TAGS = [
@@ -44,6 +48,71 @@ def parse_toml(path: Path, errors: list[str]):
         errors.append(f"{path}: invalid TOML: {exc}")
         return None
 
+
+def read_uses_header(raw: str) -> list[str] | None:
+    """Entries of the '# Uses:' header comment, or None when the header is absent."""
+    for line in raw.splitlines():
+        if not line.startswith("#"):
+            break
+        if line.startswith(USES_HEADER):
+            return [entry.strip() for entry in line[len(USES_HEADER):].split(",")]
+    return None
+
+
+def find_uses_cycle(start: str, root: Path) -> list[str] | None:
+    """Loop of local domain entries from lead to lead that returns to `start`, or None. Tag entries end the walk."""
+
+    def walk(current: str, trail: list[str]) -> list[str] | None:
+        chief_path = root / "agents" / current / f"{CHIEF_SPEC}.toml"
+        if not chief_path.is_file():
+            return None
+        for entry in read_uses_header(chief_path.read_text(encoding="utf-8")) or []:
+            if ":" in entry or not USES_ENTRY.fullmatch(entry):
+                continue
+            if entry == start and len(trail) > 1:
+                return trail + [entry]
+            if entry in trail:
+                continue
+            found = walk(entry, trail + [entry])
+            if found:
+                return found
+        return None
+
+    return walk(start, [start])
+
+
+def check_uses_entries(entries: list[str], domain: str, root: Path) -> list[str]:
+    # A generated tap may depend on domains of another tap: an entry whose domain
+    # is not a local directory is accepted without further checks.
+    problems = []
+    seen = set()
+    for entry in entries:
+        if not entry:
+            problems.append("USES_INVALID: empty entry in '# Uses:' (stray comma or no value)")
+            continue
+        if not USES_ENTRY.fullmatch(entry):
+            problems.append(f"USES_INVALID: '{entry}' is malformed — write a bare domain ('content') or a full tag ('seo:audit')")
+            continue
+        if entry in seen:
+            problems.append(f"USES_INVALID: '{entry}' is listed more than once")
+            continue
+        seen.add(entry)
+        entry_domain, _, entry_spec = entry.partition(":")
+        if entry_domain == domain:
+            problems.append(f"USES_INVALID: '{entry}' is in the agent's own domain — use {{{{SPECIALISTS}}}} for it")
+        elif entry_spec == CHIEF_SPEC:
+            problems.append(f"USES_INVALID: '{entry}' — write the bare domain '{entry_domain}' instead of '{entry_domain}:{CHIEF_SPEC}'")
+        elif not (root / "agents" / entry_domain).is_dir():
+            continue
+        elif not entry_spec and not (root / "agents" / entry_domain / f"{CHIEF_SPEC}.toml").is_file():
+            problems.append(f"USES_UNKNOWN: domain '{entry}' has no agents/{entry_domain}/{CHIEF_SPEC}.toml")
+        elif entry_spec and not (root / "agents" / entry_domain / f"{entry_spec}.toml").is_file():
+            problems.append(f"USES_UNKNOWN: agent '{entry}' has no agents/{entry_domain}/{entry_spec}.toml")
+    if not problems:
+        cycle = find_uses_cycle(domain, root)
+        if cycle:
+            problems.append(f"USES_CYCLE: {CYCLE_SEPARATOR.join(cycle)} — leads that use each other would delegate in a loop")
+    return problems
 
 def validate_agent(path: Path, root: Path, errors: list[str]) -> None:
     relative = path.relative_to(root / "agents")
@@ -144,11 +213,24 @@ def validate_agent(path: Path, root: Path, errors: list[str]) -> None:
         errors.append(f"{path}: SPECIALISTS_MISPLACED: '{{{{SPECIALISTS}}}}' in system is only for a domain's orchestrator ('{CHIEF_SPEC}')")
     if DOMAINS_PATTERN.search(system) and tag != GLOBAL_AGENT_TAG:
         errors.append(f"{path}: DOMAINS_MISPLACED: '{{{{DOMAINS}}}}' in system is only allowed for {GLOBAL_AGENT_TAG}")
-    if is_chief and has_siblings and not any(
+    uses_entries = read_uses_header(raw)
+    has_uses_placeholder = bool(USES_PATTERN.search(system))
+    if not is_chief:
+        if uses_entries is not None or has_uses_placeholder:
+            errors.append(f"{path}: USES_MISPLACED: '# Uses:' header and '{{{{USES}}}}' in system are only for a domain's orchestrator ('{CHIEF_SPEC}')")
+    else:
+        if uses_entries is not None and not has_uses_placeholder:
+            errors.append(f"{path}: USES_MISSING: '# Uses:' header needs '{{{{USES}}}}' in system so the orchestrator can name what it may call")
+        elif uses_entries is None and has_uses_placeholder:
+            errors.append(f"{path}: USES_MISSING: '{{{{USES}}}}' in system needs a '# Uses: <entry>[, <entry>…]' header comment")
+        if uses_entries is not None:
+            errors.extend(f"{path}: {problem}" for problem in check_uses_entries(uses_entries, domain, root))
+    if is_chief and (has_siblings or uses_entries is not None) and not any(
         isinstance(capability, str) and capability.rpartition("/")[2] == ORCHESTRATION_CAPABILITY
         for capability in capabilities
     ):
-        errors.append(f"{path}: CHIEF_NO_ORCHESTRATION: '{CHIEF_SPEC}' leads a domain with other agents and must declare the '{ORCHESTRATION_CAPABILITY}' capability")
+        reason = "leads a domain with other agents" if has_siblings else "declares '# Uses:'"
+        errors.append(f"{path}: CHIEF_NO_ORCHESTRATION: '{CHIEF_SPEC}' {reason} and must declare the '{ORCHESTRATION_CAPABILITY}' capability")
     if is_orchestrator:
         local_tags = {f"{other.parent.name}:{other.stem}" for other in (root / "agents").glob("*/*.toml")}
         prompt_text = f"{system}\n{role.get('welcome', '')}"

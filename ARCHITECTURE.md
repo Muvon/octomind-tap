@@ -143,7 +143,7 @@ flowchart TD
 
 ### The chief agent
 
-The orchestrator of a domain is the agent named `chief`: `agents/<domain>/chief.toml`, tag `<domain>:chief`. It declares the `orchestration` capability and delegates through the `tap` tool, only inside its own domain. No header comment marks it; the file name is the rule.
+The orchestrator of a domain is the agent named `chief`: `agents/<domain>/chief.toml`, tag `<domain>:chief`. It declares the `orchestration` capability and delegates through the `tap` tool inside its own domain and to what its optional `# Uses:` header declares. The file name, not a header, marks it as the orchestrator.
 
 `octomind run <domain>` starts `<domain>:chief`, and `octomind run <domain>:<spec>` starts that exact agent. If a domain has no `chief`, the bare domain name is an error that lists the domain's agents. In this registry every domain with two or more agents has a `chief`, except `assistant` (twelve agents), whose orchestrator is `assistant:concierge`, the global assistant. The sole agent of a single-agent domain (`chef`, `device`, `shopping`, `travel`) is named `chief` too, so the bare domain name works and the global assistant can reach it. It has no one to delegate to, so it needs neither `orchestration` nor `{{SPECIALISTS}}` until the domain gains a second agent.
 
@@ -158,18 +158,30 @@ These rules hold in every tap, not only this registry. `octomind tap init` gener
 | Agent | Delegates to | Gets the list from |
 |-------|--------------|--------------------|
 | `assistant:concierge` | any other domain, by its bare name; agents of its own `assistant` domain | `{{DOMAINS}}`, `{{SPECIALISTS}}` |
-| a domain's `chief` | agents of its own domain only | `{{SPECIALISTS}}` |
+| a domain's `chief` | agents of its own domain; the domains and agents in its `# Uses:` header | `{{SPECIALISTS}}`, `{{USES}}` |
 
-A `chief` never hands work to another domain. A request outside its domain gets one answer: this is out of scope, use the global assistant (`octomind run` with no agent). Work that spans domains belongs to the global assistant alone.
+A `chief` hands work to another domain only when its `# Uses:` header declares it. A request for anything else outside its domain gets one answer: this is out of scope, use the global assistant (`octomind run` with no agent). Open-ended work across domains belongs to the global assistant.
+
+### Declaring other domains and agents
+
+A `chief` can call other domains or single agents that it declares. The declaration is a header comment next to `# Title:` and `# Description:`: `# Uses: <entry>[, <entry>…]`. An entry is a bare domain (`content`) or a full tag (`seo:audit`). The `chief` also puts `{{USES}}` in `system`; Octomind expands it to one line per entry, `- <entry> — <Description>`, sorted. For a domain entry the description is the one of that domain's `chief`; the `chief` calls the domain by its bare name and that domain's lead picks the agent. For a tag entry it calls that agent directly.
+
+```toml
+# agents/marketing/chief.toml
+# Uses: content, seo:audit
+```
+
+Only a `chief` may carry the header or the placeholder. A `chief` with the header declares `orchestration` even when its domain has no other agents. Two leads must not use each other, directly or through a longer loop of domain entries (`marketing → content → marketing`); tag entries end the walk, so they cannot form a loop. The `chief`'s prose still names no other domain's agent tag; declared ones reach the prompt through `{{USES}}`. The author-facing snippet is in the `tap-agent-authoring` skill.
 
 ### Roster placeholders
 
-A `chief` does not list its specialists by hand. Octomind fills two placeholders in `system` when it loads the manifest:
+A `chief` does not list its specialists by hand. Octomind fills these placeholders in `system` when it loads the manifest:
 
 | Placeholder | Expands to | Where it is allowed |
 |-------------|------------|---------------------|
 | `{{SPECIALISTS}}` | every other agent of the same domain, one line each, sorted: `- <tag> — <Description>`; `(none)` when the agent is alone | a `chief` and `assistant:concierge`; required once the domain has other agents; an error in any other agent |
 | `{{DOMAINS}}` | every other domain that has a `chief`, one line each: `- <domain> — <Description of its chief>` | `assistant:concierge` only |
+| `{{USES}}` | the entries of the `# Uses:` header, one line each, sorted: `- <entry> — <Description>` | a `chief` with a `# Uses:` header; required with the header, an error in any other agent |
 
 The list is built from the header comments of every installed tap, so an agent that a user adds in their own tap appears without any edit to this registry. Lines are sorted, so the prompt changes only when a tap changes and prompt caching keeps working. `{{CWD}}` and `{{DATE}}` change every session, which is why they stay banned from `system`.
 
@@ -197,7 +209,12 @@ In the user's Octomind config, `[taps]` sets the model for a whole domain or for
 | `SPECIALISTS_MISPLACED` | `{{SPECIALISTS}}` appears in an agent that is neither a `chief` nor `assistant:concierge` |
 | `DOMAINS_MISPLACED` | `{{DOMAINS}}` appears outside `assistant:concierge` |
 | `FOREIGN_DOMAIN_TAG` | a `chief`'s `system` or `welcome` names an agent of another domain |
-| `CHIEF_NO_ORCHESTRATION` | a `chief` does not declare the `orchestration` capability |
+| `CHIEF_NO_ORCHESTRATION` | a `chief` does not declare the `orchestration` capability (required when its domain has other agents or it has a `# Uses:` header) |
+| `USES_MISPLACED` | a `# Uses:` header or `{{USES}}` appears in an agent that is not a `chief` |
+| `USES_MISSING` | a `chief` has the `# Uses:` header without `{{USES}}` in `system`, or `{{USES}}` without the header |
+| `USES_INVALID` | an entry is empty, malformed, repeated, in the `chief`'s own domain (use `{{SPECIALISTS}}`), or written `<domain>:chief` (write the bare domain) |
+| `USES_UNKNOWN` | a domain entry has no `agents/<domain>/chief.toml`, or a tag entry has no manifest file; in a generated tap, only entries whose domain is a local directory are checked |
+| `USES_CYCLE` | domain entries lead from chief to chief back to the starting domain; the message shows the loop |
 
 ---
 
