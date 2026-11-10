@@ -7,8 +7,8 @@ body:
     id: tag
     attributes:
       label: Agent tag
-      description: "The tag you ran, e.g. `developer:rust`"
-      placeholder: "developer:rust"
+      description: "The tag you ran, e.g. `doctor:blood`"
+      placeholder: "doctor:blood"
     validations:
       required: true
 

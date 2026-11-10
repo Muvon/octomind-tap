@@ -291,7 +291,7 @@ Optional dirs alongside SKILL.md: `scripts/`, `references/`, `assets/`, plus a `
 
 **Activation — three methods:**
 
-- Env preload: `OCTOMIND_SKILLS=programming-rust,git-workflow octomind run developer:general` (permanent, no rules evaluated)
+- Env preload: `OCTOMIND_SKILLS=programming-rust,git-workflow octomind run developer` (permanent, no rules evaluated)
 - Auto-activation: skills whose `domains` match the agent's domain get their `rules` evaluated on conversation events; already-active skills are skipped
 - Manual: `skill(action="use"|"forget"|"list", name=...)` or `/skill <use|forget|list>`
 

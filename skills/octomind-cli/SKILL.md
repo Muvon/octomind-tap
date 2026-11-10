@@ -145,7 +145,7 @@ octomind config --model openai:gpt-5   # rewrites global config for one task
 
 ✅ Good:
 ```bash
-octomind run developer:general -m openai:gpt-5
+octomind run developer -m openai:gpt-5
 ```
 
 What changed: the narrowest surface that survives long enough — a flag, not a persisted setting.
@@ -153,7 +153,7 @@ What changed: the narrowest surface that survives long enough — a flag, not a 
 ### Example 2: non-interactive with structured output
 
 ```bash
-echo "List the top 3 TODOs" | octomind run developer:general \
+echo "List the top 3 TODOs" | octomind run developer \
   --format jsonl --schema todos.schema.json
 ```
 

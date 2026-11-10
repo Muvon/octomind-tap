@@ -319,7 +319,7 @@ skills/
 
 **Environment variable** — preload skills at session start:
 ```bash
-OCTOMIND_SKILLS=programming-rust,git-workflow octomind run developer:general
+OCTOMIND_SKILLS=programming-rust,git-workflow octomind run developer
 ```
 Comma-delimited skill names. Activated permanently, no rules evaluated.
 
