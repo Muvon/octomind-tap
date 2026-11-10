@@ -243,7 +243,7 @@ rules:
 Preload skills without activate scripts:
 
 ```bash
-OCTOMIND_SKILLS=programming-rust,git-workflow octomind run developer:general
+OCTOMIND_SKILLS=programming-rust,git-workflow octomind run developer
 ```
 
 Skill auto-activation is powered by the embedding fine-tune in `model/` — see [model/README.md](model/README.md) for the training pipeline.

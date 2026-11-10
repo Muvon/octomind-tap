@@ -13,9 +13,9 @@ If you have domain knowledge — medicine, law, finance, security, DevOps, or an
 A tap agent is a fully-configured AI specialist that anyone can run:
 
 ```bash
-octomind run doctor:blood      # Blood test interpreter
-octomind run developer:rust    # Rust development specialist
-octomind run devops:kubernetes  # Kubernetes expert
+octomind run developer      # The developer domain: starts its lead agent
+octomind run doctor         # The doctor domain
+octomind run doctor:blood   # One exact agent: blood test interpreter
 ```
 
 Each agent is a single TOML file that defines:
@@ -494,15 +494,9 @@ bash scripts/lint-skills.sh skills/<name>
 **7. Test in a session**
 
 ```bash
-octomind run octomind:developer   # or any agent with the skill tool
+octomind run octomind:tap   # the tap-authoring agent; it has the skill tool
 # Then in session:
 # skill(action="use", name="<name>")
-```
-
-Or use the dedicated skill development agent:
-
-```bash
-octomind run octomind:skill
 ```
 
 **8. Submit a Pull Request**

@@ -9,10 +9,10 @@ Thanks for contributing! This repo is the community registry of agent manifests 
 A manifest is a single TOML file at `agents/<domain>/<spec>.toml`. When a user runs:
 
 ```bash
-octomind run developer:rust
+octomind run doctor:blood
 ```
 
-Octomind fetches `agents/developer/rust.toml` from this repo and merges it into their config — no installation, no global state.
+Octomind fetches `agents/doctor/blood.toml` from this repo and merges it into their config — no installation, no global state.
 
 ---
 
