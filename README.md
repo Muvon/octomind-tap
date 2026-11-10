@@ -12,6 +12,13 @@ octomind run doctor:blood        # one specialist: interpret blood test results
 
 Browse the catalog: [octomind.run/tap](https://octomind.run/tap/)
 
+One diagram: who takes a request, what an agent file contains, and when skills load.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/how-it-works-dark.svg">
+  <img src="assets/how-it-works-light.svg" width="100%" alt="How the tap works. Who takes the request: octomind run with no agent starts the global assistant, which picks a domain; octomind run developer starts that domain's lead agent, which answers or delegates to a specialist; octomind run doctor:blood starts one exact specialist. What one agent is made of: a manifest file with a prompt and a list of capabilities; each capability is resolved to a provider, which starts tool servers and runs install scripts before the session. Loaded on demand: a skill loads when its rules match, adds instructions to the running session and can switch on more capabilities.">
+</picture>
+
 ---
 
 ## Table of Contents
