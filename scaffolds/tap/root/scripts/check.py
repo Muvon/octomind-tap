@@ -127,7 +127,7 @@ def check_uses_entries(entries: list[str], domain: str, root: Path) -> list[str]
         seen.add(entry)
         entry_domain, _, entry_spec = entry.partition(":")
         if entry_domain == domain:
-            problems.append(f"USES_INVALID: '{entry}' is in the agent's own domain — use {{{{SPECIALISTS}}}} for it")
+            problems.append(f"USES_INVALID: '{entry}' is in the agent's own domain — its agents are reachable without it")
         elif entry_spec == CHIEF_SPEC:
             problems.append(f"USES_INVALID: '{entry}' — write the bare domain '{entry_domain}' instead of '{entry_domain}:{CHIEF_SPEC}'")
         elif not (root / "agents" / entry_domain).is_dir():
@@ -231,28 +231,21 @@ def validate_agent(path: Path, root: Path, errors: list[str]) -> None:
     domain = path.parent.name
     # The unrendered starter is generated as chief.toml, so --template treats its token as chief.
     is_orchestrator = path.stem in (CHIEF_SPEC, STARTER_SPEC_TOKEN)
-    has_specialists = bool(SPECIALISTS_PATTERN.search(system))
     has_siblings = any(sibling != path for sibling in agent_files(path.parent))
-    if is_orchestrator and has_siblings and not has_specialists:
-        errors.append(f"{path}: SPECIALISTS_MISSING: orchestrator must put '{{{{SPECIALISTS}}}}' in system to delegate to the other agents of its domain")
-    if has_specialists and not is_orchestrator:
-        errors.append(f"{path}: SPECIALISTS_MISPLACED: '{{{{SPECIALISTS}}}}' in system is only for a domain's orchestrator ('{CHIEF_SPEC}')")
+    if SPECIALISTS_PATTERN.search(system):
+        errors.append(f"{path}: SPECIALISTS_REMOVED: '{{{{SPECIALISTS}}}}' is no longer used; tap matches a specialist from the task, so delete the placeholder")
     if DOMAINS_PATTERN.search(system):
         errors.append(
             f"{path}: DOMAINS_REMOVED: '{{{{DOMAINS}}}}' no longer exists; the global assistant "
-            f"({GLOBAL_AGENT_TAG}) declares '# Uses: {USES_ALL}' and puts '{{{{USES}}}}' in system"
+            f"({GLOBAL_AGENT_TAG}) declares '# Uses: {USES_ALL}'"
         )
     uses_entries = read_uses_header(raw)
-    has_uses_placeholder = bool(USES_PATTERN.search(system))
-    if not is_orchestrator:
-        if uses_entries is not None or has_uses_placeholder:
-            errors.append(f"{path}: USES_MISPLACED: '# Uses:' header and '{{{{USES}}}}' in system are only for a domain's orchestrator ('{CHIEF_SPEC}')")
-    else:
-        if uses_entries is not None and not has_uses_placeholder:
-            errors.append(f"{path}: USES_MISSING: '# Uses:' header needs '{{{{USES}}}}' in system so the orchestrator can name what it may call")
-        elif uses_entries is None and has_uses_placeholder:
-            errors.append(f"{path}: USES_MISSING: '{{{{USES}}}}' in system needs a '# Uses: <entry>[, <entry>…]' header comment")
-        if uses_entries is not None:
+    if USES_PATTERN.search(system):
+        errors.append(f"{path}: USES_PLACEHOLDER_REMOVED: '{{{{USES}}}}' is no longer used; the '# Uses:' header alone sets what the orchestrator's tasks may be matched to, so delete the placeholder")
+    if uses_entries is not None:
+        if not is_orchestrator:
+            errors.append(f"{path}: USES_MISPLACED: '# Uses:' header is only for a domain's orchestrator ('{CHIEF_SPEC}')")
+        else:
             errors.extend(f"{path}: {problem}" for problem in check_uses_entries(uses_entries, domain, root))
     if is_orchestrator and (has_siblings or uses_entries is not None) and not any(
         isinstance(capability, str) and capability.rpartition("/")[2] == ORCHESTRATION_CAPABILITY

@@ -90,22 +90,21 @@ Block rules:
 
 Chief agent blocks:
 
-- Put `{{SPECIALISTS}}` in `<scope>` or `<rules>` of the `chief`. Released octomind 0.71 expands it to one line per other agent of the domain (its tag and `# Description:`, `(none)` when the agent is alone); newer octomind expands it to one fixed sentence saying the specialist is matched automatically from the task. It is allowed in a `chief`, required once the domain has other agents, and an error in any other agent.
+- Do not put `{{SPECIALISTS}}` or `{{USES}}` in `system`. Octomind 0.71 and older expanded them to lists of agents; newer octomind does not expand them, and lint rejects them (`SPECIALISTS_REMOVED`, `USES_PLACEHOLDER_REMOVED`). The `chief` names no specialist.
 - Delegate with `tap(action="run", prompt="<brief>")`; the `tap` tool takes no role. The runtime picks the specialist whose `# Title:` and `# Description:` are closest to the brief, among the agents of the same domain plus the domains and agents the chief declares in a `# Uses:` header. Write each agent's `# Title:` and `# Description:` in the words a task brief would use: the kind of work and the deliverable. Tell the chief to name the kind of work and the deliverable first, and, when `run` answers "No specialist matches this task", to do the work itself or say it is outside the domain. Anything else outside the domain gets one answer: out of scope, use the global assistant (`octomind run` with no agent).
 - Name no other domain's agent tag in `system` or `welcome`. Only `assistant:chief` routes across all domains: it declares `# Uses: *`, which stands for every other domain that has a `chief`.
 
-A chief can reach other domains or single agents it declares. Put one header comment next to `# Title:` and `# Description:`: `# Uses: <entry>[, <entry>…]`, where an entry is a bare domain (`content`, meaning that domain's `chief`) or a full tag (`seo:audit`, meaning that agent). Add `{{USES}}` to `system`; released octomind 0.71 expands it to one line per entry, `- <entry> — <Description>`, sorted, and newer octomind to the same fixed sentence as `{{SPECIALISTS}}`. The header is validated at load and bounds which agents the runtime can match for this chief. Only a `chief` may carry the header or the placeholder, it needs `orchestration`, and it must not list its own domain (`{{SPECIALISTS}}` covers that), write `<domain>:chief` (write the bare domain), or form a loop with another lead.
+A chief can reach other domains or single agents it declares. Put one header comment next to `# Title:` and `# Description:`: `# Uses: <entry>[, <entry>…]`, where an entry is a bare domain (`content`, meaning that domain's `chief`) or a full tag (`seo:audit`, meaning that agent). The header alone makes them reachable; it is validated at load and bounds which agents the runtime can match for this chief. Only a `chief` may carry the header, it needs `orchestration`, and it must not list its own domain (its agents are reachable without it), write `<domain>:chief` (write the bare domain), or form a loop with another lead.
 
 ```toml
 # agents/marketing/chief.toml
 # Uses: content, seo:audit
 ```
 
-Prompt lines to copy into `<scope>` or `<rules>` of a chief that has the header:
+Prompt lines to copy into `<scope>` or `<rules>` of a chief that has the header (the agents themselves are not listed; the runtime matches the brief):
 
 ```
-Outside your domain you may reach only these:
-{{USES}}
+Outside your domain you may reach only the domains and agents your `# Uses:` header declares.
 Send the task with tap(action="run", prompt="<brief>"); the runtime matches it to one of them.
 ```
 
@@ -134,8 +133,7 @@ The system prompt must be identical run to run so the provider can cache it (cac
 | Placeholder | Where |
 |-------------|-------|
 | `{{CWD}}`, `{{DATE}}`, `{{SYSTEM}}` | `welcome` only — lint fails if they appear in `system` |
-| `{{SPECIALISTS}}` | `system` of a `chief`; required once the domain has other agents, an error in any other agent; expands at load time and is stable until a tap changes (a list of agents in octomind 0.71, one fixed sentence in newer versions) |
-| `{{USES}}` | `system` of a `chief` with a `# Uses:` header, required with the header, an error in any other agent; expands at load time and is stable until a tap changes (a list of entries in octomind 0.71, one fixed sentence in newer versions) |
+| `{{SPECIALISTS}}`, `{{USES}}` | Removed: not expanded in newer octomind (lists of agents in 0.71 and older); lint rejects them in `system` |
 | `{{ROLE}}`, `{{SHELL}}`, `{{OS}}`, `{{GIT_STATUS}}`, `{{README}}`, ... | Expand in both, but anything that changes per session or project breaks caching in `system` |
 | `{{INPUT:KEY}}`, `{{ENV:KEY}}` | Capability files, not prompts — credentials and env vars |
 
@@ -160,7 +158,7 @@ So the fields are required, but on current Claude models behaviour comes from th
 - No tap-relative paths (`skills/…`, `capabilities/…`, `deps/…`) in `system` or `welcome` — agents run in the user's project, not the tap checkout. The `octomind` domain is exempt.
 - Every `` `name` skill `` mention must exist at `skills/<name>/SKILL.md`.
 - Every capability needs `capabilities/<name>/default.toml`.
-- Every domain with two or more agents has a `chief` that declares `orchestration`; `{{SPECIALISTS}}` required in a `chief` with siblings, an error in any other agent; no foreign domain tag in a `chief`; no `# Default:` header; `{{DOMAINS}}` no longer exists (`DOMAINS_REMOVED`: use `# Uses: *` with `{{USES}}`). `# Uses:` and `{{USES}}` go together and only in a `chief` (`USES_MISPLACED`, `USES_MISSING`); entries are valid, unique, outside the chief's own domain, not `<domain>:chief`, and `*` only in `assistant:chief` (`USES_INVALID`), exist (`USES_UNKNOWN`) and form no loop between leads (`USES_CYCLE`).
+- Every domain with two or more agents has a `chief` that declares `orchestration`; no `{{SPECIALISTS}}` (`SPECIALISTS_REMOVED`) or `{{USES}}` (`USES_PLACEHOLDER_REMOVED`) in `system`; no foreign domain tag in a `chief`; no `# Default:` header; `{{DOMAINS}}` no longer exists (`DOMAINS_REMOVED`: the global assistant declares `# Uses: *`). A `# Uses:` header goes only in a `chief` (`USES_MISPLACED`); entries are valid, unique, outside the chief's own domain, not `<domain>:chief`, and `*` only in `assistant:chief` (`USES_INVALID`), exist (`USES_UNKNOWN`) and form no loop between leads (`USES_CYCLE`).
 
 ### Required disclaimers
 
@@ -244,7 +242,7 @@ What changed: the system prompt is cacheable again and lint passes.
 
 - [ ] Header comments present with valid lengths; path matches tag?
 - [ ] Every needed capability exists; tiers respected (no `orchestration`/`runtime` on a specialist)?
-- [ ] A domain with two or more agents has a `chief` that declares `orchestration`, has `{{SPECIALISTS}}`, delegates inside its domain, names no other domain's tag?
+- [ ] A domain with two or more agents has a `chief` that declares `orchestration`, delegates inside its domain, names no other domain's tag?
 - [ ] XML blocks in canonical order, `<identity>` first, `<critical>` last and short?
 - [ ] Tone calibrated: plain `Use X when …`, explicit asks, all-caps only for real hard-stops?
 - [ ] No `{{CWD}}`/`{{DATE}}`/`{{SYSTEM}}`, headers, or bold in `system`; under ~1500 words?

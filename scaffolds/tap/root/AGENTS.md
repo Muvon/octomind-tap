@@ -54,17 +54,16 @@ Do not set `name`; Octomind injects it from the tag.
 A domain's orchestrator is the agent named `chief`: `agents/<domain>/chief.toml`.
 `octomind run <domain>` starts `<domain>:chief`. A domain with two or more
 agents needs a `chief.toml`; a domain with a single agent does not. The chief
-declares the `orchestration` capability (`octomind/orchestration`) and its
-`system` carries `{{SPECIALISTS}}`. The placeholder is required once the domain
-has other agents. The chief sends a task with `tap(action="run", prompt="<brief>")`
-and the runtime matches it to a specialist by each agent's `# Title:` and
-`# Description:`, so write those in the words a task brief would use.
+declares the `orchestration` capability (`octomind/orchestration`). The chief
+sends a task with `tap(action="run", prompt="<brief>")` and the runtime matches
+it to a specialist by each agent's `# Title:` and `# Description:`, so write
+those in the words a task brief would use. The chief names no specialist.
 
 A chief can also call other domains or single agents it declares in a header
-comment: a bare domain (`content`) or a full tag (`seo:audit`) per entry. It
-puts `{{USES}}` in `system`. Only a chief
-may carry the header or the placeholder, and it needs `orchestration`. Entries
-may name domains of another tap; local ones are checked.
+comment: a bare domain (`content`) or a full tag (`seo:audit`) per entry. The
+header alone makes them reachable. Only a chief may carry the header, and it
+needs `orchestration`. Entries may name domains of another tap; local ones are
+checked.
 
 ```toml
 # agents/marketing/chief.toml
@@ -259,15 +258,9 @@ steps may reference earlier outputs by name.
 - `{{INPUT:KEY}}` is for user-global secrets stored by Octomind.
 - `{{ENV:KEY}}` is for project-scoped environment values.
 - `{{CWD}}` and `{{DATE}}` are prompt-time values and belong in `welcome` only.
-- `{{SPECIALISTS}}` in a `chief` agent's `system` is required once the domain
-  has other agents and is an error in any other agent. Octomind 0.71 expands it
-  to the other agents of the domain, one line each from their `# Description:`
-  (`(none)` when the agent is alone); newer versions expand it to one fixed
-  sentence saying the specialist is matched automatically. It changes only when
-  a tap changes, so it is allowed in `system`.
-- `{{USES}}` in a `chief` agent's `system` goes with the `# Uses:` header and is
-  an error in any other agent. Octomind 0.71 expands it to the header entries,
-  one line each; newer versions expand it to the same fixed sentence.
+- `{{SPECIALISTS}}` and `{{USES}}` are removed and must not appear in `system`.
+  Octomind 0.71 and older expanded them to lists of agents; newer versions
+  do not expand them, and the tap registry lint rejects them.
 - Commit only placeholder names, never secret values or a populated `.env`.
 
 Capability `env` tables primarily carry and document `{{ENV:KEY}}` values.

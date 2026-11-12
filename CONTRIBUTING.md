@@ -43,8 +43,8 @@ Examples:
 A domain with two or more agents has an orchestrator named `chief` (`agents/<domain>/chief.toml`). It is the agent that `octomind run <domain>` starts, and it hands work to the other agents of its domain.
 
 - A new domain with two or more agents needs a `chief`.
-- An agent added to an existing domain needs no edit elsewhere: the domain's `chief` lists it automatically from its `# Description:` line, so the description must say what the agent takes in and what it returns.
-- A `chief` can also call other domains or single agents by declaring them in a header comment, a bare domain or a full tag per entry, and putting `{{USES}}` in `system`. Only a `chief` may do this.
+- An agent added to an existing domain needs no edit elsewhere: the domain's `chief` is matched to it from its `# Title:` and `# Description:` lines, so the description must say what the agent takes in and what it returns.
+- A `chief` can also call other domains or single agents by declaring them in a header comment, a bare domain or a full tag per entry. Only a `chief` may do this.
 
 ```toml
 # agents/marketing/chief.toml
