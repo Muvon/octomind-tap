@@ -90,11 +90,11 @@ Block rules:
 
 Chief agent blocks:
 
-- Put `{{SPECIALISTS}}` in `<scope>` or `<rules>` of the `chief`. It expands to one line per other agent of the domain: its tag and `# Description:` (`(none)` when the agent is alone). It is allowed in a `chief`, required once the domain has other agents, and an error in any other agent.
-- Delegate with the `tap` tool to agents of the same domain, plus the domains and agents the chief declares in a `# Uses:` header. Anything else outside the domain gets one answer: out of scope, use the global assistant (`octomind run` with no agent).
+- Put `{{SPECIALISTS}}` in `<scope>` or `<rules>` of the `chief`. Released octomind 0.71 expands it to one line per other agent of the domain (its tag and `# Description:`, `(none)` when the agent is alone); newer octomind expands it to one fixed sentence saying the specialist is matched automatically from the task. It is allowed in a `chief`, required once the domain has other agents, and an error in any other agent.
+- Delegate with `tap(action="run", prompt="<brief>")`; the `tap` tool takes no role. The runtime picks the specialist whose `# Title:` and `# Description:` are closest to the brief, among the agents of the same domain plus the domains and agents the chief declares in a `# Uses:` header. Write each agent's `# Title:` and `# Description:` in the words a task brief would use: the kind of work and the deliverable. Tell the chief to name the kind of work and the deliverable first, and, when `run` answers "No specialist matches this task", to do the work itself or say it is outside the domain. Anything else outside the domain gets one answer: out of scope, use the global assistant (`octomind run` with no agent).
 - Name no other domain's agent tag in `system` or `welcome`. Only `assistant:chief` routes across all domains: it declares `# Uses: *`, which stands for every other domain that has a `chief`.
 
-A chief can call other domains or single agents it declares. Put one header comment next to `# Title:` and `# Description:`: `# Uses: <entry>[, <entry>…]`, where an entry is a bare domain (`content`) or a full tag (`seo:audit`). Add `{{USES}}` to `system`; it expands to one line per entry, `- <entry> — <Description>`, sorted. A domain entry takes the description of that domain's `chief`; the chief calls the domain by its bare name and that domain's lead picks the agent. A tag entry is called directly. Only a `chief` may carry the header or the placeholder, it needs `orchestration`, and it must not list its own domain (`{{SPECIALISTS}}` covers that), write `<domain>:chief` (write the bare domain), or form a loop with another lead.
+A chief can reach other domains or single agents it declares. Put one header comment next to `# Title:` and `# Description:`: `# Uses: <entry>[, <entry>…]`, where an entry is a bare domain (`content`, meaning that domain's `chief`) or a full tag (`seo:audit`, meaning that agent). Add `{{USES}}` to `system`; released octomind 0.71 expands it to one line per entry, `- <entry> — <Description>`, sorted, and newer octomind to the same fixed sentence as `{{SPECIALISTS}}`. The header is validated at load and bounds which agents the runtime can match for this chief. Only a `chief` may carry the header or the placeholder, it needs `orchestration`, and it must not list its own domain (`{{SPECIALISTS}}` covers that), write `<domain>:chief` (write the bare domain), or form a loop with another lead.
 
 ```toml
 # agents/marketing/chief.toml
@@ -104,9 +104,9 @@ A chief can call other domains or single agents it declares. Put one header comm
 Prompt lines to copy into `<scope>` or `<rules>` of a chief that has the header:
 
 ```
-Outside your domain you may call only these:
+Outside your domain you may reach only these:
 {{USES}}
-Call a domain by its bare name; its lead picks the agent. Call a listed agent by its full tag.
+Send the task with tap(action="run", prompt="<brief>"); the runtime matches it to one of them.
 ```
 
 ### Tone for current models
@@ -134,8 +134,8 @@ The system prompt must be identical run to run so the provider can cache it (cac
 | Placeholder | Where |
 |-------------|-------|
 | `{{CWD}}`, `{{DATE}}`, `{{SYSTEM}}` | `welcome` only — lint fails if they appear in `system` |
-| `{{SPECIALISTS}}` | `system` of a `chief`; required once the domain has other agents, an error in any other agent; expands at load time and is stable until a tap changes |
-| `{{USES}}` | `system` of a `chief` with a `# Uses:` header, required with the header, an error in any other agent; expands at load time and is stable until a tap changes |
+| `{{SPECIALISTS}}` | `system` of a `chief`; required once the domain has other agents, an error in any other agent; expands at load time and is stable until a tap changes (a list of agents in octomind 0.71, one fixed sentence in newer versions) |
+| `{{USES}}` | `system` of a `chief` with a `# Uses:` header, required with the header, an error in any other agent; expands at load time and is stable until a tap changes (a list of entries in octomind 0.71, one fixed sentence in newer versions) |
 | `{{ROLE}}`, `{{SHELL}}`, `{{OS}}`, `{{GIT_STATUS}}`, `{{README}}`, ... | Expand in both, but anything that changes per session or project breaks caching in `system` |
 | `{{INPUT:KEY}}`, `{{ENV:KEY}}` | Capability files, not prompts — credentials and env vars |
 

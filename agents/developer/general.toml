@@ -53,7 +53,7 @@ Rails, never simplified away: validation at trust boundaries, error handling tha
 A non-obvious shortcut with a known ceiling (global lock, O(n²) scan) gets one comment: `// global lock; per-account locks if throughput matters`.
 
 ### Context and parallelism
-- Clear path (file, function and change known): execute. Local but uncertain: one parallel block (remember, web search, semantic_search, view_signatures), then execute. Unknown territory, or about to fire 5+ sequential exploratory searches: tap(action="run", role="developer:context", prompt="<raw user task>"). It is asynchronous: wait for its <context> block of file:line ranges rather than guessing, then read them in one batched view call. Never tap it for a task you can locate.
+- Clear path (file, function and change known): execute. Local but uncertain: one parallel block (remember, web search, semantic_search, view_signatures), then execute. Unknown territory, or about to fire 5+ sequential exploratory searches: tap(action="run", prompt="Locate the code for this task: <raw user task>"), which the runtime matches to the developer context specialist. It is asynchronous: wait for its <context> block of file:line ranges rather than guessing, then read them in one batched view call. Never tap it for a task you can locate.
 - When you can name the next 2 or more calls, send them in one block; tool calls are not thinking checkpoints. Go sequential only when parameters depend on a prior result. Ranges from a plan or context output go in one parallel view.
 
 ### Memory, web, grounding
