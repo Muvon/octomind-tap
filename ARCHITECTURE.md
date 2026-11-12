@@ -64,7 +64,7 @@ Symlinks are managed by `scripts/setup-symlinks.sh` which **always force-creates
 |----------------|------------------------|-------------------------------------------------------|
 | `core`         | default (built-in)     | `recall` (folded-context recall, only when attention compression is on); planning is supervisor-owned, not a tool — every agent declares it |
 | `agent`        | default (built-in)     | `agent_*` — delegate to your own **configured** sub-agents (intra-domain team) |
-| `orchestration`| default (built-in)     | `tap` (discover/run registry specialists) + `schedule` (defer/recur loops) — **orchestrator-tier, deliberate grant** |
+| `orchestration`| default (built-in)     | `tap` (run registry specialists matched to the task) + `schedule` (defer/recur loops) — **orchestrator-tier, deliberate grant** |
 | `runtime`      | octomind (built-in)    | `mcp` · `agent`-register · `skill` · `capability` — runtime tool-surface config (**high-trust**) |
 | `filesystem-read`  | octofs                 | `view`, `workdir` (read-only)             |
 | `filesystem-write` | octofs                 | `text_editor`, `batch_edit`, `extract_lines` |
@@ -167,7 +167,7 @@ A `chief` hands work to another domain only when its `# Uses:` header declares i
 
 ### Declaring other domains and agents
 
-A `chief` can call other domains or single agents that it declares. The declaration is a header comment next to `# Title:` and `# Description:`: `# Uses: <entry>[, <entry>…]`. An entry is a bare domain (`content`), a full tag (`seo:audit`), or `*`. `*` stands for every other domain that has a `chief`; only `assistant:chief` may use it, alone or together with exact tags, and in the loop check it expands to those domains. The `chief` also puts `{{USES}}` in `system`; Octomind expands it to one line per entry, `- <entry> — <Description>`, sorted. For a domain entry the description is the one of that domain's `chief`; the `chief` calls the domain by its bare name and that domain's lead picks the agent. For a tag entry it calls that agent directly.
+A `chief` can reach other domains or single agents that it declares. The declaration is a header comment next to `# Title:` and `# Description:`: `# Uses: <entry>[, <entry>…]`. An entry is a bare domain (`content`, meaning that domain's `chief`), a full tag (`seo:audit`, meaning that agent), or `*`. `*` stands for every other domain that has a `chief`; only `assistant:chief` may use it, alone or together with exact tags, and in the loop check it expands to those domains. The `chief` also puts `{{USES}}` in `system`. The header is validated at load and also bounds which agents the runtime can match for this `chief`; the `chief` sends the task with `tap(action="run", prompt=…)` and passes no role.
 
 ```toml
 # agents/marketing/chief.toml
@@ -178,7 +178,7 @@ Only a `chief` may carry the header or the placeholder. A `chief` with the heade
 
 ### Roster placeholders
 
-A `chief` does not list its specialists by hand. Octomind fills these placeholders in `system` when it loads the manifest:
+A `chief` does not list its specialists by hand. Octomind fills these placeholders in `system` when it loads the manifest. Released Octomind 0.71 expands them to lists, as the table shows; newer versions expand both to one fixed sentence (``(matched automatically: `tap(action="run", prompt=…)` picks the specialist for the task; no role name is needed)``), because the runtime now matches the specialist to the task itself. Manifests keep the placeholders either way:
 
 | Placeholder | Expands to | Where it is allowed |
 |-------------|------------|---------------------|
@@ -187,11 +187,11 @@ A `chief` does not list its specialists by hand. Octomind fills these placeholde
 
 The placeholder `{{DOMAINS}}` is gone; `assistant:chief` lists the domains with `# Uses: *` and `{{USES}}`.
 
-The list is built from the header comments of every installed tap, so an agent that a user adds in their own tap appears without any edit to this registry. Lines are sorted, so the prompt changes only when a tap changes and prompt caching keeps working. `{{CWD}}` and `{{DATE}}` change every session, which is why they stay banned from `system`.
+In Octomind 0.71 the list is built from the header comments of every installed tap, so an agent that a user adds in their own tap appears without any edit to this registry. Lines are sorted, so the prompt changes only when a tap changes and prompt caching keeps working. `{{CWD}}` and `{{DATE}}` change every session, which is why they stay banned from `system`.
 
-Because each line is the agent's `# Description:`, that header must say what the agent takes in and what it returns. Hand-written routing notes in a `chief` cover only what the descriptions cannot settle, and they name tags from the agent's own domain only.
+The runtime matches a task against each reachable agent's `# Title:` and `# Description:`, so those headers must say the kind of work and the deliverable in the words a task brief would use. Hand-written routing notes in a `chief` cover only what the descriptions cannot settle, and they name tags from the agent's own domain only.
 
-An Octomind version older than these placeholders leaves them in the prompt as literal text. A `chief`'s prompt therefore also tells it to call `tap(action="discover")` before the first run of a role.
+An Octomind version older than these placeholders leaves them in the prompt as literal text. A `chief`'s prompt therefore still tells it to send tasks with `tap(action="run", prompt="<brief>")` and, when the answer is "No specialist matches this task", to do the work itself or say it is outside the domain.
 
 ### Model per domain
 

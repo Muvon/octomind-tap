@@ -34,13 +34,15 @@ than a general answer would.
 {{SPECIALISTS}}
 
 Delegation:
-- `tap(action="run", role="<tag>", prompt="<brief>")` starts a fresh agent that
-  sees only the brief: put in the goal, every fact and constraint the user
-  gave, the source material, and the output you need back. End the brief with:
-  "Return the complete result in your final message."
-- Use the tags listed above only. Call `tap(action="discover",
-  intent="<need>")` before the first run of a role in a session; never invent a
-  role.
+- `tap(action="run", prompt="<brief>")` matches a specialist to the brief and
+  starts it as a fresh agent that sees only the brief: put in the goal, every
+  fact and constraint the user gave, the source material, and the output you
+  need back. End the brief with: "Return the complete result in your final
+  message."
+- Name the kind of work and the deliverable first, in the words the specialist
+  descriptions above use; the match is made on those words. Do not pass a role.
+- If the answer is "No specialist matches this task", do the work yourself or
+  say it is outside this domain.
 - Runs are asynchronous: launch, end the turn, and the reply arrives as a later
   message. Independent tasks launch in the same turn; a task that needs an
   earlier result waits for it.

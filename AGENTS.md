@@ -205,7 +205,7 @@ A domain is a directory under `agents/`. Its orchestrator, the agent that hands 
 
 `general` is a generalist that does the work itself (`developer:general`, `assistant:general`), never the orchestrator. A `chief` delegates with the `tap` tool to agents of its own domain, plus the domains and agents it declares in a `# Uses:` header, and declares `orchestration`. Only `assistant:chief` routes across all domains: it declares `# Uses: *`. For a request outside its domain, the `chief` points the user to the global assistant.
 
-Two placeholders in `system` list the agents, built from their `# Description:` lines: `{{SPECIALISTS}}` (other agents of the same domain; allowed in a `chief`, required once the domain has other agents, an error in any other agent) and `{{USES}}`. A `chief` that needs other domains or single agents declares them in a header comment, with a bare domain (`content`) or a full tag (`seo:audit`) per entry, and puts `{{USES}}` in `system`; it expands to one line per entry (`- <entry> — <Description>`, sorted), taken from the domain's `chief` or from the agent. The chief calls a domain by its bare name and that domain's lead picks the agent; it calls a listed tag directly. Only a `chief` may carry the header or the placeholder. The entry `*` means every other domain that has a `chief`; only `assistant:chief` may use it, alone or together with exact tags. `{{DOMAINS}}`, the former placeholder for that list, is an error (`DOMAINS_REMOVED`).
+Two placeholders in `system` stand for the agents a `chief` can reach: `{{SPECIALISTS}}` (other agents of the same domain; allowed in a `chief`, required once the domain has other agents, an error in any other agent) and `{{USES}}`. Octomind 0.71 expands them to lists built from the agents' `# Description:` lines; newer versions expand both to one fixed sentence saying the specialist is matched automatically. A `chief` that needs other domains or single agents declares them in a header comment, with a bare domain (`content`, that domain's `chief`) or a full tag (`seo:audit`, that agent) per entry, and puts `{{USES}}` in `system`. The header is validated at load and bounds which agents the runtime can match. The chief sends a task with `tap(action="run", prompt="<brief>")` and passes no role; the runtime matches the prompt against each reachable agent's `# Title:` and `# Description:`, so those headers must say the kind of work and the deliverable. Only a `chief` may carry the header or the placeholder. The entry `*` means every other domain that has a `chief`; only `assistant:chief` may use it, alone or together with exact tags. `{{DOMAINS}}`, the former placeholder for that list, is an error (`DOMAINS_REMOVED`).
 
 ```toml
 # agents/marketing/chief.toml
@@ -341,8 +341,8 @@ Optional dirs alongside SKILL.md: `scripts/`, `references/`, `assets/`, plus a `
 | `{{DATE}}` | Session | Current date — same caching rule |
 | `{{ENV:KEY}}` | Project env | Injects environment variable (e.g. API keys) in capability files; document required vars in the capability header comment |
 | `{{INPUT:KEY}}` | User-global secret | API tokens, credentials (e.g. in `[[mcp.servers]] env`) |
-| `{{SPECIALISTS}}` | Load time | `system` of a `chief`: the other agents of the domain, one line each from `# Description:` |
-| `{{USES}}` | Load time | `system` of a `chief` with a `# Uses:` header: the declared domains and agents, one line each |
+| `{{SPECIALISTS}}` | Load time | `system` of a `chief`: the other agents of the domain, one line each from `# Description:` in Octomind 0.71; one fixed sentence in newer versions |
+| `{{USES}}` | Load time | `system` of a `chief` with a `# Uses:` header: the declared domains and agents, one line each in Octomind 0.71; one fixed sentence in newer versions |
 
 ## Done
 

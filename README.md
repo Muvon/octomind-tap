@@ -174,7 +174,7 @@ top_k = 0
 |------------|-----------------|-----------------|
 | `core` | `recall` — universal self-management (every agent); planning is supervisor-owned | built-in |
 | `agent` | `agent_*` — delegate to your configured sub-agents | built-in |
-| `orchestration` | `tap` (discover/run specialists) + `schedule` (defer/recur loops) — orchestrator-tier | built-in |
+| `orchestration` | `tap` (hand a task to the specialist that fits it) + `schedule` (defer/recur loops) — orchestrator-tier | built-in |
 | `runtime` | `mcp` · `agent`-register · `skill` · `capability` — runtime config (high-trust) | built-in |
 | `filesystem-read` / `filesystem-write` | `view`, `workdir` / `text_editor`, `batch_edit`, `extract_lines` | `octofs.toml` |
 | `shell` | `shell` (command execution) | `octofs.toml` |
