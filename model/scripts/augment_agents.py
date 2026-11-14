@@ -20,8 +20,13 @@ embeds only its first 512 tokens (octolib's ONNX provider truncates there).
 The `long` style is written past that window so both training and the eval
 see what the runtime sees: the opening of a long brief, cut mid-material.
 
-  uv run python scripts/augment_agents.py            # both splits, all agents
-  uv run python scripts/augment_agents.py --resume   # only what is missing
+The file is a frozen record and every run only adds what is missing: an
+agent, split or style that has no briefs yet. Eval briefs written once
+stay, so routing scores remain comparable across retrains. To replace an
+agent's briefs (its description changed), delete its lines first.
+
+  uv run python scripts/augment_agents.py                  # whatever is missing
+  uv run python scripts/augment_agents.py --only developer  # one domain or tag
 """
 
 from __future__ import annotations
@@ -155,7 +160,6 @@ def main() -> int:
     ap.add_argument("--split", choices=["train", "eval", "both"], default="both")
     ap.add_argument("--only", type=str, default="", help="comma-separated agent tags or domains")
     ap.add_argument("--workers", type=int, default=8)
-    ap.add_argument("--resume", action="store_true", help="append, skipping (agent, split, style) already present")
     args = ap.parse_args()
 
     if not os.environ.get("ANTHROPIC_API_KEY"):
@@ -172,12 +176,12 @@ def main() -> int:
         agents = [a for a in agents if a["tag"] in allow or a["domain"] in allow]
 
     done: set[tuple[str, str, str]] = set()
-    if args.resume and args.out.exists():
+    if args.out.exists():
         with args.out.open() as f:
             for line in f:
                 row = json.loads(line)
                 done.add((row["agent"], row["split"], row["style"]))
-        print(f"resume: {len(done)} (agent, split, style) already present")
+        print(f"{len(done)} (agent, split, style) already present")
 
     splits = ["train", "eval"] if args.split == "both" else [args.split]
     jobs: list[tuple[dict, str, dict[str, int]]] = []
@@ -193,7 +197,7 @@ def main() -> int:
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
     written = failures = 0
-    with args.out.open("a" if args.resume else "w") as fp, ThreadPoolExecutor(max_workers=args.workers) as pool:
+    with args.out.open("a") as fp, ThreadPoolExecutor(max_workers=args.workers) as pool:
         futures = {
             pool.submit(generate, SPLIT_MODELS[split], agent, by_domain[agent["domain"]], counts): (agent, split)
             for agent, split, counts in jobs

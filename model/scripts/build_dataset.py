@@ -964,7 +964,9 @@ def write_agent_dataset(
                 "label": f"agent:{agents[idx]['tag']}",
             }) + "\n")
 
-    if mining_model is None or not rows:
+    if mining_model is None:
+        # A triplets file from an earlier run would still be trained on.
+        triplets_out.unlink(missing_ok=True)
         return len(rows), 0
 
     import numpy as np
@@ -1094,10 +1096,14 @@ def main() -> int:
 
     agents = load_agents(args.agents)
     briefs_by_agent = load_agent_briefs(args.agent_briefs)
+    # Briefs exist only as LLM output; there is no rule-based stand-in, and a
+    # model trained without them silently loses the routing half.
     without_briefs = [a["tag"] for a in agents if not any(r["split"] == "train" for r in briefs_by_agent.get(a["tag"], []))]
     if without_briefs:
-        print(f"[warn] {len(without_briefs)} agents have no training briefs (run augment_agents.py --resume): "
-              f"{', '.join(without_briefs[:8])}", file=sys.stderr)
+        raise SystemExit(
+            f"{len(without_briefs)} agents have no training briefs in {args.agent_briefs} "
+            f"({', '.join(without_briefs[:8])}). Run: uv run python scripts/augment_agents.py"
+        )
     n_agent_pairs, n_agent_triplets = write_agent_dataset(
         agents,
         briefs_by_agent,

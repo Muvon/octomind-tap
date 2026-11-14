@@ -38,6 +38,7 @@ and the trainer keeps the checkpoint with the highest dev MRR@10.
 from __future__ import annotations
 
 import argparse
+import dataclasses
 import json
 import os
 import random
@@ -66,6 +67,7 @@ try:
         MatryoshkaLoss,
         MultipleNegativesRankingLoss,
     )
+    from sentence_transformers.sentence_transformer.data_collator import SentenceTransformerDataCollator
     from sentence_transformers.sentence_transformer.training_args import BatchSamplers, MultiDatasetBatchSamplers
 except ImportError:
     from sentence_transformers.evaluation import InformationRetrievalEvaluator
@@ -75,6 +77,7 @@ except ImportError:
         MatryoshkaLoss,
         MultipleNegativesRankingLoss,
     )
+    from sentence_transformers.data_collator import SentenceTransformerDataCollator
     from sentence_transformers.training_args import BatchSamplers, MultiDatasetBatchSamplers
 from torch.utils.data import DataLoader
 
@@ -146,6 +149,7 @@ def build_loss(
     model: SentenceTransformer,
     loss_cfg: dict,
     mini_batch_size: int,
+    scale: float,
 ):
     """Compose the loss stack from config.
 
@@ -168,7 +172,6 @@ def build_loss(
     # margin our runtime gate depends on. Lowering it softens the contrast
     # so an already-well-separated base (e.g. MiniLM) can be nudged without
     # losing its native spread. Only affects the MNRL-family losses.
-    scale = float(loss_cfg.get("scale", 20.0))
 
     if use_gist:
         guide_name = loss_cfg.get("gist_guide", "BAAI/bge-small-en-v1.5")
@@ -201,6 +204,41 @@ def build_loss(
         inner = MatryoshkaLoss(model, inner, matryoshka_dims=dims, matryoshka_weights=weights)
 
     return inner
+
+
+# ---------------------------------------------------------------------------
+# Padding control
+#
+# The collator pads every row of the 256-row batch to its longest text. One
+# 512-token task brief among short ones made each of the eight mini-batches
+# run at 512 tokens: 558 s per step on the CPU training box (2026-11). Rows
+# are therefore sorted by length, so neighbours in a mini-batch are alike,
+# and each mini-batch is cut to its own longest row before the encoder runs.
+# Neither changes the loss: row order inside a batch does not matter to
+# in-batch negatives, and the cut columns are padding the mask hides anyway.
+# ---------------------------------------------------------------------------
+
+
+class LengthSortedCollator(SentenceTransformerDataCollator):
+    def __call__(self, features: list[dict]) -> dict:
+        return super().__call__(sorted(features, key=lambda row: len(row["anchor"])))
+
+
+class LengthSortedTrainer(SentenceTransformerTrainer):
+    data_collator_class = LengthSortedCollator
+
+
+def trim_padding(_module, args: tuple) -> tuple:
+    """Forward pre-hook for the transformer module: drop the token columns
+    that are padding in every row of this mini-batch."""
+    features = args[0]
+    width = features["attention_mask"].shape[1]
+    longest = int(features["attention_mask"].sum(dim=1).max())
+    trimmed = {
+        key: value[:, :longest] if isinstance(value, torch.Tensor) and value.ndim == 2 and value.shape[1] == width else value
+        for key, value in features.items()
+    }
+    return (trimmed, *args[1:])
 
 
 # ---------------------------------------------------------------------------
@@ -377,10 +415,18 @@ def train_modern(
         train_datasets["agent_triplets"] = load_triplets_ds(agent_triplets_path)
         print(f"loaded {len(train_datasets['agent_triplets'])} agent triplet examples from {agent_triplets_path.name}")
 
-    # Build one loss instance per dataset. Both share the same model and
-    # the same loss class — they differ only in column count.
+    # Build one loss instance per dataset. All share the same model and the
+    # same loss class; they differ in column count and in `scale`: the
+    # capability files train at `loss.scale`, the agent files at
+    # `loss.agent_scale` (see configs/default.yaml for why they differ).
     mini_batch_size = int(train_cfg.get("mini_batch_size", train_cfg["batch_size"]))
-    losses = {name: build_loss(model, loss_cfg, mini_batch_size) for name in train_datasets}
+    losses = {
+        name: build_loss(
+            model, loss_cfg, mini_batch_size,
+            scale=float(loss_cfg["agent_scale"] if name.startswith("agent_") else loss_cfg["scale"]),
+        )
+        for name in train_datasets
+    }
 
     # Per-device (real compute/memory) batch. These two loss paths size it
     # differently and conflating them was silently wrong:
@@ -445,13 +491,17 @@ def train_modern(
         dataloader_pin_memory=torch.cuda.is_available(),
     )
 
-    trainer = SentenceTransformerTrainer(
+    trainer = LengthSortedTrainer(
         model=model,
         args=targs,
         train_dataset=train_datasets,
         loss=losses,
         evaluator=evaluator,
     )
+
+    if model.tokenizer.padding_side != "right":
+        raise SystemExit(f"trim_padding cuts trailing columns; tokenizer pads on the {model.tokenizer.padding_side}")
+    trim_hook = model[0].register_forward_pre_hook(trim_padding)
 
     print(
         f"training {len(train_datasets)} objective(s) for {train_cfg['epochs']} epochs "
@@ -467,6 +517,26 @@ def train_modern(
             trainer.train()
     else:
         trainer.train()
+
+    # Second phase: the agent files alone, with a fresh optimizer and warmup.
+    # More capability batches cost accuracy on real prompts while more agent
+    # batches keep helping routing (2026-11, capability top-1 / routing
+    # handoff): 105 mixed steps 0.940 / 0.338, 210 mixed steps 0.931 / 0.396,
+    # 105 mixed + 105 agent-only steps 0.939 / 0.418.
+    agent_steps = int(train_cfg["agent_steps"])
+    agent_datasets = {name: ds for name, ds in train_datasets.items() if name.startswith("agent_")}
+    if agent_steps > 0 and agent_datasets:
+        print(f"agent phase: {agent_steps} steps on {', '.join(agent_datasets)}")
+        LengthSortedTrainer(
+            model=model,
+            args=dataclasses.replace(
+                targs, max_steps=agent_steps,
+                eval_strategy="no", load_best_model_at_end=False, metric_for_best_model=None,
+            ),
+            train_dataset=agent_datasets,
+            loss={name: losses[name] for name in agent_datasets},
+        ).train()
+    trim_hook.remove()
     trainer.save_model(str(out_dir))
 
 
@@ -524,8 +594,12 @@ def main() -> int:
     # (torch picks physical cores, ignores SMT). For this small encoder
     # the forward/backward is compute-bound, so use every core. No-op
     # benefit on GPU but harmless.
+    # On a box that other jobs share, every core is the wrong count: at load
+    # 36 on 12 cores a mini-batch took 12.8 s with 12 threads and 2-4 s with
+    # 4 (2026-11). OMP_NUM_THREADS, when set, is the caller's measured count.
     if not torch.cuda.is_available():
-        torch.set_num_threads(os.cpu_count() or torch.get_num_threads())
+        if "OMP_NUM_THREADS" not in os.environ:
+            torch.set_num_threads(os.cpu_count() or torch.get_num_threads())
         print(f"CPU training: torch threads = {torch.get_num_threads()}")
 
     model = SentenceTransformer(cfg["base_model"], device=None if torch.cuda.is_available() else "cpu")

@@ -17,6 +17,12 @@ train:
   # ~105 steps (the shipped run: a 25% random subset, seed 42, one epoch)
   # gave the soup 0.870 vs 0.846. Same LR, same data order otherwise.
   max_steps: 105
+  # Steps of a second phase on the agent files alone (0 = none). Routing
+  # keeps improving with agent batches, while capability batches past ~50
+  # start to cost top-1 on real prompts, so the extra steps go to agents
+  # only: 105 mixed + 105 agent steps gave capability gate 0.823 and routing
+  # handoff 0.418, against 0.802 and 0.396 for 210 mixed steps (2026-11).
+  agent_steps: 105
   # Effective batch for in-batch negatives (GradCache chunks it into
   # `mini_batch_size` pieces, so this is not the memory load).
   batch_size: 256
@@ -37,8 +43,11 @@ train:
   max_seq_length: 512
   # How batches are drawn across the four training files (capability pairs
   # and triplets, agent pairs and triplets): `proportional` to file size, or
-  # `round_robin` for the same number of batches from each.
-  multi_dataset_sampler: proportional
+  # `round_robin` for the same number of batches from each. Proportional
+  # gives the agent files a sixth of the batches; with the same 105 steps
+  # routing handoff was 0.290 against 0.342 for round_robin, at the same
+  # capability gate (2026-11).
+  multi_dataset_sampler: round_robin
   seed: 42
   evaluation_steps: 0   # 0 = evaluate at end of each epoch
   save_best_model: true
@@ -59,6 +68,8 @@ loss:
   # saturates the space and crushes the margin; 10 keeps the base's
   # spread while still sharpening the capability clusters.
   scale: 10.0
+  # The same setting for the agent files (agent_pairs / agent_triplets).
+  agent_scale: 10.0
   # Matryoshka: the same weights stay usable at truncated dims. The
   # runtime serves the full 384-dim vector, so it gets the weight.
   # https://sbert.net/examples/sentence_transformer/training/matryoshka/README.html
@@ -76,14 +87,6 @@ loss:
 #   https://arxiv.org/abs/2109.01903  https://arxiv.org/abs/2203.05482
 soup:
   alphas: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6]
-
-export:
-  # int8 with a 7-bit weight range. Artifact-specific, not model-specific:
-  # on the raw-corpus gate it rescued the untrained granite base (0.747 →
-  # 0.837) but HURT the shipped soup (0.848 → 0.785, fp32 0.870) and
-  # bge-small. Default per-channel int8 is the right call for what ships;
-  # bin/train scores the int8 graph so a regression is visible.
-  reduce_range: false
 
 data:
   pairs_path: data/pairs.jsonl
