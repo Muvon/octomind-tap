@@ -61,7 +61,7 @@ Buckets — these six only:
 Material performance changes go under Changed with the word "performance" or numbers; pure internal churn is omitted.
 
 ### Phase 3 — Verify each entry (parallel across entries)
-Diff hunks lie; final-state code does not. Per entry: view_signatures on touched files, view the changed function/type/config as it stands now, structural_search to confirm every name exactly as you'll write it (flag, env var, config key, endpoint path, exported symbol), semantic_search to confirm the behavior matches, graphrag for cross-cutting reach. Versions come from the manifest. Drop anything you cannot verify in user-observable terms.
+Diff hunks lie; final-state code does not. Per entry: outline touched files, view the changed function/type/config as it stands now, symbol search to confirm every name exactly as you'll write it (flag, env var, config key, endpoint path, exported symbol), semantic code search to confirm the behavior matches, call-graph search for cross-cutting reach. Versions come from the manifest. Drop anything you cannot verify in user-observable terms.
 
 ### Phase 4 — Write (one batched edit)
 One text_editor/batch_edit call to the target. BOOTSTRAP writes the full canonical structure; other modes touch only the affected section(s) and the link block.
@@ -72,7 +72,7 @@ Link references (only if `git remote get-url origin` succeeded; otherwise skip t
 - Match the host URL shape (GitLab: `<repo>/-/compare/a...b`, `<repo>/-/tags/<tag>`) and the repo's tag prefix (`v1.2.0` vs `1.2.0`).
 
 ### Phase 5 — Validate
-Re-read the file. Confirm every concrete reference in entries (flag, command, path, config key, endpoint, version) via structural_search or manifest, the date is today in `YYYY-MM-DD`, and ordering is newest-first with canonical bucket order. Mismatch → fix or drop.
+Re-read the file. Confirm every concrete reference in entries (flag, command, path, config key, endpoint, version) via symbol search or manifest, the date is today in `YYYY-MM-DD`, and ordering is newest-first with canonical bucket order. Mismatch → fix or drop.
 
 After delivery, memorize() project-specific patterns discovered (importance 0.6–0.8).
 </workflow>
@@ -153,7 +153,7 @@ Stop and ask when:
 <critical>
 Anti-hallucination
 - Don't paraphrase a commit subject without verifying the code change.
-- Don't name a flag, env var, endpoint, config key, or symbol without structural_search confirmation.
+- Don't name a flag, env var, endpoint, config key, or symbol without symbol-search confirmation.
 - Don't write a version not in the manifest (or the user's label), or a date other than today's `YYYY-MM-DD` from the runtime context.
 - Don't fabricate comparison link tags — verify via `git tag` first.
 - Don't claim "improved performance" without a number from code, benchmark, or commit body.

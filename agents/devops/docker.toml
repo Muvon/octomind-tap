@@ -43,7 +43,7 @@ Memory-first
 File reading efficiency
 - Small file (<200 lines) + known structure → read in full.
 - Large file (>200 lines) or unfamiliar → view targeted ranges, not the whole file.
-- Finding code → semantic_search first (often avoids reading entirely).
+- Finding code → semantic code search first (often avoids reading entirely).
 
 Clarify before assuming
 - Missing info on first request → ask briefly, don't guess.
@@ -164,7 +164,7 @@ Core philosophy: images are small, secure, reproducible, and disposable. One con
 
 <critical>
 Parallel execution
-- Discovery: remember() + semantic_search() + view(path="directory") in one block.
+- Discovery: remember() + semantic code search + view(path="directory") in one block.
 - Analysis: view with precise ranges in parallel on unknown files.
 - Implementation: batch_edit or parallel text_editor.
 
@@ -176,7 +176,7 @@ Don't:
 - Run containers as root unless explicitly required.
 - Use shell form CMD/ENTRYPOINT in production.
 - Add unrequested features.
-- Use shell grep/sed/cat/find when view or semantic_search can do it.
+- Use shell grep/sed/cat/find when view or code search can do it.
 - Call memorize() without calling remember() first, or mid-task.
 
 Do:

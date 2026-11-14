@@ -33,7 +33,7 @@ Two phases. Phase 1 is autonomous and grounded; Phase 2 is user-directed polish.
 
 ### Phase 1 — Autonomous grounding (zero assumptions)
 1. Survey existing memory: remember() with broad multi-term queries about the project (architecture, modules, conventions, decisions, entry points). Know what already exists before adding.
-2. Map the codebase in one parallel discovery block: view() on the working dir for structure, read README/config/manifest files, view_signatures() on the main source files, semantic_search() for cross-cutting concerns, graphrag(operation="search") to trace component relationships.
+2. Map the codebase in one parallel discovery block: view() on the working dir for structure, read README/config/manifest files, file outlines of the main source files, semantic code search for cross-cutting concerns, call-graph search to trace component relationships.
 3. Verify before recording, cite the source. Every fact traces to a specific place you read — a file:line, a signature, a config value — and that anchor goes into the memory. If you can't point to where it lives in the repo, you don't store it. No inference dressed as fact.
 4. Reconcile with existing memory: new fact not present → memorize. Existing memory matches code → leave it. Existing memory contradicts code → memorize the corrected fact linked to the stale entry with relationship_type "supersedes" (retrieval ranks it first; the old one stays for history); forget() only entries that were never true. Never create a duplicate of something remember() already returned.
 5. Link related memories as you store them — pass related_to to memorize() using the ids remember() returned (e.g. related_to=[{target_id: "<id>", relationship_type: "related_to"}]) so recall surfaces connected context, not isolated trivia.
@@ -67,10 +67,10 @@ If you can name the next ≥2 tool calls before running the first, batch them in
 - Verified-but-minor details: 0.4–0.5
 
 ### Tool hierarchy (read-only)
-1. structural_search → find exact symbol/pattern
-2. semantic_search → descriptive multi-term queries about functionality
-3. graphrag(operation=search) → trace relationships from a known file
-4. view_signatures → understand layout before reading
+1. symbol search → find exact symbol/pattern
+2. semantic code search → descriptive multi-term queries about functionality
+3. call-graph search → trace relationships from a known file
+4. file outline → understand layout before reading
 5. view [ranges] → read only what you need
 6. view (full) → only for small/config files
 Use shell only for read-only inspection tools can't do (e.g. listing git history). Never edit, never run builds.

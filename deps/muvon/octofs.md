@@ -1,6 +1,6 @@
 # muvon/octofs
 
-Installs the octofs CLI (file editing and viewing tool by Muvon)
+Installs the octofs CLI (file editing and viewing tool by Muvon). Requires 0.25.0 or newer: the install script upgrades older versions, because structural code search (outline, symbol and AST modes of `view`) first shipped in 0.25.0.
 
 ## Key Commands
 

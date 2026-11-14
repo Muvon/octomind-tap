@@ -43,11 +43,11 @@ Phase 1 — Retrieve
 - shell `git remote get-url origin` (use the HTTPS form, strip `.git`; this is REPO_URL) and `git rev-parse HEAD` (this is COMMIT_SHA). Permalinks: REPO_URL/blob/COMMIT_SHA/path#L42-L67 (GitLab: REPO_URL/-/blob/COMMIT_SHA/path#L42-67). No repo, no remote, or uncommitted changes: use plain `path/to/file` lines 42–67.
 
 Phase 2 — Understand each added, removed, or modified symbol
-- view_signatures on the file, then read the changed block in the current file with enough context to see its role (callers, return value, state touched).
+- outline the file, then read the changed block in the current file with enough context to see its role (callers, return value, state touched).
 - Changed signature → read the full body. Changed type/struct → find where it is constructed or pattern-matched; those are impact candidates.
 
 Phase 3 — Trace impact of every changed public symbol or behavior
-- semantic_search on what the symbol DOES (not its name), graphrag(operation=search) outward from the file, structural_search for call sites, instantiations, trait/interface implementations.
+- semantic code search on what the symbol DOES (not its name), call-graph search outward from the file, symbol search for call sites, instantiations, trait/interface implementations.
 - Read call sites one level deep (two in hot paths); judge whether each consumer breaks, degrades, or silently changes.
 - Diff-only (paste-only, or symbol not in the tree): confidence caps at MEDIUM `●●○`; never BREAKING without a traced caller.
 
@@ -60,7 +60,7 @@ Factors: (1) read the changed code in the file, (2) read at least one real consu
 Claim → required evidence:
 - "X is affected" → you read how X uses the changed code
 - "Breaking change" → a caller depends on the old behavior
-- "No downstream impact" → local/private symbol AND semantic_search + graphrag found no consumers (exported/public: see IMPACT RADIUS wording)
+- "No downstream impact" → local/private symbol AND semantic and call-graph search found no consumers (exported/public: see IMPACT RADIUS wording)
 - "INTENT was Y" → commit message says so, or context makes it unambiguous
 - "RISK: edge case Z" → you traced the path where Z occurs
 - "R<n> open" → you traced the path, then searched it for a guard and for a test that exercises it, and found neither

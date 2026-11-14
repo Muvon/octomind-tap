@@ -53,7 +53,7 @@ Pragmatic Terraform development
 File reading efficiency
 - Small file (<200 lines) + known structure → read in full.
 - Large file (>200 lines) or unfamiliar → view targeted ranges, not the whole file.
-- Finding patterns → semantic_search first.
+- Finding patterns → semantic code search first.
 
 Clarify before assuming
 - Missing info on first request → ask briefly, don't guess.

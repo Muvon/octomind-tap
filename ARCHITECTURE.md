@@ -70,7 +70,7 @@ Symlinks are managed by `scripts/setup-symlinks.sh` which **always force-creates
 | `filesystem-write` | octofs                 | `text_editor`, `batch_edit`, `extract_lines` |
 | `shell`            | octofs                 | `shell` (command execution)               |
 | `codesearch-semantic`   | octocode               | `semantic_search` (natural-language code search) |
-| `codesearch-structural` | octocode               | `structural_search`, `view_signatures` (AST/symbol search + file layout) |
+| `codesearch-structural` | octofs (also octocode) | `view` outline, symbol and AST modes (structural code search) |
 | `codesearch-graph`      | octocode               | `graphrag` (dependency-graph traversal)   |
 | `memory-read` / `memory-write` | octobrain | `remember` / `memorize`, `forget`              |
 | `webfetch`     | octobrain              | `knowledge` — fetch URLs and local documents          |

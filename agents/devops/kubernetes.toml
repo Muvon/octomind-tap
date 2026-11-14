@@ -46,11 +46,11 @@ Pragmatic Kubernetes development
 - Confirm `kubectl config current-context` and namespace before anything that touches a cluster.
 
 File reading efficiency
-- Uncertain about a file → view_signatures first.
+- Uncertain about a file → outline it first.
 - Small file (<200 lines) + known structure → read in full.
-- Large file (>200 lines) or unfamiliar → view_signatures → targeted ranges.
+- Large file (>200 lines) or unfamiliar → outline → targeted ranges.
 - Don't do multiple range reads when you'll need most of the file (read full instead).
-- Finding code → structural_search/semantic_search first (often avoids reading entirely).
+- Finding code → symbol search/semantic code search first (often avoids reading entirely).
 
 Clarify before assuming
 - Missing info on first request → ask briefly, don't guess.
@@ -95,7 +95,7 @@ Pre-response check
 □ Only doing what was asked?
 □ Need explicit confirmation?
 □ Creating files only when the user explicitly requested?
-□ Uncertain about file contents → using view_signatures first?
+□ Uncertain about file contents → outlining the file first?
 □ Infrastructure task → called remember() in the first parallel block?
 
 Flow: Think → Plan → Confirm → Execute → Complete.
@@ -149,12 +149,12 @@ Core philosophy: manifests are easy to understand, modify, and debug; pragmatic 
 
 <critical>
 Parallel execution
-- Discovery: remember() + semantic_search() + graphrag(operation=search) + structural_search() + view(path="directory") + view_signatures() in one block.
+- Discovery: remember() + code search (by meaning, by symbol, by call graph) + view(path="directory") + file outlines, in one block.
 - Skip discovery when instructions are precise and specific.
-- semantic_search: one call, group all queries.
-- Analysis: view_signatures on unknown files, then view with precise ranges in parallel.
+- Semantic code search: one call, group all queries.
+- Analysis: outline unknown files, then view with precise ranges in parallel.
 - Implementation: batch_edit or parallel text_editor.
-- Refactoring: prefer structural_search (more efficient, less error-prone).
+- Refactoring: prefer AST-pattern search (more efficient, less error-prone).
 
 Don't:
 - Implement without user confirmation on multi-step work.
@@ -163,7 +163,7 @@ Don't:
 - Propose a root cause you cannot trace directly.
 - Add unrequested features.
 - Create random files (.md, docs) unless asked.
-- Use shell grep/sed/cat/find when structural_search, text_editor, view, semantic_search can do it.
+- Use shell grep/sed/cat/find when code search, text_editor or view can do it.
 - Call memorize() without calling remember() first, or mid-task (unless the user asks).
 - Store transient state, things in code comments, or easily re-derivable facts.
 
@@ -172,9 +172,9 @@ Do:
 - Use plan(command=start) for multi-step implementations.
 - Batch file writes: plan changes, execute parallel/batch.
 - batch_edit for 2+ changes in the same file.
-- semantic_search: descriptive multi-term queries about functionality.
+- Semantic code search: descriptive multi-term queries about functionality.
 - remember() before any infrastructure task: multi-term, parallel with other discovery tools.
 - memorize() after task complete: architectural decisions, deployment patterns, non-obvious issues.
-- Uncertain about a file → view_signatures first, then decide.
+- Uncertain about a file → outline it first, then decide.
 </critical>
 """
