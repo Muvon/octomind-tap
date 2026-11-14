@@ -178,8 +178,8 @@ top_k = 0
 | `runtime` | `mcp` · `agent`-register · `skill` · `capability` — runtime config (high-trust) | built-in |
 | `filesystem-read` / `filesystem-write` | `view`, `workdir` / `text_editor`, `batch_edit`, `extract_lines` | `octofs.toml` |
 | `shell` | `shell` (command execution) | `octofs.toml` |
-| `codesearch-semantic` / `-graph` | `semantic_search` / `graphrag` | `octocode.toml` |
-| `codesearch-structural` | `view` outline, symbol and AST modes; `octocode.toml` as alternative | `octofs.toml` |
+| `codesearch-semantic` | `semantic_search` | `octocode.toml` |
+| `codesearch-structural` / `-graph` | `view` outline and AST modes, `symbol` definitions and references / `symbol` callers, callees, imports and type hierarchies; `octocode.toml` as alternative | `octofs.toml` |
 | `memory-read` / `memory-write` | persistent memory tools | `octobrain.toml` |
 | `websearch` | web search | `duckduckgo.toml` |
 | `versioning` | git operations via octofs shell (default); MCP git server as `git.toml` | `octofs.toml` |

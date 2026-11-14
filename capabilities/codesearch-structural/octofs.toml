@@ -1,15 +1,15 @@
 # capabilities/codesearch-structural/octofs.toml
 # Capability: codesearch-structural
-# Provider: octofs — structural (AST/symbol) code search through the octofs view tool; needs octofs 0.25.0+
+# Provider: octofs — structural (AST/symbol) code search through the octofs view and symbol tools; needs octofs 0.25.0+
 # Title: Code Search (Structural)
-# Description: Get a file's code outline, find symbol definitions and references by name, and match AST patterns (ast-grep style) with octofs view.
+# Description: Get a file's code outline, find symbol definitions and references by name, and match AST patterns (ast-grep style) with octofs.
 
 [deps]
 require = ["muvon/octofs"]
 
 [roles.mcp]
 server_refs = ["octofs"]
-allowed_tools = ["octofs:view"]
+allowed_tools = ["octofs:view", "octofs:symbol"]
 
 [[mcp.servers]]
 name = "octofs"
