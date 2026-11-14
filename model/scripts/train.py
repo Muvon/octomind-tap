@@ -66,7 +66,7 @@ try:
         MatryoshkaLoss,
         MultipleNegativesRankingLoss,
     )
-    from sentence_transformers.sentence_transformer.training_args import BatchSamplers
+    from sentence_transformers.sentence_transformer.training_args import BatchSamplers, MultiDatasetBatchSamplers
 except ImportError:
     from sentence_transformers.evaluation import InformationRetrievalEvaluator
     from sentence_transformers.losses import (
@@ -75,7 +75,7 @@ except ImportError:
         MatryoshkaLoss,
         MultipleNegativesRankingLoss,
     )
-    from sentence_transformers.training_args import BatchSamplers
+    from sentence_transformers.training_args import BatchSamplers, MultiDatasetBatchSamplers
 from torch.utils.data import DataLoader
 
 warnings.filterwarnings("ignore", category=FutureWarning)
@@ -366,6 +366,17 @@ def train_modern(
     else:
         print(f"no triplets at {triplets_path}; training on pairs only")
 
+    # The routing half: (task brief, agent text) pairs and their hard
+    # negatives, written by build_dataset.py when data/agent_briefs.jsonl exists.
+    agent_pairs_path = pairs_path.with_name("agent_pairs.jsonl")
+    agent_triplets_path = pairs_path.with_name("agent_triplets.jsonl")
+    if agent_pairs_path.exists():
+        train_datasets["agent_pairs"] = load_pairs_ds(agent_pairs_path)
+        print(f"loaded {len(train_datasets['agent_pairs'])} agent pair examples from {agent_pairs_path.name}")
+    if agent_triplets_path.exists():
+        train_datasets["agent_triplets"] = load_triplets_ds(agent_triplets_path)
+        print(f"loaded {len(train_datasets['agent_triplets'])} agent triplet examples from {agent_triplets_path.name}")
+
     # Build one loss instance per dataset. Both share the same model and
     # the same loss class — they differ only in column count.
     mini_batch_size = int(train_cfg.get("mini_batch_size", train_cfg["batch_size"]))
@@ -408,11 +419,20 @@ def train_modern(
         warmup_ratio=train_cfg["warmup_ratio"],
         weight_decay=train_cfg["weight_decay"],
         fp16=use_fp16,
+        # Without CUDA, train on the CPU even where Apple's MPS exists: the
+        # cached loss copies the device RNG state through
+        # torch.utils.checkpoint, which has no MPS branch and raises
+        # "module 'torch.mps' has no attribute 'device'".
+        use_cpu=not torch.cuda.is_available(),
         # `BatchSamplers.NO_DUPLICATES` is mandatory for MNRL-family
         # losses: the in-batch-negatives signal collapses if a batch
         # contains two anchors for the same positive (they would
         # appear as each other's "negative").
         batch_sampler=BatchSamplers.NO_DUPLICATES,
+        # How batches are drawn across the datasets. `proportional` follows
+        # dataset size, so the capability pairs (the largest file by far)
+        # take most steps; `round_robin` gives every dataset the same number.
+        multi_dataset_batch_sampler=MultiDatasetBatchSamplers(train_cfg.get("multi_dataset_sampler", "proportional")),
         eval_strategy="epoch" if evaluator is not None else "no",
         save_strategy="epoch",
         save_total_limit=2,
@@ -508,7 +528,7 @@ def main() -> int:
         torch.set_num_threads(os.cpu_count() or torch.get_num_threads())
         print(f"CPU training: torch threads = {torch.get_num_threads()}")
 
-    model = SentenceTransformer(cfg["base_model"])
+    model = SentenceTransformer(cfg["base_model"], device=None if torch.cuda.is_available() else "cpu")
     model.max_seq_length = train_cfg["max_seq_length"]
 
     # Determine output directory: a fresh timestamped one for a normal

@@ -9,12 +9,12 @@ Output: model/data/intents.jsonl, one JSON object per line:
 
 `build_dataset.py` auto-loads this file if present.
 
-Provider: Anthropic Claude (Haiku for cost). Override with --provider openai
-if preferred. Reads API key from ANTHROPIC_API_KEY or OPENAI_API_KEY.
+Provider: Anthropic Claude. Override with --provider openai if preferred.
+Reads API key from ANTHROPIC_API_KEY or OPENAI_API_KEY.
 
-Cost rough estimate (Haiku):
-  53 caps × 5 triggers × 10 paraphrases × ~80 tokens ≈ 210k output tokens
-  ≈ $0.25 input + $1.05 output ≈ $1.30 total.
+Size of a full run: one call per trigger (about 860 in 2026-11), 10
+paraphrases each, about 100 output tokens per call. `--resume` only pays
+for triggers that have no paraphrases yet.
 """
 
 from __future__ import annotations
@@ -165,11 +165,11 @@ def parse_array(text: str) -> list[str]:
         if l == -1 or r == -1 or r <= l:
             raise
         parsed = json.loads(t[l:r + 1])
+    # JSON mode returns an object, with the array under a key the model picks.
     if isinstance(parsed, dict):
-        for key in ("items", "paraphrases", "intents", "results"):
-            if key in parsed and isinstance(parsed[key], list):
-                parsed = parsed[key]
-                break
+        lists = [v for v in parsed.values() if isinstance(v, list)]
+        if len(lists) == 1:
+            parsed = lists[0]
     if not isinstance(parsed, list):
         raise ValueError(f"expected JSON array, got {type(parsed).__name__}")
     out = []
@@ -199,7 +199,7 @@ def main() -> int:
     ap.add_argument("--resume", action="store_true", help="append, skipping (label,source) pairs already present")
     args = ap.parse_args()
 
-    model_name = args.model or {"anthropic": "claude-haiku-4-5", "openai": "gpt-4o-mini"}[args.provider]
+    model_name = args.model or {"anthropic": "claude-sonnet-5-5", "openai": "gpt-6-luna"}[args.provider]
     key_env = "ANTHROPIC_API_KEY" if args.provider == "anthropic" else "OPENAI_API_KEY"
     if not os.environ.get(key_env):
         print(f"set {key_env} env var", file=sys.stderr)

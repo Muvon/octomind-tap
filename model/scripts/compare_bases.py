@@ -39,6 +39,10 @@ from sentence_transformers import SentenceTransformer
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from eval_gate import cap_score, select_with_margin, load_triggers_from_pairs  # noqa: E402
+from eval_route import (  # noqa: E402
+    DEFAULT_MARGINS, DEFAULT_THRESHOLDS, MAX_FIRED, MAX_WRONG,
+    best_point, load_agents, load_eval_briefs, ranking_metrics, score_rows,
+)
 
 # Default roster. `q`/`d` are optional query/doc prefixes for asymmetric
 # models — when present the model needs a runtime change to deploy
@@ -103,7 +107,8 @@ def grid_best_gate(scored_per_row: list[list[tuple[float, str]]],
 
 def eval_model(spec: dict, eval_rows: list[dict], triggers_by_cap: dict,
                top_k: int, thresholds: list[float], margins: list[float],
-               target_fpr: float, batch_size: int) -> dict:
+               target_fpr: float, batch_size: int,
+               agents: list[dict], briefs: list[dict]) -> dict:
     mid = spec["id"]
     q_pref = spec.get("q", "")
     d_pref = spec.get("d", "")
@@ -148,7 +153,25 @@ def eval_model(spec: dict, eval_rows: list[dict], triggers_by_cap: dict,
             margins_top1.append(scored[0][0] - (scored[1][0] if len(scored) > 1 else 0.0))
 
     gate = grid_best_gate(scored_per_row, eval_rows, thresholds, margins, target_fpr)
+
+    # Routing, prefix-free like the runtime: top-1 in the brief's own domain
+    # and the handoff rate at the model's own best (threshold, margin).
+    route_rows = score_rows(model, agents, briefs)
+    route_best = best_point(
+        [route_rows],
+        [float(x) for x in DEFAULT_THRESHOLDS.split(",")],
+        [float(x) for x in DEFAULT_MARGINS.split(",")],
+        MAX_WRONG,
+        MAX_FIRED,
+    )
+    route = {
+        "top1_acc": ranking_metrics(route_rows)["domain"]["top1_acc"],
+        "handoff": route_best["handoff"] if route_best else 0.0,
+        "threshold": route_best["threshold"] if route_best else None,
+        "margin": route_best["margin"] if route_best else None,
+    }
     return {
+        "route": route,
         "model": mid,
         "tag": spec.get("tag", ""),
         "prefix": bool(q_pref or d_pref),
@@ -190,6 +213,9 @@ def main() -> int:
     thresholds = [float(x) for x in args.threshold_grid.split(",")]
     margins = [float(x) for x in args.margin_grid.split(",")]
 
+    agents = load_agents(root / eval_cfg["agents_path"])
+    briefs = load_eval_briefs(root / eval_cfg["agent_briefs_path"])
+
     roster = ([{"id": m.strip()} for m in args.models.split(",")]
               if args.models else DEFAULT_ROSTER)
 
@@ -198,25 +224,28 @@ def main() -> int:
         try:
             results.append(eval_model(spec, eval_rows, triggers_by_cap, top_k,
                                       thresholds, margins, args.target_fpr,
-                                      args.batch_size))
+                                      args.batch_size, agents, briefs))
         except Exception as e:  # one bad model shouldn't kill the sweep
             print(f"  FAILED {spec['id']}: {e}", flush=True)
 
     results.sort(key=lambda r: r["top1_acc"], reverse=True)
-    print("\n" + "=" * 118)
+    print("\n" + "=" * 134)
     print(f"{'model':<42}{'dim':>4}{'pfx':>4}{'top1':>7}{'top3':>7}"
-          f"{'margin':>8}{'gate':>7}{'fpr':>6}{'τ':>6}{'δ':>6}{'enc/s':>8}{'lat1ms':>8}")
-    print("-" * 118)
+          f"{'margin':>8}{'gate':>7}{'fpr':>6}{'τ':>6}{'δ':>6}{'enc/s':>8}{'lat1ms':>8}{'rt.top1':>8}{'rt.hand':>8}")
+    print("-" * 134)
     for r in results:
         g = r["best_gate"]
         print(f"{r['model']:<42}{r['dim']:>4}{('Y' if r['prefix'] else '-'):>4}"
               f"{r['top1_acc']:>7.3f}{r['top3_acc']:>7.3f}{r['mean_top1_margin']:>8.3f}"
               f"{g['gate_acc']:>7.3f}{g['null_fpr']:>6.3f}{g['threshold']:>6.2f}"
-              f"{g['margin']:>6.2f}{r['enc_intents_per_s']:>8.1f}{r['lat1_ms']:>8.1f}")
-    print("=" * 118)
+              f"{g['margin']:>6.2f}{r['enc_intents_per_s']:>8.1f}{r['lat1_ms']:>8.1f}"
+              f"{r['route']['top1_acc']:>8.3f}{r['route']['handoff']:>8.3f}")
+    print("=" * 134)
     print("top1/top3 = threshold-free ranking ceiling (fair base comparison).")
     print("gate/fpr/τ/δ = each model's OWN best operating point (max gate_acc, fpr<=%.2f)." % args.target_fpr)
     print("pfx=Y means the model needs query/doc prefixes → runtime change to deploy.")
+    print("rt.top1 = brief ranks its agent first within its domain; rt.hand = handoff rate at the model's own")
+    print("          best route point (wrong <= %.2f, foreign fired <= %.2f)." % (MAX_WRONG, MAX_FIRED))
 
     if args.json_out:
         args.json_out.write_text(json.dumps(results, indent=2))
