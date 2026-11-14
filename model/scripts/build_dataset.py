@@ -397,6 +397,57 @@ def load_llm_intents(path: Path) -> dict[str, list[tuple[str, str]]]:
 
 
 # ---------------------------------------------------------------------------
+# Agents: the routing corpus
+# ---------------------------------------------------------------------------
+#
+# `tap(action="run")` hands a task brief to the agent whose title and
+# description score highest against it (octomind/src/mcp/orchestration/
+# tap_route.rs). The text matched is "<title>. <description>" from the
+# manifest's header comments, so that is the document the model must rank.
+
+_AGENT_TITLE_RE = re.compile(r"(?m)^# Title:\s*(.+?)\s*$")
+_AGENT_DESCRIPTION_RE = re.compile(r"(?m)^# Description:\s*(.+?)\s*$")
+
+
+def load_agents(agents_dir: Path) -> list[dict]:
+    """Every agent manifest as {tag, domain, title, description, text, manifest}.
+
+    `text` is what the runtime embeds (tap_route.rs `describe`). Symlinks
+    are aliases of another manifest and are not routing candidates
+    (octomind `list_agent_headers` leaves them out), so they are skipped.
+    """
+    agents: list[dict] = []
+    for path in sorted(agents_dir.glob("*/*.toml")):
+        if path.is_symlink():
+            continue
+        manifest = path.read_text()
+        title = _AGENT_TITLE_RE.search(manifest)
+        description = _AGENT_DESCRIPTION_RE.search(manifest)
+        if not title or not description:
+            raise SystemExit(f"{path}: missing `# Title:` or `# Description:` header")
+        agents.append({
+            "tag": f"{path.parent.name}:{path.stem}",
+            "domain": path.parent.name,
+            "title": title.group(1),
+            "description": description.group(1),
+            "text": f"{title.group(1)}. {description.group(1)}",
+            "manifest": manifest,
+        })
+    return agents
+
+
+def load_agent_briefs(path: Path) -> dict[str, list[dict]]:
+    """data/agent_briefs.jsonl (from augment_agents.py) as {tag: [{brief, split, style}]}."""
+    out: dict[str, list[dict]] = {}
+    if not path.exists():
+        return out
+    with path.open() as f:
+        for line in f:
+            row = json.loads(line)
+            out.setdefault(row["agent"], []).append(row)
+    return out
+
+# ---------------------------------------------------------------------------
 # Splits and pair writing
 # ---------------------------------------------------------------------------
 
@@ -866,6 +917,88 @@ def mine_hard_negatives_from_retriever(
 
 
 # ---------------------------------------------------------------------------
+# Agent routing dataset
+# ---------------------------------------------------------------------------
+
+
+def write_agent_dataset(
+    agents: list[dict],
+    briefs_by_agent: dict[str, list[dict]],
+    raw_out: Path,
+    pairs_out: Path,
+    triplets_out: Path,
+    mining_model: str | None,
+    neg_siblings: int,
+    neg_foreign: int,
+    pos_aware_frac: float,
+) -> tuple[int, int]:
+    """Write the routing corpus, brief->agent pairs and hard-negative triplets.
+
+    A pair is (brief, the agent's runtime text): the same two sides the
+    runtime compares. In-batch negatives are other agents' texts. Triplets
+    add the agents a brief is most often confused with: the nearest ones of
+    its own domain, which a lead actually chooses between, and the nearest
+    ones outside it, which a caller that reaches every agent chooses between.
+    Briefs were written to be unambiguous inside their domain only, so a
+    foreign agent scoring close to the brief's own is dropped as a possible
+    second right answer (`pos_aware_frac`, as in retriever mining).
+
+    Returns (pairs written, triplets written).
+    """
+    raw_out.parent.mkdir(parents=True, exist_ok=True)
+    with raw_out.open("w") as fp:
+        for agent in agents:
+            fp.write(json.dumps({"tag": agent["tag"], "domain": agent["domain"], "text": agent["text"]}) + "\n")
+
+    rows: list[tuple[int, str]] = []  # (agent index, brief)
+    for idx, agent in enumerate(agents):
+        for row in briefs_by_agent.get(agent["tag"], []):
+            if row["split"] == "train":
+                rows.append((idx, row["brief"]))
+
+    with pairs_out.open("w") as fp:
+        for idx, brief in rows:
+            fp.write(json.dumps({
+                "anchor": brief,
+                "positive": agents[idx]["text"],
+                "label": f"agent:{agents[idx]['tag']}",
+            }) + "\n")
+
+    if mining_model is None or not rows:
+        return len(rows), 0
+
+    import numpy as np
+    from sentence_transformers import SentenceTransformer
+
+    print(f"loading model for agent negative mining: {mining_model}")
+    model = SentenceTransformer(mining_model)
+    agent_vecs = model.encode([a["text"] for a in agents], normalize_embeddings=True, convert_to_numpy=True)
+    brief_vecs = model.encode(
+        [brief for _, brief in rows], normalize_embeddings=True, convert_to_numpy=True,
+        batch_size=64, show_progress_bar=False,
+    )
+    domains = np.array([a["domain"] for a in agents])
+
+    written = 0
+    with triplets_out.open("w") as fp:
+        for (idx, brief), brief_vec in zip(rows, brief_vecs):
+            scores = agent_vecs @ brief_vec
+            own_domain = domains == domains[idx]
+            siblings = [int(i) for i in np.argsort(-scores) if own_domain[i] and i != idx][:neg_siblings]
+            ceiling = pos_aware_frac * float(scores[idx])
+            foreign = [int(i) for i in np.argsort(-scores) if not own_domain[i] and scores[i] <= ceiling][:neg_foreign]
+            for neg in siblings + foreign:
+                fp.write(json.dumps({
+                    "anchor": brief,
+                    "positive": agents[idx]["text"],
+                    "negative": agents[neg]["text"],
+                    "label": f"agent:{agents[idx]['tag']}",
+                    "neg_label": f"agent:{agents[neg]['tag']}",
+                }) + "\n")
+                written += 1
+    return len(rows), written
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -883,6 +1016,17 @@ def main() -> int:
     ap.add_argument("--holdout-out", type=Path, default=root / "data" / "holdout.jsonl")
     ap.add_argument("--raw-triggers-out", type=Path, default=root / "data" / "raw_triggers.jsonl",
                     help="the un-augmented corpus the runtime embeds (eval.triggers_path)")
+    ap.add_argument("--agents", type=Path, default=repo / "agents")
+    ap.add_argument("--agent-briefs", type=Path, default=root / "data" / "agent_briefs.jsonl",
+                    help="LLM-written task briefs per agent (from augment_agents.py)")
+    ap.add_argument("--raw-agents-out", type=Path, default=root / "data" / "raw_agents.jsonl",
+                    help="the agent texts the runtime routes over (eval.agents_path)")
+    ap.add_argument("--agent-pairs-out", type=Path, default=root / "data" / "agent_pairs.jsonl")
+    ap.add_argument("--agent-triplets-out", type=Path, default=root / "data" / "agent_triplets.jsonl")
+    ap.add_argument("--agent-neg-siblings", type=int, default=4,
+                    help="hard negatives per brief from the agent's own domain")
+    ap.add_argument("--agent-neg-foreign", type=int, default=2,
+                    help="hard negatives per brief from other domains")
     ap.add_argument("--holdout-ratio", type=float, default=0.2)
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--base-model", type=str, default="BAAI/bge-small-en-v1.5")
@@ -947,6 +1091,26 @@ def main() -> int:
         help="(retrieval mode) per-anchor top-K wrong retrievals to sample negatives from.",
     )
     args = ap.parse_args()
+
+    agents = load_agents(args.agents)
+    briefs_by_agent = load_agent_briefs(args.agent_briefs)
+    without_briefs = [a["tag"] for a in agents if not any(r["split"] == "train" for r in briefs_by_agent.get(a["tag"], []))]
+    if without_briefs:
+        print(f"[warn] {len(without_briefs)} agents have no training briefs (run augment_agents.py --resume): "
+              f"{', '.join(without_briefs[:8])}", file=sys.stderr)
+    n_agent_pairs, n_agent_triplets = write_agent_dataset(
+        agents,
+        briefs_by_agent,
+        args.raw_agents_out,
+        args.agent_pairs_out,
+        args.agent_triplets_out,
+        None if args.skip_negatives else (args.neg_embed_model or args.base_model),
+        args.agent_neg_siblings,
+        args.agent_neg_foreign,
+        args.pos_aware_frac,
+    )
+    print(f"wrote {len(agents)} agent texts to {args.raw_agents_out}, {n_agent_pairs} brief pairs to "
+          f"{args.agent_pairs_out}, {n_agent_triplets} triplets to {args.agent_triplets_out}")
 
     triggers_by_cap = load_all_triggers(args.caps, args.skills)
     if not triggers_by_cap:

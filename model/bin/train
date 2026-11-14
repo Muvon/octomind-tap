@@ -15,9 +15,11 @@
 #   bin/train --legacy                 # plain model.fit() loop with MNRL (diagnostic)
 #
 # After training, `soup.alphas` in configs/default.yaml drives a WiSE-FT
-# sweep against the base model; the alpha with the best gate on the raw
-# trigger corpus is copied to checkpoints/embed-<run>-soup-a<alpha>/ and is
-# what gets evaluated, exported and (via bin/publish) shipped.
+# sweep against the base model. The alpha with the best sum of the two
+# things the runtime decides with this model (capability gate accuracy on
+# the raw trigger corpus, agent handoff rate on the routing eval) is copied
+# to checkpoints/embed-<run>-soup-a<alpha>/ and is what gets evaluated,
+# exported and (via bin/publish) shipped.
 #
 # Iterative re-mining (recommended for the production run):
 #
@@ -107,6 +109,8 @@ fi
 if [ $LLM -eq 1 ] && [ $SKIP_BUILD -eq 0 ]; then
   echo "==> augment_llm.py (anthropic)"
   $PY scripts/augment_llm.py $RESUME
+  echo "==> augment_agents.py (anthropic): task briefs per agent"
+  $PY scripts/augment_agents.py $RESUME
 fi
 
 # ---------------------------------------------------------------------------
@@ -172,12 +176,12 @@ if [ -n "$SOUP_ALPHAS" ]; then
   for a in ${SOUP_ALPHAS//,/ }; do
     MODELS="$MODELS,$LAST_RUN/soup/soup-a$a"
   done
-  echo "==> compare_bases.py — ft vs soups on the raw trigger corpus"
+  echo "==> compare_bases.py — ft vs soups: capability gate + agent routing"
   $PY scripts/compare_bases.py --models "$MODELS" --json-out "$LAST_RUN/soup/compare.json"
   WINNER=$($PY -c "
 import json
 r = json.load(open('$LAST_RUN/soup/compare.json'))
-r.sort(key=lambda x: (x['best_gate']['gate_acc'], x['top1_acc']), reverse=True)
+r.sort(key=lambda x: (x['best_gate']['gate_acc'] + x['route']['handoff'], x['top1_acc']), reverse=True)
 print(r[0]['model'])")
   echo "==> winner: $WINNER"
   if [ "$WINNER" != "$LAST_RUN" ]; then
@@ -207,6 +211,9 @@ if [ -f data/eval_real.jsonl ]; then
   echo "==> eval_gate.py — real-user distribution (publish gate)"
   # Informational only here (no --baseline written); bin/publish enforces.
   $PY scripts/eval_gate.py --model "$LAST_RUN" || true
+  echo
+  echo "==> eval_route.py — does a task brief reach its agent"
+  $PY scripts/eval_route.py --model "$LAST_RUN"
 else
   echo
   echo "==> eval_real.jsonl missing — skipping real-user eval"
@@ -235,6 +242,13 @@ if [ $SKIP_EXPORT -eq 0 ]; then
     $PY scripts/calibrate_thresholds.py --model "$LAST_RUN/onnx" \
       --onnx-file model_quantized.onnx --target-fpr 0.03 \
       --json-out "$LAST_RUN/onnx/calibration.json" || true
+    echo
+    echo "==> eval_route.py — int8 ONNX graph"
+    $PY scripts/eval_route.py --model "$LAST_RUN/onnx" --onnx-file model_quantized.onnx
+    echo
+    echo "==> dump_scores.py + calibrate_cpus.py — this machine only"
+    $PY scripts/dump_scores.py --model "$LAST_RUN/onnx" --out "$LAST_RUN/scores/$(uname -m).json"
+    $PY scripts/calibrate_cpus.py "$LAST_RUN"/scores/*.json
   fi
 fi
 
@@ -242,6 +256,11 @@ echo
 echo "Done. Final checkpoint: $LAST_RUN"
 echo "  Upload:  HF_TOKEN=... bin/publish --run $LAST_RUN"
 echo
-echo "NOTE: octomind loads the int8 graph. Copy the calibrated τ/δ above into"
-echo "      configs/default.yaml eval.runtime_* (publish gate) and into octomind"
-echo "      capability.rs AUTO_ACTIVATE_* / skill.rs SEMANTIC_* before rollout."
+echo "NOTE: octomind loads the int8 graph, and that graph scores a few hundredths"
+echo "      differently per CPU kind. The thresholds above come from this machine"
+echo "      alone. Before rollout, add a dump from the other CPU kinds (see"
+echo "      scripts/dump_scores.py) to $LAST_RUN/scores/, re-run"
+echo "        $PY scripts/calibrate_cpus.py $LAST_RUN/scores/*.json"
+echo "      and copy its thresholds into configs/default.yaml (eval.runtime_*,"
+echo "      eval.route_*) and octomind: capability.rs AUTO_ACTIVATE_*, skill.rs"
+echo "      SEMANTIC_*, tap_route.rs ROUTE_*."

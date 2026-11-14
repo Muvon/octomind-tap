@@ -30,7 +30,15 @@ train:
   learning_rate: 1.0e-5
   warmup_ratio: 0.1
   weight_decay: 0.01
-  max_seq_length: 128
+  # The runtime's own cut: octolib's ONNX provider truncates at 512 tokens,
+  # and a lead's brief is longer than that, so the model must be trained and
+  # scored on the same opening. Capability triggers are far shorter; only
+  # the batches holding long briefs pay for the length.
+  max_seq_length: 512
+  # How batches are drawn across the four training files (capability pairs
+  # and triplets, agent pairs and triplets): `proportional` to file size, or
+  # `round_robin` for the same number of batches from each.
+  multi_dataset_sampler: proportional
   seed: 42
   evaluation_steps: 0   # 0 = evaluate at end of each epoch
   save_best_model: true
@@ -105,3 +113,11 @@ eval:
   runtime_top_k: 3
   runtime_threshold: 0.65
   runtime_margin: 0.06
+  # Routing eval (scripts/eval_route.py): the agent texts the runtime ranks
+  # and the LLM-written briefs, both written by the dataset scripts.
+  agents_path: data/raw_agents.jsonl
+  agent_briefs_path: data/agent_briefs.jsonl
+  # Mirror octomind/src/mcp/orchestration/tap_route.rs ROUTE_THRESHOLD /
+  # ROUTE_MARGIN. Re-calibrate with calibrate_cpus.py after every retrain.
+  route_threshold: 0.67
+  route_margin: 0.04

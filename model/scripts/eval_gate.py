@@ -41,7 +41,6 @@ from pathlib import Path
 
 import numpy as np
 import yaml
-from sentence_transformers import SentenceTransformer
 
 
 # ---------------------------------------------------------------------------
@@ -132,6 +131,10 @@ class OnnxEncoder:
 def load_encoder(model_path: str, onnx_file: str | None):
     if onnx_file:
         return OnnxEncoder(Path(model_path), onnx_file)
+    # Imported here so the ONNX path runs where only onnxruntime is installed
+    # (dump_scores.py inside a bare container for another CPU).
+    from sentence_transformers import SentenceTransformer
+
     print(f"loading model: {model_path}")
     return SentenceTransformer(model_path)
 
