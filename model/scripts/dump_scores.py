@@ -1,10 +1,13 @@
 """Score both eval sets with an ONNX graph on THIS machine and save the scores.
 
-The int8 graph gives different cosines on different CPUs: the same brief
-scored 0.620 against an agent on ARM and 0.664 on an x86 CI runner
-(2026-11). A threshold calibrated on one machine can therefore misfire on
-another. Run this once per CPU kind, then hand all the dumps to
-`calibrate_cpus.py`, which picks operating points that hold on every one.
+A graph can give different cosines on different CPUs: with the graph
+shipped 2026-09, which quantized activations, the same brief scored 0.620
+against an agent on ARM and 0.664 on an x86 CI runner, and a threshold
+calibrated on one machine misfired on the other. The graph export_onnx.py
+writes now computes in fp32 and scored identically on three CPU kinds
+(2026-11); this dump is how that stays checked. Run it once per CPU kind,
+then hand all the dumps to `calibrate_cpus.py`, which picks operating
+points that hold on every one.
 
 It needs only numpy, pyyaml, tokenizers and onnxruntime, so it runs in a
 bare container:

@@ -35,32 +35,34 @@ tags:
 
 # {repo}
 
-Embedding model for octomind capability / skill auto-activation:
+Embedding model for two octomind decisions: which capability or skill to
+activate for a user message, and which agent takes a delegated task.
 `ibm-granite/granite-embedding-30m-english` (30M params, 6 layers, 384-dim,
-CLS-pooled, prefix-free, English) fine-tuned on trigger phrases from the
-octomind-tap capabilities + skills catalog and blended back into the base
-as a WiSE-FT model soup, which beats both the base and the raw fine-tune on
-the runtime gate (mean-of-top-3 cosine + threshold + margin).
+CLS-pooled, prefix-free, English) fine-tuned on the octomind-tap catalog
+(capability and skill trigger phrases, agent titles and descriptions) and
+blended back into the base as a WiSE-FT model soup.
 
-Training: rule-based + LLM paraphrase augmentation, one epoch of
-`CachedMultipleNegativesRankingLoss` (scale 10) on in-class pairs and
-positive-aware hard-negative triplets, `MatryoshkaLoss` over
+Training: rule-based + LLM paraphrase augmentation for triggers, LLM-written
+task briefs for agents, `CachedMultipleNegativesRankingLoss` (scale 10) on
+pairs and positive-aware hard-negative triplets, `MatryoshkaLoss` over
 [384, 256, 192, 128, 96], then weight interpolation with the base.
 
 ## Files
 
 - `model.safetensors` + `1_Pooling/` — sentence-transformers layout (fp32).
 - `onnx/model.onnx` — fp32 graph.
-- `onnx/model_quantized.onnx` — int8 (weight-only, per-channel, plain 8-bit
-  range); this is what the octomind runtime loads. Pool with CLS as declared in
-  `1_Pooling/config.json`.
+- `onnx/model_quantized.onnx` — the same graph with its weight matrices stored
+  as int8 (one scale per channel) and restored to fp32 by constant nodes, so
+  the arithmetic is fp32; this is what the octomind runtime loads. Pool with
+  CLS as declared in `1_Pooling/config.json`.
 
 ## Use
 
 octomind loads `onnx:{repo}` via octolib's ONNX provider (`MODEL_NAME` in
 `octomind/src/embeddings/mod.rs`). Runtime thresholds are model-specific and
-calibrated against the int8 graph (`AUTO_ACTIVATE_THRESHOLD` / `_MARGIN` in
-`capability.rs`, `SEMANTIC_*` in `skill.rs`).
+calibrated against `onnx/model_quantized.onnx` (`AUTO_ACTIVATE_THRESHOLD` /
+`_MARGIN` in `capability.rs`, `SEMANTIC_*` in `skill.rs`, `ROUTE_*` in
+`tap_route.rs`).
 """
 
 RERANK_CARD = """---

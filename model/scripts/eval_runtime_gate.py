@@ -88,6 +88,22 @@ def block(body: str, declaration: str) -> str:
     return body[start : body.index("];", start)]
 
 
+def tuples(body: str, declaration: str, pattern: str) -> list:
+    """Every tuple of the initialiser after `declaration`, matched by `pattern`.
+    Fails when a tuple in the source did not match: a fixture dropped here
+    would make this script pass on a different set than the Rust test runs."""
+    text = block(body, declaration)
+    found = re.findall(pattern, text)
+    written = len(re.findall(r"(?m)^\s*\(", text))
+    if len(found) != written:
+        raise SystemExit(f"`{declaration}`: parsed {len(found)} of {written} tuples; update the pattern in {Path(__file__).name}")
+    return found
+
+
+# The end of a tuple: Rust allows a trailing comma and a line break before `)`.
+_END = r"\s*,?\s*\)"
+
+
 def capabilities(body: str) -> dict[str, list[str]]:
     caps: dict[str, list[str]] = {}
     for name, triggers in re.findall(rf"make_cap_with_triggers\(\s*{_STRING}\s*,\s*&\[(.*?)\]", body, re.S):
@@ -139,7 +155,7 @@ def run_capability_tests(source: str, gate: Gate, top_k: int, min_chars: int, ed
     name = "capability_routing_fixtures_match_expected_caps"
     body = test_body(source, name)
     score = scorer(capabilities(body))
-    positives = [(unescape(i), unescape(c)) for i, c in re.findall(rf"\(\s*{_STRING}\s*,\s*{_STRING}\s*\)", block(body, "let positives"))]
+    positives = [(unescape(i), unescape(c)) for i, c in tuples(body, "let positives", rf"\(\s*{_STRING}\s*,\s*{_STRING}{_END}")]
     negatives = [unescape(i) for i in re.findall(_STRING, block(body, "let negatives"))]
     pos_floor = float(re.search(r"pos_acc >= ([0-9.]+)", body).group(1))
     neg_floor = float(re.search(r"neg_acc >= ([0-9.]+)", body).group(1))
@@ -165,8 +181,8 @@ def run_capability_tests(source: str, gate: Gate, top_k: int, min_chars: int, ed
     name = "capability_routing_diversity_fixtures"
     body = test_body(source, name)
     score = scorer(capabilities(body))
-    fixtures = re.findall(rf"\(\s*{_STRING}\s*,\s*{_STRING}\s*,\s*(?:Some\({_STRING}\)|None)\s*\)", block(body, "let fixtures"))
-    floors = {c: float(f) for c, f in re.findall(rf"\(\s*{_STRING}\s*,\s*([0-9.]+)\s*\)", block(body, "let floors"))}
+    fixtures = tuples(body, "let fixtures", rf"\(\s*{_STRING}\s*,\s*{_STRING}\s*,\s*(?:Some\({_STRING}\)|None){_END}")
+    floors = {c: float(f) for c, f in tuples(body, "let floors", rf"\(\s*{_STRING}\s*,\s*([0-9.]+){_END}")}
     totals: dict[str, list[int]] = {}
     notes = []
     for category, intent, expected in fixtures:
@@ -191,8 +207,8 @@ def run_capability_tests(source: str, gate: Gate, top_k: int, min_chars: int, ed
 def run_route_test(source: str, gate: Gate, edge: float) -> bool:
     name = "developer_tasks_reach_their_specialist_and_foreign_tasks_reach_none"
     source = strip_comments(source)
-    roster = re.findall(rf"\(\s*{_STRING}\s*,\s*{_STRING}\s*,\s*{_STRING}\s*\)", block(source, "const DEVELOPER_ROSTER"))
-    tasks = re.findall(rf"\(\s*{_STRING}\s*,\s*(?:Some\({_STRING}\)|None)\s*\)", block(source, "const DEVELOPER_TASKS"))
+    roster = tuples(source, "const DEVELOPER_ROSTER", rf"\(\s*{_STRING}\s*,\s*{_STRING}\s*,\s*{_STRING}{_END}")
+    tasks = tuples(source, "const DEVELOPER_TASKS", rf"\(\s*{_STRING}\s*,\s*(?:Some\({_STRING}\)|None){_END}")
     max_missed = int(re.search(r"const MAX_MISSED_DEVELOPER_TASKS: usize = (\d+);", source).group(1))
 
     tags = [unescape(tag) for tag, _, _ in roster]
@@ -227,8 +243,11 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", type=str, required=True, help="dir holding the ONNX graph, tokenizer.json and 1_Pooling/")
     ap.add_argument("--onnx-file", type=str, default="model_quantized.onnx")
-    ap.add_argument("--octomind", type=Path, default=Path(__file__).resolve().parents[3] / "octomind",
-                    help="octomind checkout to read fixtures and constants from")
+    # `.parent` chain, not `parents[3]`: in a container the scripts sit two
+    # levels below `/`, where the chain stops at the root instead of raising.
+    ap.add_argument("--octomind", type=Path,
+                    default=Path(__file__).resolve().parent.parent.parent.parent / "octomind",
+                    help="octomind checkout to read fixtures and constants from (default: beside the tap checkout)")
     ap.add_argument("--capability", type=pair, default=None, metavar="THRESHOLD,MARGIN",
                     help="override AUTO_ACTIVATE_THRESHOLD / AUTO_ACTIVATE_MARGIN")
     ap.add_argument("--route", type=pair, default=None, metavar="THRESHOLD,MARGIN",

@@ -10,19 +10,8 @@ set -euo pipefail
 DEPS_LIB="$(cd "$(dirname "${BASH_SOURCE[0]}")/../lib" && pwd)"
 source "$DEPS_LIB/platform.sh"
 
-# Structural code search (view outline, symbol and AST modes) needs this release.
-MIN_VERSION="0.25.0"
-
-octofs_ok() {
-  pkg_check octofs || return 1
-  local v
-  v="$(octofs --version 2>/dev/null | sed -n '1s/^octofs[^0-9]*\([0-9.]*\).*/\1/p')"
-  [[ -n $v ]] || return 1
-  [[ "$(printf '%s\n%s\n' "$MIN_VERSION" "$v" | sort -V | head -1)" == "$MIN_VERSION" ]]
-}
-
-# Fast path — an octofs new enough for structural code search
-if octofs_ok; then
+# Fast path — already installed
+if pkg_check octofs; then
   exit 0
 fi
 
@@ -30,16 +19,11 @@ REPO="Muvon/octofs"
 BINARY="octofs"
 INSTALL_DIR="${HOME}/.local/bin"
 
-info "octofs missing or older than $MIN_VERSION — installing the latest release..."
+info "octofs not found — installing from GitHub releases..."
 
 # On macOS, prefer Homebrew if available
 if [[ $OS == "macos" ]] && pkg_check brew; then
-  if brew list --formula octofs >/dev/null 2>&1; then
-    brew upgrade muvon/tap/octofs
-  else
-    brew install muvon/tap/octofs
-  fi
-  octofs_ok || die "octofs $MIN_VERSION+ not found in PATH after brew; remove older octofs binaries that shadow it"
+  brew install muvon/tap/octofs
   exit 0
 fi
 
@@ -91,7 +75,4 @@ else
   cp "$TMP_DIR/$BINARY" "$INSTALL_DIR/$BINARY"
   chmod +x "$INSTALL_DIR/$BINARY"
 fi
-
-export PATH="$INSTALL_DIR:$PATH"
-octofs_ok || die "octofs $MIN_VERSION+ not found after install; add $INSTALL_DIR to PATH ahead of older octofs binaries"
 info "octofs $VERSION installed to $INSTALL_DIR"

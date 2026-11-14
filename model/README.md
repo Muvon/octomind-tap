@@ -1,15 +1,25 @@
 # octomind-tap embedding model
 
-Fine-tune one small ONNX bi-encoder that powers octomind's capability
-auto-activation:
+Fine-tune one small ONNX bi-encoder that octomind uses for two decisions:
+
+- **Capability auto-activation**: which capability to switch on for a
+  user message. `octomind/src/mcp/runtime/capability.rs` scores the
+  message against each capability's trigger phrases (mean of the top 3
+  cosines) and activates the best one when it clears a threshold and
+  leads the runner-up by a margin.
+- **Agent routing**: which agent should take a delegated task.
+  `octomind/src/mcp/orchestration/tap_route.rs` scores the task brief
+  against each reachable agent's "`<title>. <description>`" text and
+  hands the task over under the same threshold-plus-margin rule, with
+  its own constants.
+
+The model:
 
 - **`muvon/octomind-embed`** — granite-embedding-30m-english (30M
   params, 6 layers, 384-dim, CLS-pooled, prefix-free) fine-tuned and
-  blended back into the base as a WiSE-FT soup. The runtime in
-  `octomind/src/mcp/runtime/capability.rs` uses it to decide which
-  capability to auto-activate from a single user message via a
-  mean-of-top-3 cosine score + threshold + margin gate, loading the int8
-  ONNX graph (~2 ms per intent on CPU).
+  blended back into the base as a WiSE-FT soup. The runtime loads the
+  ONNX graph with int8-stored weights (30 MB, fp32 arithmetic) and
+  reads at most 512 tokens of a text.
 - Before 2026-09 the same repo held a BGE-small-en-v1.5 fine-tune. The
   base bake-off (`scripts/compare_bases.py` on the raw trigger corpus,
   each model at its own best operating point) put granite at gate 0.846
@@ -48,14 +58,17 @@ what ships.
 
 ## Pipeline
 
-    capabilities/*/config.toml  +  skills/*/SKILL.md
+    capabilities/*/config.toml  +  skills/*/SKILL.md  +  agents/*/*.toml
                        │
                        ▼
     scripts/augment_llm.py     (optional) →  data/intents.jsonl
+    scripts/augment_agents.py  (optional) →  data/agent_briefs.jsonl
                        │
                        ▼
     scripts/build_dataset.py   →  data/pairs.jsonl, triplets.jsonl, holdout.jsonl
                        │          raw_triggers.jsonl (what the runtime embeds)
+                       │          agent_pairs.jsonl, agent_triplets.jsonl,
+                       │          raw_agents.jsonl (the agent texts the runtime embeds)
                        │       (+ _oos sink label, multi-turn surfaces,
                        │          positive-aware hard-negative mining)
                        ▼
@@ -63,14 +76,17 @@ what ships.
                        │       (CachedMNRL scale=10 + Matryoshka, 1 epoch)
                        ▼
     scripts/model_soup.py      →  checkpoints/embed-<run>-<ts>-soup-a<α>/
-    scripts/compare_bases.py      (best gate on raw_triggers.jsonl wins)
+    scripts/compare_bases.py      (best capability gate + routing handoff wins)
                        ▼
     scripts/eval.py            →  holdout-distribution metrics
     scripts/eval_gate.py       →  real-user-distribution metrics  ← publish gate
+    scripts/eval_route.py      →  does a task brief reach its agent
                        │
                        ▼
-    scripts/export_onnx.py     →  onnx/  (fp32 + int8, reduce_range from config)
-    scripts/calibrate_thresholds.py --onnx-file  →  runtime τ, δ for the int8 graph
+    scripts/export_onnx.py     →  onnx/  (fp32 graph + int8-stored graph)
+    scripts/dump_scores.py     →  scores/<cpu>.json, once per CPU kind
+    scripts/calibrate_cpus.py  →  runtime thresholds, checked on every CPU kind
+    scripts/eval_runtime_gate.py  →  octomind's Rust test fixtures, scored in Python
                        │
                        ▼
     scripts/push_hf.py         →  hf.co/muvon/octomind-embed
@@ -104,13 +120,12 @@ The HF repo holds BOTH formats:
     # 3) Full training run (build + train + soup + eval + export + calibrate).
     ANTHROPIC_API_KEY=... bin/train --llm
 
-    # 4) Copy the calibrated τ/δ printed at the end into
-    #    configs/default.yaml eval.runtime_* and octomind capability.rs /
-    #    skill.rs. To re-run calibration by hand:
-    uv run python scripts/calibrate_thresholds.py \
-        --model checkpoints/embed-<ts>-soup-a<α>/onnx --onnx-file model_quantized.onnx
+    # 4) Calibrate the runtime thresholds, check them on every CPU kind and copy them
+    #    into configs/default.yaml and octomind (see "Runtime threshold
+    #    calibration" below). bin/train prints the numbers for this
+    #    machine only.
 
-    # 5) Publish (the gate runs automatically on fp32 and int8).
+    # 5) Publish (the gate runs automatically on both graphs).
     HF_TOKEN=hf_... bin/publish
 
     # 6) After production rollout, record the new baseline.
@@ -161,6 +176,38 @@ production recipe.
   `config.toml` triggers + skill `semantic()` phrases. This is what the
   runtime embeds, so `eval_gate.py`, `compare_bases.py` and
   `calibrate_thresholds.py` score against it (`eval.triggers_path`).
+- **agent_pairs.jsonl** `{anchor, positive, label}` — a task brief and
+  the text of the agent that should take it.
+- **agent_triplets.jsonl** — the same pairs with a hard negative: per
+  brief, the 4 closest agents of the same domain and the 2 closest from
+  other domains (`--agent-neg-siblings`, `--agent-neg-foreign`).
+- **raw_agents.jsonl** `{tag, domain, title, description, text}` — one
+  row per agent manifest; `text` is "`<title>. <description>`", the
+  string the runtime embeds. Symlinked manifests are aliases and are
+  left out, as the runtime leaves them out.
+
+### Task briefs for agent routing
+
+Agent manifests carry no example tasks, so the briefs are written by an
+LLM: `scripts/augment_agents.py` reads each agent's manifest and its
+domain siblings and writes briefs in five styles to
+`data/agent_briefs.jsonl`:
+
+| Style | What it imitates |
+| ----- | ---------------- |
+| `lead` | a domain lead delegating: the kind of work, then a few sentences of context (30-90 words) |
+| `short` | one sentence, the task and nothing else |
+| `user` | how an end user asks for it in a chat |
+| `full` | a brief in four labelled parts: objective, context, source material, output shape (80-160 words) |
+| `long` | the same four parts with the raw material written out (500-900 words), longer than the 512 tokens the runtime reads |
+
+Training briefs and eval briefs come from different models
+(`SPLIT_MODELS` in the script), so the eval set is not an echo of the
+training phrasing. The file is append-only: a run adds only the
+(agent, split, style) groups that are missing, and eval briefs written
+once stay, so routing scores remain comparable across retrains. To
+replace an agent's briefs after its description changed, delete its
+lines and run the script again.
 
 ### `_oos` sink label
 
@@ -211,6 +258,21 @@ Bootstrap with `scripts/build_eval_seed.py`, then **hand-edit the
 JSONL** to add production-observed failure modes. The file is the
 publish gate; whatever is in it becomes part of the regression test.
 
+### Routing eval
+
+`scripts/eval_route.py` scores the eval briefs against the agent texts
+in three scenarios that mirror what a caller can reach at runtime:
+
+- `domain` — the brief's own domain without its lead, as the lead sees
+  it. The right agent should take the task (`handoff`); a different one
+  taking it is `wrong`.
+- `all` — every agent, as a caller outside any domain sees them.
+- `foreign` — the members of another domain. Nothing should take the
+  task; a handoff here counts as `fired`.
+
+It reports each scenario at the configured `eval.route_threshold` /
+`route_margin` and per brief style.
+
 ## Publish gate
 
 `bin/publish` runs `eval_gate.py` against `eval_baselines.json` before
@@ -225,27 +287,55 @@ why in the commit message).
 
 ## Runtime threshold calibration
 
-The runtime uses two constants in
-`octomind/src/mcp/runtime/capability.rs` (mirrored by
-`SEMANTIC_DEFAULT_THRESHOLD` / `SEMANTIC_MARGIN` in `skill.rs`):
+The runtime compares cosines against constants that only fit one set of
+weights:
 
-    const AUTO_ACTIVATE_THRESHOLD: f32 = ...;
-    const AUTO_ACTIVATE_MARGIN: f32    = ...;
+| Decision | octomind constants | Mirror in `configs/default.yaml` |
+| -------- | ------------------ | -------------------------------- |
+| capability activation | `capability.rs` `AUTO_ACTIVATE_THRESHOLD` / `AUTO_ACTIVATE_MARGIN`, `skill.rs` `SEMANTIC_DEFAULT_THRESHOLD` / `SEMANTIC_MARGIN` | `eval.runtime_threshold` / `runtime_margin` |
+| agent routing | `tap_route.rs` `ROUTE_THRESHOLD` / `ROUTE_MARGIN` | `eval.route_threshold` / `route_margin` |
 
 Every base has its own cosine scale, so the operating point moves with
-each retrain. Calibrate against the int8 graph — that is what the
-runtime loads, and quantization shifts cosines:
+each retrain. Calibrate against `onnx/model_quantized.onnx`, because
+that is the graph the runtime loads, and confirm the result on every
+CPU kind. The graph `export_onnx.py` writes today computes in fp32 and
+scored identically on ARM, x86 and x86 with VNNI (2026-11). The graph
+shipped 2026-09 quantized its activations per batch and did not: the
+same text scored 0.620 on an ARM Mac and 0.664 on an x86 CI runner, and
+a test that passed on the Mac failed on CI. The dumps below are the
+check that this has not come back.
 
-    uv run python scripts/calibrate_thresholds.py \
-        --model checkpoints/<run>/onnx --onnx-file model_quantized.onnx \
-        --target-fpr 0.03
+1. Dump the scores once per CPU kind (ARM and x86 at least):
 
-Prints the Pareto front of (gate_acc, null_fpr) over a τ × δ grid and
-suggests the operating point with highest gate_acc whose
-`null_fpr ≤ target`. Copy the recommended constants into
-`capability.rs` / `skill.rs` and into `configs/default.yaml`
-`eval.runtime_threshold` / `runtime_margin` (the publish gate scores at
-those values). `bin/train` runs this step automatically.
+       uv run python scripts/dump_scores.py --model checkpoints/<run>/onnx \
+           --out checkpoints/<run>/scores/arm64.json
+
+   The script needs only numpy, pyyaml, tokenizers and onnxruntime, so
+   it runs in a bare container; its docstring has the Docker command
+   that emulates x86 on an ARM Mac.
+
+2. Pick the thresholds that hold on all of them:
+
+       uv run python scripts/calibrate_cpus.py checkpoints/<run>/scores/*.json
+
+   For each decision it prints the point with the best accuracy on the
+   worst machine, among the points that keep false activations under
+   the cap on every machine (capability `null_fpr` 0.03; routing wrong
+   handoffs 0.02 and foreign handoffs 0.03).
+
+3. Copy the constants into octomind and `configs/default.yaml`, then
+   check octomind's test fixtures against the new graph without a Rust
+   build, on each CPU kind:
+
+       uv run python scripts/eval_runtime_gate.py --model checkpoints/<run>/onnx
+
+   It reads the fixtures and constants from the octomind source tree
+   (`--octomind`, default: a sibling checkout) and prints PASS or FAIL
+   per test, plus every fixture that sits within `--edge` of a
+   threshold.
+
+`scripts/calibrate_thresholds.py` still prints the full Pareto front of
+(gate_acc, null_fpr) for the capability decision on one machine.
 
 ## When to retrain
 
@@ -258,9 +348,10 @@ You MUST retrain (and republish) whenever the supervision set changes:
 | Edited `triggers = [...]` in any `config.toml`               | yes      |
 | Added or edited `semantic(...)` rules in any `SKILL.md`      | yes      |
 | Edited the `_oos` curated phrases in `build_dataset.py`      | yes      |
-| Pure agent / playbook / docs change, no triggers touched     | no       |
+| Added or removed an agent, or edited its `# Title:` / `# Description:` | yes |
+| Agent prompt, playbook or docs change, title and description untouched | no |
 | Code change in `octomind/` runtime only                      | no       |
-| Threshold/margin tweak in `capability.rs` / `skill.rs`       | no (just rebuild octomind) |
+| Threshold/margin tweak in `capability.rs` / `skill.rs` / `tap_route.rs` | no (just rebuild octomind) |
 
 Run from `model/`:
 
@@ -269,7 +360,13 @@ Run from `model/`:
 `--resume` is passed to `augment_llm.py`: it skips `(label, trigger)`
 pairs already paraphrased in `data/intents.jsonl`, so you only pay for
 the NEW triggers. Without `--resume` you re-augment everything (same
-result, costs ~$1-2 extra).
+result, costs ~$1-2 extra). `augment_agents.py` always adds only what
+is missing.
+
+Training runs on the CPU when there is no CUDA device. On a machine
+that other jobs share, set `OMP_NUM_THREADS` to a measured thread count
+before `bin/train`: with every core claimed, a loaded 12-core box ran a
+mini-batch in 12.8 s, against 2-4 s with 4 threads.
 
 After it finishes:
 

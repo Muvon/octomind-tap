@@ -11,7 +11,8 @@ Who the candidates are depends on the caller (resolver.rs
 
   domain   the brief's own domain, as its lead sees it: every member but the
            lead (`chief`). A brief written for the lead is scored against the
-           whole domain, as another member would see it.
+           whole domain, as another member would see it. A domain that is
+           only its lead has no such caller and is left out.
   all      every agent: a caller that is not a tap agent reaches all of them.
   foreign  another domain's members. Nothing there should take the brief.
 
@@ -66,6 +67,8 @@ def load_agents(path: Path) -> list[dict]:
 
 
 def load_eval_briefs(path: Path) -> list[dict]:
+    if not path.exists():
+        raise SystemExit(f"missing {path}. Run: uv run python scripts/augment_agents.py")
     rows = [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
     return [r for r in rows if r["split"] == "eval"]
 
@@ -114,7 +117,8 @@ def score_rows(encoder, agents: list[dict], briefs: list[dict], seed: int = 42) 
             continue  # the agent was removed after the brief was written
         domain = agents[gold]["domain"]
         own = by_domain[domain] if agents[gold]["tag"] == f"{domain}:{LEAD}" else members(domain)
-        out.append(row("domain", brief, gold, ranked(vec, own)))
+        if len(by_domain[domain]) > 1:
+            out.append(row("domain", brief, gold, ranked(vec, own)))
         out.append(row("all", brief, gold, ranked(vec, list(range(len(agents))))))
         for other in rng.sample([d for d in foreign_pool if d != domain], FOREIGN_DOMAINS_PER_BRIEF):
             out.append(row("foreign", brief, None, ranked(vec, members(other))))
