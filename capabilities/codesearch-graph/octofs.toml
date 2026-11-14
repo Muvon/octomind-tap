@@ -1,0 +1,24 @@
+# capabilities/codesearch-graph/octofs.toml
+# Capability: codesearch-graph
+# Provider: octofs — code relationship search through the octofs symbol tool; needs octofs 0.25.0+
+# Title: Code Search (Graph)
+# Description: Trace the call graph (callers, callees), imports and type hierarchies between symbols and files with the octofs symbol tool. No index needed.
+#
+# The graph is built from source with Tree-sitter on each call and kept in
+# memory while files are unchanged. Relations are resolved by name and
+# imports, not by types. Local paths only.
+
+[deps]
+require = ["muvon/octofs"]
+
+[roles.mcp]
+server_refs = ["octofs"]
+allowed_tools = ["octofs:symbol"]
+
+[[mcp.servers]]
+name = "octofs"
+type = "stdio"
+command = "octofs"
+args = ["mcp"]
+timeout_seconds = 300
+tools = []
