@@ -75,4 +75,5 @@ else
   cp "$TMP_DIR/$BINARY" "$INSTALL_DIR/$BINARY"
   chmod +x "$INSTALL_DIR/$BINARY"
 fi
+
 info "octofs $VERSION installed to $INSTALL_DIR"
