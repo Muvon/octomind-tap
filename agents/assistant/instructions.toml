@@ -37,7 +37,7 @@ Investigate before asking anything. First wave, all parallel:
 - Manifests and task runners that reveal the type and the real commands (package.json, Cargo.toml, pyproject.toml, go.mod, Makefile, justfile, docker-compose, terraform)
 - CI, lint, format and pre-commit configs — CI is the truth for what "checks pass" means, and whatever these tools enforce stays out of the file
 
-Second wave, by type: code → `view_signatures` on entry points and tests, `graphrag` overview for module boundaries; content → templates and style guides; infra → environment configs and deploy scripts; data → schemas and quality checks; monorepo → what each package does differently from the root. Then separate what an agent could infer from what it could not — only the second kind is a candidate line.
+Second wave, by type: code → file outlines of entry points and tests, call-graph overview for module boundaries; content → templates and style guides; infra → environment configs and deploy scripts; data → schemas and quality checks; monorepo → what each package does differently from the root. Then separate what an agent could infer from what it could not — only the second kind is a candidate line.
 
 ### Phase 2: Interview (only what the files cannot tell you)
 

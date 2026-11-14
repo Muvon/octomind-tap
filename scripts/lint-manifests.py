@@ -95,7 +95,7 @@ def check_uses_entries(entries, domain, repo_root):
         seen.add(entry)
         entry_domain, _, entry_spec = entry.partition(":")
         if entry_domain == domain:
-            problems.append(f"USES_INVALID: '{entry}' is in the agent's own domain — use {{{{SPECIALISTS}}}} for it")
+            problems.append(f"USES_INVALID: '{entry}' is in the agent's own domain — its agents are reachable without it")
         elif entry_spec == CHIEF_SPEC:
             problems.append(f"USES_INVALID: '{entry}' — write the bare domain '{entry_domain}' instead of '{entry_domain}:{CHIEF_SPEC}'")
         elif not entry_spec and not is_agent_file(repo_root / "agents" / entry_domain / f"{CHIEF_SPEC}.toml"):
@@ -255,26 +255,19 @@ for line in raw_text.splitlines():
         errors.append(f"DEFAULT_HEADER_REMOVED: '# Default:' is no longer used — a domain's orchestrator is the agent named '{CHIEF_SPEC}' (agents/<domain>/{CHIEF_SPEC}.toml)")
         break
 
-has_specialists = bool(re.search(SPECIALISTS_PATTERN, system_content))
-if is_orchestrator and sibling_count > 0 and not has_specialists:
-    errors.append("SPECIALISTS_MISSING: orchestrator must put '{{SPECIALISTS}}' in system so it can delegate to the other agents in its domain")
-elif has_specialists and not is_orchestrator:
-    errors.append(f"SPECIALISTS_MISPLACED: '{{{{SPECIALISTS}}}}' is only for a domain's orchestrator ('{CHIEF_SPEC}')")
+if re.search(SPECIALISTS_PATTERN, system_content):
+    errors.append("SPECIALISTS_REMOVED: '{{SPECIALISTS}}' is no longer used — tap matches a specialist from the task; delete the placeholder")
 
 if re.search(DOMAINS_PATTERN, system_content):
-    errors.append(f"DOMAINS_REMOVED: '{{{{DOMAINS}}}}' no longer exists — the global assistant ({GLOBAL_AGENT_TAG}) declares '# Uses: {USES_ALL}' and puts '{{{{USES}}}}' in system")
+    errors.append(f"DOMAINS_REMOVED: '{{{{DOMAINS}}}}' no longer exists — the global assistant ({GLOBAL_AGENT_TAG}) declares '# Uses: {USES_ALL}'")
 
 uses_entries = read_uses_header(raw_text)
-has_uses_placeholder = bool(re.search(USES_PATTERN, system_content))
-if path.stem != CHIEF_SPEC:
-    if uses_entries is not None or has_uses_placeholder:
-        errors.append(f"USES_MISPLACED: '# Uses:' header and '{{{{USES}}}}' in system are only for a domain's orchestrator ('{CHIEF_SPEC}')")
-else:
-    if uses_entries is not None and not has_uses_placeholder:
-        errors.append("USES_MISSING: '# Uses:' header needs '{{USES}}' in system so the orchestrator can name what it may call")
-    elif uses_entries is None and has_uses_placeholder:
-        errors.append("USES_MISSING: '{{USES}}' in system needs a '# Uses: <entry>[, <entry>…]' header comment")
-    if uses_entries is not None:
+if re.search(USES_PATTERN, system_content):
+    errors.append("USES_PLACEHOLDER_REMOVED: '{{USES}}' is no longer used — the '# Uses:' header alone sets what the orchestrator's tasks may be matched to; delete the placeholder")
+if uses_entries is not None:
+    if path.stem != CHIEF_SPEC:
+        errors.append(f"USES_MISPLACED: '# Uses:' header is only for a domain's orchestrator ('{CHIEF_SPEC}')")
+    else:
         errors.extend(check_uses_entries(uses_entries, domain, repo_root))
 
 if path.stem == CHIEF_SPEC and (sibling_count > 0 or uses_entries is not None):

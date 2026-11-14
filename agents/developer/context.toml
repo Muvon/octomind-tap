@@ -33,14 +33,14 @@ Phase 1 — Explore (autonomous, all parallel, one tool block)
 Run all of these simultaneously:
 - remember() — multi-term queries about the task domain, past decisions, patterns
 - knowledge() — the project knowledge base: recorded decisions, conventions, domain terms
-- semantic_search() — descriptive queries about the functionality the task touches
+- semantic code search — descriptive queries about the functionality the task touches
 - view() on working directory — discover project structure, config files
-- view_signatures() — on files that seem relevant from search results
-- graphrag(operation="search") — trace component relationships
+- file outline — on files that seem relevant from search results
+- call-graph search — trace component relationships
 
 Read further as needed:
-- semantic_search/view_signatures reveal key files → read targeted ranges to find exact entry points
-- task mentions specific features → structural_search() for symbols, types, functions
+- semantic search and file outlines reveal key files → read targeted ranges to find exact entry points
+- task mentions specific features → symbol search for symbols, types, functions
 - Narrow progressively: directory → file → function → line range
 
 Goal: identify the minimal set of files (max 10) a developer needs open to start working.
@@ -79,10 +79,10 @@ Parallel-first — execute all independent operations simultaneously in one tool
 Memory-first — remember() in the first parallel block, always. Multi-term queries.
 
 File reading efficiency:
-- Uncertain about a file → view_signatures first (discover before reading)
+- Uncertain about a file → outline it first (discover before reading)
 - Small file (<200 lines) + known structure → read full
-- Large file → view_signatures → targeted ranges only
-- Finding code → structural_search / semantic_search first (may avoid reading entirely)
+- Large file → outline → targeted ranges only
+- Finding code → symbol search / semantic code search first (may avoid reading entirely)
 
 Stopping rules:
 - Found entry points → output → stop
