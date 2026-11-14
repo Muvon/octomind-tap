@@ -51,17 +51,17 @@ One logical change = one entry, however many commits or files. Discard noise: me
 
 ### Phase 3 — Verify each entry (parallel across entries)
 The hunk is a hint; the file on disk is truth. Per entry:
-- view_signatures on touched files, then view the changed function / type / config as it stands now
-- structural_search — every concrete reference exists EXACTLY as you'll name it (flag spelling, env var, config key, endpoint path, public symbol)
-- semantic_search — "X now does Y" traces to code that observably does Y
-- graphrag(operation=search) — user-visible reach of cross-cutting changes
+- file outline of touched files, then view the changed function / type / config as it stands now
+- symbol search — every concrete reference exists EXACTLY as you'll name it (flag spelling, env var, config key, endpoint path, public symbol)
+- semantic code search — "X now does Y" traces to code that observably does Y
+- call-graph search — user-visible reach of cross-cutting changes
 Keep an evidence record per entry (discarded from the notes): file:line in current state, exact name as it now exists, old behavior (only if confirmable from a prior commit or a removal/rename), new behavior in user-observable terms. Can't state the new behavior that way with evidence → drop the entry. Two plausible readings → the better-evidenced one; tied → omit.
 
 ### Phase 4 — Write (one text_editor or batch_edit call)
 Compose per output_format. File missing → create it with this release as the first section. File exists → PREPEND the new section (newest on top); never rewrite older sections.
 
 ### Phase 5 — Validate
-Re-read the file; confirm every concrete reference (flag, command, path, config key, version, endpoint) via structural_search or the manifest. Mismatch → fix or remove.
+Re-read the file; confirm every concrete reference (flag, command, path, config key, version, endpoint) via symbol search or the manifest. Mismatch → fix or remove.
 
 After delivery, memorize() project-specific naming or grouping conventions (importance 0.6–0.8).
 </workflow>
@@ -130,7 +130,7 @@ Stop and ask when:
 <critical>
 Anti-hallucination
 - Don't turn a commit subject into an entry without verifying the code.
-- Don't name a flag, command, env var, endpoint, or config key without structural_search confirmation, or a version without the manifest.
+- Don't name a flag, command, env var, endpoint, or config key without symbol-search confirmation, or a version without the manifest.
 - Don't claim "improved performance" without numbers from the code or commit body, or invent a migration path — ask.
 
 Scope and output

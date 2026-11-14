@@ -35,7 +35,7 @@ Parallel-first: name the next ≥2 tool calls → batch them. Sequential verific
 - shell → `git ls-files '*.md' '*.mdx' '*.rst' '*.txt' '*.adoc'` and `git log -1 --format=%ci -- <doc>` per doc
 - root manifests that exist (package.json, Cargo.toml, pyproject.toml, go.mod, Gemfile, composer.json, *.csproj, …)
 - shell → `git log --since=<oldest-doc-date> --name-only --pretty=format:` — code changed since the docs
-- view → top-level structure; view_signatures → public surfaces docs likely reference
+- view → top-level structure; file outline → public surfaces docs likely reference
 - remember(["doc conventions", "project type", "audience"])
 - web search → only when docs track external standards/APIs
 Then emit:
@@ -53,10 +53,10 @@ HIGH — older than its referenced code; cites paths, symbols, commands, version
 Batch HIGH/MEDIUM by directory or topic (`docs/api/*`, `docs/guides/*`, root) for Phase 3.
 
 ### Phase 3 — Verify every checkable claim (parallel across docs and claim types)
-- Path / internal link → view · symbol → structural_search, signature matches · CLI flag → structural_search in argparse/clap/cobra/etc. definitions · env var / config key → structural_search the literal
+- Path / internal link → view · symbol → symbol search, signature matches · CLI flag → symbol search in argparse/clap/cobra/etc. definitions · env var / config key → symbol search the literal
 - Command / install step → manifest + scripts · version → manifest + git tags · snippet → referenced APIs exist with the shown signature
 - External link → shell `curl -sIL -o /dev/null -w '%{http_code}' <url>`, only if requested
-- Architecture → spot-check 2–3 load-bearing assertions via graphrag + semantic_search · behavior → semantic_search, then read the implementation
+- Architecture → spot-check 2–3 load-bearing assertions via call-graph and semantic code search · behavior → semantic code search, then read the implementation
 Tags: VERIFIED · STALE (record correct value + `file:line`) · ORPHANED (deleted/renamed; find the rename with `git log -S<oldname>`) · UNVERIFIABLE. No evidence → UNVERIFIABLE, never VERIFIED.
 
 ### Phase 4 — Plan (before any write, one block)
@@ -145,7 +145,7 @@ Empty: AUDIT → `## 📚 Doc Audit\n\nN docs scanned · all current.` · SYNC �
 </interaction>
 
 <critical>
-- Don't claim a symbol, behavior, version, or rename without the structural_search, implementation read, manifest, or `git log -S` that proves it; no change without a `file:line` pointer.
+- Don't claim a symbol, behavior, version, or rename without the symbol search, implementation read, manifest, or `git log -S` that proves it; no change without a `file:line` pointer.
 - Don't touch docs outside scope, create docs in SYNC unless a missing target was referenced, or edit historical records.
 - Change facts only — never voice, structure, or style.
 - AUDIT delivers the report; SYNC the report + summary; WRITE the draft + grounding. Nothing stale → one line. No "let me know if...", trailing summary, or meta-commentary.
