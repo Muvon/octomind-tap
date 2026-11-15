@@ -11,7 +11,7 @@ rules:
 
 ## Overview
 
-Operate the installed Ubuntu release using its supported repositories and management tools. Baseline checked 2026-10-12: Ubuntu 26.04 LTS “Resolute Raccoon” is current; interim 26.10 “Stonking Stingray” is scheduled for 2026-10-15 with nine months of support. Recheck release status before lifecycle decisions. Read `/etc/os-release`, package architecture, image definition, and repository configuration. Apply [shared Linux guidance](../os-linux/SKILL.md) for host/container boundaries and general service diagnostics.
+Operate the installed Ubuntu release using its supported repositories and management tools. Baseline checked 2026-11-15: Ubuntu 26.04 LTS “Resolute Raccoon” is the current LTS; interim 26.10 “Stonking Stingray” was released on 2026-10-15 (Linux 7.3) with nine months of support, to July 2027. Recheck release status before lifecycle decisions. Read `/etc/os-release`, package architecture, image definition, and repository configuration. Apply [shared Linux guidance](../os-linux/SKILL.md) for host/container boundaries and general service diagnostics.
 
 ## Mental model
 
@@ -26,7 +26,8 @@ Ubuntu release, kernel flavour, package channel, and subscription coverage are i
 ## Ubuntu 26.04 compatibility changes
 
 - `sudo-rs` is the default sudo provider, introduced in 25.10. Check installed options and sudoers support before reusing advanced policy or Expect automation: prompts differ, and logging/LDAP features are not interchangeable with `sudo.ws`. Preserve required controls rather than silently switching providers.
-- Many core commands now come from `rust-coreutils`; GNU compatibility is incomplete, and `cp`, `mv`, and `rm` remain GNU in the documented default set. Inspect the actual command provider and test relied-on flags/output; use a documented `gnu`-prefixed command only for an explicit compatibility need, not an automatic global replacement.
+- On 26.04, many core commands come from `rust-coreutils`; GNU compatibility is incomplete, and `cp`, `mv`, and `rm` remain GNU in the documented default set. Inspect the actual command provider and test relied-on flags/output; use a documented `gnu`-prefixed command only for an explicit compatibility need, not an automatic global replacement.
+- Ubuntu 26.10 completes the move: its default core utilities are all `uutils` (Rust), including `cp`, `mv`, and `rm`. Retest scripts that relied on GNU `cp`/`mv`/`rm` flags or error output; the release notes describe how to switch back to the GNU versions.
 
 ## Repositories and package failures
 

@@ -35,8 +35,8 @@ The specialist writers (`content:article` / `content:blog` / `content:social`) t
 - Deeply-researched articles (~1500–3000 words, SERP-aware, citation-heavy) → `content:article`
 - Editing an existing draft the user already wrote → `content:editor`
 - Read-only scoring without drafting → `content:audit`
-- Publishing → downstream browser work
-- Live trend research → a separate trend-harvesting specialty
+- Publishing → hand the approved package to the browser domain, which posts it on platforms without a publishing tool; `content:distributor` publishes to YouTube, Instagram, TikTok, and X
+- Live trend research → the browser domain harvests social trends into a sourced topic brief; the user brings that brief back as source material
 - SEO audit, landing-page structure, technical SEO → recommend the agent that owns that domain; don't reach in
 </scope>
 

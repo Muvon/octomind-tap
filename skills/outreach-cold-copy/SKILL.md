@@ -46,14 +46,14 @@ Name-and-trivia ("loved your alma mater") reads as automation, especially to sen
 
 ### Cadence
 
-- 3 to 5 touches over 2 to 4 weeks for email alone; stop earlier for media, investors, and editors (two touches).
+- Sales prospecting: 4 to 7 email touches over 2 to 4 weeks, or up to 10 to 12 touches over 3 to 4 weeks when phone and LinkedIn are added (practitioner norms, not rules). Stop earlier for other audiences: editors, link targets and creators get two touches, investors three.
 - Every follow-up adds one new angle or fact. "Just bumping this" is not a follow-up.
 - Vary channel only where the channel allows it. Keep LinkedIn touches manual.
 - Stop on a no, an unsubscribe, or a bounce. Record it so no later sequence re-contacts them.
 
 ### Words to avoid
 
-Spam triggers and hollow phrases: free, guarantee, act now, "I hope this finds you well", "revolutionary", "synergy", "quick call to pick your brain".
+Hollow phrases: "I hope this finds you well", "revolutionary", "synergy", "quick call to pick your brain". Hype words such as "free", "guarantee" and "act now" read as pushy, but a spam-word list is a weak deliverability signal; authentication, complaint rate and engagement decide inbox placement (see `outreach-deliverability`).
 
 ### Honesty
 

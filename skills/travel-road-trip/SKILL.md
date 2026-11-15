@@ -38,7 +38,8 @@ Check live sources rather than promising a route from memory. The best route lea
 - Show local dates and time zones when crossing them. Separate driving time from total elapsed travel time and protect rest breaks and meal time.
 - Don't optimize away rest or recommend driving while fatigued. Shorten the day or add an overnight when the user's limit cannot be met.
 - EV planning uses the exact vehicle's connector, usable battery, supported charging rate and the user's consumption where available. Verify manufacturer specifications and label modeled energy use as an estimate.
-- Account for weather, elevation, load, towing and charging taper. State departure and arrival charge assumptions and the reserve, and don't equate advertised range with reliable usable range.
+- Account for weather, elevation, load, towing and charging taper. State departure and arrival charge assumptions and the reserve, and don't equate advertised range with reliable usable range. Cold is the largest single factor: at 20 F (about -7 C), testing by AAA (2019) and fueleconomy.gov shows about 41% less range with cabin heating on and about 12% less with none; AAA's 2026 test shows about 39% less. Use those figures for a winter plan unless the vehicle's own data is better.
+- Planning conventions for this skill, not manufacturer figures: keep stop-to-stop legs to about 70–80% of the vehicle's advertised range in mild weather, plan to arrive at each charger with at least 10–15% battery, and charge to about 80% rather than 100% because charging power falls as the battery fills. Plan a break of about every 2 hours of driving; the charge stop can be that break.
 - Verify charger connector, public access, hours and operator status. A listing is not a guarantee of availability, so include a reachable backup and a pre-departure recheck.
 - For combustion vehicles, state tank and consumption assumptions, plan a reserve, and check remote-area fuel access. Don't plan to arrive empty.
 - Link official border, driving, toll and safety guidance for the route. The traveler verifies requirements for their passport and license. Medical fitness-to-drive questions go to a clinician, and legal eligibility is not decided here.
@@ -84,3 +85,4 @@ Good: state the exact vehicle's connector and usable range as an estimate, the a
 
 - Starts from the itinerary in the session; pairs with `travel-budget` for fuel, charging and tolls costs and `travel-packing` for vehicle-trip luggage.
 - Sources are live map routes, operator and official road pages, manufacturer vehicle specifications, and official border, toll and driving guidance for the route.
+- Cold-weather range figures: https://www.fueleconomy.gov/feg/coldweather.shtml ; https://newsroom.aaa.com/2026/05/aaa-study-reveals-temperature-impacts-on-ev-and-hybrid-performance-efficiency-and-costs/ (May 2026). Pairs with `vehicle-ev-ownership` for charging at home and battery questions.

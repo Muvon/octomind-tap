@@ -36,7 +36,16 @@ In Microsoft's terms, answer engine optimization (AEO) drives clarity with enric
 
 ### Scope the channels
 
-Name the AI channels this store can reach, such as Microsoft Merchant Center or Shopify Catalog, and read each channel's current feed documentation. Field names and eligibility differ, so don't carry one channel's rules to another. Google says its AI features need no special schema, so justify schema work by Copilot, Bing and rich results, not by Google AI answers. Sample before scaling: top sellers plus one product per category (a convention).
+Name the AI channels this store can reach and read each channel's current feed documentation. Field names and eligibility differ, so don't carry one channel's rules to another. Channels as of 2026-11:
+
+| Channel | What the seller needs | Status read on the channel's page |
+|---|---|---|
+| Google Merchant Center and Universal Commerce Protocol (UCP) | Complete Merchant Center product data; the `native_commerce(checkout_eligibility)` attribute puts a Buy button on listings in AI Mode and Gemini | Early access for select merchants; products eligible in the US, Canada and Australia; seller stays the seller of record |
+| OpenAI Agentic Commerce Protocol (ACP) | A product feed submitted by upload, HTTPS URL or SFTP; a live site that confirms the current offer when a buyer acts | Building with ACP is open to all; Instant Checkout in ChatGPT is limited to approved partners, so most stores use their own checkout |
+| Microsoft Copilot Checkout | A Microsoft Merchant Center account, a feed that meets Microsoft's UCP-ready attributes (checkout eligibility, unique merchant item ID), one supported checkout partner (Stripe's Agentic Commerce Suite is named; read the page for others); Shopify merchants are enrolled automatically, with controls in Shopify admin | English-language merchants selling to US buyers in USD only; the seller remains merchant of record |
+| Shopify Catalog | Complete product data in Shopify admin | Read Shopify's current documentation for the store's region |
+
+Statuses move quickly; confirm each on the linked page and date it in the report. Google says its AI features need no special schema, so justify schema work by Copilot, Bing and rich results, not by Google AI answers. Sample before scaling: top sellers plus one product per category (a convention).
 
 ### Make the catalog machine-readable (p. 12)
 
@@ -100,5 +109,8 @@ Return a report; save it as `ai-readiness-[store]-[YYYY-MM-DD].md` only when ask
 - [Microsoft Advertising: From discovery to influence, a guide to AEO and GEO](https://aka.ms/ads/AeoGeo), PDF, 16 pages, summary post dated 2026-01-06: [blog](https://about.ads.microsoft.com/en/blog/post/january-2026/from-discovery-to-influence-a-guide-to-geo).
 - [Google: optimizing for generative AI features](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide).
 - [Google: review snippet structured data](https://developers.google.com/search/docs/appearance/structured-data/review-snippet).
+- [Google Merchant Center: UCP-powered checkout](https://support.google.com/merchants/answer/16837055), read 2026-11-15.
+- [OpenAI: Agentic Commerce Protocol developer docs](https://developers.openai.com/commerce), checked through search results 2026-11-15; the page itself did not load.
+- [Microsoft Advertising: agentic commerce and Copilot Checkout requirements](https://about.ads.microsoft.com/en/solutions/technology/agentic-commerce), read 2026-11-15.
 
 Read in full 2026-11-09. The sampling approach is a convention, not a published rule.

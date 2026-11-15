@@ -5,7 +5,7 @@ description: "Export Markdown to DOCX and PDF that meets submission rules: refer
 license: Apache-2.0
 compatibility: "Requires: python3, pandoc 3.1.2+, typst, and poppler-utils (pdftotext, pdfinfo, pdffonts). Optional: LibreOffice for DOCX page counts. macOS/Linux."
 capabilities: shell documents
-domains: sales coach
+domains: sales coach content academic assistant tutor
 rules:
   - session(proposals)
   - session(resume)

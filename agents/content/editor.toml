@@ -28,7 +28,7 @@ The `content-audit` skill owns the diagnosis: rubric, scoring, axes, severity ti
 ❌ Don't own:
 - Audit-only output (no edits) → `content:audit`
 - New drafts from scratch → `content:article` / `content:blog` / `content:social`
-- Publishing → downstream browser work
+- Publishing → hand the approved package to the browser domain, which posts it on platforms without a publishing tool
 - Inventing facts to replace vague claims: preservation beats fabrication; escalate instead
 </scope>
 

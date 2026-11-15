@@ -97,7 +97,7 @@ For US-facing endorsements, disclose material connections clearly with the endor
 
 Choose cadence from evidence availability and staffed responses (directional). Buffer's format comparisons differ by platform, and its engagement definitions include LinkedIn clicks (measured, Buffer Engagement, n=platform subsets of 52M+ posts, 2026-03). Don't replace buyer relevance with a universal format hierarchy or promotional percentage.
 
-Use permission-based DMs. A like, follow, or public reply doesn't authorize a sales sequence. Respond publicly to the actual question without inserting a cold pitch. Move private details to an agreed channel; record consent, purpose, owner, and the promised follow-up. Stop after refusal or an unanswered unsolicited approach. Don't enroll a contact into newsletters without permission (directional).
+Use permission-based DMs. A like, follow, or public reply doesn't authorize a sales sequence. Respond publicly to the actual question without inserting a cold pitch. Move private details to an agreed channel; record consent, purpose, owner, and the promised follow-up. Stop after refusal or an unanswered unsolicited approach. Don't enroll a contact into newsletters without permission (directional). For email or call follow-up, apply the `outreach-compliance` skill for consent and opt-out rules and the `outreach-deliverability` skill for sending setup.
 
 ### KPI stack and readout
 
@@ -118,7 +118,7 @@ Readout template: campaign and stage; reporting window and cohort maturity; chan
 
 ### Experiments
 
-Change a single variable, such as speaker or proof presentation. Record the hypothesis, comparable audience, baseline, success criterion, resource ceiling, and decision date before publishing. Compare at similar ages and disclose concurrent events. Mark kept or killed with evidence; if volume is inconclusive, record that finding and explicitly decide whether to fund a dated continuation. Don't extend a weak test indefinitely (directional).
+Follow the `marketing-experiments` skill for the plan and verdict. Change a single variable, such as speaker or proof presentation. Record the hypothesis, comparable audience, baseline, success criterion, resource ceiling, and decision date before publishing. Compare at similar ages and disclose concurrent events. Mark kept or killed with evidence; if volume is inconclusive, record that finding and explicitly decide whether to fund a dated continuation. Don't extend a weak test indefinitely (directional).
 
 ## What gets suppressed and prohibited
 

@@ -45,13 +45,15 @@ Read the input. Match against these signatures. If signal is ambiguous, ask the 
 | ≤ 280 chars, no thread markers, single block | X post | `social-x` + cross-cutting |
 | 2+ blocks separated by blank lines or "—" / "Post N" markers, each ≤ 280 chars | X thread | `social-x` + cross-cutting |
 | ≤ 3000 chars, conversational, no formal sections | LinkedIn post | `social-linkedin` + cross-cutting |
-| Similar to X but with different platform context cue | Threads / Bluesky / Mastodon / Reddit / HN | matching `social-<platform>` + cross-cutting |
+| Similar to X but with different platform context cue | Threads / Bluesky / Mastodon / Reddit / HN / Facebook | matching `social-<platform>` + cross-cutting |
+| Image or video caption, hook line, or script for a short vertical video, named or cued as Instagram, TikTok or YouTube | Instagram / TikTok / YouTube copy | `social-instagram`, `social-tiktok` or `social-youtube` + cross-cutting; scored with the X post/thread weights |
+| Long-form post named or cued as dev.to or Medium | dev.to / Medium article | `social-devto` or `social-medium` + cross-cutting + `content-geo` + `content-formats`; scored with the Article weights (Blog weights under 1500 words) |
 | 600–1500 words, opinionated, conversational | Blog post (content quality) | cross-cutting + `content-geo` + `content-formats` |
 | 1500–3000+ words, sections, citations, formal voice | Article (content quality) | cross-cutting + `content-geo` + `content-formats` |
 
 Cross-cutting skills always loaded: `content-voice`, `content-humanize`, `content-grounding`.
 
-Don't guess between blog and article — confirm if borderline. Don't guess platform if no cue — ask which one.
+Don't guess between blog and article — confirm if borderline. Don't guess platform if no cue — ask which one. The axis-weight table below has four columns; a surface scored with another type's weights says so in the report header. Phoenix-style verdicts stay X-only.
 
 This audit covers the writing itself: hook, dwell, slop, voice, specificity, structure, grounding, safety, topic fit, and answer-first structure for long-form.
 
@@ -261,7 +263,7 @@ Before returning a report:
 ## Composition / References
 
 Content-domain skills the harness composes with:
-- `social-x`, `social-linkedin`, `social-threads`, `social-bluesky`, `social-mastodon`, `social-hackernews`, `social-reddit` — platform rulebooks
+- `social-x`, `social-linkedin`, `social-threads`, `social-bluesky`, `social-mastodon`, `social-hackernews`, `social-reddit`, `social-facebook`, `social-instagram`, `social-tiktok`, `social-youtube`, `social-devto`, `social-medium` — platform rulebooks
 - `content-voice` — voice / AI-pattern check
 - `content-humanize` — 8-dimension humanization diagnostic (when Slop-risk score is low)
 - `content-grounding` — fact-grounding triage for the Grounding axis

@@ -4,7 +4,7 @@ title: "Meta Ads Production Spec (Facebook + Instagram)"
 description: "Meta ad specs for Facebook and Instagram Feed, Stories and Reels: text slots, character limits, ratios and CTAs. Use when writing Meta ad copy or briefs."
 license: Apache-2.0
 compatibility: "Octomind launch agents. Platform-specific to Meta (Facebook + Instagram)."
-domains: launch
+domains: launch marketing
 rules:
   - content(meta ads)
   - content(facebook ads)
@@ -165,7 +165,7 @@ So:
 - Primary text first sentence must hook in ≤125 chars
 - Do not lead with a brand name or "we are excited to announce" — pure scroll-past
 - Video first frame must be the hook, not a logo intro
-- Caption every line of video — 85%+ of Meta video plays on mute
+- Caption every line of video — many feed videos start muted, and the first seconds must work without sound
 
 ### Policy Constraints (Common Rejections)
 

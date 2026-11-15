@@ -98,10 +98,10 @@ OWASP Top 10:2025 — what to look for and the fix
 |----|----------|----------|-----|
 | A01 | Broken Access Control (now includes SSRF) | Missing object- or function-level checks (IDOR), privilege escalation, CORS misconfig, server fetching user-supplied URLs | Deny by default; authorize every request server-side against the object's owner; URL allowlists and egress limits for server-side fetches |
 | A02 | Security Misconfiguration | Default creds, debug on, verbose errors, permissive cloud/IAM, XXE-enabled parsers, missing headers | Hardened repeatable config, IaC review, unused features removed |
-| A03 | Software Supply Chain Failures | Unpinned or unvetted dependencies, typosquats, hijacked maintainers and self-spreading npm worms, over-privileged CI tokens, no SBOM | Lockfiles, CI actions pinned by commit SHA, SBOM, provenance and signing (SLSA, Sigstore), least-privilege CI secrets, a short cooldown before adopting fresh releases |
+| A03 | Software Supply Chain Failures | Unpinned or unvetted dependencies, typosquats, hijacked maintainers and self-spreading npm worms, over-privileged CI tokens, no SBOM | Lockfiles, SBOM, provenance and signing (SLSA, Sigstore), a short cooldown before adopting fresh releases; CI hardening (commit-SHA action pins, least-privilege tokens and secrets) per the `ci-cd-pipelines` skill |
 | A04 | Cryptographic Failures | Weak or legacy algorithms, hardcoded secrets, plaintext sensitive data, home-made crypto | Vetted libraries, TLS everywhere, KMS or secret manager, Argon2id/scrypt/bcrypt for passwords |
 | A05 | Injection (incl. XSS) | SQL/NoSQL/OS/LDAP/template injection, XSS | Parameterized queries, context-aware output encoding, CSP, no shell string interpolation |
-| A06 | Insecure Design | Business-logic flaws, no rate limits on sensitive flows, trust-boundary violations | Threat model (STRIDE, attack trees) before building; abuse cases as tests |
+| A06 | Insecure Design | Business-logic flaws, no rate limits on sensitive flows, trust-boundary violations | Threat model before building, using the `threat-modeling` skill; abuse cases as tests |
 | A07 | Authentication Failures | Credential stuffing, weak recovery flows, session fixation, missing MFA | Passkeys or other phishing-resistant MFA; NIST SP 800-63B-4 passwords (length over composition, breached-password check, no forced rotation); rate limits; secure sessions |
 | A08 | Software or Data Integrity Failures | Unsigned updates, insecure deserialization, trusting unverified data | Signature verification, safe deserialization, integrity checks |
 | A09 | Security Logging and Alerting Failures | Security events unlogged, secrets in logs, logs nobody alerts on | Log authn/authz/admin events without sensitive data, alert on them, tamper-resistant storage |
@@ -110,7 +110,7 @@ OWASP Top 10:2025 — what to look for and the fix
 Related OWASP standards:
 - ASVS 5.0 (May 2025) — requirement-level verification at levels 1–3; use it when the user wants a verifiable checklist rather than a risk list.
 - API Security Top 10 (2023) — for APIs: broken object-level and property-level authorization, unrestricted resource consumption, unrestricted access to sensitive business flows.
-- LLM Top 10 (2025) — for LLM features: prompt injection, improper output handling, excessive agency; treat model output as untrusted input.
+- LLM Top 10 (2026 edition, published August 2026) — for LLM features: prompt injection, excessive agency, improper output handling; treat model output as untrusted input. The `ai-prompt-injection-defense` skill holds the ID table; always write the edition with the ID (LLM03:2026).
 
 Security review checklist
 

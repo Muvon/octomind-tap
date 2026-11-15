@@ -46,7 +46,7 @@ Detect the target market first (from the posting's location/company, or ask), th
 
 ### Personal data and consent clauses
 
-- A consent clause is not a GDPR requirement for an ordinary application: employers process applicant data on the pre-contract legal basis (GDPR Art. 6(1)(b); in Germany alongside § 26 BDSG) and must give applicants their own privacy notice.
+- A consent clause is not a GDPR requirement for an ordinary application: employers process applicant data on the pre-contract legal basis (GDPR Art. 6(1)(b)) and must give applicants their own privacy notice. In Germany, § 26 BDSG was the national rule for this; since the CJEU judgment of 30 March 2023 (C-34/21) how far it still applies is disputed, so rely on Art. 6(1)(b).
 - Poland is the exception by custom: recruiters expect a RODO consent line at the foot of the CV, and many postings quote the exact wording to use. Add one there, and anywhere a posting asks for it. A separate opt-in sentence covers keeping the CV for future recruitment.
 - Personal data norms differ: date of birth, marital status, and nationality still appear on some German, French, and Central European CVs but are optional, and omitted (and can be discriminatory to request) in the US/UK/CA/AU. Include only what the target market expects and the candidate consents to.
 - Work authorization: state it in one line when it is a likely knockout question (UK "right to work", US "authorized to work in the US", EU Blue Card or permit status).
@@ -78,6 +78,6 @@ Same candidate, Polish role: 1–2 page CV in the posting's language, the RODO c
 
 ## References
 
-- GDPR Art. 6(1)(b) (pre-contract processing); Germany: Allgemeines Gleichbehandlungsgesetz (AGG, 2006) and § 26 BDSG
+- GDPR Art. 6(1)(b) (pre-contract processing); Germany: Allgemeines Gleichbehandlungsgesetz (AGG, 2006) and § 26 BDSG; CJEU, 30 March 2023, C-34/21 (Hauptpersonalrat der Lehrerinnen und Lehrer)
 - [Careers in Poland: the consent clause on a Polish CV](https://www.careersinpoland.com/article/work/the-one-thing-you-should-never-leave-off-your-polish-cv)
 - [Europass CV](https://europass.europa.eu/en/create-europass-cv)

@@ -25,7 +25,7 @@ Views render state; owners decide its lifetime. Durable data, scene state, and t
 
 ## Platform gate
 
-As of 2026-10: Xcode 27 (Swift 6.4 compiler, iOS 27 SDK, requires macOS Tahoe 26.6+) is the stable release; Xcode 27.1 is at release candidate and 27.2 in beta. Check the selected Xcode, language/isolation settings, minimum OS, entitlements, and framework availability before adding APIs. Treat iOS 27-only APIs as gated by `#available` unless the deployment target is 27.
+As of 2026-11: Xcode 27 (Swift 6.4 compiler, iOS 27 SDK, requires macOS Tahoe 26.6+) is the stable release; Xcode 27.2 (released 2026-10-29) is the current point release and 27.3 is in beta. Check the selected Xcode, language/isolation settings, minimum OS, entitlements, and framework availability before adding APIs. Treat iOS 27-only APIs as gated by `#available` unless the deployment target is 27.
 
 Observation and SwiftData require iOS 17+; NavigationStack requires iOS 16+. Use `#available` only where supported older systems need a deliberate compatible implementation. Do not add speculative fallback trees for unsupported OS versions, or raise minimum deployment versions as incidental cleanup. Recheck Apple's live SDK submission requirements when preparing a release.
 

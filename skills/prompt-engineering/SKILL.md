@@ -70,15 +70,15 @@ Apply in this order — earlier items have higher impact per minute spent.
 | Wrong first try, can be self-judged | Reflexion / Self-Refine (draft → critique → revise) | Gains depend on a reliable critic; verify on your eval set |
 | Tool-use agent | ReAct (thought → action → observation loop) | The standard agentic pattern |
 
-Reasoning models change this table. Current frontier models think internally (Claude adaptive thinking, OpenAI reasoning effort, Gemini thinking level): control depth with the effort parameter, not prompt scaffolding. On Claude Fable 5.1, Opus 5.5, and Sonnet 5.5, a prompt that asks for reasoning written into the response may be declined (`reasoning_extraction`); ask for a short explanation instead and read summarized thinking if you need the trace.
+Reasoning models change this table. Current frontier models think internally (Claude adaptive thinking, OpenAI reasoning effort, Gemini thinking level): control depth with the effort parameter, not prompt scaffolding. On Claude Fable 5.2, Opus 5.5, and Sonnet 5.5, a prompt that asks for reasoning written into the response may be declined (`reasoning_extraction`); ask for a short explanation instead and read summarized thinking if you need the trace.
 
 ### Agentic prompts (Claude 5 family, 2026)
 
 Agent prompts are runbooks: goal, tools, decision criteria, error handling, stopping conditions. For current Claude models (verify on the model-specific prompting pages):
 
 - Put the full task spec in the first turn; progressive disclosure across turns costs quality and tokens.
-- Effort is the main dial. Defaults differ (Opus 5.5 and Haiku 5.5: `medium`; Fable 5.1 and Sonnet 5.5: `high`) and level names don't map across models, so sweep per model against evals. Lowering effort cuts thinking more reliably than prompt instructions.
-- Thinking is always on for Fable 5.1 and Opus 5.5: remove "don't think" rules. `budget_tokens` returns 400 on Claude 4.7+, prefill on 4.6+, forced `tool_choice` on Opus 5.5 / Sonnet 5.5 / Fable 5.1 — use structured outputs, or `auto` + an instruction + `strict: true`.
+- Effort is the main dial. Defaults differ (Opus 5.5 and Haiku 5.5: `medium`; Fable 5.2 and Sonnet 5.5: `high`) and level names don't map across models, so sweep per model against evals. Lowering effort cuts thinking more reliably than prompt instructions.
+- Thinking is always on for Fable 5.2 and Opus 5.5: remove "don't think" rules. `budget_tokens` returns 400 on Claude 4.7+, prefill on 4.6+, forced `tool_choice` on Opus 5.5 / Sonnet 5.5 / Fable 5.2 — use structured outputs, or `auto` + an instruction + `strict: true`.
 - State scope explicitly ("apply to every section"); current models follow instructions literally.
 - Ask for progress updates when you want them (Opus 5.5 returns them as thinking blocks, visible with `display: "updates"`). In unattended runs a text-only turn is a report, not completion.
 - State when subagents are and aren't warranted; current models delegate readily.
@@ -275,7 +275,7 @@ External authoritative sources:
 - [Anthropic — Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
 - [Anthropic — Prompt caching](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)
 - [Anthropic — Adaptive thinking](https://platform.claude.com/docs/en/build-with-claude/thinking) and [effort](https://platform.claude.com/docs/en/build-with-claude/effort)
-- [Anthropic — Prompting Claude Opus 5.5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5) and [Fable 5.1](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-1)
+- [Anthropic — Prompting Claude Opus 5.5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5) and [Fable 5.2](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-2)
 - [Anthropic — Structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs)
 - [Prompting Guide — CoT](https://www.promptingguide.ai/techniques/cot), [ToT](https://www.promptingguide.ai/techniques/tot), [ReAct](https://www.promptingguide.ai/techniques/react), [Self-Consistency](https://www.promptingguide.ai/techniques/consistency)
 - [Lost in the Middle (Liu et al., TACL 2024)](https://aclanthology.org/2024.tacl-1.9/) — U-shape attention foundation

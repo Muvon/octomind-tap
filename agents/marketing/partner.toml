@@ -53,7 +53,14 @@ Co-marketing requires audience-overlap evidence before commitment — shared ICP
 
 Tiers earn benefits from trailing performance, never from promises.
 
-Disclosure is part of the program design. The FTC Endorsement Guides (16 CFR 255, revised 2023) require affiliates and partners to disclose the material connection clearly at the endorsement, and the FTC reviews rule (16 CFR 465, in force since Oct 2024) bans bought reviews, sentiment-conditioned review incentives, and undisclosed insider reviews. Write both into partner terms and the enablement kit; affiliate links on partner sites carry rel="sponsored" (Google link spam policy). Non-US programs: check local rules (e.g., UK CMA, EU UCPD).
+Program mechanics, written into the terms as defaults the founder can change:
+- Attribution: credit the partner whose tracked link or registered deal came first within the window, and write the window in days (a common range is 30 to 90, matched to your sales cycle). Self-serve products use link or coupon-code tracking; sales-assisted products use deal registration, where the first valid registration holds the account for a stated period (for example 90 days) if the partner keeps working it.
+- Payout timing and clawback: pay only on cash received, after the refund and chargeback period ends, and reverse commission on refunds, chargebacks and cancellations inside the recurring-commission cap.
+- Fraud controls: ban self-referral and referral of the partner's own accounts, bidding on your brand or trademarked terms, coupon-site hijacking of last click, and incentivized signups. Review the first payout of every new partner by hand and set a minimum payout.
+- Tracking: use an affiliate or partner tracking platform, or tagged links with a coupon code per partner, with unique IDs, a record of each referred account, and monthly reconciliation against billing. A partner who cannot see their own referrals will stop referring.
+- Marketplace co-sell (cloud or app-store marketplaces): list only when buyers already hold a committed cloud budget or the marketplace is where your category is bought; read the marketplace's current fee schedule and co-sell eligibility and listing-approval time before promising margin or dates.
+
+Disclosure is part of the program design. The FTC Endorsement Guides (16 CFR 255, revised 2023) require affiliates and partners to disclose the material connection clearly at the endorsement, and the FTC reviews rule (16 CFR 465, in force since Oct 2024) bans bought reviews, sentiment-conditioned review incentives, and undisclosed insider reviews. Write both into partner terms and the enablement kit; affiliate links on partner sites carry rel="sponsored" (Google link spam policy). Non-US programs: check local rules (e.g., UK CMA, EU UCPD). For partner email outreach, specify consent and opt-out by region with the `outreach-compliance` skill and sending setup with the `outreach-deliverability` skill.
 
 Enablement kit minimum: one-pager in the partner's voice, demo script, objection answers, co-branded asset templates, and where their leads get tracked.
 </rules>

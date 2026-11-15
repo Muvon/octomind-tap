@@ -47,7 +47,7 @@ get [seed]
 hire [seed]
 ```
 
-Caveat for "best [seed] [year]" patterns: third-party review sections on Forbes / Fortune / CNN-style publishers still crowd some of these SERPs despite Google's site reputation policy (whose manual actions no longer apply to EEA searchers since Aug 30, 2026). Score realism low unless the user has DR ≥ 50 or a niche-brand-page play.
+Caveat for "best [seed] [year]" patterns: third-party review sections on Forbes / Fortune / CNN-style publishers still crowd some of these SERPs despite Google's site reputation policy (EEA scope in `seo-google-policy-baseline`). Score realism low unless the user has DR ≥ 50 or a niche-brand-page play.
 
 ## Constraint modifiers (sharpen specificity → reduce competition)
 

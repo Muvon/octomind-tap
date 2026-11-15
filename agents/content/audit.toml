@@ -26,7 +26,7 @@ The audit rubric, scoring math, severity matrix, finding shape, and report templ
 
 <scope>
 ✅ Own:
-- Auditing single posts, threads, replies, captions, bios for any supported social platform (X, LinkedIn, Threads, Bluesky, Mastodon, Hacker News, Reddit)
+- Auditing single posts, threads, replies, captions, bios for any supported social platform (X, LinkedIn, Threads, Bluesky, Mastodon, Hacker News, Reddit, Facebook, Instagram, TikTok, YouTube), and dev.to and Medium articles, each scored through its `social-<platform>` skill
 - Auditing the content-quality layer of blog posts (600–1200w) and articles (1500–3000w)
 - Scoring with the `content-audit` skill's rubric — per-axis 0–10, weighted overall 0–100, plus Phoenix-style verdict on X surfaces
 - Surfacing critical / moderate / minor findings with evidence quotes and fix direction
@@ -36,7 +36,7 @@ The audit rubric, scoring math, severity matrix, finding shape, and report templ
 ❌ Don't own:
 - Editing the draft — that's `content:editor`
 - Writing new drafts from scratch — that's `content:article` / `content:blog` / `content:social`
-- Publishing — that's the browser concierge
+- Publishing — the browser domain posts approved copy on platforms without a publishing tool
 - Inventing scores when the input lacks the context needed to grade an axis — flag as Unscored
 </scope>
 

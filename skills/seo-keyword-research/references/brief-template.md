@@ -71,7 +71,7 @@ Canonical output format for Stage 6. Fill every section; mark "n/a" only when ge
 ## Open Items (downstream concerns — owned by other domains)
 - Content briefs per P0 keyword
 - Internal link map (pillar ↔ cluster pages)
-- On-page schema (Article, Product, Organization) + meta tag wiring — FAQ/HowTo no longer earn Google rich results
+- On-page schema (Article, Product, Organization) + meta tag wiring — FAQ/HowTo no longer earn Google rich results (`seo-google-policy-baseline`)
 - GEO content optimization (clear answers, information gain, crawlable text)
 - Backlink prospecting for pillar pages (especially those competing in DR > user DR + 15)
 - AI search visibility tracking setup (Profound / Otterly / AthenaHQ / Peec) for the GEO-flagged keywords

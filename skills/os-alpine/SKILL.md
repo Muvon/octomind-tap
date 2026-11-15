@@ -20,7 +20,7 @@ Alpine combines musl libc, BusyBox utilities, apk packages, and normally OpenRC 
 
 ## Release and current changes
 
-- Verified 2026-10-12: Alpine 3.24 (3.24.2) is the current stable branch; `edge` is rolling development, and new stable branches are cut each May and November. Check the release table again before selecting a base image or upgrade path.
+- Verified 2026-11-15: Alpine 3.24 (3.24.4) is the current stable branch (3.23.8 and 3.22.8 are the older supported ones); `edge` is rolling development, and new stable branches are cut around May/June and November/December (3.23 on 2025-12-03, 3.24 on 2026-06-09). Branch 3.25 is not yet listed. Re-read the release table when a new branch is due, and before selecting a base image or upgrade path.
 - Support differs by repository: `main` is typically supported for two years, while `community` is supported until the next stable release. An otherwise supported branch can contain community packages that no longer receive that coverage.
 - Alpine 3.23 introduced apk-tools v3. Check `apk --version` and local help before relying on newer commands, configuration, or parsed output; apk tool version and repository/package format version are different facts.
 - Alpine 3.24 deprecates `qemu-binfmt` in favor of user-mode QEMU `binfmt.d` configuration and the `binfmt` service. For emulation failures, check installed registration and host ownership rather than starting the obsolete service.

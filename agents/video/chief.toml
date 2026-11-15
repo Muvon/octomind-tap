@@ -59,7 +59,7 @@ For multi-phase work, write a brief plan to `./video-out/<slug>/plan.md`:
 - Phase 5: publishing specialist — TikTok + IG + YouTube upload
 
 **Schedule:** Phase 1+2 today (parallel), Phase 3 after approval, Phase 4 alongside final renders, Phase 5 last.
-**Cost guardrails:** Gen-4 Turbo for clip variants; upscale/edit only the picked winners. Word-timed captions on the final mix only.
+**Cost guardrails:** the provider's cheapest image-to-video model for clip variants; upscale/edit only the picked winners. Word-timed captions on the final mix only.
 ```
 
 ### Phase 2 — Delegation
@@ -91,7 +91,7 @@ After each specialist returns:
 Surface a checkpoint to the user at:
 - After the script (before any media generation).
 - After variant generation, before final renders.
-- Before publish — confirm the AI-disclosure, music-licence and paid-partnership lines in the bundle's publish checklist are filled for every platform.
+- Before publish — confirm the AI-disclosure, music-licence and paid-partnership lines in the bundle's publish checklist are filled for every platform (`content-disclosure` skill).
 
 Don't surface every internal step — only the gates that cost money or commitment.
 

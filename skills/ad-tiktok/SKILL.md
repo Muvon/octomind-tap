@@ -4,7 +4,7 @@ title: "TikTok Ads Production Spec"
 description: "TikTok ad specs: In-Feed, Spark Ads and TopView slots, limits, the 9:16 video spec and safe zones. Use when writing TikTok ad copy or video briefs."
 license: Apache-2.0
 compatibility: "Octomind launch agents. Platform-specific to TikTok Ads."
-domains: launch
+domains: launch marketing
 rules:
   - content(tiktok ads)
   - content(tiktok ad)
@@ -52,7 +52,7 @@ This skill defines exactly what to produce for a TikTok ad. It is platform-spec 
 | Caption | No character cap on the specs page; Spark captions display max 4 lines | Overlays bottom-left on video; front-load the hook. Non-Spark ad captions don't support hashtags, @mentions or clickable links (official, TikTok video ads specifications, 2026-06) |
 | Display name | 2–20 chars | The advertiser name shown |
 | Profile image | 1:1, ≥98×98 px | Round-cropped on display |
-| Video | 9:16, 5–60s (up to 3 min available) | MP4 or MOV; 540×960 minimum, 1080×1920 recommended |
+| Video | 9:16, 5–60s typical; non-Spark In-Feed up to 10 min, Spark Ads no limit | MP4 or MOV; 540×960 minimum, 1080×1920 recommended (official, TikTok video ads specifications, updated 2026-06) |
 | CTA button | Enum | See CTA section |
 | Landing URL | URL | Where the click goes |
 

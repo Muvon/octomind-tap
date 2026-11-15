@@ -4,7 +4,7 @@ title: "Reddit Ads Production Spec"
 description: "Reddit ad specs: Promoted Posts, Free-form, Carousel and Conversation ads with slots, limits and native-voice rules. Use when writing Reddit ad copy."
 license: Apache-2.0
 compatibility: "Octomind launch agents. Platform-specific to Reddit Ads."
-domains: launch
+domains: launch marketing
 rules:
   - content(reddit ads)
   - content(reddit ad)

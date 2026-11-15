@@ -58,18 +58,18 @@ Answers are nondeterministic and vary by engine, location, and session. Judge tr
 
 - Not required for AI features: "Structured data isn't required for generative AI search." It still drives rich-result eligibility and entity disambiguation, and other engines may parse it. Microsoft's retail guide recommends `Product`, `Offer`, `AggregateRating`, `Review`, `Brand`, `ItemList`, and `FAQ` markup for Copilot and Bing shopping, so keep it accurate where those surfaces matter.
 - Use JSON-LD that matches visible content: `Article`/`BlogPosting` (headline, author as `Person` with `url`/`sameAs`, `datePublished`, `dateModified`), `Organization` (logo, `sameAs`), `Product`/`Offer`, `BreadcrumbList`.
-- Google stopped showing FAQ rich results on 7 May 2026; HowTo rich results went in 2023. Keep a visible FAQ when it helps readers; leftover markup is harmless but no longer a Google lever.
+- FAQ and HowTo rich results are retired in Google (`seo-google-policy-baseline`). Keep a visible FAQ when it helps readers; leftover markup is harmless but no longer a Google lever. Schema validation and severity live in `seo-structural-audit`.
 - Review and `AggregateRating` markup about your own business on your own site is not eligible for review snippets. Mark up genuine third-party reviews only.
 
 ### Spam-policy boundaries
 
 - Scaled content abuse covers mass-produced or mass-rewritten pages, AI-assisted or not, and Google's guide applies it to attempts to manipulate generative AI responses.
-- Site reputation policy (text updated 28 August 2026): third-party content published mainly to exploit a host's ranking signals violates it unless the host's input, editorial oversight, or contribution makes it fully integrated. Since 30 August 2026 manual actions don't apply to searchers in the EEA; affected sections may rank independently instead. Pitch placements only where the topical fit is genuine.
-- The helpful content system was folded into core ranking in March 2024; there is no separate update to wait out. Core updates (2026: 27 March to 8 April, 21 May to 2 June, plus smaller unannounced ones) re-evaluate quality broadly. Don't quote ranking-shift percentages without a primary source.
+- Site reputation policy: third-party content published mainly to exploit a host's ranking signals violates it unless the host's input, editorial oversight, or contribution makes it fully integrated. The EEA change of 30 August 2026 and its source are in `seo-google-policy-baseline`. Pitch placements only where the topical fit is genuine.
+- The helpful content system was folded into core ranking in March 2024; there is no separate update to wait out. Core update dates are in `seo-google-policy-baseline`. Don't quote ranking-shift percentages without a primary source. The page-level audit of these spam boundaries is `seo-content-audit`.
 
 ### Crawlers and controls
 
-These search-related tokens are illustrative, not a required configuration. Check current per-product documentation, existing rules, CDN/WAF access, and the owner's permissions before proposing changes; a spoofed user-agent request doesn't verify real crawler access.
+These search-related tokens are illustrative, not a required configuration. Check current per-product documentation, existing rules, CDN/WAF access, and the owner's permissions before proposing changes; a spoofed user-agent request doesn't verify real crawler access. The audit procedure for crawler access is in `geo-visibility-audit`.
 ```
 User-agent: OAI-SearchBot
 Allow: /
@@ -87,11 +87,11 @@ Allow: /
 - User-initiated fetchers (ChatGPT-User, Perplexity-User, Claude-User) act for a person; OpenAI and Perplexity state robots.txt may not apply to them.
 - Google's AI features use Googlebot. Limit display with `nosnippet`, `data-nosnippet`, or `max-snippet`; the Search Console "Search generative AI" control (all sites since 31 August 2026) removes a site from AI Overviews, AI Mode, and Discover AI features and is not a ranking signal elsewhere. Google-Extended limits training and Gemini Apps grounding, not appearance in Search or its AI features.
 - Serve key content in the initial HTML. Several AI crawlers don't execute JavaScript, so client-rendered text may be invisible to them.
-- llms.txt: Google Search ignores it ("You don't need to create new machine readable files, AI text files, markup, or Markdown"). Keeping one for developer tools is harmless; don't promise visibility from it.
+- llms.txt: Google Search ignores it (`seo-google-policy-baseline`). Keeping one for developer tools is harmless; don't promise visibility from it.
 
 ### Measurement
 
-- Google Search Console's Generative AI performance report shows impressions, not clicks, for AI Overviews and AI Mode, and Web performance totals also include them. Verify live report dimensions; don't infer AI-specific clicks or sum overlapping reports. Actual dated answer captures and scoped publisher/vendor reports remain separate evidence, not an interchangeable measure.
+- Google Search Console's Generative AI performance report counts impressions, not clicks, and Web totals also include them (`seo-google-policy-baseline`). Verify live report dimensions; don't infer AI-specific clicks or sum overlapping reports. Actual dated answer captures and scoped publisher/vendor reports remain separate evidence, not an interchangeable measure; the capture and cohort procedure is in `geo-visibility-audit`.
 - Bing Webmaster Tools AI Performance report (public preview February 2026): Copilot and Bing AI citations, cited pages, and grounding queries; no clicks. Partner integrations are unnamed, so don't read it as ChatGPT data.
 - Agree a bounded, versioned buyer-question set and repeat comparable trials across named engine surfaces, locales, search modes, and windows. Ten to twenty prompts and monthly sampling are practitioner starting points, not requirements. Record actual dated answers, mentions, recommendations, cited URLs, and completed/planned counts; without captures, visibility is Unverified, not zero. UI/API runs remain separate; ordinary search isn't an engine-answer test. Referral segments from chatgpt.com, perplexity.ai, copilot.microsoft.com, and gemini.google.com are partial attribution evidence, not all AI traffic. Define the activation event/window and conversion denominator; missing analytics is Unverified. Treat vendor trackers as samples, not causal uplift evidence.
 

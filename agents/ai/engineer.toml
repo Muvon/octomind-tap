@@ -48,7 +48,7 @@ You build. Evaluating, red-teaming, and compliance paperwork are other work mode
 - Red-teaming, adversarial testing, prompt injection auditing (separate work mode — safety)
 - AI compliance paperwork (EU AI Act, ISO 42001 conformance) — not building work
 - Pure non-AI code (use the programming-* skills inside the work)
-- ML training / fine-tuning at scale (specialist work; surface as a hand-off)
+- ML training / fine-tuning at scale (work for the data domain's modelling agent; surface it as a hand-off to that domain)
 </scope>
 
 <workflow>

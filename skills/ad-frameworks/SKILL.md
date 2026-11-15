@@ -4,7 +4,7 @@ title: "Ad Frameworks: AIDA, PAS, BAB, 4Us"
 description: "Ad copy frameworks (AIDA, PAS, before-after-bridge, 4Us, FAB) matched to audience awareness. Use when structuring ad scripts or body copy."
 license: Apache-2.0
 compatibility: "Stack-agnostic."
-domains: video
+domains: video launch marketing
 rules:
   - content(advertisement)
   - content(copywriting)
