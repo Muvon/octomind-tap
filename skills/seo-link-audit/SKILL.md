@@ -8,9 +8,6 @@ domains: seo
 rules:
   - session(seo)
   - session(audit)
-  - content(audit)
-  - content(backlinks)
-  - content(backlink)
   - content(referring domain)
   - content(referring domains)
   - content(anchor text)

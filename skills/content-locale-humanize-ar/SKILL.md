@@ -6,9 +6,9 @@ license: Apache-2.0
 compatibility: "Calibration data only; no tools required. Network access helps for usage checks."
 domains: content
 rules:
-  - content(arabic)
+  - match((?i)\b(translat\w*|locali[sz]\w*|native|fluen\w*|proofread\w*|transcreat\w*)\b) content(arabic)
   - match(\bar-(SA|EG|AE)\b)
-  - match(\bArabic\b)
+  - match((?i)\b(translat\w*|locali[sz]\w*|native|fluen\w*|proofread\w*|transcreat\w*)\b) match(\bArabic\b)
   - match(العربية)
   - semantic(check if this Arabic translation sounds native)
   - semantic(eliminate translationese from this Arabic text)

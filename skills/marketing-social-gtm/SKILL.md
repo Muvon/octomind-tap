@@ -6,10 +6,11 @@ license: MIT
 compatibility: "Requires access to campaign source documents and account analytics; network access for source and policy checks."
 domains: marketing
 rules:
-  - content(launch)
   - content(gtm)
   - match(go[ -]to[ -]market)
   - match(social[ -]campaign)
+  - match((?i)\blaunch\w*\b.{0,40}\b(social|posts?|tweets?|thread|linkedin|twitter|announce\w*)\b)
+  - match((?i)\b(social|posts?|tweets?|thread|announce\w*)\b.{0,40}\blaunch\w*\b)
 ---
 
 ## Overview

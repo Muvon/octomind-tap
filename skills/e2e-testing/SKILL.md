@@ -6,11 +6,6 @@ license: Apache-2.0
 compatibility: "Requires Node.js for Playwright; mobile flows need a simulator or emulator."
 domains: developer
 rules:
-  - file(playwright.config.ts)
-  - file(playwright.config.js)
-  - file(cypress.config.ts)
-  - file(cypress.config.js)
-  - file(.maestro)
   - content(playwright)
   - content(cypress)
   - content(e2e)

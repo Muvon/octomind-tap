@@ -7,7 +7,7 @@ compatibility: "<Required tools, operating systems, or network access.>"
 # capabilities: core
 # domains: developer
 # rules:
-#   - file(Cargo.toml)
+#   - file(Cargo.toml) content(<keyword>)
 #   - content(<keyword>)
 ---
 

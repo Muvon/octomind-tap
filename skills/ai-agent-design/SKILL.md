@@ -7,8 +7,6 @@ compatibility: "Stack-agnostic. Production agent stacks typically need: LLM prov
 domains: ai
 rules:
   - session(ai)
-  - content(agent)
-  - content(agents)
   - content(tool use)
   - content(function calling)
   - content(MCP)

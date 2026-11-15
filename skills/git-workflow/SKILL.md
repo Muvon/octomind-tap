@@ -7,7 +7,7 @@ compatibility: "Requires git. Works with any git-based project."
 capabilities: versioning
 domains: developer devops
 rules:
-  - file(.git)
+  - match((?i)\b(commit\s+(this|these|the|my|it|all|changes?)|commits?\s+messages?|committing|conventional\s+commits?|rebas(e|ing)|cherry-pick\w*|stash\w*|bisect|reflog|gitignore|merge\s+conflicts?|force[\s-]push\w*|squash\w*|amend\w*|(name|naming|create|new)\s+(a\s+|the\s+)?branch\w*|branch\s+nam\w*|git\s+(tags?|history|workflow|hooks?))\b)
 ---
 
 ## Overview

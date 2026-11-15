@@ -12,7 +12,6 @@ rules:
   - match((?i)\bbias\s+audit\b)
   - match((?i)\b(current|previous|past|prior) (salary|pay|compensation)\b)
   - match((?i)\bhow much (do|did) (you|they) (make|pay)\b)
-  - content(transparency)
   - semantic(is the employer required to post the salary range)
   - semantic(what are my rights when AI screens my job application)
 ---

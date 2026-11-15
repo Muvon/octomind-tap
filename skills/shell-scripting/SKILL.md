@@ -14,8 +14,6 @@ rules:
   - match((?i)\b(bash|shell|zsh|powershell|pwsh|sh)\s+(scripts?|one-?liners?|functions?)\b)
   - match((?i)\b(pipefail|shebang|psscriptanalyzer|heredoc|errexit|nounset)\b)
   - match((?i)\b\w+\.(sh|ps1)\b)
-  - file(**/*.sh)
-  - file(**/*.ps1)
 ---
 
 ## Overview

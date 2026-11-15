@@ -7,12 +7,9 @@ compatibility: "Requires Xcode and the project's supported iOS SDK/deployment ta
 capabilities: programming-swift
 domains: developer
 rules:
-  - content(ios)
-  - content(iphone)
-  - content(ipad)
   - content(uikit)
-  - match(iphone.+app|ios.+app|ipad.+app)
-  - file(*.xcodeproj)
+  - match((?i)(^|\b(please|you|lets|let's|to|and|then)\s+)(implement|refactor)\w*\b|\b(compil(e|es|ed|er|ing|ation)|build\s+(error|fail\w*|break\w*)|panic\w*|stack\s*trace|traceback|segfault|unit\s+tests?|(fix|debug)\s+(the\s+|this\s+|a\s+)?(bug|build|crash|error|test|failure)s?|write\s+(a\s+|the\s+)?(function|test|module|class|method|struct)|add\s+(a\s+|an\s+)?(function|method|endpoint|field|test)|\w+\.(swift))\b) file(*.xcodeproj)
+  - match((?i)\b(ios|iphone|ipad)\b.{0,30}\b(apps?|sdk|simulator|xcode|testflight|app\s+store)\b)
 ---
 
 ## Overview

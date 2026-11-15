@@ -7,8 +7,6 @@ compatibility: "Requires: octomind CLI with the `workflow` subcommand. Workflows
 domains: octomind
 rules:
   - content(workflow)
-  - file(*workflow*.toml)
-  - grep(\[\[steps\]\], *.toml)
 ---
 
 ## Overview

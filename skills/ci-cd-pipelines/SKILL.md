@@ -6,9 +6,6 @@ license: Apache-2.0
 compatibility: "Needs the repository's workflow files; GitHub Actions and GitLab CI syntax. Hosted runners or self-managed runners."
 domains: developer devops
 rules:
-  - file(.github/workflows/*.yml)
-  - file(.github/workflows/*.yaml)
-  - file(.gitlab-ci.yml)
   - content(github actions)
   - content(gitlab ci)
   - content(ci/cd)

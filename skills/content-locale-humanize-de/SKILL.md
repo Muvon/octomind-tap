@@ -6,10 +6,10 @@ license: Apache-2.0
 compatibility: "Calibration data only; no tools required. Network access helps for usage checks."
 domains: content
 rules:
-  - content(german)
+  - match((?i)\b(translat\w*|locali[sz]\w*|native|fluen\w*|proofread\w*|transcreat\w*)\b) content(german)
   - match(\bde-(DE|AT|CH)\b)
-  - match(\bGerman\b)
-  - match(\bDeutsch\b)
+  - match((?i)\b(translat\w*|locali[sz]\w*|native|fluen\w*|proofread\w*|transcreat\w*)\b) match(\bGerman\b)
+  - match((?i)\b(translat\w*|locali[sz]\w*|native|fluen\w*|proofread\w*|transcreat\w*)\b) match(\bDeutsch\b)
   - semantic(check if this German translation sounds native)
   - semantic(eliminate translationese from this German text)
 ---

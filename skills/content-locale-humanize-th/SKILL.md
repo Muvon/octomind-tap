@@ -6,9 +6,9 @@ license: Apache-2.0
 compatibility: "Calibration data only; no tools required. Network access helps for usage checks."
 domains: content
 rules:
-  - content(thai)
+  - match((?i)\b(translat\w*|locali[sz]\w*|native|fluen\w*|proofread\w*|transcreat\w*)\b) content(thai)
   - match(\bth-TH\b)
-  - match(\bThai\b)
+  - match((?i)\b(translat\w*|locali[sz]\w*|native|fluen\w*|proofread\w*|transcreat\w*)\b) match(\bThai\b)
   - match(ภาษาไทย)
   - semantic(check if this Thai translation sounds native)
   - semantic(eliminate translationese from this Thai text)

@@ -6,9 +6,9 @@ license: Apache-2.0
 compatibility: "Calibration data only; no tools required. Network access helps for usage checks."
 domains: content
 rules:
-  - content(french)
+  - match((?i)\b(translat\w*|locali[sz]\w*|native|fluen\w*|proofread\w*|transcreat\w*)\b) content(french)
   - match(\bfr-(FR|CA|BE|CH)\b)
-  - match(\bFrench\b)
+  - match((?i)\b(translat\w*|locali[sz]\w*|native|fluen\w*|proofread\w*|transcreat\w*)\b) match(\bFrench\b)
   - match(\bfrançais\b)
   - semantic(check if this French translation sounds native)
   - semantic(eliminate translationese from this French text)

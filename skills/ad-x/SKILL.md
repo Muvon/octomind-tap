@@ -9,7 +9,6 @@ rules:
   - content(twitter ads)
   - content(x ads)
   - content(promoted tweet)
-  - content(promoted post)
   - match(\b(x|twitter)\s+ads?\b)
   - match(\bpromoted\s+(post|tweet)\b)
   - match(\bx\s+(website|app)\s+card\b)

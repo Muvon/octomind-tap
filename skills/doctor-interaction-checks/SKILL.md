@@ -6,13 +6,13 @@ license: Apache-2.0
 compatibility: "Requires: the medical-reference tools or web search for the current FDA label. Information only; the prescriber or pharmacist decides."
 domains: doctor
 rules:
-  - content(interaction)
-  - content(interactions)
   - content(taking together)
   - content(Paxlovid)
   - content(clopidogrel)
   - content(simvastatin)
   - match((?i)can i take .* with .*)
+  - match((?i)\b(drug|medication|medicine|supplement|herbal)s?\s+interactions?\b)
+  - match((?i)\binteract\w*\b.{0,40}\b(drug|medication|medicine|pill|supplement|alcohol|grapefruit)s?\b)
 ---
 
 ## Overview

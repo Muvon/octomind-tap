@@ -10,7 +10,6 @@ rules:
   - content(eval)
   - content(evals)
   - content(evaluation)
-  - content(golden)
   - match(\b(eval|evaluation)\s+(suite|harness|framework|design|driven)\b)
   - match(\b(golden\s+(set|dataset|examples))\b)
   - match(\b(LLM[\s-]?as[\s-]?judge|G-Eval)\b)

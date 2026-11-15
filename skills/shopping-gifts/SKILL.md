@@ -11,8 +11,8 @@ rules:
   - content(gifting)
   - match((?i)\bpresents? for\b)
   - match((?i)\bwhat (should|can|do) (i|we) (get|give) (my|our|him|her|them)\b)
-  - content(birthday)
-  - content(anniversary)
+  - match((?i)\b(buy|get|give|gift|present|ideas?)\b.{0,40}\b(birthday|anniversary)\b)
+  - match((?i)\b(birthday|anniversary)\b.{0,40}\b(gift|present|ideas?|buy|surprise)\b)
 ---
 
 ## Overview

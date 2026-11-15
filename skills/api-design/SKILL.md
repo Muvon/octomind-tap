@@ -6,11 +6,6 @@ license: Apache-2.0
 compatibility: "Optional: an OpenAPI linter (Spectral) and a breaking-change checker (oasdiff) on PATH."
 domains: developer
 rules:
-  - file(openapi.yaml)
-  - file(openapi.yml)
-  - file(openapi.json)
-  - file(swagger.json)
-  - file(*.graphql)
   - content(openapi)
   - content(graphql)
   - content(webhook)

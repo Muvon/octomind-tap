@@ -7,11 +7,9 @@ compatibility: "Requires Xcode and the project's supported macOS SDK/deployment 
 capabilities: programming-swift
 domains: developer
 rules:
-  - content(macos)
-  - content(osx)
   - content(appkit)
   - content(cocoa)
-  - match(mac.+app|macos.+app|osx.+app|desktop.+app)
+  - match((?i)\b(mac|macos|osx)\b.{0,30}\b(apps?|sdk|menu\s*bar|notariz\w*|sandbox\w*)\b)
 ---
 
 ## Overview

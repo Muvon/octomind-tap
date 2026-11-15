@@ -289,7 +289,8 @@ compatibility: "Requires: tool1. macOS/Linux."   # ≤500 chars; environment onl
 capabilities: versioning memory-read    # auto-load capabilities on activation
 domains: developer devops   # auto-activation scoping; omit for manual-only
 rules:                      # auto-activation expressions; omit for manual-only
-  - file(Cargo.toml)
+  - content(rust)
+  - file(Cargo.toml) match((?i)\b(compil\w+|panic\w*|\w+\.rs)\b)
   - content(rust) content(async)
 ---
 ```
@@ -299,7 +300,7 @@ Optional dirs alongside SKILL.md: `scripts/`, `references/`, `assets/`, plus a `
 **Activation — three methods:**
 
 - Env preload: `OCTOMIND_SKILLS=programming-rust,git-workflow octomind run developer` (permanent, no rules evaluated)
-- Auto-activation: skills whose `domains` match the agent's domain get their `rules` evaluated on conversation events; already-active skills are skipped
+- Auto-activation: skills whose `domains` match the agent's domain get their `rules` evaluated on conversation events; already-active skills are skipped. A skill loads only when the request shows the work: every rule line needs a message check (`content`, `match` or `semantic`); `file`/`grep`/`bin`/`env`/`workdir` only narrow a line, since alone they fire for any request in a matching repo. `session(...)` alone is allowed (one agent's own runs).
 - Manual: `skill(action="use"|"forget"|"list", name=...)` or `/skill <use|forget|list>`
 
 **Rule expressions** — list items are OR branches; multiple expressions on one line are AND:
@@ -319,7 +320,7 @@ Optional dirs alongside SKILL.md: `scripts/`, `references/`, `assets/`, plus a `
 
 **Body — U-shape section order:** Overview (top) → Mental model → Rules → Examples → Checklist (near the end — final gate) → Composition / References. Under ~2000 words; beyond that, context rot hits skill recall.
 
-**Hard rules enforced by `lint-skills.sh`:** valid frontmatter; required fields and length limits; `name` matches directory; non-empty body; every `reference/<file>` cited exists; `validate` executable; no `**bold**` in body outside code.
+**Hard rules enforced by `lint-skills.sh`:** valid frontmatter; required fields and length limits; `name` matches directory; non-empty body; every `reference/<file>` cited exists; `validate` executable; no `**bold**` in body outside code; every rule line has a message check (`RULE_NO_INTENT`); no unknown check types (`RULE_UNKNOWN_CHECK`).
 
 **Domain isolation:** `domains:` single-valued where possible; body does NOT reference agents from other domains (`content:article`, `developer:typescript`, …); `compatibility:` describes environment only. Cross-domain composition is the orchestrating agent's job.
 

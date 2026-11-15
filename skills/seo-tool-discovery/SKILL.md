@@ -7,8 +7,6 @@ compatibility: "Stack-agnostic. Requires websearch and webfetch for competitor a
 domains: seo
 rules:
   - session(seo)
-  - content(backlink)
-  - content(backlinks)
   - content(free tool)
   - content(free tools)
   - match(\bbuild\s+a\s+(free\s+)?tool\b)

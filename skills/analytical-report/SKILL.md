@@ -6,8 +6,6 @@ license: Apache-2.0
 compatibility: "Produces self-contained HTML by default; markdown or PDF when requested and a renderer is available."
 domains: data
 rules:
-  - data(report)
-  - data(analysis-report)
   - match(\b(generate|build|write|make)\s+(a|the|an)\s+(report|analytics report|data report)\b)
   - match(\breport\s+(from|on)\s+(this|the|my)\s+(data|csv|metrics|logs|numbers)\b)
   - match(\b(pdf|html)\s+report\b)

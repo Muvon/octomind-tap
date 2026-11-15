@@ -7,8 +7,6 @@ compatibility: "octomind-tap repo with the model/ subdirectory. Requires Python 
 capabilities: core
 domains: octomind
 rules:
-  - file(model/scripts/train.py)
-  - file(model/bin/train)
   - content(retrain)
   - content(octomind-tap)
   - content(octomind-embed)

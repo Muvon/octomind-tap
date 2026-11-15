@@ -6,8 +6,6 @@ license: Apache-2.0
 compatibility: "Requires read access to the code under review. Powers multi-lens parallel review plus an adversarial verify gate."
 domains: developer
 rules:
-  - developer(review)
-  - developer(code-review)
   - match(\b(deep|multi.?angle|thorough)\s+(code\s+)?review\b)
   - match(\breview\s+(this|the|my)\s+(branch|diff|change|PR|code)\b)
   - semantic(do a deep multi-angle review of this code)
