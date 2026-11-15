@@ -37,7 +37,7 @@ Three gates stand between a resume and an interview: the parser (can the machine
 | Workday Recruiting + HiredScore | AI grades applicants A-D; from August 2026 an LLM checks each screenable qualification against the parsed resume and shows recruiters a Fit & Gap view (opt-in: employers must ask Workday to switch it on, so other employers still use the earlier matching). Basic qualifications decide A/B vs C/D |
 | Greenhouse Talent Matching | Sorts candidates in the first review stage into Strong / Good / Partial / Limited / Needs manual review against recruiter-set criteria; it does not advance or reject anyone, recruiters decide. Needs manual review means the resume could not be processed, AI is off for the job, or the candidate opted out of AI |
 | Ashby AI-Assisted Application Review | Checks each resume against criteria the employer defines and marks each as meets or does not meet, with citations; no numeric score and no auto-reject, a person advances or rejects |
-| Lever | Parses the resume into the candidate profile and lets staff edit fields by hand; the Lever help center documents parsing only, not ranking. Recruiters find candidates by search |
+| Lever | Parses the resume into the candidate profile and lets staff edit fields by hand; Lever's help article "Understanding Resume Parsing" (help.lever.co/s/article/Understanding-Resume-Parsing, as of 2026-11) describes parsing, accepted file types and manual entry into profile fields, and states nothing about ranking. Recruiters find candidates by search |
 | Most ATS | Rule-based knockout questions (work authorization, location, licence, years) are the main auto-reject path, then recruiter keyword and title search |
 
 What follows from that:

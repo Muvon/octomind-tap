@@ -63,13 +63,13 @@ The 0.90 and 1.10 flags are working conventions. Set the flags in the policy bef
 
 ### Pay transparency (as of 2026-11; read the state page before posting)
 
-US state posting rules, read in Clockspot's tracker (fact-checked 2026-05-27) and Cooley's alert (2026-07-06). Thresholds are employer headcounts. Only the Minnesota (Minn. Stat. 181.173) and Connecticut (Governor's office announcement of Public Act 26-12) rows were read on a state source; the other rows rest on the two secondary sources, so read each state's labour department page before posting.
+US state posting rules, read in Clockspot's tracker (fact-checked 2026-05-27) and Cooley's alert (2026-07-06). Thresholds are employer headcounts. The Minnesota (Minn. Stat. 181.173), Connecticut (Governor's office announcement of Public Act 26-12), Hawaii (HRS 378-2.8), District of Columbia (Code 32-1453.01), Maryland (Labor and Employment 3-304.2) and Maine (26 MRSA 622-A) rows were read on a state source as of 2026-11; the statute pages confirm the threshold and the posting rule but not the effective dates, which rest on the two secondary sources. The other rows rest on the two secondary sources only, so read each state's labour department page before posting.
 
 | Jurisdiction | Effective | Threshold | Rule |
 |---|---|---|---|
 | Hawaii | 2024-01-01 | 50+ | Range in every posting |
-| District of Columbia | 2024-06-30 | any | Range before first interview, with benefits description |
-| Maryland | 2024-10-01 | any | Range with benefits in every posting |
+| District of Columbia | 2024-06-30 | any | Range in every job listing and position description; existence of healthcare benefits disclosed before the first interview |
+| Maryland | 2024-10-01 | any | Range and a general description of benefits in every posting, for work physically performed at least in part in Maryland |
 | Illinois | 2025-01-01 | 15+ | Pay scale and benefits in every posting, including third-party |
 | Minnesota | 2025-01-01 | 30+ | Range and benefits in every posting |
 | New Jersey | 2025-06-01 | 10+ | Range and benefits in every posting |
