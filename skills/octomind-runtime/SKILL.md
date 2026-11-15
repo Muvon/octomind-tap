@@ -70,8 +70,8 @@ Runs before every API request when `auto_capabilities = true`, on fresh user mes
 
 | Constant | Value | Purpose |
 |----------|-------|---------|
-| `AUTO_ACTIVATE_THRESHOLD` | `0.65` | Minimum mean-of-top-3 cosine |
-| `AUTO_ACTIVATE_MARGIN` | `0.06` | Required gap between top-1 and top-2 |
+| `AUTO_ACTIVATE_THRESHOLD` | `0.68` | Minimum mean-of-top-3 cosine |
+| `AUTO_ACTIVATE_MARGIN` | `0.05` | Required gap between top-1 and top-2 |
 | `AUTO_ACTIVATE_TOP_K` | `3` | Triggers averaged per capability |
 
 The embedding model is `muvon/octomind-embed` (int8 ONNX). The margin gate is why two near-tied capabilities cause abstention rather than a coin flip. With `[supervisor.evaluate] capabilities = true`, an evaluation model can veto a weak cosine winner or promote a pick when cosine abstained. Silent no-ops: toggle off, not a fresh user message, intent too short, embedding model still downloading, nothing eligible, or no score clearing the gate.
@@ -110,7 +110,7 @@ An executable script at `<workdir>/.agents/tools/<name>` becomes a tool on the `
 
 ### Example 1: "the tool never showed up"
 
-Work the chain in order: is the capability in the role's `capabilities` list or expected to auto-activate; does its `config.toml` have triggers; is the session domain in its `domains`; are its `{{ENV:}}` keys set; did the intent clear 0.65 with a 0.06 margin; was it evicted by the four-capability cap. Each step has a distinct fix.
+Work the chain in order: is the capability in the role's `capabilities` list or expected to auto-activate; does its `config.toml` have triggers; is the session domain in its `domains`; are its `{{ENV:}}` keys set; did the intent clear 0.68 with a 0.05 margin; was it evicted by the four-capability cap. Each step has a distinct fix.
 
 ### Example 2: auto-activation ignores a short message
 
