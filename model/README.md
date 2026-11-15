@@ -16,19 +16,31 @@ Fine-tune one small ONNX bi-encoder that octomind uses for two decisions:
 The model:
 
 - **`muvon/octomind-embed`** — granite-embedding-30m-english (30M
-  params, 6 layers, 384-dim, CLS-pooled, prefix-free) fine-tuned and
-  blended back into the base as a WiSE-FT soup. The runtime loads the
-  ONNX graph with int8-stored weights (30 MB, fp32 arithmetic) and
-  reads at most 512 tokens of a text.
+  params, 6 layers, 384-dim, CLS-pooled, prefix-free) given a short
+  contrastive fine-tune. The runtime loads the ONNX graph with
+  int8-stored weights (30 MB, fp32 arithmetic) and reads at most 512
+  tokens of a text.
+- Measured 2026-11 on that graph, identical on ARM, x86 and x86 with
+  VNNI, against the weights published 2026-09 (scored on ARM; their
+  graph scored differently per CPU):
+
+  | | 2026-09 weights | 2026-11 weights |
+  | --- | --- | --- |
+  | Capability: right one activated (`eval_real`, 1,384 prompts) | 0.809 (0.796 on x86) | 0.837 |
+  | Capability: activated on a prompt that needs none (90 prompts) | 0.033 (0.022 on x86) | 0.022 |
+  | Routing: brief ranks its own agent first (2,184 briefs, own domain) | 0.682 | 0.824 |
+  | Routing: brief handed to its agent | 0.304 | 0.456 |
+  | Routing: brief handed to a wrong agent | 0.024 | 0.011 |
+
+  Each column is at the constants octomind runs those weights with
+  (threshold / margin): 0.65 / 0.06 for capabilities and 0.67 / 0.04 for
+  routing in 2026-09, 0.68 / 0.05 and 0.65 / 0.05 in 2026-11.
 - Before 2026-09 the same repo held a BGE-small-en-v1.5 fine-tune. The
   base bake-off (`scripts/compare_bases.py` on the raw trigger corpus,
   each model at its own best operating point) put granite at gate 0.846
   zero-shot vs 0.708 for bge-small and 0.690 for that fine-tune, at half
-  the layers. At the shipped operating point (0.65 / 0.06) the published
-  soup scores gate 0.848 / fpr 0.022 on the int8 graph vs 0.778 / 0.033
-  for the old fine-tune — that old-model score is what
-  `eval_baselines.json` holds until the post-rollout baseline is recorded.
-  New weights under the same name reach fresh installs only (hf_hub never
+  the layers.
+- New weights under the same name reach fresh installs only (hf_hub never
   re-checks a cached repo), and the runtime thresholds must ship with
   them — see calibration below.
 
@@ -50,11 +62,18 @@ the embedding on the actual decision the runtime makes:
 
     intent (user phrase)  →  capability (one of N installed) or abstain
 
-A raw fine-tune also *forgets* some of the base's generalization (top-1
-and gate drop on real prompts while the margin rises). Interpolating the
-fine-tuned weights with the base (WiSE-FT soup; `bin/train` sweeps
-alpha 0.1-0.6 and keeps the best gate) beats both parents, so that is
-what ships.
+The fine-tune is a nudge in two phases: 105 steps over all four training
+files in turn, then 105 steps over the agent files alone. More capability
+batches cost accuracy on real prompts (210 mixed steps: capability top-1
+0.931 against 0.940 for 105), while agent batches keep improving routing.
+
+A fine-tune can also *forget* some of the base's generalization.
+Interpolating the fine-tuned weights with the base (WiSE-FT soup) wins it
+back when that happens, so `bin/train` sweeps alpha 0.1-0.6 and ships the
+best of the fine-tune and the blends by capability gate plus routing
+handoff. In 2026-09 the blend at alpha 0.6 won; in 2026-11 the unblended
+fine-tune did (every blend lost routing handoff, none gained capability
+gate).
 
 ## Pipeline
 
@@ -73,7 +92,8 @@ what ships.
                        │          positive-aware hard-negative mining)
                        ▼
     scripts/train.py           →  checkpoints/embed-<run>-<ts>/
-                       │       (CachedMNRL scale=10 + Matryoshka, 1 epoch)
+                       │       (CachedMNRL + Matryoshka: 105 steps on all
+                       │        files, then 105 on the agent files)
                        ▼
     scripts/model_soup.py      →  checkpoints/embed-<run>-<ts>-soup-a<α>/
     scripts/compare_bases.py      (best capability gate + routing handoff wins)
@@ -141,6 +161,12 @@ production recipe.
    us push the effective batch to 256-2048 on a single GPU. More
    in-batch negatives = harder contrast = wider runtime margins.
    ([sbert docs](https://huggingface.co/blog/train-sentence-transformers))
+   Its `scale` (the inverse temperature of the in-batch softmax) is set
+   per file: 10 for the capability files (`loss.scale`), 50 for the agent
+   files (`loss.agent_scale`). An agent is one title and description
+   rather than a cluster of triggers, and at 10 routing stayed
+   under-fitted: handoff 0.418, against 0.456 at 50 with the capability
+   gate at 0.837 instead of 0.823 (2026-11).
 
 2. **GISTEmbedLoss** *(optional, off by default)* — A frozen guide model
    (BGE-small-en-v1.5) decides which in-batch candidates are *true*
@@ -355,7 +381,7 @@ You MUST retrain (and republish) whenever the supervision set changes:
 
 Run from `model/`:
 
-    ANTHROPIC_API_KEY=... bin/train --llm --resume --iterations 2
+    ANTHROPIC_API_KEY=... bin/train --llm --resume
 
 `--resume` is passed to `augment_llm.py`: it skips `(label, trigger)`
 pairs already paraphrased in `data/intents.jsonl`, so you only pay for
@@ -418,7 +444,7 @@ then manually continue iter 2:
 foreground process:
 
     tmux new -s train
-    bin/train --llm --resume --iterations 2
+    bin/train --llm --resume
     # Ctrl+B then D to detach.  Reattach: tmux attach -t train
 
 ## Manual steps (per-stage, if you want fine control)
@@ -441,5 +467,7 @@ foreground process:
 ## Runtime integration
 
 Embedding model path: `octomind/src/embeddings/mod.rs` → `MODEL_NAME`.
-The two-stage activation lives in
-`octomind/src/mcp/runtime/capability.rs::auto_activate_capabilities_for_intent`.
+Capability activation lives in
+`octomind/src/mcp/runtime/capability.rs::auto_activate_capabilities_for_intent`,
+skill `semantic()` checks in `octomind/src/mcp/runtime/skill.rs`, agent
+routing in `octomind/src/mcp/orchestration/tap_route.rs::route_task`.

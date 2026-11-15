@@ -74,9 +74,9 @@ Rules are evaluated on fresh user messages when `[skills] auto_activation` is on
 | `bin(<command>)` | Command found on `PATH` |
 | `workdir(<text>)` | Working-directory path contains the text (case-insensitive) |
 | `session(<text>)` | Session name contains the text (case-insensitive). Default names are `YYMMDD-<dir>-HHMM-<id>`; `tap run` sessions are `tap-<domain>-<spec>-<hex>`, so `session(<spec>)` targets one agent only in tap runs or `-n`-named sessions |
-| `semantic(<phrase>[, <threshold>])` | Embedding cosine between the message and the phrase clears the threshold (default 0.65) |
+| `semantic(<phrase>[, <threshold>])` | Embedding cosine between the message and the phrase clears the threshold (default 0.68) |
 
-Deterministic matches activate directly. Semantic-only candidates must also beat the runner-up by a 0.06 margin, so near-ties abstain. Adding or changing `semantic(...)` phrases changes the tap embedding model's training data — see the `tap-model-training` skill.
+Deterministic matches activate directly. Semantic-only candidates must also beat the runner-up by a 0.05 margin, so near-ties abstain. Adding or changing `semantic(...)` phrases changes the tap embedding model's training data — see the `tap-model-training` skill.
 
 ### Validate script
 

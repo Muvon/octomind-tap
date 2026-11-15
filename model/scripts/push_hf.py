@@ -39,13 +39,13 @@ Embedding model for two octomind decisions: which capability or skill to
 activate for a user message, and which agent takes a delegated task.
 `ibm-granite/granite-embedding-30m-english` (30M params, 6 layers, 384-dim,
 CLS-pooled, prefix-free, English) fine-tuned on the octomind-tap catalog
-(capability and skill trigger phrases, agent titles and descriptions) and
-blended back into the base as a WiSE-FT model soup.
+(capability and skill trigger phrases, agent titles and descriptions).
 
 Training: rule-based + LLM paraphrase augmentation for triggers, LLM-written
-task briefs for agents, `CachedMultipleNegativesRankingLoss` (scale 10) on
-pairs and positive-aware hard-negative triplets, `MatryoshkaLoss` over
-[384, 256, 192, 128, 96], then weight interpolation with the base.
+task briefs for agents, `CachedMultipleNegativesRankingLoss` (scale 10 for
+triggers, 50 for agents) on pairs and positive-aware hard-negative triplets,
+`MatryoshkaLoss` over [384, 256, 192, 128, 96]. Two phases: 105 steps over
+all files, then 105 steps over the agent files alone.
 
 ## Files
 
@@ -124,7 +124,12 @@ def main() -> int:
         folder_path=str(args.run),
         repo_id=args.repo,
         repo_type="model",
-        ignore_patterns=["train_config.yaml", "checkpoint-*", "runs/", "*.log"],
+        # soup/ and scores/ are what bin/train leaves inside the run dir: the
+        # blends it compared (one full model each) and the per-CPU score dumps.
+        # training_args.bin is a pickle holding the training machine's paths.
+        ignore_patterns=[
+            "train_config.yaml", "training_args.bin", "checkpoint-*", "runs/", "*.log", "soup/", "scores/",
+        ],
     )
     print(f"done: https://huggingface.co/{args.repo}")
     return 0

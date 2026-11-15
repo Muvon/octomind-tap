@@ -1,27 +1,29 @@
-# Production recipe (2026-09): granite-embedding-30m-english base + gentle
-# contrastive fine-tune + WiSE-FT soup. Chosen by the base bake-off on the
-# runtime-faithful raw trigger corpus (scripts/compare_bases.py): zero-shot
-# gate 0.846 vs 0.708 for bge-small, 6 layers / 384-dim / CLS-pooled /
-# prefix-free, int8 ONNX ≈ 2 ms per intent on CPU.
+# Production recipe (2026-11): granite-embedding-30m-english base + a short
+# contrastive fine-tune in two phases (all files, then the agent files
+# alone). The base was chosen by the 2026-09 bake-off on the runtime-faithful
+# raw trigger corpus (scripts/compare_bases.py): zero-shot gate 0.846 vs
+# 0.708 for bge-small, 6 layers / 384-dim / CLS-pooled / prefix-free. The
+# exported graph embeds one intent in about 1 ms on an ARM laptop CPU.
 base_model: ibm-granite/granite-embedding-30m-english
 output_dir: checkpoints
-run_name: embed-granite-v2
+run_name: embed-granite-v3
 
 train:
   # One epoch. On the previous recipe epochs 2-3 cost 2/3 of the wall
   # clock and moved holdout accuracy@1 by <0.003.
   epochs: 1
-  # Cap on optimizer steps (-1 = full epoch). The fine-tune is a nudge the
-  # soup then blends back: 419 steps (full epoch, 2026-09-17) drifted so far
-  # that no alpha beat the untrained base by more than 0.005 gate, while
-  # ~105 steps (the shipped run: a 25% random subset, seed 42, one epoch)
-  # gave the soup 0.870 vs 0.846. Same LR, same data order otherwise.
+  # Cap on optimizer steps of the first phase (-1 = full epoch). The
+  # fine-tune is a nudge: 419 steps (full epoch, 2026-09-17) drifted so far
+  # that no blend with the base beat the untrained base by more than 0.005
+  # gate, and 210 steps scored lower than 105 on real prompts (2026-11,
+  # capability top-1 0.931 against 0.940).
   max_steps: 105
   # Steps of a second phase on the agent files alone (0 = none). Routing
   # keeps improving with agent batches, while capability batches past ~50
   # start to cost top-1 on real prompts, so the extra steps go to agents
-  # only: 105 mixed + 105 agent steps gave capability gate 0.823 and routing
-  # handoff 0.418, against 0.802 and 0.396 for 210 mixed steps (2026-11).
+  # only. At `loss.agent_scale` 10, 105 mixed + 105 agent steps gave
+  # capability gate 0.823 and routing handoff 0.418, against 0.802 and 0.396
+  # for 210 mixed steps (2026-11).
   agent_steps: 105
   # Effective batch for in-batch negatives (GradCache chunks it into
   # `mini_batch_size` pieces, so this is not the memory load).
@@ -69,7 +71,13 @@ loss:
   # spread while still sharpening the capability clusters.
   scale: 10.0
   # The same setting for the agent files (agent_pairs / agent_triplets).
-  agent_scale: 10.0
+  # An agent text is one title and description, not a cluster of triggers,
+  # and at 10 routing stayed under-fitted: a brief ranked its own agent
+  # first 78% of the time. Measured 2026-11 on the two-phase recipe
+  # (capability gate / routing handoff, each at its calibrated point):
+  # 10 gave 0.823 / 0.418, 30 gave 0.822 / 0.465, 50 gave 0.837 / 0.456.
+  # 50 ships: 30 failed octomind's capability paraphrase fixtures.
+  agent_scale: 50.0
   # Matryoshka: the same weights stay usable at truncated dims. The
   # runtime serves the full 384-dim vector, so it gets the weight.
   # https://sbert.net/examples/sentence_transformer/training/matryoshka/README.html
@@ -77,13 +85,14 @@ loss:
   matryoshka_dims: [384, 256, 192, 128, 96]
   matryoshka_weights: [1.0, 0.6, 0.4, 0.2, 0.1]
 
-# WiSE-FT / model soup: theta = (1-alpha)*base + alpha*ft. The raw
-# fine-tune forgets some of the base's generalization (top1 and gate
-# drop, margin rises); interpolating with the base beats BOTH parents.
-# The best alpha depends on how far the fine-tune moved: a 25%-data run
-# peaked at 0.6, the full-data run needs 0.4 or less. bin/train sweeps
-# all of these and ships the one with the best gate on the raw trigger
-# corpus, so keep the grid wide.
+# WiSE-FT / model soup: theta = (1-alpha)*base + alpha*ft. A long
+# fine-tune forgets some of the base's generalization (top1 and gate drop,
+# margin rises) and a blend with the base wins it back: the 2026-09 soup
+# at alpha 0.6 beat both parents. bin/train sweeps all of these and ships
+# the best of the fine-tune and the blends by capability gate plus routing
+# handoff. With the 2026-11 two-phase recipe the unblended fine-tune won:
+# every blend lost routing handoff (0.455 against 0.412 at alpha 0.6) and
+# none gained capability gate.
 #   https://arxiv.org/abs/2109.01903  https://arxiv.org/abs/2203.05482
 soup:
   alphas: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6]
@@ -112,15 +121,15 @@ eval:
   baselines_path: eval_baselines.json
   # Runtime-mirror constants (mirror octomind/src/mcp/runtime/capability.rs
   # AUTO_ACTIVATE_* and skill.rs SEMANTIC_*). Re-calibrate against the
-  # int8 graph after every retrain: calibrate_thresholds.py --onnx-file.
+  # graph the runtime loads after every retrain: calibrate_cpus.py.
   runtime_top_k: 3
-  runtime_threshold: 0.65
-  runtime_margin: 0.06
+  runtime_threshold: 0.68
+  runtime_margin: 0.05
   # Routing eval (scripts/eval_route.py): the agent texts the runtime ranks
   # and the LLM-written briefs, both written by the dataset scripts.
   agents_path: data/raw_agents.jsonl
   agent_briefs_path: data/agent_briefs.jsonl
   # Mirror octomind/src/mcp/orchestration/tap_route.rs ROUTE_THRESHOLD /
   # ROUTE_MARGIN. Re-calibrate with calibrate_cpus.py after every retrain.
-  route_threshold: 0.67
-  route_margin: 0.04
+  route_threshold: 0.65
+  route_margin: 0.05

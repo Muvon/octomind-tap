@@ -21,7 +21,7 @@
 # to checkpoints/embed-<run>-soup-a<alpha>/ and is what gets evaluated,
 # exported and (via bin/publish) shipped.
 #
-# Iterative re-mining (recommended for the production run):
+# Iterative re-mining (optional; the 2026-11 production run used one round):
 #
 #   bin/train --llm --iterations 2
 #
