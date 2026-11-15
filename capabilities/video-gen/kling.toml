@@ -1,22 +1,18 @@
 # capabilities/video-gen/kling.toml
 # Capability: video-gen
-# Provider: Kling AI — text-to-video with strong motion physics
+# Provider: Kling official remote MCP — Kling video models on a Kling account
 # Title: Video Generation
-# Description: Text-to-video and image-to-video via Kling AI (strong motion physics, lipsync, and video effects). Needs KLING_ACCESS_KEY and KLING_SECRET_KEY.
-# Provides tools: generate_video, generate_image_to_video, check_video_status, extend_video, create_lipsync, apply_video_effect, list_tasks, get_account_balance
-
-[deps]
-require = ["kling/kling"]
+# Description: Text-to-video and image-to-video with Kling AI through Kling's official MCP server, signed in with a Kling account and paid from its credits.
+# Auth: OAuth sign-in with a Kling account. The first session opens a browser;
+# octomind stores and refreshes the token. Generations spend Kling account credits.
 
 [roles.mcp]
 server_refs = ["kling"]
-allowed_tools = ["generate_video", "generate_image_to_video", "check_video_status", "extend_video", "create_lipsync", "apply_video_effect", "list_tasks", "get_account_balance"]
+allowed_tools = ["kling:*"]
 
 [[mcp.servers]]
 name = "kling"
-type = "stdio"
-command = "npx"
-args = ["-y", "mcp-kling@5.2.0"]
-timeout_seconds = 180
-env = { KLING_ACCESS_KEY = "{{ENV:KLING_ACCESS_KEY}}", KLING_SECRET_KEY = "{{ENV:KLING_SECRET_KEY}}" }
+type = "http"
+url = "https://kling.ai/mcp"
+timeout_seconds = 600
 tools = []

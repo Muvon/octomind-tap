@@ -1,0 +1,19 @@
+# capabilities/video-gen/replicate.toml
+# Capability: video-gen
+# Provider: Replicate official remote MCP — any video model hosted on Replicate, run by name
+# Title: Video Generation
+# Description: Text-to-video and image-to-video with any video model hosted on Replicate, through Replicate's official MCP server; pay per prediction.
+# Auth: OAuth sign-in with a Replicate account. The first session opens a browser;
+# octomind stores and refreshes the token. Predictions are billed to the account.
+# Outputs are URLs (download with the shell tool).
+
+[roles.mcp]
+server_refs = ["replicate-video"]
+allowed_tools = ["replicate-video:*"]
+
+[[mcp.servers]]
+name = "replicate-video"
+type = "http"
+url = "https://mcp.replicate.com/mcp"
+timeout_seconds = 600
+tools = []

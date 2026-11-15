@@ -94,16 +94,19 @@ The in-app TikTok caption cap and the Instagram visible-before-"more" length wer
 
 ### AI Video Generation Providers
 
-The `video-gen` capability wires one provider; which one depends on the user's config. Agents describe the step by what it does (image-to-video clip, upscale, targeted edit) and read the tool names and limits here. Check the wired tool's own schema before sending a request: the MCP package version decides which model ids it accepts.
+The `video-gen` capability wires one provider; which one depends on the user's config. Agents describe the step by what it does (image-to-video clip, upscale, targeted edit) and read the tool names and limits here. Check the wired tool's own schema before sending a request: the server, or the package version for local servers, decides which model ids it accepts.
 
 | Provider | Wired tools | Models and limits (provider docs, checked 2026-11-15) | Native audio |
 |---|---|---|---|
-| Runway (default) | `runway_generateVideo` (image-to-video), `runway_generateImage`, `runway_upscaleVideo`, `runway_editVideo`, `runway_getTask` | `gen4_turbo`: 2–10 s, ratios `1280:720`, `720:1280`, `960:960`, `1104:832`, `832:1104`, `1584:672`; `gen4.5`: same ratios, 2–10 s. Upscale (`magnific_video_upscaler_creative`): input up to 30 s, output up to 4k. Editing (`aleph2`): input up to 30 s. | Not stated for Gen-4 Turbo or Gen-4.5 |
-| Kling | `generate_video`, `generate_image_to_video`, `extend_video`, `create_lipsync`, `apply_video_effect` | Not confirmed on Kling's own docs in this pass; read the tool schema. | Read the tool schema |
+| fal (default) | `search_models`, `get_model_schema`, `get_pricing`, `run_model`, `submit_job`, `check_job`, `get_job_result`, `upload_file` | A catalog of hosted models (Kling, Seedance, Wan, LTX, MiniMax, Gemini Omni). Find one with `search_models`, read its limits with `get_model_schema` and its price with `get_pricing` before running it. | Per model; read the schema |
+| Runway | tools of Runway's remote server | `gen4_turbo`: 2–10 s, ratios `1280:720`, `720:1280`, `960:960`, `1104:832`, `832:1104`, `1584:672`; `gen4.5`: same ratios, 2–10 s. Upscale (`magnific_video_upscaler_creative`): input up to 30 s, output up to 4k. Editing (`aleph2`): input up to 30 s. | Not stated for Gen-4 Turbo or Gen-4.5 |
+| Kling | tools of Kling's remote server | Not confirmed on Kling's own docs in this pass; read the tool schema. | Read the tool schema |
+| Gemini | `generate_video_omni`, `extend_video_omni`, `edit_video`, `get_omni_interaction` | `gemini-omni-1.2-flash`: 3–15 s output, 360p, 720p, 1080p or 4K, 24 fps; extension 3–10 s per turn, up to 30 s total. | Yes |
+| Replicate | tools of Replicate's remote server | Any video model hosted on Replicate; read the model's input schema for its limits. | Per model |
 | MiniMax Hailuo | `generate_video`, `query_video_generation` | `MiniMax-Hailuo-2.3`: 768P at 6 or 10 s, 1080P at 6 s | Not stated |
 | Luma | tools of Luma's remote server | `ray-2` and `ray-flash-2`; resolutions 540p to 4k. Luma's older guide notes current docs are in its Agents API docs. | Not stated |
 
-Sources: [Runway API reference](https://docs.dev.runwayml.com/api.md), [Runway models](https://docs.dev.runwayml.com/guides/models/), [MiniMax text-to-video reference](https://platform.minimax.io/docs/api-reference/video-generation-t2v), [Luma video generation](https://docs.lumalabs.ai/docs/video-generation).
+Sources: [fal MCP server](https://fal.ai/docs/model-apis/mcp), [Runway MCP guide](https://docs.dev.runwayml.com/guides/mcp), [Runway API reference](https://docs.dev.runwayml.com/api.md), [Runway models](https://docs.dev.runwayml.com/guides/models/), [Gemini Omni Flash model page](https://aistudio.google.com/docs/models/gemini-omni-flash), [Replicate MCP server](https://replicate.com/docs/reference/mcp), [MiniMax text-to-video reference](https://platform.minimax.io/docs/api-reference/video-generation-t2v), [Luma video generation](https://docs.lumalabs.ai/docs/video-generation).
 
 ### Output Presets (ffmpeg) — copy-paste ready
 

@@ -1,28 +1,29 @@
 # minimax/hailuo
 
-MiniMax Hailuo 02 video MCP server. The cheapest viable text-to-video and image-to-video model — ideal for high-volume creative testing where you generate dozens of variants and pick the winners.
+MiniMax's official MCP server, wired for its video tools: text-to-video and image-to-video with MiniMax Hailuo models, a low-cost option when many variants are generated and the best are kept.
 
 ## MCP Server
 
-- **Package**: `minimax-mcp` (community)
+- **Package**: `minimax-mcp` (official, MiniMax-AI/MiniMax-MCP)
 - **Transport**: stdio
-- **Command**: `npx -y minimax-mcp`
+- **Command**: `uvx minimax-mcp==0.0.20`
 
 ## Authentication
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `MINIMAX_API_KEY` | Yes | API key from minimax.io platform dashboard |
-| `MINIMAX_GROUP_ID` | No | Group/workspace ID, required by some endpoints |
+| `MINIMAX_API_KEY` | Yes | API key from the MiniMax platform dashboard |
+| `MINIMAX_API_HOST` | Yes | `https://api.minimax.io` (global) or `https://api.minimaxi.com` (mainland China); must match the key's region |
+| `MINIMAX_MCP_BASE_PATH` | No | Directory where generated files are saved |
 
 ## Available Tools
 
+The server also ships audio and image tools; the `video-gen` capability exposes only the two video tools.
+
 | Tool | Description |
 |------|-------------|
-| `hailuo_text_to_video` | T2V (6s default, 720p/1080p) |
-| `hailuo_image_to_video` | I2V from a still + prompt |
-| `hailuo_get_task` | Poll generation status |
-| `minimax_tts` | MiniMax TTS as a fallback voice option |
+| `generate_video` | Text-to-video, or image-to-video from a first frame |
+| `query_video_generation` | Poll a generation task and download the result |
 
 ## Configuration Example
 
@@ -30,15 +31,16 @@ MiniMax Hailuo 02 video MCP server. The cheapest viable text-to-video and image-
 [[mcp.servers]]
 name = "hailuo"
 type = "stdio"
-command = "npx"
-args = ["-y", "minimax-mcp"]
+command = "uvx"
+args = ["minimax-mcp==0.0.20"]
 timeout_seconds = 120
-env = { MINIMAX_API_KEY = "{{INPUT:MINIMAX_API_KEY}}" }
+env = { MINIMAX_API_KEY = "{{INPUT:MINIMAX_API_KEY}}", MINIMAX_API_HOST = "https://api.minimax.io" }
 tools = []
 ```
 
-**Notes:** Best price/quality ratio for short-form social. Use Hailuo for the first wave of variants, then re-render the chosen winner on Runway for the final upload.
+**Notes:** Cheap per clip, so it suits a first wave of variants; re-render the chosen one on a higher-quality provider for the final upload.
 
 ## Links
 
-- [MiniMax Platform docs](https://www.minimax.io/platform/document/)
+- [MiniMax MCP on GitHub](https://github.com/MiniMax-AI/MiniMax-MCP)
+- [MiniMax video generation API](https://platform.minimax.io/docs/api-reference/video-generation-t2v)

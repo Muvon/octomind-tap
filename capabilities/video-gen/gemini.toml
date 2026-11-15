@@ -1,0 +1,24 @@
+# capabilities/video-gen/gemini.toml
+# Capability: video-gen
+# Provider: Google Gemini Omni Flash via the community gemini-media-mcp server, with a Gemini API key
+# Title: Video Generation
+# Description: Google's Gemini Omni Flash video generation: text-to-video and image-to-video, 3-15 s clips with native audio. Needs GEMINI_API_KEY.
+# Provides tools: generate_video_omni, extend_video_omni, edit_video, get_omni_interaction
+# Google publishes no MCP server for the Gemini API; this package is community-maintained.
+# Only the Omni tools are exposed: the package's Veo and upscale tools need Vertex AI credentials.
+
+[deps]
+require = ["cxoagi/gemini-media"]
+
+[roles.mcp]
+server_refs = ["gemini-media"]
+allowed_tools = ["generate_video_omni", "extend_video_omni", "edit_video", "get_omni_interaction"]
+
+[[mcp.servers]]
+name = "gemini-media"
+type = "stdio"
+command = "uvx"
+args = ["gemini-media-mcp==0.1.14"]
+timeout_seconds = 600
+env = { GEMINI_API_KEY = "{{ENV:GEMINI_API_KEY}}" }
+tools = []
