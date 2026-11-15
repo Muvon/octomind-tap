@@ -18,7 +18,7 @@ type = "stdio"
 command = "sh"
 # sh wrapper: octomind drops the env table at parse time, so constants and
 # derived paths must be exported by the launch command itself.
-args = ["-c", "mkdir -p \"$PWD/video-out\"; MINIMAX_API_HOST=https://api.minimax.io MINIMAX_MCP_BASE_PATH=\"$PWD/video-out\" exec uvx minimax-mcp==0.0.19"]
+args = ["-c", "mkdir -p \"$PWD/video-out\"; MINIMAX_API_HOST=https://api.minimax.io MINIMAX_MCP_BASE_PATH=\"$PWD/video-out\" exec uvx minimax-mcp==0.0.20"]
 timeout_seconds = 120
 env = { MINIMAX_API_KEY = "{{ENV:MINIMAX_API_KEY}}" }
 tools = []
