@@ -1,7 +1,7 @@
 ---
 name: tap-model-training
-title: "Octomind-Tap Embed Model Training and Publishing"
-description: "Train, evaluate and publish the octomind-embed model behind capability auto-activation and agent routing. Use when capability triggers, skill semantic() phrases, or agent titles and descriptions change."
+title: "Fine-Tune Embedding Model: Octomind Embed"
+description: "Fine-tune, evaluate and publish the octomind-embed model that routes requests to capabilities and agents. Use when triggers or agent descriptions change."
 license: Apache-2.0
 compatibility: "octomind-tap repo with the model/ subdirectory. Requires Python 3.11+, uv, ANTHROPIC_API_KEY for LLM augmentation, HF_TOKEN with write scope for publishing. GPU optional."
 capabilities: core
