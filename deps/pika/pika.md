@@ -39,7 +39,7 @@ env = { PIKA_API_KEY = "{{INPUT:PIKA_API_KEY}}" }
 tools = []
 ```
 
-**Notes:** Pikaffects make for great pattern-interrupt opens in short-form ads. Cheaper per render than Runway/Veo when stylized output is acceptable.
+**Notes:** Pikaffects make for great pattern-interrupt opens in short-form ads. Cheaper per render than Runway when stylized output is acceptable.
 
 ## Links
 

@@ -45,7 +45,7 @@ Visa 10.x and Mastercard 4837 are the fraud codes where proving the cardholder a
 - Time for the bank to decide: usually 60 to 75 days; the whole case takes 2 to 3 months.
 - Respond to an inquiry or early fraud warning at once. An unanswered inquiry can turn into a dispute that cannot be won.
 - One submission only. No edits or extra files after submitting. Build the full pack first.
-- Visa VAMP (disputes plus fraud reports over captured payments, monthly): non-compliant at a ratio of 0.5% with a count of 5; excessive at 1.5% and 1,500 in the US, EU, Canada, Asia-Pacific and Latin America. Disputes resolved by pre-dispute tools or qualifying under Compelling Evidence 3.0 are excluded from the count.
+- Visa VAMP (disputes plus fraud reports over captured payments, monthly), as listed in Stripe's documentation of the card network programs (read the network's current rules): non-compliant at a ratio of 0.5% with a count of 5; excessive at 1.5% and 1,500 in the US, EU, Canada, Asia-Pacific and Latin America. Disputes resolved by pre-dispute tools or qualifying under Compelling Evidence 3.0 are excluded from the count.
 - Mastercard Excessive Chargeback Merchant: 100 to 299 chargebacks and 1.5% to 2.99% of the prior month's payments; High Excessive at 300 or more and 3%. Fines start in the second month.
 - Refunding before a dispute does not remove it from the network count when the bank still raises it.
 

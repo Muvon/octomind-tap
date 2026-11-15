@@ -101,10 +101,9 @@ The `video-gen` capability wires one provider; which one depends on the user's c
 | Runway (default) | `runway_generateVideo` (image-to-video), `runway_generateImage`, `runway_upscaleVideo`, `runway_editVideo`, `runway_getTask` | `gen4_turbo`: 2–10 s, ratios `1280:720`, `720:1280`, `960:960`, `1104:832`, `832:1104`, `1584:672`; `gen4.5`: same ratios, 2–10 s. Upscale (`magnific_video_upscaler_creative`): input up to 30 s, output up to 4k. Editing (`aleph2`): input up to 30 s. | Not stated for Gen-4 Turbo or Gen-4.5 |
 | Kling | `generate_video`, `generate_image_to_video`, `extend_video`, `create_lipsync`, `apply_video_effect` | Not confirmed on Kling's own docs in this pass; read the tool schema. | Read the tool schema |
 | MiniMax Hailuo | `generate_video`, `query_video_generation` | `MiniMax-Hailuo-2.3`: 768P at 6 or 10 s, 1080P at 6 s | Not stated |
-| Google Veo | `generate_video`, `extend_video`, `interpolate_frames` | Google's Gemini API docs state the Veo 3.1 preview model ids are shut down (callout date 2026-10-22) and point to Gemini Omni Flash (3–15 s, native audio). Confirm the wired server still generates before relying on it. | Yes |
 | Luma | tools of Luma's remote server | `ray-2` and `ray-flash-2`; resolutions 540p to 4k. Luma's older guide notes current docs are in its Agents API docs. | Not stated |
 
-Sources: [Runway API reference](https://docs.dev.runwayml.com/api.md), [Runway models](https://docs.dev.runwayml.com/guides/models/), [MiniMax text-to-video reference](https://platform.minimax.io/docs/api-reference/video-generation-t2v), [Gemini API video docs](https://aistudio.google.com/docs/video), [Luma video generation](https://docs.lumalabs.ai/docs/video-generation).
+Sources: [Runway API reference](https://docs.dev.runwayml.com/api.md), [Runway models](https://docs.dev.runwayml.com/guides/models/), [MiniMax text-to-video reference](https://platform.minimax.io/docs/api-reference/video-generation-t2v), [Luma video generation](https://docs.lumalabs.ai/docs/video-generation).
 
 ### Output Presets (ffmpeg) — copy-paste ready
 
@@ -162,7 +161,7 @@ Paid-partnership and AI-content disclosure rules per platform and jurisdiction a
 
 ### Example 1: TikTok ad export
 
-Source: 4K 16:9 24fps generated at Veo. Target: TikTok ad.
+Source: 4K 16:9 24fps generated clip. Target: TikTok ad.
 
 ```bash
 ffmpeg -i source.mp4 \

@@ -27,13 +27,13 @@ An EV's value sits in its battery, so check the battery before the paint. Real r
 |---|---|---|
 | Battery state-of-health (SoH) | An independent SoH report from a diagnostic provider (a short test through the OBD port) or a dealer report, with the date and the odometer | Only the dashboard range figure or the seller's word |
 | Fit with age | SoH is consistent with the car's age and mileage; fleet data show about 2.3% capacity lost per year on average, up to about 3.0% per year with heavy DC fast charging above 100 kW and about 1.5% per year with mostly AC or lower-power charging (Geotab, Jan 2026) | A large gap against the average with no explanation |
-| Same-model spread | The report is compared with other cars of the same model: one 500,000-test study found up to 13.5% SoH difference between examples of the same model (Aviloo, 2026) | Treated as equal to the model's average |
+| Same-model spread | The report is compared with other cars of the same model: one 500,000-test study found up to 13.5% SoH difference between examples of the same model (Aviloo, vendor-reported, 2026) | Treated as equal to the model's average |
 | Battery warranty | In writing: years, miles, the capacity floor, and whether it transfers to a second owner; the remaining term covers the buyer's plans | Unknown terms, or the warranty ends on transfer |
 | Charge port and charging | Both AC and DC charging started on a real charger during the test; no port damage or heat marks | Refused test, error messages, or charging stops early |
 | Warnings and recalls | No battery or high-voltage warnings; recalls checked by VIN with the regulator and completed | Open battery recall |
 | Climate history | Notes on hot-climate use (Geotab: about 0.4% per year faster loss in hot climates) | Not asked |
 
-- A health figure reads one thing: capacity. A study noted that about 1% of used EVs hid a battery fault the health figure could not see, so keep the independent inspection (Aviloo and trade press, 2026).
+- A health figure reads one thing: capacity. A study noted that about 1% of used EVs hid a battery fault the health figure could not see, so keep the independent inspection (Aviloo, vendor-reported, via trade press, 2026).
 - On-board readouts depend on the car's own battery management system and can differ from an independent test.
 - High-voltage inspection and repair are for qualified technicians. Don't guide it.
 
@@ -47,7 +47,7 @@ An EV's value sits in its battery, so check the battery before the paint. Real r
 
 ### Range planning numbers
 
-- Advertised range is a test figure. Cold lowers it: at 20 F (about -7 C), AAA (2019) and fueleconomy.gov report about 41% less range with cabin heating on and about 12% less with no heating; AAA's 2026 testing reports about 39% less. DOE (2024) reports heat pumps cut the heating draw by about 38% at 20 F.
+- Advertised range is a test figure. Cold lowers it: at 20 F (about -7 C), AAA (2019) and fueleconomy.gov report about 41% less range with cabin heating on, and fueleconomy.gov about 12% less with the heater off; AAA's 2026 testing reports about 39% less. DOE (2024) reports heat pumps cut the heating draw by about 38% at 20 F.
 - Plan with a lower usable range than advertised: in cold weather use the 20 F figures above; for road trips use the `travel-road-trip` skill's reserve and charging rules.
 - DC fast charging slows as the battery fills; plan stops that charge to about 80% rather than 100%, and arrive at the next charger with a stated reserve.
 - Frequent heavy fast charging goes with faster battery loss (Geotab figures above), so use home or lower-power charging for daily needs.

@@ -35,7 +35,7 @@ Work in the project directory with Python and the shell; `uv run --with scikit-l
 
 1. Frame — write down the target (one row = one what), the prediction time (what is known at that moment), the horizon, and the decision the prediction feeds. If the decision is unclear, the metric cannot be chosen; ask.
 2. Split before looking — hold out the test set first and touch it once, at the end. Random split for independent rows; for time-dependent data split by time (train on the past, test on the future); for repeated entities (customers, devices) split by entity with grouped folds so one entity never sits on both sides.
-3. Leakage checks — before fitting: no feature built from data after the prediction time; no target-derived column (a "cancel_date" when predicting churn); scaling, imputation, encoding, and selection fitted inside each training fold only (use a pipeline); no duplicates across the split. After fitting: a single feature with near-perfect importance or AUC above 0.95 on a hard problem is a leak until proven otherwise.
+3. Leakage checks — before fitting: no feature built from data after the prediction time; no target-derived column (a "cancel_date" when predicting churn); scaling, imputation, encoding, and selection fitted inside each training fold only (use a pipeline); no duplicates across the split. After fitting: a single feature with near-perfect importance or AUC above 0.95 on a hard problem is a leak until proven otherwise (a practitioner heuristic, not a published threshold).
 4. Baseline first — a trivial model (majority class, base rate, mean, or seasonal naive for time series) and a simple one (regularized logistic or linear regression). A complex model is kept only if it beats the simple one by more than the fold-to-fold spread.
 5. Model and tune — gradient-boosted trees for tabular data once the baseline is set; tune with cross-validation on the training set only, with a small search budget stated in the report.
 6. Calibrate — for a classifier whose probabilities are used (ranking by risk is not enough), check a reliability curve and the Brier score on held-out data; calibrate with sigmoid scaling, or isotonic regression only with roughly 1000 or more calibration samples. Calibration data is disjoint from training data.
@@ -46,7 +46,7 @@ Work in the project directory with Python and the shell; `uv run --with scikit-l
 <rules>
 | Situation | Rule |
 |-----------|------|
-| Imbalanced classes (positive rate under about 10%) | Report precision-recall AUC (average precision) and the positive rate next to it; ROC AUC looks high when negatives dominate. Accuracy alone is not reported. |
+| Imbalanced classes (positive rate under about 10%, a practitioner heuristic) | Report precision-recall AUC (average precision) and the positive rate next to it; ROC AUC looks high when negatives dominate. Accuracy alone is not reported. |
 | Threshold-based action | Pick the threshold from the cost of a false positive vs a false negative or a capacity limit (top N contacted), on validation data, and report precision and recall at that threshold. |
 | Regression | Report MAE and RMSE next to a naive baseline; use a percentage error only when the target is never near zero. |
 | Forecasting | Backtest with rolling-origin (expanding window) folds; compare with the seasonal naive baseline using MASE (Hyndman and Koehler, 2006), where below 1 beats the naive forecast; report error by horizon. With scikit-learn `TimeSeriesSplit`, set `gap` to the forecast horizon so near-term rows do not leak across the split. |

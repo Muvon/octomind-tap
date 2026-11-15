@@ -67,7 +67,7 @@ Name resolution, then route, then filter, then the service. Check in this order:
 - Prices and discount terms change; read the current pricing page or the provider's cost tool before quoting a number.
 
 ### Audit-log triage
-- Retention differs: CloudTrail event history keeps 90 days of management events only; the Azure activity log keeps 90 days, records changes but usually not reads, and does not record requests rejected before they started; Google Cloud Data Access audit logs may be off, so check what is enabled before concluding an event did not happen.
+- Retention differs: CloudTrail event history keeps 90 days of management events only; the Azure activity log keeps 90 days, records changes but usually not reads, and does not record requests rejected before they started; Google Cloud Data Access audit logs are off by default except for BigQuery (as of 2026-11), so check what is enabled before concluding an event did not happen.
 - Triage in order: who (principal, session, access key), what (event name, resource), when (UTC, first and last), from where (source IP, user agent), result (error codes such as AccessDenied). Build one timeline. Mark every gap in logging as a gap, not as absence.
 
 ### Architecture review

@@ -46,14 +46,14 @@ Rates vary by platform, niche, and format, and public benchmarks disagree by up 
 | Micro | 10,000 to 100,000 | USD 250 to 2,500 | USD 200 to 800 | USD 5,000 to 20,000 |
 | Macro | 100,000 to 1,000,000 | USD 2,500 to 12,000 | USD 800 to 5,000 | USD 20,000 to 200,000 and up |
 
-Tier cut-offs differ by source, so state which one you use. Engagement rate usually falls as audience grows; one 2026 study of 92 partnerships found medians of 6.7% for nano, 3.9% for micro and 1.4% for macro creators.
+Tier cut-offs differ by source, so state which one you use. Engagement rate usually falls as audience grows; one vendor-reported 2026 study of 92 partnerships found medians of 6.7% for nano, 3.9% for micro and 1.4% for macro creators.
 
 Check any quote with two numbers:
 
 - Cost per thousand views = fee / expected views x 1,000, where expected views is the median of the creator's last 10 posts of the same format.
 - Cost per engagement = fee / (expected views x engagement rate).
 
-Usage terms are priced apart from the post. Planning bands: paid-ad use of the creator's handle or content (whitelisting, partnership ads) adds roughly 20% to 50% of the base fee for about 30 days, more for longer terms; exclusivity in a category adds roughly 25% to 100% depending on length. Put in writing the assets, platforms, start and end dates, and who can revoke. Do not agree to perpetual rights.
+Usage terms are priced apart from the post. Vendor-reported planning bands: paid-ad use of the creator's handle or content (whitelisting, partnership ads) adds roughly 20% to 50% of the base fee for about 30 days, more for longer terms; exclusivity in a category adds roughly 25% to 100% depending on length. Put in writing the assets, platforms, start and end dates, and who can revoke. Do not agree to perpetual rights.
 
 Offer formats in this order of cost: gifted product, affiliate or revenue share, flat fee for one deliverable, ongoing ambassador deal.
 
@@ -76,7 +76,7 @@ Any material connection between a brand and a creator must be disclosed clearly:
 
 US rule on fake reviews and testimonials (16 CFR Part 465, effective 2024-10-21): a brand may not write, buy or publish fake or false reviews or testimonials. A brand may not buy followers or other fake influence signals, and insider reviews (staff or agents) need a clear disclosure of the relationship. A testimonial from an AI avatar is prohibited when the experience it describes is invented. The brand is liable for what it knew or should have known was false.
 
-United Kingdom: advertising rules (the Advertising Standards Authority and the CAP Code) require ads to be obviously identifiable; a clear "Ad" label is the common form. The ASA, CAP and CMA have published joint influencer guidance; read the current version. Since 2025-04-06 the Competition and Markets Authority can fine for consumer-law breaches directly, up to 10% of global turnover, including undisclosed paid posts. A platform's paid-partnership tool can satisfy the rule only if the label is clear and prominent.
+United Kingdom: advertising rules (the Advertising Standards Authority and the CAP Code) require ads to be obviously identifiable; a clear "Ad" label is the common form. The ASA, CAP and CMA have published joint influencer guidance; read the current version. Since April 2025 (the CMA announced the regime in force on 2025-04-07) the Competition and Markets Authority can fine for consumer-law breaches directly, up to 10% of global turnover, including undisclosed paid posts. A platform's paid-partnership tool can satisfy the rule only if the label is clear and prominent.
 
 The brand is responsible for briefing and monitoring creators. For any other country, state the creator's and the audience's country and send the question to counsel.
 

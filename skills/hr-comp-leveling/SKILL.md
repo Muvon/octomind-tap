@@ -63,7 +63,7 @@ The 0.90 and 1.10 flags are working conventions. Set the flags in the policy bef
 
 ### Pay transparency (as of 2026-11; read the state page before posting)
 
-US state posting rules, read in Clockspot's tracker (fact-checked 2026-05-27) and Cooley's alert (2026-07-06). Thresholds are employer headcounts.
+US state posting rules, read in Clockspot's tracker (fact-checked 2026-05-27) and Cooley's alert (2026-07-06). Thresholds are employer headcounts. Only the Minnesota (Minn. Stat. 181.173) and Connecticut (Governor's office announcement of Public Act 26-12) rows were read on a state source; the other rows rest on the two secondary sources, so read each state's labour department page before posting.
 
 | Jurisdiction | Effective | Threshold | Rule |
 |---|---|---|---|
@@ -77,7 +77,7 @@ US state posting rules, read in Clockspot's tracker (fact-checked 2026-05-27) an
 | Massachusetts | 2025-10-29 | 25+ in MA | Range in every posting, and on request to employees |
 | Virginia | 2026-07-01 | any | Range in every posting; 15-business-day cure period |
 | Maine | 2026-07-29 | 10+ | Range in every posting, including third-party postings |
-| Connecticut | 2026-10-01 (HB 5003) | any | Range and general benefits description in postings, all employer sizes |
+| Connecticut | 2026-10-01 (Public Act 26-12) | any | Range and general benefits description in postings, all employer sizes |
 | Rhode Island | 2023-01-01 | any | Range on applicant request |
 | Delaware | 2027-09-26 | more than 25 | Good-faith range in every posting |
 
@@ -87,7 +87,7 @@ EU Pay Transparency Directive 2023/970: applicants have the right to information
 
 ### US overtime: the salary floor
 
-An employee can be exempt from overtime only if paid a salary of at least $684 per week, and meets a duties test. Highly compensated employees need $107,432 total annual compensation. The Department of Labor restored these figures on 2026-05-14 after a court vacated the 2024 increase. Some states set higher floors: check the state. Contractor versus employee status depends on the facts of the work, not the contract's label: send classification questions to an employment lawyer.
+An employee can be exempt from overtime only if paid a salary of at least $684 per week, and meets a duties test. Highly compensated employees need $107,432 total annual compensation. The Department of Labor restored these figures in a technical amendment announced 2026-05-14 and published in the Federal Register on 2026-05-15, after courts vacated the 2024 increase. Some states set higher floors: check the state. Contractor versus employee status depends on the facts of the work, not the contract's label: send classification questions to an employment lawyer.
 
 ## Examples
 

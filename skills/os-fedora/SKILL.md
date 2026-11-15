@@ -13,7 +13,7 @@ rules:
 
 ## Overview
 
-Research baseline: 2026-11-15. Fedora Linux 45 was released on 2026-11-03 (Fedora Magazine announcement), later than its 2026-10-20 target; Fedora 44 is the previous release. A release stays supported until about four weeks after the release two versions newer, so Fedora 43 ends about four weeks after 2026-11-03 (early December 2026); read the exact date from the Fedora schedule. Recheck release status before upgrades. Apply the [Linux baseline](../os-linux/SKILL.md) for shared host/container, systemd, and resource diagnostics.
+Research baseline: 2026-11-15. Fedora Linux 45 was released on 2026-11-03 (Fedora Magazine announcement); Fedora 44 is the previous release. A release stays supported until about four weeks after the release two versions newer, so Fedora 43 ends about four weeks after 2026-11-03 (early December 2026); read the exact date from the Fedora schedule. Recheck release status before upgrades. Apply the [Linux baseline](../os-linux/SKILL.md) for shared host/container, systemd, and resource diagnostics.
 
 ## Mental model
 
