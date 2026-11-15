@@ -28,7 +28,7 @@ Federal figures (look up the current year at irs.gov before stating them)
 
 | Item | Fact | Source |
 |------|------|--------|
-| Estate tax exclusion for deaths in 2026 | $15,000,000 per person, set by P.L. 119-21 | IRS, Form 706 instructions (Rev. July 2026) |
+| Estate tax exclusion for deaths in 2026 | $15,000,000 per person (basic exclusion amount, as of 2026-11); look up the current figure | IRS, Form 706 instructions (Rev. July 2026) |
 | Estate tax return (Form 706) due | Nine months after the date of death; Form 4768 gives a six-month extension to file (15 months in total) | IRS |
 | Who must file Form 706 | Gross estate plus adjusted taxable gifts above $15,000,000 for 2026 deaths, or an executor electing to transfer the unused exclusion of a deceased spouse to the surviving spouse (portability), whatever the estate size | IRS |
 | Final personal income tax return (Form 1040) | The personal representative files it for income earned up to the date of death; Form 1310 is needed to claim a refund unless a court-appointed representative attaches the court certificate | IRS, Publication 559 |

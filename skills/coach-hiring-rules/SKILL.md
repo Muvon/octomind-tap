@@ -34,7 +34,7 @@ It is information, not legal advice. A dispute with an employer, or a question a
 
 ### Pay-range posting, United States (snapshot as of 2026-09)
 
-A posting is a public or internal job advertisement. Thresholds are the number of employees the employer needs for the law to apply. Compiled from the sixfifty state tracker (updated 2026-09), Cooley (2026-07-06) and Jackson Lewis (2026-07-15); the state's own page is the authority. The thresholds for Washington, New York, Minnesota and the Maryland row were read on the state statute pages on 2026-11-15; the other rows rest on the trackers and still need the state check.
+A posting is a public or internal job advertisement. Thresholds are the number of employees the employer needs for the law to apply. Compiled from the sixfifty state tracker (updated 2026-09), Cooley (2026-07-06) and Jackson Lewis (2026-07-15); the state's own page is the authority. The thresholds for Washington, New York, Minnesota, Maryland, California, Delaware, Hawaii, the District of Columbia and Maine, and the Minnesota, Hawaii, Delaware and California dates, were read on official state pages on 2026-11-15; the other rows, and the Maine date, rest on the trackers and still need the state check.
 
 | Jurisdiction | In force from | Employer threshold |
 |---|---|---|
@@ -42,7 +42,7 @@ A posting is a public or internal job advertisement. Thresholds are the number o
 | California | in force; SB 642 changes from 2026-01-01 | 15 or more employees |
 | Washington | in force (RCW 49.58.110); a 2025 amendment lets an employer that offers one fixed wage post that amount, and gives a five-business-day cure period for postings from 2025-07-27 to 2027-07-27 | 15 or more employees |
 | New York | in force | 4 or more employees |
-| Hawaii | in force | 50 or more employees |
+| Hawaii | 2024-01-01 (Act 203 of 2023) | 50 or more employees |
 | District of Columbia | 2024 | at least 1 employee |
 | Maryland | 2024-10-01 | none stated in the statute (Labor and Employment section 3-304.2) |
 | Illinois | 2025-01-01 | 15 or more employees |
@@ -59,7 +59,7 @@ Counts of states differ between trackers (13 to 18) because they count cities, t
 
 ### Pay transparency, European Union
 
-- Directive (EU) 2023/970 gives candidates the starting pay or range, either in the job advertisement or before the first interview, and bars asking about pay history in earlier jobs. Member states had to turn it into national law by 7 June 2026.
+- Directive (EU) 2023/970 gives candidates the starting pay or range, either in the job advertisement or before the first interview, and bars asking about pay history in earlier jobs. Member states had to turn it into national law by 7 June 2026 (European Commission, as of 2026-11).
 - Most member states missed that date: one analysis dated 2026-07-02 counted four of 27 in compliance. The candidate's rights come from the national law of the country where the job is, so check that country's status on a current tracker before saying a right applies.
 - Where a country has not yet passed its law, suggest asking for the range anyway; whether the candidate can enforce it is a question for an employment lawyer.
 
