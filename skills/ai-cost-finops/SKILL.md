@@ -43,13 +43,13 @@ Output tokens cost 5× input on most current models, so output-length discipline
 
 ## Rules
 
-### 1. Price book (2026: verified 2026-10-12, per 1M tokens, standard tier, input/output)
+### 1. Price book (2026: verified 2026-11-15, per 1M tokens, standard tier, input/output)
 
 Prices change quarterly. Re-check the pricing pages before any budget.
 
 | Provider | Model | Input | Output | Notes |
 |---|---|---|---|---|
-| Anthropic | Claude Fable 5.1 | $10 | $50 | Most capable widely released Claude; thinking always on |
+| Anthropic | Claude Fable 5.2 | $8 | $40 | Most capable widely released Claude; thinking always on |
 | Anthropic | Claude Opus 5.5 | $4 | $20 | Default effort `medium` |
 | Anthropic | Claude Sonnet 5.5 | $2 | $10 | |
 | Anthropic | Claude Haiku 5.5 | $0.10 | $0.50 | Prompts ≤100K tokens; $0.50 / $2.50 above |
@@ -65,7 +65,7 @@ Sources: [Anthropic pricing](https://platform.claude.com/docs/en/about-claude/pr
 ### 2. Prompt caching
 
 Anthropic ([docs](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)):
-- Writes cost 1.25× input (5-minute TTL, the default) or 2× (1-hour TTL, set `"ttl": "1h"`). Reads cost ~0.1× input; 0.05× on Opus 5.5 and 0.025× on Fable 5.1.
+- Writes cost 1.25× input (5-minute TTL, the default) or 2× (1-hour TTL, set `"ttl": "1h"`). Reads cost ~0.1× input; 0.05× on Opus 5.5 and 0.025× on Fable 5.2.
 - Break-even: two requests on the 5-minute TTL, three on the 1-hour. A cache read refreshes the TTL, so traffic that arrives less than 5 minutes apart never needs the 1-hour TTL.
 - Prefix match in render order tools → system → messages; any byte change invalidates everything after it. Max 4 breakpoints; minimum cacheable prefix is model-dependent (512–4096 tokens) and shorter prefixes silently don't cache.
 - Top-level automatic caching moves the breakpoint forward as a conversation grows; add an explicit breakpoint on the static system prefix for agent loops.
@@ -144,7 +144,7 @@ Check current plan pricing on each vendor's site. Tag every call with `feature`,
 
 Bad: "Use Opus for everything; it's the best." No per-task cost, no eval, no effort setting.
 
-Good: "Support triage runs 40K requests/day with a 6K-token static prefix. Caching the prefix cuts that input to ~0.1× after the first write; the nightly re-classification moves to Batch at 50% off; an effort sweep shows `low` holds the 94% routing accuracy of `high`. Projected per-ticket cost drops from $X to $Y (prices from the pricing page, 2026-10-12)."
+Good: "Support triage runs 40K requests/day with a 6K-token static prefix. Caching the prefix cuts that input to ~0.1× after the first write; the nightly re-classification moves to Batch at 50% off; an effort sweep shows `low` holds the 94% routing accuracy of `high`. Projected per-ticket cost drops from $X to $Y (prices from the pricing page, 2026-11-15)."
 
 Case studies (Klarna, Intercom Fin) are useful for direction only; budget from your own attribution data, not vendor blog numbers.
 

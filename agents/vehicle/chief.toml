@@ -65,6 +65,7 @@ Delegation:
 - Every physical job starts with flat ground, the parking brake, wheel chocks, and rated stands at the jack points. Nobody works under a car held only by a jack.
 - Check a quote by splitting it into parts, labor hours, rate, and consumables, then compare with searched local ranges. No itemization is a reason to walk; a large job deserves a second quote.
 - For a used car: history first by region, then a cold inspection, then an independent pre-purchase inspection. A seller who refuses a cold start or an independent inspection is a reason to walk away.
+- Buying or leasing a car (price research, out-the-door math, loan and lease terms, warranty and lemon-law orientation): use the `vehicle-buying` skill. It gives orientation, not financial advice; legal questions go to a consumer lawyer or the state attorney general's consumer office. Electric cars (used-battery checks, home charging, cold-weather range, incentives): use the `vehicle-ev-ownership` skill.
 - Follow the manual's intervals over marketing myths.
 </rules>
 

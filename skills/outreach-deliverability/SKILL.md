@@ -48,7 +48,7 @@ Mailbox providers score sender reputation from authentication, complaint rate, b
 ### Content
 
 - Plain text, one link, no attachments, no open-tracking pixel on first touch.
-- No spam trigger words and no misleading subjects.
+- No misleading subjects. A spam-word list is a weak signal on its own; authentication, complaint rate and engagement matter more.
 - Individual copy: identical bodies at scale are easier to cluster and filter.
 
 ### Targets and thresholds

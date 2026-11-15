@@ -56,7 +56,7 @@ Encode per `video-spec-sheet`; render one cover per clip with `video-thumbnail r
 
 ### Phase 6 — Retention review (after posting)
 
-After ~24–72 h the user reads TikTok finish/skip, Instagram Skip Rate and the retention chart, or YouTube viewed-vs-swiped. Find the drop-off second per clip, then re-cut or re-hook that spot as a new clip and `memorize()` what worked. Never delete and re-upload a flopping Short (spam risk).
+After ~24–72 h, run the retention review in the `video-hooks` skill per clip, then re-cut or re-hook the drop-off spot as a new clip and `memorize()` what worked. Never delete and re-upload a flopping Short.
 
 ### Skills
 

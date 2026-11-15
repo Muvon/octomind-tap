@@ -42,7 +42,7 @@ cv:
       username: janedoe
   sections:
     summary:
-      - Backend engineer, 7 years in payments; led the PSD3 migration at a 40-person fintech.
+      - Backend engineer, 7 years in payments; led the payment-API migration at a 40-person fintech.
     experience:
       - company: Finly
         position: Senior Backend Engineer

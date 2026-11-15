@@ -30,7 +30,7 @@ The shift is from theatrical emphasis to plain directive language. Substance sta
 | `NEVER assert X you haven't verified` | `Don't assert X you haven't verified.` |
 | `ALWAYS use tool Y` | `Use tool Y when …` |
 | `DEFAULT TO using web search` | `Use web search when it would enhance your understanding.` |
-| `IMPORTANT: After every 3 tool calls, summarize` | (drop on 4.7+; Claude Fable 5.1 writes fewer updates, so ask for them in plain terms there) |
+| `IMPORTANT: After every 3 tool calls, summarize` | (drop on 4.7+; as of the Claude Fable 5.1 guide, that model writes fewer updates, so ask for them in plain terms; not re-checked for 5.2) |
 
 Reserve all-caps and "must" for one or two single load-bearing safety hard-stops the model genuinely needs to refuse against (e.g. `Never force-push to main`). Stacking ten of them dilutes the signal and the model starts treating all of them as flavour.
 
@@ -46,7 +46,7 @@ If you intend to call multiple tools and there are no dependencies between the t
 </use_parallel_tool_calls>
 ```
 
-Anthropic's claim: takes parallel-call success rate from "high by default" to ~100%. Claude Fable 5.1 usually parallelizes explicit multi-fetch requests but may issue implied independent calls one per turn in coding and computer-use loops; a one-sentence batching nudge at the end of the request fixes it ([Prompting Claude Fable 5.1](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-1)).
+Anthropic's claim: takes parallel-call success rate from "high by default" to ~100%. The Claude Fable 5.1 guide says that model usually parallelizes explicit multi-fetch requests but may issue implied independent calls one per turn in coding and computer-use loops; a one-sentence batching nudge at the end of the request fixes it ([Prompting Claude Fable 5.1](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-1)). This is 5.1-specific; check the guide for the model in use.
 
 ### Message-history formatting (the silent killer)
 
@@ -56,7 +56,7 @@ Bigger cause of regression to sequential tool calls than any prompt change:
 - Splitting tool results into separate user messages teaches the model to avoid parallel calls.
 - No text before tool results inside the content array.
 - Return a failed tool as `tool_result` with `is_error: true`; don't drop it.
-- On models that check thinking-block bindings (Claude Fable 5.1, Opus 5.5, Sonnet 5.5), keep the history append-only: add reminders as new messages instead of editing earlier turns.
+- On models that check thinking-block bindings (Claude Fable 5.1 and 5.2, Opus 5.5, Sonnet 5.5), keep the history append-only: add reminders as new messages instead of editing earlier turns.
 
 ## Reflection between tool batches
 

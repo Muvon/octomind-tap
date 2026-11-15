@@ -88,4 +88,4 @@ Good reclamation: "Thanks for mentioning Acme in your roundup. Could the name li
 ## Composition / References
 
 - Pair with `outreach-cold-copy`, `outreach-deliverability`, and `outreach-compliance` for the shared craft, sending, and legal rules.
-- Pair with the SEO strategy skills for prospect selection; this skill starts where the prospect list ends.
+- Pair with the `seo-guest-posting` skill for target qualification, anchor mix and link placement, with `seo-backlink-prospecting` for finding prospects, and with `seo-link-audit` for judging existing links. This skill starts where the prospect list ends and holds only the pitch copy; for guest-post pitches, take the qualification rubric and the paid-link and network warnings from those skills rather than restating them here.

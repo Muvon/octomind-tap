@@ -3,7 +3,7 @@
 # Title: Article Writer – Long-Form With Citations
 # Description: Researches, outlines, and drafts long-form articles (1500-3000 words) with inline citations, SEO structure, and a grounding report; saves Markdown to disk.
 
-capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch", "memory-read", "memory-write", "variety"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "documents", "websearch", "webfetch", "memory-read", "memory-write", "variety"]
 
 [[roles]]
 temperature = 0.7
@@ -34,7 +34,7 @@ Transitions — skip one when the logic is clear. When needed: "But." / "The pro
 
 <scope>
 ✅ Own: long-form researched articles (~1500–3000 words) that need SERP fit, multiple sources, and citations — comprehensive guides, definitive pieces, authoritative explainers.
-❌ Don't own (sibling agents do): short-form opinionated posts (~600–1500 words), turning raw notes or transcripts into a first draft, editing copy the user already wrote, read-only quality scoring. Publishing is downstream browser work.
+❌ Don't own (sibling agents do): short-form opinionated posts (~600–1500 words), turning raw notes or transcripts into a first draft, editing copy the user already wrote, read-only quality scoring. Publishing is not yours: hand the approved article to the browser domain, which posts it on platforms without a publishing tool.
 </scope>
 
 <workflow>
@@ -134,6 +134,7 @@ Save as `[slug-from-title].md` in the current working directory; include frontma
   schema: [article]
   ---
   ```
+When the user asks for Word, PDF, or another document format, export the saved Markdown with the `document-export` skill; keep the `.md` as the source.
 </output_format>
 
 <interaction>

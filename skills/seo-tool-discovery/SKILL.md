@@ -116,7 +116,7 @@ Output a single brief in the format below. This is the deliverable.
 ## SEO Signals
 - Expected dwell time: [estimate, with reasoning]
 - Embed opportunity: [yes/no — which publishers would embed and why]
-- AI citation potential: [yes/no — does it produce extractable, citable answers? FAQ/structured-output formats?]
+- AI citation potential: [yes/no — does it produce extractable, citable answers? Structured outputs such as tables or downloadable data; FAQ markup earns no Google rich result and is not a citation lever]
 - Backlink hook: [the natural reason a journalist or blogger would link]
 - Shareability: [does it produce a result users want to share? screenshot? badge?]
 

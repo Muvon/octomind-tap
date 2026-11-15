@@ -75,7 +75,7 @@ Run all six in one tool block. Don't serialize. If any fetch fails, the result b
 | 9 | hreflang | each variant points to the others bidirectionally; uses ISO codes | Moderate if asymmetric or broken; Critical if hreflang errors mean wrong region ranks |
 | 10 | JS-render parity | primary content (title, H1, body) visible in raw HTML view-source | Critical if primary content only appears after hydration |
 | 11 | URL architecture | descriptive slug, no query-string for canonical content, consistent trailing-slash policy | Minor unless duplicate content created |
-| 12 | Internal-link topology | pillar links out to clusters in first section; cluster pages link back within first 100 words; ≤3 clicks from homepage | Moderate if orphan pages or broken pillar/cluster pattern |
+| 12 | Internal-link topology | practitioner convention, not a Google rule: pillar links out to clusters in first section; cluster pages link back within first 100 words; ≤3 clicks from homepage | Moderate if orphan pages or broken pillar/cluster pattern |
 | 13 | Mobile parity | mobile viewport, responsive content, no separate m. subdomain serving different content | Critical if content differs materially mobile-vs-desktop |
 
 ### Severity matrix
@@ -98,8 +98,8 @@ Never infer a finding from absence of evidence. "Could not fetch" is its own fin
 
 ### Schema validation notes
 
-- Google states AI Overviews and AI Mode need no special schema, llms.txt, or content chunking (AI optimization guide, May 2026). Score schema for rich-result eligibility and entity clarity, not as a Google AI-citation lever. Microsoft's retail guide (January 2026) does recommend `Product`, `Offer`, `AggregateRating`, `Review`, `Brand`, and `ItemList` markup for Copilot and Bing shopping; on retail pages with that scope, report missing types as a Copilot/Bing readiness gap and name the source.
-- Retired rich results — don't report missing markup as lost visibility: FAQ (ended May 7, 2026), HowTo (2023), Practice problem (Jan 2026), and ClaimReview, Course info, Estimated salary, Learning video, Special announcement, Vehicle listing (2025–26). Leaving the markup in place is harmless. Check Google's search gallery live before citing a type.
+- Google AI features need no special schema, `llms.txt` or content chunking, and FAQ and HowTo rich results are retired (dated facts and sources in `seo-google-policy-baseline`). Score schema for rich-result eligibility and entity clarity, not as a Google AI-citation lever. Microsoft's retail guide to AEO and GEO recommends `Product`, `Offer`, `AggregateRating`, `Review`, `Brand`, `ItemList` and `FAQ` markup for Copilot and Bing shopping; on retail pages with that scope, report missing types as a Copilot/Bing readiness gap and name the source.
+- Retired rich results — don't report missing markup as lost visibility for FAQ or HowTo; leaving the markup in place is harmless. For any other type, check Google's search gallery and structured-data changelog live before calling it retired.
 - Article schema → `headline`, `author` (Person with name + sameAs/url), `datePublished`, `dateModified`, `image`. Missing author identity on a YMYL page is Critical-tier as an E-E-A-T gap, schema or not.
 - Person / Organization schema → anchors entity recognition. Missing `sameAs` to LinkedIn / publication / org bio is Moderate.
 - Review / AggregateRating → present only when genuine reviews back it; self-serving reviews on LocalBusiness/Organization aren't eligible, and fake review markup risks a manual action (and the FTC reviews rule in the US).
@@ -115,12 +115,28 @@ When only lab data is available, flag the field-vs-lab gap; lab overstates good 
 
 ### Internal-link topology — what to look for
 
+The link counts and click depths below are practitioner conventions, not Google rules; Google publishes no such thresholds. Report them as heuristics.
 - Pillar pages should link out to every cluster article in their opening section (first 200 words).
 - Cluster articles should link back to the pillar within the first 100 words.
 - Cluster siblings should cross-link 2–3 times where topically relevant.
 - Every indexable page should be reachable within 3 clicks from the homepage.
 - Orphan pages (no internal inbound links) are a Moderate finding — they signal abandoned content or template gaps.
 - The link graph should mirror the topic graph, not the navigation hierarchy.
+
+### Index status, parameters, pagination, crawl budget, logs
+
+Run when pages are missing from Google or the site has many URL variants. Needs Search Console (Page indexing report) or a supplied export; without it mark these checks Unverified.
+
+| Status or pattern | What it means (Google) | Check and fix direction |
+|---|---|---|
+| Crawled - currently not indexed | Crawled, not added to the index; common and not necessarily a problem | For important pages, run URL Inspection and compare with indexed siblings: thin or duplicate content, weak internal links, a canonical elsewhere |
+| Discovered - currently not indexed | Known but not crawled; Google likely postponed the crawl to avoid overloading the site | Confirm a link from a known page or a sitemap entry; allow weeks for new pages; look for server slowness and URL bloat |
+| Duplicate without user-selected canonical, or Google chose a different canonical | Google clustered the page with another | Compare the two pages; set a consistent canonical, redirect or differentiate |
+| Faceted or parameter URLs in the index | Filter and sort combinations create near-duplicates | Prevent crawling with robots.txt rules or URL fragments for filters; return 404 for combinations with no results; `rel=canonical` and `nofollow` are weaker (Google, faceted navigation) |
+| Paginated series | Each page needs its own URL and a canonical to itself, linked with `<a href>`; Google no longer uses `rel=next` and `rel=prev` | Flag the first page used as the canonical of the series, and fragment-based page numbers |
+| Crawl budget | Matters for sites of 1 million or more unique pages changing weekly, or 10,000 or more changing daily, or with many "Discovered - currently not indexed" URLs (Google) | On smaller sites don't raise it as a finding; fix URL inventory first |
+
+Log analysis: with server logs, count Googlebot requests by URL type (templates, parameters, redirects, error codes) and compare with the URLs that should rank. Confirm a request is genuine Googlebot with Google's verification method before counting it. Without logs mark it Unverified; Search Console's Crawl stats report is the first-party substitute.
 
 ### Output
 
@@ -144,7 +160,13 @@ Within-domain pairings:
 - Pairs with the sibling SEO skill that audits on-page content quality (titles, meta, headings, intent match, AI-citability, E-E-A-T).
 - Pairs with the sibling SEO skill that audits link profile (referring-domain quality, anchor distribution, toxic neighborhoods).
 
+- Redirect and domain moves: `seo-site-migration`. Template page sets: `seo-programmatic`. Traffic that already fell: `seo-traffic-drop-diagnosis`.
+
 External authoritative sources:
+- [Google Search Central — Faceted navigation](https://developers.google.com/search/docs/crawling-indexing/crawling-managing-faceted-navigation)
+- [Google Search Central — Managing crawl budget](https://developers.google.com/search/docs/crawling-indexing/large-site-managing-crawl-budget)
+- [Google Search Central — Pagination](https://developers.google.com/search/docs/specialty/ecommerce/pagination-and-incremental-page-loading)
+- [Google Search Console — Page indexing report](https://support.google.com/webmasters/answer/7440203)
 - [Google Search Central — Crawling and indexing](https://developers.google.com/search/docs/crawling-indexing/overview)
 - [Google Search Central — Structured data general guidelines](https://developers.google.com/search/docs/appearance/structured-data/sd-policies)
 - [Google Search Central — Core Web Vitals](https://developers.google.com/search/docs/appearance/core-web-vitals)

@@ -135,7 +135,7 @@ CMD ["node", "dist/index.js"]
 - Numeric non-root `USER` (e.g. 10001) so Kubernetes `runAsNonRoot` can verify it; no SUID/SGID binaries in custom layers. At runtime: `--read-only`, `--cap-drop ALL`, `--security-opt no-new-privileges`, then add back only what is needed.
 - HEALTHCHECK must use a binary the image contains (curl is absent from distroless and hardened images); set `--start-period` for slow starters.
 - Attach attestations: `docker buildx build --sbom=true --provenance=mode=max --push`; sign and deploy by digest.
-- Scan with `docker scout cves` or Trivy. Pin scanner versions and CI actions by digest or commit SHA: Trivy's releases and action tags were hijacked in March 2026 (CVE-2026-33634).
+- Scan with `docker scout cves` or Trivy. For pinning scanners and CI actions, token permissions and OIDC, use the `ci-cd-pipelines` skill.
 - Multi-arch: `docker buildx build --platform linux/amd64,linux/arm64`.
 
 ### Compose

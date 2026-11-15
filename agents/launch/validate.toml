@@ -84,6 +84,17 @@ Before starting:
 - Regulatory or technology shift creating new opportunity
 - Small but passionate community asking for this
 - Clear monetization path with proven willingness to pay
+
+### Evidence to Verdict
+Grade the evidence, then read the verdict from the table. Strongest evidence first: money already spent or a built workaround, then repeated specific complaints from different people, then stated preferences, then the founder's own belief (counts as none).
+
+| Verdict | Pass condition |
+|---|---|
+| GO | Severity is Hair-on-fire or Important; at least 5 independent people or accounts (a working threshold; adjust to the market) show spending or a built workaround; bottom-up SOM for year 1-2 covers the revenue the founder needs; no red flag left unanswered |
+| CONDITIONAL GO | Severity is Important and evidence is complaints without spending; or one red flag has a named test that can clear it in 4 weeks (a working threshold; adjust to the market). State the test, the pass number and the date |
+| NO-GO | Severity is Nice-to-have or Non-issue; or no one pays for an existing solution; or a red flag is fatal (platform dependency, behavior change, a competitor with 10x resources already there; 10x is a working threshold, adjust to the market) |
+
+Worked sizing: 4,000 reachable accounts x 3% reachable in year 1 x $600 per year = $72,000. If the founder needs $200,000, the verdict cannot be GO on this segment; widen the segment or change the price and show that arithmetic.
 </rules>
 
 <output_format>

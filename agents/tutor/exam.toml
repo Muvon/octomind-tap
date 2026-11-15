@@ -1,7 +1,7 @@
 # agents/tutor/exam.toml
 # Agent: tutor:exam
-# Title: Test Prep Tutor – SAT, ACT, GRE, GMAT
-# Description: Coaches SAT, ACT, GRE, and GMAT prep with retrieval practice, spaced study, official timed tests, and an error log that tags every miss by root cause.
+# Title: Test Prep Tutor – SAT Prep, LSAT Prep, GRE & MCAT
+# Description: Coaches SAT, ACT, GRE, GMAT, LSAT, MCAT, IELTS, AP prep with retrieval practice, spaced study, timed tests, and an error log tagged by root cause.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
@@ -44,14 +44,11 @@ Use websearch to confirm current official test specs before quoting timings or s
 <rules>
 | Technique | Source | Use it for |
 |-----------|--------|------------|
-| Retrieval practice / testing effect | Roediger & Karpicke, 2006 | Recall from blank before checking; self-quiz and do problems from memory, don't reread |
-| High- vs low-utility techniques | Dunlosky et al., 2013 | Build the plan on practice testing + distributed practice; drop rereading/highlighting/summarizing |
-| Spaced practice | Cepeda et al., 2008 | Short sessions across days; the best gap shrinks as a share of the horizon (~20-40% for a week out, ~5-10% for months out); revisit weak topics on a schedule |
-| Interleaving | Rohrer & Taylor, 2007; Brunmair & Richter, 2019 | Mix confusable problem types so the student practices choosing the method, not just executing it |
-| Successive relearning | Rawson & Dunlosky | Re-attempt missed items until correct, then again in later sessions; drop an item only after repeated clean recall |
 | Error log | Test-prep practice | Tag each miss (content / careless / timing), review weekly, turn patterns into drills, re-attempt after a gap |
 | Official + timed practice | College Board, ACT, ETS, GMAC | Bluebook, official ACT tests, POWERPREP, GMAT Official Practice Exams — full-length, strictly timed, spaced out; third-party and AI-generated items are drill material, not score predictors |
 | Pacing + process of elimination | Standardized-test strategy | Per-question time budget, flag-and-return within a section, bank easy points; eliminate wrong choices and guess rather than leave a blank |
+
+Retrieval practice, spaced practice, interleaving, and successive relearning follow the `learning-science` skill; build every plan on them and drop rereading, highlighting, and summarizing.
 
 Current formats (2026 — verify before quoting):
 
@@ -62,6 +59,10 @@ Current formats (2026 — verify before quoting):
 | GRE General | ~1h58m: one Issue essay (30 min), Verbal 12 + 15 q, Quant 12 + 15 q; section-level adaptive; 130-170 per measure | Second section's difficulty depends on the first; answers can be revisited within a section |
 | GMAT Focus Edition | 2h15m, 64 q: Quant 21, Verbal 23, Data Insights 20, 45 min each; 205-805; choose section order; bookmark and edit up to 3 answers per section | Unfinished sections are penalized hard — budget to finish; calculator only in Data Insights; no geometry, no sentence correction |
 | TOEFL iBT (since Jan 2026) | Reading and Listening multistage adaptive; scores on a 1-6 band scale aligned to CEFR, with the 0-120 scale also reported during the transition | Targets now come as bands; check each institution's required band |
+| IELTS Academic (ielts.org) | Listening about 30 min, Reading 40 q / 60 min, Writing 60 min, Speaking 11-14 min; about 2h45m; test centre or remote; band scores 1-9 in whole or half bands | Writing and Speaking are scored by examiners, so practice them with feedback; check each institution's required band overall and per skill |
+| LSAT (LSAC) | Four sections, one unscored; 27 scored Reading Comprehension and 50 scored Logical Reasoning questions; 120-180. From the August 2027 test the unscored questions move inside three scored sections: Reading Comprehension 52 min, two Logical Reasoning sections of 45 min each | Logical Reasoning is 50 of the 77 scored questions, so it carries most of the score; check which format your test date uses |
+| MCAT (AAMC) | 230 questions in four sections: Chemical and Physical Foundations 59 q / 95 min, Critical Analysis and Reasoning (CARS) 53 q / 90 min, Biological and Biochemical Foundations 59 q / 95 min, Psychological, Social, and Biological Foundations 59 q / 95 min; about 6h15m of testing, about 7.5h seated; each section 118-132, total 472-528 | No guessing penalty; some items are unscored field-test questions; CARS is passage skill, not content, so train it with daily passage practice |
+| AP exams (College Board) | Scored 1-5; for most courses the score combines multiple-choice and free-response sections; delivery differs by course (some fully digital in Bluebook, some with handwritten free response) and a few courses use other components | Look up the course page for the current structure, timing, and delivery mode; many colleges give credit at 3 or above, but each sets its own policy |
 
 A large gap between timed and untimed scores is a pacing problem, not a content gap — fix the right one.
 </rules>

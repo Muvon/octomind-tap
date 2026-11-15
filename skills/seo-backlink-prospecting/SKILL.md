@@ -39,7 +39,7 @@ Use it AFTER niche and audience are clear and BEFORE any outreach email. Deliver
 
 ### Core Rules
 
-- Topical fit beats authority. DR/DA is an obsolete primary filter: a DR-30 site with 5 years in your exact vertical beats a DR-80 generalist link farm, so check vertical history first. A 1 on topical fit is an automatic strike; off-topic high-DR links draw Google's reasonable-surfer discount and mixed-niche cluster signals. Third-party readings of the March 2026 (Mar 27–Apr 8) and May 2026 core updates saw aggregation-model sites lose (Google gave no specifics): discount "list of Y for Z" pages with no primary value.
+- Topical fit beats authority. DR/DA is an obsolete primary filter: a DR-30 site with 5 years in your exact vertical beats a DR-80 generalist link farm, so check vertical history first. A 1 on topical fit is an automatic strike; off-topic high-DR links draw Google's reasonable-surfer discount and mixed-niche cluster signals. Third-party readings of the 2026 core updates saw aggregation-model sites lose (Google gave no specifics; `seo-google-policy-baseline`): discount "list of Y for Z" pages with no primary value.
 - Manual qualification, every prospect. No batch submission or automated discovery-to-outreach pipelines; mass-submit directory tools are the fastest path to a manual action.
 - Intent test: would this link exist if SEO didn't? If not, it's a violation in waiting; Google's policy treats intent as the natural/unnatural line.
 - Toxic neighborhood is permanent. A site linking to spam (casino/pharma/foreign-language farms) is contaminated even if your page looks clean; penalty contagion is real.
@@ -66,7 +66,7 @@ PARALLEL-FIRST: fire all category searches in ONE block. Ordered by risk-adjuste
 
 ##### A. Reclamation (highest ROI, lowest risk)
 
-Already mentioned; you only ask for the link. Converts at 30–60%, far above any cold tactic.
+Already mentioned; you only ask for the link. Practitioners report it as the best-converting tactic here; no published conversion rate exists, so quote none.
 
 - Unlinked brand mentions — `"[brand]" -site:[your-domain.com]`, body-copy mentions without a link. Top priority: Tier-1 publications (Forbes, Times, Fortune), which rarely accept cold guest posts but will reclaim a link they meant to add.
 - Broken backlinks to your site — pages linking to your now-404 URLs. Restore or 301; no outreach needed.
@@ -88,12 +88,12 @@ Original value first; the link is the byproduct.
 
 - Journalist requests / digital PR (HARO replacements after the Dec-2024 shutdown); best results come from working 2–3 at once:
   - Source of Sources (SOS) — free, by Peter Shankman (original HARO creator); honor system, off-topic pitch = ban.
-  - Featured.com — relaunched HARO brand, free daily newsletter, more selective than the original.
+  - Featured.com — a separate company that bought the HARO brand from Cision in April 2025 (Cision announcement, 2025-04-15); free tier, more selective than the original.
   - Qwoted — expertise-profile matching; journalists post queries.
-  - #JournoRequest and #PRRequest on X — direct, no platform.
+  - #JournoRequest and #PRRequest on X — direct and informal; no platform vets the requester or the journalist.
 - Guest posts — `[topic] intitle:"write for us"`, `[topic] "submit a guest post"`, `[topic] "contributor guidelines"`. Never pay, never accept a flat-fee structure; pursue only sites with editorial review (named editor, rejection rate, masthead). Paid without `rel="sponsored"` = penalty.
 - Podcast / interview pages — `[topic] inurl:interview OR inurl:podcast`; pitch yourself as a guest, episode pages link out.
-- Original research — pitch unique data (survey, benchmark, study) to niche journalists; 22+ links from one report is realistic.
+- Original research — pitch unique data (survey, benchmark, study) to niche journalists; the number of links one report earns varies widely with the story, and no benchmark exists.
 
 ##### D. Community (high effort, AI-citation value, mostly nofollow)
 
@@ -213,7 +213,7 @@ Quoted from Google's spam policies (updated 2026); kill-rules.
 - "Advertorials or native advertising where payment is received for articles that include links that pass ranking credit, or links with optimized anchor text in articles, guest posts, or press releases distributed on other sites"
 - "Low-quality directory or bookmark site links"; keyword-rich widget links; widely distributed footer/template links
 - "Forum comments with optimized links in the post or signature"
-- Manufactured "brand mentions" — Google's May 2026 AI optimization guide says seeking inauthentic mentions isn't helpful and its AI features depend on its spam systems. Engineer real mentions (genuine engagement, real expert presence, real product/data placements), not synthetic campaigns.
+- Manufactured "brand mentions" — Google's position on inauthentic mentions is logged in `seo-google-policy-baseline`. Engineer real mentions (genuine engagement, real expert presence, real product/data placements), not synthetic campaigns.
 
 Allowed:
 - Paid links with `rel="sponsored"` or `rel="nofollow"` — "It's not a violation of our policies to have such links as long as they are qualified."
@@ -223,7 +223,7 @@ Allowed:
 
 ### AI-Search Citation Overlay (2026)
 
-- Google: AI Overviews and AI Mode use Search's ranking and spam systems; no special markup or llms.txt needed (AI optimization guide, May 2026). Organic quality and authority still decide eligibility.
+- Google: AI Overviews and AI Mode use Search's ranking and spam systems; no special markup or `llms.txt` is needed (`seo-google-policy-baseline`). Organic quality and authority still decide eligibility.
 - Forums and Reddit rank among the most-cited domains in several 2025–2026 studies, but shares vary widely by study, engine and month — cite a dated source or no number.
 - ChatGPT search uses third-party search providers (historically Bing) plus OpenAI's own crawler: allow `OAI-SearchBot` in robots.txt and submit sitemaps to Bing Webmaster Tools.
 - Clicks shrink on AI-answer queries: Pew (2025) saw traditional-result clicks fall from 15% to 8% of visits with an AI summary; Seer (2025) measured ~61% lower organic CTR on AIO queries.

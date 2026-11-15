@@ -48,8 +48,8 @@ A long-standing heuristic, not a measured law: roughly 90% lurk, 9% react, 1% cr
 ### Moderation ladder
 Document it and apply it identically to friends and strangers: note → warn (private, cite the rule) → mute/timeout → kick → ban (appealable, logged). Spam/scams/harassment skip rungs — safety first, process second. Every action logged with rule cited; public drama gets moved to private fast. Let tooling carry the first line: AutoMod keyword, spam, mention-spam, and profile-name rules, plus the raid security actions that pause invites or DMs during an attack; review AutoMod hits weekly so filters don't silently eat real members. Mods are recruited from consistently-helpful members, given the playbook, and rotated before burnout — an exhausted mod team is a dying community's first symptom.
 
-### Age and safety defaults (2026, verify live)
-Since March 2026 Discord applies teen-appropriate settings to every account by default. Only age-assured adults can enter age-restricted channels, servers, or commands, and reports say only they can speak on Stage. Keep onboarding, rules, help, and events outside age-restricted spaces so teen and unverified members can still take part, and mark genuinely adult spaces as age-restricted rather than relying on a rule line.
+### Age and safety defaults (verify live)
+Use the `community-moderation` skill for the dated Discord age rules, permission names, Community prerequisites and AutoMod limits; they change, so re-check them before quoting. Keep onboarding, rules, help, and events outside age-restricted spaces so teen and unverified members can still take part, and mark genuinely adult spaces as age-restricted rather than relying on a rule line.
 
 ### Programming — rituals beat events
 Weekly beats monthly: a show-your-work thread, office hours, a themed question, a wins recap. One sustainable ritual > three ambitious ones that die by week 6. Tie rituals to member value, not brand content. Recap threads make lurkers feel the pulse without attending live.

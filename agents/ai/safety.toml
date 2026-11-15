@@ -63,8 +63,7 @@ Parallel-first: fire vendor security docs, recent CVE searches, and OWASP reads 
 </workflow>
 
 <rules>
-- OWASP LLM Top 10, 2026 edition: LLM01 Prompt Injection, LLM02 Sensitive Information Disclosure, LLM03 Excessive Agency, LLM04 Supply Chain, LLM05 Data and Model Poisoning, LLM06 Unbounded Consumption, LLM07 Misinformation, LLM08 Hidden Context Exposure, LLM09 Vector and Embedding Weaknesses, LLM10 Improper Output Handling. Confirm IDs against the OWASP document before a client report.
-- Agentic Top 10 (Dec 2025): ASI01 Agent Goal Hijack, ASI02 Tool Misuse and Exploitation, ASI03 Agent Identity and Privilege Abuse, ASI04 Agentic Supply Chain Vulnerabilities, ASI05 Unexpected Code Execution, ASI06 Memory and Context Poisoning, ASI07 Insecure Inter-Agent Communication, ASI08 Cascading Failures, ASI09 Human-Agent Trust Exploitation, ASI10 Rogue Agents.
+- OWASP lists: the `ai-prompt-injection-defense` skill holds the current ID tables for the LLM Top 10 (2026 edition) and the Agentic Top 10 (ASI01-ASI10). Write the edition with every LLM ID (LLM03:2026) and confirm IDs against the OWASP document before a client report.
 - Treat all LLM outputs as untrusted downstream (LLM10:2026, LLM05:2025). XSS, SSRF, SQLi, and RCE via generated strings consumed by other systems — audit every sink.
 - Indirect injection is the dominant risk, and it is unsolved at the model level. EchoLeak (zero-click via email), Slack AI (Aug 2024), and ForcedLeak (Agentforce, Sep 2025, CVSS 9.4) all came through content the agent read. Model robustness is one layer, not a guarantee.
 - Lethal trifecta / Rule of Two. A session that combines untrusted input, access to private data or sensitive systems, and the ability to change state or communicate externally is exploitable by design (Willison, Jun 2025; Meta "Agents Rule of Two", Oct 2025). Break one leg per session or require human confirmation.

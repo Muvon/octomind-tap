@@ -4,7 +4,7 @@ title: "Video Spec Sheet: Platform Specs and Safe Zones"
 description: "Platform video output specs: aspect ratio, length, codec, bitrate, safe zones, ffmpeg presets for TikTok, Reels, Shorts, YouTube. Use to check an export."
 license: Apache-2.0
 compatibility: "Stack-agnostic."
-domains: video
+domains: video content
 rules:
   - session(video)
   - session(adcraft)
@@ -39,14 +39,14 @@ Each social platform has its own combination of aspect ratio, max duration, code
 - Final encode in H.264 / yuv420p, even if the source is HEVC / 10-bit. Universal compatibility beats marginal quality.
 - Audio: AAC-LC stereo, 48 kHz, 128 kbps minimum (YouTube recommends 384 kbps stereo for uploads). Mono audio reads as low-quality on most feeds.
 - Loudness: master to about -14 LUFS integrated, true peak ≤ -1 dBTP. YouTube normalizes to roughly that level; TikTok and Meta don't publish a target, so -14 is a safe common master.
-- AI-generated clips usually come out at 720p (Runway Gen-4 Turbo renders 1280×720 / 720×1280). Upscale picked shots before the final 1080p encode; never let the platform upscale.
-- Re-encoding with ffmpeg drops any C2PA Content Credentials the generator embedded, so platform auto-labelling of AI content will not fire. Disclose manually at upload (see Disclosure and Rights).
+- AI-generated clips often come out at 720p or 768p class resolution (see the provider table below for each provider's limits). Upscale picked shots before the final 1080p encode; never let the platform upscale.
+- Re-encoding with ffmpeg drops any C2PA Content Credentials the generator embedded, so platform auto-labelling of AI content will not fire. Disclose manually at upload (see the `content-disclosure` skill).
 
 ### Platform Spec Table (2026 — verify live)
 
 | Platform | Aspect | Resolution | Length cap | Frame rate | Codec | Bitrate | Audio |
 |---|---|---|---|---|---|---|---|
-| TikTok organic | 9:16 | 1080×1920 | 10 min recorded in-app, 60 min uploaded | 30 / 60 | H.264 | 8–10 Mbps | AAC 128k+ 48kHz |
+| TikTok organic | 9:16 | 1080×1920 | Most accounts post up to 3 min, some up to 5 or 10 min (TikTok developer docs, checked 2026-11-15); uploads from TikTok.com or TikTok Studio reported up to 60 min (TikTok Creator Academy, undated) | 30 / 60 | H.264 | 8–10 Mbps | AAC 128k+ 48kHz |
 | TikTok in-feed ad (non-Spark) | 9:16 (16:9, 1:1 accepted) | 1080×1920 (min 540×960) | 10 min, 500 MB | 30 | H.264 | ≥516 kbps (aim 8 Mbps) | AAC 128k+ 48kHz |
 | Instagram Reels | 9:16 | 1080×1920 (Meta ads guide recommends 1440×2560) | Organic up to 20 min since late 2025, but Reels over 3 min aren't recommended to non-followers (reported, Instagram Help via Socialinsider, 2026-07); Reels ads up to 15 min, 4 GB | 30 | H.264 | 5–8 Mbps | AAC 128k+ 48kHz |
 | YouTube Shorts | 9:16 or 1:1 | 1080×1920 | 3 min; any square/vertical upload ≤3 min is classified as a Short automatically | 30 / 60 | H.264 | 8–12 Mbps | AAC 384k 48kHz |
@@ -55,7 +55,7 @@ Each social platform has its own combination of aspect ratio, max duration, code
 | Snapchat | 9:16 | 1080×1920 | 60s (verify Spotlight cap) | 30 | H.264 | 5–8 Mbps | AAC 128k+ 48kHz |
 | YouTube long-form | 16:9 | 1920×1080 / 3840×2160 | 12 hr or 256 GB | 30 / 60 | H.264 (or H.265 source) | 8 / 12 Mbps (1080p30/60), 35–45 Mbps (4K30) | AAC 384k 48kHz |
 | X | 16:9 or 1:1 | 1280×720+ | 2 min 20 s standard; longer on Premium | 30 / 60 | H.264 | 5–25 Mbps | AAC 128k 48kHz |
-| LinkedIn feed | 1:1, 4:5, 16:9, 9:16 | 1080×1080 / 1920×1080 / 1080×1920 | 15 min desktop upload, 10 min mobile | 30 | H.264 | 8–10 Mbps | AAC 128k 48kHz |
+| LinkedIn feed | 1:1, 4:5, 16:9, 9:16 | 1080×1080 / 1920×1080 / 1080×1920 | Member posts 15 min, 5 GB; Page and Career Page video 10 min, 5 GB (LinkedIn Help, checked 2026-11-15) | 30 | H.264 | 8–10 Mbps | AAC 128k 48kHz |
 | Pinterest video Pin | 9:16 or 2:3 | 1080×1920 | 15 min | 30 | H.264 | 5–8 Mbps | AAC 128k 48kHz |
 
 ### Safe Zones (keep critical text, faces and logos out of these UI bands)
@@ -80,6 +80,31 @@ Each social platform has its own combination of aspect ratio, max duration, code
 - One sentence per card max. Two-sentence cards get skipped.
 - Word-by-word reveal in time with VO is the common preset look; test it against flat full-sentence captions on the account's own data (no measured source). Keep on-screen text at or under 5–10 words per second (TikTok creative guidance).
 - Instagram captions hold at most 2,200 characters (official, Meta developer docs, Instagram Graph API media reference). Instagram posts allow at most 5 hashtags (reported, Business Today, 2025-12-19; newer than the API reference, which may lag). Put the hook and topic words in the first line, before the "more" truncation.
+
+### Metadata Limits (verify live)
+
+| Platform | Field | Limit | Source (checked 2026-11-15) |
+|---|---|---|---|
+| YouTube | Title | 100 characters | [YouTube Help](https://support.google.com/youtube/answer/57404) |
+| YouTube | Description | 5,000 characters | [YouTube Help](https://support.google.com/youtube/answer/57404) |
+| Instagram | Caption | 2,200 characters; at most 5 hashtags (reported, see References) | [Instagram Graph API](https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/media) |
+| TikTok, Content Posting API | Title (caption) | 2,200 UTF-16 characters | [TikTok Content Posting API](https://developers.tiktok.com/doc/content-posting-api-reference-direct-post) |
+
+The in-app TikTok caption cap and the Instagram visible-before-"more" length were not confirmed on a primary page; write the hook in the first line and keep the first 125 characters self-contained.
+
+### AI Video Generation Providers
+
+The `video-gen` capability wires one provider; which one depends on the user's config. Agents describe the step by what it does (image-to-video clip, upscale, targeted edit) and read the tool names and limits here. Check the wired tool's own schema before sending a request: the MCP package version decides which model ids it accepts.
+
+| Provider | Wired tools | Models and limits (provider docs, checked 2026-11-15) | Native audio |
+|---|---|---|---|
+| Runway (default) | `runway_generateVideo` (image-to-video), `runway_generateImage`, `runway_upscaleVideo`, `runway_editVideo`, `runway_getTask` | `gen4_turbo`: 2–10 s, ratios `1280:720`, `720:1280`, `960:960`, `1104:832`, `832:1104`, `1584:672`; `gen4.5`: same ratios, 2–10 s. Upscale (`magnific_video_upscaler_creative`): input up to 30 s, output up to 4k. Editing (`aleph2`): input up to 30 s. | Not stated for Gen-4 Turbo or Gen-4.5 |
+| Kling | `generate_video`, `generate_image_to_video`, `extend_video`, `create_lipsync`, `apply_video_effect` | Not confirmed on Kling's own docs in this pass; read the tool schema. | Read the tool schema |
+| MiniMax Hailuo | `generate_video`, `query_video_generation` | `MiniMax-Hailuo-2.3`: 768P at 6 or 10 s, 1080P at 6 s | Not stated |
+| Google Veo | `generate_video`, `extend_video`, `interpolate_frames` | Google's Gemini API docs state the Veo 3.1 preview model ids are shut down (callout date 2026-10-22) and point to Gemini Omni Flash (3–15 s, native audio). Confirm the wired server still generates before relying on it. | Yes |
+| Luma | tools of Luma's remote server | `ray-2` and `ray-flash-2`; resolutions 540p to 4k. Luma's older guide notes current docs are in its Agents API docs. | Not stated |
+
+Sources: [Runway API reference](https://docs.dev.runwayml.com/api.md), [Runway models](https://docs.dev.runwayml.com/guides/models/), [MiniMax text-to-video reference](https://platform.minimax.io/docs/api-reference/video-generation-t2v), [Gemini API video docs](https://aistudio.google.com/docs/video), [Luma video generation](https://docs.lumalabs.ai/docs/video-generation).
 
 ### Output Presets (ffmpeg) — copy-paste ready
 
@@ -127,14 +152,10 @@ Each social platform has its own combination of aspect ratio, max duration, code
 
 ### Disclosure and Rights (2026 — verify live)
 
+Paid-partnership and AI-content disclosure rules per platform and jurisdiction are in the `content-disclosure` skill. Music rights stay here:
+
 | Item | Rule |
 |---|---|
-| YouTube | Turn on "altered or synthetic content" in Studio when realistic AI makes a real person say/do something, alters a real event or place, or shows a realistic scene that never happened. Not needed for clearly unrealistic/animated content or AI used only for scripts, captions, production help. |
-| TikTok organic | Use the AI-generated content label (API field `is_aigc`) for realistic AI content; unlabelled realistic AI content can be removed. Paid partnerships and own-brand promotion need the commercial content toggles. |
-| TikTok ads | Ads Manager's AI-generated content disclaimer is mandatory for AI-generated or AI-significantly-altered images, video or audio; undisclosed ads are rejected or restricted. |
-| Meta | Meta auto-applies "AI info" when it detects C2PA/IPTC signals or its own gen-AI tools; political and social-issue ads must self-disclose photorealistic AI. |
-| EU | AI Act Art. 50(4): deepfake content shown to EU audiences must be disclosed as AI-generated or manipulated from 2 Aug 2026. |
-| New York | GBL § 396-b (in force 9 Jun 2026): ads that include a synthetic performer (an AI-generated person not recognizable as a real individual, e.g. an AI avatar presenter) must conspicuously disclose it when the advertiser knows. $1,000 first violation, $5,000 each after. Audio-only ads and AI used solely to translate a human performer are not covered. |
 | Music | YouTube Shorts over 1 min with any active Content ID claim are blocked worldwide. Business TikTok accounts and all ads use the Commercial Music Library or owned/licensed music; trending sounds are not cleared for brand use. AI music (e.g. ElevenLabs) is commercially usable only on a paid plan per its terms. |
 
 ## Examples
@@ -176,13 +197,10 @@ Brief: One ad, ship to TikTok + IG Reels + IG feed + YT Shorts + YT long-form tr
 ## References
 
 - [TikTok in-feed ad specs](https://ads.tiktok.com/help/article/video-ads-specifications)
-- [TikTok ad disclaimers (AI-generated content)](https://ads.tiktok.com/help/article/about-ad-disclaimers-in-tiktok-ads-manager)
 - [Instagram Reels ad specs and safe zones](https://www.facebook.com/business/ads-guide/update/video/instagram-reels)
 - [YouTube Shorts up to 3 minutes](https://support.google.com/youtube/answer/15424877)
 - [YouTube recommended upload encoding settings](https://support.google.com/youtube/answer/1722171)
-- [YouTube altered or synthetic content disclosure](https://support.google.com/youtube/answer/14328491)
 - [Meta Ads Guide](https://www.facebook.com/business/ads-guide)
-- [New York synthetic performer ad disclosure, GBL § 396-b (Cooley summary)](https://www.cooley.com/news/insight/2026/2026-01-29-new-york-enacts-synthetic-performer-disclosure-law-for-advertisements-including-those-using-generative-ai)
 - [TikTok creative best practices](https://ads.tiktok.com/help/article/creative-best-practices)
 - [Instagram Reels length (Instagram Help via Socialinsider)](https://www.socialinsider.io/blog/instagram-reels-length/), 2026-07, reported.
 - [Meta Reels ads, sound-on share](https://developers.facebook.com/blog/post/2024/11/07/unlock-the-power-of-reel-ads), 2024-11-07, official.

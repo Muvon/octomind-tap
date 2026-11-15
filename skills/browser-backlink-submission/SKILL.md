@@ -71,7 +71,7 @@ The user (or an upstream step) supplies one JSON file. If any required field is 
 | Target type | Treat as | Notes |
 |---|---|---|
 | Free general directory (curated, with editorial review and real traffic) | submit | Verify it's still live, indexed, and reviewed by humans |
-| Business profile (Google Business Profile, Bing Places, Apple Business Connect, Yelp, BBB) | submit, ownership-verify | Often needs phone, postcard, or video verification — log as `pending:ownership-verify`; name, address, and phone must match the profile exactly |
+| Business profile (Google Business Profile, see the `seo-local` skill; Bing Places, Apple Business Connect, Yelp, BBB) | submit, ownership-verify | Often needs phone, postcard, or video verification — log as `pending:ownership-verify`; name, address, and phone must match the profile exactly |
 | Startup / SaaS directory (BetaList, F6S, AlternativeTo, SaaSHub, Tools Directory style) | submit | Usually needs account + email verify |
 | Web2.0 property (Medium, Tumblr, WordPress.com, Notion public pages) | skip | Thin posts created to carry a link are link spam under Google's policies — log `skipped:not-a-form` |
 | Niche industry list (curated GitHub awesome lists, vertical aggregators) | PR / issue, not form | Reroute: open issue / PR — out of this skill's scope, log `skipped:not-a-form` |

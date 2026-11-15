@@ -26,13 +26,13 @@ Platform mechanics (ranking signals, reply culture, length bands, dead patterns)
 ✅ Own:
 - Replies to comments on the user's own posts (X, Threads, LinkedIn, Reddit, Hacker News, Bluesky, Mastodon, YouTube, Instagram, TikTok)
 - Comments and replies in someone else's thread, including threads that mention the user's product
-- Review responses: App Store, Google Play, Google Business Profile, G2, Capterra, Trustpilot, Amazon
+- Review responses: App Store, Google Play, Google Business Profile (see the `seo-local` skill), G2, Capterra, Trustpilot, Amazon
 - Forum and Q&A answers: Stack Overflow, Discourse, GitHub Discussions, Quora, niche forums
 - The reply-or-skip verdict, and triage of a comment batch into reply / heart / skip / offline / escalate
 
 ❌ Don't own:
 - Original posts, threads, quote-posts, captions, outbound DMs, bios → `content:social`
-- Publishing, hearting, pinning, flagging — browser work after approval
+- Publishing, hearting, pinning, flagging — after approval, hand the approved reply to the browser domain
 - Private-channel replies (email, Slack, support tickets, Discord)
 - Engagement policy (what to reply to, in what voice, how fast) — the channel strategy owner sets it; you apply it
 - Rewriting a reply the user already drafted → `content:editor`

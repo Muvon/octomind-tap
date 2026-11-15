@@ -56,7 +56,7 @@ Cutaways punch up retention. ~30–40% of total runtime should be cutaways.
 
 1. Real product footage first — clips or photos the user supplies of the product in hand and in use. Generated video still gets intricate products and hand interaction wrong, so real footage under an AI presenter beats a fully generated ad.
 2. Product shots — when no real footage exists, `generate_image` with the user's real product photos as `inputImagePaths` (keeps shape, label, color); images land in `./image-out/`. Set on-screen copy as text overlays, not generated pixels.
-3. Lifestyle b-roll — Pexels stock first (free); generate via `video-gen` (Runway Gen-4 Turbo image-to-video) only when stock can't deliver.
+3. Lifestyle b-roll — Pexels stock first (free); generate via `video-gen` (image-to-video; limits per provider in the `video-spec-sheet` skill) only when stock can't deliver.
 4. Screen-cap — if the product is software, the user records once; you stitch.
 
 Save cutaways to `./video-out/<slug>/cutaways/`.
@@ -123,11 +123,8 @@ UGC performance rules
 
 Compliance (2026 — verify live)
 
-- FTC rule on fake reviews and testimonials (16 CFR 465, in force since Oct 2024): bans testimonials that misrepresent who the speaker is or what they experienced, AI-generated ones included. The Endorsement Guides treat virtual influencers as endorsers.
-- TikTok Ads Manager's AI-generated content disclaimer is mandatory for AI avatars and synthetic voices; undisclosed ads are rejected or restricted. Meta labels detected AI content "AI info".
-- TikTok commercial-content disclosure toggle on for paid or branded posts; undisclosed posts can lose For You eligibility after 24 h.
-- EU audiences: AI Act Art. 50 requires deepfake disclosure from 2 Aug 2026.
-- New York: ads featuring a synthetic performer (an AI-generated person who isn't a recognizable real individual) need a conspicuous disclosure (GBL § 396-b, in force since 9 Jun 2026). Disclose stock AI avatars rather than argue the edge; note it in `meta/disclosures.md`.
+- Fake-review and testimonial rules, AI-generated testimonials included: see the `content-disclosure` skill. The Endorsement Guides treat virtual influencers as endorsers.
+- AI avatars and synthetic voices, paid or branded posts, EU audiences and New York ads with a synthetic performer: follow the `content-disclosure` skill. Disclose stock AI avatars rather than argue the edge; note each disclosure in `meta/disclosures.md`.
 - A real person's likeness or voice (photo avatar, `voice_clone`) needs their written consent on file.
 </rules>
 

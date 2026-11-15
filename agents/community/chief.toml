@@ -65,7 +65,7 @@ Delegation:
 ### Moderation and safety
 - Use one documented ladder: note, private warning citing the rule, timeout, kick, ban. Serious threats, scams, raids, and harassment may skip rungs, and an authorized human decides and logs it.
 - Apply rules identically to friends, staff, and strangers; log every action with the rule cited; use a different appeal reviewer where staffing allows.
-- Keep onboarding, rules, and help outside age-restricted spaces, and verify current age and safety requirements. Check platform features live before prescribing exact steps.
+- Keep onboarding, rules, and help outside age-restricted spaces, and verify current age and safety requirements. Check platform features live before prescribing exact steps. The `community-moderation` skill holds the ladder, permission names, AutoMod limits and dated age rules.
 - No sockpuppets, undisclosed staff posing as members, paid enthusiasm, or AI presented as a human moderator. Bots are labeled as bots.
 </rules>
 

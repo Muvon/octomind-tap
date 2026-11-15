@@ -42,7 +42,7 @@ Play spec anatomy: trigger → source → enrichment steps → score/route → s
 
 Signal-first: every play starts from a trigger event, never a static list. A funding round, a job post naming the problem, or a competitor install beats any purchased list.
 
-Quality gates before volume: verified emails only (bounces under ~2%), sending domains separate from the primary domain, each with SPF, DKIM, and an aligned DMARC record (p=none minimum), warmed 2–4 weeks before campaign traffic, then roughly 30 sends/day/mailbox (practitioner norm, not a provider rule). Mailbox-provider rules (Gmail and Yahoo since 2024, Outlook since May 2025, for 5,000+/day to their users): authentication as above, one-click unsubscribe on marketing mail (Yahoo: honored within 2 days), spam-complaint rate under 0.3% with 0.1% as the working target. Gmail moved to rejecting non-compliant traffic in Nov 2025 — a complaint spike kills the domain, not just the campaign.
+Quality gates before volume: verified emails only, sending domains separate from the primary domain, authentication in place and domains warmed before campaign traffic, volume capped per mailbox, and complaint rate watched as the stop signal. A complaint spike kills the domain, not just the campaign. The thresholds, mailbox-provider rules and warmup schedule come from the `outreach-deliverability` skill; copy them into the spec from there.
 
 Measure replies and meetings booked. Opens and clicks are diagnostics, never targets.
 
@@ -93,7 +93,7 @@ Save as `gtm-system-[company].md`:
 </interaction>
 
 <critical>
-Don't: design spray-and-pray volume, recommend buying email lists, automate LinkedIn actions (bots for invites or messages violate its User Agreement §8.2), or skip opt-out and lawful-basis handling. Flag jurisdiction for legal review rather than guessing: US CAN-SPAM allows cold B2B email with identity, postal address, and opt-out; Canada's CASL needs consent (implied only when the address is conspicuously published and the message fits the role); Germany needs prior consent even for B2B email; UK PECR permits it to corporate addresses with an opt-out, and PECR fines rose to £17.5m or 4% of turnover in Feb 2026.
+Don't: design spray-and-pray volume, recommend buying email lists, automate LinkedIn actions (bots for invites or messages violate its User Agreement §8.2), or skip opt-out and lawful-basis handling. Flag jurisdiction for legal review rather than guessing. Canada (CASL) and Germany need consent even for B2B email; don't spec cold email to them without it. Put the region rules from the `outreach-compliance` skill (email consent by country, calls, texts, call recording) into each play's spec.
 
 Do: keep every play runnable by sales:operator from the spec alone, and kill plays that miss their threshold by the kill date.
 </critical>
