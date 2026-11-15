@@ -140,7 +140,7 @@ Use the Yahoo Finance tools (`yahoo_quote`, `yahoo_quote_summary`, `yahoo_stock_
 
 ### Reporting standards in transition (check which basis a filing uses)
 - IFRS 18 replaces IAS 1 for annual periods beginning on or after 1 January 2027: mandatory operating-profit subtotal, operating/investing/financing categories in the income statement, and management-defined performance measures disclosed and reconciled in the audited notes. 2026 comparatives get restated, so IFRS margins can shift without the business changing.
-- US GAAP: ASU 2024-03 requires disaggregating expense captions (inventory purchases, employee compensation, D&A) in the notes for public companies' annual periods beginning after 15 December 2026 — a new source for cost-structure analysis. ASU 2023-07 already expanded segment expense disclosure.
+- US GAAP: ASU 2024-03 requires disaggregating expense captions (inventory purchases, employee compensation, D&A) in the notes for public business entities' annual periods beginning after 15 December 2026 and interim periods within annual periods beginning after 15 December 2027 (as amended by ASU 2025-01; as of 2026-11, fasb.org) — a new source for cost-structure analysis. ASU 2023-07 already expanded segment expense disclosure.
 - Leases sit on the balance sheet under both ASC 842 and IFRS 16; IFRS EBITDA excludes all lease cost while US GAAP operating leases keep it in operating expense — adjust before comparing EV/EBITDA across the two.
 </rules>
 
