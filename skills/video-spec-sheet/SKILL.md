@@ -46,9 +46,9 @@ Each social platform has its own combination of aspect ratio, max duration, code
 
 | Platform | Aspect | Resolution | Length cap | Frame rate | Codec | Bitrate | Audio |
 |---|---|---|---|---|---|---|---|
-| TikTok organic | 9:16 | 1080×1920 | Most accounts post up to 3 min, some up to 5 or 10 min (TikTok developer docs, checked 2026-11-15); uploads from TikTok.com or TikTok Studio reported up to 60 min (TikTok Creator Academy, undated) | 30 / 60 | H.264 | 8–10 Mbps | AAC 128k+ 48kHz |
+| TikTok organic | 9:16 | 1080×1920 | Most accounts post up to 3 min, some up to 5 or 10 min (TikTok developer docs, checked 2026-11-15); look up the current upload limit for TikTok.com and TikTok Studio in TikTok Help | 30 / 60 | H.264 | 8–10 Mbps | AAC 128k+ 48kHz |
 | TikTok in-feed ad (non-Spark) | 9:16 (16:9, 1:1 accepted) | 1080×1920 (min 540×960) | 10 min, 500 MB | 30 | H.264 | ≥516 kbps (aim 8 Mbps) | AAC 128k+ 48kHz |
-| Instagram Reels | 9:16 | 1080×1920 (Meta ads guide recommends 1440×2560) | Organic up to 20 min since late 2025, but Reels over 3 min aren't recommended to non-followers (reported, Instagram Help via Socialinsider, 2026-07); Reels ads up to 15 min, 4 GB | 30 | H.264 | 5–8 Mbps | AAC 128k+ 48kHz |
+| Instagram Reels | 9:16 | 1080×1920 (Meta ads guide recommends 1440×2560) | Organic up to 20 min, but Reels over 3 min won't be recommended to new audiences (Instagram Help, help.instagram.com/2720958398006062, as of 2026-11); Reels ads up to 15 min, 4 GB | 30 | H.264 | 5–8 Mbps | AAC 128k+ 48kHz |
 | YouTube Shorts | 9:16 or 1:1 | 1080×1920 | 3 min; any square/vertical upload ≤3 min is classified as a Short automatically | 30 / 60 | H.264 | 8–12 Mbps | AAC 384k 48kHz |
 | Facebook video | 9:16 or 4:5 | 1080×1920 / 1080×1350 | All Facebook video uploads publish as Reels since 2025; feed ads 1s–241 min, 4 GB | 30 | H.264 | 5–8 Mbps | AAC 128k+ 48kHz |
 | IG / FB Stories | 9:16 | 1080×1920 | 60s per card | 30 | H.264 | 5–8 Mbps | AAC 128k+ 48kHz |
