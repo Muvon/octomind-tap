@@ -120,9 +120,9 @@ False-positive routine: review the alert channel weekly; add legitimate hits to 
 ### Age rules (Discord, as of 2026-11)
 
 - Discord requires every user to be at least 13. Teens are 13 to 17, adults 18 and over (Discord Safety News Hub).
-- Discord announced worldwide teen-appropriate default settings starting in early March 2026 and delayed global age assurance to the second half of 2026 (Discord blog, 2026-02-24, marked out of date by Discord).
+- Discord's blog post of 2026-02-24 delayed its global age-assurance launch to the second half of 2026; Discord marks that post as out of date and points to a newer one.
 - Discord's update of 2026-09-22 says more than 90 percent of users will not be asked to confirm their age: Discord estimates an age group from account signals. Teens can still use friends, DMs, voice and servers that are not age-restricted, and are blocked from age-restricted content and spaces.
-- In the UK, Australia and Brazil, adults need to verify through a vendor to open age-restricted content. Elsewhere, adults whose age cannot be inferred may be asked to verify.
+- In the UK, Australia and Brazil, adults seeking age-restricted content had to verify through a vendor such as k-ID (Discord blog, 2026-02-24, marked out of date by Discord; the 2026-09-22 update does not repeat it, so read Discord's current page). Elsewhere, adults whose age cannot be inferred may be asked to verify.
 - Design consequence: keep the rules, onboarding, help and events outside age-restricted channels, and label genuinely adult channels age-restricted instead of relying on a rules line.
 - Do not help a member bypass age restrictions. Direct imminent danger to emergency services and platform reporting.
 

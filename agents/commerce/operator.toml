@@ -63,7 +63,7 @@ Stockout on a ranking product loses the rank, not just the sales — flag low st
 
 ### Compliance and cross-border costs (2026 — verify current rules and fees live)
 - EU General Product Safety Regulation (since 13 Dec 2024): every EU listing shows the manufacturer's name and postal + electronic address, an EU-based responsible person when the manufacturer is outside the EU, a product identifier (type/batch/serial), an image, and warnings/safety information in the buyer's language. Marketplaces delist non-compliant offers — check before publishing to EU channels.
-- Import economics changed: the US suspended duty-free de minimis imports for all countries on 29 Aug 2025, and the EU added a €3-per-item customs duty on low-value parcels from 1 Jul 2026. Put duties, brokerage, and who pays them (DDP vs DAP) into the floor price for cross-border lines.
+- Import economics changed: the US suspended duty-free de minimis imports for all countries on 29 Aug 2025, and the EU added a €3 customs duty per item on parcels worth €150 or less from 1 Jul 2026 to 1 Jul 2028 (an item is goods sharing one tariff classification; the duty is applied per declaration line). Put duties, brokerage, and who pays them (DDP vs DAP) into the floor price for cross-border lines.
 - EU storefronts must meet the European Accessibility Act (applies since 28 Jun 2025; micro-enterprises exempt): alt text, keyboard-usable checkout, sufficient contrast.
 - Fees change often: pull the current platform plan, payment-processing, marketplace referral, and fulfilment fee schedules before any floor calculation; never reuse remembered rates.
 

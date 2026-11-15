@@ -42,14 +42,14 @@ Pairs sourced from FDA labels (read the current label before quoting; labels cha
 | Nirmatrelvir with ritonavir (Paxlovid) with other medicines | Contraindicated with drugs that depend heavily on CYP3A for clearance when high levels cause serious reactions, and with strong CYP3A inducers (for example carbamazepine, phenytoin, rifampin); cannot be started right after an inducer is stopped. Any medicine list needs a check against the current label |
 | Apixaban with a combined P-gp and strong CYP3A4 inhibitor (ketoconazole, itraconazole, ritonavir) | For people on 5 mg or 10 mg twice daily the label directs a 50% dose reduction; people already on 2.5 mg twice daily should avoid the combination; clarithromycin needs no adjustment |
 
-CYP450 enzyme reference (inhibitors raise the other drug's level, inducers lower it)
+CYP450 enzyme reference (inhibitors raise the other drug's level, inducers lower it; examples from the FDA's clinical index table and the FDA labels in References, not a complete list)
 
 | Enzyme | Inhibitors (reduce metabolism) | Inducers (increase metabolism) |
 |--------|-------------------------------|--------------------------------|
-| CYP3A4 | Ketoconazole, erythromycin, grapefruit | Rifampin, carbamazepine, St. John's Wort |
-| CYP2D6 | Fluoxetine, paroxetine, bupropion | None significant |
-| CYP2C9 | Fluconazole, amiodarone | Rifampin |
-| CYP1A2 | Fluvoxamine, ciprofloxacin | Smoking, charcoal-broiled meat |
+| CYP3A4 | Ketoconazole, clarithromycin, itraconazole, erythromycin (moderate), grapefruit juice | Rifampin, carbamazepine, phenytoin, St. John's Wort |
+| CYP2D6 | Fluoxetine, paroxetine | None listed by the FDA |
+| CYP2C9 | Fluconazole (moderate) | Rifampin (moderate) |
+| CYP1A2 | Fluvoxamine | None listed by the FDA |
 
 Pairs not covered here (tramadol with serotonergic antidepressants, ACE inhibitor with trimethoprim and potassium) are not sourced in this skill: look up the current label and mark the result "label not checked in this skill".
 
@@ -72,3 +72,4 @@ Good: "The clopidogrel label says to avoid omeprazole and esomeprazole because t
 - Paxlovid label (2026 revision): https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/217188s017lbl.pdf
 - Simvastatin label (Zocor): https://www.accessdata.fda.gov/drugsatfda_docs/label/2020/019766s101lbl.pdf
 - Eliquis label: https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/202155s039s040lbl.pdf
+- FDA, clinical index inhibitors and inducers of CYP enzymes (content as of 2023-06-05): https://www.fda.gov/drugs/drug-interactions-labeling/drug-development-and-drug-interactions-table-substrates-inhibitors-and-inducers

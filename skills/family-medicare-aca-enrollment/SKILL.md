@@ -80,8 +80,8 @@ Stable screening tests (check the current year)
 |------|--------|--------|
 | Medicaid expansion adults 19-64 | Income up to 138% of the federal poverty level, in states that expanded | HealthCare.gov |
 | SSI countable resources | $2,000 for one person, $3,000 for a couple (2026) | SSA |
-| SSDI cash wait | Five full months after the disability onset date | SSA (secondary summaries; confirm on ssa.gov) |
-| Medicare after SSDI | After 24 months of disability benefits; ALS and end-stage kidney disease have their own Medicare rules, so look them up | SSA (secondary summaries; confirm on ssa.gov) |
+| SSDI cash wait | Five full consecutive calendar months of disability, counted from the first month in which the person is insured and disabled (as of 2026-11) | 20 CFR 404.315 |
+| Medicare after SSDI | Medicare Part A starts with the 25th month of disability benefit entitlement, that is, after 24 months of benefits (as of 2026-11); ALS and end-stage kidney disease have their own Medicare rules, so look them up | 42 CFR 406.12 |
 
 ## Examples
 
@@ -105,4 +105,7 @@ Good: "Entered your 4 drugs and pharmacy in Plan Finder: Plan X totals about $A 
 - KFF, 9 things to watch for 2027 (2026-11-06): https://kff.org/affordable-care-act/9-things-to-watch-for-the-2027-aca-open-enrollment-period/
 - Medicaid expansion: https://www.healthcare.gov/medicaid-chip/medicaid-expansion-and-you/
 - Medicaid work requirement rule: https://www.federalregister.gov/documents/2026/06/03/2026-11094/medicaid-program-community-engagement-requirement-for-certain-individuals
-- Retroactive coverage change: https://justiceinaging.org/hr1-reduces-medicaid-retroactive-eligibility-starting-in-2027/
+- Retroactive coverage change (CMS summary of P.L. 119-21): https://www.medicaid.gov/medicaid/downloads/wftc-legsltn-overview-slide.pdf
+- Six-month renewals (CMS SMD 26-001, 2026-03-06): https://www.medicaid.gov/federal-policy-guidance/downloads/smd26001.pdf
+- SSDI waiting period: https://www.ecfr.gov/current/title-20/part-404/section-404.315
+- Medicare entitlement of disabled people: https://www.ecfr.gov/current/title-42/part-406/section-406.12

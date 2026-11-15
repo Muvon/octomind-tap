@@ -42,7 +42,7 @@ env = { KLING_ACCESS_KEY = "{{INPUT:KLING_ACCESS_KEY}}", KLING_SECRET_KEY = "{{I
 tools = []
 ```
 
-**Notes:** Credit-based pricing; cheaper per second than Runway/Veo for 1080p output. Lipsync endpoint useful for UGC-style ads.
+**Notes:** Credit-based pricing; cheaper per second than Runway for 1080p output. Lipsync endpoint useful for UGC-style ads.
 
 ## Links
 

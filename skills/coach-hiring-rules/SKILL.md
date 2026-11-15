@@ -34,17 +34,17 @@ It is information, not legal advice. A dispute with an employer, or a question a
 
 ### Pay-range posting, United States (snapshot as of 2026-09)
 
-A posting is a public or internal job advertisement. Thresholds are the number of employees the employer needs for the law to apply. Compiled from the sixfifty state tracker (updated 2026-09), Cooley (2026-07-06) and Jackson Lewis (2026-07-15); the state's own page is the authority.
+A posting is a public or internal job advertisement. Thresholds are the number of employees the employer needs for the law to apply. Compiled from the sixfifty state tracker (updated 2026-09), Cooley (2026-07-06) and Jackson Lewis (2026-07-15); the state's own page is the authority. The thresholds for Washington, New York, Minnesota and the Maryland row were read on the state statute pages on 2026-11-15; the other rows rest on the trackers and still need the state check.
 
 | Jurisdiction | In force from | Employer threshold |
 |---|---|---|
 | Colorado | in force | at least 1 employee in the state |
 | California | in force; SB 642 changes from 2026-01-01 | 15 or more employees |
-| Washington | in force; fixed-wage update from 2026-01-01 | 15 or more employees |
+| Washington | in force (RCW 49.58.110); a 2025 amendment lets an employer that offers one fixed wage post that amount, and gives a five-business-day cure period for postings from 2025-07-27 to 2027-07-27 | 15 or more employees |
 | New York | in force | 4 or more employees |
 | Hawaii | in force | 50 or more employees |
 | District of Columbia | 2024 | at least 1 employee |
-| Maryland | 2024-10-01 | not stated by the tracker |
+| Maryland | 2024-10-01 | none stated in the statute (Labor and Employment section 3-304.2) |
 | Illinois | 2025-01-01 | 15 or more employees |
 | Minnesota | 2025-01-01 | 30 or more employees |
 | New Jersey | 2025-06-01 | 10 or more employees |

@@ -37,7 +37,7 @@ env = { MINIMAX_API_KEY = "{{INPUT:MINIMAX_API_KEY}}" }
 tools = []
 ```
 
-**Notes:** Best price/quality ratio for short-form social. Use Hailuo for the first wave of variants, then re-render the chosen winner on Veo / Runway for the final upload.
+**Notes:** Best price/quality ratio for short-form social. Use Hailuo for the first wave of variants, then re-render the chosen winner on Runway for the final upload.
 
 ## Links
 

@@ -42,7 +42,7 @@ Default model by product type:
 - Marketplace → transaction fee, aligned with user success.
 - Content/community → free then premium: build audience, monetize the most engaged.
 - Open source → open core or hosted: free core drives adoption.
-- AI product / agent → hybrid platform fee + usage credits, or outcome-based (2026 example: Intercom Fin at $0.99 per resolution, on top of seats). Each use carries real inference cost, so a flat seat price loses money on the heaviest users; price the unit the buyer values (task, resolution) and keep it above per-unit model cost.
+- AI product / agent → hybrid platform fee + usage credits, or outcome-based (2026 example: Intercom Fin at $0.99 per outcome, such as a resolution, on its pricing page). Each use carries real inference cost, so a flat seat price loses money on the heaviest users; price the unit the buyer values (task, resolution) and keep it above per-unit model cost.
 
 Pricing psychology:
 - Anchoring: show the expensive option first so the middle feels reasonable

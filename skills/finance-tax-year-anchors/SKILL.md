@@ -16,7 +16,7 @@ rules:
 
 ## Overview
 
-Contribution limits, deductions and thresholds change every year. This skill holds them once, in one table per tax year, each row with its source and the date it was checked. Agents name this skill instead of copying figures. The table was last checked on 2026-11-15; the UK change rows for the cash ISA limit and savings and property income rates were read in the gov.uk Budget 2026 document (published 2026-10-28).
+Contribution limits, deductions and thresholds change every year. This skill holds them once, in one table per tax year, each row with its source and the date it was checked. Agents name this skill instead of copying figures. The table was last checked on 2026-11-15 against the IRS notices named in each row and the gov.uk pages and Budget documents (Budget 2025, published 2025-11-26, and Budget 2026, published 2026-10-28).
 
 ## Mental model
 
@@ -36,15 +36,15 @@ A figure is only true for a named tax year. Each row below is one year of one ju
 |---|---|---|
 | 401(k), 403(b), 457(b) employee deferral | $24,500 | IRS IR-2025-111, 2025-11-13 |
 | Catch-up, age 50+ / ages 60-63 | $8,000 / $11,250 | IRS IR-2025-111 |
-| Roth-only catch-up if prior-year FICA wages from that employer exceeded | $150,000 | IRS Notice 2025-67; final regulations T.D. 10033 |
+| Roth-only catch-up if prior-year FICA wages from that employer exceeded | $150,000 | IRS Notice 2025-67; final regulations T.D. 10033 (Federal Register, 2025-09-16) |
 | IRA, plus catch-up age 50+ | $7,500, plus $1,100 | IRS IR-2025-111 |
-| HSA self-only / family, plus age 55+ | $4,400 / $8,750, plus $1,000 | Rev. Proc. 2025-19 (secondary) |
-| HDHP minimum deductible / out-of-pocket maximum (self-only; family) | $1,700; $3,400 / $8,500; $17,000 | Rev. Proc. 2025-19 (secondary) |
+| HSA self-only / family, plus age 55+ | $4,400 / $8,750, plus $1,000 | IRS Rev. Proc. 2025-19 |
+| HDHP minimum deductible / out-of-pocket maximum (self-only; family) | $1,700; $3,400 / $8,500; $17,000 | IRS Rev. Proc. 2025-19 |
 | Standard deduction single / married joint / head of household | $16,100 / $32,200 / $24,150 | IRS IR-2025-103, 2025-10-09 |
 | AMT exemption single / joint; phase-out starts | $90,100 / $140,200; $500,000 / $1,000,000 | IRS IR-2025-103 |
 | Estate basic exclusion; annual gift exclusion | $15,000,000; $19,000 | IRS IR-2025-103 |
 | Foreign earned income exclusion; health FSA | $132,900; $3,400 | IRS IR-2025-103 |
-| SALT deduction cap (half for married filing separately) | $40,400, reduced above $505,000 MAGI, floor $10,000, back to $10,000 from 2030 | IRS 2026 Form 1040-ES correction; 2026 Schedule A draft |
+| SALT deduction cap (half for married filing separately) | $40,400, reduced above $505,000 MAGI, floor $10,000, back to $10,000 for tax years after 2029 | IRS Publication 505 (2026); IRC section 164(b)(7) as added by Public Law 119-21 |
 | Qualified tips deduction; overtime deduction | up to $25,000; up to $12,500 ($25,000 joint), phase-out above MAGI $150,000 ($300,000 joint) | IRS FS-2025-03, 2025-07-25 |
 | Senior deduction (age 65+); car-loan interest | $6,000 each, phase-out above MAGI $75,000 ($150,000 joint); up to $10,000, phase-out above $100,000 ($200,000 joint) | IRS FS-2025-03 |
 | Years the four deductions above apply | 2025 through 2028 | IRS FS-2025-03 |
@@ -61,9 +61,13 @@ A figure is only true for a named tax year. Each row below is one year of one ju
 | AMT exemption single / joint; phase-out starts | $93,000 / $144,700; $515,950 / $1,031,900 | IRS IR-2026-133 |
 | Estate basic exclusion; annual gift exclusion | $15,480,000; $20,000 | IRS IR-2026-133 |
 | Foreign earned income exclusion; health FSA | $137,300; $3,500 | IRS IR-2026-133 |
-| HSA self-only / family; HDHP out-of-pocket maximum | $4,500 / $9,000; $8,700 / $17,400 | Rev. Proc. 2026-24 (secondary) |
-| 401(k) deferral, catch-ups, IRA, Roth catch-up wage threshold | look up: no official IRS notice found as of 2026-11-15; published numbers are projections | irs.gov newsroom, retirement cost-of-living notice |
-| SALT cap, QBI thresholds, Social Security wage base | look up | irs.gov |
+| HSA self-only / family; HDHP minimum deductible; HDHP out-of-pocket maximum | $4,500 / $9,000; $1,750 / $3,500; $8,700 / $17,400 | IRS Rev. Proc. 2026-24 |
+| 401(k), 403(b), 457(b) employee deferral | $25,500 | IRS IR-2026-136, 2026-11-12; Notice 2026-66 |
+| Catch-up, age 50+ / ages 60-63 | $8,500 / $11,750 | IRS IR-2026-136; Notice 2026-66 |
+| IRA, plus catch-up age 50+ | $7,500, plus $1,100 | IRS IR-2026-136 |
+| Roth-only catch-up if prior-year FICA wages from that employer exceeded | $155,000 | IRS Notice 2026-66 |
+| Defined-contribution plan annual additions limit (section 415(c)) | $75,000 | IRS Notice 2026-66 |
+| SALT cap, QBI thresholds, Social Security wage base | look up | irs.gov, ssa.gov |
 
 ### UK, tax year 2026-27 (6 April 2026 to 5 April 2027)
 
@@ -86,11 +90,11 @@ A figure is only true for a named tax year. Each row below is one year of one ju
 | 6 April 2027 | Making Tax Digital threshold £30,000 (judged on 2025-26 qualifying income) | gov.uk MTD guidance |
 | 6 April 2027 | Cash ISA limit: the planned cut to £12,000 for under-65s was dropped; the cash ISA limit stays £20,000 for all ages | gov.uk Budget 2026 document, 2026-10-28 |
 | 6 April 2027 | Most unused pension funds and death benefits count in the estate for Inheritance Tax; personal representatives report and pay | gov.uk Inheritance Tax unused pension funds |
-| 6 April 2027 | Savings and property income tax rates rise by 2 percentage points at the basic, higher and additional rate, on top of the 2-point rise announced in Budget 2025: 24% / 44% / 49% on the 20 / 40 / 45% base. Confirm the legislated rates and which nations apply (property: England, Wales and Northern Ireland) on gov.uk | gov.uk Budget 2025 and Budget 2026 document, Table 6.1, 2026-10-28 |
+| 6 April 2027 | Savings and property income tax rates rise by 2 percentage points at the basic, higher and additional rate, on top of the 2-point rise announced in Budget 2025: 24% / 44% / 49%. Property income rates apply in England, Wales and Northern Ireland; savings income rates apply across the UK. Check the legislated rates on gov.uk before quoting | gov.uk, Income Tax: changes to tax rates for property and savings income, 2026-10-29; Budget 2026 document, Table 6.1, 2026-10-28 |
 | 6 April 2028 | Making Tax Digital threshold £20,000 (judged on 2026-27 qualifying income) | gov.uk MTD guidance |
 | 6 April 2029 | Employee pension contributions through salary sacrifice above £2,000 a year lose the National Insurance exemption | gov.uk salary sacrifice reform |
 
-The pension Inheritance Tax, salary sacrifice and threshold-freeze rows come from gov.uk pages and the Budget 2025 documents; the Budget 2026 document was not read for them, so confirm them on gov.uk before quoting.
+The threshold-freeze and salary-sacrifice rows come from the Budget 2025 document and the HMRC policy paper on salary sacrifice reform; the pension Inheritance Tax row comes from the HMRC policy paper published 2025-11-26 (deaths on or after 6 April 2027). Check gov.uk for later changes before quoting them.
 
 ### Adding a year
 
@@ -100,9 +104,9 @@ The pension Inheritance Tax, salary sacrifice and threshold-freeze rows come fro
 
 ## Examples
 
-Bad: "The 401(k) limit is $25,500 next year." This is a projection, not an official figure.
+Bad: "The 2027 401(k) limit is around $26,000." This is a guess, not an official figure.
 
-Good: "For 2026 the 401(k) deferral limit is $24,500 (IRS, 2025-11-13). The IRS had not published the 2027 limit when this table was last checked on 2026-11-15; check irs.gov before planning around a number."
+Good: "For 2027 the 401(k) deferral limit is $25,500 (IRS Notice 2026-66, 2026-11-12). Social Security wage base and SALT cap for 2027 were not in the table when it was last checked on 2026-11-15; check the authority's page."
 
 ## Checklist
 
@@ -115,6 +119,9 @@ Good: "For 2026 the 401(k) deferral limit is $24,500 (IRS, 2025-11-13). The IRS 
 
 - IRS newsroom: https://www.irs.gov/newsroom
 - IRS Notice 2025-67 (2026 retirement limits): https://www.irs.gov/pub/irs-drop/n-25-67.pdf
+- IRS Notice 2026-66 (2027 retirement limits): https://www.irs.gov/pub/irs-drop/n-26-66.pdf
+- IRS IR-2026-136 (2027 401(k) and IRA limits): https://www.irs.gov/newsroom/401k-limit-increases-to-25500-for-2027-ira-limit-remains-7500
+- IRS Rev. Proc. 2025-19 (2026 HSA) and Rev. Proc. 2026-24 (2027 HSA): https://www.irs.gov/pub/irs-drop/rp-25-19.pdf and https://www.irs.gov/pub/irs-drop/rp-26-24.pdf
 - IRS tax year 2027 inflation adjustments, IR-2026-133: https://www.irs.gov/newsroom/irs-releases-tax-inflation-adjustments-for-tax-year-2027-taxpayers-continue-to-benefit-from-the-working-families-tax-cuts
 - IRS Publication 1099: https://www.irs.gov/publications/p1099
 - gov.uk income tax rates: https://www.gov.uk/income-tax-rates
