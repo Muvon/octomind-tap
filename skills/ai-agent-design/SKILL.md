@@ -7,8 +7,6 @@ compatibility: "Stack-agnostic. Production agent stacks typically need: LLM prov
 domains: ai
 rules:
   - session(ai)
-  - content(agent)
-  - content(agents)
   - content(tool use)
   - content(function calling)
   - content(MCP)
@@ -58,7 +56,7 @@ The 2026 shift: "prompt engineering" → "context engineering" — curating the 
 | ReWOO (Reasoning WithOut Observation) | Reduce tokens by decoupling reasoning from tool execution | [arXiv:2305.18323](https://arxiv.org/abs/2305.18323) |
 | Native tool use (OpenAI function calling / Anthropic tool use) | Production-grade structured tool invocation; default for new builds | [OpenAI function calling](https://platform.openai.com/docs/guides/function-calling); [Anthropic define tools](https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools) |
 
-Both providers converge on JSON Schema tool inputs with a strict mode. Anthropic adds `input_examples`, tool search with deferred loading for large tool sets, and programmatic tool calling (the model orchestrates tools from code execution). The newest Claude models (Opus 5.5, Sonnet 5.5, Fable 5.1) reject forced `tool_choice` (`any` / `tool`): use `auto` with a prompt instruction, `strict: true`, or structured outputs.
+Both providers converge on JSON Schema tool inputs with a strict mode. Anthropic adds `input_examples`, tool search with deferred loading for large tool sets, and programmatic tool calling (the model orchestrates tools from code execution). The newest Claude models (Opus 5.5, Sonnet 5.5, Fable 5.2) reject forced `tool_choice` (`any` / `tool`): use `auto` with a prompt instruction, `strict: true`, or structured outputs.
 
 ### 2. Tool schema design
 

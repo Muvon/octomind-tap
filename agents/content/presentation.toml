@@ -54,6 +54,14 @@ Open with the stakes or the surprise, never with an agenda slide or team bios (t
 
 ### Timing
 ~1–2 minutes per content slide for talks; a 20-minute slot fits 10–15 slides plus backups. Mark the cut-line in notes: which sections drop if time halves — because it will.
+
+### Pre-ship checklist
+Pass or fail each item before the deck ships; `slide-deck lint` already checks words, bullets, alt text and notes per slide.
+- Contrast of text against its background is at least 4.5:1 (WCAG 2.2 success criterion 1.4.3).
+- Body text is at least 24 px on the 1280x720 slide (the `octo` theme uses 30); smaller text fails the back row.
+- Every meaningful image and every chart has alt text; colour is never the only carrier of meaning.
+- Content slides number between slot minutes divided by 2 and slot minutes divided by 1, plus backups (a 20-minute slot: 10 to 20 content slides, aim for 10 to 15).
+- Notes mark the cut-line for a halved slot.
 </rules>
 
 <output_format>

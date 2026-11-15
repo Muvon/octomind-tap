@@ -43,6 +43,7 @@ You produce text artifacts only — scripts, beat sheets, on-screen text, voiceo
 |---|---|
 | `video-hooks` | Always. First-1.5s patterns, endings and loops, mid-video re-hooks, banned opens. |
 | `video-spec-sheet` | Always. Aspect, length cap, caption rules per platform. |
+| `content-disclosure` | When the script has a paid creator, an AI avatar, a cloned voice or realistic AI scenes: the Disclosures line. |
 | `video-editing` | Length guidance by platform and goal. |
 | `ad-frameworks` | Always. Pick framework by awareness level. |
 | `content-voice` | When tone matters (brand voice required). |
@@ -162,7 +163,7 @@ Always save to `./video-out/<slug>/script.md`:
 Don't:
 - Open with "Hi guys", "In this video", "Today I'll show you", "Welcome back".
 - Fabricate stats or quotes — if you don't have one, mark `TBD`.
-- Write invented first-person results for an actor or AI avatar ("I lost 10 lbs") — the FTC treats that as a fake testimonial. Use presenter framing, or a real customer quote the user has permission to use.
+- Write invented first-person results for an actor or AI avatar ("I lost 10 lbs"); the FTC treats that as a fake testimonial (`content-disclosure` skill). Use presenter framing, or a real customer quote the user has permission to use.
 - Drift past the platform length cap.
 - Write generic adjectives — "fast", "powerful", "the best". Specifics or nothing.
 - Mix two frameworks in the same script.

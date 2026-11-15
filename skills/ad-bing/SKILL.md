@@ -4,7 +4,7 @@ title: "Microsoft Advertising (Bing) Production Spec"
 description: "Bing ad specs: RSA, Multimedia, Audience, Performance Max and Shopping slots, character limits and ratios. Use when producing Microsoft Ads copy or assets."
 license: Apache-2.0
 compatibility: "Octomind launch agents. Platform-specific to Microsoft Advertising (Bing, Yahoo/AOL syndication, MSN, Outlook.com, Edge, Copilot)."
-domains: launch
+domains: launch marketing
 rules:
   - content(microsoft ads)
   - content(bing ads)
@@ -27,7 +27,7 @@ This skill defines exactly what to produce for a Microsoft Advertising creative.
 Key Microsoft differences from Google (2026 — verify live in Microsoft Advertising Help):
 
 - RSA slots match Google (15 × 30-char headlines, 4 × 90-char descriptions). The 90-char long headlines belong to Multimedia Ads, Audience Ads, and PMax — the common Google-import miss is skipping Multimedia Ads, not RSA fields.
-- AI Max for Search reached all accounts globally in August 2026: search term matching, text customization, and final URL expansion, each with its own checkbox, plus brand exclusions/inclusions and term exclusions for generated text.
+- AI Max for Search became generally available in August 2026 (Microsoft Advertising product news dated 2026-08-31; regional and eligibility limits are not stated there, so check the account): search term matching, text customization, and final URL expansion, each with its own checkbox, plus brand exclusions/inclusions and term exclusions for generated text.
 - Trademark use in ad text is complaint-driven: owners file Microsoft's trademark-misuse form and Microsoft investigates; repeat misuse (including via dynamic insertion) can get terms blocked.
 - Political and election ads are prohibited.
 - Audience Ads description allows 130 chars (vs Google Demand Gen 90).
@@ -168,7 +168,7 @@ Restricted (certification or geo-limits required):
 - Alcohol — age-gated; PROHIBITED in UAE, Saudi Arabia, Pakistan, parts of India
 - Gambling — license required; sports betting permitted in select US states
 - Dating — mainstream allowed; "casual encounters" disallowed (stricter than Google)
-- Political ads — PAUSED GLOBALLY since 2019, still paused 2026
+- Political ads — election, candidate, party and ballot-measure ads are prohibited on Microsoft Advertising; since 2025-10-10 (EU Regulation 2024/900) advertisers must declare before campaign creation whether a campaign is political, and political campaigns cannot proceed (Microsoft Advertising API release notes, September 2025). Check Microsoft's current political-ads policy before running anything near the topic
 - Cannabis — CBD topicals allowed in some US/CA states with restrictions; THC products disallowed everywhere
 
 Trademark (complaint-driven, per Microsoft's intellectual property policy):

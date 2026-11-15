@@ -29,7 +29,8 @@ Decay signal → cause → decision → priority → page brief → implemented 
 
 - Primary input is authorized Search Console access or a supplied export (URL, query, clicks, impressions, CTR, position, date).
 - Without it, audit public evidence only: dated claims, old statistics, prices, versions, screenshots, dead links. Mark decay Unverified. Missing data is Unknown, not zero.
-- Search Console Web results include AI Overviews and AI Mode, so Web totals are not organic-only (Google, AI features, checked 2026-11-09). Don't infer AI-specific clicks from them.
+- Search Console Web results include AI Overviews and AI Mode, so Web totals are not organic-only; the Generative AI report counts impressions only (`seo-google-policy-baseline`). Don't infer AI-specific clicks from them.
+- A drop that is sudden, site-wide or unexplained is not a decay queue: run `seo-traffic-drop-diagnosis` first, then queue the pages it points to.
 
 ### Find decay and separate causes
 

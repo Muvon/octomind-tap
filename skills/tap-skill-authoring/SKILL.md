@@ -42,8 +42,8 @@ compatibility: "Requires: tool1. macOS/Linux."
 capabilities: versioning
 domains: developer
 rules:
-  - file(Cargo.toml)
-  - content(rust) content(async)
+  - content(rust)
+  - file(Cargo.toml) match((?i)\b(compil\w+|panic\w*|\w+\.rs)\b)
 ---
 ```
 
@@ -77,6 +77,8 @@ Rules are evaluated on fresh user messages when `[skills] auto_activation` is on
 | `semantic(<phrase>[, <threshold>])` | Embedding cosine between the message and the phrase clears the threshold (default 0.68) |
 
 Deterministic matches activate directly. Semantic-only candidates must also beat the runner-up by a 0.05 margin, so near-ties abstain. Adding or changing `semantic(...)` phrases changes the tap embedding model's training data — see the `tap-model-training` skill.
+
+A skill loads only when the request shows the work. Every rule line carries at least one check on the message (`content`, `match` or `semantic`); `file`, `grep`, `bin`, `env` and `workdir` only narrow a line, because on their own they fire in every session in a matching repo, whatever the user asked. `session(...)` alone is fine: it targets one agent's own runs. Lint enforces this (`RULE_NO_INTENT`) and rejects unknown check types (`RULE_UNKNOWN_CHECK`), which the runtime would silently ignore. Single common words (`review`, `cost`, `pdf`, `node`) fire on passing mentions; use a phrase or a `match()` that needs the task verb.
 
 ### Validate script
 
@@ -158,10 +160,10 @@ Encodes Conventional Commits and branch naming.
 ---
 name: programming-rust
 title: "Rust Programming"
-description: "Rust idioms, error handling, async patterns. Auto-activates in Rust projects."
+description: "Rust idioms, error handling, async patterns. Auto-activates when Rust work is asked for in a Rust project."
 domains: developer
 rules:
-  - file(Cargo.toml)
+  - match((?i)\b(compil\w+|panic\w*|\w+\.rs)\b) file(Cargo.toml)
   - grep(tokio, Cargo.toml) content(async)
   - semantic(write idiomatic rust code)
 ---
@@ -175,11 +177,13 @@ rules:
 
 ❌ `domains: dev` — no `agents/dev/` directory, so lint fails and it would never activate.
 
+❌ `- file(Cargo.toml)` on its own line — loads the skill for every request in a Rust repo, even "summarize the changes"; lint fails with `RULE_NO_INTENT`. Add a message check on the same line.
+
 ## Checklist
 
 - [ ] Description in third person, says what and when, with concrete trigger terms?
 - [ ] `name` equals the directory; `domains` and `capabilities` reference real directories?
-- [ ] Rules match the intended prompts and nothing broader; semantic phrases one idea each?
+- [ ] Rules match the intended prompts and nothing broader; every line has a message check; semantic phrases one idea each?
 - [ ] Body in canonical order, no H1, bold, italics, or `---`; under ~2000 words?
 - [ ] Instructions actionable and specific; examples for non-obvious rules?
 - [ ] Tone calibrated: plain directives, all-caps only for real hard-stops?

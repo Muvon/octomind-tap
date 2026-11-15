@@ -38,7 +38,24 @@ Drop creators with no published contact, signs of purchased followers, or confli
 
 ### Tiers and rates
 
-Rates vary by platform, niche, and format and shift constantly. Do not quote benchmarks from memory. Ask the creator for their rate card, or research current figures before proposing a budget. Offer formats in this order of cost: gifted product, affiliate or revenue share, flat fee for one deliverable, ongoing ambassador deal.
+Rates vary by platform, niche, and format, and public benchmarks disagree by up to four times between datasets. Ask the creator for a rate card first, then check it against the planning bands below (as of 2026-11, vendor surveys, not rules). Look up current figures before proposing a budget.
+
+| Tier | Followers (common cut) | Instagram post | TikTok video | YouTube integration |
+|------|------------------------|----------------|--------------|---------------------|
+| Nano | under 10,000 | USD 50 to 500 | USD 50 to 200 | USD 1,000 to 3,000 |
+| Micro | 10,000 to 100,000 | USD 250 to 2,500 | USD 200 to 800 | USD 5,000 to 20,000 |
+| Macro | 100,000 to 1,000,000 | USD 2,500 to 12,000 | USD 800 to 5,000 | USD 20,000 to 200,000 and up |
+
+Tier cut-offs differ by source, so state which one you use. Engagement rate usually falls as audience grows; one vendor-reported 2026 study of 92 partnerships found medians of 6.7% for nano, 3.9% for micro and 1.4% for macro creators.
+
+Check any quote with two numbers:
+
+- Cost per thousand views = fee / expected views x 1,000, where expected views is the median of the creator's last 10 posts of the same format.
+- Cost per engagement = fee / (expected views x engagement rate).
+
+Usage terms are priced apart from the post. Vendor-reported planning bands: paid-ad use of the creator's handle or content (whitelisting, partnership ads) adds roughly 20% to 50% of the base fee for about 30 days, more for longer terms; exclusivity in a category adds roughly 25% to 100% depending on length. Put in writing the assets, platforms, start and end dates, and who can revoke. Do not agree to perpetual rights.
+
+Offer formats in this order of cost: gifted product, affiliate or revenue share, flat fee for one deliverable, ongoing ambassador deal.
 
 ### First pitch
 
@@ -50,7 +67,18 @@ Send after interest. Include: the single message to convey, must-include facts, 
 
 ### FTC endorsement and disclosure
 
-Any material connection between a brand and a creator must be disclosed clearly: payment, free product, affiliate commission, or employment. Disclosure goes where the audience sees it without clicking, in the content itself, in plain words such as "ad", "sponsored", or "paid partnership". Hashtags buried in a pile do not count, and platform tools alone may not suffice. The creator may not make claims about the product that the brand cannot substantiate. The brand is responsible for guiding and monitoring creators. Rules differ outside the US, so state the recipient's country and send questions to counsel.
+Any material connection between a brand and a creator must be disclosed clearly: payment, free product, discounts, affiliate commission, family or employment ties. In the US (FTC guidance, page dated 2019):
+
+- Put the disclosure with the endorsement, not on a profile page, at the end of a post or behind a "more" link. In video, say or show it in the video itself, and repeat it periodically in live streams. In images, keep it on screen long enough to read.
+- Use plain words: "ad", "sponsored", "thanks to [brand] for the free product". Do not use "sp", "collab", "thanks" or "ambassador" alone, and do not bury it in a pile of hashtags.
+- Do not rely only on the platform's own label; use it in addition to words in the content.
+- The creator may not make claims the brand cannot substantiate or describe a product they have not used.
+
+US rule on fake reviews and testimonials (16 CFR Part 465, effective 2024-10-21): a brand may not write, buy or publish fake or false reviews or testimonials. A brand may not buy followers or other fake influence signals, and insider reviews (staff or agents) need a clear disclosure of the relationship. A testimonial from an AI avatar is prohibited when the experience it describes is invented. The brand is liable for what it knew or should have known was false.
+
+United Kingdom: advertising rules (the Advertising Standards Authority and the CAP Code) require ads to be obviously identifiable; a clear "Ad" label is the common form. The ASA, CAP and CMA have published joint influencer guidance; read the current version. Since April 2025 (the CMA announced the regime in force on 2025-04-07) the Competition and Markets Authority can fine for consumer-law breaches directly, up to 10% of global turnover, including undisclosed paid posts. A platform's paid-partnership tool can satisfy the rule only if the label is clear and prominent.
+
+The brand is responsible for briefing and monitoring creators. For any other country, state the creator's and the audience's country and send the question to counsel.
 
 ### Follow-up
 
@@ -73,7 +101,7 @@ Good brief: "Main point: receipts match themselves. Please mention the free expo
 ## Checklist
 
 - [ ] Each creator vetted for audience fit, engagement quality, and brand safety?
-- [ ] Rates asked for or researched live, none quoted from memory?
+- [ ] Rate card requested, quote checked against planning bands and the cost formulas, usage and exclusivity priced separately?
 - [ ] First pitch under 120 words, citing a specific piece, one question?
 - [ ] Brief lists allowed and forbidden claims, rights, dates, and approvals?
 - [ ] Disclosure requirement stated in writing, in the content itself?

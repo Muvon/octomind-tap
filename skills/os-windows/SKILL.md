@@ -23,12 +23,12 @@ Windows behavior depends on edition, channel, identity, and execution context. A
 
 ## Release and execution gate
 
-Verified 2026-10-12: Windows 11 26H2 (build 26300) reached general availability on 2026-09-29 as an enablement package for 24H2/25H2 devices; 25H2 remains supported. 26H1 (build 28000) serves specific new hardware and is not an in-place upgrade from 24H2/25H2. 24H2 Home/Pro servicing ends 2026-10-13. Windows Server 2025 is the current LTSC release; Server 2022 left mainstream support on 2026-10-13. Recheck release health and edition-specific lifecycle dates before prescribing an upgrade; Insider and optional preview updates are different channels.
+Verified 2026-11-15: Windows 11 26H2 (build 26300) reached general availability on 2026-09-29 as an enablement package for 24H2/25H2 devices; 25H2 remains supported (Home/Pro to 2027-10-12). 26H1 (build 28000) serves specific new hardware and is not an in-place upgrade from 24H2/25H2. 24H2 Home/Pro servicing has ended; 24H2 Enterprise and Education run to 2027-10-12. Windows Server 2025 is the current LTSC release; Server 2022 left mainstream support on 2026-10-13 (extended support to 2031-10-14). Recheck release health and edition-specific lifecycle dates before prescribing an upgrade; Insider and optional preview updates are different channels.
 
 - Identify client versus Server, edition, display version, full build/revision, architecture, and installation type. Server Core, desktop clients, Enterprise LTSC, and IoT Enterprise LTSC have different component availability and support terms.
-- Windows 10 22H2 standard support ended in October 2025, and consumer ESU ends on 2026-10-13; paid commercial ESU runs at most to October 2028. Verify actual ESU enrollment; don't apply that lifecycle blindly to Windows 10 LTSC products.
+- Windows 10 22H2 standard support ended on 2025-10-14, and consumer ESU runs to 2027-10-12 (Microsoft's consumer ESU page); paid commercial ESU lasts at most three years after end of support, so year 3 ends in October 2028 (read the exact date from Microsoft's ESU schedule). Verify actual ESU enrollment; don't apply that lifecycle blindly to Windows 10 LTSC products.
 - Distinguish native architecture from process bitness/emulation. A 32-bit shell on 64-bit Windows can see redirected filesystem/registry locations; ARM64 machines may run emulated x64 tools.
-- Windows PowerShell 5.1 uses `powershell.exe`; PowerShell 7 uses `pwsh.exe` and installs alongside it. PowerShell 7.6 (on .NET 10) is the current LTS; 7.4 LTS support ends November 2026; 7.7 is preview. Check `$PSVersionTable`, module compatibility, and remoting endpoint rather than assuming Terminal selects PowerShell 7.
+- Windows PowerShell 5.1 uses `powershell.exe`; PowerShell 7 uses `pwsh.exe` and installs alongside it. PowerShell 7.6 (on .NET 10) is the current LTS, supported to 2028-11-14; 7.4 LTS and 7.5 support ended on 2026-11-10; 7.7 (Standard Term Support, on .NET 11) was released on 2026-11-10. Check `$PSVersionTable`, module compatibility, and remoting endpoint rather than assuming Terminal selects PowerShell 7.
 - Preserve argument boundaries with PowerShell arrays and `-LiteralPath` where appropriate. Explicitly use `sc.exe` for the service utility: `sc` can resolve to a PowerShell alias.
 
 ## Services and scheduled work
@@ -79,8 +79,8 @@ Processor architecture codes include 9 for x64 and 12 for ARM64. Run in the inte
 
 ## References
 
-- [Windows 11 releases](https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information) and [Server releases](https://learn.microsoft.com/en-us/windows/release-health/windows-server-release-info)
-- [PowerShell lifecycle](https://learn.microsoft.com/en-us/powershell/scripting/install/powershell-support-lifecycle) and [5.1/7 differences](https://learn.microsoft.com/en-us/powershell/scripting/whats-new/differences-from-windows-powershell)
+- [Windows 10 ESU program](https://learn.microsoft.com/en-us/windows/whats-new/extended-security-updates), [Windows Server 2022 lifecycle](https://learn.microsoft.com/en-us/lifecycle/products/windows-server-2022), [Windows 11 releases](https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information) and [Server releases](https://learn.microsoft.com/en-us/windows/release-health/windows-server-release-info)
+- [PowerShell lifecycle](https://learn.microsoft.com/en-us/powershell/scripting/install/powershell-support-lifecycle), [Announcing PowerShell 7.7](https://devblogs.microsoft.com/powershell/announcing-powershell-7-7/) and [5.1/7 differences](https://learn.microsoft.com/en-us/powershell/scripting/whats-new/differences-from-windows-powershell)
 - [Service Control Manager](https://learn.microsoft.com/en-us/windows/win32/services/service-control-manager) and [WinGet](https://learn.microsoft.com/en-us/windows/package-manager/winget/)
 - [WSL versions](https://learn.microsoft.com/en-us/windows/wsl/compare-versions) and [execution policies](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies)
 - [PowerShell errors](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_error_handling) and [processor architecture](https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-processor)

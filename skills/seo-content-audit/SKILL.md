@@ -8,12 +8,8 @@ domains: seo
 rules:
   - session(seo)
   - session(audit)
-  - content(audit)
   - content(on-page)
-  - content(title)
   - content(meta description)
-  - content(headings)
-  - content(intent)
   - content(EEAT)
   - content(E-E-A-T)
   - match(\b(audit|review|inspect)\s+.{0,40}(content|page|article|post)\b)
@@ -34,7 +30,7 @@ rules:
 
 A page can pass every structural check, load fast, validate every schema, and still rank nowhere — because the content doesn't match search intent, the headings bury the answer, the byline says "Admin," or the top 10 already covers everything this page says. This skill diagnoses the on-page layer that the structural audit can't see: how the content is shaped against the SERP it wants to win.
 
-The audit cross-references the target page against the actual SERP — top 10 results, "People Also Ask"-style questions, AI Overview presence where it can be observed — and returns findings where the page falls short of what's already winning. Information gain (what does this page add that the top 10 doesn't) is the priority test: Google's May 2026 AI optimization guide asks for non-commodity, first-hand content, and third-party readings of the March and May 2026 core updates saw original sources gain over aggregators.
+The audit cross-references the target page against the actual SERP — top 10 results, "People Also Ask"-style questions, AI Overview presence where it can be observed — and returns findings where the page falls short of what's already winning. Information gain (what does this page add that the top 10 doesn't) is the priority test. It is a practitioner heuristic: Google asks for helpful, first-hand content but documents no information-gain ranking system, and Google gave no specifics for the 2026 core updates (`seo-google-policy-baseline`). Third-party readings of those updates are readings, not findings.
 
 ## Mental model
 
@@ -70,13 +66,13 @@ Run all four in one block. Don't serialize. The web search tool is not Google Se
 | 6 | Answer placement | The direct answer to the section's question appears early, before supporting detail | Moderate per key section that buries its answer |
 | 7 | Self-contained sections | Each major point reads on its own without reconstructing it from several paragraphs | Minor; don't recommend splitting content into fragments — Google says chunking isn't needed |
 | 8 | Data density | At least one concrete number, percentage, or statistic per major section | Minor per data-free section; Moderate if entire piece lacks specifics |
-| 9 | FAQ section | Present when users genuinely ask follow-up questions (informational and commercial intent) | Minor if absent and intent is suitable; FAQ rich results ended May 7, 2026, so judge it on reader value only |
-| 10 | Author byline | Real name + role + credentials + outbound link (LinkedIn / publication / org bio). "Admin" or anonymous = Critical | Critical if anonymous or generic-name attribution |
+| 9 | FAQ section | Present when users genuinely ask follow-up questions (informational and commercial intent) | Minor if absent and intent is suitable; FAQ rich results are retired (`seo-google-policy-baseline`), so judge it on reader value only |
+| 10 | Author byline | Real name + role + credentials + outbound link (LinkedIn / publication / org bio). "Admin" or anonymous is a trust gap for readers | Critical on YMYL or expertise-required topics (reader-trust heuristic); Moderate elsewhere |
 | 11 | Experience proof | Original screenshots / dashboards / photos from the field / named tools+versions / time-boxed case-study language | Critical if pure explainer with no experience signal on YMYL or expertise-required topic |
-| 12 | Information gain vs top 10 | Identify the specific thing this page adds (original data, contrarian take, novel synthesis, practitioner detail) that the top 10 doesn't | Critical if the page is reconstructable from the top 10 (information-gain-zero) |
+| 12 | Information gain vs top 10 | Identify the specific thing this page adds (original data, contrarian take, novel synthesis, practitioner detail) that the top 10 doesn't | Critical as a value finding if the page is reconstructable from the top 10 (information-gain-zero); label it a heuristic, not a Google-confirmed ranking cause |
 | 13 | Internal linking | 5–10 contextual links per piece; descriptive anchors (not exact-match); pillar/cluster pattern present where applicable | Moderate if under 3 internal links or all anchor text is generic |
 | 14 | Schema readiness for content | Article schema present with author/datePublished/dateModified; markup matches visible text | Moderate per invalid or contradicting markup; Google states AI features need no special schema |
-| 15 | Primary-source posture | Page presents primary data/experience/original synthesis OR cites primary sources where it relies on them | Critical if the page is an intermediary roundup of other rankers without added signal |
+| 15 | Primary-source posture | Page presents primary data/experience/original synthesis OR cites primary sources where it relies on them | Critical if the page is an intermediary roundup of other rankers without added signal (heuristic: third-party readings of core updates, not a Google statement) |
 | 16 | Content currency | Dated statistics, prices, versions, policies, and screenshots still match a current primary source; displayed and schema dates change only with real edits | Critical if a wrong fact affects money, health, legal, or security decisions; otherwise Moderate per stale claim. Queue decayed pages through `seo-content-refresh` |
 
 ### Title and description review
@@ -90,7 +86,7 @@ Run all four in one block. Don't serialize. The web search tool is not Google Se
 
 ### Severity matrix
 
-- Critical — directly suppresses ranking under 2026 systems: anonymous byline on YMYL, information-gain-zero, intent format mismatch with SERP, intermediary-only positioning, missing H1.
+- Critical — highest priority for the page's value to readers and for ranking risk as practitioners read it: anonymous byline on YMYL, information-gain-zero, intent format mismatch with SERP, intermediary-only positioning, missing H1. Only the missing H1 and intent mismatch are structural facts; the rest are heuristics and the report says so.
 - Moderate — degrades extraction or comprehension: buried answers, weak title/meta, invalid or contradicting schema.
 - Minor — polish: data-free secondary sections, internal-link count slightly low, descriptive anchor tweaks.
 
@@ -110,11 +106,11 @@ If you cannot name what the target page adds that the top 10 doesn't, that is th
 
 ### Headings, answer placement, and AI features
 
-Google's May 2026 AI optimization guide says AI Overviews and AI Mode need no special phrasing, chunking, llms.txt, or schema, and that a page per query variation counts as scaled content abuse. Audit structure for readers, not for a machine:
+Google's AI optimization guide says AI Overviews and AI Mode need no special phrasing, chunking, `llms.txt` or schema, and that a page per query variation counts as scaled content abuse (dated facts in `seo-google-policy-baseline`). Audit structure for readers, not for a machine:
 
 - Headings that say what the section answers ("How to set up FAQ schema" beats "Schema") help readers and passage extraction alike; don't flag a page for lacking question-form H2s.
 - If an AI Overview cites competitors but not this page, look first at information gain, answer clarity, and indexability — not at formatting tricks.
-- Search Console's Generative AI performance report shows impressions, not clicks, for AI Overviews and AI Mode, and Web performance totals also include them; verify live dimensions before claiming query-level presence. Use actual answer captures for prompt-level visibility, scoped vendor observations as samples, and separate attributable activation data for business outcomes.
+- Search Console's Generative AI report counts impressions, not clicks, and Web totals include them (`seo-google-policy-baseline`); verify live dimensions before claiming query-level presence. Use actual answer captures for prompt-level visibility, scoped vendor observations as samples, and separate attributable activation data for business outcomes.
 
 ### Unverified checks — escalation rule
 

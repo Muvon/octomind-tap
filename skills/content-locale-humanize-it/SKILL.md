@@ -6,9 +6,9 @@ license: Apache-2.0
 compatibility: "Calibration data only; no tools required. Network access helps for usage checks."
 domains: content
 rules:
-  - content(italian)
+  - match((?i)\b(translat\w*|locali[sz]\w*|native|fluen\w*|proofread\w*|transcreat\w*)\b) content(italian)
   - match(\bit-(IT|CH)\b)
-  - match(\bItalian\b)
+  - match((?i)\b(translat\w*|locali[sz]\w*|native|fluen\w*|proofread\w*|transcreat\w*)\b) match(\bItalian\b)
   - match(italiano)
   - semantic(check if this Italian translation sounds native)
   - semantic(eliminate translationese from this Italian text)

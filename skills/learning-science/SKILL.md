@@ -71,6 +71,13 @@ Performance is not learning. Fluent, comfortable study (rereading a chapter, wat
 - So the rules are the same as for a human tutor: the learner attempts first, the AI gives the next hint rather than the solution, the learner explains the result back, and final retrieval happens without the AI.
 - Treat AI output as material to check, not to copy. Asking the AI to quiz the learner, generate practice questions, or critique the learner's own explanation keeps the thinking on the learner's side.
 
+### Build the same methods into a teacher's plan
+
+- Open each lesson with 3-5 retrieval questions on earlier lessons, answered from memory before any review.
+- Spread a unit's key ideas over several weeks and bring each back in later lessons and homework, instead of closing a topic once.
+- Mix confusable problem types in practice sets; for a novice procedure, give worked examples first, then completion problems, then independent work.
+- Judge the unit by a delayed, cumulative check, not by the end-of-lesson exit ticket alone.
+
 ## Examples
 
 ### Example 1: Weak vs strong study
@@ -103,6 +110,7 @@ A learner says "I'm a visual learner, what's the best format for my style?" Don'
 - [ ] Did you name and avoid the weak defaults (rereading, highlighting, summarizing, cramming, learning styles)?
 - [ ] Did you tell the learner the right methods feel harder, so they don't mistake difficulty for failure?
 - [ ] Is progress judged by delayed recall and transfer, not in-the-moment fluency?
+- [ ] For a classroom plan: does each lesson open with retrieval, and do key ideas return in later lessons?
 
 ## Composition / References
 

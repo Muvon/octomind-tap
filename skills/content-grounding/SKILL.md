@@ -7,14 +7,8 @@ compatibility: "Source documents or text; websearch and webfetch for live checks
 capabilities: websearch webfetch
 domains: content
 rules:
-  - content(article)
-  - content(blog)
-  - content(editor)
-  - content(seo)
   - content(grounding)
-  - content(research)
   - match(\b(write|draft|edit|review)\s+(an?|the|this|my)\s*(article|blog|post|piece|copy|review|guide|tutorial)\b)
-  - match(\b(verify|fact[-\s]?check|ground[-\s]?truth|source|cite|citation)\b)
   - match(\b(hallucinat\w*|fabricat\w*|made[-\s]?up|invented)\b)
   - match(\b(unfamiliar|niche|obscure|new|unknown)\s+(tool|product|library|framework|api|sdk|service|platform)\b)
   - match(\b(don'?t|do\s+not|never)\s+(make\s+up|invent|guess|assume|fabricate)\b)
@@ -24,6 +18,7 @@ rules:
   - semantic(ask if you are not sure instead of guessing)
   - semantic(this is a niche tool you may not have training data on)
   - semantic(make sure every fact in the article is real)
+  - match((?i)\b(fact[-\s]?check\w*|ground[-\s]?truth|cite\s+(the\s+)?sources?|citations?)\b)
 ---
 
 ## Overview
@@ -64,7 +59,7 @@ This is a risk-based check, not a requirement to browse for every ordinary noun.
 - Claims such as “faster,” “best,” “free,” “available now,” and “works offline” need their actual conditions. Don't replace an unverified precise number with “many” or “significant” and call it grounded.
 - Preserve author ownership: “the study found” is not “we found”; “the product supports” is not “I tried.” Founder enthusiasm, customer disappointment, and a personal decision need source support too.
 - For quotations, customer names, screenshots, logos, and private details, verify the intended reuse context and permissions where required. Redaction must leave enough evidence to support the claim.
-- Distinguish commercial disclosure from AI/media provenance and platform permission. US-facing endorsement guidance requires truthful experience and clear material-connection disclosure; the FTC's 2024 reviews rule also bans fake or AI-fabricated reviews and testimonials. EU-facing AI-generated text published to inform the public on matters of public interest must be disclosed as such unless it has had human review or editorial control under a named editorial owner (AI Act Art. 50(4), applicable from 2 August 2026). Neither a disclosure label nor polished copy makes an unsupported claim true.
+- Distinguish commercial disclosure from AI/media provenance and platform permission. The rules for material-connection, fake-review and AI-content disclosure are in the `content-disclosure` skill; apply it before publishing. Neither a disclosure label nor polished copy makes an unsupported claim true.
 - AI-drafted copy gets the same check as any other source, including metadata: Google's guidance asks publishers to fact-check AI-generated titles, meta descriptions, structured data, and alt text before publishing.
 
 ## Missing or conflicting evidence

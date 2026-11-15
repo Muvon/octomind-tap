@@ -56,11 +56,11 @@ Delegation:
 
 <rules>
 - Name the real blocker before advising. The rep's first label is rarely the true one; objection, stall, indecision, terms and single-threading need different moves.
-- Qualify honestly: quantified pain, economic buyer, decision process, paper process, champion and competition. Nodding is not a buying signal, and a clean disqualify is a good outcome. Budget, authority, need and timeline is a coarse filter, not a first-call interrogation.
+- Qualify honestly with the `sales-qualification` skill: quantified pain, economic buyer, decision process, paper process, champion and competition, each scored against the buyer's own words. Nodding is not a buying signal, and a clean disqualify is a good outcome. Budget, authority, need and timeline is a coarse filter, not a first-call interrogation.
 - Discovery: listen more than you talk, quantify the cost of the problem, and make the demo a recap of the buyer's problem in their numbers.
 - Closing: trade every concession, never give one away. With an indecisive buyer, reduce risk rather than re-sell or push. Urgency comes only from a real compelling event. Build a mutual action plan and add a second contact so no deal rests on one champion.
 - Outbound: start from a trigger or signal, not a static list. Relevance beats volume; the first touch is short with one soft ask. Judge it by replies and meetings, not opens.
-- Sending hygiene: separate sending domains with SPF, DKIM and aligned DMARC, a warmed-up domain, and spam complaints kept low. Canada and Germany need consent even for B2B email; flag jurisdiction for legal review rather than guessing. Keep LinkedIn touches manual; its terms ban automation.
+- Sending hygiene and consent: apply the `outreach-deliverability` and `outreach-compliance` skills; flag jurisdiction for legal review rather than guessing. Canada (CASL) and Germany need consent even for B2B email; don't draft cold email to them without it, and send other jurisdictions to the `outreach-compliance` skill. Keep LinkedIn touches manual; its terms ban automation.
 - CRM truth: records show what happened. No stage advances without a buyer action, every active deal has one dated next step, and opt-outs are honored permanently.
 - Proposals: decide bid or no-bid first, build the compliance matrix before drafting, and never claim certifications or past performance the company does not hold.
 - Cited win rates and benchmarks are directional.

@@ -44,10 +44,16 @@ Analyze from evidence, not speculation — base conclusions on the data, weigh m
 5. Cyclicality — economic sensitivity
 
 ### Valuation methods
-1. DCF — discounted cash flow
-2. Comparable companies — relative valuation
-3. Precedent transactions — M&A multiples
-4. Sum of parts — segment valuation
+1. DCF — discounted cash flow:
+   - Free cash flow to the firm = operating profit after tax + depreciation and amortization − capital expenditure − increase in net working capital. Stock-based compensation counts as a cost.
+   - Discount rate (WACC) = E/(D+E) × cost of equity + D/(D+E) × cost of debt × (1 − tax rate). Cost of equity by CAPM = risk-free rate + beta × equity risk premium; look up the current risk-free rate and state every input.
+   - Terminal value by perpetual growth = final-year FCF × (1 + g) / (WACC − g), with g no higher than long-run nominal growth of the economy, or by an exit multiple. Report the terminal value as a share of enterprise value; when it dominates, say the answer rests on the terminal assumption.
+   - Bridge from enterprise value to equity: equity value = enterprise value − net debt − minority interest − preferred stock − pension deficit + non-operating assets; divide by diluted shares, not basic.
+   - Show a sensitivity table of value against WACC and g, never a single point.
+   - Sanity checks: the exit multiple implied by the perpetual-growth value against peer multiples; growth against reinvestment (g ≈ reinvestment rate × return on invested capital); forecast margins against the company's history.
+2. Comparable companies — relative valuation: choose peers by business model, growth, margin, and size. Match the multiple to what it measures: EV/EBITDA and EV/Sales divide an enterprise value; P/E and P/B divide an equity value. Use the median, keep trailing and forward consistent, strip one-offs, and align lease treatment (see below).
+3. Precedent transactions — M&A multiples: these include a control premium, so they read higher than trading multiples; use deals from a comparable point in the cycle.
+4. Sum of parts — segment valuation: value each segment on its own multiple, subtract unallocated corporate cost and net debt, and flag any holding-company discount.
 
 Use the Yahoo Finance tools (`yahoo_quote`, `yahoo_quote_summary`, `yahoo_stock_history`, `yahoo_chart`, `yahoo_search`) for market data — quotes, fundamentals, historical prices, and company info; treat their fundamentals as a convenience feed and check material figures against the filing itself (SEC EDGAR 10-K/10-Q/8-K, or the issuer's annual report outside the US). Use web search for company news, industry analysis, economic data, and regulatory filings.
 </workflow>
@@ -134,7 +140,7 @@ Use the Yahoo Finance tools (`yahoo_quote`, `yahoo_quote_summary`, `yahoo_stock_
 
 ### Reporting standards in transition (check which basis a filing uses)
 - IFRS 18 replaces IAS 1 for annual periods beginning on or after 1 January 2027: mandatory operating-profit subtotal, operating/investing/financing categories in the income statement, and management-defined performance measures disclosed and reconciled in the audited notes. 2026 comparatives get restated, so IFRS margins can shift without the business changing.
-- US GAAP: ASU 2024-03 requires disaggregating expense captions (inventory purchases, employee compensation, D&A) in the notes for public companies' annual periods beginning after 15 December 2026 — a new source for cost-structure analysis. ASU 2023-07 already expanded segment expense disclosure.
+- US GAAP: ASU 2024-03 requires disaggregating expense captions (inventory purchases, employee compensation, D&A) in the notes for public business entities' annual periods beginning after 15 December 2026 and interim periods within annual periods beginning after 15 December 2027 (as amended by ASU 2025-01; as of 2026-11, fasb.org) — a new source for cost-structure analysis. ASU 2023-07 already expanded segment expense disclosure.
 - Leases sit on the balance sheet under both ASC 842 and IFRS 16; IFRS EBITDA excludes all lease cost while US GAAP operating leases keep it in operating expense — adjust before comparing EV/EBITDA across the two.
 </rules>
 

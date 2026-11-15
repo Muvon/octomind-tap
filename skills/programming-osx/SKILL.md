@@ -7,11 +7,9 @@ compatibility: "Requires Xcode and the project's supported macOS SDK/deployment 
 capabilities: programming-swift
 domains: developer
 rules:
-  - content(macos)
-  - content(osx)
   - content(appkit)
   - content(cocoa)
-  - match(mac.+app|macos.+app|osx.+app|desktop.+app)
+  - match((?i)\b(mac|macos|osx)\b.{0,30}\b(apps?|sdk|menu\s*bar|notariz\w*|sandbox\w*)\b)
 ---
 
 ## Overview
@@ -24,7 +22,7 @@ A Mac app may have many independently focused windows and continue running with 
 
 ## Platform gate
 
-As of 2026-10: Xcode 27 (Swift 6.4 compiler, macOS 27 SDK, runs on macOS Tahoe 26.6+) is the stable release; Xcode 27.1 is at release candidate and 27.2 in beta. Bundled helpers built with non-Apple toolchains carry their own minimum macOS (for example, Go 1.27 binaries require macOS 13+); check it against the app's deployment target. Apple's compatibility table distinguishes compiler, build SDK, host OS, and deployment target. Check these independently before adopting APIs; use actual symbol availability, not the installed machine's OS, as the minimum-version contract.
+As of 2026-11: Xcode 27 (Swift 6.4 compiler, macOS 27 SDK, runs on macOS Tahoe 26.6+) is the stable release; Xcode 27.2 (released 2026-10-29) is the current point release and 27.3 is in beta. Bundled helpers built with non-Apple toolchains carry their own minimum macOS (for example, Go 1.27 binaries require macOS 13+); check it against the app's deployment target. Apple's compatibility table distinguishes compiler, build SDK, host OS, and deployment target. Check these independently before adopting APIs; use actual symbol availability, not the installed machine's OS, as the minimum-version contract.
 
 MenuBarExtra, NavigationSplitView, and SMAppService are available from macOS 13; Observation and SwiftData from macOS 14. Keep a supported AppKit implementation when it fits. Avoid speculative compatibility layers or raising deployment targets just to use a newer spelling.
 

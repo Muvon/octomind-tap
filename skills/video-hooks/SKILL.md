@@ -4,14 +4,11 @@ title: "Video Hooks: TikTok, Reels, Shorts Retention Guide"
 description: "Video hook playbook for TikTok, Reels and Shorts: opening patterns, loops, re-hooks, retention review. Use when drafting a script or fixing early drop-off."
 license: Apache-2.0
 compatibility: "Stack-agnostic."
-domains: video
+domains: video content
 rules:
   - session(video)
   - session(adcraft)
   - content(short-form video)
-  - content(reels)
-  - content(shorts)
-  - content(tiktok)
   - content(video hook)
   - content(video ad)
   - match(\bvideo\s+hook\b)

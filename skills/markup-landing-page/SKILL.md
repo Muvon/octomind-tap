@@ -253,7 +253,7 @@ JSON-LD for a software product:
 }
 ```
 
-Add `Organization`. `FAQPage` is harmless, but since 2023 Google shows FAQ rich results only for authoritative government and health sites. The software-app rich result needs a real `aggregateRating` or `review` (otherwise no stars, though other parsers still benefit). Never invent ratings or review counts — it violates Google's structured-data policy and the US FTC fake-review rule.
+Add `Organization`. `FAQPage` is harmless, but Google stopped showing FAQ rich results on 7 May 2026 (from 2023 they had shown only for authoritative government and health sites); don't promise a rich result from it. The software-app rich result needs a real `aggregateRating` or `review` (otherwise no stars, though other parsers still benefit). Never invent ratings or review counts — it violates Google's structured-data policy and the US FTC fake-review rule.
 
 Canonical and sitemap: `<link rel="canonical">` on every page; static `sitemap.xml` of all routes with accurate `lastmod` (Google ignores `priority` and `changefreq`); `robots.txt` allowing everything except `/api/` and `/_`.
 

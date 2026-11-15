@@ -85,7 +85,7 @@ link "task-management" "linear.toml"
 link "webfetch" "octobrain.toml"
 link "knowledge" "octobrain.toml"
 # ── Video / media production capabilities ────────────────────────────────────
-link "video-gen" "runway.toml"
+link "video-gen" "fal.toml"
 link "voice" "elevenlabs.toml"
 link "avatar" "heygen.toml"
 link "lipsync" "sync.toml"

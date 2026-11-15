@@ -7,7 +7,6 @@ compatibility: "Stack-agnostic. Red-team tooling typically needs Python (garak, 
 domains: ai
 rules:
   - session(ai)
-  - content(injection)
   - content(jailbreak)
   - content(red team)
   - content(red-team)
@@ -51,7 +50,7 @@ The principle: untrusted content can never be trusted to follow the system's ins
 
 ### 1. OWASP Top 10 for LLM Applications (2026 edition)
 
-The 2026 edition (v1.0, Aug 2026) re-ranked the list using incident data alongside community vote. Many reports and tools still cite 2025 IDs, so always write the edition (`LLM03:2026`). IDs below are as reported at release; confirm against the [official OWASP page](https://genai.owasp.org/llm-top-10/) before a client report.
+The 2026 edition (v1.0, published 2026-08-04 per the project repository) re-ranked the list using incident data alongside community vote. Many reports and tools still cite 2025 IDs, so always write the edition (`LLM03:2026`). The IDs and names below match the OWASP GenAI Security Project repository as of 2026-11; the [official OWASP page](https://genai.owasp.org/llm-top-10/) is the place to re-check them.
 
 | 2026 ID | Item | 2025 ID | What it covers |
 |---|---|---|---|
@@ -186,7 +185,7 @@ Single-layer systems get owned. Compose at least four layers; alert on filter tr
 
 ### 9. Items to verify before quoting externally
 
-- OWASP LLM Top 10 2026 IDs and names — confirm against the official document; secondary sources reported them at release.
+- OWASP LLM Top 10 2026 IDs and names: checked against the project repository (GenAI-Security-Project/GenAI-LLM-Top10, 2026/README.md) as of 2026-11; re-check before a client report if the project issues a revision.
 - NeMo Guardrails provides programmable rails (Colang), not cryptographically signed prompts; do not conflate.
 - Guard-model versions and red-team tool plugin/probe counts — they change with each release.
 

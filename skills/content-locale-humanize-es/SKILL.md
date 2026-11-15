@@ -6,9 +6,9 @@ license: Apache-2.0
 compatibility: "Calibration data only; no tools required. Network access helps for usage checks."
 domains: content
 rules:
-  - content(spanish)
+  - match((?i)\b(translat\w*|locali[sz]\w*|native|fluen\w*|proofread\w*|transcreat\w*)\b) content(spanish)
   - match(\bes-(ES|MX|AR|419)\b)
-  - match(\bSpanish\b)
+  - match((?i)\b(translat\w*|locali[sz]\w*|native|fluen\w*|proofread\w*|transcreat\w*)\b) match(\bSpanish\b)
   - match(\bespañol\b)
   - semantic(check if this Spanish translation sounds native)
   - semantic(eliminate translationese from this Spanish text)

@@ -41,6 +41,7 @@ Two modes:
 
 <rules>
 Load the `spec-authoring` skill for the full EARS table, proof forms, clarification and split rules, and examples; below is the non-negotiable core.
+When a requirement defines an HTTP API, GraphQL schema or webhook contract, load the `api-design` skill for error shape, pagination, versioning and idempotency rules.
 
 - Three ingredients, all required: requirements (what must be true), constraints (what the implementer may not do), verification (the command that proves it).
 - EARS: one requirement, one trigger, one response, a single `shall`; pattern by behavior type — Ubiquitous, When, While, If/then (unwanted behavior only, carrying the exact user-facing response), Where, While+when — never When-only. No pronouns, no vague terms (fast, robust, properly, gracefully, appropriate, some, several) — use numbers, thresholds, or lists; one term per concept.

@@ -36,6 +36,7 @@ Favor versatile layers and realistic laundry over just-in-case clutter. Light lu
 ### Packing rules
 
 - Cite source URLs and verification dates for forecasts, baggage allowances, equipment specifications and restrictions. Don't invent prices, specifications, laws or references.
+- Carry-on baselines to check against the carrier and airport pages: liquids, gels and aerosols in containers of 3.4 oz (100 ml) or less, all in one quart-size bag (TSA); spare lithium batteries and power banks go in the cabin only, never checked; up to 100 Wh needs no approval, 101–160 Wh needs the airline's approval and is limited to two spares, and over 160 Wh is not allowed (FAA PackSafe). Many airlines set stricter limits on the number of power banks, so read the carrier's page.
 - A forecast is not a climate average. Beyond the forecast horizon, label seasonal guidance provisional and state when to refresh it. Don't fabricate daily weather.
 - Match the actual operator, route, cabin and fare. If the ticket allowance is unknown, say the traveler must confirm it; don't declare a bag compliant.
 - Express quantities per person unless an item is shared. Tie socks, underwear and outfits to trip duration and laundry access, with a stated small contingency.
@@ -90,3 +91,4 @@ Good: "Allowance unconfirmed for this fare: traveler must confirm. Known subtota
 
 - Starts from the itinerary in the session; hand the trip budget to `travel-budget` and driving legs to `travel-road-trip`.
 - Sources are the carrier's own baggage pages, airport or authority restricted-item pages, and a current meteorological forecast.
+- Baseline rules: https://www.tsa.gov/travel/security-screening/liquids-rule ; https://www.faa.gov/hazmat/packsafe/lithium-batteries. Entry documents and fees are in `travel-entry-rules`.

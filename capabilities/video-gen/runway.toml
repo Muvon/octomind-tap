@@ -1,22 +1,19 @@
 # capabilities/video-gen/runway.toml
 # Capability: video-gen
-# Provider: Runway Gen-4 Turbo and Gen-4 Aleph — image-to-video generation and video-to-video editing
+# Provider: Runway official remote MCP — Gen-4.5 and partner video models on Runway Dev
 # Title: Video Generation
-# Description: Image-to-video via Runway Gen-4 Turbo, video editing with Gen-4 Aleph, Gen-4 reference images, and video upscaling. Needs RUNWAYML_API_SECRET.
-# Provides tools: runway_generateVideo, runway_generateImage, runway_upscaleVideo, runway_editVideo, runway_getTask
-
-[deps]
-require = ["runwayml/runway"]
+# Description: Text-to-video and image-to-video via Runway's official MCP server with Gen-4.5 and partner models, paid with Runway Dev credits.
+# Auth: OAuth sign-in with a Runway Dev account, which is separate from the Runway app.
+# The first session opens a browser; octomind stores and refreshes the token.
+# Generations spend Runway Dev credits, bought in the developer portal.
 
 [roles.mcp]
 server_refs = ["runway"]
-allowed_tools = ["runway_*"]
+allowed_tools = ["runway:*"]
 
 [[mcp.servers]]
 name = "runway"
-type = "stdio"
-command = "npx"
-args = ["-y", "runway-api-mcp-server@1.0.0"]
-timeout_seconds = 120
-env = { RUNWAYML_API_SECRET = "{{ENV:RUNWAYML_API_SECRET}}" }
+type = "http"
+url = "https://dev.runwayml.com/mcp"
+timeout_seconds = 600
 tools = []

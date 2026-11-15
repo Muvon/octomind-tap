@@ -64,7 +64,7 @@ Track saves, shares, and profile visits as native diagnostics. Define qualified 
 
 Use dated sources with sample scope for benchmarks. Platform engagement definitions differ; LinkedIn includes clicks (measured, Buffer State of Social Media Engagement, n=platform subsets of 52M+ posts, 2026-03; https://buffer.com/resources/state-of-social-media-engagement-2026/). Compare downstream outcomes with consistent definitions.
 
-Experiments change a single variable, specify a success criterion and decision date, and end with a kept or killed verdict. Low volume or delayed sales requires an explicit inconclusive finding and a dated continuation decision (directional).
+Experiments follow the `marketing-experiments` skill: a single variable, a success criterion and decision date, and a kept, killed or inconclusive verdict. Low volume or delayed sales requires an explicit inconclusive finding and a dated continuation decision (directional).
 </rules>
 
 <output_format>

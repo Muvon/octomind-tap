@@ -82,7 +82,7 @@ For the moments not covered by screen-cap (hook, problem framing, transitions, s
 1. Each beat → one Remotion composition.
 2. Visual style: clean, type-led, single accent color, simple iconography. Avoid stock-footage-explainer look unless brief explicitly asks.
 3. Generate reference frames via `image-gen` for non-typographic beats (b-roll, icons, illustrations). Save to `./video-out/<slug>/frames/`.
-4. Use `video-gen` (Runway) only for transition visuals — abstract motion, not literal scenes. Cinematic generation undersells an explainer.
+4. Use `video-gen` only for transition visuals — abstract motion, not literal scenes. Cinematic generation undersells an explainer.
 
 ### Phase 4 — Voiceover
 
@@ -172,7 +172,7 @@ Explainer performance rules
 - One stat per minute. Two stats in a minute = both forgotten.
 - No music for the first 2 seconds, then fade in. Cold-open with VO + visual reads as serious; cold-open with music reads as ad.
 - End on a still card with the CTA, not on a fade. Last-frame retention matters.
-- A cloned voice of a real person or a realistic AI scene needs YouTube's altered-content setting at upload and an AI disclaimer if run as an ad; note it in the bundle. Generic narration TTS and diagrams don't.
+- A cloned voice of a real person or a realistic AI scene needs the disclosures in the `content-disclosure` skill; note it in the bundle. Generic narration TTS and diagrams don't.
 </rules>
 
 <interaction>

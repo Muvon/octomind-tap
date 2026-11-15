@@ -166,8 +166,8 @@ terraform plan -out=tfplan        # review, then
 terraform apply tfplan
 terraform plan -refresh-only      # drift detection, changes nothing
 ```
-- Test and lint: `terraform test` (`.tftest.hcl`, mock providers), tflint, and Checkov or Trivy config scanning (tfsec now lives in Trivy). Pin these tools by version or digest; Trivy's releases were hijacked in March 2026.
-- CI plans every PR; one pipeline identity applies, authenticated by OIDC federation instead of long-lived keys. Scheduled `plan -detailed-exitcode` (exit 2 = changes) catches drift.
+- Test and lint: `terraform test` (`.tftest.hcl`, mock providers), tflint, and Checkov or Trivy config scanning (tfsec now lives in Trivy).
+- CI plans every PR; one pipeline identity applies, authenticated by OIDC federation instead of long-lived keys; use the `ci-cd-pipelines` skill for pinning those tools and the pipeline trust setup. Scheduled `plan -detailed-exitcode` (exit 2 = changes) catches drift.
 
 ### Cloud security baseline
 - Dedicated least-privilege role per environment via provider `assume_role` or OIDC; audit logging on.

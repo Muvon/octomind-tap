@@ -12,7 +12,6 @@ rules:
   - content(glossary)
   - content(pillar)
   - content(tutorial)
-  - content(alternatives)
   - match(\b(search|user|query)\s+intent\b)
   - match(\b(which|what|right|best)\s+(content\s+|article\s+|post\s+)?format\b)
   - match(\bhow[-\s]to\s+(guide|article|post|tutorial)\b)

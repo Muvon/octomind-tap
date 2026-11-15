@@ -8,9 +8,6 @@ domains: seo
 rules:
   - session(seo)
   - session(audit)
-  - content(audit)
-  - content(backlinks)
-  - content(backlink)
   - content(referring domain)
   - content(referring domains)
   - content(anchor text)
@@ -33,7 +30,7 @@ rules:
 
 A link profile is a portfolio. The audit asks four questions: how many distinct authoritative voices vouch for the site, how natural does the anchor distribution look to an algorithm, how much penalty exposure is hiding in the long tail, and where do credible competitors get links that this site doesn't. The answer is a prioritized finding list — not a vanity count of "total backlinks." Raw inbound count has been an inferior signal since 2019; unique referring root domains, topical fit, and authentic-mention sources are what compound in 2026.
 
-Google's link spam policy (updated through 2026) still names paid links, link exchanges, automated links, and optimized-anchor links in guest posts and press releases. Google gave no specifics for the March 2026 (Mar 27–Apr 8) or May 2026 (May 21–Jun 2) core updates; third-party analyses saw aggregation-model sites lose. Spam updates in 2026 rolled out in days (March's in under 24 hours). The audit identifies risk patterns before they become algorithmic suppression or a manual action.
+Google's link spam policy (updated through 2026) still names paid links, link exchanges, automated links, and optimized-anchor links in guest posts and press releases. Core and spam update dates for 2026 and what Google did and didn't say about them are in `seo-google-policy-baseline`. The audit identifies risk patterns before they become algorithmic suppression or a manual action.
 
 ## Mental model
 
@@ -66,15 +63,15 @@ Run in one block. Free-path covers the 80% case; paid-tool data adds census-leve
 | 2 | Topical fit distribution | Sample 20 referring domains; categorize as in-niche / adjacent / off-topic | Critical if >50% off-topic (reasonable-surfer discount); Moderate if >70% adjacent |
 | 3 | DR/DA distribution | Sample distribution across DR bands; no single source contributing >30% of total link equity | Moderate if concentration risk (one DR-80 + a long tail of DR-10) |
 | 4 | Anchor-text distribution | Practitioner heuristic, not a Google threshold: branded/URL majority, partial-match and natural phrases next, exact-match a small minority | Critical if exact-match dominates commercial anchors; Moderate if branded is a minority |
-| 5 | Toxic-neighborhood exposure | Sample referring domains; check for casino/pharma/adult/foreign-language farms or sites that link to those | Critical per identified toxic referrer; recommend disavow only after exhaustion of removal-request path |
+| 5 | Toxic-neighborhood exposure | Sample referring domains; check for casino/pharma/adult/foreign-language farms or sites that link to those | Critical per identified toxic referrer; disavow is rarely needed and only for the case in "Penalty and manual-action recovery" below |
 | 6 | Paid-link risk patterns | Look for: dofollow links from sites with "sponsored" / "advertorial" navigation, sites in known paid-link networks, niche-edit/link-insertion services | Critical per pattern detected — paid links without rel="sponsored" violate Google's link spam policy |
 | 7 | Velocity profile | Look for unnatural spikes — 50+ links in a week from disparate sources is fine ONCE on a newsworthy basis; sustained spikes trigger SpamBrain | Moderate if recent spike unexplained; Critical if pattern is ongoing |
-| 8 | Manufactured-mention signals | Look for bulk-purchased "brand mention" patterns — same wording across many sites, low-quality directories, AI-generated guest-post farm placements | Critical per pattern — Google's May 2026 AI optimization guide says seeking inauthentic mentions isn't helpful and its AI features depend on its spam systems |
+| 8 | Manufactured-mention signals | Look for bulk-purchased "brand mention" patterns — same wording across many sites, low-quality directories, AI-generated guest-post farm placements | Critical per pattern — Google's position on inauthentic mentions is logged in `seo-google-policy-baseline` |
 | 9 | Link gap vs niche competitors | Identify 3 same-niche same-DR-tier competitors; list referring domains they have and this site doesn't | Document as opportunity, not deficit; rank by topical fit × authority |
 | 10 | Community / forum presence | Reddit (relevant subreddits), Stack Exchange, niche forums — is the brand mentioned naturally and recently? | Moderate if absent in niches with active communities (forums take many SERP slots and AI-answer citations) |
 | 11 | Brand-mention trend | Brand search interest and web mentions — growing? Ahrefs (2025) found branded web mentions correlate more with AI Overview visibility than backlinks do (correlation, not cause) | Moderate if brand interest is flat/down while backlink count grows fast (suggests inorganic link-building) |
 | 12 | Unlinked-mention surface | Sites that mention the brand without linking — reclamation opportunity | Document as opportunity |
-| 13 | Site reputation policy exposure | Are inbound links from third-party sections of big publishers ("best [X] [year]" coupon/review folders)? Google may treat those sections separately and issue manual actions — except for EEA searchers since Aug 30, 2026 | Note as fragile, not durable authority |
+| 13 | Site reputation policy exposure | Are inbound links from third-party sections of big publishers ("best [X] [year]" coupon/review folders)? Google may treat those sections separately and issue manual actions; the EEA exception is in `seo-google-policy-baseline` | Note as fragile, not durable authority |
 | 14 | Primary-source pass-through | Links from intermediary aggregator pages vs primary-source publications | Moderate if portfolio skews to aggregators |
 
 ### Severity matrix
@@ -106,6 +103,18 @@ Exact-match concentration on links the site controlled (guest posts, partner pag
 - Modern variant: paid-tool-directory tiers that bundle a "dofollow link" into the $97–$197/yr listing
 
 Any of these without `rel="sponsored"` is a Critical finding. Google's policy text covers "links with optimized anchor text in articles, guest posts, or press releases distributed on other sites" and "sending someone a product in exchange for them writing about it and including a link"; mass AI-written placements also fall under scaled content abuse.
+
+### Penalty and manual-action recovery
+
+Run when the request mentions a penalty, a manual action or a disavow. Google's guidance (checked 2026-11-15):
+
+1. Open the Manual Actions report. No action listed means there is no manual action to recover from; a ranking drop then goes to `seo-traffic-drop-diagnosis`. Don't call an algorithmic loss a penalty.
+2. If an unnatural-links action is listed, read which pattern it names (links to the site, or links from the site). For links to the site, export links from Search Console and list the violating ones.
+3. Ask the linking sites to remove the links or stop them passing PageRank. Record each request and reply. For links from the site, remove them or add `rel="nofollow"` or `rel="sponsored"`.
+4. Disavow only the links that could not be removed. Google says most sites don't need the tool, that Google can usually assess links without it, that it is for sites with many spammy links that caused or likely will cause a manual action, and that wrong use can hurt. Disavowing without trying removal can lead to rejection; don't disavow natural links. The file is a UTF-8 or ASCII text file, one URL or `domain:` entry per line, up to 100,000 lines and 2 MB; a new upload replaces the old list; it can take a few weeks to take effect.
+5. Fix every listed issue on all affected pages, then use "Request Review" with a record of what was wrong, what was done, and the results. Don't resubmit while a request is pending; reviews take days to weeks, longer for link cases.
+
+Sites with no manual action and only some low-quality links: recommend no disavow; report them as monitored.
 
 ### Unverified checks — escalation rule
 
@@ -144,6 +153,8 @@ Within-domain pairings:
 - Pairs with the sibling SEO skill that audits on-page content quality.
 
 External authoritative sources:
+- [Google Search Console — Manual actions report](https://support.google.com/webmasters/answer/9044175)
+- [Google Search Console — Disavow links](https://support.google.com/webmasters/answer/2648487)
 - [Google Search Central — Link spam policy](https://developers.google.com/search/docs/essentials/spam-policies#link-spam)
 - [Google Search Central — Qualifying outbound links](https://developers.google.com/search/docs/crawling-indexing/qualify-outbound-links)
 - [Google Search Central — Site Reputation Abuse policy](https://developers.google.com/search/docs/essentials/spam-policies#site-reputation)

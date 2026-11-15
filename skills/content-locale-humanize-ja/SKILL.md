@@ -6,9 +6,9 @@ license: Apache-2.0
 compatibility: "Calibration data only; no tools required. Network access helps for usage checks."
 domains: content
 rules:
-  - content(japanese)
+  - match((?i)\b(translat\w*|locali[sz]\w*|native|fluen\w*|proofread\w*|transcreat\w*)\b) content(japanese)
   - match(\bja-JP\b)
-  - match(\bJapanese\b)
+  - match((?i)\b(translat\w*|locali[sz]\w*|native|fluen\w*|proofread\w*|transcreat\w*)\b) match(\bJapanese\b)
   - match(日本語)
   - semantic(check if this Japanese translation sounds native)
   - semantic(eliminate translationese from this Japanese text)

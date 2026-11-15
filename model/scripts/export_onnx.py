@@ -54,6 +54,7 @@ from pathlib import Path
 import numpy as np
 import onnx
 from onnx import TensorProto, helper, numpy_helper
+from onnxruntime.tools.symbolic_shape_infer import SymbolicShapeInference
 from optimum.onnxruntime import ORTModelForFeatureExtraction
 from transformers import AutoTokenizer
 
@@ -124,6 +125,38 @@ def quantize_weights(out: Path) -> Path:
     onnx.save(model, str(dst))
     print(f"  stored {len(restore) // 2} weight matrices as int8 → {dst.name}")
     return dst
+
+
+def record_shapes(path: Path) -> None:
+    """Write the shape of every intermediate tensor into the graph at `path`.
+
+    onnxruntime's CoreML builder compares the two inputs of an Add or a Mul one
+    dimension at a time, and two dimensions it knows nothing about count as
+    equal. For the attention scores and the attention mask it then picks a
+    CoreML layer that cannot broadcast, and every batch above one fails on
+    macOS with "Unable to compute the prediction using a neural network model".
+    With the shapes recorded it sees 12 heads against 1 and picks the
+    broadcasting layer.
+    """
+    model = SymbolicShapeInference.infer_shapes(onnx.load(str(path)), auto_merge=True)
+    graph = model.graph
+    constants = {init.name for init in graph.initializer}
+    constants |= {name for node in graph.node if node.op_type == "Constant" for name in node.output}
+    shapes = {
+        value.name: value.type.tensor_type.shape.dim
+        for value in (*graph.input, *graph.value_info, *graph.output)
+        if value.type.tensor_type.HasField("shape")
+    }
+    for node in graph.node:
+        if node.op_type not in ("Add", "Mul"):
+            continue
+        for name in node.input:
+            if name in constants:
+                continue
+            if name not in shapes or any(not dim.HasField("dim_value") and not dim.dim_param for dim in shapes[name]):
+                raise SystemExit(f"{path.name}: no complete shape for '{name}', an input of {node.op_type} '{node.name}'")
+    onnx.save(model, str(path))
+    print(f"  recorded tensor shapes → {path.name}")
 
 
 def check_against_fp32(out: Path) -> None:
@@ -199,8 +232,10 @@ def main() -> int:
     copy_sidecars(args.run, out)
     warn_if_pooling_missing(out)
 
+    record_shapes(out / "model.onnx")
     if not args.no_quantize:
         quantize_weights(out)
+        record_shapes(out / "model_quantized.onnx")
         check_against_fp32(out)
 
     print("done. files:")

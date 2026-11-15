@@ -4,12 +4,11 @@ title: "X (Twitter) Ads Production Spec"
 description: "X (Twitter) ad specs: Promoted Posts, Website and App Cards, Video Ads, with slots, character limits and ratios. Use when writing X ad copy or card assets."
 license: Apache-2.0
 compatibility: "Octomind launch agents. Platform-specific to X/Twitter Ads."
-domains: launch
+domains: launch marketing
 rules:
   - content(twitter ads)
   - content(x ads)
   - content(promoted tweet)
-  - content(promoted post)
   - match(\b(x|twitter)\s+ads?\b)
   - match(\bpromoted\s+(post|tweet)\b)
   - match(\bx\s+(website|app)\s+card\b)

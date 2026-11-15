@@ -6,10 +6,10 @@ license: Apache-2.0
 compatibility: "Requires the project's modern .NET SDK and target framework; newer language/API features are version-gated."
 domains: developer
 rules:
-  - file(*.sln)
-  - file(*.csproj)
-  - file(global.json)
-  - file(Directory.Build.props)
+  - match((?i)(^|\b(please|you|lets|let's|to|and|then)\s+)(implement|refactor)\w*\b|\b(compil(e|es|ed|er|ing|ation)|build\s+(error|fail\w*|break\w*)|panic\w*|stack\s*trace|traceback|segfault|unit\s+tests?|(fix|debug)\s+(the\s+|this\s+|a\s+)?(bug|build|crash|error|test|failure)s?|write\s+(a\s+|the\s+)?(function|test|module|class|method|struct)|add\s+(a\s+|an\s+)?(function|method|endpoint|field|test)|\w+\.(cs|csx))\b) file(*.sln)
+  - match((?i)(^|\b(please|you|lets|let's|to|and|then)\s+)(implement|refactor)\w*\b|\b(compil(e|es|ed|er|ing|ation)|build\s+(error|fail\w*|break\w*)|panic\w*|stack\s*trace|traceback|segfault|unit\s+tests?|(fix|debug)\s+(the\s+|this\s+|a\s+)?(bug|build|crash|error|test|failure)s?|write\s+(a\s+|the\s+)?(function|test|module|class|method|struct)|add\s+(a\s+|an\s+)?(function|method|endpoint|field|test)|\w+\.(cs|csx))\b) file(*.csproj)
+  - match((?i)(^|\b(please|you|lets|let's|to|and|then)\s+)(implement|refactor)\w*\b|\b(compil(e|es|ed|er|ing|ation)|build\s+(error|fail\w*|break\w*)|panic\w*|stack\s*trace|traceback|segfault|unit\s+tests?|(fix|debug)\s+(the\s+|this\s+|a\s+)?(bug|build|crash|error|test|failure)s?|write\s+(a\s+|the\s+)?(function|test|module|class|method|struct)|add\s+(a\s+|an\s+)?(function|method|endpoint|field|test)|\w+\.(cs|csx))\b) file(global.json)
+  - match((?i)(^|\b(please|you|lets|let's|to|and|then)\s+)(implement|refactor)\w*\b|\b(compil(e|es|ed|er|ing|ation)|build\s+(error|fail\w*|break\w*)|panic\w*|stack\s*trace|traceback|segfault|unit\s+tests?|(fix|debug)\s+(the\s+|this\s+|a\s+)?(bug|build|crash|error|test|failure)s?|write\s+(a\s+|the\s+)?(function|test|module|class|method|struct)|add\s+(a\s+|an\s+)?(function|method|endpoint|field|test)|\w+\.(cs|csx))\b) file(Directory.Build.props)
   - content(c#)
   - content(csharp)
   - content(dotnet)
@@ -25,9 +25,9 @@ The compiler checks declared contracts, while runtime boundaries still validate 
 
 ## Version gate
 
-As of 2026-10: .NET 10 (LTS, supported to November 2028) and C# 14 are the current stable pair; .NET 11 is in prerelease for a November 2026 GA. .NET 8 and .NET 9 both reach end of support in November 2026, so plan runtime upgrades for services still targeting them. Check `global.json`, target frameworks, `LangVersion`, nullable settings, and CI SDKs before selecting APIs. Don't set `latest` or `preview` to make an example compile; the target framework's default language version normally supplies the supported pairing.
+As of 2026-11: .NET 10 (LTS, C# 14, supported to November 2028) and .NET 11 (STS, C# 15, released 2026-11-10, supported to 2028-11-14) are both current. .NET 8 and .NET 9 reached end of support on 2026-11-10, so services still targeting them need a runtime upgrade. Check `global.json`, target frameworks, `LangVersion`, nullable settings, and CI SDKs before selecting APIs. Don't set `latest` or `preview` to make an example compile; the target framework's default language version normally supplies the supported pairing (`net11.0` defaults to C# 15).
 
-C# 12 supplies primary constructors and collection expressions. C# 14 adds extension members, field-backed property accessors using `field`, and null-conditional assignment. Use them where ownership remains clear: a primary-constructor parameter is not automatically a property, and `obj?.Property = value` deliberately skips an update when null rather than validating a required receiver.
+C# 12 supplies primary constructors and collection expressions. C# 14 adds extension members, field-backed property accessors using `field`, and null-conditional assignment. C# 15 (`net11.0` only) adds union types (`union Pet(Cat, Dog, Bird)` with exhaustive `switch`), the `closed` class modifier for exhaustive hierarchies, collection expression arguments (`[with(capacity: n), ..items]`), extension indexers, and labeled `break`/`continue`; its memory-safety rules are preview and need `LangVersion` preview. Use them where ownership remains clear: a primary-constructor parameter is not automatically a property, and `obj?.Property = value` deliberately skips an update when null rather than validating a required receiver.
 
 ## Values and public contracts
 
@@ -90,7 +90,7 @@ The .NET SDK's implicit usings are assumed. HTTP, JSON, and cancellation failure
 
 ## References
 
-- [.NET 10](https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-10/overview) and [C# 14](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-14)
+- [.NET support policy](https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core), [.NET 10](https://learn.microsoft.com/en-us/dotnet/core/whats-new/dotnet-10/overview), [C# 14](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-14) and [C# 15](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-15)
 - [Nullable references](https://learn.microsoft.com/en-us/dotnet/csharp/nullable-references) and [record semantics](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/record)
 - [HttpClient lifetimes](https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/http/httpclient-guidelines)
 - [DbContext ownership](https://learn.microsoft.com/en-us/ef/core/dbcontext-configuration/)

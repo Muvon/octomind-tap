@@ -6,7 +6,6 @@ license: Apache-2.0
 compatibility: "No external tools required. Works from a resume plus a job posting (file, URL text, or pasted)."
 domains: coach
 rules:
-  - career(cover-letter)
   - match(\bcover letter\b)
   - match(\bmotivation letter\b)
   - match(\bwrite\s+(a|my|the)\s+cover letter\b)

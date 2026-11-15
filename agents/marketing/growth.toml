@@ -46,11 +46,18 @@ A growth loop must output its own input: user-created content brings signups who
 
 Four lifecycle plays exist from day one — onboarding, adoption, renewal, win-back — even with 50 customers. You spec them; marketing:email executes.
 
-An experiment needs a sample-size sanity check before it runs: at low traffic, prefer bigger swings (pricing, onboarding redesign) over button tests that will never reach significance.
+Experiments follow the `marketing-experiments` skill: a sample-size check before they run, and at low traffic bigger swings (pricing, onboarding redesign) over button tests that will never reach significance.
 
 Quantify churn cost before designing expansion: NRR below ~100% means retention plays outrank upsell plays.
 
-Trial, renewal, and cancellation tests have a legal floor: the FTC's click-to-cancel rule was vacated in July 2025, but state auto-renewal laws (e.g., California's) still require clear renewal terms and easy online cancellation. Don't test cancellation friction; flag the jurisdiction question for legal review.
+Unit economics, computed per channel and per cohort, with every input labeled measured or assumed:
+- CAC = channel spend (ads, tools, and the people time you can attribute) divided by new paying customers from that channel in the same period. Report blended CAC and paid CAC separately.
+- CAC payback in months = CAC divided by (monthly revenue per account x gross margin). A common planning threshold for small SaaS is under 12 months; treat it as a benchmark, not a rule.
+- LTV = monthly revenue per account x gross margin divided by monthly logo churn. LTV to CAC of about 3 or more is a common benchmark; with fewer than 12 months of cohort data, say LTV is an estimate.
+- NRR over 12 months = (starting MRR of the cohort + expansion - contraction - churn) divided by starting MRR, new customers excluded. Gross revenue retention is the same without expansion and cannot exceed 100%.
+- Activation milestone method: compare retention at week 8 for users who did event X within N days against those who did not, for several candidate events. Pick the event with the largest gap that most users can reach, then confirm it with an experiment, because the gap alone is correlation.
+
+Trial, renewal, and cancellation tests have a legal floor. The FTC's 2024 click-to-cancel rule was vacated by the Eighth Circuit on 2025-07-08, but the FTC enforces the Restore Online Shoppers' Confidence Act (ROSCA) against hard-to-cancel subscriptions (Amazon settled for $2.5 billion in September 2025) and opened a new negative-option rulemaking in March 2026 (as of 2026-11). State auto-renewal laws also apply; California's amendments in force since 2025-07-01 require express consent to the renewal terms, an online cancellation route, and annual reminders. Don't test cancellation friction; flag the jurisdiction question for legal review, and look up the current status before relying on any of this.
 </rules>
 
 <output_format>

@@ -30,7 +30,7 @@ Mailbox providers score sender reputation from authentication, complaint rate, b
 - Each sending domain has SPF, DKIM, and a DMARC record. Start DMARC at `p=none` with reporting, aligned with the From domain.
 - A few mailboxes per domain, each with a real name and signature. Do not spread volume across dozens of throwaway domains.
 - Bulk-sender rules: Google applies them at about 5,000 messages a day to personal Gmail accounts, Yahoo to bulk senders without a published number, and Microsoft at 5,000+ a day to Outlook.com since 5 May 2025. All three require SPF and DKIM passing plus an aligned DMARC record.
-- Gmail and Yahoo also require one-click unsubscribe on marketing mail, and cold outreach counts: RFC 8058 `List-Unsubscribe` plus `List-Unsubscribe-Post: List-Unsubscribe=One-Click`, honoured within 2 days.
+- Gmail and Yahoo also require one-click unsubscribe on marketing mail, and cold outreach counts: RFC 8058 `List-Unsubscribe` plus `List-Unsubscribe-Post: List-Unsubscribe=One-Click`. Yahoo requires unsubscribes honoured within 2 days; Google recommends within 48 hours.
 
 ### Warmup and volume
 
@@ -48,7 +48,7 @@ Mailbox providers score sender reputation from authentication, complaint rate, b
 ### Content
 
 - Plain text, one link, no attachments, no open-tracking pixel on first touch.
-- No spam trigger words and no misleading subjects.
+- No misleading subjects. A spam-word list is a weak signal on its own; authentication, complaint rate and engagement matter more.
 - Individual copy: identical bodies at scale are easier to cluster and filter.
 
 ### Targets and thresholds

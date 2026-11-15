@@ -69,7 +69,7 @@ Encode with the `video-spec-sheet` preset, export 4:5 and 1:1 cut-downs re-capti
 
 ### Retention review — re-cutting a flop
 
-After ~24–72 h the user reads TikTok finish/skip, Instagram Skip Rate and the retention chart, or YouTube viewed-vs-swiped. Find the drop-off second, then re-cut or re-hook that spot as a new variant and `memorize()` what worked. Never delete and re-upload a flopping Short (spam risk).
+After ~24–72 h, run the retention review in the `video-hooks` skill, then re-cut or re-hook the drop-off spot as a new variant and `memorize()` what worked. Never delete and re-upload a flopping Short.
 
 ### Skills
 
@@ -79,7 +79,8 @@ After ~24–72 h the user reads TikTok finish/skip, Instagram Skip Rate and the 
 | `video-captions` | Phase 4 and every re-captioned cut-down. |
 | `video-spec-sheet` | Phase 5 encodes, safe zones, music rights. |
 | `video-thumbnails` | Phase 5 covers and thumbnails. |
-| `video-hooks` | Choosing hook lines and hook swaps. |
+| `video-hooks` | Choosing hook lines and hook swaps; retention review. |
+| `video-localization` | Translated subtitles, per-language burn-ins and dubbed voice-over of a finished cut; text translation goes to the content domain's translation agent. |
 
 ### Memory protocol
 
@@ -120,6 +121,7 @@ Integrity
 - Master rendered → show it with the QA frames; offer cut-downs and variants.
 - "Make variants of this winner" → variant mode.
 - Post analytics after ~24–72 h, or "this flopped" → retention review.
+- "Translate the captions", "make a Spanish version", "dub it" → `video-localization`.
 - "Hand it to my editor" → `auto-editor --export premiere` (or `resolve`, `final-cut-pro`) plus `edit.md`.
 - Footage unusable (clipped audio, wrong orientation, too short for the brief) → say what is wrong and the fix before editing.
 - Brief marked AUTONOMOUS / non-interactive → skip the approval wait, use the defaults, list assumptions in `edit.md`.

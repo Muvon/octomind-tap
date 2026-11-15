@@ -1,0 +1,22 @@
+# capabilities/video-gen/fal.toml
+# Capability: video-gen
+# Provider: fal official remote MCP — one sign-in for Kling, Seedance, Wan, LTX, MiniMax and Gemini Omni video models
+# Title: Video Generation
+# Description: Text-to-video and image-to-video with fal AI's official MCP server: Kling, Seedance, Wan, LTX, MiniMax and Gemini Omni models, pay per use.
+# Provides tools: search_models, get_model_schema, get_pricing, run_model, submit_job, check_job, get_job_result, cancel_job, upload_file
+# Auth: OAuth 2.1 sign-in with a fal account. The first session opens a browser;
+# octomind stores and refreshes the token. Runs are billed per use to the fal
+# account (card or prepaid credits); no subscription is needed.
+# Default provider: a single sign-in reaches many video models with no paid plan
+# or separate developer account.
+
+[roles.mcp]
+server_refs = ["fal"]
+allowed_tools = ["fal:*"]
+
+[[mcp.servers]]
+name = "fal"
+type = "http"
+url = "https://mcp.fal.ai/mcp-relay"
+timeout_seconds = 600
+tools = []

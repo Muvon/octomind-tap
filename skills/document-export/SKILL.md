@@ -5,16 +5,14 @@ description: "Export Markdown to DOCX and PDF that meets submission rules: refer
 license: Apache-2.0
 compatibility: "Requires: python3, pandoc 3.1.2+, typst, and poppler-utils (pdftotext, pdfinfo, pdffonts). Optional: LibreOffice for DOCX page counts. macOS/Linux."
 capabilities: shell documents
-domains: sales coach
+domains: sales coach content academic assistant tutor
 rules:
   - session(proposals)
   - session(resume)
-  - content(docx)
-  - content(pdf)
-  - match(\b(word|docx|pdf)\s+(file|document|version|format)\b)
-  - match(\b(page\s+limit|font\s+size|margins?)\b)
   - semantic(export this proposal to word and pdf)
   - semantic(the rfp requires 12 point times new roman and one inch margins)
+  - match((?i)\b(export|convert|save|render|turn)\b.{0,40}\b(pdf|docx|word)\b)
+  - match((?i)\b(page\s+limit|font\s+size|\d+\s*(pt|point)\s+font|(one|1)[\s-]inch\s+margins?)\b)
 ---
 
 ## Overview

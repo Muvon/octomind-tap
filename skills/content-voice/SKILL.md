@@ -7,9 +7,6 @@ compatibility: "Text editing and source material; network access for current pol
 domains: content
 rules:
   - content(humanize)
-  - content(voice)
-  - content(article)
-  - content(blog)
   - match(\brewrite\s+(this|the|my)\s+(article|blog|post|copy|content|draft|piece|writing)\b)
   - match(\b(write|writing|draft|drafting)\s+(an|a|the|this)\s+(article|blog|post|copy|piece|essay|newsletter)\b)
   - match(\b(make|sounds?)\b.*\b(human|natural|authentic|less\s+ai|less\s+robotic)\b)
