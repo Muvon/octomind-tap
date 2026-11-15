@@ -18,7 +18,6 @@ rules:
   - match((?i)\bsynthetic (content|performer|media)\b)
   - match((?i)\b(label|tag|mark)\w*\s+(this|my|the)?\s*(video|post|ad|content)\s+as\s+(ai|sponsored|an ad)\b)
   - content(brand deal)
-  - content(influencer)
   - content(affiliate)
   - semantic(do I need to disclose that this video is AI generated)
   - semantic(how do I label a sponsored post)

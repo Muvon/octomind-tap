@@ -6,7 +6,6 @@ license: Apache-2.0
 compatibility: "Requires: octomind-tap repo. Run scripts/lint-deps.sh for validation."
 domains: octomind
 rules:
-  - file(deps/)
   - match(\bdep\s+script\b)
   - match(\bdeps/[\w./-]+)
   - match(\bplatform\.sh\b)

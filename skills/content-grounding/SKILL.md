@@ -7,14 +7,8 @@ compatibility: "Source documents or text; websearch and webfetch for live checks
 capabilities: websearch webfetch
 domains: content
 rules:
-  - content(article)
-  - content(blog)
-  - content(editor)
-  - content(seo)
   - content(grounding)
-  - content(research)
   - match(\b(write|draft|edit|review)\s+(an?|the|this|my)\s*(article|blog|post|piece|copy|review|guide|tutorial)\b)
-  - match(\b(verify|fact[-\s]?check|ground[-\s]?truth|source|cite|citation)\b)
   - match(\b(hallucinat\w*|fabricat\w*|made[-\s]?up|invented)\b)
   - match(\b(unfamiliar|niche|obscure|new|unknown)\s+(tool|product|library|framework|api|sdk|service|platform)\b)
   - match(\b(don'?t|do\s+not|never)\s+(make\s+up|invent|guess|assume|fabricate)\b)
@@ -24,6 +18,7 @@ rules:
   - semantic(ask if you are not sure instead of guessing)
   - semantic(this is a niche tool you may not have training data on)
   - semantic(make sure every fact in the article is real)
+  - match((?i)\b(fact[-\s]?check\w*|ground[-\s]?truth|cite\s+(the\s+)?sources?|citations?)\b)
 ---
 
 ## Overview

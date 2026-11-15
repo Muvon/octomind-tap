@@ -7,7 +7,6 @@ compatibility: "Stack-agnostic. Red-team tooling typically needs Python (garak, 
 domains: ai
 rules:
   - session(ai)
-  - content(injection)
   - content(jailbreak)
   - content(red team)
   - content(red-team)

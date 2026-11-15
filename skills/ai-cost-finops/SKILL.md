@@ -7,24 +7,20 @@ compatibility: "Stack-agnostic. FinOps observability typically needs a proxy (He
 domains: ai
 rules:
   - session(ai)
-  - content(cost)
-  - content(token)
-  - content(tokens)
-  - content(caching)
-  - content(batch)
-  - content(pricing)
   - match(\b(token\s+(cost|economics|budget|usage|waste))\b)
   - match(\b(prompt\s+caching|cache\s+control)\b)
   - match(\b(batch\s+api)\b)
   - match(\b(model\s+(routing|selection|router))\b)
   - match(\b(finops|cost\s+optimization|reduce\s+(ai|llm)\s+cost)\b)
-  - match(\b(Fable|Haiku|Sonnet|Opus|GPT-?6|Astra|Gemini\s+(Pro|Flash))\b)
   - match(\b(Helicone|Langfuse|Vantage|Phoenix|LangSmith|OpenLLMetry)\b)
   - semantic(reduce our LLM API spend)
   - semantic(why is our AI bill so high)
   - semantic(should we use Opus or Haiku for this)
   - semantic(set up cost tracking for our AI features)
   - semantic(what does prompt caching save)
+  - match((?i)\b(llm|api|model|token|inference|ai)\s+(costs?|spend|bills?|pricing|prices?)\b)
+  - match((?i)\b(costs?|spend|bills?|pricing)\b.{0,40}\b(llm|tokens?|inference|api\s+calls?|model\s+calls?)\b)
+  - match((?i)\b(cheaper|cheapest)\s+model\b)
 ---
 
 ## Overview

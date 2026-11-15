@@ -7,16 +7,15 @@ compatibility: "Requires Node.js and a package manager."
 capabilities: programming-nodejs
 domains: developer
 rules:
-  - file(.nvmrc)
-  - file(.node-version)
-  - grep(fastify|express|@nestjs|hono|koa, package.json)
+  - match((?i)(^|\b(please|you|lets|let's|to|and|then)\s+)(implement|refactor)\w*\b|\b(compil(e|es|ed|er|ing|ation)|build\s+(error|fail\w*|break\w*)|panic\w*|stack\s*trace|traceback|segfault|unit\s+tests?|(fix|debug)\s+(the\s+|this\s+|a\s+)?(bug|build|crash|error|test|failure)s?|write\s+(a\s+|the\s+)?(function|test|module|class|method|struct)|add\s+(a\s+|an\s+)?(function|method|endpoint|field|test)|\w+\.(js|mjs|cjs))\b) file(.nvmrc)
+  - match((?i)(^|\b(please|you|lets|let's|to|and|then)\s+)(implement|refactor)\w*\b|\b(compil(e|es|ed|er|ing|ation)|build\s+(error|fail\w*|break\w*)|panic\w*|stack\s*trace|traceback|segfault|unit\s+tests?|(fix|debug)\s+(the\s+|this\s+|a\s+)?(bug|build|crash|error|test|failure)s?|write\s+(a\s+|the\s+)?(function|test|module|class|method|struct)|add\s+(a\s+|an\s+)?(function|method|endpoint|field|test)|\w+\.(js|mjs|cjs))\b) file(.node-version)
+  - match((?i)(^|\b(please|you|lets|let's|to|and|then)\s+)(implement|refactor)\w*\b|\b(compil(e|es|ed|er|ing|ation)|build\s+(error|fail\w*|break\w*)|panic\w*|stack\s*trace|traceback|segfault|unit\s+tests?|(fix|debug)\s+(the\s+|this\s+|a\s+)?(bug|build|crash|error|test|failure)s?|write\s+(a\s+|the\s+)?(function|test|module|class|method|struct)|add\s+(a\s+|an\s+)?(function|method|endpoint|field|test)|\w+\.(js|mjs|cjs))\b) grep(fastify|express|@nestjs|hono|koa, package.json)
   - content(node.js)
   - content(nodejs)
-  - content(express)
   - content(fastify)
   - content(nestjs)
-  - content(node)
   - match((?i)\b(sigterm|graceful\s+shutdown|event[\s-]?loop|node:test|worker[\s_]threads)\b)
+  - match((?i)\bexpress(\.js|js)\b|\bexpress\s+(app|server|routes?|router|middleware)\b)
 ---
 
 ## Overview

@@ -8,10 +8,6 @@ domains: video content
 rules:
   - session(video)
   - session(adcraft)
-  - content(reels)
-  - content(shorts)
-  - content(tiktok)
-  - content(instagram stories)
   - content(aspect ratio)
   - match(\bsafe\s+zone\b)
   - match(\b(video\s+)?codec\b)
@@ -23,6 +19,7 @@ rules:
   - semantic(what are the platform specs for short-form video)
   - semantic(which codec and bitrate should I use for vertical video)
   - semantic(why does my video get cropped on Instagram)
+  - match((?i)\b(export\w*|render\w*|upload\w*)\b.{0,40}\b(tiktok|reels?|shorts|instagram\s+stories)\b)
 ---
 
 ## Overview

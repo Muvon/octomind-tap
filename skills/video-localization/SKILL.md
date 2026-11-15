@@ -7,7 +7,6 @@ compatibility: "Requires: ffmpeg with libass for burn-in; a voice tool for dubbi
 capabilities: shell captions voice
 domains: video
 rules:
-  - content(subtitles)
   - content(translate captions)
   - content(translated captions)
   - content(dubbing)

@@ -6,7 +6,7 @@ license: Apache-2.0
 compatibility: "PHP 8.2+ and Composer. Newer features require the corresponding PHP version and compatible tooling."
 domains: developer
 rules:
-  - file(composer.json)
+  - match((?i)(^|\b(please|you|lets|let's|to|and|then)\s+)(implement|refactor)\w*\b|\b(compil(e|es|ed|er|ing|ation)|build\s+(error|fail\w*|break\w*)|panic\w*|stack\s*trace|traceback|segfault|unit\s+tests?|(fix|debug)\s+(the\s+|this\s+|a\s+)?(bug|build|crash|error|test|failure)s?|write\s+(a\s+|the\s+)?(function|test|module|class|method|struct)|add\s+(a\s+|an\s+)?(function|method|endpoint|field|test)|\w+\.(php))\b) file(composer.json)
   - content(php)
 ---
 

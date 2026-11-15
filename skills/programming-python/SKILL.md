@@ -7,10 +7,10 @@ compatibility: "Requires the Python interpreter and environment selected by the 
 capabilities: programming-python
 domains: developer
 rules:
-  - file(pyproject.toml)
-  - file(setup.py)
-  - file(setup.cfg)
-  - file(requirements.txt)
+  - match((?i)(^|\b(please|you|lets|let's|to|and|then)\s+)(implement|refactor)\w*\b|\b(compil(e|es|ed|er|ing|ation)|build\s+(error|fail\w*|break\w*)|panic\w*|stack\s*trace|traceback|segfault|unit\s+tests?|(fix|debug)\s+(the\s+|this\s+|a\s+)?(bug|build|crash|error|test|failure)s?|write\s+(a\s+|the\s+)?(function|test|module|class|method|struct)|add\s+(a\s+|an\s+)?(function|method|endpoint|field|test)|\w+\.(py))\b) file(pyproject.toml)
+  - match((?i)(^|\b(please|you|lets|let's|to|and|then)\s+)(implement|refactor)\w*\b|\b(compil(e|es|ed|er|ing|ation)|build\s+(error|fail\w*|break\w*)|panic\w*|stack\s*trace|traceback|segfault|unit\s+tests?|(fix|debug)\s+(the\s+|this\s+|a\s+)?(bug|build|crash|error|test|failure)s?|write\s+(a\s+|the\s+)?(function|test|module|class|method|struct)|add\s+(a\s+|an\s+)?(function|method|endpoint|field|test)|\w+\.(py))\b) file(setup.py)
+  - match((?i)(^|\b(please|you|lets|let's|to|and|then)\s+)(implement|refactor)\w*\b|\b(compil(e|es|ed|er|ing|ation)|build\s+(error|fail\w*|break\w*)|panic\w*|stack\s*trace|traceback|segfault|unit\s+tests?|(fix|debug)\s+(the\s+|this\s+|a\s+)?(bug|build|crash|error|test|failure)s?|write\s+(a\s+|the\s+)?(function|test|module|class|method|struct)|add\s+(a\s+|an\s+)?(function|method|endpoint|field|test)|\w+\.(py))\b) file(setup.cfg)
+  - match((?i)(^|\b(please|you|lets|let's|to|and|then)\s+)(implement|refactor)\w*\b|\b(compil(e|es|ed|er|ing|ation)|build\s+(error|fail\w*|break\w*)|panic\w*|stack\s*trace|traceback|segfault|unit\s+tests?|(fix|debug)\s+(the\s+|this\s+|a\s+)?(bug|build|crash|error|test|failure)s?|write\s+(a\s+|the\s+)?(function|test|module|class|method|struct)|add\s+(a\s+|an\s+)?(function|method|endpoint|field|test)|\w+\.(py))\b) file(requirements.txt)
   - content(python)
 ---
 

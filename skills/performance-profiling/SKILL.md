@@ -6,7 +6,6 @@ license: Apache-2.0
 compatibility: "Requires a shell and the runtime's own profiler; k6 for load tests."
 domains: developer
 rules:
-  - content(profile)
   - content(profiling)
   - content(flamegraph)
   - content(latency)
@@ -15,7 +14,6 @@ rules:
   - content(k6)
   - match((?i)\b(memory\s+(leak|usage|growth|bloat)|leaking\s+memory|out\s+of\s+memory|oom|load\s+tests?|stress\s+tests?|soak\s+tests?|p99|p95|too\s+slow|performance\s+(regression|issue|problem)s?|high\s+cpu|cpu\s+spike)\b)
   - match((?i)\b(speed\s+up|takes\s+(forever|too\s+long)|getting\s+slower|runs?\s+slow(ly)?|slow\s+(query|endpoint|request|response|startup|build))\b)
-  - bin(k6)
 ---
 
 ## Overview

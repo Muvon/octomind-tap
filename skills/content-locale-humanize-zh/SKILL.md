@@ -6,9 +6,9 @@ license: Apache-2.0
 compatibility: "Calibration data only; no tools required. Network access helps for usage checks."
 domains: content
 rules:
-  - content(chinese)
+  - match((?i)\b(translat\w*|locali[sz]\w*|native|fluen\w*|proofread\w*|transcreat\w*)\b) content(chinese)
   - match(\bzh-(Hans|Hant|CN|TW)\b)
-  - match(\bChinese\b)
+  - match((?i)\b(translat\w*|locali[sz]\w*|native|fluen\w*|proofread\w*|transcreat\w*)\b) match(\bChinese\b)
   - match(中文)
   - semantic(check if this Chinese translation sounds native)
   - semantic(eliminate translationese from this Chinese text)

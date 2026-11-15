@@ -6,9 +6,6 @@ license: Apache-2.0
 compatibility: "No external tools required. Works on any resume text; parser-safe output is plain-format friendly."
 domains: coach
 rules:
-  - career(ats)
-  - career(resume)
-  - career(tailor)
   - match(\bATS\b)
   - match(\bapplicant tracking system\b)
   - match(\btailor\s+(my|the|this)\s+(resume|cv)\b)

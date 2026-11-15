@@ -8,7 +8,6 @@ domains: seo
 rules:
   - session(seo)
   - session(audit)
-  - content(audit)
   - content(crawlability)
   - content(indexability)
   - content(sitemap)

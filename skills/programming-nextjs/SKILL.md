@@ -7,12 +7,12 @@ compatibility: "Requires Node.js and a package manager."
 capabilities: programming-nodejs
 domains: developer
 rules:
-  - file(next.config.js)
-  - file(next.config.mjs)
-  - file(next.config.ts)
-  - file(app/layout.tsx)
-  - file(src/app/layout.tsx)
-  - file(proxy.ts)
+  - match((?i)(^|\b(please|you|lets|let's|to|and|then)\s+)(implement|refactor)\w*\b|\b(compil(e|es|ed|er|ing|ation)|build\s+(error|fail\w*|break\w*)|panic\w*|stack\s*trace|traceback|segfault|unit\s+tests?|(fix|debug)\s+(the\s+|this\s+|a\s+)?(bug|build|crash|error|test|failure)s?|write\s+(a\s+|the\s+)?(function|test|module|class|method|struct)|add\s+(a\s+|an\s+)?(function|method|endpoint|field|test)|\w+\.(tsx|jsx))\b) file(next.config.js)
+  - match((?i)(^|\b(please|you|lets|let's|to|and|then)\s+)(implement|refactor)\w*\b|\b(compil(e|es|ed|er|ing|ation)|build\s+(error|fail\w*|break\w*)|panic\w*|stack\s*trace|traceback|segfault|unit\s+tests?|(fix|debug)\s+(the\s+|this\s+|a\s+)?(bug|build|crash|error|test|failure)s?|write\s+(a\s+|the\s+)?(function|test|module|class|method|struct)|add\s+(a\s+|an\s+)?(function|method|endpoint|field|test)|\w+\.(tsx|jsx))\b) file(next.config.mjs)
+  - match((?i)(^|\b(please|you|lets|let's|to|and|then)\s+)(implement|refactor)\w*\b|\b(compil(e|es|ed|er|ing|ation)|build\s+(error|fail\w*|break\w*)|panic\w*|stack\s*trace|traceback|segfault|unit\s+tests?|(fix|debug)\s+(the\s+|this\s+|a\s+)?(bug|build|crash|error|test|failure)s?|write\s+(a\s+|the\s+)?(function|test|module|class|method|struct)|add\s+(a\s+|an\s+)?(function|method|endpoint|field|test)|\w+\.(tsx|jsx))\b) file(next.config.ts)
+  - match((?i)(^|\b(please|you|lets|let's|to|and|then)\s+)(implement|refactor)\w*\b|\b(compil(e|es|ed|er|ing|ation)|build\s+(error|fail\w*|break\w*)|panic\w*|stack\s*trace|traceback|segfault|unit\s+tests?|(fix|debug)\s+(the\s+|this\s+|a\s+)?(bug|build|crash|error|test|failure)s?|write\s+(a\s+|the\s+)?(function|test|module|class|method|struct)|add\s+(a\s+|an\s+)?(function|method|endpoint|field|test)|\w+\.(tsx|jsx))\b) file(app/layout.tsx)
+  - match((?i)(^|\b(please|you|lets|let's|to|and|then)\s+)(implement|refactor)\w*\b|\b(compil(e|es|ed|er|ing|ation)|build\s+(error|fail\w*|break\w*)|panic\w*|stack\s*trace|traceback|segfault|unit\s+tests?|(fix|debug)\s+(the\s+|this\s+|a\s+)?(bug|build|crash|error|test|failure)s?|write\s+(a\s+|the\s+)?(function|test|module|class|method|struct)|add\s+(a\s+|an\s+)?(function|method|endpoint|field|test)|\w+\.(tsx|jsx))\b) file(src/app/layout.tsx)
+  - match((?i)(^|\b(please|you|lets|let's|to|and|then)\s+)(implement|refactor)\w*\b|\b(compil(e|es|ed|er|ing|ation)|build\s+(error|fail\w*|break\w*)|panic\w*|stack\s*trace|traceback|segfault|unit\s+tests?|(fix|debug)\s+(the\s+|this\s+|a\s+)?(bug|build|crash|error|test|failure)s?|write\s+(a\s+|the\s+)?(function|test|module|class|method|struct)|add\s+(a\s+|an\s+)?(function|method|endpoint|field|test)|\w+\.(tsx|jsx))\b) file(proxy.ts)
   - content(next.js)
   - content(nextjs)
   - match((?i)\bnext\s*\.?\s*js\b)

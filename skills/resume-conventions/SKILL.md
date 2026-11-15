@@ -6,9 +6,6 @@ license: Apache-2.0
 compatibility: "No external tools required. Markets covered: US/CA, UK/IE, continental Europe, AU/NZ, plus photo/data norms for DE, FR, and Asia."
 domains: coach
 rules:
-  - career(resume)
-  - career(cv)
-  - career(localize-resume)
   - match(\b(resume|cv)\s+(format|convention|for)\s+.{0,20}(germany|france|uk|us|europe|canada|australia|asia)\b)
   - match(\b(cv|resume)\s+photo\b)
   - match(\bGDPR\s+.{0,15}(cv|resume|application)\b)

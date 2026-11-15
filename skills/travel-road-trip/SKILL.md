@@ -9,7 +9,6 @@ domains: travel
 rules:
   - match((?i)\broad[- ]?trips?\b)
   - content(driving)
-  - content(drive)
   - match((?i)\b(ev charging|charging stops?|fuel stops?|campervan|motorhome|rental car|hire car)\b)
 ---
 

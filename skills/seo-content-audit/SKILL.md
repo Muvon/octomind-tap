@@ -8,12 +8,8 @@ domains: seo
 rules:
   - session(seo)
   - session(audit)
-  - content(audit)
   - content(on-page)
-  - content(title)
   - content(meta description)
-  - content(headings)
-  - content(intent)
   - content(EEAT)
   - content(E-E-A-T)
   - match(\b(audit|review|inspect)\s+.{0,40}(content|page|article|post)\b)

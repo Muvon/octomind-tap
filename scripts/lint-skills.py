@@ -119,6 +119,51 @@ if fields.get("capabilities"):
             print(f"CAPABILITY_UNKNOWN: capabilities value '{c}' has no capabilities/{cap_name}/ directory — it will silently fail to load", file=sys.stderr)
             sys.exit(1)
 
+# ── Activation rules: a skill loads only when the request shows the work ─────
+# Each `rules:` line is one OR branch; checks on a line are ANDed. Octomind
+# silently drops check types it doesn't know, so a typo never fires. A line made
+# only of workspace checks (file/grep/bin/env/workdir) fires in every session
+# in a matching repo, whatever the user asked — so it must also carry a check on
+# the message (content/match/semantic). session() alone is allowed: it targets
+# one agent's own runs.
+KNOWN_CHECKS = {"file", "content", "grep", "env", "match", "bin", "session", "workdir", "semantic"}
+MESSAGE_CHECKS = {"content", "match", "semantic"}
+
+
+def _rule_check_types(rule):
+    types, rest = [], rule.strip()
+    while rest:
+        open_i = rest.find("(")
+        if open_i < 0:
+            break
+        depth, close = 0, None
+        for offset, char in enumerate(rest[open_i:]):
+            if char == "(":
+                depth += 1
+            elif char == ")":
+                depth -= 1
+                if depth == 0:
+                    close = open_i + offset
+                    break
+        if close is None:
+            break
+        types.append(rest[:open_i].strip())
+        rest = rest[close + 1:].lstrip()
+    return types
+
+
+rules_block = re.search(r'^rules:\n((?:[ \t]+- .*\n?)+)', frontmatter + "\n", re.M)
+if rules_block:
+    for rule_line in rules_block.group(1).splitlines():
+        rule = rule_line.strip()[2:].strip()
+        types = _rule_check_types(rule)
+        unknown = [t for t in types if t not in KNOWN_CHECKS]
+        if unknown:
+            print(f"RULE_UNKNOWN_CHECK: rule '{rule}' uses {', '.join(unknown)}(); octomind ignores unknown checks, so it never fires", file=sys.stderr)
+            sys.exit(1)
+        if types and set(types) != {"session"} and not MESSAGE_CHECKS & set(types):
+            print(f"RULE_NO_INTENT: rule '{rule}' checks only the workspace, so it loads the skill for any request; add content(), match() or semantic() on the same line", file=sys.stderr)
+            sys.exit(1)
 # ── Body must be non-empty ────────────────────────────────────────────────────
 body_start = after_open.find("\n---") + 4  # skip past closing ---
 body = after_open[body_start:].strip()

@@ -6,9 +6,9 @@ license: Apache-2.0
 compatibility: "Calibration data only; no tools required. Network access helps for usage checks."
 domains: content
 rules:
-  - content(hindi)
+  - match((?i)\b(translat\w*|locali[sz]\w*|native|fluen\w*|proofread\w*|transcreat\w*)\b) content(hindi)
   - match(\bhi-IN\b)
-  - match(\bHindi\b)
+  - match((?i)\b(translat\w*|locali[sz]\w*|native|fluen\w*|proofread\w*|transcreat\w*)\b) match(\bHindi\b)
   - match(हिन्दी|हिंदी)
   - semantic(check if this Hindi translation sounds native)
   - semantic(eliminate translationese from this Hindi text)

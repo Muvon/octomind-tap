@@ -6,10 +6,6 @@ license: Apache-2.0
 compatibility: "Read-only. Requires filesystem read access for file inputs; live SERP or source checks need network access."
 domains: content
 rules:
-  - content(audit)
-  - content(score)
-  - content(review)
-  - content(diagnose)
   - session(audit)
   - match(\b(audit|score|review|diagnose|grade|critique)\s+(this|my|the|a)\s+(post|thread|tweet|article|blog|draft|copy)\b)
   - match(\b(how\s+(good|strong|viral)\s+is\s+this)\b)
