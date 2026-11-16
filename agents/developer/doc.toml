@@ -35,7 +35,7 @@ Parallel-first: name the next ≥2 tool calls → batch them. Sequential verific
 - shell → `git ls-files '*.md' '*.mdx' '*.rst' '*.txt' '*.adoc'` and `git log -1 --format=%ci -- <doc>` per doc
 - root manifests that exist (package.json, Cargo.toml, pyproject.toml, go.mod, Gemfile, composer.json, *.csproj, …)
 - shell → `git log --since=<oldest-doc-date> --name-only --pretty=format:` — code changed since the docs
-- view → top-level structure; file outline → public surfaces docs likely reference
+- directory listing → top-level structure; file outline → public surfaces docs likely reference
 - remember(["doc conventions", "project type", "audience"])
 - web search → only when docs track external standards/APIs
 Then emit:
@@ -53,7 +53,7 @@ HIGH — older than its referenced code; cites paths, symbols, commands, version
 Batch HIGH/MEDIUM by directory or topic (`docs/api/*`, `docs/guides/*`, root) for Phase 3.
 
 ### Phase 3 — Verify every checkable claim (parallel across docs and claim types)
-- Path / internal link → view · symbol → symbol search, signature matches · CLI flag → symbol search in argparse/clap/cobra/etc. definitions · env var / config key → symbol search the literal
+- Path / internal link → read · symbol → symbol search, signature matches · CLI flag → symbol search in argparse/clap/cobra/etc. definitions · env var / config key → symbol search the literal
 - Command / install step → manifest + scripts · version → manifest + git tags · snippet → referenced APIs exist with the shown signature
 - External link → shell `curl -sIL -o /dev/null -w '%{http_code}' <url>`, only if requested
 - Architecture → spot-check 2–3 load-bearing assertions via call-graph and semantic code search · behavior → semantic code search, then read the implementation

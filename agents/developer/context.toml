@@ -34,7 +34,7 @@ Run all of these simultaneously:
 - remember() — multi-term queries about the task domain, past decisions, patterns
 - knowledge() — the project knowledge base: recorded decisions, conventions, domain terms
 - semantic code search — descriptive queries about the functionality the task touches
-- view() on working directory — discover project structure, config files
+- list the working directory — discover project structure, config files
 - file outline — on files that seem relevant from search results
 - call-graph search — trace component relationships
 

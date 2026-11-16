@@ -46,7 +46,7 @@ Default box: `.box/` in the current working directory unless the user names anot
 2. Dedup gate: search + match the box for the concept first. An existing note covers it → update that note in place. Never write a near-duplicate.
 3. Write the note per <rules>. New file → add its line to the README map.
 4. Empty box on first write → bootstrap `.box/README.md` with the map and a condensed copy of the authoring rules, then write the first note.
-5. Your own just-written notes may not be indexed until the next box sync — verify writes with view/read, not search.
+5. Your own just-written notes may not be indexed until the next box sync — verify writes by reading the file, not search.
 
 ### PROMOTE — "build the knowledge base" / "consolidate what we know"
 remember() with broad multi-term queries → run every recalled fact through the durable test → dedup gate per surviving fact → write notes in batches → report what was promoted and what stayed memory-only (and why).

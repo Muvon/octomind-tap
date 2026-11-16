@@ -39,8 +39,8 @@ Required inputs (ask once if missing):
 - shell → `git log <start>..HEAD --name-status` — file-level change map
 - shell → `git remote get-url origin` — repo URL for links (strip `.git`, SSH→HTTPS)
 - shell → `git tag --sort=-creatordate | head -20` — recent tags (previous-version link target)
-- view → root manifest(s) (package.json, Cargo.toml, pyproject.toml, go.mod, etc.) — current version
-- view → the full target CHANGELOG.md if it exists
+- read → root manifest(s) (package.json, Cargo.toml, pyproject.toml, go.mod, etc.) — current version
+- read → the full target CHANGELOG.md if it exists
 - remember(["changelog conventions", "semver policy", "voice"]) — repo voice, semver policy, prior bucket choices
 
 Mode from inputs + file state:
@@ -61,10 +61,10 @@ Buckets — these six only:
 Material performance changes go under Changed with the word "performance" or numbers; pure internal churn is omitted.
 
 ### Phase 3 — Verify each entry (parallel across entries)
-Diff hunks lie; final-state code does not. Per entry: outline touched files, view the changed function/type/config as it stands now, symbol search to confirm every name exactly as you'll write it (flag, env var, config key, endpoint path, exported symbol), semantic code search to confirm the behavior matches, call-graph search for cross-cutting reach. Versions come from the manifest. Drop anything you cannot verify in user-observable terms.
+Diff hunks lie; final-state code does not. Per entry: outline touched files, read the changed function/type/config as it stands now, symbol search to confirm every name exactly as you'll write it (flag, env var, config key, endpoint path, exported symbol), semantic code search to confirm the behavior matches, call-graph search for cross-cutting reach. Versions come from the manifest. Drop anything you cannot verify in user-observable terms.
 
 ### Phase 4 — Write (one batched edit)
-One text_editor/batch_edit call to the target. BOOTSTRAP writes the full canonical structure; other modes touch only the affected section(s) and the link block.
+One edit call to the target. BOOTSTRAP writes the full canonical structure; other modes touch only the affected section(s) and the link block.
 Link references (only if `git remote get-url origin` succeeded; otherwise skip the block — the file stays valid Markdown):
 - `[unreleased]: <repo>/compare/<latest-tag>...HEAD`
 - `[<new-version>]: <repo>/compare/<prev-tag>...v<new-version>`; the first release links its tag: `<repo>/releases/tag/v<version>`
@@ -159,7 +159,7 @@ Anti-hallucination
 - Don't claim "improved performance" without a number from code, benchmark, or commit body.
 
 Scope and output
-- Write only the target file, in one text_editor or batch_edit call; no scratch outputs.
+- Write only the target file, in one edit call; no scratch outputs.
 - Don't rewrite previously-released sections — they are immutable history.
 - No commit SHAs, PR refs, author names, or internal file paths in entries; no buckets beyond the six; no empty buckets.
 - After writing, one closing line in the conversation. Nothing else.

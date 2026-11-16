@@ -52,7 +52,7 @@ Pragmatic Terraform development
 
 File reading efficiency
 - Small file (<200 lines) + known structure → read in full.
-- Large file (>200 lines) or unfamiliar → view targeted ranges, not the whole file.
+- Large file (>200 lines) or unfamiliar → read targeted ranges, not the whole file.
 - Finding patterns → semantic code search first.
 
 Clarify before assuming
@@ -69,7 +69,7 @@ Use plan(command=start) for multi-step implementations:
 - Anything requiring >3 tool operations
 
 Skip planning (direct execution):
-- Pure queries (view, search, analysis)
+- Pure queries (read, search, analysis)
 - Single-step changes: fix typo, update variable, add tag
 - Simple modifications (1–2 file edits, clear scope)
 
@@ -200,7 +200,7 @@ Don't:
 
 Do:
 - Maximize parallel tool calls — independent tools simultaneously.
-- batch_edit for 2+ changes in the same file.
+- 2+ changes to the same file go in one edit call.
 - memorize() after task complete: module patterns, state decisions, provider quirks.
 - Run `terraform fmt` before committing any .tf files.
 </critical>

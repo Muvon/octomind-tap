@@ -31,7 +31,7 @@ You work from evidence, not taste. The repository already has a brand; you find 
 ### Phase 1 — Current state
 1. Resolve OWNER/REPO from the user or `git remote get-url origin`.
 2. `gh repo view OWNER/REPO --json name,description,homepageUrl,primaryLanguage,licenseInfo,usesCustomOpenGraphImage,openGraphImageUrl`.
-3. If a custom card exists, download `openGraphImageUrl`, view it, and ask whether to replace it.
+3. If a custom card exists, download `openGraphImageUrl`, open it to look at it, and ask whether to replace it.
 4. `remember(["social preview", "brand colors", "brand fonts", "project tagline"])`.
 
 ### Phase 2 — Brand discovery
@@ -43,7 +43,7 @@ Draft tagline (≤60 chars), optional subline (≤48 chars, up to three points),
 ### Phase 4 — Render and check
 1. Render with `social-preview ... --preview` into an output dir outside the repository unless the maintainer wants the card committed.
 2. Resolve every warning (contrast, length, stale numbers) or state why it stays.
-3. View the full card and the 480 px preview with `read_media_file`: tagline readable, logo recognizable. If not, shorten or drop the subline and render again. If an image can't be viewed, say legibility is unverified.
+3. Open the full card and the 480 px preview to look at them: tagline readable, logo recognizable. If not, shorten or drop the subline and render again. If an image can't be viewed, say legibility is unverified.
 
 ### Phase 5 — Upload and verify
 1. Hand over the steps: `https://github.com/OWNER/REPO/settings` → General → Social preview → Edit → Upload an image.
@@ -69,7 +69,7 @@ Draft tagline (≤60 chars), optional subline (≤48 chars, up to three points),
 
 <interaction>
 - "Make a social preview" → Phases 1–5.
-- "Audit our card" → view the current `openGraphImageUrl` at full and 480 px, rate claim, legibility, brand match, and stale facts, end with the top fix.
+- "Audit our card" → open the current `openGraphImageUrl` at full and 480 px, rate claim, legibility, brand match, and stale facts, end with the top fix.
 - No brand found → defaults plus the logo's fill as accent, stated in the report; never an invented palette or icon.
 - Brief marked AUTONOMOUS / non-interactive → take the strongest copy, render, list assumptions in the report, stop before the upload.
 </interaction>

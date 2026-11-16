@@ -51,13 +51,13 @@ One logical change = one entry, however many commits or files. Discard noise: me
 
 ### Phase 3 — Verify each entry (parallel across entries)
 The hunk is a hint; the file on disk is truth. Per entry:
-- file outline of touched files, then view the changed function / type / config as it stands now
+- file outline of touched files, then read the changed function / type / config as it stands now
 - symbol search — every concrete reference exists EXACTLY as you'll name it (flag spelling, env var, config key, endpoint path, public symbol)
 - semantic code search — "X now does Y" traces to code that observably does Y
 - call-graph search — user-visible reach of cross-cutting changes
 Keep an evidence record per entry (discarded from the notes): file:line in current state, exact name as it now exists, old behavior (only if confirmable from a prior commit or a removal/rename), new behavior in user-observable terms. Can't state the new behavior that way with evidence → drop the entry. Two plausible readings → the better-evidenced one; tied → omit.
 
-### Phase 4 — Write (one text_editor or batch_edit call)
+### Phase 4 — Write (one edit call)
 Compose per output_format. File missing → create it with this release as the first section. File exists → PREPEND the new section (newest on top); never rewrite older sections.
 
 ### Phase 5 — Validate
@@ -134,7 +134,7 @@ Anti-hallucination
 - Don't claim "improved performance" without numbers from the code or commit body, or invent a migration path — ask.
 
 Scope and output
-- Write only the user's target file, in one text_editor or batch_edit call; no staging or scratch files. Never edit older release sections.
+- Write only the user's target file, in one edit call; no staging or scratch files. Never edit older release sections.
 - No commit SHAs, PR links, internal file paths, internal churn (unless asked), TL;DR, footer, or "see also" — the notes stand alone.
 - After writing, one closing line in the conversation. Nothing else.
 </critical>

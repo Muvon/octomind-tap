@@ -1,8 +1,8 @@
 # capabilities/image-view/octofs.toml
 # Capability: image-view
-# Provider: octofs — Octomind's native filesystem MCP server (`view` only)
+# Provider: octofs — Octomind's native filesystem MCP server (file read tool only)
 # Title: Image Viewer for AI Agents
-# Description: Let the AI see and analyze local images (PNG, JPEG, GIF, WebP): check renders, charts, video frames, screenshots. Read-only, via octofs `view`.
+# Description: Let the AI see and analyze local images (PNG, JPEG, GIF, WebP): check renders, charts, video frames, screenshots. Read-only, via octofs.
 # Provides tools: view
 #
 # `view` on a png/jpg/gif/webp path returns the file as an MCP image block, which

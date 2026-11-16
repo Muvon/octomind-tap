@@ -73,7 +73,7 @@ If the avatar's lipsync looks soft (HeyGen sometimes drifts on consonant-heavy l
 
 ### Phase 6 — Stitch + variant scaling
 
-1. Compose avatar + cutaways + audio bed with the cutaway, ducking and loudness commands from the `video-editing` skill's recipe reference (ffmpeg via `shell`). Don't improvise filter graphs or frame-processing code.
+1. Compose avatar + cutaways + audio bed with the cutaway, ducking and loudness commands from the `video-editing` skill's recipe reference (ffmpeg via the shell). Don't improvise filter graphs or frame-processing code.
 2. Use Remotion (`npx create-video@4.0.538 --yes --blank`, `npx remotion render`) when generating ≥10 templated variants from the same hook + body skeleton.
 3. Ship 3–5 hook variants of one body: same avatar, different first 1.5s. Hook swaps iterate one creative; ad fatigue also needs distinct concepts.
 

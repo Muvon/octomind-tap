@@ -66,12 +66,12 @@ Symlinks are managed by `scripts/setup-symlinks.sh` which **always force-creates
 | `agent`        | default (built-in)     | `agent_*` — delegate to your own **configured** sub-agents (intra-domain team) |
 | `orchestration`| default (built-in)     | `tap` (run registry specialists matched to the task) + `schedule` (defer/recur loops) — **orchestrator-tier, deliberate grant** |
 | `runtime`      | octomind (built-in)    | `mcp` · `agent`-register · `skill` · `capability` — runtime tool-surface config (**high-trust**) |
-| `filesystem-read`  | octofs                 | `view`, `workdir` (read-only)             |
-| `filesystem-write` | octofs                 | `text_editor`, `batch_edit`, `extract_lines` |
-| `shell`            | octofs                 | `shell` (command execution)               |
+| `filesystem-read`  | octofs                 | read files, list directories, search file contents (read-only) |
+| `filesystem-write` | octofs                 | create, edit and delete files; several changes to one file in one call; copy line ranges |
+| `shell`            | octofs                 | run shell commands                        |
 | `codesearch-semantic`   | octocode               | `semantic_search` (natural-language code search) |
-| `codesearch-structural` | octofs (also octocode) | `view` outline and AST modes, `symbol` definitions and references (structural code search) |
-| `codesearch-graph`      | octofs (also octocode) | `symbol` callers, callees, imports and type hierarchies (code relationship search) |
+| `codesearch-structural` | octofs (also octocode) | file outlines, AST pattern search, symbol definitions and references (structural code search) |
+| `codesearch-graph`      | octofs (also octocode) | a symbol's callers, callees, imports and type hierarchies (code relationship search) |
 | `memory-read` / `memory-write` | octobrain | `remember` / `memorize`, `forget`              |
 | `webfetch`     | octobrain              | `knowledge` — fetch URLs and local documents          |
 | `websearch`    | duckduckgo (also brave, deepseek, exa, tavily) | `search` — web search                     |

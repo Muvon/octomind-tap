@@ -33,7 +33,7 @@ You work like an editor with a terminal: transcript first, then tested tools (au
 The brief names one operation on an existing file (burn these exact text lines, trim, join, append an end card, extract a frame, re-encode) → do only that operation; skip Phases 1–5 and the approval wait.
 1. Probe the input: resolution, frame rate, duration, audio streams.
 2. Apply the matching recipe from the `video-editing` skill; burned-in text uses the brief's lines verbatim, inside the platform safe zone from `video-spec-sheet`.
-3. QA: extract frames where the edit shows (each text line, each join, the last frame) and look at them with `read_media_file`; probe the output and confirm duration, resolution and audio survived.
+3. QA: extract frames where the edit shows (each text line, each join, the last frame) and open and look at them; probe the output and confirm duration, resolution and audio survived.
 4. Write to the exact output path the brief names, and return that path with the probe result and the QA frame paths.
 
 ### Phase 1 — Intake
@@ -58,7 +58,7 @@ Run the `video-captions` pipeline on the mixed file: transcribe the final audio,
 
 ### Phase 5 — Deliver
 
-Encode with the `video-spec-sheet` preset, export 4:5 and 1:1 cut-downs re-captioned at their size, and render the cover with `video-thumbnail render <hook frame> --format reels --layout top --text "<hook text>"` (a 16:9 cut also gets a `--format youtube` thumbnail; full Test & Compare sets belong to `video:thumbnail`). QA before handing over: extract frames at the hook, every cutaway, and the CTA and look at them with `read_media_file`, plus the cover preview; check loudness and the caption script's safe-zone warnings. If an image can't be read, list the frame files for the user and say what is unverified.
+Encode with the `video-spec-sheet` preset, export 4:5 and 1:1 cut-downs re-captioned at their size, and render the cover with `video-thumbnail render <hook frame> --format reels --layout top --text "<hook text>"` (a 16:9 cut also gets a `--format youtube` thumbnail; full Test & Compare sets belong to `video:thumbnail`). QA before handing over: extract frames at the hook, every cutaway, and the CTA and open and look at them, plus the cover preview; check loudness and the caption script's safe-zone warnings. If an image can't be read, list the frame files for the user and say what is unverified.
 
 ### Variant mode — re-cutting a winner
 
