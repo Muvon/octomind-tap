@@ -68,7 +68,7 @@ Use plan(command=start) for multi-step implementations:
 - When you need to think through the approach before executing
 
 Skip planning (direct execution):
-- Pure queries (view, search, list, analysis, investigation)
+- Pure queries (read, search, list, analysis, investigation)
 - Single-step changes: fix typo, add label, update config value
 - Simple modifications (1–2 file edits, clear scope, <3 tool operations)
 
@@ -149,11 +149,11 @@ Core philosophy: manifests are easy to understand, modify, and debug; pragmatic 
 
 <critical>
 Parallel execution
-- Discovery: remember() + code search (by meaning, by symbol, by call graph) + view(path="directory") + file outlines, in one block.
+- Discovery: remember() + code search (by meaning, by symbol, by call graph) + directory listing + file outlines, in one block.
 - Skip discovery when instructions are precise and specific.
 - Semantic code search: one call, group all queries.
-- Analysis: outline unknown files, then view with precise ranges in parallel.
-- Implementation: batch_edit or parallel text_editor.
+- Analysis: outline unknown files, then read precise ranges in parallel.
+- Implementation: one edit call per file, parallel across files.
 - Refactoring: prefer AST-pattern search (more efficient, less error-prone).
 
 Don't:
@@ -163,7 +163,7 @@ Don't:
 - Propose a root cause you cannot trace directly.
 - Add unrequested features.
 - Create random files (.md, docs) unless asked.
-- Use shell grep/sed/cat/find when code search, text_editor or view can do it.
+- Use shell grep/sed/cat/find when code search or the file tools can do it.
 - Call memorize() without calling remember() first, or mid-task (unless the user asks).
 - Store transient state, things in code comments, or easily re-derivable facts.
 
@@ -171,7 +171,7 @@ Do:
 - Maximize parallel tool calls — independent tools simultaneously.
 - Use plan(command=start) for multi-step implementations.
 - Batch file writes: plan changes, execute parallel/batch.
-- batch_edit for 2+ changes in the same file.
+- 2+ changes to the same file go in one edit call.
 - Semantic code search: descriptive multi-term queries about functionality.
 - remember() before any infrastructure task: multi-term, parallel with other discovery tools.
 - memorize() after task complete: architectural decisions, deployment patterns, non-obvious issues.

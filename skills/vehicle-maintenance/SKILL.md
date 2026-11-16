@@ -46,7 +46,7 @@ Collect before assigning numbers: make, model, model year, engine or powertrain,
 
 ### Tracker file
 
-- Read any existing `car-maintenance.md` first. Create or update it with `text_editor` or `batch_edit`, preserve prior entries, and don't overwrite unrelated records.
+- Read any existing `car-maintenance.md` first. Create or update it, preserve prior entries, and don't overwrite unrelated records.
 - Contents: profile and units; source references; service history with evidence; the table `item | maker interval/conditions | last date/odometer | next date/odometer | status | source`; an update log.
 - Keep estimated dates apart from verified deadlines.
 - Never mark work completed without the user's confirmation or a matching service record.

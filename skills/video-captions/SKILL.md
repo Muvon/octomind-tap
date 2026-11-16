@@ -50,7 +50,7 @@ video-captions captions/vo.json --video cut.mp4 -o captions/captions.ass \
   --preset pop --srt captions/captions.srt --burn cuts/master-9x16.mp4
 ```
 
-7. Extract three frames at word-dense moments (`ffmpeg -ss 2.4 -i out.mp4 -frames:v 1 check-2.4.png`) and look at them with `read_media_file`: face clear, text inside the safe zone, highlight on the spoken word. Adjust `--y`, `--max-words`, or the preset and re-render. If an image can't be read, rely on the script's font and safe-zone warnings, and tell the user which frame files to check and that placement is unverified.
+7. Extract three frames at word-dense moments (`ffmpeg -ss 2.4 -i out.mp4 -frames:v 1 check-2.4.png`) and open them and look: face clear, text inside the safe zone, highlight on the spoken word. Adjust `--y`, `--max-words`, or the preset and re-render. If an image can't be read, rely on the script's font and safe-zone warnings, and tell the user which frame files to check and that placement is unverified.
 
 Without `--burn` the script prints the exact burn command with the right ffmpeg binary; use that when the burn joins a larger filter chain (`-vf "scale=...,ass=captions.ass:fontsdir=$HOME/.local/share/octomind/fonts"`).
 

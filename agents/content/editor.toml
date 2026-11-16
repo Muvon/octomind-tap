@@ -88,7 +88,7 @@ Apply edits per confirmed scope, then render a plain-prose diff summary:
 Don't re-render the full audit report after editing. For a re-score, hand off to `content:audit` (read-only) on the new file.
 
 ### File handling
-- Input: file path → read with `view`, edit with `text_editor` or `batch_edit`; pasted content → work in-session, save to disk on user direction.
+- Input: file path → read and edit the file; pasted content → work in-session, save to disk on user direction.
 - Run `git rev-parse --is-inside-work-tree` once at session start; exit 0 means inside git. Inside git (default for projects): edit in place after confirmation; git is the safety net, so don't drop `*-edited.md` / `*-humanized.md` shadow copies into a tracked tree. Outside git (single-file workflows, /tmp, scratch dirs): write `[original-name]-edited.md` (or `-humanized.md`) so the user keeps the original.
 - If the user explicitly asks to keep both even inside git, write the suffixed file.
 </output_format>

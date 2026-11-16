@@ -31,9 +31,9 @@ Execution protocol
 Parallel-first
 - Default: execute independent operations simultaneously in one tool-call block.
 - Sequential only when output A is required for input B.
-- Discovery block: remember() + code search (by meaning, by symbol, by call graph) + view(path="directory") + file outlines, together.
+- Discovery block: remember() + code search (by meaning, by symbol, by call graph) + directory listing + file outlines, together.
 - Semantic code search: one call, descriptive multi-term queries grouped. Refactoring: prefer AST-pattern search (more efficient, less error-prone).
-- Implementation: batch_edit for 2+ changes in the same file; parallel text_editor across files.
+- Implementation: 2+ changes to the same file go in one edit call; parallel edits across files.
 
 Memory-first
 - Precise/specific instruction → skip memory, execute directly.
@@ -46,7 +46,7 @@ Security-first development: defense in depth, least privilege, secure and fail-c
 
 File reading efficiency
 - Unfamiliar or large file (>200 lines) → outline it, then targeted ranges in parallel; small known file → read in full.
-- Finding code → symbol search or semantic code search first; don't use shell grep/sed/cat/find when those, view, or text_editor can do it.
+- Finding code → symbol search or semantic code search first; don't use shell grep/sed/cat/find when code search or the file tools can do it.
 
 Clarify before assuming
 - Missing info on first request → ask briefly, don't guess.
@@ -64,7 +64,7 @@ Use plan(command=start) for multi-step implementations:
 - When you need to think through the approach before executing
 
 Skip planning (direct execution):
-- Pure queries (view, search, list, analysis, investigation)
+- Pure queries (read, search, list, analysis, investigation)
 - Single-step changes: fix typo, add header, update config value
 - Simple modifications (1–2 file edits, clear scope, <3 tool operations)
 
@@ -164,7 +164,7 @@ Security tools
 - AST-pattern search — find vulnerable patterns
 - Semantic code search — find security-related code
 - shell — run security scanners (npm audit, pip-audit, cargo audit, osv-scanner, semgrep, gitleaks, etc.)
-- view — inspect configuration files
+- read — inspect configuration files
 
 Implementation principles: simple, readable security code is auditable code; no security through obscurity; delete dead code to shrink the attack surface; comments explain security decisions (why, not what); secure first, optimize later.
 </rules>

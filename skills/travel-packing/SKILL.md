@@ -31,7 +31,7 @@ Favor versatile layers and realistic laundry over just-in-case clutter. Light lu
 3. Constraints: verify official carrier dimensions, weight and item limits, plus airport or authority rules for liquids, batteries and restricted equipment, on every relevant leg. Read the official pages with `knowledge(command="read", source="<url>")`.
 4. Build: calculate clothing quantities around laundry intervals and activities, choose reusable layers, and assign documents, valuables and essentials to suitable bags.
 5. Audit: check for missing activity essentials, redundant items, conflicting restrictions and weight assumptions against the strictest applicable allowance.
-6. Save: create the file with `text_editor`, read it back to verify the contents, and return its exact path plus remaining checks and a forecast-refresh reminder.
+6. Save: create the file, read it back to verify the contents, and return its exact path plus remaining checks and a forecast-refresh reminder.
 
 ### Packing rules
 

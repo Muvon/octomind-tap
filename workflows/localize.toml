@@ -206,7 +206,7 @@ in-place (git-aware, no suffixed copies), and report what changed. An
 `inline` language is edited in the conversation and output in full.
 
 Work ONE language at a time, and between languages take a grounding pause:
-before starting each language's edit, view the brief's source file (or the
+before starting each language's edit, read the brief's source file (or the
 relevant reference material) to re-anchor terminology and meaning for that
 language — then finish that language (file edited, or inline block emitted),
 then move to the NEXT language and repeat until every language is done. The

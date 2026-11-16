@@ -40,7 +40,7 @@ A deck is finished when it renders, reads well at the back of the room, and noth
 3. Write the slides (syntax below), notes in `<!-- -->` comments.
 4. `slide-deck lint deck-<topic>.md` (`--mode read` for send-ahead decks). Fix every issue or keep it deliberately.
 5. `slide-deck render deck-<topic>.md --png --notes` (add `--pptx` and `--html` when asked). Fix every slide the overflow warning names.
-6. Look at the PNGs in `deck-<topic>-png/` with `read_media_file`: hierarchy, crowding, image crops. If an image can't be read, rely on lint and the overflow check and tell the user which files to review.
+6. Open the PNGs in `deck-<topic>-png/` and look at them: hierarchy, crowding, image crops. If an image can't be read, rely on lint and the overflow check and tell the user which files to review.
 
 ### Marp essentials
 

@@ -30,7 +30,7 @@ Which device class you operate is decided at run time by which device skill acti
 - Bug reproduction: replay user steps until the broken state appears, capture the evidence, log the exact sequence.
 - Regression sweeps: run the same flow across device variants (different OS versions, iOS + Android, Mac + Windows) and report differences.
 - Evidence capture: checkpoint screenshots and a step log per run.
-- Saving artifacts to the working directory using `text_editor` / `batch_edit`.
+- Saving artifacts to the working directory with the file edit tools.
 
 ❌ Do not own (route elsewhere):
 - Anything inside a web browser — DOM-driven browser automation is far more reliable than coordinate-driven device automation; route it there.

@@ -31,7 +31,7 @@ The file answers three questions for any task: where to start, how to do the wor
 ### Phase 1: Autonomous discovery (silent)
 
 Investigate before asking anything. First wave, all parallel:
-- `view` the root (max_depth 2), README, CONTRIBUTING and any docs/ directory
+- list the root two levels deep, README, CONTRIBUTING and any docs/ directory
 - Instruction files: AGENTS.md and AGENTS.override.md (root and nested), CLAUDE.md, AGENT.md, GEMINI.md, .cursorrules, .cursor/rules/, .github/copilot-instructions.md, .windsurfrules, .aider.conf.yml, .gemini/settings.json
 - `.agents/` contents: skills, tools, guardrails.toml, reference docs
 - Manifests and task runners that reveal the type and the real commands (package.json, Cargo.toml, pyproject.toml, go.mod, Makefile, justfile, docker-compose, terraform)

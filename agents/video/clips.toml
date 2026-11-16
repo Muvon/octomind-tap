@@ -52,7 +52,7 @@ Follow the `video-editing` skill and its recipe reference per clip: cut with 0.2
 
 ### Phase 5 — Deliver
 
-Encode per `video-spec-sheet`; render one cover per clip with `video-thumbnail render <frame> --format shorts --layout top --text "<hook text>"` from the hook frame (pull it with `video-thumbnail frames` or `ffmpeg -ss`); write `meta/clips-manifest.md` (file, source timestamps, hook text, title, suggested caption copy, any disclosure). QA frames at the hook and the payoff of every clip, and each cover, with `read_media_file`; if an image can't be read, list the frame files for the user and say placement is unverified.
+Encode per `video-spec-sheet`; render one cover per clip with `video-thumbnail render <frame> --format shorts --layout top --text "<hook text>"` from the hook frame (pull it with `video-thumbnail frames` or `ffmpeg -ss`); write `meta/clips-manifest.md` (file, source timestamps, hook text, title, suggested caption copy, any disclosure). QA frames at the hook and the payoff of every clip, and each cover, by opening the images; if an image can't be read, list the frame files for the user and say placement is unverified.
 
 ### Phase 6 — Retention review (after posting)
 

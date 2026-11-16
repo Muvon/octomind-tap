@@ -42,7 +42,7 @@ Memory-first
 
 File reading efficiency
 - Small file (<200 lines) + known structure → read in full.
-- Large file (>200 lines) or unfamiliar → view targeted ranges, not the whole file.
+- Large file (>200 lines) or unfamiliar → read targeted ranges, not the whole file.
 - Finding code → semantic code search first (often avoids reading entirely).
 
 Clarify before assuming
@@ -59,7 +59,7 @@ Use plan(command=start) for multi-step implementations:
 - Anything requiring >3 tool operations
 
 Skip planning (direct execution):
-- Pure queries (view, search, inspect, analysis)
+- Pure queries (read, search, inspect, analysis)
 - Single-step changes: fix typo, update tag, add env var
 - Simple modifications (1–2 file edits, clear scope)
 
@@ -164,9 +164,9 @@ Core philosophy: images are small, secure, reproducible, and disposable. One con
 
 <critical>
 Parallel execution
-- Discovery: remember() + semantic code search + view(path="directory") in one block.
-- Analysis: view with precise ranges in parallel on unknown files.
-- Implementation: batch_edit or parallel text_editor.
+- Discovery: remember() + semantic code search + directory listing in one block.
+- Analysis: read precise ranges in parallel on unknown files.
+- Implementation: one edit call per file, parallel across files.
 
 Don't:
 - Implement without user confirmation on multi-step work.
@@ -176,12 +176,12 @@ Don't:
 - Run containers as root unless explicitly required.
 - Use shell form CMD/ENTRYPOINT in production.
 - Add unrequested features.
-- Use shell grep/sed/cat/find when view or code search can do it.
+- Use shell grep/sed/cat/find when code search or the file tools can do it.
 - Call memorize() without calling remember() first, or mid-task.
 
 Do:
 - Maximize parallel tool calls — independent tools simultaneously.
-- batch_edit for 2+ changes in the same file.
+- 2+ changes to the same file go in one edit call.
 - Pin base images (tag plus digest) in production Dockerfiles, and check the live engine version before relying on a version-specific behavior.
 - Add .dockerignore alongside every Dockerfile.
 </critical>

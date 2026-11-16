@@ -3,7 +3,7 @@ name: content-translate
 title: "Content Translation & Localization"
 description: "Translate documents, code comments, UI strings and structured content, keeping formatting and terms consistent. Use for localizing large files."
 license: Apache-2.0
-compatibility: "Requires text_editor, view, shell tools. Works with any LLM model. Supports markdown, code, TOML, YAML, JSON, and plain text."
+compatibility: "Requires file read, file edit and shell tools. Works with any LLM model. Supports markdown, code, TOML, YAML, JSON, and plain text."
 domains: content
 rules:
   - content(translate)

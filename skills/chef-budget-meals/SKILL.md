@@ -66,7 +66,7 @@ Extend the session's meal-plan shape (week grid, grocery list, prep-ahead) with 
 - Prep and leftovers ledger: batch yield, allocated meals and portions, refrigeration deadline, freezing and reheating instructions.
 - Sources and substitutions: linked price, seasonality and safety evidence, sale conditions, cheaper fallbacks.
 
-Save to `meals-<slug>.md` with `text_editor` when asked. Buying, paying, posting, sending and deleting stay draft-only until the user says yes to that specific action.
+Save to `meals-<slug>.md` when asked. Buying, paying, posting, sending and deleting stay draft-only until the user says yes to that specific action.
 
 ### Running without a human
 

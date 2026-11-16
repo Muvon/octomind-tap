@@ -2,14 +2,14 @@
 # Capability: filesystem-read
 # Provider: octofs — Octomind's native filesystem MCP server (read-only subset)
 # Title: Filesystem (Read)
-# Description: Read files, list and search directories with octofs view, and check or switch the working directory with workdir. No write access.
+# Description: Read files and line ranges, list directories, and search file contents by text, regex or syntax pattern in the project. No write access.
 
 [deps]
 require = ["muvon/octofs"]
 
 [roles.mcp]
 server_refs = ["octofs"]
-allowed_tools = ["octofs:view", "octofs:workdir"]
+allowed_tools = ["octofs:view"]
 
 [[mcp.servers]]
 name = "octofs"

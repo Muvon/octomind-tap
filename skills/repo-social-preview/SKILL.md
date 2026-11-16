@@ -72,7 +72,7 @@ social-preview -o <out>/social-preview.png --preview <out>/social-preview-previe
 - Write outputs outside the repository (a temp or output dir) unless the maintainer asks to keep the card in the repo.
 - Resolve every warning: contrast below WCAG AA, text over length, stale numbers. Fix the input; don't ignore a warning without telling the user why.
 - The command fails on an unknown font family, a size other than 1280x640, or a file over GitHub's 1 MB limit. Fix the cause; never resize or recompress the PNG afterwards.
-- View both PNGs with `read_media_file`. At 480 px the tagline must read and the logo must be recognizable; if not, shorten the tagline or drop the subline. If an image can't be viewed, list the files and tell the user legibility is unverified.
+- Open both PNGs and look at them. At 480 px the tagline must read and the logo must be recognizable; if not, shorten the tagline or drop the subline. If an image can't be viewed, list the files and tell the user legibility is unverified.
 
 ### Upload and verify
 

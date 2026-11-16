@@ -176,10 +176,10 @@ top_k = 0
 | `agent` | `agent_*` — delegate to your configured sub-agents | built-in |
 | `orchestration` | `tap` (hand a task to the specialist that fits it) + `schedule` (defer/recur loops) — orchestrator-tier | built-in |
 | `runtime` | `mcp` · `agent`-register · `skill` · `capability` — runtime config (high-trust) | built-in |
-| `filesystem-read` / `filesystem-write` | `view`, `workdir` / `text_editor`, `batch_edit`, `extract_lines` | `octofs.toml` |
-| `shell` | `shell` (command execution) | `octofs.toml` |
+| `filesystem-read` / `filesystem-write` | read files, list directories, search file contents / create, edit and delete files, copy line ranges | `octofs.toml` |
+| `shell` | run shell commands | `octofs.toml` |
 | `codesearch-semantic` | `semantic_search` | `octocode.toml` |
-| `codesearch-structural` / `-graph` | `view` outline and AST modes, `symbol` definitions and references / `symbol` callers, callees, imports and type hierarchies; `octocode.toml` as alternative | `octofs.toml` |
+| `codesearch-structural` / `-graph` | file outlines, AST pattern search, symbol definitions and references / a symbol's callers, callees, imports and type hierarchies; `octocode.toml` as alternative | `octofs.toml` |
 | `memory-read` / `memory-write` | persistent memory tools | `octobrain.toml` |
 | `websearch` | web search | `duckduckgo.toml` |
 | `versioning` | git operations via octofs shell (default); MCP git server as `git.toml` | `octofs.toml` |
