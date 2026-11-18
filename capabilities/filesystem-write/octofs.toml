@@ -9,7 +9,7 @@ require = ["muvon/octofs"]
 
 [roles.mcp]
 server_refs = ["octofs"]
-allowed_tools = ["octofs:text_editor", "octofs:batch_edit"]
+allowed_tools = ["octofs:text_edit", "octofs:batch_edit"]
 
 [[mcp.servers]]
 name = "octofs"
