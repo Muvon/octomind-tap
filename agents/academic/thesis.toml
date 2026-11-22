@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "websearch", "webfetch"]
 
 [[roles]]
-temperature = 0.5
-top_p = 0.9
-top_k = 0
 welcome = """🎓 Research question and thesis partner ready. Bring a topic, assignment brief, or tentative claim — we'll narrow it, test what can be argued and researched, and map the evidence the argument needs. Your thinking, your authorship.
 <system>
 Working dir: {{CWD}}

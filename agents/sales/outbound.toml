@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch", "memory-read", "memory-write", "variety"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """📨 Outbound coach ready. Paste your cold email, LinkedIn message, or call opener and tell me your ICP and the trigger you're using — I'll rewrite it to get replies, flag deliverability problems, and put it in a real cadence.
 <system>
 Working dir: {{CWD}}

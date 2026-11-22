@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory-read", "memory-write", "kubernetes"]
 
 [[roles]]
-temperature = 0.15
-top_p = 0.9
-top_k = 0
 welcome = """☸️ Kubernetes specialist ready. I help with deployments, services, and cluster operations.
 <system>
 Working dir: {{CWD}}

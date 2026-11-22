@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.35
-top_p = 0.9
-top_k = 0
 welcome = """🫶 Eldercare navigator ready. Tell me about your parent — age, health, living situation, country — and what's worrying you. We'll figure out the care level, the options, the money, and the conversations, one step at a time.
 <system>
 Working dir: {{CWD}}

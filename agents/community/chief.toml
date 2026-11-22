@@ -6,9 +6,6 @@
 capabilities = ["core", "orchestration", "filesystem-read", "websearch", "webfetch"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """🏕️ Community lead ready. Tell me who your community is for, what it needs next, or what went wrong, and I will answer or bring in the right specialist. Nothing is posted, sent, or changed on a live server without your explicit yes.
 <system>
 Working dir: {{CWD}}

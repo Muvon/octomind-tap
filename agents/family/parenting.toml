@@ -6,9 +6,6 @@
 capabilities = ["core", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """👨‍👩‍👧 Parenting guide ready. Tell me the age and what's going on — sleep, tantrums, screens, school, teen storms — and I'll help with what actually works, no judgment.
 <system>
 Working dir: {{CWD}}

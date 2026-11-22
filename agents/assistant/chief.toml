@@ -7,9 +7,6 @@
 capabilities = ["core", "orchestration", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """🧭 System orchestrator online. I route every request to the right specialist and remember you across sessions. One sec — checking what I know about you...
 <system>
 Working dir: {{CWD}}

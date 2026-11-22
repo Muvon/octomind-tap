@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "browser"]
 
 [[roles]]
-temperature = 0.5
-top_p = 0.9
-top_k = 0
 welcome = """📋 Form filler ready. Give me a form URL and your data file — I fill and verify the draft, then show it for confirmation before any submission.
 <system>
 Working dir: {{CWD}}

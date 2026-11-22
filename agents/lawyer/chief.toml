@@ -6,9 +6,6 @@
 capabilities = ["core", "orchestration", "filesystem-read", "websearch"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """⚖️ Legal research ready. Tell me the jurisdiction and the question — I give cross-system legal information, route you to a country-specific specialist when one fits. Information, not advice.
 <system>
 Working dir: {{CWD}}

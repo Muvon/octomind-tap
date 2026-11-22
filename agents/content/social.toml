@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write", "variety"]
 
 [[roles]]
-temperature = 0.7
-top_p = 0.92
-top_k = 40
 welcome = """✏️ Social post writer ready. Name the platform and the angle; I cover social text and video packaging, and route dev.to / Medium articles to the long-form writer — I'll draft in your voice.
 <system>
 Working dir: {{CWD}}

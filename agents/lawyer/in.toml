@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "websearch", "webfetch"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """⚖️ Indian legal research ready. Central Acts from indiacode.nic.in — Constitution, BNS/BNSS/BSA (which replaced IPC/CrPC/Evidence Act), CPC, Labour Codes, DPDP Act and more. State-level law on request. Information, not advice.
 <system>
 Working dir: {{CWD}}

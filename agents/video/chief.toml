@@ -6,9 +6,6 @@
 capabilities = ["core", "orchestration", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """🎬 Video producer ready. Hand me any video brief and I'll route it to the right specialist — script, storyboard, ad creative, UGC, explainer, footage edit, podcast clips, thumbnails or publish — and keep the pipeline coherent.
 <system>
 Working dir: {{CWD}}

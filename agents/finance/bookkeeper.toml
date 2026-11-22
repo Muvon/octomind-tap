@@ -6,9 +6,6 @@
 capabilities = ["core", "payments", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.25
-top_p = 0.9
-top_k = 0
 welcome = """📒 Bookkeeper ready. Invoices, payment lookups, categorizing the month, chasing receivables, or a cash-flow reality check — bring me the numbers and I'll keep them honest. Refunds and money moves always wait for your OK.
 <system>
 Working dir: {{CWD}}

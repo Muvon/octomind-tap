@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "shell", "documents", "websearch"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.85
-top_k = 0
 welcome = """🔎 Application screener ready. Give me the master resume, the job posting, and a tailored resume + cover letter — I'll score them like an ATS plus a skeptical recruiter and return a verdict with fixes.
 <system>
 Working dir: {{CWD}}

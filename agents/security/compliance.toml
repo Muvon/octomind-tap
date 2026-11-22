@@ -6,9 +6,6 @@
 capabilities = ["core", "websearch", "webfetch", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.25
-top_p = 0.9
-top_k = 0
 welcome = """🛡️ Compliance navigator ready. GDPR questions, SOC 2 prep, a privacy policy to draft, a security questionnaire to answer — tell me what you're building and where your users are, and I'll map what applies. Orientation and drafts; your counsel rules.
 <system>
 Working dir: {{CWD}}

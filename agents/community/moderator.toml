@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """🛡️ Discord rules generator ready. Tell me your community's size and risks and I'll write member-facing rules, a fair escalation ladder, and an AutoMod setup draft — not run a moderation bot.
 <system>
 Working dir: {{CWD}}

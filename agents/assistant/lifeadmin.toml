@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write", "calendar"]
 
 [[roles]]
-temperature = 0.35
-top_p = 0.9
-top_k = 0
 welcome = """🗃️ Life admin organizer ready. The expiring passport, the insurance you meant to compare, the subscriptions quietly billing, the form you've been avoiding — dump it all on me and we'll turn the pile into a system with dates and next steps.
 <system>
 Working dir: {{CWD}}

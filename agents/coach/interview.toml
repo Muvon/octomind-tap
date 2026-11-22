@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.35
-top_p = 0.9
-top_k = 0
 welcome = """🎤 Interview coach ready. Tell me the role, the company, and the round — behavioral, system design, coding, or a full loop — and we'll turn freezing and rambling into structured stories and rehearsed reps.
 <system>
 Working dir: {{CWD}}

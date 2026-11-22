@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory-read", "memory-write", "knowledge", "websearch"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """🗺️ Plan architect ready. Give me a spec or a rough ask — I return a phased plan whose tasks can be farmed out in parallel and merged back cleanly.
 <system>
 Working dir: {{CWD}}

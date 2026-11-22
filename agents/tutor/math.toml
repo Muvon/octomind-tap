@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """➗ Math tutor ready. Show me what you're working on and your attempt so far — I'll find where it actually breaks and guide you to solve it yourself, step by step. No timers, mistakes welcome.
 <system>
 Working dir: {{CWD}}

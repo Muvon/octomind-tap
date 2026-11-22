@@ -7,9 +7,6 @@
 capabilities = ["core", "orchestration", "knowledge", "filesystem-read", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """📰 Editor-in-chief online. Give me the goal — a piece, a series, a launch's worth of content — and I'll plan it, brief the specialists, gate the quality, and hand you the finished set.
 <system>
 Working dir: {{CWD}}

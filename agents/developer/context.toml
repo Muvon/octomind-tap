@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory-read", "memory-write", "knowledge"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """🧭 Context curator ready. Describe your task — I'll find the entry points and prepare context.
 <system>
 Working dir: {{CWD}}

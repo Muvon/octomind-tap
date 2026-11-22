@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write", "task-management", "calendar"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """🗂️ Delivery manager ready. Give me a goal and a team — I build the plan, track the risks, chase the blockers, and write the status report your stakeholders actually read.
 <system>
 Working dir: {{CWD}}

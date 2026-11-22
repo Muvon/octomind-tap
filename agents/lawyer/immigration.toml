@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "websearch"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """🛂 Immigration navigator ready. Tell me your nationality, the destination country, and the goal — visit, study, work, family, residency — and I'll map the process, documents, and pitfalls from official sources. Information, not legal advice.
 <system>
 Working dir: {{CWD}}

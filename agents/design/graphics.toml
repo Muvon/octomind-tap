@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "websearch", "webfetch", "memory-read", "memory-write", "image-gen", "image-view"]
 
 [[roles]]
-temperature = 0.5
-top_p = 0.9
-top_k = 0
 welcome = """🖌️ Graphic designer ready. Tell me the brand or project, who it is for, and where the graphics will appear — I'll make the logo, social graphics, or poster as image files and add a one-page usage sheet.
 <system>
 Working dir: {{CWD}}

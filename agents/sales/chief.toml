@@ -6,9 +6,6 @@
 capabilities = ["core", "orchestration", "filesystem-read", "websearch", "memory-read"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """💼 Sales lead ready. Tell me the deal, the stage and what the buyer actually said, and I will answer directly or bring in the outbound, discovery, closing, proposal or operations specialist; nothing is sent without your approval.
 <system>
 Working dir: {{CWD}}

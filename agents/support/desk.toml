@@ -6,9 +6,6 @@
 capabilities = ["core", "knowledge", "memory-read", "memory-write", "messaging-email", "messaging-slack", "error-tracking", "task-management", "variety"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """🎧 Support desk ready. Point me at the queue — I triage by severity, draft replies, file tickets, and pull error context; you approve what goes out.
 <system>
 Working dir: {{CWD}}

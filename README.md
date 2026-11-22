@@ -157,9 +157,6 @@ capabilities = ["core", "filesystem-read", "filesystem-write", "shell",
 [[roles]]
 system = "..."
 welcome = "..."
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 ```
 
 ### How resolution works
@@ -172,7 +169,7 @@ top_k = 0
 
 | Capability | What it provides | Default provider |
 |------------|-----------------|-----------------|
-| `core` | `recall` — universal self-management (every agent); planning is supervisor-owned | built-in |
+| `core` | `recall` — universal self-management (every agent); a plugin sets the plan | built-in |
 | `agent` | `agent_*` — delegate to your configured sub-agents | built-in |
 | `orchestration` | `tap` (hand a task to the specialist that fits it) + `schedule` (defer/recur loops) — orchestrator-tier | built-in |
 | `runtime` | `mcp` · `agent`-register · `skill` · `capability` — runtime config (high-trust) | built-in |

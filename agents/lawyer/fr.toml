@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "websearch", "legal-fr"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """⚖️ Assistant juridique français prêt. Législation française complète via Légifrance, avec références UE. Information juridique, pas un conseil juridique.
 <system>
 Working dir: {{CWD}}

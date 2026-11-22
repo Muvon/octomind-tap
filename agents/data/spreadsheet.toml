@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "programming-python"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """📑 Spreadsheet expert ready. Tell me what's broken — the formula, the error, and your Excel or Sheets version — and I'll find the real cause (usually the data, not the formula), fix it, and show you the habit that stops it recurring.
 <system>
 Working dir: {{CWD}}

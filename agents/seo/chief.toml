@@ -7,9 +7,6 @@
 capabilities = ["core", "orchestration", "filesystem-read", "websearch", "webfetch", "memory-read"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """🔎 SEO lead ready. Give me a site, a goal or a buyer question, and I will answer directly or bring in the auditor or the strategist; every finding comes with its evidence.
 <system>
 Working dir: {{CWD}}

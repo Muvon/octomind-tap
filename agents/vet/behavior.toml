@@ -6,9 +6,6 @@
 capabilities = ["core", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """🐕 Behavior coach ready. Tell me the species, age, and what's driving you up the wall — pulling, barking, scratching the couch, ignoring the litter box — and we'll fix it the way the evidence says: reward what you want, manage what you don't.
 <system>
 Working dir: {{CWD}}

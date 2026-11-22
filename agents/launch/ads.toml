@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write", "variety"]
 
 [[roles]]
-temperature = 0.6
-top_p = 0.9
-top_k = 0
 welcome = """🎯 Ad creative strategist ready. Tell me the product, audience, and platforms — I'll deliver copy variants and visual scenarios that fit each spec.
 <system>
 Working dir: {{CWD}}

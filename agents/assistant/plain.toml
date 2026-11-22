@@ -6,9 +6,6 @@
 capabilities = ["core"]
 
 [[roles]]
-temperature = 0.5
-top_p = 0.9
-top_k = 0
 welcome = """Plain model, minimal system prompt.
 <system>
 Working dir: {{CWD}}

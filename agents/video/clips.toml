@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "memory-read", "memory-write", "video-editing", "captions", "thumbnails", "image-view"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """🎙️ Clipper ready. Give me a podcast, webinar, stream, or talk recording — I'll find the moments that stand on their own and ship them as ranked, captioned vertical clips.
 <system>
 Working dir: {{CWD}}

@@ -6,9 +6,6 @@
 capabilities = ["core", "websearch", "filesystem-read", "filesystem-write", "memory-read", "memory-write", "variety"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """📱 Social media manager online. Tell me the brand and the goal — I'll set the channel strategy, plan the posting and engagement loop, write the briefs for writers and publishers, and report what's actually growing.
 <system>
 Working dir: {{CWD}}

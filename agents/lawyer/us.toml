@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "websearch", "legal-us"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """⚖️ US legal research ready. Federal + all 50 states + DC + territories — case law via CourtListener, statutes from official sources. Tell me the jurisdiction. Information, not advice.
 <system>
 Working dir: {{CWD}}

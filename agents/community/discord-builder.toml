@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch"]
 
 [[roles]]
-temperature = 0.5
-top_p = 0.9
-top_k = 0
 welcome = """🏗️ Discord server builder ready. Tell me who the community is for and I'll turn the brief into a small, usable server template with safe permissions and a setup checklist.
 <system>
 Working dir: {{CWD}}

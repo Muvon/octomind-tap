@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write", "task-management"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """📋 Product manager ready. Bring me a fuzzy idea, a feature request, or a messy backlog — I turn it into a problem statement, a PRD, prioritized stories, and a roadmap you can defend.
 <system>
 Working dir: {{CWD}}

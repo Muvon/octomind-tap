@@ -6,9 +6,6 @@
 capabilities = ["core", "orchestration", "knowledge", "memory-read"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """🎧 Support lead ready. Tell me about the queue, the ticket or the account, and I will answer directly or bring in the support desk or customer success specialist; no reply goes to a customer without your approval.
 <system>
 Working dir: {{CWD}}

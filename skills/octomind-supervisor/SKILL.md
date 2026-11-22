@@ -1,184 +1,143 @@
 ---
 name: octomind-supervisor
-title: "Octomind Supervisor & Learning"
-description: "Octomind supervisor reference: loop detectors, verify gate, plan manager, condense, authorizer, lessons. Use when a turn was re-run, gated or blocked."
+title: "Octomind Supervisor Work: Besydr Plugin"
+description: "Octomind has no built-in supervisor since config version 32. The Besydr plugin does the completion check, tool admission, condensing, planning, loop notes and learning. Use when a turn was re-run, checked or blocked, or a user asks about old [supervisor] settings."
 license: Apache-2.0
-compatibility: "Requires: octomind binary. macOS/Linux/Windows."
+compatibility: "Requires: octomind binary, config version 32 or later; the besydr program (Octomind downloads it on first use). macOS/Linux/Windows."
 domains: octomind
 rules:
   - match((?i)\bsupervisor\b)
-  - match((?i)\bverify.?gate\b)
+  - match((?i)\bbesydr\b)
+  - match((?i)\bplugins\s*=|\[\[plugins\]\])
+  - match((?i)\bcompletion.?check\b)
   - match((?i)\[supervisor)
-  - match((?i)\b(orientation memory|cross.session learning|condense|authorizer|hindsight)\b)
-  - semantic(why did octomind re-run or gate my turn)
+  - match((?i)\b(condense|cross.session learning|/learning)\b)
+  - semantic(why did octomind re-run, check or block my turn)
 metadata:
-  version: "1.1"
-  tags: "octomind supervisor learning verify-gate condense"
+  version: "2.0"
+  tags: "octomind besydr plugin supervisor completion-check learning"
 ---
 
 ## Overview
 
-The supervisor is a control plane running beside the agent loop, never inside the transcript. It watches each turn, steers the agent off dead ends, verifies every stop before accepting it, manages the plan, narrows oversized tool output, and carries lessons and grounded knowledge across sessions.
+Since configuration version 32, Octomind has no built-in supervisor. The work the supervisor used to do (a completion check at the end of a turn, a check on tool calls before they run, condensing of long tool output, a plan manager, notes when the agent loops, lessons learned from sessions) is done by Besydr. Besydr is a separate program that Octomind runs as a plugin.
 
-Use this skill to explain supervisor behaviour a user observes and to tune the `[supervisor]` sections. The config is strict: the section and its mechanic tables must be present even when a mechanic is disabled.
+A plugin is a program that Octomind sends events to (session start, each prompt, before and after tool calls, the end of a turn) and whose answers Octomind applies.
+
+Use this skill to explain behaviour a user sees from Besydr, to turn the plugin on or off, and to point users with old `[supervisor]` settings to where those settings went. Besydr's own pages are the source for its details: `https://besydr.com/docs/mechanics`, `/learning`, `/configuration`.
 
 ## Mental model
 
-Free signals gate expensive ones. Every turn produces two zero-cost signals — the agent's self-report and deterministic counters. A model call happens only at a turn stop, on an oversized tool round, on a plan signal, or (if enabled) before tool execution.
+Two programs, two config files. Octomind decides whether the plugin runs: the root key `plugins` in `config.toml`. Besydr decides what it does while running: its own file. A switch for one Besydr part is never in `config.toml`.
 
-The verify-gate is the reward signal: a run counts as verified only when the turn changed state and a recognised check ran on the result. Learning credits only memories the agent reports as materially used.
-
-Mid-trajectory everything is advisory: steering nudges, it never forces. The only blockers are the opt-in authorizer and project guardrails.
+Octomind keeps working without the plugin. It then runs as a plain agent loop. What disappears is every check and every learned lesson: no completion check, no tool admission check, no learning across sessions, no condensing of tool output, no plan manager.
 
 ## Rules
 
-### Self-report
+### Lists, starts and installs the plugin
 
-With supervision on, the agent ends each response with a hidden structured status (`state`, `focus`, `next`, `carry`, plan signal, used memory ids). It is parsed and stripped before display. `focus`/`next`/`carry` feed compression as an attention hint, grounded against the transcript; credential values are forbidden in `carry`.
-
-| State | Effect |
-|-------|--------|
-| `done` | Completion claim, checked by the verify-gate |
-| `need_input` / `blocked` | Hand-back; the gate checks the blocker is genuine, otherwise sends the agent back |
-| `exploring` / `progressing` | Fused with the counters |
-
-### Detectors
-
-Deterministic, free, fixed thresholds. Novelty compares the call target with its result, so a reworded call returning the same output is not new information, while a successful mutation always counts as progress.
-
-- Loop — identical calls and results for 3 tool rounds without novelty.
-- No-progress — 5 tool rounds without new receipts or successful mutations.
-- Recovery — command executions keep failing with no later success for those calls.
-
-All three only queue advisory steer notes. `done`, `blocked`, and `need_input` are left alone, and no-progress is suppressed while `exploring`. Repeated notes back off by doubling when the agent ignores them.
-
-### Verify-gate
-
-With `[supervisor.gate].enabled`, every stop of a user-owned turn — a `done` claim, a hand-back, or a turn ending without status — gets an independent model verification. Mutation and verification detectors supply context but cannot reject on their own; a saved artifact can satisfy an artifact request. Explicit user prohibitions on running checks are honoured: a forbidden check's absence is compliance.
-
-- Pass — accepted; labelled verified only with execution evidence, otherwise unknown.
-- Gaps — an advisory listing gaps is injected and the turn re-runs within a fixed budget; blocking findings first get a refutation pass.
-- Indeterminate — transport failure or invalid protocol fails closed for the turn, recorded as unknown.
-
-All supervisor calls use `[supervisor.model]` (inheriting `[model]`). There is no separate verifier model, so pointing `[supervisor.model]` at a different model family is the way to get an independent verifier.
-
-### Plan manager
-
-Planning is exceptional and supervisor-owned. The agent emits sparse `request`, `phase_complete`, or `reassess` signals; a separate call creates, advances, holds, or revises the plan. The agent has no plan tool; `/plan` displays it. Machine-checkable assumptions (e.g. `file_exists: src/foo.rs`) are monitored and a broken one triggers `reassess`.
-
-### Steer and recite
-
-Steer injects the advisory re-anchor note at the next safe point. Recite re-injects the live goal, plan, prohibitions, and verification policy near the request tail. Both are automatic.
-
-### Condense
-
-A plain-text tool result above `[supervisor.condense].tokens_threshold` (minimum 512) is a candidate. One call per round decides per candidate: fully relevant kept byte-for-byte; partly relevant reduced to line ranges reconstructed verbatim from the original; irrelevant replaced by a deterministic notice. The `mcp_response_tokens_threshold` prefix-cut runs first, so condense narrows only what the agent would have received. The narrowed body spills to a file whose path the result carries; condense runs only when the role has a local file-reading tool, only in the main session. `adaptive = true` lets a per-session multiplier move the threshold within 0.5x–2.0x.
-
-### Authorizer (opt-in)
-
-`[supervisor.authorizer] enabled = true` checks each pending tool batch against role instructions and user intent after native guards. Allow-first: only an independently confirmed conflict blocks, returned as a normal tool error. Judge failures allow the call.
-
-### Evaluation gates and hindsight (opt-in)
-
-`[supervisor.evaluate]` routes bounded yes/no questions at specific seams to a calibrated evaluation model (`model = "cloudflare:typesafe/jev"`, `typesafe:jev-latest`, or `octohub:auto`, keys from the environment). Each seam is one boolean, default `false`: `recall`, `skills`, `capabilities`, `authorizer`, `condense`, `compression`, `distill`, `plan`, `gate`, `evolution`. Any failure falls back to the pre-existing behaviour. `octomind evaluate` runs the same model by hand.
-
-`[supervisor.hindsight]` (`enabled = false`, `model = "muvon/hindsight"`) is a local ONNX verifier that predicts whether the user's next turn will be a correction. Observe-only: scores are logged, shown, and tallied in `/info`.
-
-### Lessons, orientation, and experience
-
-All learning is file-backed under `<data_dir>/learning/`; there is no separate learning model.
-
-- Lessons — short do/avoid rules from user corrections and stated rules, each carrying a verbatim user quote that a verifier must support. At most 3 per extraction. `scoped` (default) lives in `learning/{project}/{role_base}/` (role cut at the colon) and is recalled by relevance; `global` lives in `learning/_/` and is reconsidered every turn by importance.
-- Orientation — grounded descriptive understanding, recalled as working assumptions to verify, never as truth.
-- Experience — occasional longer records of non-obvious, hard-won knowledge with an outcome label and evidence handles.
-
-Extraction runs after `/done`, at every auto-compaction fold, and at session end (a detached child). Each genuine user turn builds a fresh Active Memory Pack capped at 2,000 tokens (512 for global rules). Retention archives low-utility records to a cold store rather than deleting them; `/learning` lists, shows, deletes, and clears.
-
-`[supervisor.learning.evolution]` (`enabled = false`) can compile recurring grounded memories into generated skills or guardrail candidates, promoted only after a randomized treatment-vs-control trial scored by verify-gate verdicts (`min_samples`, `noise_margin`, `cost_allowance`, `cost_per_gain`, `max_trial_uses`). It needs the gate enabled.
-
-### Delegation
-
-`tap(action="run")` and `agent_*` spawn a context-isolated child that sees only its prompt. The handoff must carry the goal, established facts, constraints, and expected deliverable. The child reports its measured outcome back; missing or failed handbacks count as unverified.
-
-### Configuration
+A new configuration has one entry in the root key `plugins`. It is an inline table, so the key stays above the first `[table]` header of `config.toml`:
 
 ```toml
-[supervisor]
-enabled = true
-
-[supervisor.model]            # optional overrides; omitted fields inherit [model]
-name = "octohub:auto"
-reasoning_effort = "medium"
-max_tokens = 8192
-temperature = 0.0
-
-[supervisor.learning]
-enabled = true
-
-[supervisor.learning.evolution]
-enabled = false
-
-[supervisor.gate]
-enabled = true
-
-[supervisor.authorizer]
-enabled = false
-
-[supervisor.evaluate]
-model = "cloudflare:typesafe/jev"
-# recall, skills, capabilities, authorizer, condense,
-# compression, distill, plan, gate, evolution = false
-
-[supervisor.hindsight]
-enabled = false
-model = "muvon/hindsight"
-
-[supervisor.plan]
-enabled = true
-
-[supervisor.condense]
-enabled = true
-adaptive = false
-tokens_threshold = 5000
+plugins = [
+	{ name = "besydr", type = "stdio", command = "besydr", args = ["connect"], install_manifest = "https://cdn.besydr.com/latest.json", install_key = "uU5IoojVdfJZj5/fU4JQE8CXnmYXNBGo5nyLgWcNNrw=" },
+]
 ```
 
-Detectors, steer, recite, and the detector thresholds have no configuration. Strictness asymmetry: the tables are required, but an omitted field inside them can take a code default — learning's `enabled` defaults to `false` in code and is on only because the template sets it.
+- `type = "stdio"`: Octomind starts `besydr connect` and talks to it over standard input and output. That command joins the Besydr server shared by all your clients and starts it when it is not running.
+- When `besydr` is not installed, Octomind downloads it on first use from the signed release `install_manifest` names. The release must be signed with `install_key`, or nothing is installed. Octomind never updates the program by itself.
+- Provider keys: Besydr reads the OctoHub key that `octomind login` stores, so a logged-in user sets nothing.
+- Configurations written before version 32 get this entry on upgrade, unless they already list a plugin named `besydr`.
+- Besydr is free with Octomind and needs no licence there.
+
+### Turn it off
+
+- Add `enabled = false` to the `besydr` entry, or remove the entry. A plugin that is not listed, or has `enabled = false`, receives nothing.
+- One run only: `-c 'plugins=[]'` runs Octomind with no plugin.
+- Single Besydr parts (condensing, learning) are switched in Besydr's file, not in `config.toml`.
+- There is no `supervisor.enabled` switch. `-c supervisor.enabled=false` fails with `Unknown config override path 'supervisor.enabled'`.
+
+### What Octomind still does without the plugin
+
+- The agent loop, tools and MCP servers, sessions and cost accounting.
+- Compaction of long conversations, including `/done`.
+- The rules in `.agents/guardrails.toml`.
+- Storage and display of the plan (`/plan`). The agent has no tool to change the plan; a plugin creates and advances it. Without a plugin `/plan` reports that there is no plan.
+- The status line: the agent ends each response with a hidden line that reports its state. Octomind reads it and removes it before display.
+- A hard stop for runaway tool loops: root key `max_identical_rounds` (default `10`). When that many tool rounds in a row repeat calls and results already seen since the last new result, the turn ends with a notice naming the repeated call. `0` turns the stop off. `-c max_identical_rounds=0` sets it for one run.
+- Its own rules for which skill and which capability a request activates, which specialist gets a delegated task, and which tool results a compaction summarizes.
+
+### What Besydr does
+
+Each part has a switch in Besydr's file. Several parts call a model, so they use your model account. `/info` in Octomind shows the calls, time and cost of each part that ran.
+
+- Completion check (`[gate] enabled`, default on). Before work starts, Besydr writes a checklist from your request. When the agent stops at the end of a turn you started, Besydr compares the checklist with the tool calls, results and file changes. Pass: the turn ends. Gaps: the agent is sent back to work with the gaps as its next instruction. Unsettled (thin evidence): one note per user turn when `unsettled_advisory` is on, then the check runs again. Indeterminate (model unavailable or unusable answer): the turn ends and is recorded as unverified. At most 3 checks per turn. It is as good as the writing model and is not a code review.
+- Tool admission (`[authorizer] enabled`, default on). A call is allowed unless the writing model finds a conflict with your words or the agent's role and the decision model confirms it. A model that is unavailable, times out or is unsure allows the call. A confirmed conflict is a denied call with a reason quoting your words.
+- Condensing of large tool output (`[condense] enabled`, `tokens_threshold` default 5000, `adaptive`). A plain-text result above the threshold is cut to the chunks that report a failure, hold the requested data, or name a path or line to act on. Kept lines are copied from the original. The full original is saved to a file whose path the shortened result names. Results under 512 tokens are never candidates. `tokens_threshold = 0` turns it off.
+- Plan manager (`[plan] enabled`). The agent signals that work has dependent phases; a separate model call creates, advances, holds or revises the plan. In Octomind `/plan` shows it.
+- Loop and no-progress notes. No switch, thresholds fixed: the same calls and results for 3 rounds, 5 rounds with nothing new, or failed commands with no later success. The note is advice and never blocks a call.
+- Advice note (`[advise] enabled`). A model writes the loop or failure note instead of the plain one. One in four eligible signals gets the plain note on purpose, so the effect can be compared.
+- Standing rules. No switch. A rule you state for the rest of the session ("from now on, never push to main") is kept in your exact words, repeated with every later request and kept through compaction. At most 8 rules of at most 200 characters.
+- Learning (`[learning] enabled`, default on). Lessons from your corrections and rules, added to later sessions. In Octomind `/learning` comes from the plugin, with the sub-commands `list`, `show`, `delete`, `clear` and `evolution`. Generated skills and rules (`[learning.evolution] enabled`) are off by default and need `[gate] enabled = true`.
+- Hindsight (`[hindsight] enabled`) scores handed-back turns for the chance you will correct them. It acts on nothing and is counted in `/info`. Project document sections (`[inject] enabled`) add the part of a document that `AGENTS.md` references and that fits the file being worked on; no model is called.
+- Judgements for Octomind. Octomind asks its plugin to decide four things: which skill, which capability, which specialist for a delegated task, and which tool results a compaction may drop. Besydr answers with its decision model.
+
+### Besydr's configuration
+
+- Find it with `besydr config`: it prints the config file path, the data directory, the model and the decision model, and whether their key variables are set. It never prints a key. By default the file is `<data directory>/config/config.toml`; the data directory is `~/.local/share/besydr` on Linux and macOS.
+- The file is strict: every key present, unknown keys an error, `version` must be `1`. Restart the server after an edit.
+- `[model]` writes text (checklist, completion check, plans, lessons). `[decision]` `model` answers short typed questions and writes no text. Both default to `octohub:auto`. `[model]` keys include `name`, `reasoning_effort`, `max_tokens`.
+- Other tables: `[server]`, `[sessions]`, `[learning]`, `[learning.evolution]`, `[gate]`, `[authorizer]`, `[hindsight]`, `[advise]`, `[plan]`, `[condense]`, `[inject]`.
+- Judgements have no switch: with Besydr connected, all four always go to the decision model. `[decision]` holds only `model` and `recall` (ask the decision model whether each recalled lesson fits the request), and an unknown key there is an error. Octomind's page `doc/usage/14-supervisor.md` still names `skills`, `capabilities`, `taps` and `compression` switches; Besydr has none of them.
+
+### Where the old settings went
+
+- `[supervisor]`, all `[supervisor.*]` tables and `[decision]` are removed from `config.toml`; Octomind no longer reads them.
+- The upgrade saves them unchanged to `besydr-carry/supervisor.toml` beside `config.toml`. Besydr reads that file once, on its first run, and takes matching settings into its own file.
+- `supervisor.max_identical_rounds` became the root key `max_identical_rounds`. `supervisor.enabled = false` became `enabled = false` on the `besydr` entry.
+- The commands `evaluate` and `distill` are removed from the `octomind` program. Octomind has no evaluation model of its own. Overrides like `-c supervisor.gate.enabled=false` name nothing.
+- Lessons Octomind learned earlier are imported by Besydr on its first run.
+
+### When the plugin does not answer
+
+- Octomind goes on without that answer and queues a notice. A busy plugin that says so is waited for, at most one hour.
+- After 3 unanswered events in a row the plugin is paused for 30 seconds, then tried again. Each failed try doubles the pause, up to 10 minutes. One answered event ends it with the notice `plugin 'besydr' answers again`.
+- A plugin that cannot be started is off for that session; the next session tries again.
+- Notices go to standard error, only when it is a terminal and the format is not `jsonl`. A paused or unstartable plugin is also reported by `octomind run` as an error on standard error, and by the ACP and WebSocket servers in their log file.
 
 ## Examples
 
-### Example 1: deleting a section to switch a mechanic off
+### Example 1: switching the plugin off
 
-❌ Bad: removing `[supervisor.condense]` entirely.
+Bad: `supervisor.enabled = false` in `config.toml`, or `-c supervisor.enabled=false`. Octomind rejects the key.
 
-✅ Good:
-```toml
-[supervisor.condense]
-enabled = false
-adaptive = false
-tokens_threshold = 5000
-```
+Good: `enabled = false` on the `besydr` entry in `plugins`, or `-c 'plugins=[]'` for one run.
 
-What changed: the table is required by the parser; `enabled` is the switch.
+### Example 2: switching off one part
 
-### Example 2: condense threshold above the hard ceiling
+Bad: looking for a `[condense]` or `[supervisor.condense]` table in `config.toml`.
 
-Keep `tokens_threshold` well below `mcp_response_tokens_threshold`. The prefix-cut runs first, so a higher threshold means nothing ever qualifies for condensing.
+Good: set `condense.enabled = false` (or `tokens_threshold = 0`) in Besydr's file; `besydr config` shows where it is.
 
 ### Example 3: "the agent keeps redoing the same thing"
 
-That is the loop detector's territory. It fires on repeated identical calls and results and queues an advisory. Disabling the supervisor removes the note without fixing the repetition.
+Two things can act. Besydr's loop note is advice only. The hard stop is Octomind's `max_identical_rounds`, which ends the turn. Name which one fired before suggesting a change.
+
+### Example 4: "why was my turn sent back?"
+
+Most likely the completion check found gaps. The message lists them. Turn it off with `gate.enabled = false` in Besydr's file.
 
 ## Checklist
 
-- [ ] Every `[supervisor.*]` table present — mechanics switched off with `enabled`, not by deleting sections?
-- [ ] Supervisor model set in `[supervisor.model]` (no per-mechanic or verifier model keys)?
-- [ ] `[supervisor.condense].tokens_threshold` comfortably below `mcp_response_tokens_threshold`?
-- [ ] Evolution enabled only together with the gate?
-- [ ] Delegation prompts carry full context, since the child sees only the prompt string?
-- [ ] Behaviour attributed to the right mechanic before recommending a config change?
+- [ ] Told the user that Octomind has no supervisor and Besydr does the work as a plugin?
+- [ ] Plugin switched in `config.toml` (`plugins` entry), Besydr parts switched in Besydr's file?
+- [ ] Behaviour attributed to the right part (completion check, tool admission, condensing, loop note, `max_identical_rounds`) before recommending a change?
+- [ ] For `/learning` or `/plan` problems: checked that the plugin is connected?
+- [ ] Old `[supervisor]` settings: pointed to `besydr-carry/supervisor.toml` and Besydr's file, not to `config.toml`?
 
 ## Composition / References
 
-- Pairs with `octomind-config` for every non-supervisor section of `config.toml`.
-- Pairs with `octomind-cli` for `/done`, `/plan`, `/learning`, and `octomind evaluate`.
-- Octomind docs: `doc/usage/14-supervisor.md`, `doc/usage/13-learning.md`, `doc/reference/03-config-reference.md`
+- Pairs with `octomind-config` for the root key `plugins` and the rest of `config.toml`.
+- Pairs with `octomind-cli` for `/done`, `/plan`, `/learning` and `/info`.
+- Octomind docs: `doc/usage/14-supervisor.md`, `doc/usage/13-learning.md`, `doc/integration/05-plugins.md`, `doc/troubleshooting/02-migration-guide.md`.
+- Besydr docs: `https://besydr.com/docs` (mechanics, learning, configuration).

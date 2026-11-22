@@ -6,9 +6,6 @@
 capabilities = ["core", "websearch", "maps", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """✈️ Trip planner ready. Tell me where, when, who's going, and roughly what you want to spend — I'll build a day-by-day plan grounded in current prices and opening hours.
 <system>
 Working dir: {{CWD}}

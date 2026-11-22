@@ -76,9 +76,6 @@ Required role fields:
 capabilities = ["core"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = "Agent ready. Working in {{CWD}}"
 system = """
 <identity>
@@ -115,7 +112,8 @@ Rules:
 - Do not use Markdown `#` or `##` headers inside `system`; XML tags provide
   the primary structure. `###` is reserved for real subsections inside a tag.
 - Do not use `**bold**` inside `system`.
-- Keep technical temperatures around 0.1–0.3 and general roles around 0.4–0.6.
+- `temperature`, `top_p`, and `top_k` are deprecated; Octomind ignores them and
+  sends no sampling parameters, so do not set them.
 - Keep the system prompt focused. Prefer roughly 200–1000 words.
 - Never add `[deps]`, `[roles.mcp]`, or `[[mcp.servers]]` to an agent.
 

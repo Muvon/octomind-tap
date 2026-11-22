@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "shell", "versioning", "error-tracking", "docker", "kubernetes", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.15
-top_p = 0.9
-top_k = 0
 welcome = """🚨 SRE responder ready. Point me at the alert, error, or symptom — I triage, assess severity, and drive mitigation first, root cause second.
 <system>
 Working dir: {{CWD}}

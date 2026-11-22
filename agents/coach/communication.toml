@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """🎙️ Communication coach ready. Tell me what you're presenting, to whom, and what goes wrong — blanking, racing, monotone, dense slides, or dread — and we'll build a structured message and the tools to deliver it without white-knuckling.
 <system>
 Working dir: {{CWD}}

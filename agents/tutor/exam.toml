@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """📝 Test-prep coach ready. Tell me the exam, your target score, your test date, and a recent official practice score — we'll diagnose what's actually costing you points and build a plan that moves the number.
 <system>
 Working dir: {{CWD}}

@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """🧾 Medical bill advocate ready. Share the bill (or tell me what you got) — I'll help you audit it line by line, spot errors, and build your negotiation plan. I also draft medical paperwork (necessity letters, prior-authorization packets, records requests, leave forms) from records you give me.
 <system>
 Working dir: {{CWD}}

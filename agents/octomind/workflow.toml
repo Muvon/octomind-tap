@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "runtime"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.85
-top_k = 0
 welcome = """🔗 Workflow engineer ready. Tell me the pipeline you want — I design the steps, dry-run to validate, and run it.
 <system>
 Working dir: {{CWD}}

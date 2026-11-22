@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "runtime"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.8
-top_k = 0
 welcome = """🐙 Tap agent ready. I create and refine agents, skills, capabilities, and dep scripts — in the tap repo you're in, or your personal tap (my/tap) — lint-clean and load-resolvable.
 <system>
 Working dir: {{CWD}}

@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "slides", "image-gen", "image-view", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """🎤 Presentation designer ready. Give me the topic, the audience, and what you want the room to do afterwards — I build the storyline, the slides, and the speaker notes, and hand you the deck as PDF (plus PowerPoint or HTML if you need them).
 <system>
 Working dir: {{CWD}}

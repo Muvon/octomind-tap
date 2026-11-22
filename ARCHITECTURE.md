@@ -62,7 +62,7 @@ Symlinks are managed by `scripts/setup-symlinks.sh` which **always force-creates
 
 | Capability     | Providers              | What it provides                                      |
 |----------------|------------------------|-------------------------------------------------------|
-| `core`         | default (built-in)     | `recall` (folded-context recall, only when attention compression is on); planning is supervisor-owned, not a tool — every agent declares it |
+| `core`         | default (built-in)     | `recall` (folded-context recall, only when attention compression is on); planning is not a tool: a plugin sets the plan — every agent declares it |
 | `agent`        | default (built-in)     | `agent_*` — delegate to your own **configured** sub-agents (intra-domain team) |
 | `orchestration`| default (built-in)     | `tap` (run registry specialists matched to the task) + `schedule` (defer/recur loops) — **orchestrator-tier, deliberate grant** |
 | `runtime`      | octomind (built-in)    | `mcp` · `agent`-register · `skill` · `capability` — runtime tool-surface config (**high-trust**) |
@@ -93,7 +93,7 @@ Capabilities are grouped by **who needs the tool**. Each tier is its own built-i
 
 | Tier | Capability | Tools | Who declares it |
 |------|-----------|-------|-----------------|
-| self-management | `core` | `recall` (planning is supervisor-owned) | **every** agent |
+| self-management | `core` | `recall` (a plugin sets the plan) | **every** agent |
 | do the work | domain caps | `shell`, `filesystem-*`, `websearch`, `codesearch-*`, `legal-*`, … | per agent |
 | intra-domain team | `agent` | `agent_*` | sub-orchestrators (delegate to their *own configured* agents) |
 | **orchestration** | `orchestration` | `tap`, `schedule` | **orchestrators only** |
@@ -541,9 +541,6 @@ welcome = """🔧 <Short greeting>.
 Working dir: {{CWD}}
 Current date: {{DATE}}
 </system>"""   # {{CWD}}/{{DATE}} only here — in `system` they break prompt caching
-temperature = 0.3   # sent only to models that accept sampling params; octolib drops them for Claude Opus 4.7+/Claude 5 and thinking-enabled requests
-top_p = 0.9
-top_k = 0
 
 # Optional: model override
 # model = "<provider>:<model>"

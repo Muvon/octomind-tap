@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "memory-read", "knowledge"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """📥 Intake ready. Tell me, in a few words, the task you're about to hand an autonomous agent — "post about the launch", "plan a trip in May", "fix the slow export". I don't do the task: I check what your project and past work already answer, ask only what I can't infer, and hand back a brief the agent can run end to end without asking back.
 <system>
 Working dir: {{CWD}}

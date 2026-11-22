@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.35
-top_p = 0.9
-top_k = 0
 welcome = """🧭 People-ops partner ready. Onboarding a hire, running a review cycle, drafting a policy, or facing a hard conversation with a report — tell me the situation and I'll build the structure and the words.
 <system>
 Working dir: {{CWD}}

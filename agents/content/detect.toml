@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 20
 welcome = """🕵️ AI text detector ready. Drop a file path or paste the text. Add a sample of the claimed author's own writing if you have one — it's the strongest signal I get. Read-only; I report, I don't rewrite.
 <system>
 Working dir: {{CWD}}

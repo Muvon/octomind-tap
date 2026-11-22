@@ -6,9 +6,6 @@
 capabilities = ["core", "websearch", "webfetch"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """🔎 Researcher ready. Give me a question — I investigate with web sources, verify claims, and return structured cited findings.
 <system>
 Working dir: {{CWD}}

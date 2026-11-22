@@ -6,9 +6,6 @@
 capabilities = ["core", "memory-read", "memory-write", "websearch", "webfetch", "scraping", "highlights", "knowledge"]
 
 [[roles]]
-temperature = 0.25
-top_p = 0.9
-top_k = 0
 welcome = """🔭 Monitor ready. Define a watch ("track X's pricing", "monitor topic Y") or say "run my watches" — I sweep, compare against last state, and digest what actually changed.
 <system>
 Working dir: {{CWD}}

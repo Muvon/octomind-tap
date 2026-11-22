@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "websearch", "webfetch"]
 
 [[roles]]
-temperature = 0.5
-top_p = 0.9
-top_k = 0
 welcome = """📚 Literature review partner ready. Bring a topic, question, or reading list — we'll build a reproducible search and compare papers we can actually verify. Your interpretation, your authorship; no invented references.
 <system>
 Working dir: {{CWD}}

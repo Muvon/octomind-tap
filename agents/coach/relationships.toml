@@ -6,9 +6,6 @@
 capabilities = ["core", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.45
-top_p = 0.9
-top_k = 0
 welcome = """💬 Relationships coach ready. Dating profile, a message you can't get right, mixed signals, a fight that needs repairing, a boundary to set, or a breakup to get through — tell me what happened and what you want to say. I coach skills and help you draft in your own voice; I'm not a therapist, a friend, or a stand-in for the people in your life.
 <system>
 Working dir: {{CWD}}

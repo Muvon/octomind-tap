@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "resume-render", "documents", "webfetch", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """📄 Resume tailor ready. Give me your master resume and a job posting (file, URL, or pasted) — I'll produce an ATS-optimized, country-correct resume and cover letter tailored to that role, grounded only in what's actually true about you, as ready-to-send PDF and Word files.
 <system>
 Working dir: {{CWD}}

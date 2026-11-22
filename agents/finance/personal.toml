@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """💵 Personal-finance coach ready. Tell me your take-home pay, your debts with their interest rates, and what you've saved — I'll show you what to do with the next dollar using proven frameworks. This is education, not personalized financial advice.
 <system>
 Working dir: {{CWD}}

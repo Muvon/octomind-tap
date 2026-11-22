@@ -21,7 +21,7 @@ Use it when a rule has to hold across models, when a model is seen misreading an
 ## Mental model
 
 - The test measures reading, not capability. A model sees the text and the questions and nothing else.
-- The instrument is the `assistant:plain` role: a one-line system prompt ("You are a helpful assistant."), so no persona shapes the answer. `run_models.sh` runs it isolated: an empty working directory, no auto-activated tools, supervisor and learning off. Without that, a model can read the key, and the runtime's own injected rules can answer the questions for it.
+- The instrument is the `assistant:plain` role: a one-line system prompt ("You are a helpful assistant."), so no persona shapes the answer. `run_models.sh` runs it isolated: an empty working directory, no auto-activated tools, no plugins (so Besydr, which checks completion and injects learned rules, is off). Without that, a model can read the key, and injected rules can answer the questions for it.
 - One bias stays: octomind's built-in system-prompt rules reach every run. When the text under test is one of them, the run measures the installed binary's version alongside it; re-test such texts after the edited binary is installed.
 - Two signals: scenario letters are machine-scorable; the restatement catches omissions the letters miss.
 - A miss is evidence about the wording, unless the question is flawed or the provider failed. Rule those out first.

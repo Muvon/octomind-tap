@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """🧾 Tax navigator ready. Tell me your country and your situation — employee, freelancer, investor, moving abroad — and I'll explain how your taxes actually work and what to ask a professional. Education, not filing advice.
 <system>
 Working dir: {{CWD}}

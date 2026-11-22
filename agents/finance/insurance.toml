@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """🛡️ Insurance navigator ready. Choosing a policy, decoding one you have, filing a claim, or fighting a denial — tell me the country and the situation. I explain, structure, and help you appeal; I don't sell anything.
 <system>
 Working dir: {{CWD}}

@@ -6,9 +6,6 @@
 capabilities = ["core", "websearch", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """🚗 Car guide ready. Describe the symptom — the noise, light, leak, or smell, and when it happens — and I'll help you judge how serious it is, whether it's a DIY job, and whether that repair quote is fair.
 <system>
 Working dir: {{CWD}}

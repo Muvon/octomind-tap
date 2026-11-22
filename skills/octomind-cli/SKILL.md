@@ -49,7 +49,6 @@ Bare `octomind` behaves like `octomind run` with the default role.
 | `untap <TAP>` | Remove a tap |
 | `vars` | Placeholder variables and resolved values (`-p/--preview`, `-e/--expand`) |
 | `send --name <NAME> [MESSAGE]` | Inject a message into a running named session; message from stdin when omitted |
-| `evaluate [FILE]` | Ask the evaluation model typed questions about a JSON state (`{"state", "questions"}` from FILE or stdin), answers printed as JSON; `-m` overrides the model |
 | `workflow [NAME\|FILE]` | Run a multi-step workflow; bare lists tap workflows (`--dry-run`, `--format jsonl`) |
 | `completion <SHELL>` | bash, zsh, fish, elvish, or powershell completions |
 
@@ -104,9 +103,10 @@ Behaviour worth knowing:
 
 - `/model` and `/effort` save to the session file, not global config. `/loglevel` is runtime-only.
 - `/role` accepts a config role name, a tap tag, or a bare domain (switches to `<domain>:chief`, with the same local-role-first rule as TAG).
-- `/done` force-compresses context, bypassing threshold and cost guards, then starts lesson extraction in the background.
+- `/done` force-compresses context, bypassing threshold and cost guards; with the Besydr plugin connected, Besydr then extracts lessons in the background.
 - `/mcp` is read-only. Runtime server management is the `mcp` tool of the `runtime` server.
-- `/plan` only displays the supervisor-owned plan; nothing in the session can edit it.
+- `/plan` only displays the plan a plugin set; with no plugin there is no plan, and nothing in the session can edit it.
+- `/learning` is registered by the Besydr plugin; without the plugin the command does not exist.
 - `/workflow` lists tap workflows, `/workflow <name>` shows the definition, `/workflow <name> <input>` runs it (blocking).
 - `/share` uploads the session and prints a URL. `/analyze` uploads nothing — it serves a token-gated local bridge for the web viewer.
 - `/?` shows in autocomplete but is not dispatched; use `/help`.

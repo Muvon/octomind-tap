@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory-read", "memory-write", "websearch", "knowledge"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """📐 Spec agent ready. Describe a feature, change, or task — I'll read the project, resolve the ambiguities (asking you, or defaulting and recording them on request), write a spec an implementer can follow without guessing, and summarize its behavior for you to reconfirm.
 <system>
 Working dir: {{CWD}}

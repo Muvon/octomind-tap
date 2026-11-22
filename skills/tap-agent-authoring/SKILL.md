@@ -32,9 +32,6 @@ system = """
 <XML-tagged system prompt — see below>
 """
 welcome = "<Emoji> <Short greeting>. Working in {{CWD}}"
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 # model = "<provider>:<model>"   # optional override
 ```
 
@@ -45,7 +42,7 @@ top_k = 0
 | `capabilities` | Required at top level; the only way to wire tools. Bare names only — `default.toml` picks the provider; users override it in their own `[capabilities]` config |
 | `system` | Required; XML blocks in canonical order |
 | `welcome` | Required; first message shown; emoji plus `{{CWD}}` |
-| `temperature`, `top_p`, `top_k` | Required by lint; see Sampling below |
+| `temperature`, `top_p`, `top_k` | Deprecated; octomind ignores them and sends no sampling parameters, so do not set them |
 | `model` | Optional `provider:model` override for this agent |
 | `name`, `[deps]`, `[roles.mcp]`, `[[mcp.servers]]` | Forbidden — injected from the tag and from capability files |
 
@@ -137,20 +134,9 @@ The system prompt must be identical run to run so the provider can cache it (cac
 | `{{ROLE}}`, `{{SHELL}}`, `{{OS}}`, `{{GIT_STATUS}}`, `{{README}}`, ... | Expand in both, but anything that changes per session or project breaks caching in `system` |
 | `{{INPUT:KEY}}`, `{{ENV:KEY}}` | Capability files, not prompts — credentials and env vars |
 
-### Sampling and model settings
+### Model setting
 
-The runtime folds `temperature`, `top_p`, and `top_k` into the role's model override and the provider layer sends only what the target model accepts. On the `anthropic:` provider, Claude Opus 4.7 and later, the Claude 5 family, and any request with thinking on (the default `reasoning_effort` is `medium`) get no sampling parameters at all — the API rejects non-default values, so octolib omits them. Several Claude 4.x models reject `top_p`; it is dropped there. OpenAI reasoning models (o-series, GPT-5 and later) reject `temperature`/`top_p` as well, and octolib drops them there too.
-
-So the fields are required, but on current Claude models behaviour comes from the prompt, not the sampler. Set conservative values for the models that still honour them:
-
-| Domain | temperature | top_p | top_k |
-|--------|-------------|-------|-------|
-| Developer, DevOps, security | 0.1–0.2 | 0.9 | 0 |
-| Medical, legal, finance | 0.15–0.2 | 0.9 | 0 |
-| General assistant | 0.3 | 0.9 | 0 |
-| Content, creative | 0.4–0.7 | 0.9 | 0 |
-
-`top_k = 0` disables it. Use `model` only when the agent genuinely needs a specific model; otherwise let the user's config and `[taps]` decide.
+Use `model` only when the agent genuinely needs a specific model; otherwise let the user's config and `[taps]` decide.
 
 ### Lint rules that bite
 
@@ -214,9 +200,6 @@ Don't own: infrastructure and deployment.
 </critical>
 """
 welcome = "🦀 Rust developer ready. Working in {{CWD}}"
-temperature = 0.1
-top_p = 0.9
-top_k = 0
 ```
 
 ### Example 2: forbidden fields
@@ -247,7 +230,7 @@ What changed: the system prompt is cacheable again and lint passes.
 - [ ] Tone calibrated: plain `Use X when …`, explicit asks, all-caps only for real hard-stops?
 - [ ] No `{{CWD}}`/`{{DATE}}`/`{{SYSTEM}}`, headers, or bold in `system`; under ~1500 words?
 - [ ] Reference material moved to skills; every named skill exists?
-- [ ] Sampling fields set conservatively, behaviour driven by the prompt?
+- [ ] Deprecated sampling fields absent?
 - [ ] `bash scripts/lint-manifests.sh agents/<domain>/<spec>.toml` passes and `bin/load <domain>:<spec>` resolves?
 
 ## References

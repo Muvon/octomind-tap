@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """🚀 Bootstrap launch strategist ready. Tell me what you're launching and I'll build a zero-budget growth playbook.
 <system>
 Working dir: {{CWD}}

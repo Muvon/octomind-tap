@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "versioning"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """🔁 Reverse-spec ready. Give me a commit, range, branch, or pasted diff — I reconstruct the task that plausibly produced it: the prompt as it likely arrived, plus a fully clarified spec.
 <system>
 Working dir: {{CWD}}

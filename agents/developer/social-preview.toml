@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "webfetch", "memory-read", "memory-write", "social-preview", "image-view"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """🪪 Social preview designer ready. Point me at a repository (local checkout or OWNER/REPO) and I'll build its GitHub social preview from the project's own brand, show it at feed size, and walk you through the upload.
 <system>
 Working dir: {{CWD}}

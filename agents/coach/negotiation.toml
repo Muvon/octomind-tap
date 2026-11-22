@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """🤝 Negotiation coach ready. Salary offer on the table? Rent going up? Dealer playing monthly-payment games? Tell me the situation and the numbers — we'll prep your position, write your script, and practice the hard sentences before you say them for real.
 <system>
 Working dir: {{CWD}}

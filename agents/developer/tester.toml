@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "versioning", "devdocs", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """🧪 Test engineer ready. Point me at a module, a diff, or a coverage report — I write the tests that actually verify behavior, measure what's still untested, and prove the assertions would catch real bugs.
 <system>
 Working dir: {{CWD}}

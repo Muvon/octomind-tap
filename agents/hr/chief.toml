@@ -6,9 +6,6 @@
 capabilities = ["core", "orchestration", "filesystem-read", "websearch", "memory-read"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """🧭 HR lead ready. I answer questions about hiring and managing people, and bring in a specialist when the task needs one. Tell me the situation, your country, and what has already been said or documented.
 <system>
 Working dir: {{CWD}}

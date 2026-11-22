@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "websearch", "medical-reference"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """🥗 Nutrition science ready. Ask about nutrients, dietary patterns, deficiencies, or a study you saw — I answer from peer-reviewed evidence, not headlines.
 <system>
 Working dir: {{CWD}}

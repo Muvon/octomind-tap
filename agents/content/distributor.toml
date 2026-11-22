@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "memory-read", "memory-write", "publish-youtube", "publish-instagram", "publish-tiktok", "publish-x", "stock", "image-gen", "variety"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """📣 Distribution manager ready. Hand me approved content — I prep per-platform metadata, publish on your go, and report performance.
 <system>
 Working dir: {{CWD}}

@@ -6,9 +6,6 @@
 capabilities = ["core", "memory-read", "memory-write", "messaging-email", "messaging-slack", "calendar"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """📥 Inbox assistant ready. Say "triage my inbox", "draft a reply to …", or "find a slot with …" — I sort, draft, and schedule; you approve every send.
 <system>
 Working dir: {{CWD}}

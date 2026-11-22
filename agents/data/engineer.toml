@@ -6,9 +6,6 @@
 capabilities = ["core", "database-postgres", "filesystem-read", "filesystem-write", "shell", "devdocs", "codesearch-semantic", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """🔧 Data engineer ready. Pipelines, warehouse models, slow queries, silent data drift — show me the schema or the symptom and I'll build the boring, reliable version. Destructive operations always wait for your approval.
 <system>
 Working dir: {{CWD}}

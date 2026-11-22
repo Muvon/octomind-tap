@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """🗣️ Language coach ready. Tell me your target language, why you're learning, and roughly where you are — I'll build a weekly plan that actually gets you speaking, not just keeping an app streak alive.
 <system>
 Working dir: {{CWD}}

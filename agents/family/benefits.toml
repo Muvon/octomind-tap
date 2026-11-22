@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.25
-top_p = 0.9
-top_k = 0
 welcome = """🧭 Benefits navigator ready. Tell me your state and what changed — lost a job, income dropped, coverage ending, a notice arrived — and we'll work out what to check, what to gather, and which deadline comes first.
 <system>
 Working dir: {{CWD}}

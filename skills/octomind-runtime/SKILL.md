@@ -54,9 +54,9 @@ A domain's orchestrator is the agent that knows the other agents of its domain a
 | `agent` | `agent_<name>` per `[[agents]]` entry | `agent` capability |
 | `local` | scripts in `.agents/tools/` | always, per workdir |
 
-There is no plan tool: planning is supervisor-owned and only displayed via `/plan`.
+There is no plan tool: a plugin sets the plan, and `/plan` only displays it.
 
-`tap` actions: `run` (background child; `prompt`, optional `workdir`; no role is passed: the runtime compares the prompt with the `# Title:` and `# Description:` of the agents the caller may reach, which are the other agents of its own domain plus what its `# Uses:` header declares, or every installed agent when the caller is not a tap agent, and starts the closest one if it is clearly ahead. With `[decision] taps = true` in the config, off by default, a decision model confirms or overrules the pick. With no match it returns "No specialist matches this task" and starts nothing. The result is `{id, role, title, workdir, message}`; pass `session=<id>` to continue a run, otherwise the child starts with zero context), `list`, `stop`, `send`, `capability` (push an intent through the auto-activation path), and `workflow` (list, show, or run a tap workflow in the background). Run ids look like `tap-developer-general-a3f1c2`; results arrive in a later turn.
+`tap` actions: `run` (background child; `prompt`, optional `workdir`; no role is passed: the runtime compares the prompt with the `# Title:` and `# Description:` of the agents the caller may reach, which are the other agents of its own domain plus what its `# Uses:` header declares, or every installed agent when the caller is not a tap agent, and starts the closest one if it is clearly ahead. With the Besydr plugin connected, Besydr's decision model confirms or overrules the pick; when it gives no answer, the pick stands. With no match it returns "No specialist matches this task" and starts nothing. The result is `{id, role, title, workdir, message}`; pass `session=<id>` to continue a run, otherwise the child starts with zero context), `list`, `stop`, `send`, `capability` (push an intent through the auto-activation path), and `workflow` (list, show, or run a tap workflow in the background). Run ids look like `tap-developer-general-a3f1c2`; results arrive in a later turn.
 
 ### Capability anatomy
 
@@ -74,7 +74,7 @@ Runs before every API request when `auto_capabilities = true`, on fresh user mes
 | `AUTO_ACTIVATE_MARGIN` | `0.05` | Required gap between top-1 and top-2 |
 | `AUTO_ACTIVATE_TOP_K` | `3` | Triggers averaged per capability |
 
-The embedding model is `muvon/octomind-embed` (int8 ONNX). The margin gate is why two near-tied capabilities cause abstention rather than a coin flip. With `[supervisor.evaluate] capabilities = true`, an evaluation model can veto a weak cosine winner or promote a pick when cosine abstained. Silent no-ops: toggle off, not a fresh user message, intent too short, embedding model still downloading, nothing eligible, or no score clearing the gate.
+The embedding model is `muvon/octomind-embed` (int8 ONNX). The margin gate is why two near-tied capabilities cause abstention rather than a coin flip. With the Besydr plugin connected, Besydr's decision model can veto a weak cosine winner or promote a pick when cosine abstained. Silent no-ops: toggle off, not a fresh user message, intent too short, embedding model still downloading, nothing eligible, or no score clearing the gate.
 
 ### Domain gating
 
@@ -90,7 +90,7 @@ Shared servers are safe: each capability records which tools it registered per s
 
 Discovery order, first name wins: tap `skills/` directories, `<workdir>/.agents/skills/`, `~/.config/agents/skills/`, Agent Plugin skill directories, then generated skills from learning evolution.
 
-Three activation methods: `OCTOMIND_SKILLS` preloads at session start; declarative `rules:` auto-activate on fresh user messages when `[skills] auto_activation` is on and the skill's `domains:` contains the session domain (or `*`); manual `/skill <name>` or `skill(action="use")`. With `[supervisor.evaluate] skills = true`, an evaluation model may pick a skill from the domain pool when every rule abstained.
+Three activation methods: `OCTOMIND_SKILLS` preloads at session start; declarative `rules:` auto-activate on fresh user messages when `[skills] auto_activation` is on and the skill's `domains:` contains the session domain (or `*`); manual `/skill <name>` or `skill(action="use")`. With the Besydr plugin connected, Besydr's decision model may pick a skill from the domain pool when every rule abstained.
 
 The parser reads `name`, `description`, `compatibility`, `license`, `allowed-tools`, `capabilities`, `domains`, and `rules`; other keys are ignored, and a skill missing `name` or `description` is skipped. Files under `scripts/`, `references/`, and `assets/` are listed with absolute paths in a Skill Resources section on activation. Declared `capabilities` are enabled with the skill.
 

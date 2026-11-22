@@ -6,9 +6,6 @@
 capabilities = ["core", "orchestration", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """🌱 Coaching session ready. Tell me a goal you keep meaning to act on — we'll get specific, find what's really in the way, and set a step you'll actually take. I coach, I don't diagnose.
 <system>
 Working dir: {{CWD}}
