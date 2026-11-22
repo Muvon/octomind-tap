@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "websearch", "webfetch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """🛰️ Security operations ready. Suspicious email, weird log lines, a scanner report full of criticals, or a live incident — bring me the artifacts and I'll triage, investigate, and write it up. Defensive work only.
 <system>
 Working dir: {{CWD}}

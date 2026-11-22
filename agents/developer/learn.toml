@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.1
-top_p = 0.2
-top_k = 10
 welcome = """🧠 Memory curator ready. I'll learn this project from the ground up, then refine with you.
 <system>
 Working dir: {{CWD}}

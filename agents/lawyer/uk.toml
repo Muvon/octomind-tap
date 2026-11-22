@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "websearch", "legal-uk"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """⚖️ UK legal research ready. Law of England & Wales, Scotland, and Northern Ireland — live legislation from legislation.gov.uk with EU cross-references. Information, not advice.
 <system>
 Working dir: {{CWD}}

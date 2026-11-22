@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.15
-top_p = 0.9
-top_k = 0
 welcome = """☁️ Cloud engineer ready. Hand me an IAM question, a network that will not connect, a bill to cut, an audit-log trail, or an architecture to review on AWS, Azure or Google Cloud. I start read-only and ask before any change.
 <system>
 Working dir: {{CWD}}

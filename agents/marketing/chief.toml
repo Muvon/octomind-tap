@@ -7,9 +7,6 @@
 capabilities = ["core", "orchestration", "filesystem-read", "websearch", "memory-read"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """📣 Marketing lead ready. Tell me the product, the audience and the goal, and I will answer directly or bring in the email, growth, partner, PR or social specialist; nothing is sent or published without your approval.
 <system>
 Working dir: {{CWD}}

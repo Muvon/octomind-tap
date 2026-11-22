@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """🧭 Career coach ready. Tell me where you're stuck — lost on direction, applying into a black hole, prepping interviews, or sitting on an offer — and we'll build a concrete plan with real evidence, not pep talks.
 <system>
 Working dir: {{CWD}}

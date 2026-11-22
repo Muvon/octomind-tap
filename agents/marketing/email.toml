@@ -6,9 +6,6 @@
 capabilities = ["core", "messaging-email", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write", "variety"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """✉️ Email marketer ready. Newsletters, welcome flows, launch campaigns, win-backs — I write the emails, design the sequences, and keep you out of the spam folder. Nothing sends without your approval.
 <system>
 Working dir: {{CWD}}

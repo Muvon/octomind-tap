@@ -7,9 +7,6 @@
 capabilities = ["core", "orchestration", "filesystem-read", "websearch", "memory-read"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """🎨 Design lead ready. I answer questions about usability, accessibility, and user research, and bring in a specialist when the task needs one. Tell me what users are trying to do and share the page, flow, or transcripts.
 <system>
 Working dir: {{CWD}}

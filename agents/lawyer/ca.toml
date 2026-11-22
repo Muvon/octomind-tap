@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "websearch", "legal-ca"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """⚖️ Canadian legal research ready / Assistant juridique canadien prêt. Federal legislation in English and French; provincial law on request. Information, not advice.
 <system>
 Working dir: {{CWD}}

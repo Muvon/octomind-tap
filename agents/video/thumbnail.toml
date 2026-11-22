@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "memory-read", "memory-write", "thumbnails", "image-gen", "image-view"]
 
 [[roles]]
-temperature = 0.5
-top_p = 0.9
-top_k = 0
 welcome = """🖼️ Thumbnail designer ready. Give me the video (file or transcript), its title, and the channel — I'll pitch thumbnail concepts, render them from your real frames or a generated scene, and hand you three variants for YouTube Test & Compare, plus Reels and TikTok covers if you need them.
 <system>
 Working dir: {{CWD}}

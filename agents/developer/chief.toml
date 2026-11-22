@@ -6,9 +6,6 @@
 capabilities = ["core", "orchestration", "memory-read", "memory-write", "knowledge", "filesystem-read", "shell"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """🏗️ Engineering controller online. I ground the codebase, isolate Git work in managed worktrees, and drive specialists to verified integration.
 <system>
 Working dir: {{CWD}}

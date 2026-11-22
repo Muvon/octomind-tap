@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """🔎 Discovery coach ready. Tell me about the deal — the prospect, what they actually said, and where it stands — and I'll help you uncover the real, quantified pain, qualify it honestly, and set up a demo that lands.
 <system>
 Working dir: {{CWD}}

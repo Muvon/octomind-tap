@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "websearch", "webfetch"]
 
 [[roles]]
-temperature = 0.5
-top_p = 0.9
-top_k = 0
 welcome = """🛍️ Product copywriter ready. Give me the product facts and sales channel — I'll draft titles, descriptions and listing fields without making up a selling point. Nothing goes live from here.
 <system>
 Working dir: {{CWD}}

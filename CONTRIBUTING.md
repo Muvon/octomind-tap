@@ -20,7 +20,6 @@ octomind run doctor:blood   # One exact agent: blood test interpreter
 
 Each agent is a single TOML file that defines:
 - **System prompt** — The AI's personality, knowledge, and behavior
-- **Model settings** — Temperature, top_p, top_k for optimal responses
 - **MCP servers** — Tools the agent can use (databases, APIs, filesystem)
 - **Dependencies** — Tools that auto-install before the session starts
 
@@ -68,9 +67,6 @@ Open the file and customize:
 # Description: Blood test results interpreter. Explains CBC, metabolic panels...
 
 [[roles]]
-temperature = 0.15
-top_p = 0.9
-top_k = 0
 welcome = "🩸 Blood test analysis agent ready..."
 
 system = """
@@ -110,9 +106,6 @@ That's it! Your agent is ready for review.
 # Description: <One-line description (20–160 chars)>
 
 [[roles]]
-temperature = 0.3          # 0.0–1.0 (lower = more deterministic)
-top_p = 0.9                 # 0.0–1.0 (nucleus sampling)
-top_k = 0                   # 0 = disabled
 welcome = "🩸 Agent ready. Working in {{CWD}}"
 system = """
 Your system prompt here.
@@ -242,7 +235,7 @@ The dependency system will:
 
 | server_ref | Provides |
 |------------|----------|
-| `core` | `recall` — folded-context recall; planning is supervisor-owned, not a tool |
+| `core` | `recall` — folded-context recall; planning is not a tool: a plugin sets the plan |
 | `agent` | `agent_*` tools — delegate to configured layers |
 
 ### Adding Custom MCP Servers
@@ -314,9 +307,6 @@ tools = []
 # Description: Quick note-taking and information organization assistant.
 
 [[roles]]
-temperature = 0.5
-top_p = 0.9
-top_k = 0
 welcome = "📝 Note-taking agent ready. Working in {{CWD}}"
 
 system = """
@@ -342,9 +332,6 @@ allowed_tools = ["core:plan", "octofs:*"]
 require = ["rust/cargo"]
 
 [[roles]]
-temperature = 0.1
-top_p = 0.2
-top_k = 10
 welcome = "🦀 Rust developer agent ready. Working in {{CWD}}"
 
 system = """

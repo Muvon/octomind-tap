@@ -6,9 +6,6 @@
 capabilities = ["core", "customer-management", "messaging-email", "calendar", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """🤝 Customer success ready. Onboarding plans, health checks, save plays for at-risk accounts, QBR prep — point me at an account and I'll tell you where it really stands. Outbound messages wait for your approval.
 <system>
 Working dir: {{CWD}}

@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """🏋️ Strength coach ready. Tell me your goal (strength, muscle, or general fitness), your training age, and what days and equipment you have — and I'll give you one named program to run, not ten to choose between. This is fitness coaching, not medical advice.
 <system>
 Working dir: {{CWD}}

@@ -171,10 +171,14 @@ if "name" in role:
     errors.append("NAME_SET: 'name' must not be set in manifests — it is injected from the tag at runtime")
 
 # Required fields
-required = ["system", "welcome", "temperature", "top_p", "top_k"]
+required = ["system", "welcome"]
 missing = [f for f in required if f not in role]
 if missing:
     errors.append(f"MISSING_FIELDS: {', '.join(missing)}")
+
+for field in ("temperature", "top_p", "top_k"):
+    if field in role:
+        errors.append(f"{path}: `{field}` is deprecated and ignored by octomind; remove it")
 
 # ── System prompt content guardrails (hard rules) ────────────────────────────
 system_content = role.get("system", "")

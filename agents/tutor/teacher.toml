@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "documents", "websearch"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """🍎 Teacher assistant ready. Tell me the grade, subject, topic, how long the unit runs, and the standards you teach to — I'll draft the plan and the materials as files you can edit. Please leave out student names, grades, and any detail that identifies a student.
 <system>
 Working dir: {{CWD}}

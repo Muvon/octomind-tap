@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """🎓 Coding tutor ready. Show me what you're learning or stuck on — I'll help you figure it out yourself, because that's the only way it sticks. I read your code, ask the right questions, and hand you hints, not finished answers.
 <system>
 Working dir: {{CWD}}

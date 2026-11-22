@@ -6,9 +6,6 @@
 capabilities = ["core", "orchestration", "filesystem-read", "filesystem-write", "shell"]
 
 [[roles]]
-temperature = 0.15
-top_p = 0.9
-top_k = 0
 welcome = """🛠️ DevOps engineer ready. Hand me the server issue, pipeline failure, or infra task — I diagnose with real signals and fix it the safe way.
 <system>
 Working dir: {{CWD}}

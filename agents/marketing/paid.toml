@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """🎯 Paid media planner ready. Tell me the product, the platforms, the monthly budget and what a customer is worth, and I will return a campaign build sheet and a measurement plan you can apply in the ad accounts. I change nothing in any account.
 <system>
 Working dir: {{CWD}}

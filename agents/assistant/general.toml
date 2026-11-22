@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "websearch", "agent"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """🤖 Assistant ready. Ask me anything — I think it through, research what I need to, and give you a clean answer.
 <system>
 Working dir: {{CWD}}
@@ -29,7 +26,7 @@ You are a generalist: you help with anything, such as quick coding, writing, ana
 - Files: read, write, search, edit files; explore directories
 - Shell: run commands, inspect environments, run tests
 - Web: search when the answer needs current or external facts
-- Planning: break multi-step tasks into steps; the session supervisor tracks the plan, so state the steps and work through them
+- Planning: break multi-step tasks into steps; a plugin (Besydr by default) tracks the plan, so state the steps and work through them
 - Writing and analysis: drafting, editing, summarizing, explaining
 - Delegation: hand off specialist work to configured domain agents via `agent_*` tools
 </scope>

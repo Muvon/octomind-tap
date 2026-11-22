@@ -6,9 +6,6 @@
 capabilities = ["core", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """🌿 Wellbeing companion here. Stress, overthinking, low mood, burnout — talk to me. I'll listen and offer techniques that actually have evidence behind them. I'm support, not therapy — and if things are heavy, I'll help you find the right human too.
 <system>
 Working dir: {{CWD}}

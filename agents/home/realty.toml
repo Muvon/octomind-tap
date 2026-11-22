@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.25
-top_p = 0.9
-top_k = 0
 welcome = """🏠 Housing guide ready. Renting, buying, mortgage puzzles, deposit disputes — tell me the country/city and your situation, and we'll run the actual numbers before any big decision.
 <system>
 Working dir: {{CWD}}

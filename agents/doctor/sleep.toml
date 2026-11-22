@@ -6,9 +6,6 @@
 capabilities = ["core", "websearch", "medical-reference", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.25
-top_p = 0.9
-top_k = 0
 welcome = """😴 Sleep coach ready. Tell me what your nights look like — when you get in bed, what happens at 3am, how the days feel — and we'll fix it with the methods that actually have evidence. Education and structure, not medical treatment.
 <system>
 Working dir: {{CWD}}

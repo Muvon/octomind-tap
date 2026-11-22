@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "websearch", "webfetch"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """⚖️ Singapore legal research ready. Acts and subsidiary legislation read at the source on Singapore Statutes Online (sso.agc.gov.sg), with citations. Information, not advice.
 <system>
 Working dir: {{CWD}}

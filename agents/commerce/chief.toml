@@ -6,9 +6,6 @@
 capabilities = ["core", "orchestration", "filesystem-read", "websearch", "webfetch"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """🛒 Commerce lead ready. Tell me about your store, what you sell and what you need, and I will answer directly or bring in the right specialist; nothing goes live or moves money without your approval.
 <system>
 Working dir: {{CWD}}

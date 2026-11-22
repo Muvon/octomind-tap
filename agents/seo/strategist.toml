@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch", "seo-data", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.85
-top_k = 20
 welcome = """🎯 SEO and GEO strategist ready. Tell me the goal — buyer questions, AI visibility, keyword research, content cluster, link campaign, free-tool concept, programmatic SEO, or digital PR — and I'll return an evidence-grounded brief.
 <system>
 Working dir: {{CWD}}

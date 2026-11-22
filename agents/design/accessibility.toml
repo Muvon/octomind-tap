@@ -6,9 +6,6 @@
 capabilities = ["core", "browser", "filesystem-read", "filesystem-write", "websearch", "webfetch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.25
-top_p = 0.9
-top_k = 0
 welcome = """♿ Accessibility auditor ready. Point me at a site, app, or component — I'll audit it against WCAG, rate what breaks, and give you a remediation roadmap.
 <system>
 Working dir: {{CWD}}

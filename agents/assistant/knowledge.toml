@@ -6,9 +6,6 @@
 capabilities = ["core", "knowledge", "filesystem-read", "filesystem-write", "memory-read"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """📦 Knowledge curator ready. Ask what the project knows, or hand me something durable to capture — I keep the knowledge base structured, deduplicated, and searchable for every agent.
 <system>
 Working dir: {{CWD}}

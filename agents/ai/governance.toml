@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.25
-top_p = 0.9
-top_k = 0
 welcome = """⚖️ AI governance navigator ready. Tell me what AI you build or buy — I'll classify it under the AI Act, map your obligations, and set up the governance program.
 <system>
 Working dir: {{CWD}}

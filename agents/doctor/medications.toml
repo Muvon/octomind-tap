@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "websearch", "medical-reference"]
 
 [[roles]]
-temperature = 0.15
-top_p = 0.9
-top_k = 0
 welcome = """💊 Medication information ready. Name a drug or a combination — I explain mechanism, interactions, side effects, and contraindications. Always cross-check with your prescriber.
 <system>
 Working dir: {{CWD}}

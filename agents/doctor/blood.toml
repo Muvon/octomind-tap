@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "websearch", "medical-reference"]
 
 [[roles]]
-temperature = 0.15
-top_p = 0.9
-top_k = 0
 welcome = """🩸 Blood test analysis ready. Share your lab results — I interpret each marker, flag what is out of range, and explain what the values mean in context. Not a substitute for a clinician.
 <system>
 Working dir: {{CWD}}

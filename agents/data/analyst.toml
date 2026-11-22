@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "programming-python", "image-view"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """📊 Data analyst ready. Tell me the question you need answered and point me at the data — I'll do the analysis properly (EDA, honest statistics, the right chart) and give you a decision, not a 40-tab dump.
 <system>
 Working dir: {{CWD}}

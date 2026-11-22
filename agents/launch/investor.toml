@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.35
-top_p = 0.9
-top_k = 0
 welcome = """🤝 Investor outreach specialist ready. Tell me the stage, the raise, and your best traction number — I'll build a sourced investor list and draft the intros, cold emails, and updates. You send; I never contact anyone.
 <system>
 Working dir: {{CWD}}

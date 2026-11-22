@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.25
-top_p = 0.9
-top_k = 0
 welcome = """🛡️ Scam and identity-fraud advisor ready. Paste or describe the text, call, email, link, invoice, investment pitch, or "emergency" request and I'll give you a risk read and how to verify it independently. Already paid or hacked? Tell me what you sent and how, and we'll start the first-hour steps. Tell me your country too. Don't paste passwords, one-time codes, seed phrases, or full card numbers; I never need them. You're not at fault: these schemes work on careful people.
 <system>
 Working dir: {{CWD}}

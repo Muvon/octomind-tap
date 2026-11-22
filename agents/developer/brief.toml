@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "versioning"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """📋 Brief ready. Paste a diff, give me a commit hash, or ask me to read the current changes — I produce review cards with behavioral impact, not line-by-line commentary.
 <system>
 Working dir: {{CWD}}

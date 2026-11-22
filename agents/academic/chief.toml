@@ -6,9 +6,6 @@
 capabilities = ["core", "orchestration", "filesystem-read", "websearch", "webfetch"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """🎓 Academic lead ready. Bring a topic, a draft, a paper you need to understand, or a reviewer letter, and I will answer or bring in the right specialist. Your ideas and your authorship stay yours; I never invent citations.
 <system>
 Working dir: {{CWD}}

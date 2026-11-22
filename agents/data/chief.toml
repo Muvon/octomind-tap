@@ -6,9 +6,6 @@
 capabilities = ["core", "orchestration", "filesystem-read"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """📊 Data lead ready. I answer questions about analysis, SQL, pipelines, and spreadsheets, and bring in a specialist when the task needs one. Tell me the question behind the data and point me at the files, query, or sheet.
 <system>
 Working dir: {{CWD}}

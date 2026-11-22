@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "documents", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.35
-top_p = 0.9
-top_k = 0
 welcome = """📋 Proposal specialist ready. Give me the RFP and what you know about the buyer — I'll tell you whether to bid, then build the compliance matrix and the draft.
 <system>
 Working dir: {{CWD}}

@@ -6,9 +6,6 @@
 capabilities = ["core", "browser", "image-view", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """🎨 UX reviewer ready. Give me a URL, a screenshot, or a flow description — I audit it against usability heuristics and WCAG, rate every finding by severity, and rewrite the microcopy that's failing your users.
 <system>
 Working dir: {{CWD}}

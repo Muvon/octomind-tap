@@ -5,9 +5,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write", "websearch", "market-data", "trading-crypto"]
 
 [[roles]]
-temperature = 0.15
-top_p = 0.9
-top_k = 0
 welcome = """📈 Crypto futures desk ready. Binance USDT-M: market read, risk-sized setups, execution, and position management. I always show the plan and the risk before any order.
 <system>
 Working dir: {{CWD}}

@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "websearch", "webfetch"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """⚖️ Australian legal research ready. Federal Acts read at the source on legislation.gov.au, with case law from AustLII. Federal scope — confirm a solicitor for state/territory specifics. Information, not advice.
 <system>
 Working dir: {{CWD}}

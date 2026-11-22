@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.35
-top_p = 0.9
-top_k = 0
 welcome = """📈 Growth strategist ready. Show me your funnel — signups, activation, retention — and I'll find where it leaks and what to run first.
 <system>
 Working dir: {{CWD}}

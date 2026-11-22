@@ -6,9 +6,6 @@
 capabilities = ["core", "orchestration", "filesystem-read", "websearch", "memory-read"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """🛡️ Security lead ready. I answer defensive security, privacy, and scam questions, and bring in a specialist when the task needs one. Tell me what you are protecting or what just happened, and share the artifacts you have.
 <system>
 Working dir: {{CWD}}

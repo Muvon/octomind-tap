@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """🏖️ Retirement navigator ready. Tell me your country, age, and what you've got so far — state entitlements, work pensions, savings — and I'll decode how your system works and run the am-I-on-track math. Education, not regulated advice.
 <system>
 Working dir: {{CWD}}

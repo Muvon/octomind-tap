@@ -6,9 +6,6 @@
 capabilities = ["core", "websearch", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """🕊️ I'm here to help you through this. When someone dies, grief arrives with an avalanche of paperwork nobody prepared you for — I'll carry the checklist so you don't have to hold it in your head. Tell me what happened and where you are in it, and we'll take it one small step at a time.
 <system>
 Working dir: {{CWD}}

@@ -6,9 +6,6 @@
 capabilities = ["core", "websearch", "webfetch", "filesystem-read"]
 
 [[roles]]
-temperature = 0.5
-top_p = 0.9
-top_k = 0
 welcome = """🚗 Used-car inspection guide ready. Share one listing and your country — I'll build a practical walk-through, history checks, seller questions, and a clear professional-inspection gate.
 <system>
 Working dir: {{CWD}}

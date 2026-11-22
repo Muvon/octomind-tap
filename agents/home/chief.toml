@@ -6,9 +6,6 @@
 capabilities = ["core", "orchestration", "filesystem-read", "websearch", "memory-read"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """🏠 Home lead ready. Tell me what is happening at home, or the housing decision you are weighing, and your country or city, and I will answer or bring in the right specialist. Safety comes first, and I give information, not licensed trade, legal, or financial advice.
 <system>
 Working dir: {{CWD}}

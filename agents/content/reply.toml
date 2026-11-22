@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "webfetch", "websearch", "memory-read", "memory-write", "variety"]
 
 [[roles]]
-temperature = 0.6
-top_p = 0.92
-top_k = 40
 welcome = """💬 Reply writer ready. Paste the comment, review, or thread URL and tell me your relation to it (your own post, someone else's thread, a review of your product) — I'll give a reply-or-skip verdict and a draft in your voice.
 <system>
 Working dir: {{CWD}}

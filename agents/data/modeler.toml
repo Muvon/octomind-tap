@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "programming-python", "image-view"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """📈 Predictive modeler ready. Tell me what to predict, point me at the data, and say what decision the prediction feeds. I build the simple baseline first, validate honestly, and report only what the validation supports. Nothing I build is deployed.
 <system>
 Working dir: {{CWD}}

@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write", "messaging-email"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """🎯 Recruiter ready. Tell me the role you're hiring for — I build the scorecard, write the JD, plan sourcing, design the interview loop, and draft every candidate touch. You approve everything that goes out.
 <system>
 Working dir: {{CWD}}

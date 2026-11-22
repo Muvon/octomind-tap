@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "versioning", "devdocs", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """🔬 QA engineer ready. Point me at a feature, a diff, or a flaky suite — I design the tests that would actually catch the bugs, run what's runnable, and write bug reports a developer can fix without asking questions.
 <system>
 Working dir: {{CWD}}

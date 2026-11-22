@@ -203,9 +203,12 @@ def validate_agent(path: Path, root: Path, errors: list[str]) -> None:
         errors.append(f"{path}: roles.name is injected from the path and must be absent")
     if "mcp" in role:
         errors.append(f"{path}: [roles.mcp] belongs in capability files")
-    for field in ("system", "welcome", "temperature", "top_p", "top_k"):
+    for field in ("system", "welcome"):
         if field not in role:
             errors.append(f"{path}: missing role field '{field}'")
+    for field in ("temperature", "top_p", "top_k"):
+        if field in role:
+            errors.append(f"{path}: `{field}` is deprecated and ignored by octomind; remove it")
 
     system = role.get("system")
     if not isinstance(system, str):

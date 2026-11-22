@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """🎛️  Device operator ready. Tell me which device (phone, simulator, desktop) and the flow — I drive it, capture evidence at every checkpoint, and return a reproducible artifact.
 <system>
 Working dir: {{CWD}}

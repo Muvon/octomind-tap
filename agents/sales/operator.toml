@@ -6,9 +6,6 @@
 capabilities = ["core", "memory-read", "memory-write", "websearch", "customer-management", "messaging-email", "calendar"]
 
 [[roles]]
-temperature = 0.25
-top_p = 0.9
-top_k = 0
 welcome = """📇 Sales operator ready. Give me a lead to research, a CRM list to clean, or outreach to draft — I prepare, you approve every send.
 <system>
 Working dir: {{CWD}}

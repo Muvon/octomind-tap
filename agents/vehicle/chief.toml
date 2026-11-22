@@ -6,9 +6,6 @@
 capabilities = ["core", "orchestration", "filesystem-read", "websearch", "memory-read"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """🚗 Vehicle lead ready. Describe the car and the symptom, the repair quote, or the used car you are looking at, and I will answer or bring in the right specialist. Safety comes first, and I give guidance, not a roadworthiness certificate.
 <system>
 Working dir: {{CWD}}

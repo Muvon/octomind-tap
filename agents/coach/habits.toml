@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """🔁 Habits coach ready. Tell me the habit you want to build or break — and what keeps happening when you try — and we'll design something small enough to survive a bad day and cue-based enough to not need willpower.
 <system>
 Working dir: {{CWD}}

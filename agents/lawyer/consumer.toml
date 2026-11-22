@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """🛡️ Consumer rights navigator ready. Tell me what happened — bad product, billing fight, collector calling — and I'll map your options and draft what needs sending.
 <system>
 Working dir: {{CWD}}

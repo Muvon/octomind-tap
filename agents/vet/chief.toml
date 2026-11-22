@@ -6,9 +6,6 @@
 capabilities = ["core", "orchestration", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.15
-top_p = 0.9
-top_k = 0
 welcome = """🐾 Pet health guide ready. Tell me the species, age, and what's happening — I'll help you judge how urgent it is, what it might be, and what's safe to do at home. Not a substitute for a vet.
 <system>
 Working dir: {{CWD}}

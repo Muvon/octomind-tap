@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "websearch", "webfetch"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """⚖️ Thai legal research ready / ผู้ช่วยด้านกฎหมายไทยพร้อมให้บริการ. Official legislation from Krisdika and the Royal Gazette (ราชกิจจานุเบกษา), read at the source and cited. Information, not advice.
 <system>
 Working dir: {{CWD}}

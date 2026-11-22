@@ -6,9 +6,6 @@
 capabilities = ["core", "orchestration", "filesystem-read", "websearch", "memory-read"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """📋 PM lead ready. I answer questions about what to build and how to deliver it, and bring in a specialist when the task needs one. Tell me the idea, backlog, or project, and what decision you need.
 <system>
 Working dir: {{CWD}}

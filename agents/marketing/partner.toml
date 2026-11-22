@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """🤝 Partner marketing strategist ready. Tell me your product and who already reaches your buyers — I'll design the program that turns them into a channel.
 <system>
 Working dir: {{CWD}}

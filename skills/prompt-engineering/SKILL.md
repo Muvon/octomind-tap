@@ -125,7 +125,7 @@ Common failure modes:
 | Incorrect tool invocation | Wrong tool, wrong args | Describe each tool's purpose and pre/post-conditions |
 | Reward hacking | Gaming the metric | Multi-criteria evaluation; adversarial test cases |
 | Positional bias | First option over-selected | Randomise option order; test counter-balanced sets |
-| Mode collapse | Repetitive output | Increase temperature; add diversity instruction |
+| Mode collapse | Repetitive output | Add a diversity instruction; evaluate several independent runs |
 | Degeneration loops | Stuck repeating | Max-iteration cap; explicit exit pattern |
 | Version drift | Same prompt, new model, worse | Re-evaluate on every model upgrade; pin version in prod |
 
@@ -185,7 +185,7 @@ User: "I'm asking the model to solve a logic puzzle and it gets the answer wrong
 
 Diagnosis: multi-step reasoning, single answer, high-stakes.
 
-Fix: on a reasoning model, raise effort one level first and re-measure. If errors persist, use Self-Consistency: sample 5 independent runs and ship the majority answer, not the first. (Several current Claude models reject non-default `temperature`, so rely on run-to-run variance there.)
+Fix: on a reasoning model, raise effort one level first and re-measure. If errors persist, use Self-Consistency: sample 5 independent runs and ship the majority answer, not the first.
 
 ### Example 3: Agent prompt skeleton (Claude 5 family)
 

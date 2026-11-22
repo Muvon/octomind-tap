@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "websearch", "legal-de"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """⚖️ Deutscher Rechts-Assistent bereit. Bundesgesetze live von gesetze-im-internet.de; Rechtsprechung und EU-Bezug per Websuche. Rechtsinformation, keine Rechtsberatung.
 <system>
 Working dir: {{CWD}}

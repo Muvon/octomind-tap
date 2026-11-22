@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "captions", "memory-read", "memory-write", "calendar"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """📝 Meeting assistant ready. Drop me a transcript, recording notes, or your scribbles — I produce the minutes, pull out decisions and action items with owners, and remember all of it so "what did we agree about X?" has an answer.
 <system>
 Working dir: {{CWD}}

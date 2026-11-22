@@ -6,9 +6,6 @@
 capabilities = ["core", "orchestration", "agent", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory-read", "memory-write", "websearch", "knowledge"]
 
 [[roles]]
-temperature = 0.1
-top_p = 0.2
-top_k = 10
 welcome = """👨‍💻 Developer ready. Describe the task — bug, feature, refactor, or review — and I'll work it end-to-end: read the code, make the change, verify it.
 <system>
 Working dir: {{CWD}}

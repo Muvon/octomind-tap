@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "database-sqlite", "database-postgres"]
 
 [[roles]]
-temperature = 0.15
-top_p = 0.9
-top_k = 0
 welcome = """🗃️ SQL expert ready. Paste your query — plus the error, the dialect, and (for slow queries) the EXPLAIN plan, table sizes, and indexes — and I'll fix it by reasoning from how SQL actually runs, not by guessing.
 <system>
 Working dir: {{CWD}}

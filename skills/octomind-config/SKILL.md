@@ -19,14 +19,14 @@ metadata:
 
 Octomind's configuration lives at `~/.local/share/octomind/config/config.toml` (`%LOCALAPPDATA%\octomind\config\config.toml` on Windows), overridable with `OCTOMIND_CONFIG_PATH` or relocated with `OCTOMIND_DATA_DIR`. This skill documents the sections and fields so config answers cite real names and defaults. The shipped template (`config-templates/default.toml` in the octomind source, also what `octomind config --show` reflects) is the authority when this page and the binary disagree.
 
-Supervisor tuning has its own skill (`octomind-supervisor`).
+Besydr, the plugin that does completion checks, planning and learning, has its own skill (`octomind-supervisor`).
 
 ## Mental model
 
 The file is strict. Octomind owns the schema and fails loudly instead of degrading silently:
 
-- Required sections — `[model]`, `[skills]`, `[timing]`, `[compression]`, `[supervisor]` and its mechanic tables, plus the root scalars. A missing one is a parse error; `octomind config --upgrade` migrates older files (the template is at `version = 21`; never edit `version` by hand).
-- One model contract — `[model]` is the complete baseline profile. Roles (`[roles.model]`), `[compression.model]`, and `[supervisor.model]` are partial overrides: omitted fields inherit from `[model]`.
+- Required sections — `[model]`, `[skills]`, `[timing]`, `[compression]`, plus the root scalars (`max_identical_rounds` among them). A missing one is a parse error; `octomind config --upgrade` migrates older files (the template is at `version = 32`; never edit `version` by hand). Version 32 removed `[supervisor]`, its sub-tables and `[decision]`: the Besydr plugin does that work and is listed in the root `plugins` key.
+- One model contract — `[model]` is the complete baseline profile. Roles (`[roles.model]`) and `[compression.model]` are partial overrides: omitted fields inherit from `[model]`.
 - Required-field tables — `[[commands]]` requires `name`, `description`, `command`, `input_mode`, `output_mode`, `output_role`; only `workdir` is optional.
 
 So a config error is usually a missing key, not a wrong value. Validate after every edit: `octomind config --validate`.
@@ -60,15 +60,12 @@ So a config error is usually a missing key, not a wrong value. Validate after ev
 name = "octohub:auto"        # provider:model
 reasoning_effort = "medium"  # none, low, medium, high, xhigh, max
 max_tokens = 32768           # 0 = provider default
-temperature = 0.3            # 0.0–2.0
-top_p = 0.7                  # 0.0–1.0
-top_k = 20                   # 0–1000
 max_retries = 1
 retry_timeout = 30           # backoff base, seconds
 request_timeout_seconds = 300  # 0 = none
 ```
 
-These fields used to be root scalars (`model`, `max_tokens`, `reasoning_effort`, ...); `--upgrade` moves them. Sampling values are sent only where the provider accepts them — the provider layer drops them for models that reject sampling parameters and while extended thinking is on.
+These fields used to be root scalars (`model`, `max_tokens`, `reasoning_effort`, ...); `--upgrade` moves them. The deprecated `temperature`, `top_p`, and `top_k` keys are accepted in old configs but ignored; octomind sends no sampling parameters, so do not set them.
 
 ### `[capabilities]` and `[taps]`
 
@@ -85,7 +82,7 @@ Model priority, highest first: runtime override (`--model`, `/model`), the role'
 
 ### `[[roles]]`
 
-Fields: `name`, `system`, `welcome` (all required), optional `[roles.model]` override table (or `model = "provider:model"`), and `[roles.mcp]`. Flat `temperature`/`top_p`/`top_k` on a role are still accepted (tap manifests use them) and folded into the role's model override. Roles in config override tap agents of the same name.
+Fields: `name`, `system`, `welcome` (all required), optional `[roles.model]` override table (or `model = "provider:model"`), and `[roles.mcp]`. Deprecated sampling keys on a role are accepted in old configs but ignored. Roles in config override tap agents of the same name.
 
 ```toml
 [[roles]]
@@ -208,7 +205,7 @@ Put the override in `mcp-github.toml`, not `zz-github.toml`. Only the `mcp-*.tom
 
 - [ ] `octomind config --validate` run after the edit and passing?
 - [ ] `version` untouched; older layouts migrated with `--upgrade` rather than by hand?
-- [ ] Model settings in `[model]`, `[roles.model]`, `[compression.model]`, or `[supervisor.model]` — not at the root?
+- [ ] Model settings in `[model]`, `[roles.model]`, or `[compression.model]` — not at the root?
 - [ ] Every `[[commands]]` entry has `description` and all three modes?
 - [ ] Every `[[mcp.servers]]` has `timeout_seconds` and `tools`, plus `url` for http or `command` for stdio?
 - [ ] Secrets referenced as `{{ENV:KEY}}` or set in `.env`, never written into the file?
@@ -217,6 +214,6 @@ Put the override in `mcp-github.toml`, not `zz-github.toml`. Only the `mcp-*.tom
 ## Composition / References
 
 - Pairs with `octomind-cli` for the `octomind config` flags that mutate this file.
-- Pairs with `octomind-supervisor` for `[supervisor]`, which is documented separately.
+- Pairs with `octomind-supervisor` for the Besydr plugin and its `plugins` entry.
 - Pairs with `octomind-runtime` for how capabilities and taps resolve into a role's tool surface.
 - Octomind docs: `doc/reference/03-config-reference.md`, `doc/usage/03-configuration.md`, `doc/usage/06-roles.md`, `doc/usage/10-commands-and-layers.md`, `doc/usage/18-guardrails.md`

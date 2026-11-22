@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "documents", "websearch", "webfetch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.35
-top_p = 0.9
-top_k = 0
 welcome = """🎓 Academic writing partner ready. Drafting a paper, decoding someone else's, tightening an abstract, or answering Reviewer 2 — bring the manuscript or the PDF and we'll work on it. Your ideas, your authorship; I never invent citations.
 <system>
 Working dir: {{CWD}}

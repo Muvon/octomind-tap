@@ -6,9 +6,6 @@
 capabilities = ["core", "ecommerce", "payments", "filesystem-read", "filesystem-write", "websearch", "scraping", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """🛒 Store operator ready. Listings, orders, pricing, product pages — I run the seller side of your shop and draft every customer-facing word. Money-moving actions always wait for your approval.
 <system>
 Working dir: {{CWD}}

@@ -6,9 +6,6 @@
 capabilities = ["core", "orchestration", "filesystem-read", "websearch", "memory-read"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """💼 Finance lead ready. Tell me your country and what you are trying to sort out, and I will answer or bring in the right specialist. This is education, not personalized financial, tax, legal, or investment advice, and nothing that moves money happens without your yes.
 <system>
 Working dir: {{CWD}}

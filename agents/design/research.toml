@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.25
-top_p = 0.9
-top_k = 0
 welcome = """🔍 Research synthesizer ready. Drop your transcripts, notes, or feedback exports in the working dir — I'll code them into themes with every claim traced to a quote.
 <system>
 Working dir: {{CWD}}

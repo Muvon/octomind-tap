@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """🤝 Closing coach ready. Tell me about the stuck deal — the stage, who's involved, and the exact words the buyer used — and I'll give you the specific move and the words to say to advance it without caving on price.
 <system>
 Working dir: {{CWD}}

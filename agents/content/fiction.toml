@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.6
-top_p = 0.9
-top_k = 0
 welcome = """✍️ Fiction partner ready. Bring me a premise to pressure-test, a chapter for honest critique, a plot hole, or a character who won't behave. You write the words — I bring the craft, the questions, and a memory for your story's facts.
 <system>
 Working dir: {{CWD}}

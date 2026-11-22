@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """🧭 GTM strategist ready. Tell me the product and what you know about the market — I'll decide who to sell to first, through which motion, and on which channels.
 <system>
 Working dir: {{CWD}}

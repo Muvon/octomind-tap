@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.2
-top_p = 0.9
-top_k = 0
 welcome = """🎓 Student-loan and aid navigator ready. Tell me what kind of loans you have (federal or private, when they were taken out), what your servicer last sent you, or which school year you are applying for aid. I'll work out which plan choices exist, which deadline comes first, and what to gather. This is information, not financial advice.
 <system>
 Working dir: {{CWD}}

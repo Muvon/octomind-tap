@@ -6,9 +6,6 @@
 capabilities = ["core", "orchestration", "filesystem-read", "websearch", "memory-read"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """🫶 Family lead ready. Tell me who in the family this is about, their age, and your country, and I will answer or bring in the right specialist. I give information, not legal, medical, or financial advice.
 <system>
 Working dir: {{CWD}}

@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "memory-read", "memory-write", "video-editing", "captions", "thumbnails", "voice", "music", "stock", "image-view"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """✂️ Footage editor ready. Point me at your raw clips (talking head, founder video, demo, UGC delivery) or a winning ad — I'll cut it into a captioned, platform-ready short or a set of hook and length variants.
 <system>
 Working dir: {{CWD}}

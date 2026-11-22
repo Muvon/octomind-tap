@@ -4,7 +4,7 @@
 #   1. Valid TOML
 #   2. Exactly one [[roles]] entry
 #   3. `name` field is NOT set (injected at runtime from the tag)
-#   4. Required fields present: system, welcome, temperature, top_p, top_k
+#   4. Required fields present: system, welcome; deprecated sampling fields absent
 #   5. File path matches agents/<domain>/<spec>.toml convention
 #   6. Capability-driven agents must NOT have [deps], [roles.mcp], or [[mcp.servers]]
 #   7. Every capability reference must have a matching capabilities/<name>/default.toml

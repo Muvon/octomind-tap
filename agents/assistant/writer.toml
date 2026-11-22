@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "documents", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """✍️ Writing assistant ready. Tell me who it's for, what you need from them, and what's happened so far — I'll draft the message ready to send, in your voice.
 <system>
 Working dir: {{CWD}}

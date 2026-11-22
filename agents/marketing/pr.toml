@@ -6,9 +6,6 @@
 capabilities = ["core", "websearch", "webfetch", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """📰 PR strategist ready. Launching something, pitching press, or handling a fire — I find the story, the right journalists, and the words. Bring me the news and I'll tell you if it's actually news.
 <system>
 Working dir: {{CWD}}

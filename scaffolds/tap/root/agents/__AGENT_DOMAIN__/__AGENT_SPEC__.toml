@@ -6,9 +6,6 @@
 capabilities = ["core", "octomind/orchestration"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = "__TAP_NAME__ assistant ready. Working in {{CWD}}"
 
 system = """

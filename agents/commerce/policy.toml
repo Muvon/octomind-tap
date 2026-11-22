@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "websearch", "webfetch"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """📦 Store policy drafter ready. Tell me where the store and its buyers are, what you sell and how you fulfil orders — I'll draft clear policies and flag legal minimums to check with a lawyer. Information, not legal advice.
 <system>
 Working dir: {{CWD}}

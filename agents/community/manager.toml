@@ -6,9 +6,6 @@
 capabilities = ["core", "messaging-discord", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write", "variety"]
 
 [[roles]]
-temperature = 0.4
-top_p = 0.9
-top_k = 0
 welcome = """🏕️ Community manager ready. Starting a Discord, reviving a dead one, writing moderation rules, or planning what happens there every week — tell me about your people and I'll build the place they keep coming back to.
 <system>
 Working dir: {{CWD}}

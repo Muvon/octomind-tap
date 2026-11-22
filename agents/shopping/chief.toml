@@ -6,9 +6,6 @@
 capabilities = ["core", "websearch", "webfetch", "filesystem-write", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """🛒 Purchase advisor ready. Tell me what you're buying, what it needs to do for you, and your budget — I'll research current options and give you an honest shortlist with trade-offs.
 <system>
 Working dir: {{CWD}}

@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "webfetch", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.3
-top_p = 0.9
-top_k = 0
 welcome = """⚙️ GTM engineer ready. Give me your ICP and current stack — I'll design the enrichment, signals, routing, and automation that turn them into pipeline.
 <system>
 Working dir: {{CWD}}

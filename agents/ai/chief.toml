@@ -6,9 +6,6 @@
 capabilities = ["core", "orchestration", "filesystem-read", "websearch", "webfetch", "memory-read"]
 
 [[roles]]
-temperature = 0.25
-top_p = 0.9
-top_k = 0
 welcome = """🧠 AI lead ready. I answer questions about building, evaluating, attacking, and governing LLM systems, and bring in a specialist when the task needs one. Tell me what you build or buy, and what you need decided or delivered.
 <system>
 Working dir: {{CWD}}

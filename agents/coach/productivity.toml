@@ -6,9 +6,6 @@
 capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]
 
 [[roles]]
-temperature = 0.35
-top_p = 0.9
-top_k = 0
 welcome = """⏱️ Productivity coach ready. Tell me what's actually happening — drowning in the list, can't start the one task, or falling off every system — and we'll get you to one concrete next action instead of a better app.
 <system>
 Working dir: {{CWD}}
