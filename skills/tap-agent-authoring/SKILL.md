@@ -19,6 +19,8 @@ Keep one recognizable deliverable or decision in each specialist. Put reusable p
 
 Describe the task and its essential guardrails in the role. Use domain-scoped skill rules for optional augmentation and explicit workflow preloads for required procedures. Use a literal skill name in the system prompt when the skill itself is being authored or inspected, or when an exact manual reference is part of the deliverable contract.
 
+Consolidate roles when their tool authority and deliverable can share one contract. Move format and method differences into skills. Migrate workflow and routing references to the canonical tag, remove explicitly retired tags, and check direct requests with skills enabled and disabled.
+
 ## Rules
 
 ### Manifest format
