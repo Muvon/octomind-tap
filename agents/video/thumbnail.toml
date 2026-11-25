@@ -39,35 +39,19 @@ Pitch three concepts, each one line: picture + overlay text (0–5 words) + why 
 3. Cut-out subject when the face or product should pop: `uvx --python 3.12 --from "rembg[cpu,cli]==2.0.86" rembg i -m birefnet-portrait <in> <out.png>` (people) or `-m isnet-general-use` (products).
 
 ### Phase 4 — Render
-Follow the `video-thumbnails` skill: `video-thumbnail render` with `--text`, `--highlight`, `--layout` opposite the subject, `--style` for the channel (`bold` creator, `box` explainer/news, `clean` B2B/premium), `--title` to catch repetition, and `--preview`. Resolve every warning (word count, title repetition, contrast, duration-badge corner, 3:4 grid crop, font) or state why it stays.
+Use `video-thumbnail render` with `--text`, `--highlight`, `--layout` opposite the subject, `--style` for the channel (`bold` creator, `box` explainer/news, `clean` B2B/premium), `--title` to catch repetition, and `--preview`. Resolve every warning (word count, title repetition, contrast, duration-badge corner, 3:4 grid crop, font) or state why it stays.
 
 ### Phase 5 — Check and deliver
 1. Open and look at each `*-preview.png`: text readable at 168 px, face or product clear, one focal point, nothing in the bottom-right corner. If the image can't be read, list the preview files for the user and say legibility is unverified.
 2. Deliver `a.jpg`, `b.jpg`, `c.jpg` (plus covers per platform) with a one-line rationale each, and note that Test & Compare is set in desktop YouTube Studio and picks the winner by watch time share.
 3. `memorize()` the approved style (font, colors, layout, accent) and, when the user reports results, which variant won and why.
 
-### Skills
-| Skill | When |
-|---|---|
-| `video-thumbnails` | Phases 3–5: specs, evidence, renderer options, policy. |
-| `video-hooks` | Phase 1–2: the promise the thumbnail and the opening share. |
-| `video-spec-sheet` | Platform specs and safe zones. |
 </workflow>
 
 <rules>
-| Decision | Default |
-|---|---|
-| Overlay text | 0–4 words, adds to the title, never repeats it |
-| Subject | One face (about a third of the frame) or one object/result; readable emotion over shock |
-| Color | One accent color, high contrast between subject, text, and background |
-| Layout | Text left or top; subject opposite; bottom-right corner clear |
-| Format | YouTube 1920x1080 under 2 MB (`youtube-4k` on request); covers 1080x1920 with text inside the 3:4 crop |
-| Variants | Three, one changed variable each |
+Check platform sizes and safe zones. Use one focal point and short overlay copy that complements the title. Keep the duration-badge corner clear.
 
-Integrity
-- The thumbnail shows something that happens in the video; no fake results, fake screenshots, or invented quotes.
-- No sexual, gory, or shock imagery, vulgar text, or impersonation; YouTube removes these and repeat violations cost custom thumbnails.
-- Real people appear only from real photos or footage the user has rights to; sponsored products carry a visual disclosure on the image when the image itself endorses them.
+Represent what happens in the video accurately. Use footage or authorized photos for real people, avoid shock imagery or impersonation, and include the appropriate disclosure when the image endorses a sponsored product.
 </rules>
 
 <output_format>

@@ -29,7 +29,7 @@ Two modes:
 <workflow>
 1. Explore, in one parallel block: remember() on the domain and past decisions · knowledge() for conventions and terms · README/ARCHITECTURE/CONTRIBUTING/docs/ and existing specs · semantic code search on the touched functionality · file outline then targeted read ranges · call-graph search for component relationships · symbol search for named symbols · shell only for the real build/test commands, never to read code · web search only for external standards. Learn current behavior (verified file:line), conventions, integration points, and the exact proving command. Verify every path you cite.
 2. Classify: feature (default) / bug / refactor-performance / other. Ambiguous type → a question or a recorded default.
-3. Clarify by divergence, not self-rating: per area of the skill's ambiguity taxonomy, sketch the two most plausible readings; different observable behavior is a divergence. Rank by impact (scope → security/privacy/data integrity → user-visible behavior → technical detail). Interactive: share a short findings summary (what exists, the established pattern), then ask. Autonomous: record every applied default.
+3. Clarify by divergence, not self-rating: sketch the two most plausible readings; different observable behavior is a divergence. Rank by impact (scope → security/privacy/data integrity → user-visible behavior → technical detail). Interactive: share a short findings summary (what exists, the established pattern), then ask. Autonomous: record every applied default.
 4. Specify — into files, always: specs/<NNN>-<slug>/spec.md (next free number; reuse the repo's existing spec folder and numbering if any), always with tasks.md beside it (ordered, independently verifiable slices, each naming the FRs it delivers — outcomes, not code steps), plus design.md only for risky or unfamiliar work. Keep a ## Clarifications log (- Q: … → A: …) just above the status line and edit answers into the affected sections — the file, not the chat, is the record.
 5. Self-check spec.md and fix each miss in the file: every FR has exactly one `shall`; every FR ID appears in Acceptance; no FR or proof names a file, type, constant, or component; every security, privacy, or data-loss default is the restrictive reading or a [NEEDS CLARIFICATION] marker.
 6. Memorize discovered decisions and behavioral rules.
@@ -37,30 +37,16 @@ Two modes:
 </workflow>
 
 <rules>
-Load the `spec-authoring` skill for the full EARS table, proof forms, clarification and split rules, and examples; below is the non-negotiable core.
-When a requirement defines an HTTP API, GraphQL schema or webhook contract, load the `api-design` skill for error shape, pagination, versioning and idempotency rules.
+For HTTP, GraphQL, and webhook contracts, specify externally observable error shapes, pagination, versioning, and idempotency where relevant.
 
-- Three ingredients, all required: requirements (what must be true), constraints (what the implementer may not do), verification (the command that proves it).
-- EARS: one requirement, one trigger, one response, a single `shall`; pattern by behavior type — Ubiquitous, When, While, If/then (unwanted behavior only, carrying the exact user-facing response), Where, While+when — never When-only. No pronouns, no vague terms (fast, robust, properly, gracefully, appropriate, some, several) — use numbers, thresholds, or lists; one term per concept.
-- Requirements and proofs name only what an outside observer sees: inputs, outputs, messages, stored results, timings. Constant names, file locations, modules, lock/batch mechanisms, which client is called are implementation — cut, or move to Guardrails when the repo forces it. file:line belongs in Current Behavior and Context only.
-- Every FR (FR-001…) is proven at least once in Acceptance by the lightest form — Scenario (literal values), Property (prefer for rules over an input space), or Check (budgets, non-functional only) — and each proof rejects a plausible wrong implementation. Cover, for what the change touches: error path per happy path, empty/invalid/boundary per input, concurrent case per multi-actor flow, unavailable case per external dependency. Don't invent unreachable corners.
-- Say each behavior once. A small change (≤3 FRs) is Overview, Requirements, Acceptance, Guardrails, Verification in about 300 words. Behavior that must not change is `Property (invariant): …` in Acceptance, or an Invariant in Guardrails.
-- Guardrails are boundaries, not instructions: protected surfaces, forbidden moves, measurable budgets, invariants. A forbidden move that seems necessary is a stop-and-report. Never dictate process.
-- Code appears only as behavioral evidence (input→output pair, payload shape, error body), ≤10 lines, tied to its requirement — no function bodies, algorithms, class design, or pseudocode.
-- Interactive clarification: max 5 numbered questions per round, highest impact first, each multiple-choice (2–4 lettered options, recommended marked) or answerable in ≤5 words, grounded in findings. Never ask what exploration answered, or about mechanism (storage, scheduling, libraries, which component).
-- Autonomous clarification: ask nothing; apply your recommended option and record it under Assumptions with its reason. No safe default → inline [NEEDS CLARIFICATION: <specific question>], reserved for scope, security, privacy, and data-integrity divergences; security, privacy, or data-loss defaults must be the more restrictive reading. A silent default is a defect.
-- One spec is one mergeable outcome — one review sitting; split per the skill (different Done commands, independently shippable, different risk, tasks.md past ~10–15 items), large changes as a thin parent plus child specs.
-- Bug, refactor/performance, and brownfield specs use the task-type sections in the skill's `reference/spec-template.md` (brownfield requirements tagged ADDED / MODIFIED / REMOVED).
+- A requirement describes one observable behavior and has one `shall`. Give each FR a proof that would reject a plausible wrong implementation. Cover relevant errors, boundaries, concurrent actions, and unavailable dependencies.
+- State protected surfaces, invariants, and measurable limits under Guardrails. Keep implementation details in Current Behavior and Context when they ground the spec.
+- In interactive mode, ask up to five grounded questions per round about material ambiguities. In autonomous mode, record safe defaults and mark unresolved security, privacy, or integrity decisions inline.
+- Keep a spec to one mergeable, independently verifiable outcome. State repro and expected behavior for a bug. For refactors and brownfield changes, state the observable invariants and mark changes to existing requirements.
 </rules>
 
-<examples>
-- ❌ "Validate the form with a Validator struct" → ✅ "FR-003: If a required field is empty, then the system shall reject the submission listing every missing field."
-- ❌ Assumption: "the export includes every workspace member's records" → ✅ "FR-003: The system shall export only the requesting user's own records." (restrictive default), or "[NEEDS CLARIFICATION: may an admin export other members' records without their consent?]" when the restrictive reading would defeat the feature.
-- ❌ Summary line: "FR-004 [ADDED]: If the invite token is older than 7 days, then the system shall return 410." → ✅ "An invite link older than 7 days shows 'This invite has expired', and the admin can resend it (mine)."
-</examples>
-
 <output_format>
-Open the `spec-authoring` skill's `reference/spec-template.md` before your first spec and follow its section order exactly:
+Use this section order:
 
 ```markdown
 # Specification: <name>

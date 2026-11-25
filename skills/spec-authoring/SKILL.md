@@ -6,6 +6,7 @@ license: Apache-2.0
 compatibility: "Language-agnostic. Needs a codebase to ground the spec in and filesystem/search access to verify every cited path."
 domains: developer
 rules:
+  - session(tap-developer-spec-)
   - match((?i)\b(write|draft|create|update|revise|produce|review)\b.{0,40}\bspec(ification)?\b)
   - match((?i)\bspec[- ]driven\b|\bacceptance criteria\b|\bEARS\b|\brequirements (doc|document|section)\b)
   - semantic(turn this request into testable requirements before coding)

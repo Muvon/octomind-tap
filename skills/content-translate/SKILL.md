@@ -6,6 +6,7 @@ license: Apache-2.0
 compatibility: "Requires file read, file edit and shell tools. Works with any LLM model. Supports markdown, code, TOML, YAML, JSON, and plain text."
 domains: content
 rules:
+  - session(tap-content-translate-)
   - content(translate)
   - content(translation)
   - content(localize)

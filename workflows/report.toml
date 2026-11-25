@@ -47,6 +47,7 @@ description = "Turns a data source into a decision-ready analysis report with co
 [[steps]]
 name    = "analyze"
 role    = "data:analyst"
+skills  = ["analytical-report"]
 session = "fresh"
 retries = 4
 prompt  = """
@@ -82,6 +83,7 @@ Output only the analysis brief. No report yet, no meta-commentary.
 [[steps]]
 name    = "compose"
 role    = "data:analyst"
+skills  = ["analytical-report"]
 session = "fresh"
 retries = 4
 prompt  = """
@@ -126,6 +128,7 @@ exit_when      = { output = "audit", matches = '(?m)^REPORT-PASS' }
   [[steps.run]]
   name    = "fix"
   role    = "data:analyst"
+  skills  = ["analytical-report"]
   session = "continue"
   retries = 4
   prompt  = """
@@ -158,6 +161,7 @@ one sentence on what you changed. Do not paste the document.
   [[steps.run]]
   name    = "audit"
   role    = "data:analyst"
+  skills  = ["analytical-report"]
   session = "fresh"
   retries = 4
   prompt  = """

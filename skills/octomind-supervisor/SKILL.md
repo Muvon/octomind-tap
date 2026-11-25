@@ -1,7 +1,7 @@
 ---
 name: octomind-supervisor
 title: "Octomind Supervisor Work: Besydr Plugin"
-description: "Octomind has no built-in supervisor since config version 32. The Besydr plugin does the completion check, tool admission, condensing, planning, loop notes and learning. Use when a turn was re-run, checked or blocked, or a user asks about old [supervisor] settings."
+description: "Explain Besydr plugin completion checks, tool admission, condensing, planning, loop notes, and learning. Use for reruns or old supervisor settings."
 license: Apache-2.0
 compatibility: "Requires: octomind binary, config version 32 or later; the besydr program (Octomind downloads it on first use). macOS/Linux/Windows."
 domains: octomind

@@ -73,6 +73,8 @@ Active when the request says AUTONOMOUS, non-interactive, use defaults, or use y
 
 ### Writing the brief
 
+Put each fact in one field. Keep the user's source material verbatim and separate from directions to the executor. State deliverable form, audience, destination, boundaries and independent done-when checks. Name only plausible adjacent work in out-of-scope. Record assumptions that affect the result and omit empty fields. Write in the user's language.
+
 - Keep the request verbatim at the top. It carries intent the restatement may lose.
 - Goal names the deliverable and what it is for: the decision, action, or reader it serves.
 - Done when lists two to four checks an outsider can verify against the result.
