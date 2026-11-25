@@ -62,6 +62,7 @@ max_cost    = 10.0   # runaway guard, not a target: checked after each step
 [[steps]]
 name    = "brief"
 role    = "content:translate"
+skills  = ["content-translate"]
 session = "fresh"
 retries = 4
 prompt  = """
@@ -103,6 +104,7 @@ Do not translate or analyze anything yet. No meta-commentary.
 [[steps]]
 name    = "facts"
 role    = "content:translate"
+skills  = ["content-translate"]
 session = "fresh"
 retries = 4
 prompt  = """
@@ -142,6 +144,7 @@ Output ONLY:
 [[steps]]
 name    = "transcreate"
 role    = "content:translate"
+skills  = ["content-translate"]
 session = "fresh"
 retries = 4
 prompt  = """
@@ -287,6 +290,7 @@ meta-commentary about your own process.
   [[steps.run]]
   name    = "audit"
   role    = "content:translate"
+  skills  = ["content-translate"]
   session = "fresh"
   retries = 4
   prompt  = """
@@ -369,6 +373,7 @@ that line.
 [[steps]]
 name    = "deliver"
 role    = "content:translate"
+skills  = ["content-translate"]
 session = "fresh"
 retries = 4
 prompt  = """

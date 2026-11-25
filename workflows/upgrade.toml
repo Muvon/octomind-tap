@@ -104,9 +104,9 @@ on_no_match = ["stalled"]
   role    = "developer:changelog"
   session = "fresh"
   prompt  = """
-Write concise upgrade notes from the current unstaged changes and the plan
+Return a concise upgrade notes draft from the current unstaged changes and the plan
 below: each package old → new version, any breaking changes handled and how,
-any bumps pinned back and why. Verified facts only — read the actual diff.
+any bumps pinned back and why. Verify against the diff and leave files untouched.
 
 <plan>
 {{inventory}}

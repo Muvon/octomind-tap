@@ -167,7 +167,7 @@ A `chief` hands work to another domain only when its `# Uses:` header declares i
 
 ### Declaring other domains and agents
 
-A `chief` can reach other domains or single agents that it declares. The declaration is a header comment next to `# Title:` and `# Description:`: `# Uses: <entry>[, <entry>…]`. An entry is a bare domain (`content`, meaning that domain's `chief`), a full tag (`seo:audit`, meaning that agent), or `*`. `*` stands for every other domain that has a `chief`; only `assistant:chief` may use it, alone or together with exact tags, and in the loop check it expands to those domains. The header alone does this. It is validated at load and also bounds which agents the runtime can match for this `chief`; the `chief` sends the task with `tap(action="run", prompt=…)` and passes no role.
+A `chief` can reach other domains or single agents that it declares. The declaration is a header comment next to `# Title:` and `# Description:`: `# Uses: <entry>[, <entry>…]`. An entry is a bare domain (`content`, meaning that domain's `chief`), a full tag (`seo:audit`, meaning that agent), or `*`. `*` stands for every other domain that has a `chief`; only `assistant:chief` may use it, alone or together with exact tags, and in the loop check it expands to those domains. The runtime validates the header at load and uses it to bound which agents the delegation tool can match.
 
 ```toml
 # agents/marketing/chief.toml
@@ -191,7 +191,7 @@ A manifest that still has one loads fine, but the lint rejects both (`SPECIALIST
 
 The runtime matches a task against each reachable agent's `# Title:` and `# Description:`, so those headers must say the kind of work and the deliverable in the words a task brief would use. Hand-written routing notes in a `chief` cover only what the descriptions cannot settle, and they name tags from the agent's own domain only.
 
-An Octomind version older than these placeholders leaves them in the prompt as literal text. A `chief`'s prompt therefore still tells it to send tasks with `tap(action="run", prompt="<brief>")` and, when the answer is "No specialist matches this task", to do the work itself or say it is outside the domain.
+The delegation tool describes matching, invocation, continuation, and asynchronous delivery in its tool definition. Use chief prompts for routing boundaries, work worth delegating, what the brief must carry, and how to verify the result. A 2026 MCP study found that compact tool descriptions can retain behavioral reliability in its evaluation. Evaluate the complete prompt and tool together on Octomind tasks. [MCP tool-description study](https://arxiv.org/abs/2602.14878v3) · [Joint tool and prompt optimization](https://arxiv.org/abs/2604.19821)
 
 ### Model per domain
 
@@ -452,7 +452,23 @@ Skills and agents serve different purposes:
 | **Activation** | Manual via `skill` tool, or auto via `rules:` frontmatter field | `octomind run domain:spec` |
 | **What it provides** | Domain knowledge + capabilities + validation | Full role: model, tools, system prompt |
 | **Composable** | Yes — multiple skills per session | No — one role per session |
-| **Auto-expand** | Yes — skills can auto-load MCP servers via capabilities | No — tools are static |
+| **Tool access** | Can request capabilities when activated | Declares baseline capabilities. The runtime can activate additional capabilities on intent. |
+
+### Choosing a role, skill, or workflow
+
+Keep a role focused on a recognizable deliverable, its authority to act, and its baseline capabilities. Put reusable procedures, decision rules, examples, and output constraints in focused skills. Use a workflow to bind the input, skills, output, and checks for a repeatable job. Declare the required skills in the workflow step's `skills` field so activation has an explicit input.
+
+Describe the work in the role prompt and put optional skill discovery in domain-scoped frontmatter with task-specific descriptions and activation rules. Keep the role's essential output and permission checks in the prompt so a direct run remains useful when discovery abstains or is disabled. Mention an exact skill name in the prompt when the skill itself is the subject of the work or when an exact manual reference is part of the role's contract. Keep workflow skill dependencies in `skills`.
+
+SkillsBench measures curated access and reports a mean gain of 16.6 percentage points across 87 tasks and 18 model–harness configurations. SkillRouter shows that name and description alone can omit routing information on its large-catalog retrieval benchmark. SkillBuffBench v2 separates automatic selection from curated access and presents the evaluation protocol. Measure discovery separately on tap workloads, including short direct requests, detached briefs, unrelated near-matches, and workflows with explicit preloads. [SkillsBench v4](https://arxiv.org/html/2602.12670v4) · [SkillRouter](https://arxiv.org/html/2603.22455) · [SkillBuffBench v2](https://arxiv.org/html/2611.22017v2)
+
+Keep decisions that depend on the same evidence in one session. The `document` workflow derives one verified change list and uses it for the README, changelog, and release notes. Reserve separate sessions for independently verifiable work or an independent review with a concrete acceptance check. Give each delegate the relevant source evidence, shared decisions, and output contract, plus an authorized way to resolve missing inputs. Preserve valid early exits.
+
+Use capability declarations for the tools a role needs to deliver its baseline job. As task-specific tooling becomes available, attach optional MCP access through capability-backed skills or explicit step capabilities. Keep the capability scope tied to the task and surface unavailable required tools before making decisions that depend on them.
+
+Measure migrations on paired tasks with the model and inputs held fixed. Compare output correctness, missing or fabricated fields, tokens, wall time, and tool availability. Include failed and incomplete runs in the denominator. Measure explicit skill preload separately from automatic activation so discovery misses are visible.
+
+Controlled enterprise SOP experiments show sensitivity to missing decision context, output contracts, and tool access, with substantial coordination costs. SkillsBench reports that results vary by task and that focused guidance outperformed comprehensive documentation in its observed length buckets. These results motivate the design and its evaluation on tap workloads. [Enterprise SOP study, §4](https://arxiv.org/html/2611.12953v1#S4) · [SkillsBench, Appendix F](https://arxiv.org/html/2602.12670v4#A6) · [Agent Systems Scaling](https://arxiv.org/abs/2512.08296)
 
 ### Domain Isolation (skills do not reach across domains)
 

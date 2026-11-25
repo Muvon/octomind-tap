@@ -15,6 +15,10 @@ This skill encodes what a correct, high-quality `agents/<domain>/<spec>.toml` ne
 
 A manifest is `capabilities` plus exactly one `[[roles]]`. Capabilities decide the tool surface (`bin/load` and the runtime merge each capability's provider file into `[deps]`, `[roles.mcp]`, and `[[mcp.servers]]`); the role decides behaviour. The system prompt is sent on every request and cached, so it must be stable, short, and structural: identity and rules live in `system`, reference material lives in skills loaded on demand.
 
+Keep one recognizable deliverable or decision in each specialist. Put reusable procedures and decision rules in focused skills. Use workflow steps to bind inputs, skills, and checks. Keep shared decisions in one session and give any delegate the evidence and output contract needed to make its own decision.
+
+Describe the task and its essential guardrails in the role. Use domain-scoped skill rules for optional augmentation and explicit workflow preloads for required procedures. Use a literal skill name in the system prompt when the skill itself is being authored or inspected, or when an exact manual reference is part of the deliverable contract.
+
 ## Rules
 
 ### Manifest format
@@ -88,7 +92,7 @@ Block rules:
 Chief agent blocks:
 
 - Do not put `{{SPECIALISTS}}` or `{{USES}}` in `system`. Octomind 0.71 and older expanded them to lists of agents; newer octomind does not expand them, and lint rejects them (`SPECIALISTS_REMOVED`, `USES_PLACEHOLDER_REMOVED`). The `chief` names no specialist.
-- Delegate with `tap(action="run", prompt="<brief>")`; the `tap` tool takes no role. The runtime picks the specialist whose `# Title:` and `# Description:` are closest to the brief, among the agents of the same domain plus the domains and agents the chief declares in a `# Uses:` header. Write each agent's `# Title:` and `# Description:` in the words a task brief would use: the kind of work and the deliverable. Tell the chief to name the kind of work and the deliverable first, and, when `run` answers "No specialist matches this task", to do the work itself or say it is outside the domain. Anything else outside the domain gets one answer: out of scope, use the global assistant (`octomind run` with no agent).
+- Describe when to delegate, what evidence and constraints belong in the handoff, and what the chief must verify. The delegation tool documents its own actions and parameters. Write each agent's `# Title:` and `# Description:` in the terms a task brief would use for the work and deliverable. The runtime matches the brief within the chief's domain and its declared reach.
 - Name no other domain's agent tag in `system` or `welcome`. Only `assistant:chief` routes across all domains: it declares `# Uses: *`, which stands for every other domain that has a `chief`.
 
 A chief can reach other domains or single agents it declares. Put one header comment next to `# Title:` and `# Description:`: `# Uses: <entry>[, <entry>…]`, where an entry is a bare domain (`content`, meaning that domain's `chief`) or a full tag (`seo:audit`, meaning that agent). The header alone makes them reachable; it is validated at load and bounds which agents the runtime can match for this chief. Only a `chief` may carry the header, it needs `orchestration`, and it must not list its own domain (its agents are reachable without it), write `<domain>:chief` (write the bare domain), or form a loop with another lead.
@@ -102,7 +106,7 @@ Prompt lines to copy into `<scope>` or `<rules>` of a chief that has the header 
 
 ```
 Outside your domain you may reach only the domains and agents your `# Uses:` header declares.
-Send the task with tap(action="run", prompt="<brief>"); the runtime matches it to one of them.
+Give the specialist a self-contained brief with the requested deliverable, verified evidence, constraints and acceptance checks.
 ```
 
 ### Tone for current models

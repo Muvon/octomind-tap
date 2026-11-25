@@ -6,6 +6,7 @@ license: Apache-2.0
 compatibility: "Needs web access to re-check Discord limits before quoting them."
 domains: community
 rules:
+  - session(tap-community-moderator-)
   - content(automod)
   - content(moderation) content(discord)
   - content(escalation) content(ladder)
