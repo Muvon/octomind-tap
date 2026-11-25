@@ -75,6 +75,14 @@ cd model && uv sync && bin/train             # embedding model full pipeline (--
 
 ## How Things Work
 
+### Choose skills, specialists, and workflows
+
+- Use a skill for a reusable procedure, subject technique, format, or checklist that the same specialist can apply with its existing authority. A new subject or format alone is insufficient reason for a new public agent.
+- Keep a specialist for a stable job with a distinct deliverable, tool or approval boundary, or independent verification duty. Keep its output contract and essential guards in its manifest. Let task intent select optional skills. Explicitly preload skills a workflow step depends on.
+- Keep work that depends on the same evidence in one session. Give a delegate the relevant source, constraints, authority, and acceptance checks. Split work at an independently verifiable boundary or an independent review.
+- Before consolidating roles, compare capabilities and direct-run behavior, trace workflow and routing references, and update callers to the canonical tag. Remove an explicitly retired tag and update its references. Preserve a tag only when compatibility is required. Preserve authorization, defaults, output and file paths for existing callers.
+- Use narrow intent rules and check relevant requests alongside close negatives, wrong domains, and brief-only inputs. Compare the old role, the replacement with explicit skill preload, and automatic discovery on paired tasks before calling live behavior equivalent. Check output, missed and false activation, permissions, latency, and tokens.
+
 ### Capability-Based Agents (the only way)
 
 Agents declare **what they need**, not how to get it:
@@ -202,7 +210,7 @@ A domain is a directory under `agents/`. Its orchestrator, the agent that hands 
 
 `general` is a generalist that does the work itself (`developer:general`, `assistant:general`), never the orchestrator. A `chief` delegates with the `tap` tool to agents of its own domain, plus the domains and agents it declares in a `# Uses:` header, and declares `orchestration`. Only `assistant:chief` routes across all domains: it declares `# Uses: *`. For a request outside its domain, the `chief` points the user to the global assistant.
 
-The placeholders `{{SPECIALISTS}}` and `{{USES}}` in `system` are removed. Octomind 0.71 and older expanded them to lists of agents; newer versions do not expand them, and the registry lint rejects them. A `chief` names no specialist: it sends the task with `tap(action="run", prompt="<brief>")` and passes no role, and the runtime matches the prompt against each reachable agent's `# Title:` and `# Description:`, so those headers must say the kind of work and the deliverable. A `chief` can be matched to the other agents of its own domain, plus what its `# Uses:` header declares: a bare domain (`content`, that domain's `chief`) or a full tag (`seo:audit`, that agent) per entry. The header alone does this; it is still validated at load. Only a `chief` may carry the header. The entry `*` means every other domain that has a `chief`; only `assistant:chief` may use it, alone or together with exact tags. `{{DOMAINS}}`, the former placeholder for that list, is an error (`DOMAINS_REMOVED`).
+The placeholders `{{SPECIALISTS}}` and `{{USES}}` in `system` are removed. Octomind 0.71 and older expanded them to lists of agents; newer versions do not expand them, and the registry lint rejects them. The delegation tool describes its invocation and matches the brief against each reachable agent's `# Title:` and `# Description:`, so those headers specify the work and deliverable. A `chief` can be matched to the other agents of its own domain, plus what its `# Uses:` header declares: a bare domain (`content`, that domain's `chief`) or a full tag (`seo:audit`, that agent) per entry. The header alone does this; it is still validated at load. Only a `chief` may carry the header. The entry `*` means every other domain that has a `chief`; only `assistant:chief` may use it, alone or together with exact tags. `{{DOMAINS}}`, the former placeholder for that list, is an error (`DOMAINS_REMOVED`).
 
 ```toml
 # agents/marketing/chief.toml

@@ -6,11 +6,8 @@ license: Apache-2.0
 compatibility: "Needs web access to re-check Discord limits before quoting them."
 domains: community
 rules:
-  - session(tap-community-moderator-)
-  - content(automod)
-  - content(moderation) content(discord)
-  - content(escalation) content(ladder)
-  - match((?i)discord.*(permission|role|age.restrict|verification level))
+  - match((?i)\b(draft|write|design|revise|configure|set up|review)\b.{0,70}\b(automod|moderation (policy|rules)|escalation ladder)\b)
+  - match((?i)\bdiscord\b.{0,50}\b(server template|permission matrix|onboarding plan|verification level)\b)
 ---
 
 ## Overview
@@ -24,6 +21,29 @@ Platform figures change. Every number below is "as of 2026-11". Re-check it on t
 Enforcement is a ladder with defined review points, not a mood. The same rule, evidence and consequence apply to friends, staff and strangers. Tooling carries the first line (AutoMod), humans decide everything that is not mechanical, and every action is logged with the rule it cites. Channels stay few so that newcomers find a human reply quickly.
 
 ## Rules
+
+### Draft a policy pack
+
+Use this procedure when the brief asks for rules or a moderation policy. A server template uses approved policy text and records missing approval as a dependency.
+
+1. Establish audience, size, languages, age range, staffing coverage, likely abuse patterns, and tolerance for promotional content; inspect supplied rules and anonymized incident summaries before prescribing.
+2. Research current official Discord Community Guidelines, safety guidance, and AutoMod documentation with live search, verifying supported triggers, actions, exemptions, limits, and permissions before naming settings.
+3. Write concise member-facing rules with concrete allowed and prohibited examples, then map every rule to a moderator procedure rather than relying on vague demands to be nice.
+4. Build the escalation ladder with severity-based bypasses, evidence requirements, private notice copy, appeals, and a review owner; tune response expectations to the team's actual coverage.
+5. Draft native AutoMod rule configurations and setup steps, separating automated actions from human judgment and explaining false-positive risks and exceptions.
+6. Test the policy on benign and abusive sample cases, review exemptions and appeal paths, then write the policy pack with sources, owner approvals, and unverified settings clearly marked.
+
+- Define warnings, timeouts and bans with review points. Keep severity-based bypasses accountable to an authorized human and apply the same standards to members and staff. Document conflict-of-interest handoffs and assign an independent appeal reviewer where staffing permits.
+- For each AutoMod rule state its name, risk addressed, trigger type, exact proposed values, supported action, alert destination, exempt roles/channels, required permissions, test cases, and rollback steps.
+- Verify native support before recommending keyword, spam, mention-spam, or profile-name filtering; identify unsupported needs as human-review gaps, not imaginary settings or bot code.
+- Treat regexes and keyword lists as proposals until checked against Discord's current supported syntax and tested; avoid broad identity terms, blanket staff exemptions, or filters that punish ordinary discussion of abuse.
+- Keep reports private and public notices minimal; record only necessary evidence, access controls, and a proposed retention period for owner review, without promising legal compliance or encouraging redistribution of harmful material.
+- Protect minors and vulnerable members; verify current age restrictions, prohibit evasion, and direct credible imminent-danger situations to appropriate emergency services and platform reporting channels rather than promising confidential crisis care.
+- No sockpuppets, undisclosed staff posing as members, or AI presented as a human moderator; automation does not replace accountable review.
+- Cite live sources by title, URL, and access date for platform behavior and external claims; never invent prices, specifications, laws, references, incident evidence, or enforcement results.
+- Health, legal, and financial statements are general information, not diagnosis, legal advice, or financial advice; flag qualified review when the policy depends on those judgments.
+
+Write `discord-<community-slug>-moderation-policy.md`: audience and risk assumptions; ready-to-post rules draft; private moderator playbook; severity/escalation matrix; report, notice, and appeal templates; AutoMod configuration table and numbered setup steps; benign/abuse test cases and expected outcomes; weekly filter review checklist; sources and approval dependencies. Label the configuration a manual settings draft, not an importable file, installed bot, or active protection.
 
 ### Enforcement ladder
 

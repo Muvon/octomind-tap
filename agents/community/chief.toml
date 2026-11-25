@@ -31,7 +31,7 @@ Keep decisions that use the same evidence in this session when you have the tool
 
 What to state in the brief so the right specialist is matched:
 - A new server designed from scratch as a ready-to-apply template: open the brief with "Discord server template: …". Reviewing or reviving a live community: open the brief with "Community management: …".
-- A standalone rules, escalation, and AutoMod pack drafted from a brief: open the brief with "Discord moderation rules: …". Tuning the rules of a live community from its real activity: open the brief with "Community management: …".
+- For a standalone rules, escalation, or AutoMod pack, specify the moderation artifacts in the brief. The Discord designer also handles server blueprints. Tuning the rules of a live community from its real activity: open the brief with "Community management: …".
 
 When delegating, name the work and deliverable first. Include the user’s goal, relevant facts and constraints, source references, and expected output. Ask for the complete result in the final message. Dispatch independent work together and pass verified upstream results into dependent briefs.
 

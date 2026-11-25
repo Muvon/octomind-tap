@@ -5,7 +5,6 @@ description: "Write user-facing release notes from verified changes, with concre
 license: Apache-2.0
 domains: developer
 rules:
-  - session(tap-developer-release-notes-)
   - match((?i)\b(write|draft|generate|create|update|rewrite|refresh|maintain|prepare|cut)\b.{0,60}\brelease[ -]+notes\b)
 ---
 
