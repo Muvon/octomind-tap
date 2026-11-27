@@ -34,7 +34,7 @@ The model:
 
   Each column is at the constants octomind runs those weights with
   (threshold / margin): 0.65 / 0.06 for capabilities and 0.67 / 0.04 for
-  routing in 2026-09, 0.68 / 0.05 and 0.65 / 0.05 in 2026-11.
+  routing in 2026-09, 0.68 / 0.05 and 0.66 / 0.05 in 2026-11.
 - Before 2026-09 the same repo held a BGE-small-en-v1.5 fine-tune. The
   base bake-off (`scripts/compare_bases.py` on the raw trigger corpus,
   each model at its own best operating point) put granite at gate 0.846

@@ -131,5 +131,5 @@ eval:
   agent_briefs_path: data/agent_briefs.jsonl
   # Mirror octomind/src/mcp/orchestration/tap_route.rs ROUTE_THRESHOLD /
   # ROUTE_MARGIN. Re-calibrate with calibrate_cpus.py after every retrain.
-  route_threshold: 0.65
+  route_threshold: 0.66
   route_margin: 0.05

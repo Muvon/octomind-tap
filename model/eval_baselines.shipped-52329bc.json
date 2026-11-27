@@ -1,0 +1,752 @@
+{
+  "model": "checkpoints/embed-granite-v3-as50-20261114-160005",
+  "n_eval": 1474,
+  "n_positives": 1384,
+  "n_nulls": 90,
+  "top1_acc": 0.9458092485549133,
+  "top3_acc": 0.9819364161849711,
+  "gate_acc": 0.8395953757225434,
+  "abstain_on_pos": 0.10621387283236994,
+  "null_fpr": 0.022222222222222223,
+  "mean_top1_margin": 0.12411309103641553,
+  "per_kind": {
+    "ambiguous": {
+      "n": 8,
+      "correct": 7,
+      "rate": 0.875
+    },
+    "chitchat": {
+      "n": 28,
+      "correct": 28,
+      "rate": 1.0
+    },
+    "compound": {
+      "n": 2,
+      "correct": 0,
+      "rate": 0.0
+    },
+    "cross_domain_shell": {
+      "n": 7,
+      "correct": 2,
+      "rate": 0.2857142857142857
+    },
+    "follow_up": {
+      "n": 412,
+      "correct": 357,
+      "rate": 0.866504854368932
+    },
+    "multi_turn": {
+      "n": 25,
+      "correct": 13,
+      "rate": 0.52
+    },
+    "off_topic": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "paste_dump": {
+      "n": 9,
+      "correct": 9,
+      "rate": 1.0
+    },
+    "positive": {
+      "n": 804,
+      "correct": 687,
+      "rate": 0.8544776119402985
+    },
+    "sarcastic_feedback": {
+      "n": 14,
+      "correct": 14,
+      "rate": 1.0
+    },
+    "typo_casual": {
+      "n": 134,
+      "correct": 103,
+      "rate": 0.7686567164179104
+    },
+    "vague": {
+      "n": 21,
+      "correct": 21,
+      "rate": 1.0
+    }
+  },
+  "per_label_recall": {
+    "ad-bing": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "ad-frameworks": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "ad-google": {
+      "n": 10,
+      "correct": 0,
+      "rate": 0.0
+    },
+    "ad-linkedin": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "ad-meta": {
+      "n": 10,
+      "correct": 4,
+      "rate": 0.4
+    },
+    "ad-reddit": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "ad-tiktok": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "ad-x": {
+      "n": 10,
+      "correct": 2,
+      "rate": 0.2
+    },
+    "ad-youtube": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "agent": {
+      "n": 10,
+      "correct": 6,
+      "rate": 0.6
+    },
+    "ai-agent-design": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "ai-cost-finops": {
+      "n": 10,
+      "correct": 6,
+      "rate": 0.6
+    },
+    "ai-evals-design": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "ai-prompt-injection-defense": {
+      "n": 10,
+      "correct": 6,
+      "rate": 0.6
+    },
+    "ai-rag-patterns": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "analytical-report": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "ats-optimization": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "avatar": {
+      "n": 10,
+      "correct": 6,
+      "rate": 0.6
+    },
+    "browser": {
+      "n": 12,
+      "correct": 9,
+      "rate": 0.75
+    },
+    "browser-backlink-submission": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "browser-social-account-maintenance": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "calendar": {
+      "n": 11,
+      "correct": 10,
+      "rate": 0.9090909090909091
+    },
+    "captions": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "code-review-lenses": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "codesearch-graph": {
+      "n": 12,
+      "correct": 12,
+      "rate": 1.0
+    },
+    "codesearch-semantic": {
+      "n": 13,
+      "correct": 13,
+      "rate": 1.0
+    },
+    "codesearch-structural": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "composition": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "content-audit": {
+      "n": 10,
+      "correct": 2,
+      "rate": 0.2
+    },
+    "content-formats": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "content-grounding": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "content-humanize": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "content-locale-humanize": {
+      "n": 10,
+      "correct": 5,
+      "rate": 0.5
+    },
+    "content-locale-humanize-ar": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "content-locale-humanize-de": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "content-locale-humanize-es": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "content-locale-humanize-fr": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "content-locale-humanize-hi": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "content-locale-humanize-it": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "content-locale-humanize-ja": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "content-locale-humanize-ko": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "content-locale-humanize-pt": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "content-locale-humanize-th": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "content-locale-humanize-zh": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "content-voice": {
+      "n": 10,
+      "correct": 6,
+      "rate": 0.6
+    },
+    "core": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "cover-letter": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "customer-management": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "database-postgres": {
+      "n": 14,
+      "correct": 14,
+      "rate": 1.0
+    },
+    "database-sqlite": {
+      "n": 11,
+      "correct": 11,
+      "rate": 1.0
+    },
+    "devdocs": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "device-computer": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "device-mobile": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "docker": {
+      "n": 13,
+      "correct": 13,
+      "rate": 1.0
+    },
+    "document-export": {
+      "n": 10,
+      "correct": 5,
+      "rate": 0.5
+    },
+    "documents": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "ecommerce": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "edge-hosting": {
+      "n": 11,
+      "correct": 8,
+      "rate": 0.7272727272727273
+    },
+    "email-sequencer": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "error-tracking": {
+      "n": 11,
+      "correct": 10,
+      "rate": 0.9090909090909091
+    },
+    "filesystem-read": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "filesystem-write": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "highlights": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "image-gen": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "image-view": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "knowledge": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "kubernetes": {
+      "n": 11,
+      "correct": 11,
+      "rate": 1.0
+    },
+    "lead-enrichment": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "legal-ca": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "legal-de": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "legal-fr": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "legal-uk": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "legal-us": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "lipsync": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "maps": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "market-data": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "medical-reference": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "memory-read": {
+      "n": 11,
+      "correct": 8,
+      "rate": 0.7272727272727273
+    },
+    "memory-write": {
+      "n": 12,
+      "correct": 10,
+      "rate": 0.8333333333333334
+    },
+    "messaging-discord": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "messaging-email": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "messaging-instagram": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "messaging-slack": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "messaging-sms": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "messaging-telegram": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "messaging-whatsapp": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "music": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "orchestration": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "payments": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "programming-nodejs": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "programming-python": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "programming-rust": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "programming-swift": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "publish-instagram": {
+      "n": 10,
+      "correct": 5,
+      "rate": 0.5
+    },
+    "publish-tiktok": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "publish-x": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "publish-youtube": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "repo-social-preview": {
+      "n": 10,
+      "correct": 4,
+      "rate": 0.4
+    },
+    "resume-conventions": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "resume-render": {
+      "n": 10,
+      "correct": 6,
+      "rate": 0.6
+    },
+    "resume-rendering": {
+      "n": 10,
+      "correct": 5,
+      "rate": 0.5
+    },
+    "runtime": {
+      "n": 10,
+      "correct": 5,
+      "rate": 0.5
+    },
+    "scraping": {
+      "n": 12,
+      "correct": 10,
+      "rate": 0.8333333333333334
+    },
+    "seo-backlink-prospecting": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "seo-content-audit": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "seo-data": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "seo-guest-posting": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "seo-keyword-research": {
+      "n": 10,
+      "correct": 4,
+      "rate": 0.4
+    },
+    "seo-link-audit": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "seo-structural-audit": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "seo-tool-discovery": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "shell": {
+      "n": 26,
+      "correct": 12,
+      "rate": 0.46153846153846156
+    },
+    "slide-decks": {
+      "n": 10,
+      "correct": 3,
+      "rate": 0.3
+    },
+    "slides": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "social-preview": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "spec-authoring": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "stock": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "svelte": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "tap-model-training": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "task-management": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "thumbnails": {
+      "n": 10,
+      "correct": 8,
+      "rate": 0.8
+    },
+    "trading-crypto": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "variety": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "versioning": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "video-captions": {
+      "n": 10,
+      "correct": 1,
+      "rate": 0.1
+    },
+    "video-editing": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "video-gen": {
+      "n": 10,
+      "correct": 9,
+      "rate": 0.9
+    },
+    "video-hooks": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "video-spec-sheet": {
+      "n": 10,
+      "correct": 7,
+      "rate": 0.7
+    },
+    "video-thumbnails": {
+      "n": 10,
+      "correct": 0,
+      "rate": 0.0
+    },
+    "voice": {
+      "n": 10,
+      "correct": 10,
+      "rate": 1.0
+    },
+    "webfetch": {
+      "n": 13,
+      "correct": 12,
+      "rate": 0.9230769230769231
+    },
+    "websearch": {
+      "n": 11,
+      "correct": 10,
+      "rate": 0.9090909090909091
+    },
+    "writing-variety": {
+      "n": 10,
+      "correct": 0,
+      "rate": 0.0
+    }
+  },
+  "settings": {
+    "top_k": 3,
+    "threshold": 0.68,
+    "margin": 0.05,
+    "backend": "safetensors"
+  }
+}

@@ -26,6 +26,10 @@ recorded JSON file. The gate exits non-zero if:
   - top1_acc < baseline.top1_acc - top1_tol           (default 0.01)
   - null_fpr > baseline.null_fpr + fpr_tol            (default 0.01)
   - any per-label top1 recall drops by > per_label_tol (default 0.05)
+    Only labels with at least --per-label-min-n positives (default 20) gate:
+    a 10-row label moves in 0.1 steps, so a 0.05 tolerance is unsatisfiable
+    there and one flipped prompt would block every publish. Smaller-label
+    drops are printed as notes.
 
 Use `--write-baseline <path>` to record the current run as the new
 baseline (after promotion).
@@ -339,13 +343,15 @@ def print_report(rep: dict) -> None:
 
 
 def compare_to_baseline(rep: dict, baseline_path: Path,
-                        top1_tol: float, fpr_tol: float, per_label_tol: float) -> tuple[bool, list[str]]:
+                        top1_tol: float, fpr_tol: float, per_label_tol: float,
+                        per_label_min_n: int = 20) -> tuple[bool, list[str], list[str]]:
     """Returns (passed, regressions). `passed=False` and a non-empty
     `regressions` list block the publish."""
     if not baseline_path.exists():
-        return True, [f"no baseline at {baseline_path}; this run will become the baseline if --write-baseline is used"]
+        return True, [], [f"no baseline at {baseline_path}; this run will become the baseline if --write-baseline is used"]
     baseline = json.loads(baseline_path.read_text())
     regs: list[str] = []
+    notes: list[str] = []
 
     if rep["top1_acc"] < baseline.get("top1_acc", 0.0) - top1_tol:
         regs.append(
@@ -368,13 +374,20 @@ def compare_to_baseline(rep: dict, baseline_path: Path,
         if lab not in base_per_label:
             continue
         base_rate = base_per_label[lab]["rate"]
-        if v["rate"] < base_rate - per_label_tol:
-            regs.append(
-                f"per-label recall regressed for '{lab}': "
-                f"{v['rate']:.3f} < {base_rate:.3f} - {per_label_tol:.3f}"
+        if v["rate"] >= base_rate - per_label_tol:
+            continue
+        if v.get("n", 0) < per_label_min_n:
+            notes.append(
+                f"small-label drop (not gated, n={v.get('n', 0)} < {per_label_min_n}) "
+                f"'{lab}': {v['rate']:.3f} < {base_rate:.3f}"
             )
+            continue
+        regs.append(
+            f"per-label recall regressed for '{lab}': "
+            f"{v['rate']:.3f} < {base_rate:.3f} - {per_label_tol:.3f}"
+        )
 
-    return (not regs), regs
+    return (not regs), regs, notes
 
 
 # ---------------------------------------------------------------------------
@@ -399,6 +412,9 @@ def main() -> int:
     ap.add_argument("--top1-tol", type=float, default=0.01)
     ap.add_argument("--fpr-tol", type=float, default=0.01)
     ap.add_argument("--per-label-tol", type=float, default=0.05)
+    ap.add_argument("--per-label-min-n", type=int, default=20,
+                    help="only gate per-label recall on labels with at least this many"
+                         " positives (smaller labels can only flip by 1/n)")
     ap.add_argument("--json-out", type=Path, default=None,
                     help="dump the full report as JSON (in addition to printing)")
     ap.add_argument("--onnx-file", type=str, default=None,
@@ -441,8 +457,13 @@ def main() -> int:
         print(f"\nwrote baseline to {args.write_baseline}")
         return 0
 
-    passed, regs = compare_to_baseline(rep, baseline_path,
-                                       args.top1_tol, args.fpr_tol, args.per_label_tol)
+    passed, regs, notes = compare_to_baseline(rep, baseline_path,
+                                             args.top1_tol, args.fpr_tol,
+                                             args.per_label_tol, args.per_label_min_n)
+    if notes:
+        print()
+        for msg in notes:
+            print(f"  note: {msg}")
     if not passed:
         print()
         print("=" * 70)

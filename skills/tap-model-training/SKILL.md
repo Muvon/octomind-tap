@@ -93,7 +93,7 @@ uv run python scripts/eval_runtime_gate.py --model checkpoints/<run>/onnx   # oc
 - `octomind/src/mcp/orchestration/tap_route.rs` — `ROUTE_THRESHOLD`, `ROUTE_MARGIN`
 - `model/configs/default.yaml` — `eval.runtime_threshold`, `eval.runtime_margin`, `eval.route_threshold`, `eval.route_margin` (the publish gate and `eval_route.py` score at these)
 
-The 2026-11 model runs at 0.68 / 0.05 for capabilities and 0.65 / 0.05 for routing, and scores identically on ARM, x86 and x86 with VNNI. The graph shipped 2026-09 quantized activations per batch and scored the same text up to 0.08 apart between ARM and x86; the per-CPU dumps are the check that this has not come back.
+The 2026-11 model runs at 0.68 / 0.05 for capabilities and 0.66 / 0.05 for routing, and scores identically on ARM, x86 and x86 with VNNI. The graph shipped 2026-09 quantized activations per batch and scored the same text up to 0.08 apart between ARM and x86; the per-CPU dumps are the check that this has not come back.
 
 ### Publishing
 
