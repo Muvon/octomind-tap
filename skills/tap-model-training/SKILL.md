@@ -98,12 +98,36 @@ The 2026-11 model runs at 0.68 / 0.05 for capabilities and 0.66 / 0.05 for routi
 ### Publishing
 
 ```bash
-HF_TOKEN=hf_... bin/publish            # latest checkpoint; --run <dir> to choose
+HF_TOKEN=hf_... bin/publish --run checkpoints/<dir> --baseline eval_baselines.shipped-<sha>.json
 ```
 
-`bin/publish` runs `eval_gate.py` against `eval_baselines.json` on the fp32 weights and again on `onnx/model_quantized.onnx`, and aborts on regression (top-1 accuracy drop > 0.01, null FPR rise > 0.01, any per-capability recall drop > 0.05). It warns if `onnx/model_quantized.onnx` is missing, since the runtime prefers it. `--force`/`--skip-gate` bypass the gate for documented emergencies only; `--dry-run` prints without uploading.
+`bin/publish` gates twice, the fp32 safetensors and then `onnx/model_quantized.onnx`, and aborts on regression (top-1 drop > 0.01, null FPR rise > 0.01, per-label recall drop > 0.05). Per-label recall only gates labels with at least `--per-label-min-n` positives (default 20): a 10-row label moves in 0.1 steps, so its one flipped prompt prints as a note instead of blocking. It warns when the int8 graph is missing — export it first, since the runtime prefers it. `--force`/`--skip-gate` are for documented emergencies; `--dry-run` prints without uploading.
 
-Octomind's CI and every fresh install download the current weights, while an existing install keeps its cached copy (a cached HF repo is not re-checked). So publish and the octomind commit that carries the recalibrated constants go out together. After the rollout is confirmed, record the baseline the next publish gates against:
+### Gate the candidate against the incumbent, not a stale baseline
+
+`eval_baselines.json` describes the graph that was current when it was written. It goes stale the moment the corpus is rebuilt, and then it measures the dataset change, not the model: the incumbent fails it too. Rescore the shipped graph on today's `data/eval_real.jsonl` first, then gate the candidate against that file:
+
+```bash
+INC=<checkpoint of HF main>    # confirm by sha256, not by name
+uv run python scripts/eval_gate.py --model $INC --write-baseline eval_baselines.shipped-<sha>.json
+uv run python scripts/eval_gate.py --model <candidate> --baseline eval_baselines.shipped-<sha>.json
+uv run python scripts/eval_gate.py --model <candidate>/onnx --onnx-file model_quantized.onnx \
+    --baseline eval_baselines.shipped-<sha>.json
+```
+
+Build the incumbent from a local copy whose hashes match the hub, not from a fresh download: `sha256sum` on `model.safetensors` and `onnx/model_quantized.onnx` against the LFS oids from `https://huggingface.co/api/models/<repo>/tree/main?expand=true`. Commit the resulting baseline file — it is what every publish compares against until the rollout lands.
+
+### Ship the pin with the weights
+
+Octolib serves a repo already in its cache without asking the hub whether it changed, and octomind asserts the loaded revision equals its pin. So a published graph reaches nobody until `MODEL_REVISION` in `octomind/src/embeddings/mod.rs` names the new commit, and an old build on a fresh machine must not pick up new weights under old thresholds. After the upload, one octomind commit carries:
+
+1. `MODEL_REVISION` → the full 40-character sha of the new hub main (`curl -s https://huggingface.co/api/models/muvon/octomind-embed/revision/main`).
+2. The recalibrated constants from `calibrate_cpus.py` — capability, skill, and `ROUTE_*`, mirrored in `model/configs/default.yaml`.
+3. Nothing else, so the release notes say what changed.
+
+Then verify the artifact that landed is the one that was gated: the `onnx/model_quantized.onnx` LFS oid on the hub must equal `sha256sum` of the checkpoint file. A mismatch means the upload pushed a different export.
+
+After the rollout is confirmed, rewrite the rolling baseline from what users now run and commit it:
 
 ```bash
 uv run python scripts/eval_gate.py --model muvon/octomind-embed --write-baseline eval_baselines.json
@@ -136,6 +160,10 @@ Retraining rarely fixes this. First run `calibrate_cpus.py` on fresh dumps to se
 
 Publishing and forgetting `--write-baseline` leaves the next publish gating against the previous model, so a later regression can slip through. Record the baseline once the rollout is confirmed.
 
+### Example 4: pushed the weights, users still run the old graph
+
+`bin/publish` succeeded and the hub main moved, yet every install keeps routing on the previous weights: `MODEL_REVISION` still names the old sha, and octolib never re-checks a cached repo. Bump the pin in the same commit as the constants — publishing alone reaches only fresh installs of a build that has no pin.
+
 ## Checklist
 
 - [ ] Trigger, semantic-phrase or agent-description change → full rebuild with `--llm --resume`, not `--skip-build`?
@@ -143,8 +171,11 @@ Publishing and forgetting `--write-baseline` leaves the next publish gating agai
 - [ ] Winner evaluated on holdout, `eval_real` and the agent briefs; ONNX graphs exported and the small one scored?
 - [ ] Thresholds calibrated over dumps from every CPU kind and copied into `capability.rs`, `skill.rs`, `tap_route.rs`, and `configs/default.yaml`?
 - [ ] `eval_runtime_gate.py` reports PASS for octomind's fixtures?
-- [ ] `bin/publish` passed the gate without `--force`, and the octomind commit with the new constants goes out with it?
-- [ ] Baseline rewritten after the rollout was confirmed?
+- [ ] Gate run against the incumbent rescored on the current corpus, with the baseline file committed — not against a stale `eval_baselines.json`?
+- [ ] `bin/publish` passed the gate without `--force` on both the fp32 and the int8 graph?
+- [ ] `MODEL_REVISION` in `octomind/src/embeddings/mod.rs` bumped to the new hub sha in the same commit as the constants?
+- [ ] Published `onnx/model_quantized.onnx` hash equals the gated checkpoint's?
+- [ ] Baseline rewritten from `muvon/octomind-embed` after the rollout was confirmed?
 
 ## Composition / References
 

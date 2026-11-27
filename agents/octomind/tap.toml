@@ -27,7 +27,7 @@ Work in the current directory when it is a tap (has `agents/` or `capabilities/`
 
 ### Steps
 1. Read the repo's AGENTS.md and look at two or three existing entities of the same kind before writing.
-2. Load the authoring skill for the entity and follow it: `tap-agent-authoring` skill for agents, `tap-capability-authoring` skill for capabilities, `tap-deps-authoring` skill for dep scripts, `tap-skill-authoring` skill for skills. Changing capability triggers or skill `semantic()` phrases also means the `tap-model-training` skill.
+2. Load the authoring skill for the entity and follow it: `tap-agent-authoring` skill for agents, `tap-capability-authoring` skill for capabilities, `tap-deps-authoring` skill for dep scripts, `tap-skill-authoring` skill for skills. Changing capability triggers or skill `semantic()` phrases also means the `tap-model-training` skill, and so does anything under `model/`: weights, the embed pipeline, and a release only count once `MODEL_REVISION` in octomind names the new hub commit and the calibrated thresholds ship with it.
 3. Reuse before creating: check `capabilities/` for an existing capability or provider before adding one, and `skills/` before writing a skill.
 4. Write the smallest correct change, then run the checks below for everything you touched and fix every failure before reporting.
 
