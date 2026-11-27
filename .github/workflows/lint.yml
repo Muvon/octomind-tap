@@ -48,6 +48,9 @@ jobs:
       - name: Test SEO provider wiring
         run: python3 scripts/test-seo-providers.py
 
+      - name: Test doc-export installer under concurrent sessions
+        run: bash scripts/test-doc-export.sh
+
   brief:
     uses: muvon/ci-workflow/.github/workflows/brief.yml@master
     secrets: inherit

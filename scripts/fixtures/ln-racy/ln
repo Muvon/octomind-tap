@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# ln(1) stand-in for scripts/test-doc-export.sh. macOS ln has no EEXIST retry: `ln -sf` stats the
+# destination, unlinks it if present, then calls symlink(). Every caller parks between the stat and
+# the create until the test releases them all, so the race hits on any OS: a writer that saw no
+# destination creates without -f and loses with "File exists" when another writer got there first.
+set -euo pipefail
+
+[[ $1 == -sf && $# == 3 ]] || {
+  echo "ln stand-in: expected 'ln -sf <target> <link>', got: $*" >&2
+  exit 2
+}
+target="$2" link="$3"
+exists=0
+[[ -e $link || -L $link ]] && exists=1
+
+touch "${LN_RACE_DIR:?}/arrived.$$"
+until [[ -e ${LN_RACE_DIR}/release ]]; do sleep 0.05; done
+rm -f "${LN_RACE_DIR}/arrived.$$" # tells the test this writer has left the barrier
+
+[[ $exists == 0 ]] || rm -f "$link"
+exec "${LN_RACE_REAL:?}" -s "$target" "$link"
