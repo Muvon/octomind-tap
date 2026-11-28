@@ -20,8 +20,8 @@ triggers = [
 	"research treatment options for a diagnosis",
 ]
 
-# Domain binding. Hard-bound: only loads when the active role's domain part
-# (e.g. `doctor:chief` → `"doctor"`) is in this list. Empty/missing =
+# Domain binding. Hard-bound: only loads when the active agent's namespace
+# (`doctor` for the base agent and for any `doctor:<variant>`) is in this list. Empty/missing =
 # available to every role (filesystem-style universal). Out-of-domain access
 # is rejected by auto-activation, `capability list/discover/enable`, and
 # `OCTOMIND_CAPABILITIES` env loading — no bypass.

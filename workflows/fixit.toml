@@ -2,7 +2,7 @@
 #
 # Public workflow: take a description of something broken at home, in the car, or
 # with a pet; decide first whether it is a stop-and-call situation; and only if
-# it is not, route to the matching specialist for a ranked diagnosis, a DIY-vs-pro
+# it is not, route to the matching agent for a ranked diagnosis, a DIY-vs-pro
 # call, and a fix plan that an independent auditor checks for safety before it is
 # delivered. Graph routing: a STOP verdict skips the plan entirely.
 #
@@ -115,7 +115,7 @@ Output only this message.
 """
 
 # ── 2b. Plan <-> audit loops, one per category ───────────────────────────────
-# The specialist drafts on iteration 1 and receives the auditor's raw critique on
+# The agent drafts on iteration 1 and receives the auditor's raw critique on
 # later rounds (session = "continue"); the auditor is a fresh, separate role so
 # the author never grades its own plan.
 [[steps]]

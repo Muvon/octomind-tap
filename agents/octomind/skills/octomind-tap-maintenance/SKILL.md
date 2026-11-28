@@ -60,7 +60,7 @@ bin/load                           resolves capabilities into the merged manifes
 scripts/                           lint, validation, symlink setup, MCP pin management
 ```
 
-The agents are the directories under `agents/`, one per field of work. A new subject or format for an existing field is a skill under that namespace (a shared skill with `domains:` only when two or more namespaces use it); a new agent is added only for a new field of work, named by what it owns. Tapping or clicking a native app or a web page belongs to `operator`, writing or changing source to `developer`.
+The agents are the directories under `agents/`, one per field of work. A new subject or format for an existing field is a skill under that namespace (a shared skill with `domains:` only when two or more namespaces use it); a new agent is added only for a new field of work, named by what it owns. A variant `agents/<ns>/<variant>.toml` (tag `<ns>:<variant>`) is the exception, for a private tap: make one only when a skill cannot do the job, because the agent needs its own system prompt and identity, capability set, model, or safety rules. The community tap's lint rejects variants (`AGENT_VARIANT`). Tapping or clicking a native app or a web page belongs to `operator`, writing or changing source to `developer`.
 
 ### Capabilities
 

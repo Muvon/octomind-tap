@@ -96,12 +96,12 @@ Capabilities are grouped by **who needs the tool**. Each tier is its own built-i
 | self-management | `core` | `recall` (a plugin sets the plan) | **every** agent |
 | do the work | domain caps | `shell`, `filesystem-*`, `websearch`, `codesearch-*`, `legal-*`, … | per agent |
 | own sub-agents | `agent` | `agent_*` | agents that run their own *configured* sub-agents (`assistant`, `developer`) |
-| **orchestration** | `orchestration` | `tap`, `schedule`, `monitor` | agents that start copies of themselves; `assistant`, which also hands tasks to other agents |
+| **orchestration** | `orchestration` | `tap`, `schedule`, `monitor` | agents that start copies of themselves; agents with a `# Uses:` header (`assistant`, `writer`), which also hand tasks to other agents |
 | runtime config | `runtime` | `mcp`, `agent`-register, `skill`, `capability` | **high-trust only**; `octomind` |
 
-**The rule — orchestration is for agents that intend to delegate.** An agent declares `core` + the tools its field needs. It declares `orchestration` only to start copies of itself (to scout or review read-only, or to split independent parts) or, for `assistant`, to hand tasks to other agents. Consult-style agents (a question in, an answer out) work in one session and do not declare it. `runtime` is declared only by `octomind`. This is enforced **structurally** — an undeclared tool is physically absent from the agent's context, not merely discouraged in the prompt. `tap`, `schedule` and `monitor` live on a separate built-in **`orchestration` server**, so an agent that declares `core` + `orchestration` resolves to `core:*` (`recall`) + `orchestration:*` (`tap`, `schedule`, `monitor`), while an agent that declares only `core` resolves to `core:*` (`recall`) alone — the orchestration server never enters its tool surface.
+**The rule — orchestration is for agents that intend to delegate.** An agent declares `core` + the tools its field needs. It declares `orchestration` only to start copies of itself (to scout or review read-only, or to split independent parts) or, with a `# Uses:` header, to hand tasks to other agents. Consult-style agents (a question in, an answer out) work in one session and do not declare it. `runtime` is declared only by `octomind`. This is enforced **structurally** — an undeclared tool is physically absent from the agent's context, not merely discouraged in the prompt. `tap`, `schedule` and `monitor` live on a separate built-in **`orchestration` server**, so an agent that declares `core` + `orchestration` resolves to `core:*` (`recall`) + `orchestration:*` (`tap`, `schedule`, `monitor`), while an agent that declares only `core` resolves to `core:*` (`recall`) alone — the orchestration server never enters its tool surface.
 
-Agents that carry `orchestration` are listed by `grep -l orchestration agents/*/default.toml`. Only `assistant` carries a `# Uses:` header (see [Agents, Skills, and Delegation](#agents-skills-and-delegation)).
+Agents that carry `orchestration` are listed by `grep -l orchestration agents/*/default.toml`. `assistant` and `writer` carry a `# Uses:` header (see [Agents, Skills, and Delegation](#agents-skills-and-delegation)).
 
 > `orchestration` (and `runtime`) may still **auto-activate** on intent — e.g. a request that clearly needs delegation or a recurring loop — via `capabilities/orchestration/config.toml` triggers. Auto-activation is request-driven and temporary; it never becomes part of an agent's standing grant.
 
@@ -109,7 +109,7 @@ Agents that carry `orchestration` are listed by `grep -l orchestration agents/*/
 
 ## Agents, Skills, and Delegation
 
-The tap has one agent per field of work, plus two special ones. A field agent does that field's work itself: `developer`, `writer`, `lawyer`, `doctor`, `producer`, and so on. `assistant` is the global assistant that hands tasks across fields. `plain` is a baseline with a one-line system prompt and no persona, used for prompt testing. Each agent is a namespace directory `agents/<ns>/` holding its base manifest, `default.toml`, and the namespace's skills under `skills/`. An agent tag is `<ns>` or `<ns>:<variant>`. The base agent is `agents/<ns>/default.toml` with the tag `<ns>`; a variant is `agents/<ns>/<variant>.toml` with the tag `<ns>:<variant>`. `<ns>:default` names the same agent as `<ns>`, and `<ns>` is its canonical form. This tap keeps one agent per field of work, so a namespace here holds only `default.toml` and `skills/`; variants are for private taps, which can add them to a namespace. An agent's prompt is short: role, scope, the common working method, guards and output conventions.
+The tap has one agent per field of work, plus two special ones. A field agent does that field's work itself: `developer`, `writer`, `lawyer`, `doctor`, `producer`, and so on. `assistant` is the global assistant that hands tasks across fields. `plain` is a baseline with a one-line system prompt and no persona, used for prompt testing. Each agent has a namespace, the directory `agents/<ns>/`, which holds the agent's base manifest `default.toml` and its skills under `skills/`. The base agent has the tag `<ns>`; `<ns>:default` names the same agent, and `<ns>` is its canonical form. An agent's prompt is short: role, scope, the common working method, guards and output conventions. [Namespaces, base agents, variants, and skills](#namespaces-base-agents-variants-and-skills) defines the terms and says when work becomes a skill and when it becomes a variant.
 
 | Command | Runs |
 |---------|------|
@@ -139,7 +139,7 @@ flowchart TD
 
 ### Skills carry the specialties
 
-Each specialty procedure (QA test planning, contract review for one jurisdiction, lifecycle email) is a skill. A skill used by one namespace is an owned skill: it sits at `agents/<ns>/skills/<skill>/SKILL.md` and is bound to that namespace by its location, so the base agent and every variant get it and its frontmatter has no `domains:` line. A skill used by two or more namespaces is a shared skill: it sits at `skills/<skill>/SKILL.md` and lists those namespaces in `domains:`. The `domains` gate of a capability lists namespaces too. A skill with no `domains:` is shared and is never loaded automatically. A skill is addressed by its bare name everywhere, so a skill name exists once in the tap. A skill loads in four ways:
+Each specialty procedure (QA test planning, contract review for one jurisdiction, lifecycle email) is a skill, owned or shared as defined in [Namespaces, base agents, variants, and skills](#namespaces-base-agents-variants-and-skills). An owned skill is bound to its namespace by location, so its frontmatter has no `domains:` line. The `domains` gate of a capability lists namespaces too. A shared skill with no `domains:` is never loaded automatically. A skill is addressed by its bare name everywhere, so a skill name exists once in the tap. A skill loads in four ways:
 
 - automatically, when the user's message matches its `rules:`;
 - from a workflow step that lists it in `skills = [...]`;
@@ -155,7 +155,7 @@ A skill can bring tools with it: `capabilities:` in its frontmatter loads them o
 An agent that declares the `orchestration` capability can delegate with the `tap` tool.
 
 - Copies. The agent can start copies of itself: `role` set to its own tag, or no `role` when it has no `# Uses:` header. A base agent that declares `orchestration` also reaches its own variants without a header. Each copy is a fresh session of the same agent. `readonly: true` starts a read-only copy that scouts before a large change or reviews finished work independently. Several writable copies can run at once for independent parts, each on its own files. A copy cannot start further copies.
-- Other agents. The `# Uses:` header is a header comment next to `# Title:` and `# Description:`: `# Uses: <entry>[, <entry>…]`. The header exists only on a base agent; a variant has none. An entry is `<ns>`, `<ns>:<variant>` or `*` for every other agent. The header sets which other agents this agent's `tap` runs can be matched to. An agent with the header declares `orchestration`. In this tap only `assistant` carries it, as `# Uses: *`: it is the one agent that hands tasks across fields.
+- Other agents. The `# Uses:` header is a header comment next to `# Title:` and `# Description:`: `# Uses: <entry>[, <entry>…]`. The header exists only on a base agent; a variant has none. An entry is `<ns>`, `<ns>:<variant>` or `*` for every other agent. The header sets which other agents this agent's `tap` runs can be matched to. An agent with the header declares `orchestration`. In this tap two agents carry it: `assistant`, as `# Uses: *`, hands tasks across all fields, and `writer`, as `# Uses: seo`, hands keyword research and SEO passes to `seo`. Agents must not use each other in a loop (`USES_CYCLE`), so `seo` does not list `writer`.
 - Matching. `tap` matches a task to an agent by comparing the brief with each reachable agent's `# Title:` and `# Description:`, so those headers must say the kind of work and the deliverable in the words a task brief would use.
 
 ```toml
@@ -171,11 +171,33 @@ The delegation tool describes matching, invocation, continuation, and asynchrono
 
 `octomind run <name> --readonly` (also `octomind acp <name> --readonly`, and `readonly: true` on a `tap` run) starts a session in which only tools whose MCP `readOnlyHint` annotation is true are offered and executed. A tool with no hint counts as mutable. Shell runners declare `readOnlyHint: false`, so a read-only session has no shell. A read-only session cannot delegate.
 
-### Choosing between a skill and an agent
+### Namespaces, base agents, variants, and skills
 
-- Add a skill for a procedure, subject technique, format, or checklist that an existing agent can apply with its own authority.
-- Add an agent for a new field of work with its own deliverables and approval boundary.
-- Keep work that depends on the same evidence in one session. Give a delegate the relevant source, constraints, authority, and acceptance checks. Split work at an independently verifiable boundary or an independent review.
+These words mean the same thing in every document of this tap.
+
+- A namespace is the directory `agents/<ns>/`. Its name is lowercase letters, digits and hyphens.
+- The base agent of a namespace is `agents/<ns>/default.toml`, tag `<ns>`.
+- A variant is `agents/<ns>/<variant>.toml`, tag `<ns>:<variant>`.
+- An owned skill is `agents/<ns>/skills/<skill>/SKILL.md`. One namespace uses it, and the base agent and every variant of that namespace get it.
+- A shared skill is `skills/<skill>/SKILL.md`. Two or more namespaces use it, and its `domains:` line names them.
+
+How the tap is built:
+
+1. An agent covers a whole field of work and does the work itself. Its tag is `<ns>` and its file is `agents/<ns>/default.toml`.
+2. A specialty inside a field (a procedure, a format, a jurisdiction, a platform) is a skill of that namespace. A skill that two or more namespaces use is shared. Skills are the default: this tap has 34 base agents and no variants.
+3. A variant is the exception. Octomind supports variants. This tap's lint rejects them (`AGENT_VARIANT`); a private tap may use them.
+4. A base agent that declares `orchestration` reaches the variants of its own namespace without a header. The `# Uses:` header exists only on a base agent. In this tap `assistant` hands tasks across all fields and `writer` hands SEO work to `seo`.
+
+Skill or variant. Make a variant only when a skill cannot do the job, that is, when the agent needs one of these:
+
+- its own system prompt and identity;
+- its own capability set: fewer or different tools than the base agent, such as a reviewer with no shell;
+- its own model;
+- its own safety rules.
+
+When the work needs only extra instructions, or extra tools on top of the base agent, write a skill: a skill brings tools with `capabilities:` in its frontmatter. When the work is a new field with its own deliverables and approval boundary, add a new base agent, which is a new namespace.
+
+Keep work that depends on the same evidence in one session. Give a delegate the relevant source, constraints, authority, and acceptance checks. Split work at an independently verifiable boundary or an independent review.
 
 ### Built-in tap setting
 
@@ -453,6 +475,8 @@ Skills and agents serve different purposes:
 | **What it provides** | Domain knowledge + capabilities + validation | Full role: model, tools, system prompt |
 | **Composable** | Yes — multiple skills per session | No — one role per session |
 | **Tool access** | Can request capabilities when activated | Declares baseline capabilities. The runtime can activate additional capabilities on intent. |
+
+The agent column means a base agent. A variant of a namespace is the exception that [Namespaces, base agents, variants, and skills](#namespaces-base-agents-variants-and-skills) describes.
 
 ### Choosing a role, skill, or workflow
 

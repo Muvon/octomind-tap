@@ -22,7 +22,7 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from eval_route import MAX_FIRED, MAX_WRONG, best_point, print_point  # noqa: E402
+from eval_route import MAX_WRONG, best_point, print_point  # noqa: E402
 
 # Grid step for both gates. The dumps differ by a few hundredths, so a coarser
 # grid can step over the only points that hold everywhere.
@@ -48,7 +48,6 @@ def main() -> int:
     ap.add_argument("dumps", type=Path, nargs="+", help="score dumps from dump_scores.py, one per CPU kind")
     ap.add_argument("--target-fpr", type=float, default=0.03, help="capability gate: cap on null_fpr")
     ap.add_argument("--max-wrong", type=float, default=MAX_WRONG, help="route gate: cap on the wrong-handoff rate")
-    ap.add_argument("--max-fired", type=float, default=MAX_FIRED, help="route gate: cap on the foreign fired rate")
     ap.add_argument("--json-out", type=Path, default=None)
     args = ap.parse_args()
 
@@ -75,8 +74,8 @@ def main() -> int:
     else:
         print("  no point holds on every CPU")
 
-    route = best_point([d["route"] for d in dumps], thresholds, margins, args.max_wrong, args.max_fired)
-    print(f"\nroute gate (wrong <= {args.max_wrong}, foreign fired <= {args.max_fired} on every CPU):")
+    route = best_point([d["route"] for d in dumps], thresholds, margins, args.max_wrong)
+    print(f"\nroute gate (wrong <= {args.max_wrong} on every CPU):")
     if route:
         print(f"  threshold={route['threshold']:.2f}  margin={route['margin']:.2f}")
         for name, metrics in zip(names, route["per_cpu"]):

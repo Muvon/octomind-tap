@@ -2,8 +2,8 @@
 # Capability: orchestration
 # Provider: Octomind built-in orchestration server
 # Title: Orchestration
-# Description: Cross-domain agent delegation (tap: discover/run registry specialists) and session-flow control (schedule) via the built-in orchestration server.
-# Provides tools: tap — discover/run registry specialists; schedule — defer/recur session messages
+# Description: Agent delegation (tap: run copies of the agent or hand a task to the agent that fits) and session-flow control (schedule) via the built-in server.
+# Provides tools: tap — run copies of the agent or hand a task to another agent; schedule — defer/recur session messages
 
 [roles.mcp]
 server_refs = ["orchestration"]

@@ -4,7 +4,7 @@
 # notice and turn it into a plain-language decode — what it is, what it says,
 # what it costs or commits you to, red flags, deadlines, ordered next steps, and
 # a draft reply only when one is warranted. A classifier emits one category from
-# a closed set; one conditional block per category runs the matching specialist
+# a closed set; one conditional block per category runs the matching agent
 # (the other five stay empty), a writer composes the decode from whichever
 # findings are non-empty, and a SEPARATE verifier checks every figure, date, and
 # party against the source document before it is delivered. Produces documents
@@ -57,8 +57,8 @@ Output only the brief — no commentary.
 </request>
 """
 
-# ── 2. Specialist findings — one conditional block per category ──────────────
-# Each specialist returns raw findings as MATERIAL; the writer composes the decode.
+# ── 2. Findings — one conditional block per category ─────────────────────────
+# Each agent returns raw findings as MATERIAL; the writer composes the decode.
 # A block whose condition does not match runs nothing and its output is empty.
 [[steps]]
 name        = "route-medical"
@@ -234,7 +234,7 @@ review it before the user signs or responds.
 
 # ── 3. Compose + verify loop ─────────────────────────────────────────────────
 # Writer and verifier are distinct roles so the author never grades its own
-# decode. Exactly one specialist block is non-empty; the other five are empty.
+# decode. Exactly one finding block is non-empty; the other five are empty.
 # A blocked or unclassified intake passes through as a single INTAKE-BLOCKED line.
 [[steps]]
 name           = "refine"
@@ -254,7 +254,7 @@ empty, output `INTAKE-BLOCKED: classification failed — no category returned`
 and nothing else.
 
 Otherwise: AUTONOMOUS run: do not ask questions; [BRACKET] unknowns and list
-assumptions. Compose a plain-language decode of the document from the specialist
+assumptions. Compose a plain-language decode of the document from the
 findings below — exactly one of the six finding blocks is non-empty; use that
 one and ignore the empty ones. Facts come only from the document and the
 findings — never invent a figure, date, party, or rule. Reading level: a

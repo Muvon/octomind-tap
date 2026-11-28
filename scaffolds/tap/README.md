@@ -39,11 +39,21 @@ exist once here and are symlinked from the repository root.
 4. Registers the directory as a local tap for `<owner/name>`, so the starter
    agent runs immediately: `octomind run <name>`.
 
-The starter agent is the base agent `agents/<name>/default.toml`. A generated
+The starter agent is the base agent `agents/<name>/default.toml`; its directory
+`agents/<name>/` is the namespace `<name>`. A generated
 tap accepts variants: `agents/<name>/<variant>.toml` is started with
 `octomind run <name>:<variant>`, and `<name>:default` names the base agent.
 `scripts/check.sh` checks the variant name, the `# Agent:` header and that a
 variant carries no `# Uses:` header.
+
+A variant is the exception, not the default. The generated `AGENTS.md` and
+`README.md` tell the tap's authors to add one only when a skill cannot do the
+job: the agent needs its own system prompt and identity, its own capability set
+(fewer or different tools), its own model, or its own safety rules. Extra
+instructions, or extra tools on top of the base agent, are a skill. A specialty
+inside a field is a skill of that namespace, and a skill that two or more
+namespaces use is shared. The community tap's own lint rejects variants
+(`AGENT_VARIANT`); the generated `scripts/check.sh` accepts them.
 
 ## Design boundary
 

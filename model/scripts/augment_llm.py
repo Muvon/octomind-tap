@@ -27,10 +27,8 @@ import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
-try:
-    import tomllib
-except ModuleNotFoundError:
-    import tomli as tomllib  # type: ignore[no-redef]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from build_dataset import load_all_triggers  # noqa: E402
 
 
 SYSTEM_PROMPT = """You generate diverse, natural user paraphrases for an embedding-model training dataset.
@@ -56,46 +54,6 @@ USER_TEMPLATE = """Capability: {label}
 Authored trigger: {trigger}
 
 Generate {n} diverse user paraphrases for this trigger."""
-
-
-_SEMANTIC_RE = __import__("re").compile(r"semantic\(\s*['\"]?(.+?)['\"]?\s*\)")
-
-
-def load_triggers(caps_dir: Path, skills_dir: Path | None = None) -> dict[str, list[str]]:
-    """Load capability triggers + skill semantic() phrases under one label
-    space. Mirrors `build_dataset.py::load_all_triggers` so the LLM
-    augmentation and dataset assembly stay in sync."""
-    out: dict[str, list[str]] = {}
-    if caps_dir and caps_dir.exists():
-        for cap_dir in sorted(p for p in caps_dir.iterdir() if p.is_dir()):
-            cfg = cap_dir / "config.toml"
-            if not cfg.exists():
-                continue
-            data = tomllib.loads(cfg.read_text())
-            triggers = [t.strip() for t in data.get("triggers", []) if t.strip()]
-            if triggers:
-                out[cap_dir.name] = list(triggers)
-    if skills_dir and skills_dir.exists():
-        for skill_dir in sorted(p for p in skills_dir.iterdir() if p.is_dir()):
-            md = skill_dir / "SKILL.md"
-            if not md.exists():
-                continue
-            text = md.read_text()
-            if not text.startswith("---"):
-                continue
-            end = text.find("\n---", 3)
-            if end == -1:
-                continue
-            phrases = [m.group(1).strip() for m in _SEMANTIC_RE.finditer(text[3:end])]
-            phrases = [p for p in phrases if p]
-            if not phrases:
-                continue
-            if skill_dir.name in out:
-                seen = set(out[skill_dir.name])
-                out[skill_dir.name].extend(p for p in phrases if p not in seen)
-            else:
-                out[skill_dir.name] = phrases
-    return out
 
 
 # ---------------------------------------------------------------------------
@@ -188,14 +146,13 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     root = Path(__file__).resolve().parents[1]
     repo = Path(__file__).resolve().parents[2]
-    ap.add_argument("--caps", type=Path, default=repo / "capabilities")
-    ap.add_argument("--skills", type=Path, default=repo / "skills")
+    ap.add_argument("--repo", type=Path, default=repo, help="tap checkout holding capabilities/, skills/ and agents/")
     ap.add_argument("--out", type=Path, default=root / "data" / "intents.jsonl")
     ap.add_argument("--provider", choices=["anthropic", "openai"], default="anthropic")
     ap.add_argument("--model", type=str, default="")
     ap.add_argument("--n", type=int, default=10, help="paraphrases per trigger")
     ap.add_argument("--workers", type=int, default=8)
-    ap.add_argument("--only", type=str, default="", help="comma-separated list of capability names to process")
+    ap.add_argument("--only", type=str, default="", help="comma-separated list of capability or skill names to process")
     ap.add_argument("--resume", action="store_true", help="append, skipping (label,source) pairs already present")
     args = ap.parse_args()
 
@@ -205,7 +162,7 @@ def main() -> int:
         print(f"set {key_env} env var", file=sys.stderr)
         return 1
 
-    triggers_by_cap = load_triggers(args.caps, args.skills)
+    triggers_by_cap = load_all_triggers(args.repo / "capabilities", args.repo)
     if not triggers_by_cap:
         print("no capabilities found", file=sys.stderr)
         return 1

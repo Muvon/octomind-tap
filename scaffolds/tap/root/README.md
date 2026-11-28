@@ -62,6 +62,13 @@ cp templates/skill.md agents/<name>/skills/release-process/SKILL.md
 A skill that two or more namespaces use goes in `skills/<skill>/SKILL.md` instead, with
 `domains:` naming those namespaces.
 
+Add a variant, `agents/<name>/<variant>.toml` with the tag `<name>:<variant>`,
+only when a skill cannot do the job: the agent needs its own system prompt and
+identity, its own capability set (fewer or different tools), its own model, or
+its own safety rules. Extra instructions, or extra tools on top of the base
+agent, are a skill; `capabilities:` in its frontmatter brings tools. A new field
+of work is a new agent directory. `AGENTS.md` has the full rules.
+
 For a capability, dependency installer, or workflow, start from the matching
 file under `templates/` and follow `AGENTS.md`.
 

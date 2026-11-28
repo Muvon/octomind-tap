@@ -42,10 +42,12 @@ CLS-pooled, prefix-free, English) fine-tuned on the octomind-tap catalog
 (capability and skill trigger phrases, agent titles and descriptions).
 
 Training: rule-based + LLM paraphrase augmentation for triggers, LLM-written
-task briefs for agents, `CachedMultipleNegativesRankingLoss` (scale 10 for
-triggers, 50 for agents) on pairs and positive-aware hard-negative triplets,
+task briefs for agents and for the skills that hold their procedure,
+`CachedMultipleNegativesRankingLoss` (scale 10 for triggers and skill pairs,
+50 for agents) on pairs and positive-aware hard-negative triplets,
 `MatryoshkaLoss` over [384, 256, 192, 128, 96]. Two phases: 105 steps over
-all files, then 105 steps over the agent files alone.
+the capability and agent files, then 105 steps over the agent files and the
+skill pairs.
 
 ## Files
 

@@ -149,6 +149,24 @@ def load_encoder(model_path: str, onnx_file: str | None):
 # ---------------------------------------------------------------------------
 
 
+def load_capability_eval_rows(eval_path: Path, triggers_by_cap: dict[str, set[str]]) -> list[dict]:
+    """eval_real rows for the capability gate: null rows and rows whose gold label is a capability.
+
+    A row whose label is a skill (or anything else with no capability triggers)
+    cannot be the right answer of a decision that never offers that label, so
+    it is left out; the count per row kind is printed."""
+    rows = [json.loads(line) for line in eval_path.read_text().splitlines() if line.strip()]
+    kept = [r for r in rows if r.get("label") is None or r["label"] in triggers_by_cap]
+    left_out = defaultdict(int)
+    for r in rows:
+        if r.get("label") is not None and r["label"] not in triggers_by_cap:
+            left_out[r.get("kind", "")] += 1
+    if left_out:
+        print(f"eval rows left out of the capability gate (label is not a capability): "
+              f"{sum(left_out.values())} of {len(rows)} {dict(sorted(left_out.items()))}")
+    return kept
+
+
 def cap_score(intent_vec: np.ndarray, trigger_vecs: np.ndarray, top_k: int) -> float:
     sims = trigger_vecs @ intent_vec
     sims.sort()
@@ -176,15 +194,18 @@ def select_with_margin(scored: list[tuple[float, str]], threshold: float, margin
 
 
 def load_triggers_from_pairs(pairs_path: Path) -> dict[str, set[str]]:
-    """Pull every (anchor, positive) across pairs.jsonl and group by
-    label. This matches what the runtime would have — the trigger set
-    per capability after training-time expansion."""
+    """Pull every (anchor, positive) across the file and group by label.
+
+    On raw_triggers.jsonl this is the trigger set the runtime scores per
+    capability. Rows marked `"kind": "skill"` are skill `semantic()` phrases:
+    the runtime scores them in skill.rs, separately, so they are not
+    candidates of the capability decision and are skipped."""
     triggers_by_cap: dict[str, set[str]] = defaultdict(set)
     with pairs_path.open() as f:
         for line in f:
             row = json.loads(line)
             label = row.get("label")
-            if not label:
+            if not label or row.get("kind") == "skill":
                 continue
             # The synthetic `_oos` sink doesn't represent a runtime
             # capability — exclude it from scoring against the user
@@ -436,8 +457,8 @@ def main() -> int:
     if not pairs_path.exists():
         raise SystemExit(f"missing trigger corpus: {pairs_path} — run build_dataset.py first")
 
-    eval_rows = [json.loads(line) for line in eval_path.read_text().splitlines() if line.strip()]
     triggers_by_cap = load_triggers_from_pairs(pairs_path)
+    eval_rows = load_capability_eval_rows(eval_path, triggers_by_cap)
 
     top_k = int(eval_cfg.get("runtime_top_k", 3))
     threshold = float(eval_cfg.get("runtime_threshold", 0.55))

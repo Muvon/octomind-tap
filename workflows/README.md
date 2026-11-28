@@ -48,13 +48,13 @@ Everyday life (paste or point at the thing; get a checked document back — you 
 
 | Name | What it does | Showcases |
 |------|--------------|-----------|
-| [`decode`](./decode.toml) | Routes a confusing letter, bill, contract, lease, or notice to the right specialist, composes a plain-language decode with red flags, deadlines, next steps, and a draft reply when warranted, and verifies every figure and date against the source. | `conditional` + `loop` |
+| [`decode`](./decode.toml) | Routes a confusing letter, bill, contract, lease, or notice to the matching agent, composes a plain-language decode with red flags, deadlines, next steps, and a draft reply when warranted, and verifies every figure and date against the source. | `conditional` + `loop` |
 | [`health-brief`](./health-brief.toml) | Extracts structured health facts and gates on red flags first, then analyzes labs, medications, and symptom context in parallel and delivers a judge-checked, non-diagnostic visit-prep brief with ranked questions for your clinician. | graph + `parallel` + `loop` |
 | [`money-checkup`](./money-checkup.toml) | Turns a bank or card statement export into a subscription and fee audit with every figure computed from the transactions, independently recomputed by an auditor loop, and ranked by annualized savings. | `loop` |
 | [`meeting`](./meeting.toml) | Turns a meeting transcript or notes into minutes, decisions, owner-and-date action items, and follow-up drafts, each traced to a verbatim quote by an independent verifier loop. | `loop` |
 | [`meal-plan`](./meal-plan.toml) | Turns household constraints into a 7-day meal plan with recipes, aisle-grouped grocery list, and prep schedule, then loops an independent auditor on allergens, list coverage, daily time, and budget until it passes. | `loop` |
 | [`trip`](./trip.toml) | Turns a trip request into a day-by-day itinerary and budget table via parallel logistics, lodging, and activities research, then loops a feasibility audit on pacing, transit, opening hours, and budget. | `parallel` + `loop` |
-| [`fixit`](./fixit.toml) | Triages a broken thing at home, in the car, or with a pet; stops immediately on danger signs, otherwise routes to a specialist for a ranked diagnosis, DIY-vs-pro call, and fix plan checked by a safety auditor. | graph + `loop` |
+| [`fixit`](./fixit.toml) | Triages a broken thing at home, in the car, or with a pet; stops immediately on danger signs, otherwise routes to the matching agent for a ranked diagnosis, DIY-vs-pro call, and fix plan checked by a safety auditor. | graph + `loop` |
 | [`interview-prep`](./interview-prep.toml) | Turns a master resume and a job posting into a grounded interview prep pack — likely questions, STAR stories from real experience, honest gap answers — refined by a screen/fix loop. Chain after apply. | `loop` |
 
 ## How resolution works
@@ -81,8 +81,11 @@ octomind workflow plan-and-build --dry-run   # validate + print the plan, run no
 
 Workflows fetched from a tap are validated to use **tap agents only** —
 every step's `role` must be the tag of an agent installed via taps
-(e.g. `developer`, `writer`, `assistant`). This tap has no variants, so its
-workflows name base agents. Where a
+(e.g. `developer`, `writer`, `assistant`). A namespace is a directory
+`agents/<ns>/`, and its base agent has the tag `<ns>`. This tap has no variants,
+so its workflows name base agents; a variant would be `<ns>:<variant>` and
+belongs in a private tap (see `ARCHITECTURE.md`, "Namespaces, base agents,
+variants, and skills"). Where a
 step needs a specialty, it preloads skills with `skills = [...]`. A skill is
 named by its bare name wherever it is stored: under `agents/<ns>/skills/` (an
 owned skill, bound to that namespace) or in `skills/` (a shared skill, bound to the

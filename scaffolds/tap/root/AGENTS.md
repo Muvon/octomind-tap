@@ -62,6 +62,22 @@ tag: `<ns>` for the base agent and `<ns>:<variant>` for a variant. Each
 manifest requires a top-level `capabilities = [...]` array followed by exactly
 one `[[roles]]`. Do not set `name`; Octomind injects it from the tag.
 
+Decide between a skill, a variant and a new base agent before creating a file.
+An agent covers a whole field of work and does the work itself. A specialty
+inside a field (a procedure, a format, a jurisdiction, a platform) is a skill of
+that namespace, and skills are the default. A variant is the exception: make one
+only when a skill cannot do the job, that is, when the agent needs
+
+- its own system prompt and identity,
+- its own capability set (fewer or different tools than the base agent),
+- its own model, or
+- its own safety rules.
+
+Extra instructions, or extra tools on top of the base agent, are a skill; a skill
+brings tools with `capabilities:` in its frontmatter. A new field of work with
+its own deliverables is a new base agent, which is a new namespace. A base agent
+that declares `orchestration` reaches the variants of its own namespace.
+
 An agent that hands work to other agents declares the `orchestration`
 capability (`octomind/orchestration`). It sends a task with
 `tap(action="run", prompt="<brief>")` and the runtime matches the task to an

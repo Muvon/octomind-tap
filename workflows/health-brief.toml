@@ -5,7 +5,7 @@
 # ask, what to bring, and when to seek care sooner. A red-flag gate runs FIRST:
 # anything that may need urgent care stops the run with an emergency message and
 # no analysis. Routine cases fan out to lab, medication, and symptom-context
-# specialists in parallel, are synthesized into one brief, and a SEPARATE judge
+# steps in parallel, are synthesized into one brief, and a SEPARATE judge
 # gates it for safety (no diagnosis, no dose advice, claims graded) before it is
 # delivered. Educational information only. Public roles only.
 #

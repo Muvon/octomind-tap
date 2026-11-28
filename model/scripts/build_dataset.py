@@ -1,6 +1,6 @@
-"""Walk capabilities/*/config.toml and emit a training dataset.
+"""Walk capabilities, skills and agents and emit the training dataset.
 
-Outputs three files under model/data/:
+Outputs under model/data/:
 
   pairs.jsonl     — {anchor, positive, label}
                     In-capability pairs for MNRL training signal.
@@ -8,6 +8,12 @@ Outputs three files under model/data/:
                     Hard-negative triplets mined with the BASE model.
   holdout.jsonl   — {intent, label}
                     User-phrased intents held out for eval.
+  raw_triggers.jsonl — the un-augmented triggers and skill phrases the runtime embeds.
+  raw_agents.jsonl   — {tag, text} per base agent: the text the runtime embeds.
+  agent_pairs.jsonl, agent_triplets.jsonl
+                  — task brief -> its agent's text, with hard-negative agents.
+  skill_brief_pairs.jsonl — {anchor, positive, label}: a train brief -> one
+                    semantic() phrase of a skill the brief carries; label = skill.
 
 Data sources, in priority order:
 
@@ -40,6 +46,9 @@ import re
 import sys
 from itertools import combinations
 from pathlib import Path
+
+import skill_rules
+import tap_paths  # on sys.path once skill_rules is imported
 
 try:
     import tomllib  # py311+
@@ -299,9 +308,6 @@ def expand_trigger(trigger: str, rng: random.Random) -> list[str]:
 # ---------------------------------------------------------------------------
 
 
-_SEMANTIC_RE = re.compile(r"semantic\(\s*['\"]?(.+?)['\"]?\s*\)")
-
-
 def load_capability_triggers(caps_dir: Path) -> dict[str, list[str]]:
     """Read `triggers = [...]` from each capability's config.toml."""
     out: dict[str, list[str]] = {}
@@ -318,44 +324,25 @@ def load_capability_triggers(caps_dir: Path) -> dict[str, list[str]]:
     return out
 
 
-def load_skill_semantic_phrases(skills_dir: Path) -> dict[str, list[str]]:
-    """Read `semantic(...)` rules from each SKILL.md frontmatter.
+def load_skill_semantic_phrases(repo: Path) -> dict[str, list[str]]:
+    """The `semantic(...)` phrases of every skill, shared and agent-owned.
 
-    Skills use the same embedding model for their `Semantic { phrase }` rule
-    type — see `octomind/src/mcp/core/skill_auto.rs`. The phrases are the
-    same kind of supervision signal as capability triggers, just sourced
-    from a different file format.
+    Skills use the same embedding model for their `semantic(phrase, threshold)`
+    rule — see `octomind/src/mcp/runtime/skill.rs`. The phrases are the same
+    kind of supervision signal as capability triggers, just sourced from a
+    different file format; the threshold is not part of the phrase.
     """
-    out: dict[str, list[str]] = {}
-    if not skills_dir.exists():
-        return out
-    for skill_dir in sorted(p for p in skills_dir.iterdir() if p.is_dir()):
-        md = skill_dir / "SKILL.md"
-        if not md.exists():
-            continue
-        text = md.read_text()
-        # Frontmatter only — between first two `---` lines.
-        if not text.startswith("---"):
-            continue
-        end = text.find("\n---", 3)
-        if end == -1:
-            continue
-        frontmatter = text[3:end]
-        phrases = [m.group(1).strip() for m in _SEMANTIC_RE.finditer(frontmatter)]
-        phrases = [p for p in phrases if p]
-        if phrases:
-            out[skill_dir.name] = phrases
-    return out
+    return skill_rules.semantic_phrases(skill_rules.load_skills(repo))
 
 
-def load_all_triggers(caps_dir: Path, skills_dir: Path) -> dict[str, list[str]]:
+def load_all_triggers(caps_dir: Path, repo: Path) -> dict[str, list[str]]:
     """Merge capability triggers and skill semantic phrases under one label
     space. If a name exists in both (e.g. `programming-rust` has a capability
     AND a skill), their phrases are concatenated into one label — they
     describe the same domain so combining sharpens that cluster.
     """
     caps = load_capability_triggers(caps_dir)
-    skills = load_skill_semantic_phrases(skills_dir)
+    skills = load_skill_semantic_phrases(repo)
 
     merged: dict[str, list[str]] = {}
     for name, phrases in caps.items():
@@ -396,6 +383,27 @@ def load_llm_intents(path: Path) -> dict[str, list[tuple[str, str]]]:
     return out
 
 
+def current_llm_intents(
+    llm_by_cap: dict[str, list[tuple[str, str]]],
+    triggers_by_cap: dict[str, list[str]],
+) -> tuple[dict[str, list[tuple[str, str]]], int]:
+    """Keep the paraphrases whose label exists and whose source is still one of its triggers.
+
+    intents.jsonl only grows, so after a trigger or phrase is edited or removed
+    its paraphrases stay in the file; training on them would teach the old wording.
+    Returns (kept, number dropped).
+    """
+    kept: dict[str, list[tuple[str, str]]] = {}
+    total = 0
+    for label, rows in llm_by_cap.items():
+        total += len(rows)
+        current = set(triggers_by_cap.get(label, ()))
+        live = [(source, intent) for source, intent in rows if source in current]
+        if live:
+            kept[label] = live
+    return kept, total - sum(len(rows) for rows in kept.values())
+
+
 # ---------------------------------------------------------------------------
 # Agents: the routing corpus
 # ---------------------------------------------------------------------------
@@ -409,25 +417,21 @@ _AGENT_TITLE_RE = re.compile(r"(?m)^# Title:\s*(.+?)\s*$")
 _AGENT_DESCRIPTION_RE = re.compile(r"(?m)^# Description:\s*(.+?)\s*$")
 
 
-def load_agents(agents_dir: Path) -> list[dict]:
-    """Every agent manifest as {tag, domain, title, description, text, manifest}.
+def load_agents(repo: Path) -> list[dict]:
+    """Every base agent (`agents/<name>/default.toml`) as {tag, title, description, text, manifest}.
 
-    `text` is what the runtime embeds (tap_route.rs `describe`). Symlinks
-    are aliases of another manifest and are not routing candidates
-    (octomind `list_agent_headers` leaves them out), so they are skipped.
+    The tag is the agent's name. `text` is what the runtime embeds
+    (tap_route.rs `describe`). Variant manifests exist in private taps only.
     """
     agents: list[dict] = []
-    for path in sorted(agents_dir.glob("*/*.toml")):
-        if path.is_symlink():
-            continue
+    for path in tap_paths.agent_manifests(repo):
         manifest = path.read_text()
         title = _AGENT_TITLE_RE.search(manifest)
         description = _AGENT_DESCRIPTION_RE.search(manifest)
         if not title or not description:
             raise SystemExit(f"{path}: missing `# Title:` or `# Description:` header")
         agents.append({
-            "tag": f"{path.parent.name}:{path.stem}",
-            "domain": path.parent.name,
+            "tag": path.parent.name,
             "title": title.group(1),
             "description": description.group(1),
             "text": f"{title.group(1)}. {description.group(1)}",
@@ -928,27 +932,24 @@ def write_agent_dataset(
     pairs_out: Path,
     triplets_out: Path,
     mining_model: str | None,
-    neg_siblings: int,
-    neg_foreign: int,
+    neg_per_brief: int,
     pos_aware_frac: float,
 ) -> tuple[int, int]:
     """Write the routing corpus, brief->agent pairs and hard-negative triplets.
 
     A pair is (brief, the agent's runtime text): the same two sides the
     runtime compares. In-batch negatives are other agents' texts. Triplets
-    add the agents a brief is most often confused with: the nearest ones of
-    its own domain, which a lead actually chooses between, and the nearest
-    ones outside it, which a caller that reaches every agent chooses between.
-    Briefs were written to be unambiguous inside their domain only, so a
-    foreign agent scoring close to the brief's own is dropped as a possible
-    second right answer (`pos_aware_frac`, as in retriever mining).
+    add the agents a brief is most often confused with: the `neg_per_brief`
+    nearest other agents. A brief is written for one agent but a neighbour may
+    fit it as well, so an agent scoring close to the brief's own is dropped as
+    a possible second right answer (`pos_aware_frac`, as in retriever mining).
 
     Returns (pairs written, triplets written).
     """
     raw_out.parent.mkdir(parents=True, exist_ok=True)
     with raw_out.open("w") as fp:
         for agent in agents:
-            fp.write(json.dumps({"tag": agent["tag"], "domain": agent["domain"], "text": agent["text"]}) + "\n")
+            fp.write(json.dumps({"tag": agent["tag"], "text": agent["text"]}) + "\n")
 
     rows: list[tuple[int, str]] = []  # (agent index, brief)
     for idx, agent in enumerate(agents):
@@ -979,17 +980,14 @@ def write_agent_dataset(
         [brief for _, brief in rows], normalize_embeddings=True, convert_to_numpy=True,
         batch_size=64, show_progress_bar=False,
     )
-    domains = np.array([a["domain"] for a in agents])
 
     written = 0
     with triplets_out.open("w") as fp:
         for (idx, brief), brief_vec in zip(rows, brief_vecs):
             scores = agent_vecs @ brief_vec
-            own_domain = domains == domains[idx]
-            siblings = [int(i) for i in np.argsort(-scores) if own_domain[i] and i != idx][:neg_siblings]
             ceiling = pos_aware_frac * float(scores[idx])
-            foreign = [int(i) for i in np.argsort(-scores) if not own_domain[i] and scores[i] <= ceiling][:neg_foreign]
-            for neg in siblings + foreign:
+            negatives = [int(i) for i in np.argsort(-scores) if i != idx and scores[i] <= ceiling][:neg_per_brief]
+            for neg in negatives:
                 fp.write(json.dumps({
                     "anchor": brief,
                     "positive": agents[idx]["text"],
@@ -1000,6 +998,49 @@ def write_agent_dataset(
                 written += 1
     return len(rows), written
 
+
+# ---------------------------------------------------------------------------
+# Skill-from-brief dataset
+# ---------------------------------------------------------------------------
+#
+# A skill loads when the user's message is close enough to one of its
+# `semantic()` phrases (skill.rs). Each brief written for a specialty carries
+# the skills that now hold that specialty's procedure, so a pair is (brief, one
+# phrase of one of those skills). The phrase rotates over the skill's phrases
+# from brief to brief, so every phrase gets supervision. All phrases are used,
+# including the ones `pairs.jsonl` holds out for its holdout: the holdout only
+# selects a checkpoint, while the runtime embeds every phrase.
+
+
+def write_skill_brief_pairs(
+    briefs_by_agent: dict[str, list[dict]],
+    phrases_by_skill: dict[str, list[str]],
+    out: Path,
+) -> tuple[int, dict[str, int]]:
+    """Write brief -> phrase pairs for the train-split briefs that carry skills.
+
+    Returns (pairs written, {skill: briefs} for skills with no `semantic()`
+    phrase, which cannot be trained on).
+    """
+    used = {s: 0 for s in phrases_by_skill}
+    without_phrases: dict[str, int] = {}
+    written = 0
+    with out.open("w") as fp:
+        for agent in sorted(briefs_by_agent):
+            for row in briefs_by_agent[agent]:
+                if row["split"] != "train":
+                    continue
+                for skill in row.get("skills", []):
+                    phrases = phrases_by_skill.get(skill)
+                    if not phrases:
+                        without_phrases[skill] = without_phrases.get(skill, 0) + 1
+                        continue
+                    phrase = phrases[used[skill] % len(phrases)]
+                    used[skill] += 1
+                    fp.write(json.dumps({"anchor": row["brief"], "positive": phrase, "label": skill}) + "\n")
+                    written += 1
+    return written, without_phrases
+
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
@@ -1009,8 +1050,8 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     root = Path(__file__).resolve().parents[1]
     repo = Path(__file__).resolve().parents[2]
-    ap.add_argument("--caps", type=Path, default=repo / "capabilities")
-    ap.add_argument("--skills", type=Path, default=repo / "skills")
+    ap.add_argument("--repo", type=Path, default=repo,
+                    help="tap checkout holding capabilities/, skills/ and agents/")
     ap.add_argument("--intents", type=Path, default=root / "data" / "intents.jsonl",
                     help="optional LLM-generated paraphrases (from augment_llm.py)")
     ap.add_argument("--pairs-out", type=Path, default=root / "data" / "pairs.jsonl")
@@ -1018,17 +1059,16 @@ def main() -> int:
     ap.add_argument("--holdout-out", type=Path, default=root / "data" / "holdout.jsonl")
     ap.add_argument("--raw-triggers-out", type=Path, default=root / "data" / "raw_triggers.jsonl",
                     help="the un-augmented corpus the runtime embeds (eval.triggers_path)")
-    ap.add_argument("--agents", type=Path, default=repo / "agents")
     ap.add_argument("--agent-briefs", type=Path, default=root / "data" / "agent_briefs.jsonl",
                     help="LLM-written task briefs per agent (from augment_agents.py)")
     ap.add_argument("--raw-agents-out", type=Path, default=root / "data" / "raw_agents.jsonl",
                     help="the agent texts the runtime routes over (eval.agents_path)")
     ap.add_argument("--agent-pairs-out", type=Path, default=root / "data" / "agent_pairs.jsonl")
     ap.add_argument("--agent-triplets-out", type=Path, default=root / "data" / "agent_triplets.jsonl")
-    ap.add_argument("--agent-neg-siblings", type=int, default=4,
-                    help="hard negatives per brief from the agent's own domain")
-    ap.add_argument("--agent-neg-foreign", type=int, default=2,
-                    help="hard negatives per brief from other domains")
+    ap.add_argument("--skill-pairs-out", type=Path, default=root / "data" / "skill_brief_pairs.jsonl",
+                    help="brief -> semantic() phrase of the skills the brief carries")
+    ap.add_argument("--agent-neg-per-brief", type=int, default=6,
+                    help="hard negative agents per brief")
     ap.add_argument("--holdout-ratio", type=float, default=0.2)
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--base-model", type=str, default="BAAI/bge-small-en-v1.5")
@@ -1094,16 +1134,17 @@ def main() -> int:
     )
     args = ap.parse_args()
 
-    agents = load_agents(args.agents)
+    agents = load_agents(args.repo)
     briefs_by_agent = load_agent_briefs(args.agent_briefs)
-    # Briefs exist only as LLM output; there is no rule-based stand-in, and a
-    # model trained without them silently loses the routing half.
-    without_briefs = [a["tag"] for a in agents if not any(r["split"] == "train" for r in briefs_by_agent.get(a["tag"], []))]
-    if without_briefs:
-        raise SystemExit(
-            f"{len(without_briefs)} agents have no training briefs in {args.agent_briefs} "
-            f"({', '.join(without_briefs[:8])}). Run: uv run python scripts/augment_agents.py"
-        )
+    # Briefs exist only as LLM output; there is no rule-based stand-in. An agent
+    # without briefs (`plain`, a baseline nobody routes to) is not a routing
+    # candidate: it has no text row and no pairs.
+    unknown_agents = sorted(set(briefs_by_agent) - {a["tag"] for a in agents})
+    if unknown_agents:
+        raise SystemExit(f"{args.agent_briefs} has briefs for agents that do not exist: {unknown_agents}")
+    agents = [a for a in agents if any(r["split"] == "train" for r in briefs_by_agent.get(a["tag"], []))]
+    if not agents:
+        raise SystemExit(f"no training briefs in {args.agent_briefs}. Run: uv run python scripts/augment_agents.py")
     n_agent_pairs, n_agent_triplets = write_agent_dataset(
         agents,
         briefs_by_agent,
@@ -1111,14 +1152,24 @@ def main() -> int:
         args.agent_pairs_out,
         args.agent_triplets_out,
         None if args.skip_negatives else (args.neg_embed_model or args.base_model),
-        args.agent_neg_siblings,
-        args.agent_neg_foreign,
+        args.agent_neg_per_brief,
         args.pos_aware_frac,
     )
     print(f"wrote {len(agents)} agent texts to {args.raw_agents_out}, {n_agent_pairs} brief pairs to "
           f"{args.agent_pairs_out}, {n_agent_triplets} triplets to {args.agent_triplets_out}")
 
-    triggers_by_cap = load_all_triggers(args.caps, args.skills)
+    phrases_by_skill = load_skill_semantic_phrases(args.repo)
+    skill_names = set(skill_rules.load_skills(args.repo))
+    unknown_skills = sorted({s for rows in briefs_by_agent.values() for r in rows for s in r.get("skills", [])} - skill_names)
+    if unknown_skills:
+        raise SystemExit(f"{args.agent_briefs} names skills that do not exist: {unknown_skills}")
+    n_skill_pairs, without_phrases = write_skill_brief_pairs(briefs_by_agent, phrases_by_skill, args.skill_pairs_out)
+    print(f"wrote {n_skill_pairs} skill pairs to {args.skill_pairs_out}")
+    if without_phrases:
+        print(f"warn: {len(without_phrases)} skills carried by briefs have no semantic() phrase and get no pairs: "
+              f"{', '.join(sorted(without_phrases))}", file=sys.stderr)
+
+    triggers_by_cap = load_all_triggers(args.repo / "capabilities", args.repo)
     if not triggers_by_cap:
         print("No capabilities with triggers found.", file=sys.stderr)
         return 1
@@ -1128,17 +1179,23 @@ def main() -> int:
     # publish gate and threshold calibration must use them, not the
     # augmented pairs. Same {anchor, positive, label} shape as pairs.jsonl.
     args.raw_triggers_out.parent.mkdir(parents=True, exist_ok=True)
+    # `kind` tells the capability decision (capability.rs) which rows are its
+    # candidates; skill phrases are scored separately (skill.rs).
+    capability_triggers = load_capability_triggers(args.repo / "capabilities")
     n_raw = 0
     with args.raw_triggers_out.open("w") as fp_raw:
         for label, triggers in sorted(triggers_by_cap.items()):
             for t in triggers:
-                fp_raw.write(json.dumps({"anchor": t, "positive": t, "label": label}) + "\n")
+                kind = "capability" if t in capability_triggers.get(label, ()) else "skill"
+                fp_raw.write(json.dumps({"anchor": t, "positive": t, "label": label, "kind": kind}) + "\n")
                 n_raw += 1
     print(f"wrote {n_raw} raw runtime triggers ({len(triggers_by_cap)} labels) to {args.raw_triggers_out}")
 
-    llm_by_cap = load_llm_intents(args.intents)
+    llm_by_cap, n_stale = current_llm_intents(load_llm_intents(args.intents), triggers_by_cap)
+    if n_stale:
+        print(f"dropped {n_stale} paraphrases whose label or source trigger is not in the catalog")
     if llm_by_cap:
-        print(f"loaded LLM-augmented intents for {len(llm_by_cap)} capabilities from {args.intents}")
+        print(f"loaded LLM-augmented intents for {len(llm_by_cap)} labels from {args.intents}")
     else:
         print(f"no LLM intents found at {args.intents} (rule-based only)")
 

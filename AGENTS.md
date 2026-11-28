@@ -5,8 +5,8 @@ Community-maintained registry of agent manifests, capability definitions, depend
 ## Project Structure
 
 ```
-agents/<ns>/default.toml        # Base agent of the namespace <ns>, one directory per field of work; tag `<ns>`
-agents/<ns>/skills/<skill>/SKILL.md  # Owned skill: used by this namespace only, bound to it by location
+agents/<ns>/default.toml        # Base agent, tag `<ns>`; the directory `agents/<ns>/` is the namespace, one per field of work
+agents/<ns>/skills/<skill>/SKILL.md  # Owned skill: one namespace uses it, bound to it by location
 capabilities/<name>/
   config.toml                   # Capability metadata: triggers (+ optional domains gate)
   default.toml                  # Symlink → active provider (e.g. duckduckgo.toml)
@@ -14,7 +14,7 @@ capabilities/<name>/
 deps/<org>/<tool>.sh            # Dependency install scripts (auto-run before sessions)
 deps/<org>/<tool>.md            # Required companion doc for every dep script
 deps/lib/platform.sh            # Shared platform detection (source in all dep scripts)
-skills/<skill>/SKILL.md         # Shared skill: used by two or more agents (bound by `domains:`) or loaded by hand only
+skills/<skill>/SKILL.md         # Shared skill: two or more namespaces use it (bound by `domains:`), or it loads by hand only
 <skill dir>/validate            # Optional script next to a SKILL.md (exit 0 = valid)
 workflows/<name>.toml           # Public multi-step workflows — `octomind workflow <name>`
 model/                          # Embedding fine-tune powering capability auto-activation
@@ -54,7 +54,7 @@ cd model && uv sync && bin/train             # embedding model full pipeline (--
 
 - All lint scripts and `mcp-versions.sh` need Python 3.11+ (or `pip install tomli`).
 - `pre-commit` runs `shfmt -w -s -i 2 -ci` on shell scripts — run it before committing dep scripts; `lint-deps.sh` is **not** in pre-commit, run it manually.
-- CI: `.github/workflows/lint.yml` runs setup-symlinks, lint-manifests, lint-capabilities, validate-capabilities, lint-skills, lint-deps, and `scripts/test-seo-providers.py` on every push/PR; `test-deps.yml` runs each changed dep script twice (install + idempotency) on clean Ubuntu, macOS, and Windows; `render-smoke.yml` runs `scripts/smoke-render.sh` on Linux and macOS when the artifact CLIs or their deps change.
+- CI: `.github/workflows/lint.yml` runs setup-symlinks, lint-manifests, lint-capabilities, validate-capabilities, lint-skills, lint-deps, `scripts/test-seo-providers.py` and `scripts/test-doc-export.sh` on every push/PR (not lint-workflows); `test-deps.yml` runs each changed dep script twice (install + idempotency) on clean Ubuntu, macOS, and Windows; `render-smoke.yml` runs `scripts/smoke-render.sh` on Linux and macOS when the artifact CLIs or their deps change.
 
 ## Where to Look
 
@@ -62,7 +62,7 @@ cd model && uv sync && bin/train             # embedding model full pipeline (--
 |------|------------|
 | Add a new agent | Copy `templates/agent.toml` → `agents/<name>/default.toml`; spec: `skills/tap-agent-authoring/SKILL.md` |
 | Add a new capability | Copy `templates/capability.toml` + `templates/capability-config.toml` → `capabilities/<name>/`; spec: `agents/octomind/skills/tap-capability-authoring/SKILL.md` |
-| Add a specialty to an agent | Add a skill (next row) under that agent; a new agent only for a new field of work |
+| Add a specialty to an agent | Add a skill (next row) under that agent; a new agent only for a new field of work; a variant only when a skill cannot do the job (`ARCHITECTURE.md`, "Namespaces, base agents, variants, and skills") |
 | Add a new skill | Copy `templates/skill.md` → `agents/<agent>/skills/<skill>/SKILL.md` when one agent uses it, or `skills/<skill>/SKILL.md` with `domains:` when two or more do; spec: `agents/octomind/skills/tap-skill-authoring/SKILL.md` |
 | Add a new dep script | Copy `templates/dep.sh` + `templates/dep-mcp.md` or `templates/dep-tool.md` → `deps/<org>/`; spec: `agents/octomind/skills/tap-deps-authoring/SKILL.md` |
 | Add a new workflow | Copy `templates/workflow.toml` → `workflows/<name>.toml`; spec: `agents/octomind/skills/octomind-workflow/SKILL.md` + `workflows/README.md` |
@@ -79,8 +79,10 @@ cd model && uv sync && bin/train             # embedding model full pipeline (--
 ### Agents, skills, and delegation
 
 - The tap has one agent per field of work (`developer`, `writer`, `lawyer`, `doctor`, `producer`, and so on), plus `assistant` (the global assistant) and `plain` (a baseline with a one-line system prompt and no persona, for prompt testing). An agent does its field's work itself. Its prompt is short: role, scope, the common working method, guards and output conventions.
-- An agent tag is `<ns>` or `<ns>:<variant>`. The base agent of a namespace is `agents/<ns>/default.toml`; a variant is `agents/<ns>/<variant>.toml`. `<ns>:default` names the same agent as `<ns>`, and `<ns>` is its canonical form. This tap keeps one agent per field of work, so each `agents/<ns>/` holds only `default.toml` and `skills/`; a variant belongs in a private tap, which can add variants to a namespace. Workflows and `# Uses:` here name base agents.
-- Each specialty procedure (QA test planning, contract review for one jurisdiction, lifecycle email) is a skill. A skill used by one namespace is an owned skill: it lives at `agents/<ns>/skills/<skill>/SKILL.md` and belongs to that namespace by location, so the base agent and every variant get it, with no `domains:` line. A skill used by two or more namespaces is a shared skill: it lives at `skills/<skill>/SKILL.md` and lists those namespaces in `domains:`; the `domains` gate of a capability lists namespaces the same way. A skill with no `domains:` is shared and loads only by hand or from a workflow step. A new subject or format is a new skill, not a new agent. A new agent needs a new field of work.
+- Terms: a namespace is the directory `agents/<ns>/`; its base agent is `agents/<ns>/default.toml` with the tag `<ns>` (`<ns>:default` names the same agent); a variant is `agents/<ns>/<variant>.toml` with the tag `<ns>:<variant>`; an owned skill is `agents/<ns>/skills/<skill>/SKILL.md`, used by one namespace and bound to it by location (the base agent and every variant get it, and it has no `domains:` line); a shared skill is `skills/<skill>/SKILL.md`, used by two or more namespaces and bound to them by `domains:`. The `domains` gate of a capability lists namespaces the same way. A shared skill with no `domains:` loads only by hand or from a workflow step.
+- A specialty inside a field (a procedure, a format, a jurisdiction, a platform) is a skill of that namespace, and skills are the default: this tap has 34 base agents and no variants. A new subject or format is a new skill, not a new agent. A new agent needs a new field of work.
+- A variant is the exception. Octomind supports it; this tap's lint rejects it (`AGENT_VARIANT`) and a private tap may use it. Make one only when a skill cannot do the job: the agent needs its own system prompt and identity, its own capability set (fewer or different tools), its own model, or its own safety rules. Extra instructions, or extra tools on top of the base agent, are a skill (`capabilities:` in its frontmatter brings tools).
+- A base agent with `orchestration` reaches the variants of its own namespace without a header. `# Uses:` exists only on a base agent. Two agents here carry the header: `assistant` hands tasks across all fields (`# Uses: *`), and `writer` hands SEO work to `seo` (`# Uses: seo`). Full statement: `ARCHITECTURE.md`, "Namespaces, base agents, variants, and skills".
 - A skill is addressed by its bare name in workflow steps, `OCTOMIND_SKILLS` and `/skill use`, so a skill name exists once in the tap, in one of the two locations.
 - A skill loads when the user's message matches its `rules:`, when a workflow step lists it in `skills = [...]`, when `OCTOMIND_SKILLS=a,b octomind run <name>` preloads it, or when `/skill use <name>` loads it by hand. Preload explicitly any skill a workflow step depends on.
 - A skill can bring tools with it: `capabilities:` in its frontmatter loads them on activation. A tool that only one specialty needs is declared by that skill, not by the agent.
@@ -201,10 +203,10 @@ Full authoring spec, rationale, anti-patterns: `skills/tap-agent-authoring/SKILL
 | self-management | `core` | `recall` (planning is not a tool: a plugin sets the plan) | **every** agent |
 | do the work | domain caps | `shell`, `filesystem-*`, `codesearch-*`, `legal-*`, … | per agent |
 | own sub-agents | `agent` | `agent_*` | agents that run their own configured sub-agents (`assistant`, `developer`) |
-| orchestration | `orchestration` | `tap`, `schedule`, `monitor` | agents that start copies of themselves (for example `developer`); `assistant`, which also hands tasks to other agents through `# Uses: *` |
+| orchestration | `orchestration` | `tap`, `schedule`, `monitor` | agents that start copies of themselves (for example `developer`); agents that also hand tasks to other agents through `# Uses:` (`assistant`, `writer`) |
 | runtime config | `runtime` | `mcp`, `agent`-register, `skill`, `capability` | high-trust only; declared by `octomind` |
 
-An agent declares `core` + the capabilities its field needs. `orchestration` is declared only by agents that start copies of themselves, and by `assistant`, which also hands tasks to other agents; consult-style agents (a question in, an answer out) work in one session and do not declare it. `runtime` is declared only by `octomind`. Each server enters the tool surface only when declared. `orchestration`/`runtime` may also auto-activate on intent via their `config.toml` triggers; that is temporary, never a standing grant.
+An agent declares `core` + the capabilities its field needs. `orchestration` is declared only by agents that start copies of themselves, and by the agents with a `# Uses:` header, which also hand tasks to other agents; consult-style agents (a question in, an answer out) work in one session and do not declare it. `runtime` is declared only by `octomind`. Each server enters the tool surface only when declared. `orchestration`/`runtime` may also auto-activate on intent via their `config.toml` triggers; that is temporary, never a standing grant.
 
 ### Running and delegating
 
@@ -217,7 +219,7 @@ The tag of a base agent is its directory name, `<ns>`. A variant has the tag `<n
 
 An agent that declares `orchestration` delegates with the `tap` tool. A base agent reaches its own variants without a header. It can start copies of itself (`role` set to its own tag, or no `role` when it has no `# Uses:` header). Each copy is a fresh session of the same agent. `readonly: true` starts a read-only copy that scouts before a large change or reviews finished work independently. Several writable copies can run at once for independent parts, each on its own files. A copy cannot start further copies.
 
-The `# Uses:` header exists only on a base agent, and a variant has none. It is a comma-separated list of `<ns>`, `<ns>:<variant>` or `*` for every other agent. It sets which other agents this agent's `tap` runs can be matched to. `tap` matches a task to an agent by comparing the brief with each reachable agent's `# Title:` and `# Description:`, so those headers specify the work and deliverable. In this tap only `assistant` carries the header, as `# Uses: *`: it is the one agent that hands tasks across fields.
+The `# Uses:` header exists only on a base agent, and a variant has none. It is a comma-separated list of `<ns>`, `<ns>:<variant>` or `*` for every other agent. It sets which other agents this agent's `tap` runs can be matched to. `tap` matches a task to an agent by comparing the brief with each reachable agent's `# Title:` and `# Description:`, so those headers specify the work and deliverable. In this tap two agents carry the header: `assistant`, as `# Uses: *`, hands tasks across all fields, and `writer`, as `# Uses: seo`, hands keyword research and SEO passes to `seo`. Agents must not use each other in a loop, so `seo` does not list `writer`.
 
 ```toml
 # agents/assistant/default.toml

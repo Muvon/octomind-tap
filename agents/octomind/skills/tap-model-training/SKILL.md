@@ -28,15 +28,15 @@ rules:
 
 ## Overview
 
-`muvon/octomind-embed` is the bi-encoder octomind uses for two decisions: scoring a user message against capability triggers and skill `semantic()` phrases, and scoring a delegated task brief against each reachable agent's "`<title>. <description>`". Since 2026-09 it is `ibm-granite/granite-embedding-30m-english` (6 layers, 384-dim, CLS-pooled) given a short contrastive fine-tune; the runtime loads `onnx/model_quantized.onnx`, a 30 MB graph with int8-stored weights and fp32 arithmetic. Whenever triggers, semantic phrases, or agent titles and descriptions change, the model is stale. This skill walks through retraining, calibration, publishing, and recovery.
+`muvon/octomind-embed` is the bi-encoder octomind uses for three decisions: scoring a user message against capability triggers, scoring it against the `semantic()` phrases of the skills offered to the running agent (the specialties inside a field are skills, in `skills/` and in `agents/<name>/skills/`), and scoring a delegated task brief against the "`<title>. <description>`" of each of the 33 routable base agents. Since 2026-09 it is `ibm-granite/granite-embedding-30m-english` (6 layers, 384-dim, CLS-pooled) given a short contrastive fine-tune; the runtime loads `onnx/model_quantized.onnx`, a 30 MB graph with int8-stored weights and fp32 arithmetic. Whenever triggers, semantic phrases, or agent titles and descriptions change, the model is stale. This skill walks through retraining, calibration, publishing, and recovery.
 
 The cross-encoder reranker is intentionally not trained or shipped: at the current capability count it does not improve routing over a well-calibrated bi-encoder.
 
 ## Mental model
 
-Both decisions have the same shape: rank the candidates by cosine, accept the winner only if it clears an absolute threshold and beats the runner-up by a margin, otherwise abstain. For capabilities the score is the mean of the top-3 trigger cosines; for agents it is the cosine to the agent text. The model, the corpus, and the two pairs of constants are one system: retraining moves the cosine scale, so the constants must be recalibrated on the graph the runtime loads and shipped together with the weights.
+The three decisions have the same shape: rank the candidates by cosine, accept the winner only if it clears an absolute threshold and beats the runner-up by a margin, otherwise abstain. For capabilities the score is the mean of the top-3 trigger cosines; for skills it is the best cosine to a `semantic(phrase, threshold)` phrase, with the threshold of that rule; for agents it is the cosine to the agent text. The model, the corpus, and the constants are one system: retraining moves the cosine scale, so the constants must be recalibrated on the graph the runtime loads and shipped together with the weights.
 
-The fine-tune is a nudge with two phases. First 105 steps over all four training files in turn (capability pairs and triplets, agent pairs and triplets), then 105 steps over the agent files alone: capability batches past about 50 start to cost accuracy on real prompts, while agent batches keep improving routing. `bin/train` then sweeps a blend of the fine-tuned and base weights (WiSE-FT soup) and keeps whichever of the fine-tune and the blends scores best on the capability gate plus routing handoff; in 2026-11 that was the unblended fine-tune.
+The fine-tune is a nudge with two phases. First 105 steps over the four capability and agent files in turn (capability pairs and triplets, agent pairs and triplets), then 105 steps over the agent files and the skill pairs (`skill_brief_pairs.jsonl`: a task brief against one `semantic()` phrase of the skill that holds its procedure): capability batches past about 50 start to cost accuracy on real prompts, while routing batches keep improving routing. The agent files use batches of 33, one text per agent, because each batch admits an agent text once. `bin/train` then sweeps a blend of the fine-tuned and base weights (WiSE-FT soup) and keeps the fine-tune or blend with the highest sum of capability gate accuracy, routing handoff rate and skill right-rate.
 
 ## Rules
 
@@ -46,7 +46,8 @@ The fine-tune is a nudge with two phases. First 105 steps over all four training
 |--------|----------|
 | Added or removed a capability (`capabilities/<name>/config.toml`) | yes |
 | Edited `triggers = [...]` | yes |
-| Added or edited `semantic(...)` rules in any `SKILL.md` | yes |
+| Added or edited `semantic(...)` rules in any `SKILL.md`, shared or agent-owned | yes |
+| Added briefs, or changed which skills a brief carries (`data/agent_briefs.jsonl`) | yes |
 | Edited the `_oos` curated phrases in `build_dataset.py` | yes |
 | Added or removed an agent, or edited its `# Title:` / `# Description:` | yes |
 | Agent prompt, skill body, or docs change with none of the above touched | no |
@@ -66,12 +67,12 @@ What runs (`bin/train`):
 
 1. `build_eval_seed.py` once, if `data/eval_real.jsonl` is missing.
 2. `augment_llm.py --resume` — LLM paraphrases for new `(label, trigger)` pairs only, appended to `data/intents.jsonl`.
-3. `augment_agents.py` — LLM-written task briefs per agent in five styles, train and eval split written by different models, appended to `data/agent_briefs.jsonl` for whatever is missing. To replace an agent's briefs after its description changed, delete its lines first.
-4. `build_dataset.py` — `pairs.jsonl`, `triplets.jsonl`, `holdout.jsonl`, `raw_triggers.jsonl` (the un-augmented corpus the runtime embeds), `agent_pairs.jsonl`, `agent_triplets.jsonl`, `raw_agents.jsonl` (the agent texts the runtime embeds), with the `_oos` sink label, multi-turn surfaces, and hard-negative mining.
-5. `train.py` — CachedMNRL + Matryoshka: `train.max_steps` over all four files (`round_robin`), then `train.agent_steps` over the agent files alone. Capability files train at `loss.scale` (10), agent files at `loss.agent_scale` (50).
-6. `model_soup.py` + `compare_bases.py` — sweep `soup.alphas` against the base and keep the best of the fine-tune and the blends by capability gate plus routing handoff.
-7. `eval.py` (holdout), `eval_gate.py` (`eval_real`, informational here) and `eval_route.py` (does a brief reach its agent).
-8. `export_onnx.py` (fp32 graph + int8-stored graph, checked against each other), then `eval_gate.py`, `eval_route.py`, `dump_scores.py` and `calibrate_cpus.py` on the graph the runtime loads.
+3. `augment_agents.py` — LLM-written task briefs per base agent in five styles, train and eval split written by different models, appended to `data/agent_briefs.jsonl` for whatever is missing. Each row carries the agent, the `skills` that hold the brief's procedure (empty for new briefs) and its `source` tag. To replace an agent's briefs after its description changed, delete its lines first.
+4. `build_dataset.py` — `pairs.jsonl`, `triplets.jsonl`, `holdout.jsonl`, `raw_triggers.jsonl` (the un-augmented corpus the runtime embeds: trigger phrases and skill `semantic()` phrases without their thresholds, each row marked `capability` or `skill`; the capability gate scores against the capability rows only and skips `eval_real` rows labelled with a skill), `agent_pairs.jsonl`, `agent_triplets.jsonl`, `raw_agents.jsonl` (the 34 agent texts the runtime embeds) and `skill_brief_pairs.jsonl` (train briefs against a phrase of each skill they carry), with the `_oos` sink label, multi-turn surfaces, and hard-negative mining. Paraphrases in `intents.jsonl` whose label or source trigger is not in the catalog are dropped.
+5. `train.py` — CachedMNRL + Matryoshka: `train.max_steps` over the capability and agent files (`round_robin`), then `train.agent_steps` over the agent files and the skill pairs. Capability files train at `loss.scale` (10), agent files at `loss.agent_scale` (50) with batches of `train.agent_batch_size` (33), skill pairs at `loss.skill_scale` (10).
+6. `model_soup.py` + `compare_bases.py --skill-eval` — sweep `soup.alphas` against the base and keep the fine-tune or blend with the highest sum of capability gate accuracy, routing handoff rate and skill right-rate.
+7. `eval.py` (holdout), `eval_gate.py` (`eval_real`, informational here), `eval_route.py` (does a brief reach its agent among all 34: top-1, handoff, wrong) and `eval_skills.py` (replays the runtime's skill rule engine on the eval briefs: right skill loaded, wrong skill loaded).
+8. `export_onnx.py` (fp32 graph + int8-stored graph, checked against each other), then `eval_gate.py`, `eval_route.py`, `eval_skills.py`, `dump_scores.py` and `calibrate_cpus.py` on the graph the runtime loads.
 
 Other flags: `--skip-build` (reuse `data/`), `--skip-export`, `--ft checkpoints/<dir>` (redo soup, eval, export, and calibration on an existing run), `--iterations N` (re-mine capability triplets from the previous round's mistakes), `--legacy` (diagnostic `model.fit` path).
 
@@ -85,7 +86,7 @@ uv run python scripts/calibrate_cpus.py checkpoints/<run>/scores/*.json
 uv run python scripts/eval_runtime_gate.py --model checkpoints/<run>/onnx   # octomind's test fixtures, no Rust build
 ```
 
-`dump_scores.py` needs only numpy, pyyaml, tokenizers and onnxruntime, so it runs in a bare container (its docstring has the Docker command for x86 on an ARM Mac). `calibrate_cpus.py` picks, per decision, the point with the best accuracy on the worst machine among those that keep false activations under the cap on every machine (capability null false-positive rate 0.03; routing wrong handoffs 0.02, foreign handoffs 0.03). Copy the values into:
+`dump_scores.py` needs only numpy, pyyaml, tokenizers and onnxruntime, so it runs in a bare container (its docstring has the Docker command for x86 on an ARM Mac). `calibrate_cpus.py` picks, per decision, the point with the best accuracy on the worst machine among those that keep false activations under the cap on every machine (capability null false-positive rate 0.03; routing wrong handoffs 0.02). Copy the values into:
 
 - `octomind/src/mcp/runtime/capability.rs` — `AUTO_ACTIVATE_THRESHOLD`, `AUTO_ACTIVATE_MARGIN`
 - `octomind/src/mcp/runtime/skill.rs` — `SEMANTIC_DEFAULT_THRESHOLD`, `SEMANTIC_MARGIN`
@@ -167,7 +168,7 @@ Publishing and forgetting `--write-baseline` leaves the next publish gating agai
 
 - [ ] Trigger, semantic-phrase or agent-description change → full rebuild with `--llm --resume`, not `--skip-build`?
 - [ ] Training run inside tmux or nohup?
-- [ ] Winner evaluated on holdout, `eval_real` and the agent briefs; ONNX graphs exported and the small one scored?
+- [ ] Winner evaluated on holdout, `eval_real`, `eval_route.py` and `eval_skills.py`; ONNX graphs exported and the small one scored?
 - [ ] Thresholds calibrated over dumps from every CPU kind and copied into `capability.rs`, `skill.rs`, `tap_route.rs`, and `configs/default.yaml`?
 - [ ] `eval_runtime_gate.py` reports PASS for octomind's fixtures?
 - [ ] Gate run against the incumbent rescored on the current corpus, with the baseline file committed — not against a stale `eval_baselines.json`?
@@ -178,7 +179,7 @@ Publishing and forgetting `--write-baseline` leaves the next publish gating agai
 
 ## Composition / References
 
-- `model/README.md` — pipeline, dataset, loss stack, eval set
+- `model/README.md` — pipeline, dataset, loss stack, eval set, routing and skill evals
 - `model/configs/default.yaml` — base model, training, soup alphas, runtime-mirror constants
 - `model/bin/train`, `model/bin/publish` — entry points
 - `tap-capability-authoring` skill — writing triggers

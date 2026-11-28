@@ -15,9 +15,11 @@ This skill encodes what a correct, high-quality `agents/<name>/default.toml` nee
 
 A manifest is `capabilities` plus exactly one `[[roles]]`. Capabilities decide the tool surface (`bin/load` and the runtime merge each capability's provider file into `[deps]`, `[roles.mcp]`, and `[[mcp.servers]]`); the role decides behaviour. The system prompt is sent on every request and cached, so it must be stable, short, and structural: identity and rules live in `system`, reference material lives in skills loaded on demand.
 
-There is one agent per field of work, for example `developer`, `writer` or `lawyer`. The agent does that field's work itself. Its prompt is short: the role, the scope, the working method every task in the field shares, the guards, and the output conventions.
+There is one agent per field of work, for example `developer`, `writer` or `lawyer`. Its directory `agents/<ns>/` is the namespace `<ns>`, and its base agent is `agents/<ns>/default.toml` with the tag `<ns>`. The agent does that field's work itself. Its prompt is short: the role, the scope, the working method every task in the field shares, the guards, and the output conventions.
 
 A specialty is a procedure for one kind of task inside the field, such as QA test planning or contract review for one jurisdiction. It is not a second agent. It is a skill. A skill only that namespace uses is an owned skill at `agents/<ns>/skills/<skill>/SKILL.md`, bound to the namespace by location (the base agent and every variant get it) with no `domains:` line; a skill two or more namespaces use is a shared skill at `skills/<skill>/SKILL.md` whose `domains:` names them. The skill loads when the user's message matches its `rules:`, when a workflow step lists it in `skills`, or when it is preloaded from the environment or by hand. A tool that only one specialty needs is declared by that skill through `capabilities:`, not by the agent. Load `tap-skill-authoring` to write such a skill.
+
+A variant (`agents/<ns>/<variant>.toml`, tag `<ns>:<variant>`) is the exception. Octomind supports it, this tap's lint rejects it, and a private tap may use it. Make one only when a skill cannot do the job: the agent needs its own system prompt and identity, its own capability set (fewer or different tools), its own model, or its own safety rules. Extra instructions, or extra tools on top of the base agent, are a skill. The full statement is in ARCHITECTURE.md, "Namespaces, base agents, variants, and skills".
 
 Put in the agent prompt only what applies to every task of the field. Put a procedure, a checklist or an output contract that applies to one kind of task into a skill. Use a literal skill name in the system prompt when the skill itself is being authored or inspected, or when an exact manual reference is part of the deliverable contract.
 
@@ -62,7 +64,7 @@ The `# Title:` and `# Description:` lines are what `tap` compares a task brief a
 
 - `core` — every agent.
 - Domain capabilities (`shell`, `filesystem-*`, `codesearch-*`, `websearch`, ...) — what the role actually needs, nothing speculative.
-- `agent` (`agent_*`) — agents that run their own configured sub-agents; only `assistant` declares it.
+- `agent` (`agent_*`) — agents that run their own configured sub-agents; `assistant` and `developer` declare it.
 - `orchestration` (`tap`, `schedule`, `monitor`) — agents that start copies of themselves or hand tasks to other agents; see Delegation.
 - `runtime` (`mcp`, `agent`, `skill`, `capability`) — reconfigures the tool surface; only `octomind` declares it.
 
@@ -97,7 +99,7 @@ Block rules:
 
 An agent that declares `orchestration` can start copies of itself with `tap`. Each copy is a fresh session of the same agent; a copy cannot start further copies. A copy started with `readonly: true` can only use tools marked read-only, so it can scout a large change before it is made or review finished work independently. Several writable copies can run at once for independent parts, each on its own files. Write when to delegate, what evidence and constraints belong in the handoff, and what the agent must verify afterwards. The delegation tool documents its own actions and parameters.
 
-An agent reaches other agents only through the `# Uses:` header, placed next to `# Title:` and `# Description:`. It is a comma-separated list of agent names, or `*` for every other agent. `tap` then matches a task brief against the `# Title:` and `# Description:` of each listed agent. An agent with the header must declare `orchestration`. Entries must be existing agent names, unique, not the agent itself, and must form no loop between agents. In this tap only `assistant` carries the header, as `# Uses: *`; it is the one agent that hands tasks across fields.
+An agent reaches other agents only through the `# Uses:` header, placed next to `# Title:` and `# Description:`. It is a comma-separated list of agent names, or `*` for every other agent. `tap` then matches a task brief against the `# Title:` and `# Description:` of each listed agent. An agent with the header must declare `orchestration`. Entries must be existing agent names, unique, not the agent itself, and must form no loop between agents. In this tap two agents carry the header: `assistant`, as `# Uses: *`, hands tasks across all fields, and `writer`, as `# Uses: seo`, hands keyword research and SEO passes to `seo`.
 
 Prompt lines for an agent that has the header (the agents themselves are not listed; the runtime matches the brief):
 

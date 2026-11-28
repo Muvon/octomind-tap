@@ -1,9 +1,10 @@
-# Production recipe (2026-11): granite-embedding-30m-english base + a short
-# contrastive fine-tune in two phases (all files, then the agent files
-# alone). The base was chosen by the 2026-09 bake-off on the runtime-faithful
-# raw trigger corpus (scripts/compare_bases.py): zero-shot gate 0.846 vs
-# 0.708 for bge-small, 6 layers / 384-dim / CLS-pooled / prefix-free. The
-# exported graph embeds one intent in about 1 ms on an ARM laptop CPU.
+# Production recipe: granite-embedding-30m-english base + a short contrastive
+# fine-tune in two phases (the capability and agent files, then the agent
+# files and the skill-from-brief pairs). The base was chosen by the 2026-09
+# bake-off on the runtime-faithful raw trigger corpus
+# (scripts/compare_bases.py): zero-shot gate 0.846 vs 0.708 for bge-small,
+# 6 layers / 384-dim / CLS-pooled / prefix-free. The exported graph embeds
+# one intent in about 1 ms on an ARM laptop CPU.
 base_model: ibm-granite/granite-embedding-30m-english
 output_dir: checkpoints
 run_name: embed-granite-v3
@@ -18,13 +19,22 @@ train:
   # gate, and 210 steps scored lower than 105 on real prompts (2026-11,
   # capability top-1 0.931 against 0.940).
   max_steps: 105
-  # Steps of a second phase on the agent files alone (0 = none). Routing
-  # keeps improving with agent batches, while capability batches past ~50
-  # start to cost top-1 on real prompts, so the extra steps go to agents
-  # only. At `loss.agent_scale` 10, 105 mixed + 105 agent steps gave
-  # capability gate 0.823 and routing handoff 0.418, against 0.802 and 0.396
-  # for 210 mixed steps (2026-11).
+  # Steps of a second phase on the agent files and skill_brief_pairs.jsonl
+  # (0 = none). Routing keeps improving with agent batches, while capability
+  # batches past ~50 start to cost top-1 on real prompts, so the extra steps
+  # go to the files that teach routing. On the 186-agent corpus at
+  # `loss.agent_scale` 10, 105 mixed + 105 agent steps gave capability gate
+  # 0.823 and routing handoff 0.418, against 0.802 and 0.396 for 210 mixed
+  # steps (2026-11).
   agent_steps: 105
+  # Batch of the agent files. NO_DUPLICATES lets each agent text into a batch
+  # once, so there are at most as many rows as agents (pairs) or half as many
+  # (triplets, which carry a second agent text): 33 routable agents make every step a
+  # contrast between all of them, where 256 only left rows out.
+  agent_batch_size: 33
+  # GradCache chunk of the agent files: half the batch, so the long briefs
+  # (sorted last) share a chunk and the short ones do not pad to 512 tokens.
+  agent_mini_batch_size: 17
   # Effective batch for in-batch negatives (GradCache chunks it into
   # `mini_batch_size` pieces, so this is not the memory load).
   batch_size: 256
@@ -43,12 +53,13 @@ train:
   # scored on the same opening. Capability triggers are far shorter; only
   # the batches holding long briefs pay for the length.
   max_seq_length: 512
-  # How batches are drawn across the four training files (capability pairs
-  # and triplets, agent pairs and triplets): `proportional` to file size, or
-  # `round_robin` for the same number of batches from each. Proportional
-  # gives the agent files a sixth of the batches; with the same 105 steps
-  # routing handoff was 0.290 against 0.342 for round_robin, at the same
-  # capability gate (2026-11).
+  # How batches are drawn across the training files of a phase (first:
+  # capability pairs and triplets, agent pairs and triplets; second: agent
+  # pairs and triplets, skill pairs): `proportional` to file size, or
+  # `round_robin` for the same number of batches from each. On the 186-agent
+  # corpus proportional gave the agent files a sixth of the batches; with the
+  # same 105 steps routing handoff was 0.290 against 0.342 for round_robin,
+  # at the same capability gate (2026-11).
   multi_dataset_sampler: round_robin
   seed: 42
   evaluation_steps: 0   # 0 = evaluate at end of each epoch
@@ -73,11 +84,16 @@ loss:
   # The same setting for the agent files (agent_pairs / agent_triplets).
   # An agent text is one title and description, not a cluster of triggers,
   # and at 10 routing stayed under-fitted: a brief ranked its own agent
-  # first 78% of the time. Measured 2026-11 on the two-phase recipe
-  # (capability gate / routing handoff, each at its calibrated point):
-  # 10 gave 0.823 / 0.418, 30 gave 0.822 / 0.465, 50 gave 0.837 / 0.456.
-  # 50 ships: 30 failed octomind's capability paraphrase fixtures.
+  # first 78% of the time. Measured 2026-11 on the 186-agent corpus and the
+  # two-phase recipe (capability gate / routing handoff, each at its
+  # calibrated point): 10 gave 0.823 / 0.418, 30 gave 0.822 / 0.465, 50 gave
+  # 0.837 / 0.456. 50 shipped: 30 failed octomind's capability paraphrase
+  # fixtures.
   agent_scale: 50.0
+  # The same setting for skill_brief_pairs.jsonl: a brief against one phrase
+  # of its skill, the same shape as a capability pair. Starts at the
+  # capability scale until a run says otherwise.
+  skill_scale: 10.0
   # Matryoshka: the same weights stay usable at truncated dims. The
   # runtime serves the full 384-dim vector, so it gets the weight.
   # https://sbert.net/examples/sentence_transformer/training/matryoshka/README.html
@@ -90,7 +106,8 @@ loss:
 # margin rises) and a blend with the base wins it back: the 2026-09 soup
 # at alpha 0.6 beat both parents. bin/train sweeps all of these and ships
 # the best of the fine-tune and the blends by capability gate plus routing
-# handoff. With the 2026-11 two-phase recipe the unblended fine-tune won:
+# handoff plus skill right-rate. On the 2026-11 two-phase recipe (without
+# skill pairs) the unblended fine-tune won:
 # every blend lost routing handoff (0.455 against 0.412 at alpha 0.6) and
 # none gained capability gate.
 #   https://arxiv.org/abs/2109.01903  https://arxiv.org/abs/2203.05482
@@ -125,8 +142,9 @@ eval:
   runtime_top_k: 3
   runtime_threshold: 0.68
   runtime_margin: 0.05
-  # Routing eval (scripts/eval_route.py): the agent texts the runtime ranks
-  # and the LLM-written briefs, both written by the dataset scripts.
+  # Routing eval (scripts/eval_route.py) and skill eval (scripts/eval_skills.py):
+  # the agent texts the runtime ranks and the briefs, with the skills each one
+  # carries; both written by the dataset scripts.
   agents_path: data/raw_agents.jsonl
   agent_briefs_path: data/agent_briefs.jsonl
   # Mirror octomind/src/mcp/orchestration/tap_route.rs ROUTE_THRESHOLD /

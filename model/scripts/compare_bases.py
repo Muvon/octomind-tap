@@ -38,9 +38,11 @@ import yaml
 from sentence_transformers import SentenceTransformer
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from eval_gate import cap_score, select_with_margin, load_triggers_from_pairs  # noqa: E402
+import skill_rules  # noqa: E402
+from eval_gate import cap_score, select_with_margin, load_triggers_from_pairs, load_capability_eval_rows  # noqa: E402
+from eval_skills import evaluate as evaluate_skills, load_briefs, summarize as summarize_skills  # noqa: E402
 from eval_route import (  # noqa: E402
-    DEFAULT_MARGINS, DEFAULT_THRESHOLDS, MAX_FIRED, MAX_WRONG,
+    DEFAULT_MARGINS, DEFAULT_THRESHOLDS, MAX_WRONG,
     best_point, load_agents, load_eval_briefs, ranking_metrics, score_rows,
 )
 
@@ -108,7 +110,7 @@ def grid_best_gate(scored_per_row: list[list[tuple[float, str]]],
 def eval_model(spec: dict, eval_rows: list[dict], triggers_by_cap: dict,
                top_k: int, thresholds: list[float], margins: list[float],
                target_fpr: float, batch_size: int,
-               agents: list[dict], briefs: list[dict]) -> dict:
+               agents: list[dict], briefs: list[dict], skill_eval: tuple | None = None) -> dict:
     mid = spec["id"]
     q_pref = spec.get("q", "")
     d_pref = spec.get("d", "")
@@ -154,23 +156,22 @@ def eval_model(spec: dict, eval_rows: list[dict], triggers_by_cap: dict,
 
     gate = grid_best_gate(scored_per_row, eval_rows, thresholds, margins, target_fpr)
 
-    # Routing, prefix-free like the runtime: top-1 in the brief's own domain
-    # and the handoff rate at the model's own best (threshold, margin).
+    # Routing, prefix-free like the runtime: top-1 among all agents and the
+    # handoff rate at the model's own best (threshold, margin).
     route_rows = score_rows(model, agents, briefs)
     route_best = best_point(
         [route_rows],
         [float(x) for x in DEFAULT_THRESHOLDS.split(",")],
         [float(x) for x in DEFAULT_MARGINS.split(",")],
         MAX_WRONG,
-        MAX_FIRED,
     )
     route = {
-        "top1_acc": ranking_metrics(route_rows)["domain"]["top1_acc"],
+        "top1_acc": ranking_metrics(route_rows)["top1_acc"],
         "handoff": route_best["handoff"] if route_best else 0.0,
         "threshold": route_best["threshold"] if route_best else None,
         "margin": route_best["margin"] if route_best else None,
     }
-    return {
+    result = {
         "route": route,
         "model": mid,
         "tag": spec.get("tag", ""),
@@ -183,6 +184,17 @@ def eval_model(spec: dict, eval_rows: list[dict], triggers_by_cap: dict,
         "enc_intents_per_s": len(intents) / enc_s if enc_s else 0.0,
         "lat1_ms": float(np.median(lat_ms)) if lat_ms else 0.0,
     }
+    if skill_eval:
+        # The runtime's skill rule engine on the eval briefs, `full` mode: how often the
+        # right skill loads for its brief (right_rate) and a wrong one for another (wrong_rate).
+        skills, brief_rows = skill_eval
+        hits, primary, _, _ = evaluate_skills(model, skills, brief_rows, "eval")
+        totals = summarize_skills(hits, primary)["full"]
+        result["skills"] = {
+            "right_rate": totals["own_hit"] / totals["own_n"],
+            "wrong_rate": totals["other_hit"] / totals["other_n"],
+        }
+    return result
 
 
 def main() -> int:
@@ -200,6 +212,8 @@ def main() -> int:
     ap.add_argument("--margin-grid", type=str,
                     default="0.02,0.03,0.05,0.06,0.08,0.10,0.12,0.15")
     ap.add_argument("--json-out", type=Path, default=None)
+    ap.add_argument("--skill-eval", action="store_true",
+                    help="also run the skill rule engine on the eval briefs (scripts/eval_skills.py)")
     args = ap.parse_args()
 
     cfg = yaml.safe_load(args.config.read_text())
@@ -207,14 +221,19 @@ def main() -> int:
     root = Path(__file__).resolve().parents[1]
     eval_path = args.eval_set or (root / eval_cfg.get("real_set_path", "data/eval_real.jsonl"))
     pairs_path = args.pairs or (root / eval_cfg.get("triggers_path", cfg["data"]["pairs_path"]))
-    eval_rows = [json.loads(l) for l in eval_path.read_text().splitlines() if l.strip()]
     triggers_by_cap = load_triggers_from_pairs(pairs_path)
+    eval_rows = load_capability_eval_rows(eval_path, triggers_by_cap)
     top_k = int(eval_cfg.get("runtime_top_k", 3))
     thresholds = [float(x) for x in args.threshold_grid.split(",")]
     margins = [float(x) for x in args.margin_grid.split(",")]
 
     agents = load_agents(root / eval_cfg["agents_path"])
     briefs = load_eval_briefs(root / eval_cfg["agent_briefs_path"])
+
+    skill_eval = None
+    if args.skill_eval:
+        skills = skill_rules.load_skills()
+        skill_eval = (skills, load_briefs(root / eval_cfg["agent_briefs_path"], skills))
 
     roster = ([{"id": m.strip()} for m in args.models.split(",")]
               if args.models else DEFAULT_ROSTER)
@@ -224,14 +243,14 @@ def main() -> int:
         try:
             results.append(eval_model(spec, eval_rows, triggers_by_cap, top_k,
                                       thresholds, margins, args.target_fpr,
-                                      args.batch_size, agents, briefs))
+                                      args.batch_size, agents, briefs, skill_eval))
         except Exception as e:  # one bad model shouldn't kill the sweep
             print(f"  FAILED {spec['id']}: {e}", flush=True)
 
     results.sort(key=lambda r: r["top1_acc"], reverse=True)
     print("\n" + "=" * 134)
     print(f"{'model':<42}{'dim':>4}{'pfx':>4}{'top1':>7}{'top3':>7}"
-          f"{'margin':>8}{'gate':>7}{'fpr':>6}{'τ':>6}{'δ':>6}{'enc/s':>8}{'lat1ms':>8}{'rt.top1':>8}{'rt.hand':>8}")
+          f"{'margin':>8}{'gate':>7}{'fpr':>6}{'τ':>6}{'δ':>6}{'enc/s':>8}{'lat1ms':>8}{'rt.top1':>8}{'rt.hand':>8}{'skill':>7}")
     print("-" * 134)
     for r in results:
         g = r["best_gate"]
@@ -239,13 +258,14 @@ def main() -> int:
               f"{r['top1_acc']:>7.3f}{r['top3_acc']:>7.3f}{r['mean_top1_margin']:>8.3f}"
               f"{g['gate_acc']:>7.3f}{g['null_fpr']:>6.3f}{g['threshold']:>6.2f}"
               f"{g['margin']:>6.2f}{r['enc_intents_per_s']:>8.1f}{r['lat1_ms']:>8.1f}"
-              f"{r['route']['top1_acc']:>8.3f}{r['route']['handoff']:>8.3f}")
+              f"{r['route']['top1_acc']:>8.3f}{r['route']['handoff']:>8.3f}"
+              f"{r['skills']['right_rate'] if 'skills' in r else float('nan'):>7.3f}")
     print("=" * 134)
     print("top1/top3 = threshold-free ranking ceiling (fair base comparison).")
     print("gate/fpr/τ/δ = each model's OWN best operating point (max gate_acc, fpr<=%.2f)." % args.target_fpr)
     print("pfx=Y means the model needs query/doc prefixes → runtime change to deploy.")
-    print("rt.top1 = brief ranks its agent first within its domain; rt.hand = handoff rate at the model's own")
-    print("          best route point (wrong <= %.2f, foreign fired <= %.2f)." % (MAX_WRONG, MAX_FIRED))
+    print("rt.top1 = brief ranks its agent first among all agents; rt.hand = handoff rate at the model's own")
+    print("          best route point (wrong <= %.2f). skill = right skill loaded for its brief (--skill-eval)." % MAX_WRONG)
 
     if args.json_out:
         args.json_out.write_text(json.dumps(results, indent=2))

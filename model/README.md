@@ -1,17 +1,24 @@
 # octomind-tap embedding model
 
-Fine-tune one small ONNX bi-encoder that octomind uses for two decisions:
+Fine-tune one small ONNX bi-encoder that octomind uses for three decisions:
 
 - **Capability auto-activation**: which capability to switch on for a
   user message. `octomind/src/mcp/runtime/capability.rs` scores the
   message against each capability's trigger phrases (mean of the top 3
   cosines) and activates the best one when it clears a threshold and
   leads the runner-up by a margin.
+- **Skill activation**: which skill to load for a user message.
+  `octomind/src/mcp/runtime/skill.rs` scores the message against the
+  `semantic(phrase, threshold)` rules of the skills offered to the running
+  agent and loads the best one when it clears that rule's threshold and
+  leads the runner-up by a margin.
 - **Agent routing**: which agent should take a delegated task.
   `octomind/src/mcp/orchestration/tap_route.rs` scores the task brief
   against each reachable agent's "`<title>. <description>`" text and
   hands the task over under the same threshold-plus-margin rule, with
-  its own constants.
+  its own constants. The tap has 34 base agents; the specialties inside a
+  field are skills, so the model's second job after capability activation
+  is to send a user message to the right skill's phrase.
 
 The model:
 
@@ -62,22 +69,24 @@ the embedding on the actual decision the runtime makes:
 
     intent (user phrase)  →  capability (one of N installed) or abstain
 
-The fine-tune is a nudge in two phases: 105 steps over all four training
-files in turn, then 105 steps over the agent files alone. More capability
-batches cost accuracy on real prompts (210 mixed steps: capability top-1
-0.931 against 0.940 for 105), while agent batches keep improving routing.
+The fine-tune is a nudge in two phases: 105 steps over the four capability
+and agent files in turn, then 105 steps over the agent files and the skill
+pairs in turn. More capability batches cost accuracy on real prompts (210
+mixed steps: capability top-1 0.931 against 0.940 for 105), while routing
+batches keep improving routing.
 
 A fine-tune can also *forget* some of the base's generalization.
 Interpolating the fine-tuned weights with the base (WiSE-FT soup) wins it
 back when that happens, so `bin/train` sweeps alpha 0.1-0.6 and ships the
 best of the fine-tune and the blends by capability gate plus routing
-handoff. In 2026-09 the blend at alpha 0.6 won; in 2026-11 the unblended
+handoff plus skill right-rate. In 2026-09 the blend at alpha 0.6 won; in 2026-11 the unblended
 fine-tune did (every blend lost routing handoff, none gained capability
 gate).
 
 ## Pipeline
 
-    capabilities/*/config.toml  +  skills/*/SKILL.md  +  agents/*/*.toml
+    capabilities/*/config.toml  +  skills/*/SKILL.md  +  agents/<name>/skills/*/SKILL.md
+    +  agents/<name>/default.toml
                        │
                        ▼
     scripts/augment_llm.py     (optional) →  data/intents.jsonl
@@ -88,19 +97,23 @@ gate).
                        │          raw_triggers.jsonl (what the runtime embeds)
                        │          agent_pairs.jsonl, agent_triplets.jsonl,
                        │          raw_agents.jsonl (the agent texts the runtime embeds)
+                       │          skill_brief_pairs.jsonl (brief → phrase of its skill)
                        │       (+ _oos sink label, multi-turn surfaces,
                        │          positive-aware hard-negative mining)
                        ▼
     scripts/train.py           →  checkpoints/embed-<run>-<ts>/
-                       │       (CachedMNRL + Matryoshka: 105 steps on all
-                       │        files, then 105 on the agent files)
+                       │       (CachedMNRL + Matryoshka: 105 steps on the
+                       │        capability and agent files, then 105 on the
+                       │        agent files and skill_brief_pairs.jsonl)
                        ▼
     scripts/model_soup.py      →  checkpoints/embed-<run>-<ts>-soup-a<α>/
-    scripts/compare_bases.py      (best capability gate + routing handoff wins)
+    scripts/compare_bases.py      (best capability gate + routing handoff
+                       │           + skill right-rate wins)
                        ▼
     scripts/eval.py            →  holdout-distribution metrics
     scripts/eval_gate.py       →  real-user-distribution metrics  ← publish gate
     scripts/eval_route.py      →  does a task brief reach its agent
+    scripts/eval_skills.py     →  does the right skill load for a task brief
                        │
                        ▼
     scripts/export_onnx.py     →  onnx/  (fp32 graph + int8-stored graph)
@@ -163,7 +176,7 @@ production recipe.
    ([sbert docs](https://huggingface.co/blog/train-sentence-transformers))
    Its `scale` (the inverse temperature of the in-batch softmax) is set
    per file: 10 for the capability files (`loss.scale`), 50 for the agent
-   files (`loss.agent_scale`). An agent is one title and description
+   files (`loss.agent_scale`) and 10 for the skill pairs (`loss.skill_scale`). An agent is one title and description
    rather than a cluster of triggers, and at 10 routing stayed
    under-fitted: handoff 0.418, against 0.456 at 50 with the capability
    gate at 0.837 instead of 0.823 (2026-11).
@@ -185,8 +198,10 @@ production recipe.
 
 ## What's in the dataset
 
-`build_dataset.py` builds three artifacts from `capabilities/` +
-`skills/`:
+`build_dataset.py` builds its artifacts from `capabilities/`, the shared
+`skills/`, the skills each agent owns (`agents/<name>/skills/`) and the 34 base
+agents (`agents/<name>/default.toml`); `scripts/tap_paths.py` at the repository
+root lists them:
 
 - **pairs.jsonl** `{anchor, positive, label}` — in-capability pairs
   from authored triggers + rule-template expansions + LLM paraphrases.
@@ -199,29 +214,53 @@ production recipe.
 - **holdout.jsonl** `{intent, label}` — held-out trigger paraphrases
   per capability for in-distribution eval.
 - **raw_triggers.jsonl** `{anchor, positive, label}` — the un-augmented
-  `config.toml` triggers + skill `semantic()` phrases. This is what the
+  `config.toml` triggers + skill `semantic()` phrases (the phrase without its
+  threshold: `semantic(write a researched article, 0.76)` contributes
+  "write a researched article"). Each row has a `kind`, `capability` or
+  `skill`. Training draws on both kinds in one pool; the capability gate
+  (`eval_gate.py`, `calibrate_thresholds.py`, `dump_scores.py`,
+  `compare_bases.py`) offers only the `capability` rows as candidates, as
+  `capability.rs` does, and leaves out the `eval_real.jsonl` rows whose gold
+  label is a skill (it prints how many, per row kind). This is what the
   runtime embeds, so `eval_gate.py`, `compare_bases.py` and
   `calibrate_thresholds.py` score against it (`eval.triggers_path`).
-- **agent_pairs.jsonl** `{anchor, positive, label}` — a task brief and
-  the text of the agent that should take it.
+- **agent_pairs.jsonl** `{anchor, positive, label}` — a train-split task
+  brief and the text of the agent that should take it (33 agent labels).
 - **agent_triplets.jsonl** — the same pairs with a hard negative: per
-  brief, the 4 closest agents of the same domain and the 2 closest from
-  other domains (`--agent-neg-siblings`, `--agent-neg-foreign`).
-- **raw_agents.jsonl** `{tag, domain, title, description, text}` — one
-  row per agent manifest; `text` is "`<title>. <description>`", the
-  string the runtime embeds. Symlinked manifests are aliases and are
-  left out, as the runtime leaves them out.
+  brief, the 6 closest other agents (`--agent-neg-per-brief`). An agent that
+  scores within 0.95 of the brief's own agent is skipped, since it may fit the
+  brief as well.
+- **raw_agents.jsonl** `{tag, text}` — one row per base agent that has
+  briefs (33 of the 34; `plain` is a baseline nobody routes to and has none);
+  `text` is "`<title>. <description>`", the string the runtime embeds.
+- **skill_brief_pairs.jsonl** `{anchor, positive, label}` — a train-split
+  task brief that carries skills, and one `semantic()` phrase of each of its
+  skills (label = skill name). The phrase rotates over the skill's phrases
+  from brief to brief, so every phrase is trained on. Eval-split briefs never
+  enter training.
+
+The agent and skill files train under `NO_DUPLICATES` batches, which admit a
+text once: a batch of agent pairs holds one brief per agent, and a batch of
+triplets about half as many (each row uses two agent texts). `train.agent_batch_size`
+is therefore 33, the number of routable agents, so each agent step contrasts every
+agent against every other. A skill batch holds each phrase once; two different
+phrases of one skill in a batch count as negatives of each other, as two
+different triggers of one capability do in the capability pairs.
 
 ### Task briefs for agent routing
 
 Agent manifests carry no example tasks, so the briefs are written by an
-LLM: `scripts/augment_agents.py` reads each agent's manifest and its
-domain siblings and writes briefs in five styles to
-`data/agent_briefs.jsonl`:
+LLM: `scripts/augment_agents.py` reads each agent's manifest, shows the writer
+the roster of all agents to tell apart, and writes briefs in five styles to
+`data/agent_briefs.jsonl`. A row is `{agent, split, style, brief, model,
+skills, source}`: `agent` is the base agent that takes the brief, `skills` the
+skills that hold the procedure the brief asks for (empty when the agent's own
+prompt covers it), and `source` the tag the brief was written for (it keeps the train/eval split
+traceable; for briefs written by the script it is the agent).
 
 | Style | What it imitates |
 | ----- | ---------------- |
-| `lead` | a domain lead delegating: the kind of work, then a few sentences of context (30-90 words) |
+| `lead` | a lead delegating: the kind of work, then a few sentences of context (30-90 words) |
 | `short` | one sentence, the task and nothing else |
 | `user` | how an end user asks for it in a chat |
 | `full` | a brief in four labelled parts: objective, context, source material, output shape (80-160 words) |
@@ -231,9 +270,10 @@ Training briefs and eval briefs come from different models
 (`SPLIT_MODELS` in the script), so the eval set is not an echo of the
 training phrasing. The file is append-only: a run adds only the
 (agent, split, style) groups that are missing, and eval briefs written
-once stay, so routing scores remain comparable across retrains. To
+once stay, so routing and skill scores remain comparable across retrains. To
 replace an agent's briefs after its description changed, delete its
-lines and run the script again.
+lines and run the script again. A brief written by the script has no
+`skills`, so it trains agent routing only.
 
 ### `_oos` sink label
 
@@ -286,18 +326,32 @@ publish gate; whatever is in it becomes part of the regression test.
 
 ### Routing eval
 
-`scripts/eval_route.py` scores the eval briefs against the agent texts
-in three scenarios that mirror what a caller can reach at runtime:
+`scripts/eval_route.py` ranks every eval-split brief against the texts of all
+33 routable agents, as a caller that reaches every agent sees them, and reports three
+numbers at the configured `eval.route_threshold` / `route_margin`:
 
-- `domain` — the brief's own domain without its lead, as the lead sees
-  it. The right agent should take the task (`handoff`); a different one
-  taking it is `wrong`.
-- `all` — every agent, as a caller outside any domain sees them.
-- `foreign` — the members of another domain. Nothing should take the
-  task; a handoff here counts as `fired`.
+- `top1_acc` — the brief's own agent ranks first.
+- `handoff` — the gate fires and picks the brief's agent.
+- `wrong` — the gate fires and picks another agent.
 
-It reports each scenario at the configured `eval.route_threshold` /
-`route_margin` and per brief style.
+It also prints the point with the best handoff whose `wrong` stays under
+0.02, and the numbers per brief style.
+
+### Skill eval
+
+`scripts/eval_skills.py` replays the runtime's skill rule engine (keyword
+rules, `semantic()` thresholds and the margin between the two best
+candidates) on the briefs. For each brief the pool is the skills offered to
+its agent: the ones the agent owns and the shared ones whose `domains:` has
+it. `--model` takes a checkpoint directory, an `onnx/` directory or a hub id
+with a revision (`muvon/octomind-embed@<sha>`). Three summary lines, for
+the keyword rules alone (`kw`), the full engine (`full`) and the full engine
+without the margin rule (`reach`), each give `own` (briefs that carry the
+skill and load it, the right-skill rate) and `other` (briefs of other work
+that load it, the wrong-skill rate). `--misses <skill>` lists the briefs a
+skill missed and the ones that loaded it by mistake; `--json <path>` writes
+the three lines as numbers. The skills counted in the summary are those that
+head a brief's `skills` list.
 
 ## Publish gate
 
@@ -347,7 +401,7 @@ check that this has not come back.
    For each decision it prints the point with the best accuracy on the
    worst machine, among the points that keep false activations under
    the cap on every machine (capability `null_fpr` 0.03; routing wrong
-   handoffs 0.02 and foreign handoffs 0.03).
+   handoffs 0.02).
 
 3. Copy the constants into octomind and `configs/default.yaml`, then
    check octomind's test fixtures against the new graph without a Rust
@@ -372,9 +426,10 @@ You MUST retrain (and republish) whenever the supervision set changes:
 | Added a new capability (`capabilities/<new>/config.toml`)    | yes      |
 | Removed a capability                                         | yes      |
 | Edited `triggers = [...]` in any `config.toml`               | yes      |
-| Added or edited `semantic(...)` rules in any `SKILL.md`      | yes      |
+| Added or edited `semantic(...)` rules in any `SKILL.md` (owned or shared) | yes |
 | Edited the `_oos` curated phrases in `build_dataset.py`      | yes      |
 | Added or removed an agent, or edited its `# Title:` / `# Description:` | yes |
+| Added briefs, or changed the `skills` of a brief                | yes      |
 | Agent prompt, playbook or docs change, title and description untouched | no |
 | Code change in `octomind/` runtime only                      | no       |
 | Threshold/margin tweak in `capability.rs` / `skill.rs` / `tap_route.rs` | no (just rebuild octomind) |
@@ -385,9 +440,10 @@ Run from `model/`:
 
 `--resume` is passed to `augment_llm.py`: it skips `(label, trigger)`
 pairs already paraphrased in `data/intents.jsonl`, so you only pay for
-the NEW triggers. Without `--resume` you re-augment everything (same
-result, costs ~$1-2 extra). `augment_agents.py` always adds only what
-is missing.
+the NEW triggers and phrases. Without `--resume` you re-augment everything
+(same result, costs ~$1-2 extra). Paraphrases whose label or source trigger
+is not in the catalog stay in `intents.jsonl` but `build_dataset.py` drops them.
+`augment_agents.py` always adds only what is missing.
 
 Training runs on the CPU when there is no CUDA device. On a machine
 that other jobs share, set `OMP_NUM_THREADS` to a measured thread count
@@ -456,9 +512,11 @@ foreground process:
     uv run python scripts/train.py
     uv run python scripts/model_soup.py --base ibm-granite/granite-embedding-30m-english \
         --ft checkpoints/embed-<ts> --alphas 0.4,0.5,0.6 --out-dir checkpoints/embed-<ts>/soup
-    uv run python scripts/compare_bases.py --models checkpoints/embed-<ts>,checkpoints/embed-<ts>/soup/soup-a0.6
+    uv run python scripts/compare_bases.py --skill-eval --models checkpoints/embed-<ts>,checkpoints/embed-<ts>/soup/soup-a0.6
     uv run python scripts/eval.py        --run <winner>
     uv run python scripts/eval_gate.py   --model <winner>
+    uv run python scripts/eval_route.py  --model <winner>
+    uv run python scripts/eval_skills.py --model <winner>
     uv run python scripts/export_onnx.py --run <winner>
     uv run python scripts/calibrate_thresholds.py --model <winner>/onnx --onnx-file model_quantized.onnx
     HF_TOKEN=... uv run python scripts/push_hf.py --run <winner> \

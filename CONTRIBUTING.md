@@ -10,7 +10,7 @@ If you have domain knowledge — medicine, law, finance, security, DevOps, or an
 
 ## What is a Tap Agent?
 
-A tap agent is a fully-configured AI specialist that anyone can run:
+A tap agent is a fully-configured AI agent that anyone can run:
 
 ```bash
 octomind run developer      # The developer agent
@@ -26,12 +26,15 @@ Each agent is a directory `agents/<name>/` whose `default.toml` defines:
 
 ## Quick Start: Create Your First Agent
 
-### 1. Decide: Skill or Agent
+### 1. Decide: Skill, Variant or Agent
 
-The tap has one agent per field of work (`developer`, `doctor`, `lawyer`, `devops`, and so on). Each specialty inside a field is a skill: an owned skill under that agent's directory when only that agent uses it, or a shared skill in `skills/` when two or more agents do.
+The tap has one agent per field of work (`developer`, `doctor`, `lawyer`, `devops`, and so on). Each agent has a namespace, the directory `agents/<ns>/`, and its base agent is `agents/<ns>/default.toml` with the tag `<ns>`. A specialty inside a field (a procedure, a format, a jurisdiction, a platform) is a skill of that namespace: an owned skill at `agents/<ns>/skills/<skill>/SKILL.md` when only that namespace uses it, or a shared skill at `skills/<skill>/SKILL.md` with `domains:` when two or more namespaces do. Skills are the default; this tap has 34 base agents and no variants.
 
-- **A specialty of an existing field** (for example blood test interpretation for `doctor`) is a skill, stored under that agent as `agents/doctor/skills/<skill>/SKILL.md`. See [Contributing a Skill](#contributing-a-skill).
-- **A new field of work** with its own deliverables is an agent. Its name is the directory name and its tag: lowercase letters, digits and hyphens. This tap keeps one agent per field of work, so a variant file `agents/<name>/<variant>.toml` (tag `<name>:<variant>`) belongs in a private tap. Examples: `developer`, `devops`, `financial-planner`.
+- **A specialty of an existing field** (for example blood test interpretation for `doctor`) is a skill. See [Contributing a Skill](#contributing-a-skill).
+- **A new field of work** with its own deliverables is a new base agent. Its name is the directory name and its tag: lowercase letters, digits and hyphens. Examples: `developer`, `devops`, `financial-planner`.
+- **A variant** (`agents/<ns>/<variant>.toml`, tag `<ns>:<variant>`) is the exception. Octomind supports variants and this tap's lint rejects them (`AGENT_VARIANT`), so a variant belongs in a private tap. Make one only when a skill cannot do the job, that is, when the agent needs its own system prompt and identity, its own capability set (fewer or different tools), its own model, or its own safety rules. Extra instructions, or extra tools on top of the base agent, are a skill: `capabilities:` in its frontmatter brings tools.
+
+The full statement is in [ARCHITECTURE.md](ARCHITECTURE.md#namespaces-base-agents-variants-and-skills).
 
 An agent starts copies of itself or hands tasks to another agent only when it declares the `orchestration` capability. Delegation matches a task to an agent from its `# Title:` and `# Description:` lines, so the description must say what the agent takes in and what it returns. The rules are in [ARCHITECTURE.md](ARCHITECTURE.md#agents-skills-and-delegation).
 
@@ -318,7 +321,7 @@ welcome = "Rust developer ready. Working in {{CWD}}"
 
 system = """
 <identity>
-You are a Rust development specialist.
+You are a Rust development agent.
 </identity>
 
 <critical>
@@ -341,7 +344,7 @@ You are a Rust development specialist.
 ## Need Help?
 
 - **GitHub Issues** — Ask questions, report bugs, request agents
-- **GitHub Discussions** — "What specialist agent would you run if it existed?"
+- **GitHub Discussions** — "What agent would you run if it existed?"
 - **Existing Agents** — Study `agents/doctor/default.toml` as a reference
 
 ---
@@ -372,9 +375,9 @@ A skill is a `SKILL.md` file in its own directory. A skill that one namespace us
 - API design guidelines
 - Deployment runbooks
 
-**Not a good skill** (use an agent instead):
-- Something that needs its own model settings
-- A whole new field of work (a new agent)
+**Not a good skill:**
+- Something that needs its own system prompt, tool set, model or safety rules (a variant, which belongs in a private tap)
+- A whole new field of work (a new base agent)
 
 Note: Skills **can** declare `capabilities` to auto-load MCP servers when activated. A skill that needs git tools can declare `capabilities: git` and the backing MCP server loads automatically.
 

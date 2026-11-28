@@ -33,7 +33,7 @@ import yaml
 # Re-use the runtime-mirror scoring from eval_gate.py.
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from eval_gate import cap_score, select_with_margin, load_triggers_from_pairs, load_encoder  # noqa: E402
+from eval_gate import cap_score, select_with_margin, load_triggers_from_pairs, load_encoder, load_capability_eval_rows  # noqa: E402
 
 
 def evaluate_at(scored_per_row: list[list[tuple[float, str]]],
@@ -151,8 +151,8 @@ def main() -> int:
     if not pairs_path.exists():
         raise SystemExit(f"missing trigger corpus: {pairs_path}; run build_dataset.py first")
 
-    rows = [json.loads(line) for line in eval_path.read_text().splitlines() if line.strip()]
     triggers_by_cap = load_triggers_from_pairs(pairs_path)
+    rows = load_capability_eval_rows(eval_path, triggers_by_cap)
     top_k = int(eval_cfg.get("runtime_top_k", 3))
 
     scored = precompute_scored(args.model, rows, triggers_by_cap, top_k, args.onnx_file)

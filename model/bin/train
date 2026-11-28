@@ -15,11 +15,12 @@
 #   bin/train --legacy                 # plain model.fit() loop with MNRL (diagnostic)
 #
 # After training, `soup.alphas` in configs/default.yaml drives a WiSE-FT
-# sweep against the base model. The alpha with the best sum of the two
-# things the runtime decides with this model (capability gate accuracy on
-# the raw trigger corpus, agent handoff rate on the routing eval) is copied
-# to checkpoints/embed-<run>-soup-a<alpha>/ and is what gets evaluated,
-# exported and (via bin/publish) shipped.
+# sweep against the base model. The fine-tune or blend with the highest sum of
+# the three things the runtime decides with this model (capability gate
+# accuracy on the raw trigger corpus, agent handoff rate on the routing eval,
+# right-skill rate of the skill rule engine on the eval briefs) is copied to
+# checkpoints/embed-<run>-soup-a<alpha>/ and is what gets evaluated, exported
+# and (via bin/publish) shipped.
 #
 # Iterative re-mining (optional; the 2026-11 production run used one round):
 #
@@ -176,12 +177,12 @@ if [ -n "$SOUP_ALPHAS" ]; then
   for a in ${SOUP_ALPHAS//,/ }; do
     MODELS="$MODELS,$LAST_RUN/soup/soup-a$a"
   done
-  echo "==> compare_bases.py — ft vs soups: capability gate + agent routing"
-  $PY scripts/compare_bases.py --models "$MODELS" --json-out "$LAST_RUN/soup/compare.json"
+  echo "==> compare_bases.py — ft vs soups: capability gate + agent routing + skill rules"
+  $PY scripts/compare_bases.py --skill-eval --models "$MODELS" --json-out "$LAST_RUN/soup/compare.json"
   WINNER=$($PY -c "
 import json
 r = json.load(open('$LAST_RUN/soup/compare.json'))
-r.sort(key=lambda x: (x['best_gate']['gate_acc'] + x['route']['handoff'], x['top1_acc']), reverse=True)
+r.sort(key=lambda x: (x['best_gate']['gate_acc'] + x['route']['handoff'] + x['skills']['right_rate'], x['top1_acc']), reverse=True)
 print(r[0]['model'])")
   echo "==> winner: $WINNER"
   if [ "$WINNER" != "$LAST_RUN" ]; then
@@ -214,6 +215,9 @@ if [ -f data/eval_real.jsonl ]; then
   echo
   echo "==> eval_route.py — does a task brief reach its agent"
   $PY scripts/eval_route.py --model "$LAST_RUN"
+  echo
+  echo "==> eval_skills.py — does the right skill load for a task brief (eval briefs)"
+  $PY scripts/eval_skills.py --model "$LAST_RUN" --json "$LAST_RUN/skills.json" | tee "$LAST_RUN/skills.txt" | tail -n 3
 else
   echo
   echo "==> eval_real.jsonl missing — skipping real-user eval"
@@ -245,6 +249,9 @@ if [ $SKIP_EXPORT -eq 0 ]; then
     echo
     echo "==> eval_route.py — int8 ONNX graph"
     $PY scripts/eval_route.py --model "$LAST_RUN/onnx" --onnx-file model_quantized.onnx
+    echo
+    echo "==> eval_skills.py — int8 ONNX graph"
+    $PY scripts/eval_skills.py --model "$LAST_RUN/onnx" --json "$LAST_RUN/onnx/skills.json" | tee "$LAST_RUN/onnx/skills.txt" | tail -n 3
     echo
     echo "==> dump_scores.py + calibrate_cpus.py — this machine only"
     $PY scripts/dump_scores.py --model "$LAST_RUN/onnx" --out "$LAST_RUN/scores/$(uname -m).json"

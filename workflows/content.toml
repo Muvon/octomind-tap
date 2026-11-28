@@ -10,7 +10,7 @@
 # `promote` workflow; chain them: `content` produces the article on disk,
 # then feed it to `promote`.
 #
-# Note: chains several specialist runs — token/time-heavy by design.
+# Note: chains several agent runs — token/time-heavy by design.
 
 name        = "content"
 description = "Turns a brief into a researched, publish-ready article in the current directory, refined by an edit and audit loop until it passes."

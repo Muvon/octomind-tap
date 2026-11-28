@@ -4,11 +4,16 @@
 "<title>. <description>" (octomind/src/mcp/orchestration/tap_route.rs). An
 agent manifest gives the document but no example of a brief that should
 reach it, so the briefs are generated here: for one agent at a time, with
-the rest of its domain shown as the roster it must be told apart from.
+every agent shown as the roster it must be told apart from.
 
 Output: model/data/agent_briefs.jsonl, one JSON object per line:
-  {"agent": "<domain>:<name>", "split": "train|eval", "style": "<style>",
-   "brief": "<text>", "model": "<llm id>"}
+  {"agent": "<name>", "split": "train|eval", "style": "<style>",
+   "brief": "<text>", "model": "<llm id>", "skills": [...], "source": "<tag>"}
+
+`skills` names the skills that hold the procedure the brief asks for, and
+`source` the tag the brief was written for. A brief written here carries no
+skills and its source is the agent; briefs carried over from earlier
+corpora keep their own source tag and skills.
 
 The two splits come from two different models so the eval briefs do not
 share a writer with the training briefs. `build_dataset.py` reads the
@@ -26,7 +31,7 @@ stay, so routing scores remain comparable across retrains. To replace an
 agent's briefs (its description changed), delete its lines first.
 
   uv run python scripts/augment_agents.py                  # whatever is missing
-  uv run python scripts/augment_agents.py --only developer  # one domain or tag
+  uv run python scripts/augment_agents.py --only developer  # one agent
 """
 
 from __future__ import annotations
@@ -64,7 +69,7 @@ You get the team roster (name, title, description of each member) and one TARGET
 Rules:
 - Every brief is a concrete task with invented but realistic specifics: file paths, product names, numbers, dates, people. No placeholders like <name> or [company].
 - The task must clearly belong to the TARGET and to no other member of the roster. If another member would fit equally well, write a different task.
-- Describe the work itself. Do not reuse the wording of the TARGET's title or description, and never mention a member's name or title or the words "agent" or "specialist".
+- Describe the work itself. Do not reuse the wording of the TARGET's title or description, and never mention a member's name or title or the word "agent".
 - Cover different parts of what the TARGET does. No two briefs about the same task.
 - Write in English.
 
@@ -155,10 +160,10 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     root = Path(__file__).resolve().parents[1]
     repo = Path(__file__).resolve().parents[2]
-    ap.add_argument("--agents", type=Path, default=repo / "agents")
+    ap.add_argument("--repo", type=Path, default=repo, help="tap checkout holding agents/")
     ap.add_argument("--out", type=Path, default=root / "data" / "agent_briefs.jsonl")
     ap.add_argument("--split", choices=["train", "eval", "both"], default="both")
-    ap.add_argument("--only", type=str, default="", help="comma-separated agent tags or domains")
+    ap.add_argument("--only", type=str, default="", help="comma-separated agent names")
     ap.add_argument("--workers", type=int, default=8)
     args = ap.parse_args()
 
@@ -166,14 +171,14 @@ def main() -> int:
         print("set ANTHROPIC_API_KEY env var", file=sys.stderr)
         return 1
 
-    agents = load_agents(args.agents)
-    by_domain: dict[str, list[dict]] = {}
-    for agent in agents:
-        by_domain.setdefault(agent["domain"], []).append(agent)
+    roster = load_agents(args.repo)
+    agents = roster
 
     if args.only:
         allow = {x.strip() for x in args.only.split(",") if x.strip()}
-        agents = [a for a in agents if a["tag"] in allow or a["domain"] in allow]
+        agents = [a for a in roster if a["tag"] in allow]
+        if len(agents) != len(allow):
+            raise SystemExit(f"--only names no agent: {sorted(allow - {a['tag'] for a in agents})}")
 
     done: set[tuple[str, str, str]] = set()
     if args.out.exists():
@@ -199,7 +204,7 @@ def main() -> int:
     written = failures = 0
     with args.out.open("a") as fp, ThreadPoolExecutor(max_workers=args.workers) as pool:
         futures = {
-            pool.submit(generate, SPLIT_MODELS[split], agent, by_domain[agent["domain"]], counts): (agent, split)
+            pool.submit(generate, SPLIT_MODELS[split], agent, roster, counts): (agent, split)
             for agent, split, counts in jobs
         }
         for fut in as_completed(futures):
@@ -218,6 +223,8 @@ def main() -> int:
                         "style": style,
                         "brief": text,
                         "model": SPLIT_MODELS[split],
+                        "skills": [],
+                        "source": agent["tag"],
                     }, ensure_ascii=False) + "\n")
                     written += 1
             fp.flush()

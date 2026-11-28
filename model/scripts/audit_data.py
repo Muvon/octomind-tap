@@ -16,6 +16,8 @@ Checks (string-based ones need no model and run instantly):
   4. holdout / train leakage (identical surface in both)
   5. label cardinality + balance
   6. eval_real gold-label coverage vs the trigger corpus
+  7. briefs: eval briefs that also sit in the train split, agents and skills
+     without training pairs, skill labels the trigger corpus does not know
 
 Usage:
   uv run python scripts/audit_data.py                 # string checks only
@@ -72,8 +74,6 @@ def main() -> int:
                     help="encode triplets to measure model-based false-negative rate")
     ap.add_argument("--frac", type=float, default=0.95,
                     help="false-neg if cos(a,neg) >= frac*cos(a,pos)")
-    ap.add_argument("--caps", type=Path, default=root.parent / "capabilities")
-    ap.add_argument("--skills", type=Path, default=root.parent / "skills")
     args = ap.parse_args()
 
     pairs = list(load_jsonl(args.data / "pairs.jsonl"))
@@ -157,6 +157,24 @@ def main() -> int:
         missing = sorted(gold - set(label_surfaces))
         print(f"\n== 6. eval_real coverage ==")
         print(f"{len(gold)} gold labels; {len(missing)} missing from pairs corpus: {missing}")
+
+    # --- 7. task briefs: agent routing and skill supervision ---
+    briefs_path = args.data / "agent_briefs.jsonl"
+    if briefs_path.exists():
+        briefs = list(load_jsonl(briefs_path))
+        train_briefs = {r["brief"] for r in briefs if r["split"] == "train"}
+        eval_in_train = sum(1 for r in briefs if r["split"] == "eval" and r["brief"] in train_briefs)
+        agent_labels = Counter(r["label"] for r in load_jsonl(args.data / "agent_pairs.jsonl"))
+        skill_labels = Counter(r["label"] for r in load_jsonl(args.data / "skill_brief_pairs.jsonl"))
+        raw_labels = {r["label"] for r in load_jsonl(args.data / "raw_triggers.jsonl")}
+        briefed_skills = {s for r in briefs if r["split"] == "train" for s in r.get("skills", [])}
+        print(f"\n== 7. briefs ==")
+        print(f"{len(briefs)} briefs ({sum(r['split'] == 'train' for r in briefs)} train, "
+              f"{sum(r['split'] == 'eval' for r in briefs)} eval); {eval_in_train} eval briefs also in train")
+        print(f"agent pairs: {len(agent_labels)} agents, min {min(agent_labels.values())} max {max(agent_labels.values())} per agent")
+        print(f"skill pairs: {len(skill_labels)} skills, min {min(skill_labels.values())} max {max(skill_labels.values())} per skill")
+        print(f"skills on train briefs without skill pairs (no semantic() phrase): {sorted(briefed_skills - set(skill_labels))}")
+        print(f"skill pair labels missing from raw_triggers.jsonl (fewer than 2 phrases): {sorted(set(skill_labels) - raw_labels)}")
 
     # --- 3b. model-based false-negative rate (optional) ---
     if args.model:

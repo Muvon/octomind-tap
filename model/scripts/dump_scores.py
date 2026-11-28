@@ -34,7 +34,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from calibrate_thresholds import precompute_scored  # noqa: E402
-from eval_gate import OnnxEncoder, load_triggers_from_pairs  # noqa: E402
+from eval_gate import OnnxEncoder, load_capability_eval_rows, load_triggers_from_pairs  # noqa: E402
 from eval_route import load_agents, load_eval_briefs, score_rows  # noqa: E402
 
 
@@ -58,8 +58,8 @@ def main() -> int:
     eval_cfg = yaml.safe_load(args.config.read_text())["eval"]
     root = Path(__file__).resolve().parents[1]
 
-    eval_rows = [json.loads(line) for line in (root / eval_cfg["real_set_path"]).read_text().splitlines() if line.strip()]
     triggers_by_cap = load_triggers_from_pairs(root / eval_cfg["triggers_path"])
+    eval_rows = load_capability_eval_rows(root / eval_cfg["real_set_path"], triggers_by_cap)
     scored = precompute_scored(args.model, eval_rows, triggers_by_cap, int(eval_cfg["runtime_top_k"]), args.onnx_file)
     capability = [
         {

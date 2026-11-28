@@ -1,6 +1,6 @@
 # Octomind Tap
 
-> Run a fully-configured AI specialist with one command — no setup, no config files, no API plumbing.
+> Run a fully-configured AI agent with one command — no setup, no config files, no API plumbing.
 
 The community registry for [Octomind](https://github.com/muvon/octomind), the CLI-first AI agent runtime. **34 agents**, 331 skill packs, 31 ready-made workflows, 160+ dependency scripts — defined in TOML and Markdown files that Octomind resolves and merges into your session at runtime.
 
@@ -66,7 +66,7 @@ octomind tap init acme/team && octomind run team
 
 ## Agents, Skills, and Delegation
 
-The tap has one agent per field of work: `developer`, `doctor`, `writer`, `lawyer`, `producer`, and so on. An agent does its field's work itself. Each specialty inside a field (QA test planning, contract review for one jurisdiction, lifecycle email) is a skill that loads when your request matches it. `assistant` is the global assistant and `plain` is a baseline with a one-line system prompt and no persona, used for prompt testing.
+The tap has one agent per field of work: `developer`, `doctor`, `writer`, `lawyer`, `producer`, and so on. An agent does its field's work itself. Each specialty inside a field (QA test planning, contract review for one jurisdiction, lifecycle email) is a skill that loads when your request matches it. `assistant` is the global assistant and `plain` is a baseline with a one-line system prompt and no persona, used for prompt testing. A variant of an agent, with its own prompt, tools, model or safety rules, is an exception that a private tap can add; [ARCHITECTURE.md](ARCHITECTURE.md#namespaces-base-agents-variants-and-skills) says when a skill or a variant fits.
 
 | Command | Runs |
 |---------|------|
@@ -84,7 +84,7 @@ Agents for work that splits into parts can start copies of themselves: a read-on
 |-----------|---------------|-------|
 | `agents/<ns>/default.toml` | Base agent manifests — a system prompt and capability declarations | 34 |
 | `capabilities/<name>/` | Capability definitions — the tools an agent needs, decoupled from how they're provided | 70+ |
-| `agents/<name>/skills/<skill>/SKILL.md` | Owned skills: instruction packs (AgentSkills spec) that one namespace uses and that auto-activate by context | 283 |
+| `agents/<ns>/skills/<skill>/SKILL.md` | Owned skills: instruction packs (AgentSkills spec) that one namespace uses and that auto-activate by context | 283 |
 | `skills/<skill>/SKILL.md` | Shared skills: instruction packs used by two or more namespaces | 48 |
 | `workflows/<name>.toml` | Multi-step pipelines chaining agent runs (sequential / parallel / loop / conditional) | 31 |
 | `deps/<org>/<tool>.sh` | Dependency install scripts — auto-run before sessions, macOS + Linux | 160+ |
@@ -134,7 +134,7 @@ The 34 agents:
 
 ## Agent Names
 
-An agent tag is `<ns>` or `<ns>:<variant>`. The base agent `agents/<ns>/default.toml` is started with `octomind run <ns>`; `<ns>:default` names the same agent. A variant `agents/<ns>/<variant>.toml` is started with `octomind run <ns>:<variant>`. Names are lowercase letters, digits and hyphens. This tap keeps one agent per field of work, so it has base agents only; variants are for private taps.
+An agent tag is `<ns>` or `<ns>:<variant>`. A namespace is the directory `agents/<ns>/`; its base agent `agents/<ns>/default.toml` is started with `octomind run <ns>`, and `<ns>:default` names the same agent. A variant `agents/<ns>/<variant>.toml` is started with `octomind run <ns>:<variant>`. Names are lowercase letters, digits and hyphens. This tap keeps one agent per field of work, so it has 34 base agents and no variants; variants are for private taps.
 
 ```
 developer    → agents/developer/default.toml
@@ -185,7 +185,7 @@ welcome = "..."
 
 Beyond these, the registry ships 50+ domain capabilities — `legal-*`, `video-gen`, `image-gen`, `messaging-*`, `trading-crypto`, and more. See [ARCHITECTURE.md](ARCHITECTURE.md) for the full table.
 
-> **Access tiers (least privilege).** An agent declares `core` plus the tools its field needs. Only agents that start copies of themselves, and `assistant`, which also hands tasks to other agents, declare `orchestration`. Consult-style agents (a question in, an answer out) work in one session and do not. Only `octomind` declares `runtime`. A server that an agent does not declare is not in its tool set at all. See [ARCHITECTURE.md](ARCHITECTURE.md#capability-access-tiers-least-privilege).
+> **Access tiers (least privilege).** An agent declares `core` plus the tools its field needs. Only agents that start copies of themselves, and the agents that also hand tasks to other agents (`assistant` to every field, `writer` to `seo`), declare `orchestration`. Consult-style agents (a question in, an answer out) work in one session and do not. Only `octomind` declares `runtime`. A server that an agent does not declare is not in its tool set at all. See [ARCHITECTURE.md](ARCHITECTURE.md#capability-access-tiers-least-privilege).
 
 ### Switching providers
 

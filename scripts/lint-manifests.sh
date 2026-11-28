@@ -13,7 +13,7 @@
 #   7. Every capability reference must have a matching capabilities/<name>/default.toml
 #   8. Comment metadata: # Title: (5–60 chars) and # Description: (120–155 chars) required
 #      {{SPECIALISTS}} / {{USES}} placeholders are rejected
-#      `# Uses:` lists `*` or existing agent names, needs the `orchestration` capability, no loops
+#      `# Uses:` lists `*` or existing base agent names, needs the `orchestration` capability, no loops
 #   9. Prompts must not cite tap-relative paths (skills/…, capabilities/…, deps/…) — octomind agent exempt
 #  10. Every `name` skill mentioned in prompts must exist at skills/<name>/SKILL.md or agents/<agent>/skills/<name>/SKILL.md
 #

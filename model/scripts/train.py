@@ -27,9 +27,11 @@ Loss stack (configurable via configs/default.yaml::loss):
      a concern.
      https://sbert.net/examples/sentence_transformer/training/matryoshka/README.html
 
-Two objectives are stacked (each gets its own loss instance built from
-the same stack): pairs.jsonl for in-batch-only MNRL signal, and
-triplets.jsonl for in-batch + explicit hard-negative signal.
+Each training file gets its own loss instance built from the same stack:
+pairs for in-batch-only MNRL signal, triplets for in-batch + explicit
+hard-negative signal. Capability pairs and triplets and the agent pairs and
+triplets train in the first phase; the second phase runs the agent files and
+`skill_brief_pairs.jsonl` (task brief -> a semantic() phrase of its skill).
 
 An InformationRetrievalEvaluator runs each epoch on holdout intents
 and the trainer keeps the checkpoint with the highest dev MRR@10.
@@ -82,6 +84,14 @@ except ImportError:
 from torch.utils.data import DataLoader
 
 warnings.filterwarnings("ignore", category=FutureWarning)
+
+# Training files by role. The first phase runs the capability and agent files;
+# the second runs the agent files and the skill-from-brief pairs.
+AGENT_FILES = ("agent_pairs", "agent_triplets")
+SKILL_FILE = "skill_brief_pairs"
+SECOND_PHASE_FILES = (*AGENT_FILES, SKILL_FILE)
+# `loss:` config key holding each non-capability file's scale.
+SCALE_KEYS = {"agent_pairs": "agent_scale", "agent_triplets": "agent_scale", SKILL_FILE: "skill_scale"}
 
 
 # ---------------------------------------------------------------------------
@@ -226,6 +236,14 @@ class LengthSortedCollator(SentenceTransformerDataCollator):
 
 class LengthSortedTrainer(SentenceTransformerTrainer):
     data_collator_class = LengthSortedCollator
+
+    def __init__(self, *args, batch_size_by_rows: dict[int, int] | None = None, **kwargs):
+        # The trainer wraps the datasets it is given, so a file is recognised by its row count.
+        self.batch_size_by_rows = batch_size_by_rows or {}
+        super().__init__(*args, **kwargs)
+
+    def get_batch_sampler(self, dataset, batch_size, *args, **kwargs):
+        return super().get_batch_sampler(dataset, self.batch_size_by_rows.get(len(dataset), batch_size), *args, **kwargs)
 
 
 def trim_padding(_module, args: tuple) -> tuple:
@@ -414,16 +432,23 @@ def train_modern(
     if agent_triplets_path.exists():
         train_datasets["agent_triplets"] = load_triplets_ds(agent_triplets_path)
         print(f"loaded {len(train_datasets['agent_triplets'])} agent triplet examples from {agent_triplets_path.name}")
+    skill_pairs_path = pairs_path.with_name("skill_brief_pairs.jsonl")
+    if skill_pairs_path.exists():
+        train_datasets[SKILL_FILE] = load_pairs_ds(skill_pairs_path)
+        print(f"loaded {len(train_datasets[SKILL_FILE])} skill pair examples from {skill_pairs_path.name}")
 
     # Build one loss instance per dataset. All share the same model and the
     # same loss class; they differ in column count and in `scale`: the
     # capability files train at `loss.scale`, the agent files at
-    # `loss.agent_scale` (see configs/default.yaml for why they differ).
+    # `loss.agent_scale` and the skill file at `loss.skill_scale` (see
+    # configs/default.yaml for why they differ).
     mini_batch_size = int(train_cfg.get("mini_batch_size", train_cfg["batch_size"]))
+    agent_mini_batch_size = int(train_cfg["agent_mini_batch_size"])
     losses = {
         name: build_loss(
-            model, loss_cfg, mini_batch_size,
-            scale=float(loss_cfg["agent_scale"] if name.startswith("agent_") else loss_cfg["scale"]),
+            model, loss_cfg,
+            agent_mini_batch_size if name in AGENT_FILES else mini_batch_size,
+            scale=float(loss_cfg[SCALE_KEYS.get(name, "scale")]),
         )
         for name in train_datasets
     }
@@ -445,6 +470,19 @@ def train_modern(
         per_device_batch = int(train_cfg["batch_size"])
     print(f"per-device batch: {per_device_batch} "
           f"({'GIST (no GradCache)' if use_gist else 'cached MNRL (GradCache chunks of %d)' % mini_batch_size})")
+
+    # NO_DUPLICATES puts each agent text in a batch at most once, so an agent
+    # file can never fill a 256-row batch: with one text per agent it yields
+    # one row per agent (pairs) or one row per pair of agents (triplets). The
+    # batch size is the number of agents, so each step is a full contrast
+    # between all of them.
+    agent_batch_size = int(train_cfg["agent_batch_size"])
+    batch_size_by_rows = {len(train_datasets[name]): agent_batch_size for name in AGENT_FILES if name in train_datasets}
+    if len(batch_size_by_rows) != sum(name in train_datasets for name in AGENT_FILES) or any(
+        len(ds) in batch_size_by_rows for name, ds in train_datasets.items() if name not in AGENT_FILES
+    ):
+        raise SystemExit("two training files share a row count; the per-file batch size cannot tell them apart")
+    print(f"agent files: batch {agent_batch_size}, GradCache chunks of {agent_mini_batch_size}")
 
     evaluator = build_ir_evaluator(pairs_path, holdout_path, name="holdout-ir")
     if evaluator is None:
@@ -491,12 +529,14 @@ def train_modern(
         dataloader_pin_memory=torch.cuda.is_available(),
     )
 
+    first_phase = {name: ds for name, ds in train_datasets.items() if name != SKILL_FILE}
     trainer = LengthSortedTrainer(
         model=model,
         args=targs,
-        train_dataset=train_datasets,
-        loss=losses,
+        train_dataset=first_phase,
+        loss={name: losses[name] for name in first_phase},
         evaluator=evaluator,
+        batch_size_by_rows=batch_size_by_rows,
     )
 
     if model.tokenizer.padding_side != "right":
@@ -504,7 +544,7 @@ def train_modern(
     trim_hook = model[0].register_forward_pre_hook(trim_padding)
 
     print(
-        f"training {len(train_datasets)} objective(s) for {train_cfg['epochs']} epochs "
+        f"training {len(first_phase)} objective(s) for {train_cfg['epochs']} epochs "
         f"(effective batch={train_cfg['batch_size']}, mini_batch={mini_batch_size})"
     )
     if resume:
@@ -518,23 +558,24 @@ def train_modern(
     else:
         trainer.train()
 
-    # Second phase: the agent files alone, with a fresh optimizer and warmup.
-    # More capability batches cost accuracy on real prompts while more agent
-    # batches keep helping routing (2026-11, capability top-1 / routing
-    # handoff): 105 mixed steps 0.940 / 0.338, 210 mixed steps 0.931 / 0.396,
-    # 105 mixed + 105 agent-only steps 0.939 / 0.418.
+    # Second phase: the agent files and the skill pairs, with a fresh
+    # optimizer and warmup. More capability batches cost accuracy on real
+    # prompts while more routing batches keep helping (2026-11, capability
+    # top-1 / routing handoff): 105 mixed steps 0.940 / 0.338, 210 mixed steps
+    # 0.931 / 0.396, 105 mixed + 105 agent-only steps 0.939 / 0.418.
     agent_steps = int(train_cfg["agent_steps"])
-    agent_datasets = {name: ds for name, ds in train_datasets.items() if name.startswith("agent_")}
-    if agent_steps > 0 and agent_datasets:
-        print(f"agent phase: {agent_steps} steps on {', '.join(agent_datasets)}")
+    second_phase = {name: ds for name, ds in train_datasets.items() if name in SECOND_PHASE_FILES}
+    if agent_steps > 0 and second_phase:
+        print(f"second phase: {agent_steps} steps on {', '.join(second_phase)}")
         LengthSortedTrainer(
             model=model,
             args=dataclasses.replace(
                 targs, max_steps=agent_steps,
                 eval_strategy="no", load_best_model_at_end=False, metric_for_best_model=None,
             ),
-            train_dataset=agent_datasets,
-            loss={name: losses[name] for name in agent_datasets},
+            train_dataset=second_phase,
+            loss={name: losses[name] for name in second_phase},
+            batch_size_by_rows=batch_size_by_rows,
         ).train()
     trim_hook.remove()
     trainer.save_model(str(out_dir))

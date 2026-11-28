@@ -32,55 +32,11 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 import sys
 from pathlib import Path
 
-try:
-    import tomllib
-except ModuleNotFoundError:
-    import tomli as tomllib  # type: ignore[no-redef]
-
-
-# ---------------------------------------------------------------------------
-# Catalog loaders (kept in sync with build_dataset.py::load_all_triggers)
-# ---------------------------------------------------------------------------
-
-_SEMANTIC_RE = re.compile(r"semantic\(\s*['\"]?(.+?)['\"]?\s*\)")
-
-
-def load_all_triggers(caps_dir: Path, skills_dir: Path) -> dict[str, list[str]]:
-    out: dict[str, list[str]] = {}
-    if caps_dir.exists():
-        for cap_dir in sorted(p for p in caps_dir.iterdir() if p.is_dir()):
-            cfg = cap_dir / "config.toml"
-            if not cfg.exists():
-                continue
-            data = tomllib.loads(cfg.read_text())
-            triggers = [t.strip() for t in data.get("triggers", []) if t.strip()]
-            if triggers:
-                out[cap_dir.name] = list(triggers)
-    if skills_dir.exists():
-        for skill_dir in sorted(p for p in skills_dir.iterdir() if p.is_dir()):
-            md = skill_dir / "SKILL.md"
-            if not md.exists():
-                continue
-            text = md.read_text()
-            if not text.startswith("---"):
-                continue
-            end = text.find("\n---", 3)
-            if end == -1:
-                continue
-            phrases = [m.group(1).strip() for m in _SEMANTIC_RE.finditer(text[3:end])]
-            phrases = [p for p in phrases if p]
-            if not phrases:
-                continue
-            if skill_dir.name in out:
-                seen = set(out[skill_dir.name])
-                out[skill_dir.name].extend(p for p in phrases if p not in seen)
-            else:
-                out[skill_dir.name] = phrases
-    return {k: v for k, v in out.items() if len(v) >= 2}
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from build_dataset import load_all_triggers  # noqa: E402
 
 
 # ---------------------------------------------------------------------------
@@ -434,8 +390,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     root = Path(__file__).resolve().parents[1]
     repo = Path(__file__).resolve().parents[2]
-    ap.add_argument("--caps", type=Path, default=repo / "capabilities")
-    ap.add_argument("--skills", type=Path, default=repo / "skills")
+    ap.add_argument("--repo", type=Path, default=repo, help="tap checkout holding capabilities/ and skills/")
     ap.add_argument("--out", type=Path, default=root / "data" / "eval_real.jsonl")
     ap.add_argument(
         "--per-cap-positives",
@@ -447,7 +402,7 @@ def main() -> int:
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
 
-    triggers_by_cap = load_all_triggers(args.caps, args.skills)
+    triggers_by_cap = load_all_triggers(args.repo / "capabilities", args.repo)
     if not triggers_by_cap:
         print("no capabilities found", file=sys.stderr)
         return 1

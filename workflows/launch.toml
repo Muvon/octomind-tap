@@ -4,7 +4,7 @@
 # honestly, and — only if it greenlights — produce a full launch kit. Built-in
 # kill-switch via a conditional gate. Public roles only.
 #
-# Note: chains several specialist runs — token/time-heavy by design.
+# Note: chains several agent runs — token/time-heavy by design.
 
 name        = "launch"
 description = "Takes a product idea through market exploration to a go/no-go, then, only if viable, a go-to-market plan with strategy, brand, pitch, ads and launch plan."

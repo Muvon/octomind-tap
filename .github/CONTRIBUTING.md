@@ -18,11 +18,15 @@ Octomind fetches `agents/doctor/default.toml` from this repo and merges it into 
 
 ## Adding a new agent
 
-### 1. Pick a name
+### 1. Decide: skill, variant or agent
 
-The tap has one agent per field of work, for example `developer`, `devops`, `analyst`, `security-analyst`. The name is the directory name and the tag: lowercase letters, digits and hyphens. This tap keeps one agent per field of work, so variants (`agents/<name>/<variant>.toml`, tag `<name>:<variant>`) belong in a private tap.
+The tap has one agent per field of work, for example `developer`, `devops`, `analyst`, `security-analyst`. Each agent has a namespace, the directory `agents/<ns>/`; its base agent is `agents/<ns>/default.toml` with the tag `<ns>`. The name is lowercase letters, digits and hyphens. Skills are the default for anything smaller than a field: this tap has 34 base agents and no variants.
 
-A specialty of an existing field (for example blood test interpretation for `doctor`) is a skill, not a new agent. A skill that only one namespace uses goes at `agents/<ns>/skills/<name>/SKILL.md`; a skill that two or more namespaces use goes at `skills/<name>/SKILL.md` with `domains:` naming them. Add an agent only for a new field of work.
+- A specialty of an existing field (a procedure, a format, a jurisdiction, a platform; for example blood test interpretation for `doctor`) is a skill. An owned skill, used by one namespace, goes at `agents/<ns>/skills/<name>/SKILL.md`. A shared skill, used by two or more namespaces, goes at `skills/<name>/SKILL.md` with `domains:` naming them.
+- A new field of work, with its own deliverables, is a new base agent.
+- A variant (`agents/<ns>/<variant>.toml`, tag `<ns>:<variant>`) is the exception. Octomind supports it and this tap's lint rejects it (`AGENT_VARIANT`), so it belongs in a private tap. It is warranted only when a skill cannot do the job: the agent needs its own system prompt and identity, its own capability set (fewer or different tools), its own model, or its own safety rules. Extra instructions, or extra tools on top of the base agent, are a skill; `capabilities:` in its frontmatter brings tools.
+
+The full statement is in [ARCHITECTURE.md](../ARCHITECTURE.md#namespaces-base-agents-variants-and-skills).
 
 ### 2. Create the manifest
 
