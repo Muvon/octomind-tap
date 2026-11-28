@@ -12,7 +12,6 @@
 set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 LOAD="$REPO_ROOT/bin/load"
-AGENTS_DIR="$REPO_ROOT/agents"
 
 QUIET=0
 [[ ${1:-} == "--quiet" ]] && QUIET=1
@@ -29,9 +28,9 @@ ERRORS=()
 echo "Validating agent manifests..."
 echo ""
 
-for toml in "$AGENTS_DIR"/*.toml; do
-  # The agent tag is the file name without .toml
-  tag="$(basename "$toml" .toml)"
+while IFS= read -r manifest; do
+  # The agent tag is the name of the directory that holds config.toml
+  tag="$(basename "$(dirname "$manifest")")"
 
   if output=$(python3 "$LOAD" "$tag" 2>&1); then
     PASS=$((PASS + 1))
@@ -44,7 +43,7 @@ for toml in "$AGENTS_DIR"/*.toml; do
     echo "  ❌  $tag"
     echo "      $output"
   fi
-done
+done < <(python3 "$REPO_ROOT/scripts/tap_paths.py" agents "$REPO_ROOT")
 
 echo ""
 echo "Results: $PASS passed, $FAIL failed"

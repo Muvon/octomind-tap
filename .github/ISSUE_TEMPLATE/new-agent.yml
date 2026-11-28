@@ -7,7 +7,7 @@ body:
     id: tag
     attributes:
       label: Agent name
-      description: "The name of the agent: lowercase letters, digits and hyphens, no `:`. It is the file name `agents/<name>.toml`."
+      description: "The name of the agent: lowercase letters, digits and hyphens, no `:`. It is the directory name `agents/<name>/`."
       placeholder: "zig"
     validations:
       required: true

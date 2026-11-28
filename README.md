@@ -2,7 +2,7 @@
 
 > Run a fully-configured AI specialist with one command — no setup, no config files, no API plumbing.
 
-The community registry for [Octomind](https://github.com/muvon/octomind), the CLI-first AI agent runtime. **34 agents**, 330+ skill packs, 31 ready-made workflows, 160+ dependency scripts — each one a single TOML file that Octomind resolves and merges into your session at runtime.
+The community registry for [Octomind](https://github.com/muvon/octomind), the CLI-first AI agent runtime. **34 agents**, 331 skill packs, 31 ready-made workflows, 160+ dependency scripts — defined in TOML and Markdown files that Octomind resolves and merges into your session at runtime.
 
 ```bash
 octomind run                   # the global assistant
@@ -74,7 +74,7 @@ The tap has one agent per field of work: `developer`, `doctor`, `writer`, `lawye
 | `octomind run developer` | the `developer` agent |
 | `octomind run developer --readonly` | the `developer` agent in a session that offers only read-only tools (no shell, no delegation) |
 
-Agents for work that splits into parts can start copies of themselves: a read-only copy to scout before a large change or to review finished work independently, or several writable copies for independent parts of a task. The global assistant also hands tasks to the agent that fits them; it declares that with the header comment `# Uses: *` in `agents/assistant.toml`. The rules and the lint codes are in [ARCHITECTURE.md](ARCHITECTURE.md#agents-skills-and-delegation).
+Agents for work that splits into parts can start copies of themselves: a read-only copy to scout before a large change or to review finished work independently, or several writable copies for independent parts of a task. The global assistant also hands tasks to the agent that fits them; it declares that with the header comment `# Uses: *` in `agents/assistant/config.toml`. The rules and the lint codes are in [ARCHITECTURE.md](ARCHITECTURE.md#agents-skills-and-delegation).
 
 ---
 
@@ -82,9 +82,10 @@ Agents for work that splits into parts can start copies of themselves: a read-on
 
 | Directory | What it holds | Count |
 |-----------|---------------|-------|
-| `agents/<name>.toml` | Agent manifests — a system prompt and capability declarations | 34 |
+| `agents/<name>/config.toml` | Agent manifests — a system prompt and capability declarations | 34 |
 | `capabilities/<name>/` | Capability definitions — the tools an agent needs, decoupled from how they're provided | 70+ |
-| `skills/<name>/SKILL.md` | Reusable instruction packs (AgentSkills spec) that auto-activate by context | 330+ |
+| `agents/<name>/skills/<skill>/SKILL.md` | Owned skills: instruction packs (AgentSkills spec) that one agent uses and that auto-activate by context | 283 |
+| `skills/<skill>/SKILL.md` | Shared skills: instruction packs used by two or more agents | 48 |
 | `workflows/<name>.toml` | Multi-step pipelines chaining agent runs (sequential / parallel / loop / conditional) | 31 |
 | `deps/<org>/<tool>.sh` | Dependency install scripts — auto-run before sessions, macOS + Linux | 160+ |
 | `model/` | Embedding model fine-tune powering capability auto-activation | — |
@@ -133,12 +134,12 @@ The 34 agents:
 
 ## Agent Names
 
-An agent is named after its file: `agents/<name>.toml` is started with `octomind run <name>`. A name is lowercase letters, digits and hyphens. It never contains a `:`; a tag written with `:` is an error that shows the flat form.
+An agent is named after its directory: `agents/<name>/config.toml` is started with `octomind run <name>`. A name is lowercase letters, digits and hyphens. It never contains a `:`; a tag written with `:` is an error that shows the correct form, the bare agent name.
 
 ```
-developer    → agents/developer.toml
-devops       → agents/devops.toml
-analyst      → agents/analyst.toml
+developer    → agents/developer/config.toml
+devops       → agents/devops/config.toml
+analyst      → agents/analyst/config.toml
 ```
 
 A role in your own Octomind config with the same name as a tap agent takes priority over the tap agent.
@@ -150,7 +151,7 @@ A role in your own Octomind config with the same name as a tap agent takes prior
 Agents declare **what they need**, not how to get it. This is the only supported way — manifests never contain `[deps]`, `[roles.mcp]`, or `[[mcp.servers]]` blocks.
 
 ```toml
-# agents/developer.toml
+# agents/developer/config.toml
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell",
                 "codesearch-semantic", "codesearch-structural", "versioning"]
@@ -243,10 +244,10 @@ rules:
 
 - `rules:` predicates (`file()`, `match()`, `semantic()`, `grep()`, `env()`, …) drive auto-activation. Skills without `rules:` are manual-only.
 - `capabilities:` auto-loads capabilities when the skill activates.
-- `domains:` names the agents the skill is bound to; auto-activation applies only in those agents.
-- Optional `activate` and `validate` scripts alongside `SKILL.md` add event-driven activation and output validation.
+- `domains:` names the agents a shared skill is bound to; auto-activation applies only in those agents. An owned skill, one stored under `agents/<name>/skills/`, belongs to that agent by location and has no `domains:` line.
+- An optional `validate` script alongside `SKILL.md` checks the agent's output.
 
-Preload skills without activate scripts:
+Preload skills by name, wherever they are stored:
 
 ```bash
 OCTOMIND_SKILLS=programming-rust,git-workflow octomind run developer
@@ -288,13 +289,14 @@ Every dep script must:
 ## Repository Layout
 
 ```
-agents/<name>.toml              # Agent manifests — one per field of work, flat
+agents/<name>/config.toml       # Agent manifest — one directory per field of work
+agents/<name>/skills/<skill>/SKILL.md  # Owned skills: used by that agent only
 capabilities/<name>/            # Capability definitions
   default.toml                  # Symlink → active provider (e.g. octofs.toml)
   <provider>.toml               # [deps], [roles.mcp], [[mcp.servers]]
 deps/<org>/<tool>.sh            # Dependency install scripts (+ companion .md)
 deps/lib/platform.sh            # Shared platform detection helpers
-skills/<name>/SKILL.md          # Reusable instruction packs (AgentSkills spec)
+skills/<skill>/SKILL.md         # Shared skills: used by two or more agents (AgentSkills spec)
 workflows/<name>.toml           # Multi-step pipelines — octomind workflow <name>
 model/                          # Embedding fine-tune powering capability auto-activation
 bin/load                        # Resolver: merges capabilities → final manifest (stdout)
@@ -336,7 +338,7 @@ Options:
 
 ```bash
 octomind tap init acme/team --dir ../team-tap      # destination (default ./octomind-<name>; must be empty)
-octomind tap init acme/team --agent ops            # starter agent's name (default: the tap name); the agent is agents/<name>.toml
+octomind tap init acme/team --agent ops            # starter agent's name (default: the tap name); the agent is agents/<name>/config.toml
 ```
 
 The tap id `owner/name` maps to the GitHub repository `owner/octomind-<name>`.
@@ -378,12 +380,13 @@ Manifests support placeholders expanded at runtime — run `octomind vars` to se
 
 ```bash
 # 1. Start from the canonical template
-cp templates/agent.toml agents/<name>.toml
+mkdir agents/<name>
+cp templates/agent.toml agents/<name>/config.toml
 
 # 2. Edit: capabilities and the system prompt (XML-tagged blocks)
 
 # 3. Validate
-bash scripts/lint-manifests.sh agents/<name>.toml
+bash scripts/lint-manifests.sh agents/<name>/config.toml
 bash scripts/validate-capabilities.sh
 bin/load <name>
 ```
@@ -392,7 +395,7 @@ Key rules:
 
 - Agents declare `capabilities = [...]` only — never `[deps]`, `[roles.mcp]`, or `[[mcp.servers]]` in a manifest
 - System prompts use XML-tagged blocks in canonical order (`<identity>` → … → `<critical>`), 200–1000 words
-- Exactly one `[[roles]]` entry; never set `name` (injected at runtime from the file name)
+- Exactly one `[[roles]]` entry; never set `name` (injected at runtime from the directory name)
 - New capabilities need a provider file, a `setup-symlinks.sh` entry, and a `DECLARED` registration
 
 Full guidelines: [CONTRIBUTING.md](CONTRIBUTING.md) · Design doc: [ARCHITECTURE.md](ARCHITECTURE.md) · Agent conventions: [AGENTS.md](AGENTS.md)

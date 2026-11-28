@@ -1,6 +1,9 @@
 import sys, re, pathlib
 
+import tap_paths
+
 path = pathlib.Path(sys.argv[1])
+repo_root = pathlib.Path(sys.argv[2])
 
 if not path.exists():
     print(f"MISSING: {path} does not exist", file=sys.stderr)
@@ -94,23 +97,39 @@ if "compatibility" in fields and len(fields["compatibility"]) > 500:
     sys.exit(1)
 
 # ── Optional: domains / capabilities must reference real directories ──────────
-# domains: each entry is an agent name that must have agents/<entry>.toml
+# domains: each entry is an agent name that must have agents/<entry>/config.toml
 # (runtime compares it with the agent's name); a phantom value silently never auto-activates.
+# An owned skill (agents/<agent>/skills/<name>/) belongs to its agent by location and sets
+# no domains; a shared skill (skills/<name>/) is bound to two or more agents, or has none.
 # capabilities: resolved from capabilities/<name>/ at activation; a phantom
 # value silently fails to load its MCP servers.
-repo_root = skill_dir.parent.parent
-
 def _split_values(raw):
     raw = raw.strip()
     if raw.startswith("[") and raw.endswith("]"):
         return [v.strip().strip('"').strip("'") for v in raw[1:-1].split(",") if v.strip()]
     return raw.split()
 
+owner = tap_paths.skill_owner(repo_root, skill_dir)
+
+copies = tap_paths.find_skill_dirs(repo_root, name)
+if len(copies) > 1:
+    places = ", ".join(str(c.relative_to(repo_root)) for c in copies)
+    print(f"SKILL_NAME_DUPLICATE: skill '{name}' exists in {len(copies)} places ({places}) — skills are addressed by bare name, so it must exist once", file=sys.stderr)
+    sys.exit(1)
+
+if owner and fields.get("domains"):
+    print(f"OWNED_SKILL_HAS_DOMAINS: skill '{name}' belongs to agent '{owner}' by location — remove its domains line", file=sys.stderr)
+    sys.exit(1)
+
 if fields.get("domains"):
-    for d in _split_values(fields["domains"]):
-        if not (repo_root / "agents" / f"{d}.toml").is_file():
-            print(f"DOMAIN_UNKNOWN: domains value '{d}' has no agents/{d}.toml — it will never auto-activate", file=sys.stderr)
+    domain_values = _split_values(fields["domains"])
+    for d in domain_values:
+        if not (repo_root / "agents" / d / tap_paths.AGENT_MANIFEST).is_file():
+            print(f"DOMAIN_UNKNOWN: domains value '{d}' has no agents/{d}/{tap_paths.AGENT_MANIFEST} — it will never auto-activate", file=sys.stderr)
             sys.exit(1)
+    if len(domain_values) == 1:
+        print(f"SHARED_SKILL_SINGLE_DOMAIN: skill '{name}' is bound only to '{domain_values[0]}' — move it to agents/{domain_values[0]}/skills/{name}/ and remove its domains line", file=sys.stderr)
+        sys.exit(1)
 
 if fields.get("capabilities"):
     for c in _split_values(fields["capabilities"]):
@@ -179,7 +198,7 @@ for m in re.finditer(r'(?<![\w/.-])(?:skills/([a-z0-9-]+)/)?reference/([A-Za-z0-
     other_skill, ref_file = m.group(1), m.group(2).rstrip('.,;:)')
     if '<' in ref_file or '*' in ref_file:
         continue
-    base = (repo_root / "skills" / other_skill) if other_skill else skill_dir
+    base = (tap_paths.find_skill_dirs(repo_root, other_skill) or [repo_root / "skills" / other_skill])[0] if other_skill else skill_dir
     if not (base / "reference" / ref_file).is_file():
         print(f"REFERENCE_MISSING: body cites '{m.group(0)}' but {base.relative_to(repo_root)}/reference/{ref_file} does not exist", file=sys.stderr)
         sys.exit(1)

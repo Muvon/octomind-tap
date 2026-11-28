@@ -5,7 +5,7 @@ bin/load <name>
 Resolves capabilities and outputs a merged, ready-to-use agent TOML to stdout.
 
 How it works:
-  1. Read agents/<name>.toml
+  1. Read agents/<name>/config.toml
   2. Extract top-level `capabilities = [...]` list
   3. For each capability, load capabilities/<name>/default.toml
   4. Merge:
@@ -182,7 +182,7 @@ def main():
         print(f"ERROR: invalid agent name '{name}': tags are flat, a lowercase name without ':' (e.g. bin/load developer)", file=sys.stderr)
         sys.exit(1)
 
-    agent_path = os.path.join(tap_root, "agents", f"{name}.toml")
+    agent_path = os.path.join(tap_root, "agents", name, "config.toml")
     if not os.path.exists(agent_path):
         print(f"ERROR: agent not found: {agent_path}", file=sys.stderr)
         sys.exit(1)

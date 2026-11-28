@@ -1,0 +1,110 @@
+---
+name: organic-launch
+title: "Zero-Budget Organic Launch Planning"
+description: "Plan an organic launch on zero budget with audience-fit channels, community participation, credible proof, and a sequenced first-user playbook."
+license: Apache-2.0
+rules:
+  - match((?i)\b(zero[ -]budget|no[ -]budget|without (spending|paid ads))\b.{0,50}\b(launch|organic growth|first users)\b)
+  - match((?i)\b(launch|first users)\b.{0,50}\b(zero[ -]budget|no[ -]budget)\b)
+  - content(organic) match((?i)\b(plan|prepare|playbook)\b.{0,35}\b(product hunt|show hn)\b)
+---
+
+## Overview
+
+Build an organic launch plan for an existing product. Use supplied GTM and brand decisions to select channels, sequence the work, and choose measurable milestones. If those inputs are missing, establish the product, audience and stage, and state any assumptions. Verify current platform policies and limits before applying channel guidance. Give each action a metric or decision gate, exclude paid spend, and provide requested outreach as drafts only. Follow an explicit workflow output contract when one is given.
+
+## Procedure
+
+Fire independent search queries in parallel.
+
+Given a product: 1) understand it — what, for whom, stage (idea/MVP/launched); 2) find where the audience hangs out and what they read; 3) study how comparable products launched and what worked; 4) map channels to audience and product type; 5) build a specific, sequenced plan.
+
+Research searches: "[similar product] launch strategy" / "Product Hunt" / "Show HN" / "Hacker News"; "[audience] community / subreddit / Discord / newsletter / influencer / podcast"; "[product type] growth strategy indie" / "first users".
+
+Memory: before starting, remember(["launch strategy", "growth channels", "target audience", "competitors", "product positioning"]); after, memorize() the launch plan, channel decisions, and outreach templates.
+
+## Channel and proof guidance
+
+| Product Type | Best Channels | Why |
+|-------------|--------------|-----|
+| Developer tool | HN, Reddit, Twitter/X, Dev.to | Devs discover tools in communities |
+| SaaS (B2B) | LinkedIn, cold email, Product Hunt | Decision-makers on LinkedIn |
+| SaaS (B2C) | Twitter/X, TikTok, Product Hunt, Reddit | Consumer discovery channels |
+| Open source | GitHub, HN, Reddit, Twitter/X | Community-driven adoption |
+| Creator tool | Twitter/X, YouTube, Product Hunt | Creators follow creators |
+| Design tool | Dribbble, Twitter/X, Product Hunt | Visual discovery |
+
+### Zero-Budget Tactics (ranked by effort:impact)
+1. Show HN / Reddit — low effort, high one-time spike. Show HN only for something people can try now (no landing pages, signup walls, or fundraisers); never ask friends to upvote or comment. Read each subreddit's self-promotion rules first.
+2. Product Hunt — medium effort, high one-time spike
+3. Building in public (Twitter/X) — medium effort, compounds
+4. SEO content — high effort, compounds massively over months
+5. Community participation — medium effort, builds trust slowly
+6. Cold outreach — high effort, direct but doesn't scale
+7. Partnerships/integrations — medium effort, borrows others' audiences
+8. Free tool / calculator — high effort, great for SEO + virality
+
+### Social Proof With Zero Users
+- Beta testers — state the true count ("12 teams in beta"); small honest numbers beat inflated ones
+- GitHub stars — open source a component
+- Personal credibility — "Built by a [role] with [X] years in [domain]"
+- Benchmarks — social proof for technical products
+- "As seen on" — PH badge, HN front page, any press
+- Beta testimonials — 2-3 genuine quotes work; never write, AI-generate, or buy them (FTC fake-reviews rule, in force since Oct 2024)
+
+## Playbook templates
+
+Launch playbook (`launch-playbook-[product].md`):
+```markdown
+# Launch Playbook: [Product]
+## Overview — product, audience, stage (Pre-MVP/MVP/Beta/Launched), budget $0, timeline [X weeks]
+## Channel Priority Matrix
+| Channel | Effort | Impact | Timeline | Priority 1-5 |
+## Phase 1: Pre-Launch (Weeks 1-2) — waitlist & social proof; seed the community (where, what to say, expected outcome); launch assets (what and why). Checklist items, each specific.
+## Phase 2: Launch Week — Mon prep; Tue launch day (hour-by-hour for PH); Wed-Fri momentum follow-ups
+## Phase 3: Post-Launch (Weeks 3-6) — ongoing tactics, content calendar, engagement rhythm; key metrics; decision points for doubling down vs switching channels
+```
+
+Product Hunt plan (`ph-launch-[product].md`):
+```markdown
+# Product Hunt Launch Plan: [Product]
+## Pre-Launch (2-4 weeks before)
+- Assets: tagline (60 chars max, benefit-focused); description (260 chars: what + for whom + why); 5-6 gallery images of the product in action; maker comment draft (story, why built, what's next); optional 1-2 min demo video/GIF (high impact)
+- Engage genuinely on PH for 2+ weeks; list 50+ supporters to notify; prepare personal messages (NOT "please upvote")
+- Self-hunt from the maker's personal account — PH says a third-party hunter gives no advantage; company accounts are prohibited
+- Timing: the day you're most prepared for (PH's own guidance) — weekdays bring more traffic and more competition, weekends the reverse; launch 12:01 AM PT (start of PH day); avoid holidays and major tech-event days. Homepage featuring is editorially curated, not automatic — the plan must work unfeatured.
+## Launch Day
+- Hour 0: submit, post maker comment immediately, share on personal social
+- Hours 1-4: message supporters "I launched [X] today — would love your honest feedback"; PH prohibits asking for upvotes — ask people to visit and comment; reply to EVERY comment within 30 minutes
+- Hours 4-12: Twitter/X thread on the building journey; post in Slack/Discord communities you're already in; Show HN if appropriate
+- Hours 12-24: keep replying, share progress, thank supporters personally
+## Post-Launch — "lessons learned" post (SEO + credibility); follow up with every commenter; add the "Featured on Product Hunt" badge
+```
+
+Outreach templates (`outreach-[product].md`):
+```markdown
+## 1. Value-First DM
+Subject: [specific observation about their work]
+Hey [Name], [one specific sentence showing you know their work]. I built [Product] because [problem]. Thought it might help with [their specific thing]. [What makes it different.] Happy to give you [free access / extended trial / lifetime deal] if you want to try it. — [You]
+## 2. Community Introduction (only where you're already active)
+Hey everyone — I've been [lurking/contributing] here for [time] and finally shipped something this community might find useful. **[Product]**: [what it does]. Built it because [pain point]. It's [free / free tier / open source]. Would love feedback — you're exactly who I built it for. [Link]
+## 3. Influencer Pitch
+Subject: Quick question about [their topic]
+Hi [Name], love your [specific piece], especially [detail]. I built [Product], which [one sentence]. Given your audience of [X], you might find it interesting to [review / mention / try]. Not asking for promotion — your take on [angle] would be valuable. Happy to give you [offer]. — [You]
+## Follow-Up Sequence
+- Day 3: reply with something new — a relevant result, resource, or answer to a likely question. No "just bumping this".
+- Day 7: new angle — "Quick update — [social proof]."
+- Day 14: final — "Last note from me on this. [Product] now does [new thing]. Here if you ever want to try it."
+- After 3 touches: stop.
+- Cold email is commercial mail: real sender identity, a postal address, and a working opt-out (CAN-SPAM); Canada (CASL) and Germany need consent even for B2B — flag recipients there.
+```
+
+Channel playbook (`channels-[product].md`), per channel: strategy for this product; Week 1-4 content calendar (Mon/Wed/Fri, e.g. building-in-public post, problem-awareness thread, product demo); post templates ("Week [X] of building [Product]: [milestone]. [Screenshot]" · "[N] reasons why [problem] is broken: 🧵" · "[User/metric] just [achievement] using [Product]. Here's how: ..."); metrics (followers → profile visits → link clicks → signups) with a weekly signup target.
+
+Save all deliverables as Markdown in the working directory.
+
+## Checklist
+
+- [ ] Paid spend is zero and claims, proof, and venue rules are verified.
+- [ ] Each channel serves the audience and has a measurable next action.
+- [ ] Outreach remains a draft and no engagement, reviews, or endorsements are fabricated.

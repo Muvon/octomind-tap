@@ -8,7 +8,8 @@ machine. Never commit credentials or machine-specific configuration.
 ## Repository structure
 
 ```text
-agents/<name>.toml               # Runnable agent manifests, one file per agent
+agents/<name>/config.toml        # Runnable agent manifest, one directory per agent
+agents/<name>/skills/<skill>/SKILL.md  # Owned skill: used by this agent only
 capabilities/<name>/            # Capability metadata and provider definitions
   config.toml                   # Auto-activation triggers and optional domains
   default.toml                  # Active provider, normally a relative symlink
@@ -16,14 +17,16 @@ capabilities/<name>/            # Capability metadata and provider definitions
 deps/<org>/<tool>.sh            # Idempotent macOS/Linux installer
 deps/<org>/<tool>.md            # Required companion documentation
 deps/lib/platform.sh            # Shared platform helpers; source, do not duplicate
-skills/<name>/SKILL.md          # AgentSkills instruction pack
+skills/<skill>/SKILL.md         # Shared skill: used by two or more agents
 workflows/<name>.toml           # External multi-step workflow
 templates/                      # Canonical starting points for new artifacts
 scripts/check.sh                # Repository validation entrypoint
 ```
 
-Keep agents directly in `agents/` (no subdirectories, no symlinks) and skills no
-deeper than `skills/<name>/SKILL.md`.
+Keep only agent directories in `agents/`, with no symlinks. An agent directory
+holds only `config.toml` and `skills/`. A skill sits at
+`agents/<agent>/skills/<skill>/SKILL.md` or `skills/<skill>/SKILL.md`, and its
+name exists once in the tap.
 
 ## Working protocol
 
@@ -44,12 +47,12 @@ unless the user explicitly asks.
 Location:
 
 ```text
-agents/<name>.toml
+agents/<name>/config.toml
 ```
 
-The file name defines the runtime tag `<name>`: lowercase letters, digits, and
+The directory name defines the runtime tag `<name>`: lowercase letters, digits, and
 hyphens, starting with a letter, with no `:`. `octomind run <name>` starts the
-agent. The `# Agent: <name>` header comment must equal the file name. Each
+agent. The `# Agent: <name>` header comment must equal the directory name. Each
 manifest requires a top-level `capabilities = [...]` array followed by exactly
 one `[[roles]]`. Do not set `name`; Octomind injects it from the tag.
 
@@ -65,7 +68,7 @@ never be the agent's own name, and agents that list each other must not form a
 loop. An agent with the header needs `orchestration`.
 
 ```toml
-# agents/marketer.toml
+# agents/marketer/config.toml
 # Uses: writer, seo
 ```
 
@@ -211,8 +214,14 @@ sections. Plain dependency documentation requires `Key Commands` and
 
 ## Skills
 
-Skills live at `skills/<name>/SKILL.md`. The directory and frontmatter `name`
-must match and use lowercase letters, digits, and hyphens.
+A skill used by one agent is an owned skill. It lives at
+`agents/<agent>/skills/<skill>/SKILL.md` and belongs to that agent by location,
+so its frontmatter has no `domains` line. A skill used by two or more agents is
+a shared skill. It lives at `skills/<skill>/SKILL.md` and its `domains` line
+lists those agents. A shared skill without `domains` loads only by hand or from
+a workflow step. The directory and frontmatter `name` must match and use
+lowercase letters, digits, and hyphens. Skills are addressed by bare name, so a
+name exists once in the tap.
 
 Required frontmatter:
 
@@ -226,9 +235,11 @@ license: MIT
 ```
 
 Optional `capabilities`, `domains`, `allowed-tools`, and activation `rules`
-may follow. Each `domains` entry is the name of an agent in `agents/`; the
-skill auto-activates only for those agents. Keep skills tied to the agents they
-serve and do not mention other agents in the body. Their recommended body order is:
+may follow. Each `domains` entry is the name of an agent in `agents/`, and a shared skill
+names at least two; a skill bound to one agent moves under that agent. A skill
+auto-activates only for the agent that owns it or the agents in its `domains`.
+Keep skills tied to the agents they serve and do not mention other agents in
+the body. Their recommended body order is:
 
 ```text
 Overview → Mental model → Rules → Examples → Checklist → Composition / References
@@ -266,12 +277,13 @@ Ensure the key exactly matches the variable read by the child process.
 
 ## Validation checklist
 
-- [ ] Agent file names match their `# Agent: <name>` headers.
+- [ ] Agent directory names match their `# Agent: <name>` headers, and each directory holds only `config.toml` and `skills/`.
 - [ ] Every agent has capabilities and exactly one complete role.
 - [ ] Agent system prompts use canonical XML ordering and stable contents.
 - [ ] Every bare capability exists locally with `default.toml`; community ones use `octomind/<name>`.
 - [ ] Every capability dependency has a matching shell script and document.
-- [ ] Every skill directory matches its frontmatter name.
+- [ ] Every skill directory matches its frontmatter name, and no skill name appears twice.
+- [ ] Owned skills have no `domains` line; shared skills list two or more agents.
 - [ ] Every workflow parses and references intentional roles.
 - [ ] No secret or populated `.env` is committed.
 - [ ] `bash scripts/check.sh` passes.

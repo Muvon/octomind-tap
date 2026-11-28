@@ -1,0 +1,76 @@
+---
+name: cover-letter
+title: "How to Write a Cover Letter: Truthful, Tailored Drafts"
+description: "Write a truthful cover letter tailored to the posting and grounded in the candidate's real experience, without AI-template phrasing. Use when applying."
+license: Apache-2.0
+compatibility: "No external tools required. Works from a resume plus a job posting (file, URL text, or pasted)."
+rules:
+  - match(\bcover letter\b)
+  - match(\bmotivation letter\b)
+  - match(\bwrite\s+(a|my|the)\s+cover letter\b)
+  - semantic(write a cover letter for this job, 0.74)
+  - semantic(make my cover letter less generic)
+---
+
+## Overview
+
+A cover letter's job is to connect the candidate's real, specific experience to this specific role and company in a way a busy hiring manager grasps in a skim. Most cover letters fail by being generic — interchangeable praise that could be sent to any company — or by restating the resume. This skill encodes how to write one that earns its read.
+
+Every claim traces to the candidate's actual background. A cover letter that invents enthusiasm, achievements, or fit is worse than none.
+
+## Mental model
+
+Generative AI made fluent, well-aligned letters free, so fluency no longer signals anything. On a large online labour platform, after an AI cover-letter tool launched, the link between letter-to-job alignment and callbacks fell by about half and employers shifted weight to work history; time spent editing the AI draft still predicted hiring (Cui, Dias & Ye, 2025). What still carries signal is what a generic draft can't produce: verifiable specifics about this candidate and this company.
+
+## Instructions
+
+### What a good cover letter does
+
+- Opens with a specific hook — a real reason this candidate fits this role, or a genuine connection to the company's work — not "I am writing to apply for the position of…".
+- Proves fit with 2–3 concrete, quantified achievements from the candidate's real experience that map to the posting's top requirements, framed as "here is the problem I solved" not "I have skill X".
+- Shows it is for THIS company: reference something specific and true — the product, a stated challenge, the team's domain — that could not be copy-pasted to a competitor.
+- Closes with a confident, low-pressure call to action.
+
+### Structure
+
+- Length: 3–4 short paragraphs, roughly 250–400 words, one page maximum. Hiring managers skim; density loses them.
+- Hook paragraph: the specific fit or connection.
+- Body (1–2 paragraphs): the mapped achievements, each tied to a posting requirement.
+- Close: enthusiasm that is specific, plus the call to action.
+- Salutation: a named person when discoverable; a role-specific greeting ("Dear Hiring Team for the X role") over "To Whom It May Concern".
+
+### Grounding and honesty
+
+- Pull every achievement, number, and skill from the candidate's resume or their confirmed input. No invented projects, metrics, or motivations.
+- The enthusiasm must be real and specific — a fabricated "I've always admired your mission" reads as filler. If there is no genuine specific hook, use a truthful competence-based one instead.
+- If the candidate is missing a stated requirement, do not paper over it with bravado. Lead with genuine strengths; a stretch application can acknowledge the gap briefly and pivot to adjacent, real experience.
+
+### Avoid the AI-template tells
+
+Generic cover letters read as mass-produced. Apply content-voice's rules: no dead phrases ("I am excited to apply", "proven track record", "team player", "hit the ground running", "align with your values"), vary sentence rhythm, use contractions, sound like a specific person. Strip anything that could belong in any other candidate's letter to any other company. If a sentence survives find-and-replace of the company name into a competitor's, it is too generic — rewrite it.
+
+### Locale
+
+Match the target market: the letter language follows the posting, formality follows the market (more formal in DE/FR/JP, warmer and more direct in the US), and the greeting/sign-off use local convention. Hand non-English letters to the localization path for native fluency.
+
+### When the letter is optional
+
+If the posting marks it optional or the form has no field, a short letter (or a 3–4 sentence note in the application's message box) is still worth sending for a role the candidate really wants or a career change that the resume alone doesn't explain. Skip it for high-volume, knockout-driven applications rather than send a generic one.
+
+## Examples
+
+Generic open (discard pile): "I am writing to express my strong interest in the Senior Engineer position at your company. I am a passionate team player with a proven track record."
+
+Specific open (grounded, human): "I spent the last two years cutting a data pipeline's cost by 60% at 3B events/day — which is the exact scaling problem your engineering blog described last month. That's why the Senior Data Engineer role caught my eye."
+
+## Checklist
+
+- [ ] Every achievement, number, and skill traces to the resume or the candidate's confirmed input.
+- [ ] The hook names something specific and true about this company or role.
+- [ ] 2–3 achievements, each mapped to a top posting requirement.
+- [ ] Swap the company name for a competitor's: if a sentence still works, it's rewritten.
+- [ ] No template phrases; 250–400 words; local greeting and formality.
+
+## References
+
+- [Cui, Dias & Ye — Signaling in the Age of AI: Evidence from Cover Letters (arXiv 2025)](https://arxiv.org/abs/2509.25054)

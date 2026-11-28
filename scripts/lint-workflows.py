@@ -1,5 +1,7 @@
 import sys, pathlib, re
 
+import tap_paths
+
 try:
     import tomllib
 except ImportError:
@@ -82,9 +84,12 @@ for n in all_names:
     seen.add(n)
 
 
-def skill_domains(skill_file):
-    """Agent names in the `domains:` line of the SKILL.md frontmatter; empty when absent."""
-    lines = skill_file.read_text().splitlines()
+def skill_domains(skill_dir):
+    """Agents a skill is bound to: its owner by location, else the `domains:` line of its frontmatter (empty when manual-only)."""
+    owner = tap_paths.skill_owner(repo_root, skill_dir)
+    if owner:
+        return {owner}
+    lines = (skill_dir / "SKILL.md").read_text().splitlines()
     if not lines or lines[0].strip() != "---":
         return set()
     for line in lines[1:]:
@@ -106,17 +111,17 @@ for s in leaves:
     elif ":" in role or not role_re.match(role):
         errors.append(f"ROLE_FORMAT: step {sname!r} role {role!r} must be a flat agent name such as 'seo': tags are flat, no ':'")
     else:
-        agent_file = repo_root / "agents" / f"{role}.toml"
+        agent_file = repo_root / "agents" / role / tap_paths.AGENT_MANIFEST
         if not agent_file.is_file() or agent_file.is_symlink():
-            errors.append(f"ROLE_NOT_FOUND: step {sname!r} role {role!r} has no agents/{role}.toml")
+            errors.append(f"ROLE_NOT_FOUND: step {sname!r} role {role!r} has no agents/{role}/{tap_paths.AGENT_MANIFEST}")
     if "readonly" in s and not isinstance(s["readonly"], bool):
         errors.append(f"READONLY_INVALID: step {sname!r} readonly must be true or false, got {s['readonly']!r}")
     for skill in s.get("skills") or []:
-        skill_file = repo_root / "skills" / skill / "SKILL.md"
-        if not skill_file.is_file():
-            errors.append(f"SKILL_NOT_FOUND: step {sname!r} skill {skill!r} has no skills/{skill}/SKILL.md")
+        skill_dir = next((d for d in tap_paths.find_skill_dirs(repo_root, skill) if (d / "SKILL.md").is_file()), None)
+        if skill_dir is None:
+            errors.append(f"SKILL_NOT_FOUND: step {sname!r} skill {skill!r} has no SKILL.md in skills/{skill}/ or agents/<agent>/skills/{skill}/")
         elif role:
-            domains = skill_domains(skill_file)
+            domains = skill_domains(skill_dir)
             # A skill without domains is manual-only: any role may preload it.
             if domains and role not in domains:
                 errors.append(f"SKILL_DOMAIN_MISMATCH: step {sname!r} role {role!r} is not in the domains of skill {skill!r} ({' '.join(sorted(domains))})")

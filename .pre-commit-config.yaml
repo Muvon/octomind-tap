@@ -19,7 +19,7 @@ repos:
         language: script
         entry: scripts/lint-manifests.sh
         files: ^agents/.*\.toml$
-        pass_filenames: true
+        pass_filenames: false
 
       - id: lint-capabilities
         name: Lint capability definitions
@@ -32,7 +32,7 @@ repos:
         name: Lint skill definitions
         language: script
         entry: scripts/lint-skills.sh
-        files: ^skills/.*/SKILL\.md$
+        files: ^(skills|agents/[^/]+/skills)/.*/SKILL\.md$
         pass_filenames: false
 
       - id: lint-workflows

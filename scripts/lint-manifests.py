@@ -1,5 +1,7 @@
 import sys, pathlib, re, os
 
+import tap_paths
+
 try:
     import tomllib
 except ImportError:
@@ -32,7 +34,7 @@ def read_uses_header(text):
 
 
 def agent_exists(name, repo_root):
-    path = repo_root / "agents" / f"{name}.toml"
+    path = repo_root / "agents" / name / tap_paths.AGENT_MANIFEST
     return path.is_file() and not path.is_symlink()
 
 
@@ -41,10 +43,10 @@ def find_uses_cycle(start, repo_root):
     def walk(current, trail):
         if not agent_exists(current, repo_root):
             return None
-        entries = read_uses_header((repo_root / "agents" / f"{current}.toml").read_text()) or []
+        entries = read_uses_header((repo_root / "agents" / current / tap_paths.AGENT_MANIFEST).read_text()) or []
         if USES_ALL in entries:
             entries = [e for e in entries if e != USES_ALL] + sorted(
-                p.stem for p in (repo_root / "agents").glob("*.toml") if p.stem != current
+                p.parent.name for p in tap_paths.agent_manifests(repo_root) if p.parent.name != current
             )
         for entry in entries:
             if not re.fullmatch(AGENT_NAME_PATTERN, entry):
@@ -77,7 +79,7 @@ def check_uses_entries(entries, name, repo_root):
         if entry == name:
             problems.append(f"USES_INVALID: '{entry}' is the agent itself")
         elif entry != USES_ALL and not agent_exists(entry, repo_root):
-            problems.append(f"USES_UNKNOWN: agent '{entry}' has no agents/{entry}.toml")
+            problems.append(f"USES_UNKNOWN: agent '{entry}' has no agents/{entry}/{tap_paths.AGENT_MANIFEST}")
     if not problems:
         cycle = find_uses_cycle(name, repo_root)
         if cycle:
@@ -88,7 +90,7 @@ def check_uses_entries(entries, name, repo_root):
 
 path = pathlib.Path(sys.argv[1])
 repo_root = pathlib.Path(sys.argv[2])
-agent_name = path.stem
+agent_name = path.parent.name
 
 raw_text = path.read_text()
 
@@ -203,9 +205,9 @@ if system_content:
 # at runtime. Only the octomind agent works on the tap repo itself.
 prompt_text = f"{system_content}\n{role.get('welcome', '')}"
 if agent_name != "octomind":
-    tap_paths = re.findall(r'(?<![\w/.~-])(?:skills|capabilities|deps)/[^\s`\'")]+/[^\s`\'")]+', prompt_text)
-    if tap_paths:
-        errors.append(f"TAP_PATH_REF: '{tap_paths[0]}' is a tap-relative path — unreadable from the project workdir at runtime. Reference the skill by name instead.")
+    tap_path_refs = re.findall(r'(?<![\w/.~-])(?:skills|capabilities|deps)/[^\s`\'")]+/[^\s`\'")]+', prompt_text)
+    if tap_path_refs:
+        errors.append(f"TAP_PATH_REF: '{tap_path_refs[0]}' is a tap-relative path — unreadable from the project workdir at runtime. Reference the skill by name instead.")
 
 # Every `name` skill mention must resolve — a phantom name silently fails to load.
 # Placeholders such as `social-<platform>` are skipped.
@@ -213,8 +215,8 @@ for m in re.finditer(r'((?:`[a-z0-9<>-]+`(?:,\s*|\s+(?:and|or)\s+|\s+))+)skills?
     for skill_name in re.findall(r'`([^`]+)`', m.group(1)):
         if '<' in skill_name:
             continue
-        if not (repo_root / "skills" / skill_name / "SKILL.md").is_file():
-            errors.append(f"SKILL_REF_UNKNOWN: '{skill_name}' skill has no skills/{skill_name}/SKILL.md")
+        if not any((d / "SKILL.md").is_file() for d in tap_paths.find_skill_dirs(repo_root, skill_name)):
+            errors.append(f"SKILL_REF_UNKNOWN: '{skill_name}' skill has no SKILL.md in skills/{skill_name}/ or agents/<agent>/skills/{skill_name}/")
 
 # ── Agent header, delegation placeholders, and the '# Uses:' header ──────────
 header_lines = []
@@ -227,10 +229,10 @@ agent_headers = [l[len(AGENT_HEADER):].strip() for l in header_lines if l.starts
 if not agent_headers:
     errors.append(f"MISSING_AGENT_HEADER: '# Agent: {agent_name}' comment is required")
 elif agent_headers[0] != agent_name:
-    errors.append(f"AGENT_HEADER_MISMATCH: '# Agent: {agent_headers[0]}' must equal the file name '{agent_name}'")
+    errors.append(f"AGENT_HEADER_MISMATCH: '# Agent: {agent_headers[0]}' must equal the directory name '{agent_name}'")
 
 if not re.fullmatch(AGENT_NAME_PATTERN, agent_name):
-    errors.append(f"AGENT_NAME_INVALID: file name '{agent_name}' must match {AGENT_NAME_PATTERN} (lowercase letters, digits, hyphens; tags are flat, no ':')")
+    errors.append(f"AGENT_NAME_INVALID: directory name '{agent_name}' must match {AGENT_NAME_PATTERN} (lowercase letters, digits, hyphens; tags are flat, no ':')")
 
 if any(l.startswith("# Default:") for l in header_lines):
     errors.append("DEFAULT_HEADER_REMOVED: '# Default:' is not used — delete the header")

@@ -35,7 +35,7 @@ Users can override providers via `[capabilities]` in their config (e.g. `websear
 Use prefix naming to group related capabilities: `programming-python`, `programming-rust`, etc.
 
 ```
-agents/developer.toml
+agents/developer/config.toml
   └── capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "programming-rust"]
            │
            ▼
@@ -101,7 +101,7 @@ Capabilities are grouped by **who needs the tool**. Each tier is its own built-i
 
 **The rule — orchestration is for agents that intend to delegate.** An agent declares `core` + the tools its field needs. It declares `orchestration` only to start copies of itself (to scout or review read-only, or to split independent parts) or, for `assistant`, to hand tasks to other agents. Consult-style agents (a question in, an answer out) work in one session and do not declare it. `runtime` is declared only by `octomind`. This is enforced **structurally** — an undeclared tool is physically absent from the agent's context, not merely discouraged in the prompt. `tap`, `schedule` and `monitor` live on a separate built-in **`orchestration` server**, so an agent that declares `core` + `orchestration` resolves to `core:*` (`recall`) + `orchestration:*` (`tap`, `schedule`, `monitor`), while an agent that declares only `core` resolves to `core:*` (`recall`) alone — the orchestration server never enters its tool surface.
 
-Agents that carry `orchestration` are listed by `grep -l orchestration agents/*.toml`. Only `assistant` carries a `# Uses:` header (see [Agents, Skills, and Delegation](#agents-skills-and-delegation)).
+Agents that carry `orchestration` are listed by `grep -l orchestration agents/*/config.toml`. Only `assistant` carries a `# Uses:` header (see [Agents, Skills, and Delegation](#agents-skills-and-delegation)).
 
 > `orchestration` (and `runtime`) may still **auto-activate** on intent — e.g. a request that clearly needs delegation or a recurring loop — via `capabilities/orchestration/config.toml` triggers. Auto-activation is request-driven and temporary; it never becomes part of an agent's standing grant.
 
@@ -109,7 +109,7 @@ Agents that carry `orchestration` are listed by `grep -l orchestration agents/*.
 
 ## Agents, Skills, and Delegation
 
-The tap has one agent per field of work, plus two special ones. A field agent does that field's work itself: `developer`, `writer`, `lawyer`, `doctor`, `producer`, and so on. `assistant` is the global assistant that hands tasks across fields. `plain` is a baseline with a one-line system prompt and no persona, used for prompt testing. Each agent is one manifest, `agents/<name>.toml`, and its tag is the file name. A tag has no `:`. An agent's prompt is short: role, scope, the common working method, guards and output conventions.
+The tap has one agent per field of work, plus two special ones. A field agent does that field's work itself: `developer`, `writer`, `lawyer`, `doctor`, `producer`, and so on. `assistant` is the global assistant that hands tasks across fields. `plain` is a baseline with a one-line system prompt and no persona, used for prompt testing. Each agent is a directory `agents/<name>/` holding one manifest, `config.toml`, and its own skills under `skills/`. Its tag is the directory name. A tag has no `:`. An agent's prompt is short: role, scope, the common working method, guards and output conventions.
 
 | Command | Runs |
 |---------|------|
@@ -117,7 +117,7 @@ The tap has one agent per field of work, plus two special ones. A field agent do
 | `octomind run developer` | the `developer` agent |
 | `octomind run <name> --readonly` | that agent in a read-only session (see below) |
 
-A role in the user's local Octomind config with the same name as a tap agent takes priority over the tap agent. A tag written with `:` is an error that shows the flat form.
+A role in the user's local Octomind config with the same name as a tap agent takes priority over the tap agent. A tag written with `:` is an error that shows the correct form, the bare agent name.
 
 ```mermaid
 flowchart TD
@@ -139,7 +139,7 @@ flowchart TD
 
 ### Skills carry the specialties
 
-Each specialty procedure (QA test planning, contract review for one jurisdiction, lifecycle email) is a skill at `skills/<name>/SKILL.md`, bound to an agent by `domains: <agent name>`. A skill loads in four ways:
+Each specialty procedure (QA test planning, contract review for one jurisdiction, lifecycle email) is a skill. A skill used by one agent is an owned skill: it sits at `agents/<agent>/skills/<skill>/SKILL.md` and is bound to that agent by its location, so its frontmatter has no `domains:` line. A skill used by two or more agents is a shared skill: it sits at `skills/<skill>/SKILL.md` and lists those agents in `domains:`. A skill with no `domains:` is shared and is never loaded automatically. A skill is addressed by its bare name everywhere, so a skill name exists once in the tap. A skill loads in four ways:
 
 - automatically, when the user's message matches its `rules:`;
 - from a workflow step that lists it in `skills = [...]`;
@@ -159,7 +159,7 @@ An agent that declares the `orchestration` capability can delegate with the `tap
 - Matching. `tap` matches a task to an agent by comparing the brief with each reachable agent's `# Title:` and `# Description:`, so those headers must say the kind of work and the deliverable in the words a task brief would use.
 
 ```toml
-# agents/assistant.toml
+# agents/assistant/config.toml
 # Uses: *
 ```
 
@@ -194,22 +194,26 @@ In the user's Octomind config, `[taps]` sets the model for one agent:
 
 | Code | Fails when |
 |------|------------|
-| `AGENT_PATH` | the manifest is not at `agents/<name>.toml` |
-| `AGENT_SUBDIR` | `agents/` contains a subdirectory |
-| `AGENT_SYMLINK` | an agent file is a symlink |
-| `AGENT_NAME_INVALID` | the file name does not start with a lowercase letter or is not lowercase letters, digits and hyphens (no `:`) |
+| `AGENT_PATH` | the manifest is not at `agents/<name>/config.toml` |
+| `AGENT_FLAT_FILE` | a `<name>.toml` file sits directly under `agents/`; the manifest belongs at `agents/<name>/config.toml` |
+| `AGENT_STRAY_FILE` | a file that is not a `.toml` manifest sits directly under `agents/`; only agent directories belong there |
+| `AGENT_NO_MANIFEST` | an agent directory has no `config.toml` |
+| `AGENT_DIR_ENTRY` | an agent directory holds something besides `config.toml` and `skills/`, or `skills` is not a directory |
+| `AGENT_SYMLINK` | an agent file or directory is a symlink |
+| `AGENT_NAME_INVALID` | the directory name does not start with a lowercase letter or is not lowercase letters, digits and hyphens (no `:`) |
 | `MISSING_AGENT_HEADER` | the `# Agent: <name>` header is missing |
-| `AGENT_HEADER_MISMATCH` | the `# Agent:` header differs from the file name |
+| `AGENT_HEADER_MISMATCH` | the `# Agent:` header differs from the directory name |
 | `DEFAULT_HEADER_REMOVED` | a manifest carries a `# Default:` header comment |
 | `SPECIALISTS_REMOVED` | `{{SPECIALISTS}}` appears in `system` |
 | `USES_PLACEHOLDER_REMOVED` | `{{USES}}` appears in `system` |
 | `DOMAINS_REMOVED` | `{{DOMAINS}}` appears in `system` |
 | `USES_INVALID` | a `# Uses:` entry is empty, malformed, repeated, or the agent itself |
-| `USES_UNKNOWN` | a `# Uses:` entry has no `agents/<name>.toml` |
+| `USES_UNKNOWN` | a `# Uses:` entry has no `agents/<name>/config.toml` |
+| `SKILL_REF_UNKNOWN` | a prompt names a skill that has no `SKILL.md` in `skills/<name>/` or `agents/<agent>/skills/<name>/` |
 | `USES_CYCLE` | agents use each other in a loop; the message shows the loop |
 | `USES_NO_ORCHESTRATION` | an agent with a `# Uses:` header does not declare `orchestration` |
 
-`lint-skills` fails with `DOMAIN_UNKNOWN` when a skill's `domains:` entry is not an agent name. `lint-workflows` fails with `ROLE_FORMAT` when a step `role` contains `:`, and with `ROLE_NOT_FOUND` when it names no agent. It fails with `SKILL_NOT_FOUND` when a step preloads a skill that has no `SKILL.md`, and with `SKILL_DOMAIN_MISMATCH` when the skill's `domains:` does not include the step's `role` (a skill without `domains:` may be preloaded by any role). `lint-workflows` also fails with `READONLY_INVALID` when a step sets `readonly` to anything but `true` or `false`; `readonly = true` starts that step's agent with `--readonly`.
+`lint-skills` fails with `DOMAIN_UNKNOWN` when a skill's `domains:` entry is not an agent name, with `OWNED_SKILL_HAS_DOMAINS` when a skill under `agents/<agent>/skills/` has a `domains:` line, with `SHARED_SKILL_SINGLE_DOMAIN` when a skill in `skills/` is bound to only one agent (move it under that agent), and with `SKILL_NAME_DUPLICATE` when one skill name exists in more than one place. `lint-workflows` fails with `ROLE_FORMAT` when a step `role` contains `:`, and with `ROLE_NOT_FOUND` when it names no agent. It fails with `SKILL_NOT_FOUND` when a step preloads a skill that has no `SKILL.md`, and with `SKILL_DOMAIN_MISMATCH` when the step's `role` is not an agent the skill is bound to (the owner of an owned skill, or the `domains:` of a shared skill; a shared skill without `domains:` may be preloaded by any role). `lint-workflows` also fails with `READONLY_INVALID` when a step sets `readonly` to anything but `true` or `false`; `readonly = true` starts that step's agent with `--readonly`.
 
 ---
 
@@ -245,9 +249,9 @@ args = ["mcp"]
 2. **Never write `[roles.mcp]`** in an agent — injected by `bin/load` from capabilities.
 3. **Never write `[deps]`** in an agent — deps belong in capability files only.
 4. **Never write `[[mcp.servers]]`** in an agent — MCP servers belong in capability files.
-5. **Never set `name`** in `[[roles]]` — injected from the file name at runtime.
+5. **Never set `name`** in `[[roles]]` — injected from the directory name at runtime.
 6. **One `[[roles]]` per file** — no multi-role manifests.
-7. **File path is `agents/<name>.toml`** — directly under `agents/`, no subdirectories, no symlinks; the `# Agent:` header equals the file name; the name has no `:`.
+7. **File path is `agents/<name>/config.toml`** — no symlinks, no other files directly under `agents/`, and nothing in the agent directory but `config.toml` and `skills/`; the `# Agent:` header equals the directory name; the name has no `:`.
 8. **A `# Uses:` header needs `orchestration`** — an agent that lists other agents declares the capability that lets it delegate.
 
 ---
@@ -286,7 +290,7 @@ To add an alternative provider to an existing capability:
 
 `bin/load <name>` (Python 3, no external deps):
 
-1. Reads `agents/<name>.toml`
+1. Reads `agents/<name>/config.toml`
 2. Extracts `capabilities = [...]`
 3. For each capability, loads `capabilities/<name>/default.toml` (users switch providers in their own `[capabilities]` config, which `bin/load` does not read)
 4. Merges: `[deps].require`, `server_refs`, `allowed_tools`, `[[mcp.servers]]` (deduplicated by name)
@@ -298,19 +302,21 @@ To add an alternative provider to an existing capability:
 
 ## Skills
 
-Skills are reusable instruction packs stored alongside agents in the tap. They follow the [AgentSkills specification](https://agentskills.io/specification).
+Skills are reusable instruction packs stored in the tap. They follow the [AgentSkills specification](https://agentskills.io/specification).
 
 ### Directory layout
 
 ```
-skills/
-  <skill-name>/
-    SKILL.md        # Required: YAML frontmatter + instruction body
-    validate        # Optional: executable script — validates LLM output quality
-    scripts/        # Optional: executable scripts the skill references
-    references/     # Optional: supplementary docs (REFERENCE.md, etc.)
-    assets/         # Optional: templates, config files, resources
+agents/<agent>/skills/<skill-name>/   # owned skill: used by this agent only
+skills/<skill-name>/                  # shared skill: used by two or more agents, or loaded by hand only
+  SKILL.md        # Required: YAML frontmatter + instruction body
+  validate        # Optional: executable script — validates LLM output quality
+  scripts/        # Optional: executable scripts the skill references
+  references/     # Optional: supplementary docs (REFERENCE.md, etc.)
+  assets/         # Optional: templates, config files, resources
 ```
+
+To place a new skill: one agent uses it, so it goes under that agent; two or more agents use it, so it goes in `skills/` with `domains:`. The skill directory holds the same files in either location.
 
 ### SKILL.md frontmatter
 
@@ -320,7 +326,7 @@ skills/
 | `title` | ✅ | 5–60 chars. Short human-readable label for the skill. |
 | `description` | ✅ | 20–1024 chars. What the skill does and when to use it. |
 | `capabilities` | optional | Capabilities to auto-load when skill activates. Space-delimited or array: `versioning memory-read` or `["versioning", "memory-read"]`. Names must match `capabilities/<name>/` directories. |
-| `domains` | optional | Names of the agents the skill is bound to — each value must exactly match an existing `agents/<name>.toml` (runtime compares against the running agent's name). Space-delimited or array. Without this, skill is manual-only. |
+| `domains` | shared skills only | Names of two or more agents the skill is bound to — each value must exactly match an existing `agents/<name>/config.toml` (runtime compares against the running agent's name). Space-delimited or array. A shared skill without it is manual-only. An owned skill must not set it: its location binds it. |
 | `rules` | optional | Auto-activation rules — list of expressions evaluated against the project and conversation. See [Auto-activation rules](#auto-activation-rules). |
 | `license` | optional | License name or path to bundled license file. |
 | `compatibility` | optional | Max 500 chars. Environment requirements (tools, OS, network). |
@@ -337,7 +343,7 @@ Comma-delimited skill names. Activated permanently, no rules evaluated.
 
 **Workflow step** — a step lists the skills it depends on with `skills = ["spec-authoring"]`; they load when the step starts.
 
-**Auto-activation** — skills with a `rules:` frontmatter field are automatically evaluated on conversation events. The system scans skills whose `domains` include the current agent's name, evaluates their rules, and activates matching skills. Already-active skills (including env-loaded) are skipped.
+**Auto-activation** — skills with a `rules:` frontmatter field are automatically evaluated on conversation events. The system scans the skills the current agent owns and the shared skills whose `domains` include its name, evaluates their rules, and activates matching skills. Already-active skills (including env-loaded) are skipped.
 
 **Manual activation** — the AI calls the `skill` MCP tool or user runs `/skill` command:
 
@@ -392,7 +398,7 @@ Skills without `rules:` are manual-only — they never auto-activate.
 
 ### validate script
 
-An executable file at `skills/<name>/validate`. Checks LLM output quality deterministically.
+An executable file named `validate` in the skill directory, next to `SKILL.md`. Checks LLM output quality deterministically.
 
 - `argv[1]` = event type: `user` | `assistant` | `turn`
 - `stdin` = event content (user message, assistant response, or turn summary with tool names)
@@ -405,13 +411,13 @@ When a skill declares `capabilities: versioning memory-read`, activating the ski
 
 ### Agent binding
 
-The `domains` field limits auto-activation to the named agents:
+An owned skill belongs to the agent whose directory holds it and sets no `domains:` line. A shared skill's `domains` field limits auto-activation to the named agents:
 
 ```yaml
 domains: developer devops
 ```
 
-Matching is an exact comparison against the running agent's name: `developer` matches `agents/developer.toml`. A value that is not an existing agent name silently never matches — the skill will never auto-activate (`DOMAIN_UNKNOWN` in the lint). Skills without `domains` are manual-only.
+Matching is an exact comparison against the running agent's name: `developer` matches `agents/developer/config.toml`. A value that is not an existing agent name silently never matches — the skill will never auto-activate (`DOMAIN_UNKNOWN` in the lint). Shared skills without `domains` are manual-only.
 
 ### Validation
 
@@ -419,15 +425,16 @@ Matching is an exact comparison against the running agent's name: `developer` ma
 # Lint all skills
 bash scripts/lint-skills.sh
 
-# Lint a specific skill
-bash scripts/lint-skills.sh skills/git-workflow
+# Lint specific skills, shared or owned
+bash scripts/lint-skills.sh skills/git-workflow agents/developer/skills/spec-authoring
 ```
 
 The lint script validates:
 - Valid YAML frontmatter (delimited by `---`)
 - Required fields: `name`, `title`, `description`
 - `name` format and length constraints
-- `name` matches directory name
+- `name` matches directory name and exists once in the tap
+- an owned skill has no `domains:`; a shared skill's `domains:` lists two or more agents
 - `title` length (5–60 chars)
 - `description` length (20–1024 chars) and `compatibility` length limits
 - Non-empty body after frontmatter
@@ -440,7 +447,7 @@ Skills and agents serve different purposes:
 
 | | Skill | Agent |
 |---|---|---|
-| **File** | `skills/<name>/SKILL.md` | `agents/<name>.toml` |
+| **File** | `agents/<agent>/skills/<name>/SKILL.md` or `skills/<name>/SKILL.md` | `agents/<name>/config.toml` |
 | **Activation** | Manual via `skill` tool, or auto via `rules:` frontmatter field | `octomind run <name>` |
 | **What it provides** | Domain knowledge + capabilities + validation | Full role: model, tools, system prompt |
 | **Composable** | Yes — multiple skills per session | No — one role per session |
@@ -450,7 +457,7 @@ Skills and agents serve different purposes:
 
 Keep a role focused on a recognizable deliverable, its authority to act, and its baseline capabilities. Put reusable procedures, decision rules, examples, and output constraints in focused skills. Use a workflow to bind the input, skills, output, and checks for a repeatable job. Declare the required skills in the workflow step's `skills` field so activation has an explicit input.
 
-Describe the work in the role prompt and put optional skill discovery in agent-bound frontmatter with task-specific descriptions and activation rules. Keep the role's essential output and permission checks in the prompt so a direct run remains useful when discovery abstains or is disabled. Mention an exact skill name in the prompt when the skill itself is the subject of the work or when an exact manual reference is part of the role's contract. Keep workflow skill dependencies in `skills`.
+Describe the work in the role prompt and put optional skill discovery in the skill frontmatter, bound to the agent by location or `domains:`, with task-specific descriptions and activation rules. Keep the role's essential output and permission checks in the prompt so a direct run remains useful when discovery abstains or is disabled. Mention an exact skill name in the prompt when the skill itself is the subject of the work or when an exact manual reference is part of the role's contract. Keep workflow skill dependencies in `skills`.
 
 Before adding an agent, compare its authority, deliverables, callers, and behavior when no skill activates with those of an existing agent plus a skill. Name workflow roles and routing declarations by agent name. Check near-miss and unrelated inputs alongside intended activations. SkillRet finds that retrieval completeness drops as the number of required skills rises on its benchmark. Keep activation narrow and measure each required procedure's availability on representative tap tasks. [SkillRet, §5.3](https://arxiv.org/html/2605.05726v3#S5.SS3)
 
@@ -468,9 +475,9 @@ Controlled enterprise SOP experiments show sensitivity to missing decision conte
 
 ### Agent Binding (skills do not reach across agents)
 
-A skill belongs to the agent named in its `domains:` field and stays inside that agent's field. Concretely:
+A skill belongs to the agent that holds it, or to the agents named in the `domains:` field of a shared skill, and stays inside that agent's field. Concretely:
 
-- **`domains:` is single-valued where possible.** `domains: marketer writer founder` couples one skill to three agents and is almost always wrong — pick the agent that owns this skill's deliverable.
+- **A skill one agent uses lives under that agent.** A shared skill binds two or more agents with `domains:`; a shared skill that names one agent fails the lint. `domains: marketer writer founder` couples one skill to three agents and is almost always wrong — give the skill to the agent that owns its deliverable, unless the agents really apply the same procedure.
 - **`compatibility:` describes environment only.** Tools, OS, network requirements. Not "Pairs with X agent" — pairing is the delegating agent's responsibility.
 - **The body does not name other agents.** If the work needs to continue elsewhere, describe it as a downstream concern owned by another field — without pinning a specific agent.
 
@@ -534,7 +541,7 @@ All agents and capabilities require `# Title:` and `# Description:` comment line
 ## Canonical Manifest Template
 
 ```toml
-# agents/<name>.toml
+# agents/<name>/config.toml
 # Agent: <name>
 # Title: Short Agent Title
 # Description: What this agent does, in 120–155 characters.

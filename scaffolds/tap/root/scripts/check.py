@@ -15,6 +15,7 @@ except ModuleNotFoundError:  # pragma: no cover - Python 3.11+ is the contract
     raise SystemExit(2)
 
 AGENT_NAME = re.compile(r"[a-z][a-z0-9-]*")
+AGENT_MANIFEST = "config.toml"
 AGENT_HEADER = "# Agent:"
 ORCHESTRATION_CAPABILITY = "orchestration"
 SPECIALISTS_PATTERN = re.compile(r"\{\{\s*SPECIALISTS\s*\}\}")
@@ -59,7 +60,7 @@ def read_uses_header(raw: str) -> list[str] | None:
 
 
 def agent_exists(name: str, root: Path) -> bool:
-    path = root / "agents" / f"{name}.toml"
+    path = root / "agents" / name / AGENT_MANIFEST
     return path.is_file() and not path.is_symlink()
 
 
@@ -69,12 +70,12 @@ def find_uses_cycle(start: str, root: Path) -> list[str] | None:
     def walk(current: str, trail: list[str]) -> list[str] | None:
         if not agent_exists(current, root):
             return None
-        text = (root / "agents" / f"{current}.toml").read_text(encoding="utf-8")
+        text = (root / "agents" / current / AGENT_MANIFEST).read_text(encoding="utf-8")
         entries = []
         for entry in read_uses_header(text) or []:
             if entry == USES_ALL:
                 # '*' reaches every other agent, so it can close a loop like any named entry.
-                entries.extend(sorted(path.stem for path in (root / "agents").glob("*.toml") if path.stem != current))
+                entries.extend(sorted(path.parent.name for path in (root / "agents").glob(f"*/{AGENT_MANIFEST}") if path.parent.name != current))
             else:
                 entries.append(entry)
         for entry in entries:
@@ -109,7 +110,7 @@ def check_uses_entries(entries: list[str], name: str, root: Path) -> list[str]:
         if entry == name:
             problems.append(f"USES_INVALID: '{entry}' is the agent itself")
         elif entry != USES_ALL and not agent_exists(entry, root):
-            problems.append(f"USES_UNKNOWN: agent '{entry}' has no agents/{entry}.toml")
+            problems.append(f"USES_UNKNOWN: agent '{entry}' has no agents/{entry}/{AGENT_MANIFEST}")
     if not problems:
         cycle = find_uses_cycle(name, root)
         if cycle:
@@ -118,12 +119,12 @@ def check_uses_entries(entries: list[str], name: str, root: Path) -> list[str]:
 
 
 def validate_agent(path: Path, root: Path, errors: list[str]) -> None:
-    agent_name = path.stem
-    if path.parent != root / "agents":
-        errors.append(f"{path}: AGENT_PATH: agents must be agents/<name>.toml")
+    agent_name = path.parent.name
+    if path.parent.parent != root / "agents" or path.name != AGENT_MANIFEST:
+        errors.append(f"{path}: AGENT_PATH: agents must be agents/<name>/{AGENT_MANIFEST}")
     # An unrendered starter keeps its render token as the name; unresolved tokens are reported separately.
     if not AGENT_NAME.fullmatch(agent_name) and not RENDER_TOKEN.fullmatch(agent_name):
-        errors.append(f"{path}: AGENT_NAME_INVALID: file name '{agent_name}' must match {AGENT_NAME.pattern} (tags are flat, no ':')")
+        errors.append(f"{path}: AGENT_NAME_INVALID: directory name '{agent_name}' must match {AGENT_NAME.pattern} (tags are flat, no ':')")
 
     raw = path.read_text(encoding="utf-8")
     data = parse_toml(path, errors)
@@ -145,7 +146,7 @@ def validate_agent(path: Path, root: Path, errors: list[str]) -> None:
     if not agent_headers:
         errors.append(f"{path}: MISSING_AGENT_HEADER: '# Agent: {agent_name}' comment is required")
     elif agent_headers[0] != agent_name:
-        errors.append(f"{path}: AGENT_HEADER_MISMATCH: '# Agent: {agent_headers[0]}' must equal the file name '{agent_name}'")
+        errors.append(f"{path}: AGENT_HEADER_MISMATCH: '# Agent: {agent_headers[0]}' must equal the directory name '{agent_name}'")
     if any(line.startswith("# Default:") for line in header_lines):
         errors.append(f"{path}: DEFAULT_HEADER_REMOVED: '# Default:' is not used; delete the header")
 
@@ -258,7 +259,18 @@ def validate_capability(cap_dir: Path, root: Path, errors: list[str]) -> None:
             errors.append(f"{default}: dependency '{dependency}' has no {document.relative_to(root)}")
 
 
-def validate_skill(path: Path, errors: list[str]) -> None:
+def validate_agent_dir(agent_dir: Path, root: Path, errors: list[str]) -> None:
+    manifest = agent_dir / AGENT_MANIFEST
+    if not manifest.is_file():
+        errors.append(f"{agent_dir}: AGENT_NO_MANIFEST: agent directory has no {AGENT_MANIFEST}")
+    for entry in sorted(agent_dir.iterdir()):
+        if entry.name not in (AGENT_MANIFEST, "skills"):
+            errors.append(f"{entry}: AGENT_DIR_ENTRY: an agent directory holds only {AGENT_MANIFEST} and skills/")
+    if manifest.is_file():
+        validate_agent(manifest, root, errors)
+
+
+def validate_skill(path: Path, root: Path, errors: list[str]) -> None:
     raw = path.read_text(encoding="utf-8")
     match = re.match(r"^---\s*\n(.*?)\n---\s*\n(.*)$", raw, re.DOTALL)
     if not match:
@@ -277,6 +289,12 @@ def validate_skill(path: Path, errors: list[str]) -> None:
         errors.append(f"{path}: frontmatter name must match directory '{path.parent.name}'")
     if "**" in body:
         errors.append(f"{path}: Markdown bold is not allowed in skill bodies")
+    relative = path.relative_to(root)
+    domains = fields.get("domains", "").strip("[]").replace(",", " ").split()
+    if relative.parts[0] == "agents" and domains:
+        errors.append(f"{path}: OWNED_SKILL_HAS_DOMAINS: belongs to agent '{relative.parts[1]}' by location; remove the domains line")
+    if relative.parts[0] == "skills" and len(domains) == 1:
+        errors.append(f"{path}: SHARED_SKILL_SINGLE_DOMAIN: bound only to '{domains[0]}'; move it to agents/{domains[0]}/skills/{path.parent.name}/ and remove the domains line")
 
 
 def validate_dep(path: Path, errors: list[str]) -> None:
@@ -319,15 +337,23 @@ def main() -> int:
     for path in sorted(agents_dir.iterdir() if agents_dir.is_dir() else []):
         if path.is_symlink():
             errors.append(f"{path}: AGENT_SYMLINK: agents are regular files, not symlinks")
-        elif path.is_dir():
-            errors.append(f"{path}: AGENT_SUBDIR: agents live directly in agents/<name>.toml, not in subdirectories")
-        elif path.suffix == ".toml":
-            validate_agent(path, root, errors)
+        elif path.is_file() and path.suffix == ".toml":
+            errors.append(f"{path}: AGENT_FLAT_FILE: flat manifest; move it to agents/{path.stem}/{AGENT_MANIFEST}")
+        elif path.is_file():
+            errors.append(f"{path}: AGENT_STRAY_FILE: agents are directories agents/<name>/")
+        else:
+            validate_agent_dir(path, root, errors)
     for cap_dir in sorted((root / "capabilities").iterdir() if (root / "capabilities").is_dir() else []):
         if cap_dir.is_dir():
             validate_capability(cap_dir, root, errors)
-    for path in sorted((root / "skills").glob("*/SKILL.md")):
-        validate_skill(path, errors)
+    skill_files = sorted((root / "skills").glob("*/SKILL.md")) + sorted(root.glob("agents/*/skills/*/SKILL.md"))
+    skill_locations: dict[str, list[Path]] = {}
+    for path in skill_files:
+        validate_skill(path, root, errors)
+        skill_locations.setdefault(path.parent.name, []).append(path)
+    for name, locations in sorted(skill_locations.items()):
+        if len(locations) > 1:
+            errors.append(f"{name}: SKILL_NAME_DUPLICATE: exists in {len(locations)} places; skills are addressed by bare name, so it must exist once")
     for path in sorted((root / "deps").glob("*/*.sh")):
         if path.parent.name != "lib":
             validate_dep(path, errors)
