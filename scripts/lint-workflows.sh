@@ -4,8 +4,8 @@
 #   1. Valid TOML; `name` matches the file stem; description 20–400 chars
 #   2. Comment metadata: # Title: (5–60 chars)
 #   3. Step names unique across steps and sub-steps; none named `input`
-#   4. Every sequential step / sub-step has a prompt and a role: the name of an
-#      agent that exists as agents/<name>/config.toml
+#   4. Every sequential step / sub-step has a prompt and a role: the name of a
+#      base agent that exists as agents/<name>/default.toml
 #   5. Every {{var}} is `input`, a step name, or an uppercase placeholder
 #   6. exit_when / condition / edge `when` set exactly one of contains|matches,
 #      and every `matches` regex compiles

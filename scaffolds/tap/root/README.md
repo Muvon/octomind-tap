@@ -31,11 +31,11 @@ bash scripts/check.sh
 
 | Path | Purpose |
 |------|---------|
-| `agents/<name>/config.toml` | Runnable agent manifests, one directory per agent |
-| `agents/<name>/skills/<skill>/SKILL.md` | Skills used by that agent only |
+| `agents/<ns>/default.toml` | Base agent of a namespace, tag `<ns>`; `agents/<ns>/<variant>.toml` adds a variant with the tag `<ns>:<variant>` |
+| `agents/<ns>/skills/<skill>/SKILL.md` | Skills used by that namespace: its base agent and every variant |
 | `capabilities/<name>/` | Tool and dependency providers used by agents and skills |
 | `deps/<org>/<tool>.sh` | Idempotent dependency installers and companion documentation |
-| `skills/<skill>/SKILL.md` | Skills shared by two or more agents, bound with `domains:` |
+| `skills/<skill>/SKILL.md` | Skills shared by two or more namespaces, bound with `domains:` |
 | `workflows/<name>.toml` | Multi-step pipelines run with `octomind workflow` |
 | `templates/` | Starting points for new tap artifacts |
 | `scripts/check.sh` | Local and CI validation entrypoint |
@@ -49,18 +49,18 @@ Create an agent:
 
 ```bash
 mkdir agents/<name>
-cp templates/agent.toml agents/<name>/config.toml
+cp templates/agent.toml agents/<name>/default.toml
 ```
 
-Create a skill that only that agent uses:
+Create a skill that only that namespace uses:
 
 ```bash
 mkdir -p agents/<name>/skills/release-process
 cp templates/skill.md agents/<name>/skills/release-process/SKILL.md
 ```
 
-A skill that two or more agents use goes in `skills/<skill>/SKILL.md` instead, with
-`domains:` naming those agents.
+A skill that two or more namespaces use goes in `skills/<skill>/SKILL.md` instead, with
+`domains:` naming those namespaces.
 
 For a capability, dependency installer, or workflow, start from the matching
 file under `templates/` and follow `AGENTS.md`.

@@ -5,8 +5,8 @@ Community-maintained registry of agent manifests, capability definitions, depend
 ## Project Structure
 
 ```
-agents/<name>/config.toml       # Agent manifest, one directory per field of work; the directory name is the agent name
-agents/<name>/skills/<skill>/SKILL.md  # Owned skill: used by this agent only, bound to it by location
+agents/<ns>/default.toml        # Base agent of the namespace <ns>, one directory per field of work; tag `<ns>`
+agents/<ns>/skills/<skill>/SKILL.md  # Owned skill: used by this namespace only, bound to it by location
 capabilities/<name>/
   config.toml                   # Capability metadata: triggers (+ optional domains gate)
   default.toml                  # Symlink → active provider (e.g. duckduckgo.toml)
@@ -31,7 +31,7 @@ CONTRIBUTING.md                 # Human contribution guide
 ## Commands
 
 ```bash
-bash scripts/lint-manifests.sh [agents/<name>/config.toml ...]     # lint agents
+bash scripts/lint-manifests.sh [agents/<name>/default.toml ...]     # lint agents
 bash scripts/lint-capabilities.sh [capabilities/<name> ...]        # lint capabilities
 bash scripts/lint-skills.sh [<skill dir> ...]                      # lint skills (shared or owned)
 bash scripts/lint-deps.sh [deps/<org>/<tool>.sh]                   # lint dep scripts + docs
@@ -60,7 +60,7 @@ cd model && uv sync && bin/train             # embedding model full pipeline (--
 
 | Task | Start here |
 |------|------------|
-| Add a new agent | Copy `templates/agent.toml` → `agents/<name>/config.toml`; spec: `skills/tap-agent-authoring/SKILL.md` |
+| Add a new agent | Copy `templates/agent.toml` → `agents/<name>/default.toml`; spec: `skills/tap-agent-authoring/SKILL.md` |
 | Add a new capability | Copy `templates/capability.toml` + `templates/capability-config.toml` → `capabilities/<name>/`; spec: `agents/octomind/skills/tap-capability-authoring/SKILL.md` |
 | Add a specialty to an agent | Add a skill (next row) under that agent; a new agent only for a new field of work |
 | Add a new skill | Copy `templates/skill.md` → `agents/<agent>/skills/<skill>/SKILL.md` when one agent uses it, or `skills/<skill>/SKILL.md` with `domains:` when two or more do; spec: `agents/octomind/skills/tap-skill-authoring/SKILL.md` |
@@ -71,7 +71,7 @@ cd model && uv sync && bin/train             # embedding model full pipeline (--
 | Train the embedding model | `model/README.md`; spec: `agents/octomind/skills/tap-model-training/SKILL.md` |
 | Resolve a manifest (debug) | `bin/load <name>` — merged TOML on stdout |
 | Platform helpers in dep scripts | `deps/lib/platform.sh` — source it, never re-implement |
-| Tap, workflow and config authoring | `agents/octomind/config.toml` — it operates on the tap itself |
+| Tap, workflow and config authoring | `agents/octomind/default.toml` — it operates on the tap itself |
 | Change what `octomind tap init` generates | `scaffolds/tap/` — edit `root/`, keep `scaffold.toml` and `scaffolds/tap/README.md` in sync |
 
 ## How Things Work
@@ -79,7 +79,8 @@ cd model && uv sync && bin/train             # embedding model full pipeline (--
 ### Agents, skills, and delegation
 
 - The tap has one agent per field of work (`developer`, `writer`, `lawyer`, `doctor`, `producer`, and so on), plus `assistant` (the global assistant) and `plain` (a baseline with a one-line system prompt and no persona, for prompt testing). An agent does its field's work itself. Its prompt is short: role, scope, the common working method, guards and output conventions.
-- Each specialty procedure (QA test planning, contract review for one jurisdiction, lifecycle email) is a skill. A skill used by one agent is an owned skill: it lives at `agents/<agent>/skills/<skill>/SKILL.md` and belongs to that agent by location, with no `domains:` line. A skill used by two or more agents is a shared skill: it lives at `skills/<skill>/SKILL.md` and lists those agents in `domains:`. A skill with no `domains:` is shared and loads only by hand or from a workflow step. A new subject or format is a new skill, not a new agent. A new agent needs a new field of work.
+- An agent tag is `<ns>` or `<ns>:<variant>`. The base agent of a namespace is `agents/<ns>/default.toml`; a variant is `agents/<ns>/<variant>.toml`. `<ns>:default` names the same agent as `<ns>`, and `<ns>` is its canonical form. This tap keeps one agent per field of work, so each `agents/<ns>/` holds only `default.toml` and `skills/`; a variant belongs in a private tap, which can add variants to a namespace. Workflows and `# Uses:` here name base agents.
+- Each specialty procedure (QA test planning, contract review for one jurisdiction, lifecycle email) is a skill. A skill used by one namespace is an owned skill: it lives at `agents/<ns>/skills/<skill>/SKILL.md` and belongs to that namespace by location, so the base agent and every variant get it, with no `domains:` line. A skill used by two or more namespaces is a shared skill: it lives at `skills/<skill>/SKILL.md` and lists those namespaces in `domains:`; the `domains` gate of a capability lists namespaces the same way. A skill with no `domains:` is shared and loads only by hand or from a workflow step. A new subject or format is a new skill, not a new agent. A new agent needs a new field of work.
 - A skill is addressed by its bare name in workflow steps, `OCTOMIND_SKILLS` and `/skill use`, so a skill name exists once in the tap, in one of the two locations.
 - A skill loads when the user's message matches its `rules:`, when a workflow step lists it in `skills = [...]`, when `OCTOMIND_SKILLS=a,b octomind run <name>` preloads it, or when `/skill use <name>` loads it by hand. Preload explicitly any skill a workflow step depends on.
 - A skill can bring tools with it: `capabilities:` in its frontmatter loads them on activation. A tool that only one specialty needs is declared by that skill, not by the agent.
@@ -146,10 +147,10 @@ tools = []
 
 | Field | Rule |
 |-------|------|
-| Header comments | `# Agent: <name>` (equals the directory name), `# Title:` (5–60 chars), `# Description:` (120–155 chars) — required, linted; no `# Default:` header exists |
+| Header comments | `# Agent: <ns>` (equals the directory name; a variant writes `<ns>:<variant>`), `# Title:` (5–60 chars), `# Description:` (120–155 chars) — required, linted; no `# Default:` header exists |
 | `capabilities = [...]` | Required at top level; drives everything |
 | `[[roles]]` | Exactly one entry |
-| `name` | Must NOT be set — injected at runtime from the directory name |
+| `name` | Must NOT be set — injected at runtime from the tag |
 | `system` | Required; XML-tagged blocks in canonical order (below); stable run-to-run for prompt caching |
 | `welcome` | Required; `{{CWD}}` and `{{DATE}}` allowed here only — they break caching if used in `system` |
 | `temperature` / `top_p` / `top_k` | Deprecated; octomind ignores them and sends no sampling parameters, so do not set them |
@@ -186,10 +187,10 @@ Reserve all-caps for one or two genuine safety hard-stops (e.g. `Never force-pus
 - Target 200–1000 words; beyond ~1500, context rot degrades recall
 - No tap-relative paths (`skills/…`, `capabilities/…`, `deps/…`) in `system` or `welcome` — agents run in the project workdir, not the tap checkout; name the skill instead (the `octomind` agent is exempt)
 - Every `` `name` skill `` mentioned must exist at `skills/<name>/SKILL.md` or `agents/<agent>/skills/<name>/SKILL.md` (`SKILL_REF_UNKNOWN`)
-- The manifest path is `agents/<name>/config.toml` and is not a symlink (`AGENT_PATH`, `AGENT_SYMLINK`); nothing but directories sits directly under `agents/` (`AGENT_FLAT_FILE` for a `<name>.toml` manifest, `AGENT_STRAY_FILE` for any other file); every agent directory has a `config.toml` (`AGENT_NO_MANIFEST`) and holds only `config.toml` and `skills/` (`AGENT_DIR_ENTRY`); the name starts with a lowercase letter and is lowercase letters, digits and hyphens, never a `:` (`AGENT_NAME_INVALID`); the `# Agent:` header equals the directory name (`MISSING_AGENT_HEADER`, `AGENT_HEADER_MISMATCH`)
+- The manifest path is `agents/<name>/default.toml` and is not a symlink (`AGENT_PATH`, `AGENT_SYMLINK`); nothing but directories sits directly under `agents/` (`AGENT_FLAT_FILE` for a `<name>.toml` manifest, `AGENT_STRAY_FILE` for any other file); every agent directory has a `default.toml` (`AGENT_NO_MANIFEST`); a variant file `agents/<ns>/<variant>.toml` fails because this tap keeps one agent per field of work and a variant belongs in a private tap (`AGENT_VARIANT`); the directory holds only `default.toml` and `skills/` (`AGENT_DIR_ENTRY`); the name starts with a lowercase letter and is lowercase letters, digits and hyphens (`AGENT_NAME_INVALID`); the `# Agent:` header equals the directory name (`MISSING_AGENT_HEADER`, `AGENT_HEADER_MISMATCH`)
 - No manifest carries a `# Default:` header (`DEFAULT_HEADER_REMOVED`)
 - `{{SPECIALISTS}}`, `{{USES}}` and `{{DOMAINS}}` are rejected in `system` (`SPECIALISTS_REMOVED`, `USES_PLACEHOLDER_REMOVED`, `DOMAINS_REMOVED`)
-- A `# Uses:` header lists `*` or existing agent names; entries are unique, not the agent itself (`USES_INVALID`, `USES_UNKNOWN`), and agents must not use each other in a loop (`USES_CYCLE`); an agent with the header declares `orchestration` (`USES_NO_ORCHESTRATION`)
+- A `# Uses:` header lists `*` or existing base agent names; entries are unique, not the agent itself (`USES_INVALID`, `USES_UNKNOWN`), and agents must not use each other in a loop (`USES_CYCLE`); an agent with the header declares `orchestration` (`USES_NO_ORCHESTRATION`)
 
 Full authoring spec, rationale, anti-patterns: `skills/tap-agent-authoring/SKILL.md`.
 
@@ -207,23 +208,23 @@ An agent declares `core` + the capabilities its field needs. `orchestration` is 
 
 ### Running and delegating
 
-The tag of an agent is its directory name, with no `:`.
+The tag of a base agent is its directory name, `<ns>`. A variant has the tag `<ns>:<variant>` and the file `agents/<ns>/<variant>.toml`; this tap has none.
 
 - `octomind run <name>` starts that agent. `octomind run` with no argument starts the config `default`, which is `assistant`.
 - A role in the user's local config with the same name as a tap agent takes priority over the tap agent.
-- A tag written with `:` is an error that shows the correct form, the bare agent name.
+- `octomind run <ns>:<variant>` starts a variant of the namespace; it works in a private tap that adds variants.
 - `octomind run <name> --readonly` starts a session that is offered and runs only tools whose MCP `readOnlyHint` annotation is true. A tool with no hint counts as mutable, and shell runners declare `readOnlyHint: false`, so a read-only session has no shell and cannot delegate.
 
-An agent that declares `orchestration` delegates with the `tap` tool. It can start copies of itself (`role` set to its own name, or no `role` when it has no `# Uses:` header). Each copy is a fresh session of the same agent. `readonly: true` starts a read-only copy that scouts before a large change or reviews finished work independently. Several writable copies can run at once for independent parts, each on its own files. A copy cannot start further copies.
+An agent that declares `orchestration` delegates with the `tap` tool. A base agent reaches its own variants without a header. It can start copies of itself (`role` set to its own tag, or no `role` when it has no `# Uses:` header). Each copy is a fresh session of the same agent. `readonly: true` starts a read-only copy that scouts before a large change or reviews finished work independently. Several writable copies can run at once for independent parts, each on its own files. A copy cannot start further copies.
 
-The `# Uses:` header is a comma-separated list of agent names, or `*` for every other agent. It sets which other agents this agent's `tap` runs can be matched to. `tap` matches a task to an agent by comparing the brief with each reachable agent's `# Title:` and `# Description:`, so those headers specify the work and deliverable. In this tap only `assistant` carries the header, as `# Uses: *`: it is the one agent that hands tasks across fields.
+The `# Uses:` header exists only on a base agent, and a variant has none. It is a comma-separated list of `<ns>`, `<ns>:<variant>` or `*` for every other agent. It sets which other agents this agent's `tap` runs can be matched to. `tap` matches a task to an agent by comparing the brief with each reachable agent's `# Title:` and `# Description:`, so those headers specify the work and deliverable. In this tap only `assistant` carries the header, as `# Uses: *`: it is the one agent that hands tasks across fields.
 
 ```toml
-# agents/assistant/config.toml
+# agents/assistant/default.toml
 # Uses: *
 ```
 
-The placeholders `{{SPECIALISTS}}`, `{{USES}}` and `{{DOMAINS}}` in `system` are not expanded, and the lint rejects them. Detail: `ARCHITECTURE.md`, "Agents, Skills, and Delegation". `octomind tap init` generates the starter agent at `agents/<name>/config.toml`.
+The placeholders `{{SPECIALISTS}}`, `{{USES}}` and `{{DOMAINS}}` in `system` are not expanded, and the lint rejects them. Detail: `ARCHITECTURE.md`, "Agents, Skills, and Delegation". `octomind tap init` generates the starter agent at `agents/<name>/default.toml`; a generated tap accepts variants.
 
 ### Multi-Step Pipelines (external)
 
@@ -231,7 +232,7 @@ Agents are `capabilities` + one `[[roles]]` — they do **not** define pipelines
 
 Orchestration is an external CLI: `octomind workflow <file.toml|name>` — portable TOML chaining `octomind run` invocations (sequential / parallel / loop / conditional steps, plus graph routing via `entry`, `max_transitions`, `[[edges]]`), piping output between steps by name (`{{input}}`, `{{<step-name>}}`). Rules that bite:
 
-- Workflows fetched from a tap may use **tap agents only** (a step `role` is an agent name such as `developer`, never a tag with `:`) — no local config roles; this keeps them portable. A step that needs a specialty preloads skills: `role = "developer"`, `skills = ["spec-authoring"]`.
+- Workflows fetched from a tap may use **tap agents only** (a step `role` is an agent tag such as `developer`; here that is a base agent, because this tap has no variants) — no local config roles; this keeps them portable. A step that needs a specialty preloads skills: `role = "developer"`, `skills = ["spec-authoring"]`.
 - Driving input arrives on stdin; validate with `--dry-run` before running.
 - A step that only reads and reports sets `readonly = true`: its agent starts with `--readonly`, so it has no shell and no file writes and cannot delegate. `lint-workflows.sh` rejects a non-boolean value (`READONLY_INVALID`).
 - Author with `templates/workflow.toml`, the `octomind-workflow` skill, or the `octomind` agent; catalogue: `workflows/README.md`.
@@ -240,7 +241,7 @@ Orchestration is an external CLI: `octomind workflow <file.toml|name>` — porta
 
 ### Naming Conventions
 
-- **Agents**: `agents/<name>/config.toml` — one directory per agent, lowercase letters, digits and hyphens; one agent per field of work; the directory holds only `config.toml` and `skills/`
+- **Agents**: `agents/<name>/default.toml` — one directory per agent, lowercase letters, digits and hyphens; one agent per field of work; the directory holds only `default.toml` and `skills/`
 - **Capabilities**: lowercase-hyphens; prefix grouping for variants: `programming-rust`, `legal-us`, `messaging-slack`
 - **Dep scripts**: `deps/<org>/<tool>.sh` — matches `require = ["<org>/<tool>"]` in capability files
 - **Skills**: `agents/<agent>/skills/<skill>/SKILL.md` (owned) or `skills/<skill>/SKILL.md` (shared) — the skill directory holds `SKILL.md` and may hold `scripts/`, `references/`, `assets/` and `validate`; its name must match frontmatter `name`, be lowercase-hyphens only, and exist once in the whole tap (`SKILL_NAME_DUPLICATE`)
@@ -309,7 +310,7 @@ rules:                      # auto-activation expressions; omit for manual-only
 
 Optional dirs alongside SKILL.md: `scripts/`, `references/`, `assets/`, plus a `validate` executable.
 
-Where a skill lives decides which agents it is bound to. One agent uses it: put it at `agents/<agent>/skills/<skill>/SKILL.md`; the agent owns it by location and the frontmatter has no `domains:` line. Two or more agents use it: put it at `skills/<skill>/SKILL.md` with `domains:` naming them. A skill that no agent should load by itself goes in `skills/` without `domains:` and is loaded by hand or by a workflow step.
+Where a skill lives decides which agents it is bound to. One namespace uses it: put it at `agents/<ns>/skills/<skill>/SKILL.md`; the base agent and every variant of the namespace get it, and the frontmatter has no `domains:` line. Two or more namespaces use it: put it at `skills/<skill>/SKILL.md` with `domains:` naming them. A skill that no agent should load by itself goes in `skills/` without `domains:` and is loaded by hand or by a workflow step.
 
 **Activation — four methods:**
 
@@ -337,7 +338,7 @@ Where a skill lives decides which agents it is bound to. One agent uses it: put 
 
 **Hard rules enforced by `lint-skills.sh`:** valid frontmatter; required fields and length limits; `name` matches directory (`NAME_MISMATCH`); non-empty body; every `reference/<file>` cited exists; `validate` executable; no `**bold**` in body outside code; every rule line has a message check (`RULE_NO_INTENT`); no unknown check types (`RULE_UNKNOWN_CHECK`); a skill name exists once in the tap (`SKILL_NAME_DUPLICATE`); an owned skill has no `domains:` line (`OWNED_SKILL_HAS_DOMAINS`); a shared skill's `domains:` lists two or more agents (`SHARED_SKILL_SINGLE_DOMAIN`, which names the owned location to move it to).
 
-**Agent binding:** an owned skill is bound by location. A shared skill's `domains:` lists agent names, each with an `agents/<name>/config.toml` (else `DOMAIN_UNKNOWN`); the body does not name other agents; `compatibility:` describes environment only. Handing work to another agent is the delegating agent's job.
+**Agent binding:** an owned skill is bound by location. A shared skill's `domains:` lists namespaces, each with an `agents/<name>/default.toml` (else `DOMAIN_UNKNOWN`); the body does not name other agents; `compatibility:` describes environment only. Handing work to another agent is the delegating agent's job.
 
 ### Adding a New Capability (full checklist)
 
@@ -364,7 +365,7 @@ Where a skill lives decides which agents it is bound to. One agent uses it: put 
 Run the commands that touch what you changed — all must exit 0:
 
 ```bash
-bash scripts/lint-manifests.sh        # touched agents/<name>/config.toml, or any file added under agents/
+bash scripts/lint-manifests.sh        # touched agents/<name>/default.toml, or any file added under agents/
 bash scripts/lint-capabilities.sh     # touched capabilities/…
 bash scripts/lint-skills.sh           # touched skills/… or agents/<name>/skills/…
 bash scripts/lint-deps.sh             # touched deps/…
@@ -376,7 +377,7 @@ scripts/mcp-versions.sh test <capability>  # touched npx/uvx server wiring
 octomind workflow <name> --dry-run    # touched workflow
 ```
 
-**Agent done** — lints pass (incl. markdown/cache guardrails); XML blocks in canonical order; every capability has `capabilities/<name>/default.toml`; all `require` entries exist under `deps/`; `welcome` is descriptive and includes `{{CWD}}`; `# Agent:` equals the directory name; the directory holds only `config.toml` and `skills/`; `octomind run <name>` starts clean.
+**Agent done** — lints pass (incl. markdown/cache guardrails); XML blocks in canonical order; every capability has `capabilities/<name>/default.toml`; all `require` entries exist under `deps/`; `welcome` is descriptive and includes `{{CWD}}`; `# Agent:` equals the directory name; the directory holds only `default.toml` and `skills/`; `octomind run <name>` starts clean.
 
 **Skill done** — lints pass; `name` matches directory and is unique in the tap; the skill sits under its one agent (no `domains:`) or in `skills/` with `domains:` naming two or more existing agents; canonical section order with Checklist near the end; instructions actionable (what to DO); names no other agent.
 
@@ -390,7 +391,7 @@ octomind workflow <name> --dry-run    # touched workflow
 
 - `bin/load` uses a regex-based TOML-subset parser (no external deps) — keep capability files simple: no multi-line arrays or complex TOML features.
 - Don't put a heredoc or here-string over 512 bytes in a shell script: bash 5.1+ writes it into a pipe before anything reads it, and macOS pipes can hold only 512 bytes, so the script hangs. Python goes in `scripts/<name>.py`, test data in `scripts/fixtures/`.
-- A symlink under `agents/`, a file directly under `agents/`, or anything in an agent directory besides `config.toml` and `skills/` fails lint (`AGENT_SYMLINK`, `AGENT_FLAT_FILE`, `AGENT_STRAY_FILE`, `AGENT_DIR_ENTRY`); every agent is a regular file `agents/<name>/config.toml`.
+- A symlink under `agents/`, a file directly under `agents/`, a variant file or anything else in an agent directory besides `default.toml` and `skills/` fails lint (`AGENT_SYMLINK`, `AGENT_FLAT_FILE`, `AGENT_STRAY_FILE`, `AGENT_VARIANT`, `AGENT_DIR_ENTRY`); every agent is a regular file `agents/<name>/default.toml`.
 - `setup-symlinks.sh` uses `ln -sf` (force) — safe to re-run; the `DECLARED` array must be updated manually or the script emits `WARN` for undeclared dirs.
 - `capabilities/core/`, `capabilities/agent/`, and `capabilities/orchestration/` have **real** `default.toml` files — no provider variants, no `link` entries for them.
 - Default providers live in `setup-symlinks.sh` — e.g. `websearch` currently defaults to `duckduckgo.toml` (not tavily). Switch a provider with `ln -sf <provider>.toml capabilities/<name>/default.toml`; reset all with `setup-symlinks.sh`.
@@ -401,12 +402,12 @@ octomind workflow <name> --dry-run    # touched workflow
 ## Never
 
 - Write `[deps]`, `[roles.mcp]`, or `[[mcp.servers]]` in an agent manifest — they belong exclusively in capability files
-- Set `name = "..."` inside `[[roles]]` — injected at runtime from the directory name
+- Set `name = "..."` inside `[[roles]]` — injected at runtime from the tag
 - Add a `server_ref` without a matching `[[mcp.servers]]` block (built-ins exempt: `core`, `octofs`, `agent`, `octocode`)
 - Launch an npx/uvx server without an exact version pin
 - Add `orchestration` to an agent that neither starts copies of itself nor hands tasks to other agents, or `runtime` to any agent but `octomind` — `runtime` is high-trust only
 - Create a capability directory without adding it to both the `link` calls and the `DECLARED` array in `setup-symlinks.sh`
-- Put a manifest or any other file directly under `agents/`, add files other than `config.toml` and `skills/` to an agent directory, name an agent with a `:`, or put a skill anywhere but `skills/<skill>/` or `agents/<agent>/skills/<skill>/`
+- Put a manifest or any other file directly under `agents/`, add files other than `default.toml` and `skills/` to an agent directory, add a variant file to this tap, or put a skill anywhere but `skills/<skill>/` or `agents/<agent>/skills/<skill>/`
 - Give an owned skill a `domains:` line, give a shared skill a single agent in `domains:`, or reuse a skill name in a second place
 - Reference tap-relative paths in `system`/`welcome`/skill bodies — agents run in the user's project, not the tap checkout
 - Give an agent a `# Uses:` header without the `orchestration` capability

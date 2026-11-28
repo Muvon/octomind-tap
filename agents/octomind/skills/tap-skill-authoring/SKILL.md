@@ -8,7 +8,7 @@ compatibility: "Requires: an Octomind tap checkout with scripts/lint-skills.sh."
 
 ## Overview
 
-A skill is a reusable instruction pack in a directory with a `SKILL.md`. A skill that one agent uses is an owned skill at `agents/<agent>/skills/<name>/SKILL.md`, bound to that agent by location. A skill that two or more agents use is a shared skill at `skills/<name>/SKILL.md`, bound to them by `domains:`. When it activates — preloaded, auto-activated by its rules, or loaded with `skill(action="use")` or `/skill <name>` — its body is injected into the session's context. Skills don't define a role or model; they add focused knowledge to the agent they are bound to, and can bring the tools that knowledge needs. Each specialty of a field is a skill, owned by that field's agent unless other agents apply it too. A skill is addressed by its bare name in workflows, `OCTOMIND_SKILLS` and `/skill use`, so the name exists once in the tap.
+A skill is a reusable instruction pack in a directory with a `SKILL.md`. A skill that one namespace uses is an owned skill at `agents/<ns>/skills/<name>/SKILL.md`, bound to that namespace by location: the base agent `<ns>` and every variant `<ns>:<variant>` get it. A skill that two or more namespaces use is a shared skill at `skills/<name>/SKILL.md`, bound to them by `domains:`. When it activates — preloaded, auto-activated by its rules, or loaded with `skill(action="use")` or `/skill <name>` — its body is injected into the session's context. Skills don't define a role or model; they add focused knowledge to the agent they are bound to, and can bring the tools that knowledge needs. Each specialty of a field is a skill, owned by that field's agent unless other agents apply it too. A skill is addressed by its bare name in workflows, `OCTOMIND_SKILLS` and `/skill use`, so the name exists once in the tap.
 
 ## Mental model
 
@@ -19,7 +19,7 @@ A skill is a checklist for a model that already knows the field. Anthropic's ski
 ### Directory structure
 
 ```
-agents/<agent>/skills/<skill-name>/   (owned) or skills/<skill-name>/   (shared)
+agents/<ns>/skills/<skill-name>/      (owned) or skills/<skill-name>/   (shared)
 ├── SKILL.md        # required
 ├── reference/      # long reference files, cited from the body and lint-checked
 ├── scripts/        # executables the skill tells the agent to run
@@ -51,7 +51,7 @@ rules:
 | `name` | yes | ≤64 chars, lowercase letters, digits, hyphens; no leading/trailing hyphen; equals the directory name |
 | `title` | yes (tap lint) | 5–60 chars |
 | `description` | yes | 20–1024 chars, third person, what it does plus when to use it with concrete trigger terms |
-| `domains` | shared skills only | Space-separated or array of two or more agent names; each value must have an `agents/<name>/config.toml` (`DOMAIN_UNKNOWN`); one name fails `SHARED_SKILL_SINGLE_DOMAIN` (move the skill under that agent); an owned skill must not set it (`OWNED_SKILL_HAS_DOMAINS`); the runtime also accepts `*` for every agent, but tap lint rejects it |
+| `domains` | shared skills only | Space-separated or array of two or more agent namespaces; each value must have an `agents/<name>/default.toml` (`DOMAIN_UNKNOWN`); one name fails `SHARED_SKILL_SINGLE_DOMAIN` (move the skill under that namespace); an owned skill must not set it (`OWNED_SKILL_HAS_DOMAINS`); the runtime also accepts `*` for every agent, but tap lint rejects it |
 | `rules` | for auto-activation | List of rule expressions, below |
 | `capabilities` | optional | Capabilities enabled when the skill activates; each must exist under `capabilities/` (lint) |
 | `compatibility` | optional | ≤500 chars, environment only (tools, OS, network) |

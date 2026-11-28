@@ -5,8 +5,8 @@ description: "<What this skill does and when it should activate.>"
 license: MIT
 compatibility: "<Required tools, operating systems, or network access.>"
 # capabilities: core
-# Location: agents/<agent>/skills/<name>/SKILL.md for a skill one agent uses (no domains line),
-# or skills/<name>/SKILL.md for a skill two or more agents use, with:
+# Location: agents/<ns>/skills/<name>/SKILL.md for a skill one namespace uses (no domains line),
+# or skills/<name>/SKILL.md for a skill two or more namespaces use, with:
 # domains: developer devops
 # rules:
 #   - file(Cargo.toml) content(<keyword>)

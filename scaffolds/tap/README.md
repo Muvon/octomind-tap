@@ -39,6 +39,12 @@ exist once here and are symlinked from the repository root.
 4. Registers the directory as a local tap for `<owner/name>`, so the starter
    agent runs immediately: `octomind run <name>`.
 
+The starter agent is the base agent `agents/<name>/default.toml`. A generated
+tap accepts variants: `agents/<name>/<variant>.toml` is started with
+`octomind run <name>:<variant>`, and `<name>:default` names the base agent.
+`scripts/check.sh` checks the variant name, the `# Agent:` header and that a
+variant carries no `# Uses:` header.
+
 ## Design boundary
 
 The scaffold copies the tap architecture and authoring foundation, not the

@@ -17,7 +17,7 @@ rules:
 
 ## Overview
 
-A tap registry holds agent manifests (`agents/<name>/config.toml`), capabilities with the dep scripts behind them (`capabilities/<name>/`, `deps/<org>/<tool>.sh`), and skills: owned skills under their agent (`agents/<name>/skills/<skill>/SKILL.md`) and shared skills (`skills/<skill>/SKILL.md`). This skill is the working method for creating and maintaining them so that everything shipped is lint-clean and resolves with `bin/load`.
+A tap registry holds agent manifests (`agents/<name>/default.toml`), capabilities with the dep scripts behind them (`capabilities/<name>/`, `deps/<org>/<tool>.sh`), and skills: owned skills under their agent (`agents/<name>/skills/<skill>/SKILL.md`) and shared skills (`skills/<skill>/SKILL.md`). This skill is the working method for creating and maintaining them so that everything shipped is lint-clean and resolves with `bin/load`.
 
 The authoring specifications are the `tap-agent-authoring`, `tap-capability-authoring`, `tap-deps-authoring` and `tap-skill-authoring` skills; this skill adds the surrounding procedure and checks. The local `config.toml`, workflow pipelines and AGENTS.md files are outside it.
 
@@ -40,7 +40,7 @@ Work in the current directory when it is a tap (it has `agents/` or `capabilitie
 
 ### Checks
 
-- Agents: `bash scripts/lint-manifests.sh agents/<name>/config.toml` and `bin/load <name>`.
+- Agents: `bash scripts/lint-manifests.sh agents/<name>/default.toml` and `bin/load <name>`.
 - Capabilities: `bash scripts/setup-symlinks.sh`, `bash scripts/lint-capabilities.sh capabilities/<name>`, `bash scripts/validate-capabilities.sh`; `scripts/mcp-versions.sh test <name>` for npx and uvx servers.
 - Deps: `bash scripts/lint-deps.sh deps/<org>/<tool>.sh`.
 - Skills: `bash scripts/lint-skills.sh <skill dir>`.
@@ -48,19 +48,19 @@ Work in the current directory when it is a tap (it has `agents/` or `capabilitie
 ### Layout
 
 ```
-agents/<name>/config.toml          one [[roles]], capabilities = [...] at top level
-agents/<name>/skills/<skill>/SKILL.md  owned skill: one agent uses it, no domains line
+agents/<name>/default.toml          one [[roles]], capabilities = [...] at top level
+agents/<name>/skills/<skill>/SKILL.md  owned skill: one namespace uses it, no domains line
 capabilities/<name>/config.toml    triggers (+ optional domains)
 capabilities/<name>/<provider>.toml  [deps], [roles.mcp], [[mcp.servers]]
 capabilities/<name>/default.toml   symlink to the active provider (real file for core, agent, orchestration)
 deps/<org>/<tool>.sh + .md         installer + companion doc
-skills/<skill>/SKILL.md            shared skill: two or more agents, bound by domains
+skills/<skill>/SKILL.md            shared skill: two or more namespaces, bound by domains
 workflows/<name>.toml              public workflows
 bin/load                           resolves capabilities into the merged manifest
 scripts/                           lint, validation, symlink setup, MCP pin management
 ```
 
-The agents are the directories under `agents/`, one per field of work. A new subject or format for an existing field is a skill under that agent (a shared skill with `domains:` only when two or more agents use it); a new agent is added only for a new field of work, named by what it owns. Tapping or clicking a native app or a web page belongs to `operator`, writing or changing source to `developer`.
+The agents are the directories under `agents/`, one per field of work. A new subject or format for an existing field is a skill under that namespace (a shared skill with `domains:` only when two or more namespaces use it); a new agent is added only for a new field of work, named by what it owns. Tapping or clicking a native app or a web page belongs to `operator`, writing or changing source to `developer`.
 
 ### Capabilities
 

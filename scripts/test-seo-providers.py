@@ -48,7 +48,7 @@ class ProviderTests(unittest.TestCase):
                 if path.name != "default.toml":
                     (seo / path.name).symlink_to(path)
             (root / "agents/seo-test").mkdir(parents=True)
-            (root / "agents/seo-test/config.toml").write_text(
+            (root / "agents/seo-test/default.toml").write_text(
                 'capabilities = ["core", "websearch", "webfetch", "seo-data"]\n'
                 '[[roles]]\nsystem = "fixture"\nwelcome = "fixture"\n')
             for provider in sorted(PROVIDERS):

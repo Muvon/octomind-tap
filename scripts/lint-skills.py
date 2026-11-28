@@ -97,10 +97,10 @@ if "compatibility" in fields and len(fields["compatibility"]) > 500:
     sys.exit(1)
 
 # ── Optional: domains / capabilities must reference real directories ──────────
-# domains: each entry is an agent name that must have agents/<entry>/config.toml
+# domains: each entry is an agent namespace that must have agents/<entry>/default.toml
 # (runtime compares it with the agent's name); a phantom value silently never auto-activates.
-# An owned skill (agents/<agent>/skills/<name>/) belongs to its agent by location and sets
-# no domains; a shared skill (skills/<name>/) is bound to two or more agents, or has none.
+# An owned skill (agents/<agent>/skills/<name>/) belongs to its namespace by location and sets
+# no domains; a shared skill (skills/<name>/) is bound to two or more namespaces, or has none.
 # capabilities: resolved from capabilities/<name>/ at activation; a phantom
 # value silently fails to load its MCP servers.
 def _split_values(raw):

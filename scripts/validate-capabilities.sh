@@ -29,7 +29,7 @@ echo "Validating agent manifests..."
 echo ""
 
 while IFS= read -r manifest; do
-  # The agent tag is the name of the directory that holds config.toml
+  # The agent tag is the name of the directory that holds default.toml
   tag="$(basename "$(dirname "$manifest")")"
 
   if output=$(python3 "$LOAD" "$tag" 2>&1); then

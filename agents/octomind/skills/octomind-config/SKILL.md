@@ -80,7 +80,7 @@ Sampling values are dropped for models that reject them, so changing `temperatur
 | `max_request_spending_threshold` | `0.0` | USD; stops the current request when exceeded |
 | `system` | unset | Legacy global prompt fallback; prefer per-role `system` |
 
-`default = "assistant"` is a tap agent, not a role in this file. A name is looked up in `[[roles]]` first; if no role has that name, it resolves against taps and runs the agent of that name (the agent tag is the agent's directory name, such as `assistant` for `agents/assistant/config.toml`).
+`default = "assistant"` is a tap agent, not a role in this file. A name is looked up in `[[roles]]` first; if no role has that name, it resolves against taps and runs the agent of that name (the base agent tag is the namespace directory name, such as `assistant` for `agents/assistant/default.toml`; a variant is `<ns>:<variant>`).
 
 ### `[model]`
 

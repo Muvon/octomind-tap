@@ -9,7 +9,7 @@ domains: octomind assistant
 
 ## Overview
 
-This skill encodes what a correct, high-quality `agents/<name>/config.toml` needs: the exact TOML shape, which fields are required or forbidden, how to structure and phrase the system prompt for current models, how sampling settings actually reach the model, and the checks that must pass before the manifest ships. Use it whenever you create or edit an agent manifest.
+This skill encodes what a correct, high-quality `agents/<name>/default.toml` needs: the exact TOML shape, which fields are required or forbidden, how to structure and phrase the system prompt for current models, how sampling settings actually reach the model, and the checks that must pass before the manifest ships. Use it whenever you create or edit an agent manifest.
 
 ## Mental model
 
@@ -17,7 +17,7 @@ A manifest is `capabilities` plus exactly one `[[roles]]`. Capabilities decide t
 
 There is one agent per field of work, for example `developer`, `writer` or `lawyer`. The agent does that field's work itself. Its prompt is short: the role, the scope, the working method every task in the field shares, the guards, and the output conventions.
 
-A specialty is a procedure for one kind of task inside the field, such as QA test planning or contract review for one jurisdiction. It is not a second agent. It is a skill. A skill only that agent uses is an owned skill at `agents/<name>/skills/<skill>/SKILL.md`, bound to the agent by location with no `domains:` line; a skill two or more agents use is a shared skill at `skills/<skill>/SKILL.md` whose `domains:` names them. The skill loads when the user's message matches its `rules:`, when a workflow step lists it in `skills`, or when it is preloaded from the environment or by hand. A tool that only one specialty needs is declared by that skill through `capabilities:`, not by the agent. Load `tap-skill-authoring` to write such a skill.
+A specialty is a procedure for one kind of task inside the field, such as QA test planning or contract review for one jurisdiction. It is not a second agent. It is a skill. A skill only that namespace uses is an owned skill at `agents/<ns>/skills/<skill>/SKILL.md`, bound to the namespace by location (the base agent and every variant get it) with no `domains:` line; a skill two or more namespaces use is a shared skill at `skills/<skill>/SKILL.md` whose `domains:` names them. The skill loads when the user's message matches its `rules:`, when a workflow step lists it in `skills`, or when it is preloaded from the environment or by hand. A tool that only one specialty needs is declared by that skill through `capabilities:`, not by the agent. Load `tap-skill-authoring` to write such a skill.
 
 Put in the agent prompt only what applies to every task of the field. Put a procedure, a checklist or an output contract that applies to one kind of task into a skill. Use a literal skill name in the system prompt when the skill itself is being authored or inspected, or when an exact manual reference is part of the deliverable contract.
 
@@ -28,7 +28,7 @@ Keep shared decisions in one session. A delegate gets the evidence and the outpu
 ### Manifest format
 
 ```toml
-# agents/<name>/config.toml
+# agents/<name>/default.toml
 # Agent: <name>
 # Title: Short Agent Title (5–60 chars)
 # Description: What this agent does and returns (120–155 chars).
@@ -54,7 +54,7 @@ welcome = "<Emoji> <Short greeting>. Working in {{CWD}}"
 | `model` | Optional `provider:model` override for this agent |
 | `name`, `[deps]`, `[roles.mcp]`, `[[mcp.servers]]` | Forbidden — injected from the tag and from capability files |
 
-The file is `agents/<name>/config.toml` with no symlink, and the agent directory holds only `config.toml` and `skills/`. The tag is the directory name: lowercase letters, digits and hyphens, starting with a letter, no `:`. The `# Agent:` header repeats the name. The manifest has exactly one `[[roles]]`. `octomind run <name>` starts the agent. A role with the same name in the user's local config takes priority over the tap agent. There is no README file per agent.
+The file is `agents/<name>/default.toml` with no symlink, and the agent directory holds only `default.toml` and `skills/`. The tag `<ns>` is the directory name: lowercase letters, digits and hyphens, starting with a letter; `<ns>:default` names the same agent. A variant is `agents/<ns>/<variant>.toml` with the tag `<ns>:<variant>`; this tap keeps one agent per field of work, so a variant belongs in a private tap and fails lint here (`AGENT_VARIANT`). A base agent with `orchestration` reaches its own variants without a `# Uses:` header; a variant has no `# Uses:` header. The `# Agent:` header repeats the tag. The manifest has exactly one `[[roles]]`. `octomind run <ns>` starts the agent. A role with the same name in the user's local config takes priority over the tap agent. There is no README file per agent.
 
 The `# Title:` and `# Description:` lines are what `tap` compares a task brief against when it picks an agent, so they say what the agent takes in and what it returns.
 
@@ -147,7 +147,7 @@ Use `model` only when the agent genuinely needs a specific model; otherwise let 
 - No tap-relative paths (`skills/…`, `capabilities/…`, `deps/…`) in `system` or `welcome` — agents run in the user's project, not the tap checkout. The `octomind` agent is exempt.
 - Every `` `name` skill `` mention must exist at `skills/<name>/SKILL.md` or `agents/<agent>/skills/<name>/SKILL.md` (`SKILL_REF_UNKNOWN`).
 - Every capability needs `capabilities/<name>/default.toml`.
-- The path is `agents/<name>/config.toml` (`AGENT_PATH`, `AGENT_SYMLINK`, `AGENT_NAME_INVALID`). Only directories sit directly under `agents/` (`AGENT_FLAT_FILE`, `AGENT_STRAY_FILE`), each has a `config.toml` (`AGENT_NO_MANIFEST`) and holds nothing else but `skills/` (`AGENT_DIR_ENTRY`). The `# Agent:` header matches the directory name (`MISSING_AGENT_HEADER`, `AGENT_HEADER_MISMATCH`).
+- The path is `agents/<name>/default.toml` (`AGENT_PATH`, `AGENT_SYMLINK`, `AGENT_NAME_INVALID`). Only directories sit directly under `agents/` (`AGENT_FLAT_FILE`, `AGENT_STRAY_FILE`), each has a `default.toml` (`AGENT_NO_MANIFEST`), holds no variant file (`AGENT_VARIANT`) and nothing else but `skills/` (`AGENT_DIR_ENTRY`). The `# Agent:` header matches the directory name (`MISSING_AGENT_HEADER`, `AGENT_HEADER_MISMATCH`).
 - No `{{SPECIALISTS}}` (`SPECIALISTS_REMOVED`), `{{USES}}` (`USES_PLACEHOLDER_REMOVED`) or `{{DOMAINS}}` (`DOMAINS_REMOVED`) in `system`; no `# Default:` header (`DEFAULT_HEADER_REMOVED`).
 - `# Uses:` entries are `*` or existing agent names, unique, not the agent itself (`USES_INVALID`, `USES_UNKNOWN`, `USES_CYCLE`), and an agent with the header declares `orchestration` (`USES_NO_ORCHESTRATION`).
 
@@ -164,7 +164,7 @@ Manifests do not define pipelines. Multi-step orchestration is the external `oct
 ### Example 1: minimal correct agent
 
 ```toml
-# agents/<name>/config.toml
+# agents/<name>/default.toml
 # Agent: rustacean
 # Title: Rust Developer – Idiomatic, Safe Code
 # Description: Writes, reviews and debugs Rust: ownership, async with tokio, error handling, FFI and Cargo. Runs check, clippy and tests before it reports the work.
@@ -237,12 +237,12 @@ What changed: the system prompt is cacheable again and lint passes.
 - [ ] No `{{CWD}}`/`{{DATE}}`/`{{SYSTEM}}`, headers, or bold in `system`; under ~1500 words?
 - [ ] Reference material moved to skills; every named skill exists?
 - [ ] Deprecated sampling fields absent?
-- [ ] `bash scripts/lint-manifests.sh agents/<name>/config.toml` passes and `bin/load <name>` resolves?
+- [ ] `bash scripts/lint-manifests.sh agents/<name>/default.toml` passes and `bin/load <name>` resolves?
 
 ## References
 
 - `templates/agent.toml` — canonical agent template
-- `agents/developer/config.toml` — execution-protocol reference
+- `agents/developer/default.toml` — execution-protocol reference
 - `bin/load <name>` — print the merged manifest
 - `agents/assistant/skills/prompt-engineering/SKILL.md` — prompt theory across agents and skills
 - [Anthropic prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)

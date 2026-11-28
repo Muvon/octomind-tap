@@ -109,7 +109,7 @@ for s in leaves:
     if not role:
         errors.append(f"MISSING_ROLE: step {sname!r}")
     elif ":" in role or not role_re.match(role):
-        errors.append(f"ROLE_FORMAT: step {sname!r} role {role!r} must be a flat agent name such as 'seo': tags are flat, no ':'")
+        errors.append(f"ROLE_FORMAT: step {sname!r} role {role!r} must be a base agent name such as 'seo' (this tap has no variants)")
     else:
         agent_file = repo_root / "agents" / role / tap_paths.AGENT_MANIFEST
         if not agent_file.is_file() or agent_file.is_symlink():

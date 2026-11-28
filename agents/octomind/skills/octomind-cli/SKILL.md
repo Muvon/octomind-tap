@@ -55,7 +55,7 @@ Hidden helpers: `octomind complete run` prints every runnable tag (tap agents pl
 
 ### TAG resolution
 
-`run`, `server`, and `acp` take an optional TAG: a plain role name matched against `[[roles]]` in config, or a tap agent tag resolved through installed taps, which is the agent's directory name, such as `developer`. A tag containing `:` is an error that shows the correct form, the bare agent name. A name is looked up as a local role first; if no role has that name, it starts the tap agent of that name. Omitted, the TAG uses `default` from config (`assistant` out of the box) — except when resuming, where the session's own role is restored. Model priority, highest first: `--model`, the role's model, a `[taps]` entry for that tag, then the main `[model]` profile. The `octomind-runtime` skill has the resolution details.
+`run`, `server`, and `acp` take an optional TAG: a plain role name matched against `[[roles]]` in config, or a tap agent tag resolved through installed taps, which is `<ns>` for the base agent `agents/<ns>/default.toml`, such as `developer`, or `<ns>:<variant>` for a variant `agents/<ns>/<variant>.toml`; `<ns>:default` names the same agent as `<ns>`. A name is looked up as a local role first; if no role has that name, it starts the tap agent of that name. Omitted, the TAG uses `default` from config (`assistant` out of the box) — except when resuming, where the session's own role is restored. Model priority, highest first: `--model`, the role's model, a `[taps]` entry for that tag, then the main `[model]` profile. The `octomind-runtime` skill has the resolution details.
 
 ### `octomind run` flags
 

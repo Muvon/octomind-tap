@@ -70,7 +70,7 @@ def check_uses_entries(entries, name, repo_root):
             problems.append("USES_INVALID: empty entry in '# Uses:' (stray comma or no value)")
             continue
         if entry != USES_ALL and not re.fullmatch(AGENT_NAME_PATTERN, entry):
-            problems.append(f"USES_INVALID: '{entry}' is malformed — write an agent name such as 'seo' (tags are flat, no ':'), or '{USES_ALL}'")
+            problems.append(f"USES_INVALID: '{entry}' is malformed — write an agent name such as 'seo' (this tap has no variants), or '{USES_ALL}'")
             continue
         if entry in seen:
             problems.append(f"USES_INVALID: '{entry}' is listed more than once")
@@ -232,7 +232,7 @@ elif agent_headers[0] != agent_name:
     errors.append(f"AGENT_HEADER_MISMATCH: '# Agent: {agent_headers[0]}' must equal the directory name '{agent_name}'")
 
 if not re.fullmatch(AGENT_NAME_PATTERN, agent_name):
-    errors.append(f"AGENT_NAME_INVALID: directory name '{agent_name}' must match {AGENT_NAME_PATTERN} (lowercase letters, digits, hyphens; tags are flat, no ':')")
+    errors.append(f"AGENT_NAME_INVALID: directory name '{agent_name}' must match {AGENT_NAME_PATTERN} (lowercase letters, digits, hyphens)")
 
 if any(l.startswith("# Default:") for l in header_lines):
     errors.append("DEFAULT_HEADER_REMOVED: '# Default:' is not used — delete the header")

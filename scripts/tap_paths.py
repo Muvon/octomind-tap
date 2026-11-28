@@ -1,7 +1,8 @@
 """Where the tap keeps agents and skills.
 
-Agent manifest:  agents/<name>/config.toml
-Owned skill:     agents/<name>/skills/<skill>/SKILL.md  (belongs to <name> by location)
+Base agent:      agents/<ns>/default.toml  (tag `<ns>`)
+Variant:         agents/<ns>/<variant>.toml  (tag `<ns>:<variant>`; private taps only)
+Owned skill:     agents/<ns>/skills/<skill>/SKILL.md  (belongs to the namespace <ns> by location)
 Shared skill:    skills/<skill>/SKILL.md                (bound through `domains:`, or manual-only)
 
 Import from a script, or list from shell:
@@ -12,12 +13,12 @@ Import from a script, or list from shell:
 import sys
 from pathlib import Path
 
-AGENT_MANIFEST = "config.toml"
+AGENT_MANIFEST = "default.toml"
 SKILLS_DIR = "skills"
 
 
 def agent_manifests(root):
-    """Manifest of every directory under agents/ that has one, sorted."""
+    """Base agent file of every namespace directory under agents/ that has one, sorted."""
     return sorted(root.glob(f"agents/*/{AGENT_MANIFEST}"))
 
 
@@ -34,7 +35,7 @@ def find_skill_dirs(root, name):
 
 
 def skill_owner(root, skill_dir):
-    """Name of the agent that owns the skill by location, or None for a shared skill."""
+    """Namespace that owns the skill by location, or None for a shared skill."""
     relative = skill_dir.resolve().relative_to(root.resolve())
     return relative.parts[1] if relative.parts[0] == "agents" else None
 

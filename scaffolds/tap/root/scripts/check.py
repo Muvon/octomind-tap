@@ -15,14 +15,18 @@ except ModuleNotFoundError:  # pragma: no cover - Python 3.11+ is the contract
     raise SystemExit(2)
 
 AGENT_NAME = re.compile(r"[a-z][a-z0-9-]*")
-AGENT_MANIFEST = "config.toml"
+# Tag `<ns>` is the base agent in agents/<ns>/default.toml; `<ns>:<variant>` is agents/<ns>/<variant>.toml.
+AGENT_TAG = re.compile(r"([a-z][a-z0-9-]*)(?::([a-z][a-z0-9-]*))?")
+BASE_VARIANT = "default"
+AGENT_FILE_SUFFIX = ".toml"
+AGENT_MANIFEST = BASE_VARIANT + AGENT_FILE_SUFFIX
 AGENT_HEADER = "# Agent:"
 ORCHESTRATION_CAPABILITY = "orchestration"
 SPECIALISTS_PATTERN = re.compile(r"\{\{\s*SPECIALISTS\s*\}\}")
 DOMAINS_PATTERN = re.compile(r"\{\{\s*DOMAINS\s*\}\}")
 USES_PATTERN = re.compile(r"\{\{\s*USES\s*\}\}")
 USES_HEADER = "# Uses:"
-# Entry for "every other agent"; it is not followed when looking for delegation loops.
+# Entry for "every other agent"; the cycle search expands it to every other agent tag.
 USES_ALL = "*"
 CYCLE_SEPARATOR = " → "
 
@@ -59,28 +63,55 @@ def read_uses_header(raw: str) -> list[str] | None:
     return None
 
 
-def agent_exists(name: str, root: Path) -> bool:
-    path = root / "agents" / name / AGENT_MANIFEST
+def split_tag(tag: str) -> tuple[str, str]:
+    namespace, _, variant = tag.partition(":")
+    return namespace, variant or BASE_VARIANT
+
+
+def canonical_tag(tag: str) -> str:
+    """`<ns>:default` is the same agent as `<ns>`."""
+    namespace, variant = split_tag(tag)
+    return namespace if variant == BASE_VARIANT else tag
+
+
+def manifest_path(tag: str, root: Path) -> Path:
+    namespace, variant = split_tag(tag)
+    return root / "agents" / namespace / f"{variant}{AGENT_FILE_SUFFIX}"
+
+
+def tag_of(path: Path) -> str:
+    if path.stem == BASE_VARIANT:
+        return path.parent.name
+    return f"{path.parent.name}:{path.stem}"
+
+
+def agent_exists(tag: str, root: Path) -> bool:
+    path = manifest_path(tag, root)
     return path.is_file() and not path.is_symlink()
 
 
+def all_agent_tags(root: Path) -> list[str]:
+    return sorted(tag_of(path) for path in (root / "agents").glob(f"*/*{AGENT_FILE_SUFFIX}"))
+
+
 def find_uses_cycle(start: str, root: Path) -> list[str] | None:
-    """Loop of named '# Uses:' entries from agent to agent that returns to `start`, or None."""
+    """Loop of named '# Uses:' entries from agent tag to agent tag that returns to `start`, or None."""
 
     def walk(current: str, trail: list[str]) -> list[str] | None:
         if not agent_exists(current, root):
             return None
-        text = (root / "agents" / current / AGENT_MANIFEST).read_text(encoding="utf-8")
+        text = manifest_path(current, root).read_text(encoding="utf-8")
         entries = []
         for entry in read_uses_header(text) or []:
             if entry == USES_ALL:
                 # '*' reaches every other agent, so it can close a loop like any named entry.
-                entries.extend(sorted(path.parent.name for path in (root / "agents").glob(f"*/{AGENT_MANIFEST}") if path.parent.name != current))
+                entries.extend(tag for tag in all_agent_tags(root) if tag != current)
             else:
                 entries.append(entry)
         for entry in entries:
-            if not AGENT_NAME.fullmatch(entry):
+            if not AGENT_TAG.fullmatch(entry):
                 continue
+            entry = canonical_tag(entry)
             if entry == start and len(trail) > 1:
                 return trail + [entry]
             if entry in trail:
@@ -100,9 +131,11 @@ def check_uses_entries(entries: list[str], name: str, root: Path) -> list[str]:
         if not entry:
             problems.append("USES_INVALID: empty entry in '# Uses:' (stray comma or no value)")
             continue
-        if entry != USES_ALL and not AGENT_NAME.fullmatch(entry):
-            problems.append(f"USES_INVALID: '{entry}' is malformed — write an agent name such as 'seo' (tags are flat, no ':'), or '{USES_ALL}'")
+        if entry != USES_ALL and not AGENT_TAG.fullmatch(entry):
+            problems.append(f"USES_INVALID: '{entry}' is malformed — write an agent tag such as 'seo' or 'seo:lite', or '{USES_ALL}'")
             continue
+        if entry != USES_ALL:
+            entry = canonical_tag(entry)
         if entry in seen:
             problems.append(f"USES_INVALID: '{entry}' is listed more than once")
             continue
@@ -110,7 +143,7 @@ def check_uses_entries(entries: list[str], name: str, root: Path) -> list[str]:
         if entry == name:
             problems.append(f"USES_INVALID: '{entry}' is the agent itself")
         elif entry != USES_ALL and not agent_exists(entry, root):
-            problems.append(f"USES_UNKNOWN: agent '{entry}' has no agents/{entry}/{AGENT_MANIFEST}")
+            problems.append(f"USES_UNKNOWN: agent '{entry}' has no {manifest_path(entry, root).relative_to(root)}")
     if not problems:
         cycle = find_uses_cycle(name, root)
         if cycle:
@@ -119,12 +152,16 @@ def check_uses_entries(entries: list[str], name: str, root: Path) -> list[str]:
 
 
 def validate_agent(path: Path, root: Path, errors: list[str]) -> None:
-    agent_name = path.parent.name
-    if path.parent.parent != root / "agents" or path.name != AGENT_MANIFEST:
-        errors.append(f"{path}: AGENT_PATH: agents must be agents/<name>/{AGENT_MANIFEST}")
+    agent_name = tag_of(path)
+    namespace, variant = split_tag(agent_name)
+    is_variant = variant != BASE_VARIANT
+    if path.parent.parent != root / "agents" or path.suffix != AGENT_FILE_SUFFIX:
+        errors.append(f"{path}: AGENT_PATH: agents must be agents/<ns>/{AGENT_MANIFEST} or agents/<ns>/<variant>{AGENT_FILE_SUFFIX}")
     # An unrendered starter keeps its render token as the name; unresolved tokens are reported separately.
-    if not AGENT_NAME.fullmatch(agent_name) and not RENDER_TOKEN.fullmatch(agent_name):
-        errors.append(f"{path}: AGENT_NAME_INVALID: directory name '{agent_name}' must match {AGENT_NAME.pattern} (tags are flat, no ':')")
+    if not AGENT_NAME.fullmatch(namespace) and not RENDER_TOKEN.fullmatch(namespace):
+        errors.append(f"{path}: AGENT_NAME_INVALID: directory name '{namespace}' must match {AGENT_NAME.pattern}")
+    if is_variant and not AGENT_NAME.fullmatch(variant):
+        errors.append(f"{path}: AGENT_VARIANT_NAME_INVALID: variant file name '{variant}' must match {AGENT_NAME.pattern}")
 
     raw = path.read_text(encoding="utf-8")
     data = parse_toml(path, errors)
@@ -146,7 +183,7 @@ def validate_agent(path: Path, root: Path, errors: list[str]) -> None:
     if not agent_headers:
         errors.append(f"{path}: MISSING_AGENT_HEADER: '# Agent: {agent_name}' comment is required")
     elif agent_headers[0] != agent_name:
-        errors.append(f"{path}: AGENT_HEADER_MISMATCH: '# Agent: {agent_headers[0]}' must equal the directory name '{agent_name}'")
+        errors.append(f"{path}: AGENT_HEADER_MISMATCH: '# Agent: {agent_headers[0]}' must equal the agent tag '{agent_name}'")
     if any(line.startswith("# Default:") for line in header_lines):
         errors.append(f"{path}: DEFAULT_HEADER_REMOVED: '# Default:' is not used; delete the header")
 
@@ -182,7 +219,7 @@ def validate_agent(path: Path, root: Path, errors: list[str]) -> None:
 
     role = roles[0]
     if "name" in role:
-        errors.append(f"{path}: roles.name is injected from the path and must be absent")
+        errors.append(f"{path}: roles.name is injected from the tag and must be absent")
     if "mcp" in role:
         errors.append(f"{path}: [roles.mcp] belongs in capability files")
     for field in ("system", "welcome"):
@@ -220,7 +257,9 @@ def validate_agent(path: Path, root: Path, errors: list[str]) -> None:
     uses_entries = read_uses_header(raw)
     if USES_PATTERN.search(system):
         errors.append(f"{path}: USES_PLACEHOLDER_REMOVED: '{{{{USES}}}}' is not expanded; the '# Uses:' header alone sets which agents tasks may be matched to, so delete the placeholder")
-    if uses_entries is not None:
+    if uses_entries is not None and is_variant:
+        errors.append(f"{path}: VARIANT_HAS_USES: a variant has no '# Uses:' header; only the base agent '{namespace}' declares it")
+    elif uses_entries is not None:
         errors.extend(f"{path}: {problem}" for problem in check_uses_entries(uses_entries, agent_name, root))
         if not any(
             isinstance(capability, str) and capability.rpartition("/")[2] == ORCHESTRATION_CAPABILITY
@@ -260,13 +299,14 @@ def validate_capability(cap_dir: Path, root: Path, errors: list[str]) -> None:
 
 
 def validate_agent_dir(agent_dir: Path, root: Path, errors: list[str]) -> None:
-    manifest = agent_dir / AGENT_MANIFEST
-    if not manifest.is_file():
-        errors.append(f"{agent_dir}: AGENT_NO_MANIFEST: agent directory has no {AGENT_MANIFEST}")
+    # A namespace may hold variants without a base agent.
+    manifests = sorted(entry for entry in agent_dir.iterdir() if entry.is_file() and entry.suffix == AGENT_FILE_SUFFIX)
+    if not manifests:
+        errors.append(f"{agent_dir}: AGENT_NO_MANIFEST: agent directory has no {AGENT_MANIFEST} and no variant file")
     for entry in sorted(agent_dir.iterdir()):
-        if entry.name not in (AGENT_MANIFEST, "skills"):
-            errors.append(f"{entry}: AGENT_DIR_ENTRY: an agent directory holds only {AGENT_MANIFEST} and skills/")
-    if manifest.is_file():
+        if entry not in manifests and entry.name != "skills":
+            errors.append(f"{entry}: AGENT_DIR_ENTRY: an agent directory holds only {AGENT_FILE_SUFFIX} agent files and skills/")
+    for manifest in manifests:
         validate_agent(manifest, root, errors)
 
 
@@ -292,7 +332,7 @@ def validate_skill(path: Path, root: Path, errors: list[str]) -> None:
     relative = path.relative_to(root)
     domains = fields.get("domains", "").strip("[]").replace(",", " ").split()
     if relative.parts[0] == "agents" and domains:
-        errors.append(f"{path}: OWNED_SKILL_HAS_DOMAINS: belongs to agent '{relative.parts[1]}' by location; remove the domains line")
+        errors.append(f"{path}: OWNED_SKILL_HAS_DOMAINS: belongs to namespace '{relative.parts[1]}' by location; remove the domains line")
     if relative.parts[0] == "skills" and len(domains) == 1:
         errors.append(f"{path}: SHARED_SKILL_SINGLE_DOMAIN: bound only to '{domains[0]}'; move it to agents/{domains[0]}/skills/{path.parent.name}/ and remove the domains line")
 

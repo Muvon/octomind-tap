@@ -7,7 +7,7 @@ body:
     id: tag
     attributes:
       label: Agent name
-      description: "The name of the agent: lowercase letters, digits and hyphens, no `:`. It is the directory name `agents/<name>/`."
+      description: "The name of the agent: lowercase letters, digits and hyphens. It is the directory name `agents/<name>/` and the tag of its base agent `agents/<name>/default.toml`."
       placeholder: "zig"
     validations:
       required: true
@@ -56,5 +56,5 @@ body:
       options:
         - label: I searched existing agents and this doesn't already exist.
           required: true
-        - label: The name is lowercase letters, digits and hyphens, with no `:`, and the agent covers a field of work rather than one specialty of an existing agent.
+        - label: The name is lowercase letters, digits and hyphens, and the agent covers a field of work rather than one specialty of an existing agent.
           required: true

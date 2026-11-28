@@ -8,8 +8,9 @@ machine. Never commit credentials or machine-specific configuration.
 ## Repository structure
 
 ```text
-agents/<name>/config.toml        # Runnable agent manifest, one directory per agent
-agents/<name>/skills/<skill>/SKILL.md  # Owned skill: used by this agent only
+agents/<ns>/default.toml          # Base agent of the namespace <ns>, one directory per namespace
+agents/<ns>/<variant>.toml        # Optional variant of <ns>, tag <ns>:<variant>
+agents/<ns>/skills/<skill>/SKILL.md  # Owned skill: used by the base agent and every variant
 capabilities/<name>/            # Capability metadata and provider definitions
   config.toml                   # Auto-activation triggers and optional domains
   default.toml                  # Active provider, normally a relative symlink
@@ -17,15 +18,16 @@ capabilities/<name>/            # Capability metadata and provider definitions
 deps/<org>/<tool>.sh            # Idempotent macOS/Linux installer
 deps/<org>/<tool>.md            # Required companion documentation
 deps/lib/platform.sh            # Shared platform helpers; source, do not duplicate
-skills/<skill>/SKILL.md         # Shared skill: used by two or more agents
+skills/<skill>/SKILL.md         # Shared skill: used by two or more namespaces
 workflows/<name>.toml           # External multi-step workflow
 templates/                      # Canonical starting points for new artifacts
 scripts/check.sh                # Repository validation entrypoint
 ```
 
-Keep only agent directories in `agents/`, with no symlinks. An agent directory
-holds only `config.toml` and `skills/`. A skill sits at
-`agents/<agent>/skills/<skill>/SKILL.md` or `skills/<skill>/SKILL.md`, and its
+Keep only namespace directories in `agents/`, with no symlinks. A namespace
+directory holds `default.toml`, optional `<variant>.toml` files and `skills/`;
+it may hold variants without a `default.toml`. A skill sits at
+`agents/<ns>/skills/<skill>/SKILL.md` or `skills/<skill>/SKILL.md`, and its
 name exists once in the tap.
 
 ## Working protocol
@@ -47,12 +49,16 @@ unless the user explicitly asks.
 Location:
 
 ```text
-agents/<name>/config.toml
+agents/<name>/default.toml
 ```
 
-The directory name defines the runtime tag `<name>`: lowercase letters, digits, and
-hyphens, starting with a letter, with no `:`. `octomind run <name>` starts the
-agent. The `# Agent: <name>` header comment must equal the directory name. Each
+The directory name is the namespace `<ns>`: lowercase letters, digits, and
+hyphens, starting with a letter. `agents/<ns>/default.toml` is the base agent
+with the tag `<ns>`, and `octomind run <ns>` starts it; `<ns>:default` names the
+same agent. A variant is `agents/<ns>/<variant>.toml` with the tag
+`<ns>:<variant>`, started with `octomind run <ns>:<variant>`; its name follows
+the same format and is never `default`. The `# Agent:` header comment equals the
+tag: `<ns>` for the base agent and `<ns>:<variant>` for a variant. Each
 manifest requires a top-level `capabilities = [...]` array followed by exactly
 one `[[roles]]`. Do not set `name`; Octomind injects it from the tag.
 
@@ -62,13 +68,15 @@ capability (`octomind/orchestration`). It sends a task with
 agent by each agent's `# Title:` and `# Description:`, so write those in the
 words a task brief would use.
 
-A header comment lists the agents it may reach: `*` for every agent, or agent
-names separated by commas. Names must exist in `agents/`, appear once, and
-never be the agent's own name, and agents that list each other must not form a
-loop. An agent with the header needs `orchestration`.
+A base agent that declares `orchestration` reaches its own variants without a
+header. A header comment lists the other agents it may reach: `*` for every
+agent, or tags (`<ns>` or `<ns>:<variant>`) separated by commas. Tags must
+exist in `agents/`, appear once, and never be the agent's own tag, and agents
+that list each other must not form a loop. Only a base agent carries the header,
+never a variant. An agent with the header needs `orchestration`.
 
 ```toml
-# agents/marketer/config.toml
+# agents/marketer/default.toml
 # Uses: writer, seo
 ```
 
@@ -214,11 +222,11 @@ sections. Plain dependency documentation requires `Key Commands` and
 
 ## Skills
 
-A skill used by one agent is an owned skill. It lives at
-`agents/<agent>/skills/<skill>/SKILL.md` and belongs to that agent by location,
-so its frontmatter has no `domains` line. A skill used by two or more agents is
-a shared skill. It lives at `skills/<skill>/SKILL.md` and its `domains` line
-lists those agents. A shared skill without `domains` loads only by hand or from
+A skill used by one namespace is an owned skill. It lives at
+`agents/<ns>/skills/<skill>/SKILL.md` and belongs to that namespace by location:
+the base agent and every variant get it, and its frontmatter has no `domains`
+line. A skill used by two or more namespaces is a shared skill. It lives at
+`skills/<skill>/SKILL.md` and its `domains` line lists those namespaces. A shared skill without `domains` loads only by hand or from
 a workflow step. The directory and frontmatter `name` must match and use
 lowercase letters, digits, and hyphens. Skills are addressed by bare name, so a
 name exists once in the tap.
@@ -277,7 +285,7 @@ Ensure the key exactly matches the variable read by the child process.
 
 ## Validation checklist
 
-- [ ] Agent directory names match their `# Agent: <name>` headers, and each directory holds only `config.toml` and `skills/`.
+- [ ] Each `# Agent:` header equals its tag, and each agent directory holds only `.toml` agent files and `skills/`.
 - [ ] Every agent has capabilities and exactly one complete role.
 - [ ] Agent system prompts use canonical XML ordering and stable contents.
 - [ ] Every bare capability exists locally with `default.toml`; community ones use `octomind/<name>`.

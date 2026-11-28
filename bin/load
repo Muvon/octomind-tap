@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-bin/load <name>
+bin/load <ns>|<ns>:<variant>
 
 Resolves capabilities and outputs a merged, ready-to-use agent TOML to stdout.
 
 How it works:
-  1. Read agents/<name>/config.toml
+  1. Read agents/<ns>/default.toml (tag <ns>) or agents/<ns>/<variant>.toml (tag <ns>:<variant>)
   2. Extract top-level `capabilities = [...]` list
   3. For each capability, load capabilities/<name>/default.toml
   4. Merge:
@@ -20,7 +20,9 @@ import sys
 import re
 import os
 
-AGENT_NAME = re.compile(r'[a-z][a-z0-9-]*')
+AGENT_NAME = r'[a-z][a-z0-9-]*'
+BASE_VARIANT = "default"
+AGENT_TAG = re.compile(rf'({AGENT_NAME})(?::({AGENT_NAME}))?')
 
 # ---------------------------------------------------------------------------
 # Tiny TOML-subset parser — only what we need, no external deps
@@ -171,18 +173,21 @@ def merge_unique(base, additions):
 
 def main():
     if len(sys.argv) != 2:
-        print("Usage: bin/load <name>", file=sys.stderr)
+        print("Usage: bin/load <ns>|<ns>:<variant>", file=sys.stderr)
         sys.exit(1)
 
     # Resolve tap root (directory containing this script's parent)
     tap_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
     name = sys.argv[1]
-    if not AGENT_NAME.fullmatch(name):
-        print(f"ERROR: invalid agent name '{name}': tags are flat, a lowercase name without ':' (e.g. bin/load developer)", file=sys.stderr)
+    tag = AGENT_TAG.fullmatch(name)
+    # `<ns>:default` is the same agent as `<ns>`.
+    if not tag:
+        print(f"ERROR: invalid agent tag '{name}': write <ns> or <ns>:<variant>, lowercase letters, digits and hyphens (e.g. bin/load developer)", file=sys.stderr)
         sys.exit(1)
 
-    agent_path = os.path.join(tap_root, "agents", name, "config.toml")
+    manifest = f"{tag.group(2) or BASE_VARIANT}.toml"
+    agent_path = os.path.join(tap_root, "agents", tag.group(1), manifest)
     if not os.path.exists(agent_path):
         print(f"ERROR: agent not found: {agent_path}", file=sys.stderr)
         sys.exit(1)

@@ -80,12 +80,13 @@ octomind workflow plan-and-build --dry-run   # validate + print the plan, run no
 ## Public agents only
 
 Workflows fetched from a tap are validated to use **tap agents only** —
-every step's `role` must be the name of an agent installed via taps
-(e.g. `developer`, `writer`, `assistant`), never a name containing `:`. Where a
+every step's `role` must be the tag of an agent installed via taps
+(e.g. `developer`, `writer`, `assistant`). This tap has no variants, so its
+workflows name base agents. Where a
 step needs a specialty, it preloads skills with `skills = [...]`. A skill is
-named by its bare name wherever it is stored: under `agents/<agent>/skills/` (an
-owned skill, bound to that agent) or in `skills/` (a shared skill, bound to the
-agents in its `domains:`). The step's `role` must be an agent the skill is bound
+named by its bare name wherever it is stored: under `agents/<ns>/skills/` (an
+owned skill, bound to that namespace) or in `skills/` (a shared skill, bound to the
+namespaces in its `domains:`). The step's `role` must be an agent in a namespace the skill is bound
 to; a shared skill without `domains:` can be preloaded by any role. This keeps a
 public workflow portable: anyone with the same taps can run it. Local workflow
 files may use local config roles freely.

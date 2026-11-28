@@ -18,7 +18,7 @@ octomind run doctor         # The doctor agent
 octomind run                # The global assistant
 ```
 
-Each agent is a directory `agents/<name>/` whose `config.toml` defines:
+Each agent is a directory `agents/<name>/` whose `default.toml` defines:
 - **System prompt** — The AI's role, scope, working method and guards
 - **Capabilities** — The tools the agent needs, named as capabilities; the registry resolves each one to a provider and installs its dependencies before the session starts
 
@@ -31,7 +31,7 @@ Each agent is a directory `agents/<name>/` whose `config.toml` defines:
 The tap has one agent per field of work (`developer`, `doctor`, `lawyer`, `devops`, and so on). Each specialty inside a field is a skill: an owned skill under that agent's directory when only that agent uses it, or a shared skill in `skills/` when two or more agents do.
 
 - **A specialty of an existing field** (for example blood test interpretation for `doctor`) is a skill, stored under that agent as `agents/doctor/skills/<skill>/SKILL.md`. See [Contributing a Skill](#contributing-a-skill).
-- **A new field of work** with its own deliverables is an agent. Its name is the directory name: lowercase letters, digits and hyphens, never a `:`. Examples: `developer`, `devops`, `financial-planner`.
+- **A new field of work** with its own deliverables is an agent. Its name is the directory name and its tag: lowercase letters, digits and hyphens. This tap keeps one agent per field of work, so a variant file `agents/<name>/<variant>.toml` (tag `<name>:<variant>`) belongs in a private tap. Examples: `developer`, `devops`, `financial-planner`.
 
 An agent starts copies of itself or hands tasks to another agent only when it declares the `orchestration` capability. Delegation matches a task to an agent from its `# Title:` and `# Description:` lines, so the description must say what the agent takes in and what it returns. The rules are in [ARCHITECTURE.md](ARCHITECTURE.md#agents-skills-and-delegation).
 
@@ -39,15 +39,15 @@ An agent starts copies of itself or hands tasks to another agent only when it de
 
 ```bash
 mkdir agents/<name>
-cp templates/agent.toml agents/<name>/config.toml
+cp templates/agent.toml agents/<name>/default.toml
 ```
 
 ### 3. Edit Your Agent
 
-Open `config.toml` and customize:
+Open `default.toml` and customize:
 
 ```toml
-# agents/<name>/config.toml
+# agents/<name>/default.toml
 # Agent: <name>
 # Title: Blood Test Interpreter
 # Description: Explains blood test results (CBC, metabolic panels, lipids) in plain language, flags values to discuss with a clinician and never diagnoses.
@@ -93,7 +93,7 @@ That's it! Your agent is ready for review.
 ### Required Fields
 
 ```toml
-# agents/<name>/config.toml
+# agents/<name>/default.toml
 # Agent: <name>
 # Title: <Short Agent Title (5–60 chars)>
 # Description: <What the agent does (120–155 chars)>
@@ -280,7 +280,7 @@ Do not set `temperature`, `top_p` or `top_k`. Octomind ignores them and sends no
 ### Minimal Agent
 
 ```toml
-# agents/<name>/config.toml
+# agents/<name>/default.toml
 # Agent: notes
 # Title: Note-Taking Assistant
 # Description: Organizes notes, writes summaries and structures information from the files you point it at, keeping your wording and never inventing content.
@@ -306,7 +306,7 @@ You are a note-taking assistant. You organize thoughts, write summaries and stru
 An agent that needs a toolchain declares the capability that installs it. The capability's provider file requires the dependency script.
 
 ```toml
-# agents/<name>/config.toml
+# agents/<name>/default.toml
 # Agent: rustacean
 # Title: Rust Developer
 # Description: Builds, tests and reviews Rust crates with cargo, clippy and rustfmt, and reports the exact command output behind every claim it makes.
@@ -342,7 +342,7 @@ You are a Rust development specialist.
 
 - **GitHub Issues** — Ask questions, report bugs, request agents
 - **GitHub Discussions** — "What specialist agent would you run if it existed?"
-- **Existing Agents** — Study `agents/doctor/config.toml` as a reference
+- **Existing Agents** — Study `agents/doctor/default.toml` as a reference
 
 ---
 
@@ -362,7 +362,7 @@ Skills are a different kind of contribution from agents. Where an agent covers a
 
 ### What is a skill?
 
-A skill is a `SKILL.md` file in its own directory. A skill that one agent uses is an owned skill, stored at `agents/<agent>/skills/<name>/SKILL.md`; it belongs to that agent by location. A skill that two or more agents use is a shared skill, stored at `skills/<name>/SKILL.md` and bound to those agents by `domains:`. A skill name is used once in the whole tap. When activated in an Octomind session, its full content is injected into the AI's context — giving it specific conventions, workflows, checklists, or decision guides for a particular task.
+A skill is a `SKILL.md` file in its own directory. A skill that one namespace uses is an owned skill, stored at `agents/<ns>/skills/<name>/SKILL.md`; it belongs to that namespace by location, so the base agent and every variant get it. A skill that two or more namespaces use is a shared skill, stored at `skills/<name>/SKILL.md` and bound to those namespaces by `domains:`. A skill name is used once in the whole tap. When activated in an Octomind session, its full content is injected into the AI's context — giving it specific conventions, workflows, checklists, or decision guides for a particular task.
 
 **Good skill candidates:**
 - Coding conventions for a language or framework
@@ -382,7 +382,7 @@ Note: Skills **can** declare `capabilities` to auto-load MCP servers when activa
 
 | | Skill | Agent |
 |---|---|---|
-| **File** | `agents/<agent>/skills/<name>/SKILL.md` or `skills/<name>/SKILL.md` | `agents/<name>/config.toml` |
+| **File** | `agents/<agent>/skills/<name>/SKILL.md` or `skills/<name>/SKILL.md` | `agents/<name>/default.toml` |
 | **Activation** | Manual via `skill` tool, or auto via `rules:` frontmatter field | `octomind run <name>` |
 | **What it provides** | Domain knowledge + capabilities + validation | Full role: model, tools, system prompt |
 | **Composable** | Yes — multiple skills per session | No — one role per session |

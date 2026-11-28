@@ -6,13 +6,13 @@ Thanks for contributing! This repo is the community registry of agent manifests 
 
 ## What is a manifest?
 
-A manifest is a TOML file at `agents/<name>/config.toml`. The agent's own skills sit beside it under `agents/<name>/skills/`. When a user runs:
+A manifest is a TOML file at `agents/<name>/default.toml`. The agent's own skills sit beside it under `agents/<name>/skills/`. When a user runs:
 
 ```bash
 octomind run doctor
 ```
 
-Octomind fetches `agents/doctor/config.toml` from this repo and merges it into their config — no installation, no global state.
+Octomind fetches `agents/doctor/default.toml` from this repo and merges it into their config — no installation, no global state.
 
 ---
 
@@ -20,20 +20,20 @@ Octomind fetches `agents/doctor/config.toml` from this repo and merges it into t
 
 ### 1. Pick a name
 
-The tap has one agent per field of work, for example `developer`, `devops`, `analyst`, `security-analyst`. The name is the directory name: lowercase letters, digits and hyphens, never a `:`.
+The tap has one agent per field of work, for example `developer`, `devops`, `analyst`, `security-analyst`. The name is the directory name and the tag: lowercase letters, digits and hyphens. This tap keeps one agent per field of work, so variants (`agents/<name>/<variant>.toml`, tag `<name>:<variant>`) belong in a private tap.
 
-A specialty of an existing field (for example blood test interpretation for `doctor`) is a skill, not a new agent. A skill that only one agent uses goes at `agents/<agent>/skills/<name>/SKILL.md`; a skill that two or more agents use goes at `skills/<name>/SKILL.md` with `domains:` naming them. Add an agent only for a new field of work.
+A specialty of an existing field (for example blood test interpretation for `doctor`) is a skill, not a new agent. A skill that only one namespace uses goes at `agents/<ns>/skills/<name>/SKILL.md`; a skill that two or more namespaces use goes at `skills/<name>/SKILL.md` with `domains:` naming them. Add an agent only for a new field of work.
 
 ### 2. Create the manifest
 
 ```
-agents/<name>/config.toml
+agents/<name>/default.toml
 ```
 
 Start from `templates/agent.toml`. The minimum:
 
 ```toml
-# agents/<name>/config.toml
+# agents/<name>/default.toml
 # Agent: <name>
 # Title: Short agent title
 # Description: What this agent does, in 120–155 characters.
@@ -41,7 +41,7 @@ Start from `templates/agent.toml`. The minimum:
 capabilities = ["core"]
 
 [[roles]]
-# name is NOT set here — Octomind injects it from the directory name at runtime.
+# name is NOT set here — Octomind injects it from the tag at runtime.
 welcome = "<Short greeting>. Working in {{CWD}}"
 system = """
 <identity>
@@ -85,9 +85,9 @@ Include a short description of:
 
 ## Manifest rules
 
-- **No `name` field** — it is injected from the directory name at runtime. Never set it.
+- **No `name` field** — it is injected from the tag at runtime. Never set it.
 - **One `[[roles]]` entry per file** — no multi-role manifests.
-- **File path is `agents/<name>/config.toml`** — no symlinks and no other files directly under `agents/`; the agent directory holds only `config.toml` and `skills/`; the `# Agent:` header equals the directory name.
+- **File path is `agents/<name>/default.toml`** — no symlinks and no other files directly under `agents/`; the agent directory holds only `default.toml` and `skills/`; the `# Agent:` header equals the directory name.
 - **Required fields**: top-level `capabilities`, and in the role `system` and `welcome`. Do not set `temperature`, `top_p` or `top_k`: they are deprecated and Octomind ignores them.
 - **No tool wiring** — no `[deps]`, `[roles.mcp]` or `[[mcp.servers]]` in a manifest.
 - **Use `{{INPUT:KEY}}` for secrets** in capability files — never hardcode tokens or credentials.
@@ -121,7 +121,7 @@ Include a short description of:
 
 ## PR checklist
 
-- [ ] File is at `agents/<name>/config.toml`
+- [ ] File is at `agents/<name>/default.toml`
 - [ ] No `name` field in `[[roles]]`
 - [ ] Required fields present: `capabilities`, `system`, `welcome`; no `temperature`, `top_p`, `top_k`
 - [ ] Tested locally with `octomind run <name>`
