@@ -32,17 +32,17 @@ Two layers stack. Static comes from the role's manifest at boot; dynamic is what
 
 ### Tap resolution
 
-A tap is a Git repo or local directory holding `agents/<domain>/<spec>.toml`, `capabilities/<name>/`, `skills/<name>/`, `deps/<org>/<tool>.sh`, `workflows/<name>.toml`, and optionally `plugins/`. `octomind tap user/repo` clones `github.com/user/octomind-repo` into `<data_dir>/taps/user/octomind-repo`; `octomind tap user/repo <path>` links a local directory instead. The built-in `muvon/tap` is always present as the last-priority fallback.
+A tap is a Git repo or local directory holding `agents/<name>.toml`, `capabilities/<name>/`, `skills/<name>/`, `deps/<org>/<tool>.sh`, `workflows/<name>.toml`, and optionally `plugins/`. `octomind tap user/repo` clones `github.com/user/octomind-repo` into `<data_dir>/taps/user/octomind-repo`; `octomind tap user/repo <path>` links a local directory instead. The built-in tap (`[registry].tap`, default `muvon/tap`, at `[registry].ref`) is always loaded last, after the taps the user added.
 
 Priority: user taps in the order added, then the built-in tap. The first tap providing a tag, skill, capability, or workflow wins. A capability can be pinned explicitly: `octomind/<name>` for the baseline tap, `<org>/<name>` for a connected tap.
 
-Running a `domain:spec` tag: fetch the manifest (cached per `[registry].cache_ttl_hours`), expand `capabilities = [...]`, resolve `{{INPUT:KEY}}` (persistent store `inputs.toml`, prompted once) and `{{ENV:KEY}}` (environment, else prompted and saved to `./.env`), run `[deps] require` scripts before MCP init, inject the tag as the role name, merge into config, start the session. In non-interactive child runs a missing value is an error, not a prompt.
+Running a tap agent tag: fetch the manifest (cached per `[registry].cache_ttl_hours`), expand `capabilities = [...]`, resolve `{{INPUT:KEY}}` (persistent store `inputs.toml`, prompted once) and `{{ENV:KEY}}` (environment, else prompted and saved to `./.env`), run `[deps] require` scripts before MCP init, inject the tag as the role name, merge into config, start the session. In non-interactive child runs a missing value is an error, not a prompt.
 
-### Bare domains and the chief
+### Agent tags
 
-A domain's orchestrator is the agent that knows the other agents of its domain and hands work to them. It is named `chief`, so its tag is `<domain>:chief`. A TAG with no colon is looked up as a local `[[roles]]` entry first, so a local role always wins over a domain of the same name. If no role matches, the name is read as a domain and runs `<domain>:chief`: `octomind run developer` starts `developer:chief`. If the domain has no `chief`, the run fails with an error that lists the domain's agents. `domain:spec` always runs that exact agent, and plain `octomind run` starts `assistant:chief`, the global assistant. The same rules apply to `octomind acp`, `octomind server`, and `/role`. The `tap` tool takes no role: it matches the prompt to a specialist. Workflows still need full two-part tags.
+Each agent is one manifest, `agents/<name>.toml`, and its tag is the file name; no tag contains `:`, and a tag written with `:` is an error that shows the flat form. A TAG is looked up as a local `[[roles]]` entry first, so a local role always wins over a tap agent of the same name. If no role matches, the name is read as a tap agent: `octomind run developer` starts the `developer` agent. Plain `octomind run` starts `assistant`, the global assistant. The same rules apply to `octomind acp`, `octomind server`, and `/role`. Without a `role`, `tap` matches the prompt to an agent the caller may reach.
 
-`{{SPECIALISTS}}` and `{{USES}}` in a tap manifest's `system` are removed. Octomind 0.71 and older expanded them to lists of agents; newer versions do not expand them, so one left in a manifest reaches the model as written. The tap registry lint rejects them. A `chief` sends the task with `tap(action="run", prompt=…)` and the runtime matches a specialist from the brief. It can match the other agents of its own domain plus what its `# Uses:` header declares: a bare domain (that domain's `chief`), a full tag (that agent), or `*` (the `chief` of every other domain, global assistant only). The header is validated at load. A caller that is not a tap agent reaches every installed agent. `{{CWD}}` and `{{DATE}}` change every session, so tap manifests put them in `welcome` only.
+`{{SPECIALISTS}}` and `{{USES}}` in a tap manifest's `system` are not expanded, so one left in a manifest reaches the model as written. The tap registry lint rejects them. An agent that declares `orchestration` sends a task with `tap(action="run", prompt=…)`; the child is a copy of the same agent in a fresh session when `role` is the caller's own name or when the caller has no `# Uses:` header and sends no `role`; a copy cannot start further copies. `readonly: true` starts a read-only copy: only tools whose MCP `readOnlyHint` is true are offered and executed, a tool with no hint counts as mutable, shell runners are not offered, and a read-only session cannot delegate. The global assistant declares `# Uses: *` and reaches every other agent. A caller that is not a tap agent reaches every installed agent. `{{CWD}}` and `{{DATE}}` change every session, so tap manifests put them in `welcome` only.
 
 ### Built-in tools
 
@@ -54,9 +54,11 @@ A domain's orchestrator is the agent that knows the other agents of its domain a
 | `agent` | `agent_<name>` per `[[agents]]` entry | `agent` capability |
 | `local` | scripts in `.agents/tools/` | always, per workdir |
 
+In this tap only `octomind` declares `runtime` and only `assistant` declares `agent`.
+
 There is no plan tool: a plugin sets the plan, and `/plan` only displays it.
 
-`tap` actions: `run` (background child; `prompt`, optional `workdir`; no role is passed: the runtime compares the prompt with the `# Title:` and `# Description:` of the agents the caller may reach, which are the other agents of its own domain plus what its `# Uses:` header declares, or every installed agent when the caller is not a tap agent, and starts the closest one if it is clearly ahead. With the Besydr plugin connected, Besydr's decision model confirms or overrules the pick; when it gives no answer, the pick stands. With no match it returns "No specialist matches this task" and starts nothing. The result is `{id, role, title, workdir, message}`; pass `session=<id>` to continue a run, otherwise the child starts with zero context), `list`, `stop`, `send`, `capability` (push an intent through the auto-activation path), and `workflow` (list, show, or run a tap workflow in the background). Run ids look like `tap-developer-general-a3f1c2`; results arrive in a later turn.
+`tap` actions: `run` (background child; `prompt`, optional `workdir`, optional `role` (the caller's own name starts a copy of itself); without a `role` the runtime compares the prompt with the `# Title:` and `# Description:` of the agents the caller may reach, which are the agents its `# Uses:` header declares, or every installed agent when the caller is not a tap agent, and starts the closest one if it is clearly ahead. A tap agent with no `# Uses:` header and no `role` starts a copy of itself. With the Besydr plugin connected, Besydr's decision model confirms or overrules the pick; when it gives no answer, the pick stands. With no match it starts nothing and reports that no agent matches the task. The result is `{id, role, title, workdir, message}`; pass `session=<id>` to continue a run, otherwise the child starts with zero context), `list`, `stop`, `send`, `capability` (push an intent through the auto-activation path), and `workflow` (list, show, or run a tap workflow in the background). Run ids look like `tap-developer-a3f1c2`; results arrive in a later turn.
 
 ### Capability anatomy
 
@@ -78,7 +80,7 @@ The embedding model is `muvon/octomind-embed` (int8 ONNX). The margin gate is wh
 
 ### Domain gating
 
-The session domain is the part before the colon of the active role. An empty `domains` list means universal; a non-empty one restricts the capability. The gate applies everywhere — `list`, `discover`, auto-activation, `enable`, and `OCTOMIND_CAPABILITIES` — with no bypass. With no domain set, only universal capabilities survive.
+The session domain is the name of the active agent. An empty `domains` list means universal; a non-empty one restricts the capability. The gate applies everywhere — `list`, `discover`, auto-activation, `enable`, and `OCTOMIND_CAPABILITIES` — with no bypass. With no domain set, only universal capabilities survive.
 
 ### LRU eviction
 

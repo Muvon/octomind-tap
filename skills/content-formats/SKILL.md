@@ -4,10 +4,9 @@ title: "Blog Formats: Choosing by Search Intent"
 description: "Blog post formats by search intent: how-to, listicle, comparison, review, guide, case study. Use when planning or drafting a post meant to rank."
 license: Apache-2.0
 compatibility: "Web search and page fetch for competitor and source pages; Google-only results features need a user screenshot, Search Console data, or a SERP-data tool."
-domains: content
+domains: writer
 rules:
-  - session(article)
-  - session(blog)
+  - match(\b(write|draft|plan|outline|refresh|update)\s+(a|an|the|my|this)\s+(long[-\s]form\s+)?(article|blog\s+post)\b)
   - content(listicle)
   - content(glossary)
   - content(pillar)

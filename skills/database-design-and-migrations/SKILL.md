@@ -4,7 +4,7 @@ title: "Database Design and Migrations"
 description: "Key and index rules for application schemas, plus zero-downtime migration patterns and lock levels for PostgreSQL, MySQL and SQLite. Use for DDL work."
 license: Apache-2.0
 compatibility: "Needs a SQL client or database MCP tool for live checks; works from schema files alone."
-domains: data
+domains: analyst
 rules:
   - match((?i)\b(schema|table|database|data\s+model)\s+(design|migrations?|changes?)\b)
   - match((?i)\b(design|model)\s+(a\s+|an\s+|the\s+|my\s+|our\s+)?(database\s+|db\s+)?(schema|tables?)\b)

@@ -10,7 +10,7 @@ description = "Reviews the current unstaged changes against the request, verifie
 # ── 1. Review ────────────────────────────────────────────────────────────────
 [[steps]]
 name    = "review"
-role    = "developer:general"
+role    = "developer"
 session = "fresh"
 prompt  = """
 Review the current unstaged git changes against this request. Read beyond the
@@ -39,7 +39,7 @@ If you find nothing, output exactly: NO FINDINGS
 # ── 2. Verify (independent precision gate) ───────────────────────────────────
 [[steps]]
 name    = "verify"
-role    = "developer:general"
+role    = "developer"
 session = "fresh"
 prompt  = """
 You are an independent verifier. Re-check each finding below against the actual
@@ -76,7 +76,8 @@ on_no_match = ["fixes"]
 
   [[steps.run]]
   name    = "approve"
-  role    = "developer:brief"
+  role    = "developer"
+  skills  = ["developer-diff-briefing"]
   session = "fresh"
   prompt  = """
 The change is approved — only non-blocking findings remain. Write a short
@@ -90,7 +91,7 @@ findings as optional follow-ups.
 
   [[steps.run]]
   name    = "fixes"
-  role    = "developer:general"
+  role    = "developer"
   session = "fresh"
   prompt  = """
 The change needs work — at least one Blocking finding remains. Turn the verified

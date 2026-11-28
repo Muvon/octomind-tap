@@ -4,7 +4,7 @@ title: "Content Humanization"
 description: "Revise stiff or formulaic writing with an eight-dimension diagnostic and seven-pass edit, keeping facts and voice. Use when copy reads machine-written."
 license: Apache-2.0
 compatibility: "A draft and its intended audience/platform; source records and author samples when available."
-domains: content
+domains: writer producer
 rules:
   - content(humanize)
   - content(ai-generated)

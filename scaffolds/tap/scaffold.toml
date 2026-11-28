@@ -10,15 +10,9 @@ required_tokens = [
   "__TAP_OWNER__",
   "__TAP_NAME__",
   "__TAP_REPOSITORY__",
-  "__AGENT_DOMAIN__",
-  "__AGENT_SPEC__",
+  "__AGENT_NAME__",
   "__YEAR__",
 ]
-
-# Octomind releases that let `--agent` choose the starter's spec read this default.
-# Current releases always name the starter `chief` and ignore it.
-[defaults]
-agent_spec = "chief"
 
 [post_create]
 executable = [

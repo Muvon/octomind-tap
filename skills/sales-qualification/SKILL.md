@@ -4,14 +4,15 @@ title: "Sales Qualification – MEDDPICC, BANT, SPIN, SPICED"
 description: "Sales qualification frameworks MEDDPICC, BANT, SPIN and SPICED: when to use each and exit criteria per deal stage. Use when scoring or advancing a deal."
 license: Apache-2.0
 compatibility: "Environment-independent. Works with any CRM or a plain notes file."
-domains: sales
+domains: sales-rep
 rules:
   - content(meddpicc)
   - content(meddic)
   - content(bant)
   - content(spiced)
-  - content(qualification) content(deal)
-  - content(qualify) content(lead)
+  - match((?i)\b(economic buyer|paper process|mutual action plan)\b)
+  - match((?i)\b(\d+% off|indecision|think it over|brush-?off|just send (me )?a (proposal|quote)|circle back)\b)
+  - match((?i)\b(discovery|demo)s?\b.{0,40}\b(call|meeting|questions?|recap|feature tour)\b|\b(spin|gap selling)\b)
 ---
 
 ## Overview
@@ -93,12 +94,12 @@ A clean disqualify is a valid exit. Write the reason in the CRM so the lead is n
 | SPICED Critical Event | Decision Process dates |
 | SPICED Decision | Decision Process, Economic Buyer |
 
-### Who calls this skill
+### Where it applies
 
-- Discovery coaching: choose the framework and run the conversation.
-- Closing coaching: check the paper process, the economic buyer and the champion before advising a move.
-- Sales operations: map each element to a CRM field and enforce the stage gates.
-- Sales lead: diagnose the real stage of a deal.
+- Discovery: choose the framework and run the conversation.
+- Closing: check the paper process, the economic buyer and the champion before advising a move.
+- CRM work: map each element to a CRM field and enforce the stage gates.
+- Pipeline review: diagnose the real stage of a deal.
 
 ## Examples
 

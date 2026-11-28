@@ -13,4 +13,4 @@ triggers = [
 	"make an ai voice read this",
 ]
 
-domains = ["video", "content", "marketing"]
+domains = ["producer", "writer", "marketer"]

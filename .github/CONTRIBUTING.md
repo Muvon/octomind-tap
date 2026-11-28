@@ -6,62 +6,51 @@ Thanks for contributing! This repo is the community registry of agent manifests 
 
 ## What is a manifest?
 
-A manifest is a single TOML file at `agents/<domain>/<spec>.toml`. When a user runs:
+A manifest is a single TOML file at `agents/<name>.toml`. When a user runs:
 
 ```bash
-octomind run doctor:blood
+octomind run doctor
 ```
 
-Octomind fetches `agents/doctor/blood.toml` from this repo and merges it into their config — no installation, no global state.
+Octomind fetches `agents/doctor.toml` from this repo and merges it into their config — no installation, no global state.
 
 ---
 
 ## Adding a new agent
 
-### 1. Pick a tag
+### 1. Pick a name
 
-Follow the naming convention: `domain:spec` or `domain:spec-sub-spec`.
+The tap has one agent per field of work, for example `developer`, `devops`, `data`, `security`. The name is the file name: lowercase letters, digits and hyphens, never a `:`.
 
-| Domain | Use for |
-|--------|---------|
-| `developer` | Language-specific coding assistants |
-| `devops` | Infrastructure, CI/CD, containers, cloud |
-| `data` | Data engineering, ML, analytics |
-| `security` | Security review, pen-testing, auditing |
-| `docs` | Documentation, technical writing |
-| `review` | Code review, PR analysis |
-
-New domains are welcome — be consistent and descriptive.
+A specialty of an existing field (for example blood test interpretation for `doctor`) is a skill at `skills/<name>/SKILL.md` with `domains: <agent name>`, not a new agent. Add an agent only for a new field of work.
 
 ### 2. Create the file
 
 ```
-agents/<domain>/<spec>.toml
+agents/<name>.toml
 ```
 
-Use this template:
+Start from `templates/agent.toml`. The minimum:
 
 ```toml
-# agents/<domain>/<spec>.toml
-# Agent: <domain>:<spec>
-# Description: One-line description of what this agent does.
+# agents/<name>.toml
+# Agent: <name>
+# Title: Short agent title
+# Description: What this agent does, in 120–155 characters.
+
+capabilities = ["core"]
 
 [[roles]]
-# name is NOT set here — Octomind injects it automatically from the tag at runtime.
+# name is NOT set here — Octomind injects it from the file name at runtime.
+welcome = "<Short greeting>. Working in {{CWD}}"
 system = """
+<identity>
 <Your system prompt here.>
-
-Working directory: {{CWD}}
+</identity>
 """
-welcome = "<Emoji> <Short greeting>. Working in {{CWD}}"
-temperature = 0.3
-top_p = 0.9
-top_k = 0
-
-[roles.mcp]
-server_refs = ["core", "octofs", "agent"]
-allowed_tools = ["core:*", "octofs:*", "agent_*"]
 ```
+
+Name capabilities only. Tool wiring (`[deps]`, `[roles.mcp]`, `[[mcp.servers]]`) lives in the capability's provider file, never in a manifest.
 
 ### 3. Test locally
 
@@ -70,7 +59,7 @@ allowed_tools = ["core:*", "octofs:*", "agent_*"]
 octomind tap muvon/tap /path/to/octomind-tap
 
 # Run your agent
-octomind run <domain>:<spec>
+octomind run <name>
 
 # Remove the local override when done
 octomind untap muvon/tap
@@ -89,21 +78,20 @@ This runs the manifest linter automatically before every commit.
 
 Include a short description of:
 - What the agent does
-- Which tools/MCP servers it uses
+- Which capabilities it declares
 - Any model override and why
 
 ---
 
 ## Manifest rules
 
-- **No `name` field** — it is injected from the tag at runtime. Never set it.
+- **No `name` field** — it is injected from the file name at runtime. Never set it.
 - **One `[[roles]]` entry per file** — no multi-role manifests.
-- **File path must match the tag** — `developer:rust` → `agents/developer/rust.toml`.
-- **Sub-specs use hyphens** — `developer:rust-nightly` → `agents/developer/rust-nightly.toml`.
-- **Required fields**: `system`, `welcome`, `temperature`, `top_p`, `top_k`.
-- **Use `{{INPUT:KEY}}` for secrets** — never hardcode tokens or credentials.
-- **Use `{{CWD}}` over hardcoded paths** — manifests run on any machine.
-- **Docker for zero-install tooling** — wrap language servers or CLIs in a Docker MCP server.
+- **File path is `agents/<name>.toml`** — directly under `agents/`, no subdirectories or symlinks; the `# Agent:` header equals the file name.
+- **Required fields**: top-level `capabilities`, and in the role `system` and `welcome`. Do not set `temperature`, `top_p` or `top_k`: they are deprecated and Octomind ignores them.
+- **No tool wiring** — no `[deps]`, `[roles.mcp]` or `[[mcp.servers]]` in a manifest.
+- **Use `{{INPUT:KEY}}` for secrets** in capability files — never hardcode tokens or credentials.
+- **Use `{{CWD}}` in `welcome` only** — it breaks prompt caching inside `system`.
 
 ---
 
@@ -124,17 +112,17 @@ Include a short description of:
 
 | `server_refs` | Tools provided |
 |---------------|----------------|
-| `core` | `plan` |
+| `core` | `recall` |
 | `octofs` | `view`, `text_editor`, `batch_edit`, `extract_lines`, `shell`, `workdir` |
-| `agent` | `agent_*` (delegate to configured layers) |
+| `agent` | `agent_*` (delegate to configured sub-agents) |
 | `octocode` | `semantic_search`, `remember`, `memorize`, `view_signatures`, `graphrag` and more |
 
 ---
 
 ## PR checklist
 
-- [ ] File is at `agents/<domain>/<spec>.toml`
+- [ ] File is at `agents/<name>.toml`
 - [ ] No `name` field in `[[roles]]`
-- [ ] All required fields present: `system`, `welcome`, `temperature`, `top_p`, `top_k`
-- [ ] Tested locally with `octomind run <domain>:<spec>`
+- [ ] Required fields present: `capabilities`, `system`, `welcome`; no `temperature`, `top_p`, `top_k`
+- [ ] Tested locally with `octomind run <name>`
 - [ ] `pre-commit run --all-files` passes

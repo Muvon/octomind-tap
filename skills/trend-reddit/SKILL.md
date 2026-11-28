@@ -5,10 +5,10 @@ description: "Harvest Reddit conversations by subreddit into a brief with cited 
 license: Apache-2.0
 compatibility: "Requires browser and network access; some Reddit surfaces require an authenticated session."
 capabilities: browser memory-read memory-write
-domains: browser
+domains: operator
 rules:
-  - session(trend) content(reddit)
-  - session(trend) content(subreddit)
+  - content(reddit) match((?i)\b(trend\w*|harvest\w*|viral|what\W?s\s+(moving|hot|popular))\b)
+  - content(subreddit) match((?i)\b(trend\w*|harvest\w*|viral|what\W?s\s+(moving|hot|popular))\b)
   - match(\breddit\s+(trend|trends|harvest|brief|post)\b)
   - match(\b(harvest|scan|analyze)\s+reddit\b)
   - match(\br/[a-zA-Z0-9_]+\b)

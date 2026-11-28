@@ -81,7 +81,20 @@ for n in all_names:
         errors.append(f"DUPLICATE_STEP: {n!r} is used more than once")
     seen.add(n)
 
-role_re = re.compile(r"^[a-z0-9-]+:[a-z0-9-]+$")
+
+def skill_domains(skill_file):
+    """Agent names in the `domains:` line of the SKILL.md frontmatter; empty when absent."""
+    lines = skill_file.read_text().splitlines()
+    if not lines or lines[0].strip() != "---":
+        return set()
+    for line in lines[1:]:
+        if line.strip() == "---":
+            break
+        if line.startswith("domains:"):
+            return set(line[len("domains:"):].split())
+    return set()
+
+role_re = re.compile(r"^[a-z][a-z0-9-]*$")
 for s in leaves:
     sname = s.get("name")
     if not s.get("prompt"):
@@ -90,14 +103,21 @@ for s in leaves:
     role = s.get("role")
     if not role:
         errors.append(f"MISSING_ROLE: step {sname!r}")
-    elif not role_re.match(role):
-        errors.append(f"ROLE_FORMAT: step {sname!r} role {role!r} must be a public category:variant tag")
+    elif ":" in role or not role_re.match(role):
+        errors.append(f"ROLE_FORMAT: step {sname!r} role {role!r} must be a flat agent name such as 'seo': tags are flat, no ':'")
     else:
-        domain, spec = role.split(":")
-        agent_file = repo_root / "agents" / domain / f"{spec}.toml"
-        # A symlink is an alias for a renamed agent; workflows must name the real one.
+        agent_file = repo_root / "agents" / f"{role}.toml"
         if not agent_file.is_file() or agent_file.is_symlink():
-            errors.append(f"ROLE_NOT_FOUND: step {sname!r} role {role!r} has no agents/{domain}/{spec}.toml")
+            errors.append(f"ROLE_NOT_FOUND: step {sname!r} role {role!r} has no agents/{role}.toml")
+    for skill in s.get("skills") or []:
+        skill_file = repo_root / "skills" / skill / "SKILL.md"
+        if not skill_file.is_file():
+            errors.append(f"SKILL_NOT_FOUND: step {sname!r} skill {skill!r} has no skills/{skill}/SKILL.md")
+        elif role:
+            domains = skill_domains(skill_file)
+            # A skill without domains is manual-only: any role may preload it.
+            if domains and role not in domains:
+                errors.append(f"SKILL_DOMAIN_MISMATCH: step {sname!r} role {role!r} is not in the domains of skill {skill!r} ({' '.join(sorted(domains))})")
 
 placeholder_re = re.compile(r"\{\{\s*([A-Za-z_][A-Za-z0-9_-]*)(?::[^}]*)?\s*\}\}")
 for s in leaves:

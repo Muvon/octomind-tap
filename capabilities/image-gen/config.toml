@@ -13,4 +13,4 @@ triggers = [
 	"make a hero image for the slide",
 ]
 
-domains = ["content", "video", "design", "marketing", "launch"]
+domains = ["writer", "producer", "designer", "marketer", "founder"]

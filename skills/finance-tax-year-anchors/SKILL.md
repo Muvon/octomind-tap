@@ -4,7 +4,7 @@ title: "401(k), IRA & Standard Deduction Limits by Tax Year"
 description: "Dated US and UK figures by tax year: contribution limits, deductions, 1099 thresholds, UK rates and allowances. Use to quote or check a limit."
 license: Apache-2.0
 compatibility: "Needs web search or fetch to confirm a year not listed. Works offline for the listed years."
-domains: finance
+domains: financial-planner
 rules:
   - match((?i)(401\(?k\)?|\bira\b|\bhsa\b).{0,40}(limit|max|cap|contribut))
   - match((?i)(limit|max|cap|contribut).{0,40}(401\(?k\)?|\bira\b|\bhsa\b))

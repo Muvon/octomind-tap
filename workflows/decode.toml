@@ -22,7 +22,7 @@ max_cost = 3.0
 # ── 1. Intake + classify ─────────────────────────────────────────────────────
 [[steps]]
 name    = "classify"
-role    = "assistant:general"
+role    = "assistant"
 session = "fresh"
 retries = 2
 prompt  = """
@@ -68,7 +68,8 @@ on_match    = ["medical"]
 
   [[steps.run]]
   name    = "medical"
-  role    = "doctor:billing"
+  role    = "doctor"
+  skills  = ["doctor-medical-billing", "doctor-medical-paperwork"]
   session = "fresh"
   retries = 2
   prompt  = """
@@ -97,7 +98,8 @@ on_match    = ["insurance"]
 
   [[steps.run]]
   name    = "insurance"
-  role    = "finance:insurance"
+  role    = "financial-planner"
+  skills  = ["finance-insurance-claims"]
   session = "fresh"
   retries = 2
   prompt  = """
@@ -124,7 +126,8 @@ on_match    = ["tax"]
 
   [[steps.run]]
   name    = "tax"
-  role    = "finance:tax"
+  role    = "financial-planner"
+  skills  = ["finance-personal-tax", "finance-tax-year-anchors", "finance-self-employed-tax", "finance-equity-compensation"]
   session = "fresh"
   retries = 2
   prompt  = """
@@ -151,7 +154,8 @@ on_match    = ["property"]
 
   [[steps.run]]
   name    = "property"
-  role    = "home:realty"
+  role    = "financial-planner"
+  skills  = ["home-rent-vs-buy"]
   session = "fresh"
   retries = 2
   prompt  = """
@@ -178,7 +182,8 @@ on_match    = ["consumer"]
 
   [[steps.run]]
   name    = "consumer"
-  role    = "lawyer:consumer"
+  role    = "lawyer"
+  skills  = ["lawyer-consumer-disputes"]
   session = "fresh"
   retries = 2
   prompt  = """
@@ -206,7 +211,7 @@ on_match    = ["general"]
 
   [[steps.run]]
   name    = "general"
-  role    = "assistant:general"
+  role    = "assistant"
   session = "fresh"
   retries = 2
   prompt  = """
@@ -239,7 +244,8 @@ exit_when      = { output = "verify", matches = '(?m)^VERDICT: VERIFIED' }
 
   [[steps.run]]
   name    = "compose"
-  role    = "assistant:writer"
+  role    = "assistant"
+  skills  = ["assistant-everyday-writing"]
   session = "continue"
   prompt  = """
 If the intake below starts with `INTAKE-BLOCKED:`, output that exact line and
@@ -286,7 +292,8 @@ again. Output only the decode — no preamble, no commentary.
 
   [[steps.run]]
   name    = "verify"
-  role    = "ai:evals"
+  role    = "ai-engineer"
+  skills  = ["ai-evals-design"]
   session = "fresh"
   retries = 2
   prompt  = """
@@ -324,7 +331,8 @@ Critique first, then end with exactly one line: VERDICT: VERIFIED or VERDICT: RE
 # ── 4. Deliver ───────────────────────────────────────────────────────────────
 [[steps]]
 name    = "deliver"
-role    = "assistant:writer"
+role    = "assistant"
+skills  = ["assistant-everyday-writing"]
 session = "fresh"
 prompt  = """
 If the decode below is a single `INTAKE-BLOCKED:` line, tell the user what could

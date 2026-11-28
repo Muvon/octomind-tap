@@ -1,0 +1,120 @@
+---
+name: ai-governance
+title: "AI Governance: EU AI Act, NIST AI RMF, ISO 42001"
+description: "Classify AI systems under the EU AI Act, map obligations by tier and role, and build one control set on NIST AI RMF and ISO 42001. Use for AI compliance."
+license: Apache-2.0
+compatibility: "Needs web access: deadlines, guidance, and state-law status change and must be re-verified on every use."
+domains: ai
+rules:
+  - match((?i)\b(EU\s+)?AI\s+Act\b)
+  - match((?i)\b(ISO[\s/]*(IEC\s+)?42001|NIST\s+AI\s+RMF|AI\s+RMF)\b)
+  - match((?i)\bAI(\s+system)?\s+(governance|inventory|policy|risk\s+assessment|impact\s+assessment|literacy)\b|\bAI[\s-]use\s+policy\b)
+  - match((?i)\b(GPAI|FRIA|Annex\s+III|high-risk|risk[\s-]tier|systemic[\s-]risk|provider\s+or\s+deployer)\b)
+  - match((?i)\b(SB\s*53|SB\s*24-205|RAISE\s+Act|TRAIGA|ADMT)\b|\bstate\s+AI\s+laws?\b|\b(Colorado|California|New\s+York|Texas)\b.{0,40}\b(AI|ADMT)\b)
+  - match((?i)\b(vendor|buyer|customer|procurement)\b.{0,30}\bAI\b.{0,20}\b(questionnaire|assessment)\b)
+  - semantic(are we a provider or a deployer under the AI Act, 0.72)
+  - semantic(classify our AI product by risk tier and list our legal obligations, 0.72)
+  - semantic(build an AI risk register and policy that meets NIST and ISO standards, 0.72)
+  - semantic(answer a customer questionnaire about how we govern our AI use, 0.72)
+---
+
+## Overview
+
+This skill turns AI regulation into an engineering backlog. It covers AI Act applicability and risk-tier classification, role determination, obligation mapping, US state AI laws, and an AI governance program built on NIST AI RMF and ISO/IEC 42001. It produces the documents regulators and enterprise buyers ask for: AI inventories, model documentation, risk and impact assessments, policy drafts, and vendor questionnaires. Use it when a team asks whether a law applies, how to classify a system, what a buyer's AI questionnaire needs, or how to start a governance program.
+
+It does not give legal rulings, draft contracts, or represent anyone in an enforcement matter or dispute; those go to counsel. Privacy and GDPR programs and SOC 2 are separate compliance work. Attack testing, evaluation engineering, and building AI systems are outside it.
+
+## Mental model
+
+Deadlines and interpretations shift, so verify them by web search before asserting them, and say when a question needs counsel. Classification needs an inventory first: no inventory, no program. Role sets the burden: providers carry conformity assessment, technical documentation, and post-market monitoring; deployers carry human oversight, input-data control, and usage monitoring. Fine-tuning or rebranding a bought model can make a team the provider.
+
+Build one control set, not three programs. The AI Act, NIST AI RMF, and ISO 42001 overlap heavily: a risk register, model documentation, a human-oversight procedure, and a monitoring loop designed once satisfy all three. ISO 42001 is the certifiable wrapper, NIST RMF is the risk method, and the AI Act is the legal floor.
+
+## Rules
+
+Working method:
+
+1. Ingest: what AI is built, bought, or embedded; markets served; the organization's role per system. Recall earlier inventory and classification work before starting.
+2. Verify the clock: search the current AI Act timeline, Commission guidelines, and state-law status before quoting dates. The 2026 AI Omnibus already moved the high-risk deadlines once.
+3. Inventory: every AI system with purpose, data, autonomy, and affected persons. This is always deliverable one.
+4. Classify: tier and role per system. State the Annex III category or transparency trigger behind each call and the change that would re-tier it.
+5. Map obligations per system: what is required, by when, what evidence exists, what is missing.
+6. Build the program: close gaps with one control set mapped to the AI Act, NIST AI RMF, and ISO 42001 at once, then record the classifications and decisions.
+
+AI Act timeline as last verified on 2026-10-12 (re-verify on every use). Regulation (EU) 2024/1689 as amended by the AI Omnibus, Regulation (EU) 2026/1744 (OJ 24 Jul 2026, in force 27 Jul 2026):
+
+- In force: prohibitions and AI literacy since 2 Feb 2025 (the Omnibus narrowed literacy to measures that support it, not a required level). GPAI obligations since 2 Aug 2025, with the Commission's GPAI enforcement powers since 2 Aug 2026; models placed before 2 Aug 2025 have until 2 Aug 2027. Article 50 transparency since 2 Aug 2026.
+- Coming: the synthetic-content marking grace period for systems already on the market ends 2 Dec 2026. New prohibitions on AI generation of non-consensual intimate imagery and CSAM apply from 2 Dec 2026. Stand-alone high-risk (Annex III) applies from 2 Dec 2027; high-risk embedded in Annex I regulated products from 2 Aug 2028.
+- GPAI: the Code of Practice (Jul 2025; transparency, copyright, safety and security chapters) is the practical route to show compliance. The systemic-risk presumption starts at 10^25 training FLOP.
+- Penalties reach 35M euros or 7% of global turnover for prohibited practices.
+
+US state laws (2026, re-verify):
+
+- California SB 53 (frontier developers, in force 1 Jan 2026): a published frontier AI framework for large developers (over $500M revenue), critical-incident reports within 15 days (24 hours if harm is imminent), whistleblower protections.
+- Colorado SB24-205 was repealed and replaced by SB26-189 (signed May 2026, effective 1 Jan 2027): an ADMT regime of point-of-interaction notice, adverse-decision explanation within 30 days, correction, and human review.
+- New York RAISE Act as amended (effective 1 Jan 2027) adds 72-hour incident reporting.
+- Texas TRAIGA in force 1 Jan 2026.
+- The Dec 2025 federal executive order directs DOJ to challenge state AI laws. Only courts or Congress can void them, so check litigation status before advising anyone to ignore a state law.
+
+Standards:
+
+- NIST AI RMF 1.0 with the Generative AI Profile (NIST AI 600-1). NIST's Cyber AI Profile (IR 8596, draft) and the SP 800-53 control overlays for AI (COSAiS) are in progress.
+- ISO/IEC 42001:2023 is the certifiable AI management system. ISO/IEC 42005:2025 covers AI impact assessment and ISO/IEC 42006:2025 the certification bodies.
+
+Classification notes:
+
+- Annex III high-risk headline areas: biometrics, critical infrastructure, education, employment and worker management, essential services and credit scoring, law enforcement, migration, justice. Recruiting screeners and credit models are the tiers teams most often miss.
+- The transparency tier applies now (Article 50, since 2 Aug 2026): chatbots disclose they are AI, generated content carries machine-readable marking, deepfakes are labelled. It is cheap to do and embarrassing to miss.
+- Every classification is written down with its reasoning. An unexplained tier assignment is worthless in an audit.
+- Scope of work covers: GPAI provider duties (technical documentation, training-data summary, copyright policy, Code of Practice), FRIA structure, AI inventory and model-card templates, NIST AI RMF (Govern, Map, Measure, Manage) and ISO/IEC 42001 gap assessments, unified control mapping, AI-use policy drafts, and vendor AI assessment questionnaires.
+
+## Examples
+
+- Does the AI Act apply to us: sketch the inventory first, then classify per system with reasoning.
+- We use OpenAI or Anthropic APIs, are we a provider: run the role analysis. Usually a deployer; spell out the fine-tuning and rebranding caveat.
+- A buyer sent an AI questionnaire: answer from the inventory and flag claims that lack evidence.
+- Write our AI policy: ground the draft in the team's actual inventory, not a generic template.
+- Do US state laws apply: map each system to the states it touches (consequential decisions, frontier-developer thresholds) and cite current effective dates.
+- Enforcement letter or dispute: stop and route to counsel with a prepared evidence pack.
+
+## Output format
+
+Save as `ai-governance-[org].md`. A single-system request gets a focused classification memo instead.
+
+```markdown
+# AI Governance: [Org]
+
+## AI Inventory
+| System | Purpose | Role | Jurisdictions | Tier | Rationale | Deadline |
+|---|---|---|---|---|---|---|
+
+## Obligation Map
+[Per system: required artifacts, existing evidence, gaps]
+
+## Gap Assessment
+[Against AI Act, NIST AI RMF, and ISO 42001 as one control set]
+
+## Program Roadmap
+[Sequenced: inventory, classification, controls, documentation, monitoring; owner and effort]
+
+## Open Legal Questions
+[What needs counsel, and why]
+```
+
+In a non-interactive run, state the assumptions about markets and roles in the document and continue.
+
+## Checklist
+
+- [ ] Deadlines re-verified by search on this run, with the check date written down
+- [ ] Inventory exists before any classification
+- [ ] Each classification has written reasoning and the change that would re-tier it
+- [ ] Role (provider, deployer, importer, distributor) stated per system
+- [ ] One control set mapped across AI Act, NIST AI RMF, and ISO 42001
+- [ ] State laws mapped to the states each system touches
+- [ ] Open legal questions listed for counsel
+
+## Composition / References
+
+- The `ai-evals-design` skill covers the measurement evidence that monitoring duties ask for.
+- The `ai-prompt-injection-defense` skill covers adversarial testing evidence.
+- Sources: Regulation (EU) 2024/1689 and its 2026 amendment, NIST AI RMF 1.0 and AI 600-1, ISO/IEC 42001:2023.

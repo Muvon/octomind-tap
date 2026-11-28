@@ -4,29 +4,18 @@ title: "Prompt Injection Defense and AI Red-Teaming"
 description: "Defending LLM apps against prompt injection: OWASP Top 10s, guard models, red-team tools. Use when auditing an LLM app or designing defenses."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Red-team tooling typically needs Python (garak, PyRIT) or Node (Promptfoo). Defense layers integrate at the SDK level (Anthropic / OpenAI / Google) and at the orchestration layer (NeMo Guardrails, custom rails)."
-domains: ai
+domains: ai-engineer security-analyst
 rules:
-  - session(ai)
-  - content(jailbreak)
-  - content(red team)
-  - content(red-team)
-  - content(red-teaming)
-  - content(adversarial)
-  - content(OWASP)
-  - match(\b(prompt\s+injection)\b)
-  - match(\b(indirect\s+(prompt\s+)?injection)\b)
-  - match(\b(jailbreak\w*)\b)
-  - match(\b(red[\s-]?team\w*)\b)
-  - match(\b(OWASP\s+(LLM|Agentic|ASI))\b)
-  - match(\b(LLM0[1-9]|LLM10|ASI0[1-9]|ASI10)\b)
-  - match(\b(garak|PyRIT|NeMo\s+Guardrails)\b)
-  - match(\b(Llama\s+Guard|Moderation\s+API)\b)
-  - match(\b(EchoLeak|Slack\s+AI|Many-?shot\s+jailbreak)\b)
-  - semantic(audit our LLM app for prompt injection)
-  - semantic(how do we defend against jailbreaks)
-  - semantic(red team this agent)
-  - semantic(OWASP risks for our AI feature)
-  - semantic(prevent indirect injection from retrieved content)
+  - match((?i)\b(prompt|indirect|direct)\s+injection\b.{0,60}\b(audit|test|attack|defen[cs]e|defend|block|stop|probe|payloads?)\b|\b(audit|test|attack|probe|defend\s+against|stop|block)\b.{0,40}\b(prompt|indirect|tool-output)\s+injection\b)
+  - match((?i)\b(garak|PyRIT|NeMo\s+Guardrails|Llama\s+Guard|OWASP\s+(LLM|Agentic|Top\s+10)|LLM0[1-9]|ASI\s*0[1-9]|lethal\s+trifecta)\b)
+  - match((?i)\bred[\s-]?team(ing)?\b.{0,40}\b(our|my|this|the)\s+\w+|\b(try|attempt)\s+to\s+(break|hack|exploit|extract)\b|\b(test|try|run)\b.{0,30}\bjailbreaks?\b)
+  - match((?i)\b(review|audit|assess|secure|lock\s+down)\b.{0,50}\b(MCP|tool\s+(permissions?|privileges?)|token\s+handling|agent\s+permissions?)\b|\b(excessive\s+(agency|privilege)|least[\s-]agency|token\s+handling|tool\s+poisoning)\b)
+  - match((?i)\b(poison\w*|hidden\s+instructions?|inject\w*\s+(text|instructions?|payloads?)|hijack\w*|exfiltrat\w+)\b|\b(extract|leak|reveal)\b.{0,30}\b(system\s+prompt|hidden\s+(system\s+)?prompt)\b)
+  - match((?i)\b(guard\s+models?|guardrails?|instruction\s*/\s*data\s+separation)\b|\baudit\s+logging\b.{0,80}\b(attack\w*|injection|abus\w+)\b)
+  - semantic(audit our LLM app for prompt injection, 0.72)
+  - semantic(red team this agent, 0.72)
+  - semantic(review the permissions our agent tools have and lock them down, 0.72)
+  - semantic(stop hidden instructions in web pages from hijacking our model, 0.72)
 ---
 
 ## Overview
@@ -188,6 +177,73 @@ Single-layer systems get owned. Compose at least four layers; alert on filter tr
 - OWASP LLM Top 10 2026 IDs and names: checked against the project repository (GenAI-Security-Project/GenAI-LLM-Top10, 2026/README.md) as of 2026-11; re-check before a client report if the project issues a revision.
 - NeMo Guardrails provides programmable rails (Colang), not cryptographically signed prompts; do not conflate.
 - Guard-model versions and red-team tool plugin/probe counts — they change with each release.
+
+### 10. Audit workflow, severity, and guards
+
+1. Map the attack surface: every entry point where untrusted content reaches the model (user input, retrieved documents, web pages, uploads, email and calendar, tool and MCP outputs, sub-agent outputs).
+2. Inventory tools: for each, reversible or not, read or write, network egress, and the identity it authenticates as.
+3. Threat-model each entry point against each tool; flag every session that holds all three trifecta legs.
+4. Attack with direct and indirect probes and multi-turn escalation using garak, PyRIT, or Promptfoo; record the exact payload set and tool versions.
+5. Score each finding, map it to an OWASP ID with its edition (ASI IDs for agentic apps), and pair it with the defense layer that would have stopped it.
+
+Severity scale:
+
+| Severity | Meaning |
+|---|---|
+| Critical | Data exfiltration, remote code execution, or an unauthorized irreversible action |
+| High | Privilege escalation or leak of hidden context |
+| Moderate | Output integrity break |
+| Minor | Nuisance or partial bypass |
+
+Additional rules:
+
+- Audit every sink that consumes generated strings (XSS, SSRF, SQL injection, and RCE via LLM output) as LLM10:2026 (LLM05:2025).
+- Hidden context is not secret (LLM08:2026): system prompts, tool schemas, retrieved documents, and memory will be extracted, so keep secrets out of them.
+- RAG corpora and agent memory are attack vectors (LLM09:2026, ASI06): curate ingestion, sanitize before indexing, scope memory per user.
+- Classifiers are bypassable: measure their miss rate during the red-team run.
+- Prefer architecture (plan-then-execute, dual LLM, action selector, capability tracking) over adding filters.
+- Never state that a system is secure. State "did not exploit under this methodology" with the methodology named.
+- Run attacks against production only with explicit, documented authorization. A destructive attack without it is an incident, not a finding.
+- Never invent CVEs, exploit numbers, or attack chains. Every finding carries a reproducible payload and a captured response; a suspicion is not a finding.
+- Keep full weaponized payload sets out of reports read beyond the engineering team; describe the pattern instead.
+- Report findings and defense recommendations, not patches.
+- In a non-interactive run, derive the tool inventory and trust boundaries from the code and configuration, proceed, and list the assumptions in the report. The production-authorization rule still applies.
+
+## Output format
+
+Save the report as `ai-redteam-[system-slug]-[YYYY-MM-DD].md` in the working directory.
+
+```markdown
+# Red Team Report: [System / Component]
+Date: YYYY-MM-DD
+Methodology: [garak / PyRIT / Promptfoo red-team / manual], N attempts across M categories
+
+## Attack surface map
+- Entry points (untrusted content sources): [...]
+- Tool inventory: [tool, reversible y/n, egress y/n, credential]
+- Trust boundaries: [where untrusted content meets a privileged action]
+
+## Critical findings
+1. [Title] (OWASP: LLM01:2026 / ASI02 / ...)
+   - Payload: [exact payload]
+   - Reproduction: [step by step]
+   - Captured response: [actual output]
+   - Impact: [worst case]
+   - Defense: [isolation pattern / tool scope reduction / human confirmation / output guard / input filter]
+
+## High, Moderate, Minor findings
+[Same shape, one section per severity]
+
+## Did not exploit
+- Methodology and categories covered: [what was tried, N jailbreak and M injection patterns, tool versions]
+
+## Defense layer recommendations (prioritized)
+1. [Layer]: closes findings [#X, #Y]
+
+## OWASP mapping summary
+| OWASP item | Findings | Max severity |
+|---|---|---|
+```
 
 ## Checklist (audit and defense)
 

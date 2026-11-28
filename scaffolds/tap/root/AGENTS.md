@@ -8,7 +8,7 @@ machine. Never commit credentials or machine-specific configuration.
 ## Repository structure
 
 ```text
-agents/<domain>/<spec>.toml     # Runnable agent manifests
+agents/<name>.toml               # Runnable agent manifests, one file per agent
 capabilities/<name>/            # Capability metadata and provider definitions
   config.toml                   # Auto-activation triggers and optional domains
   default.toml                  # Active provider, normally a relative symlink
@@ -22,8 +22,8 @@ templates/                      # Canonical starting points for new artifacts
 scripts/check.sh                # Repository validation entrypoint
 ```
 
-Do not nest agents deeper than `agents/<domain>/<spec>.toml` or skills deeper
-than `skills/<name>/SKILL.md`.
+Keep agents directly in `agents/` (no subdirectories, no symlinks) and skills no
+deeper than `skills/<name>/SKILL.md`.
 
 ## Working protocol
 
@@ -44,30 +44,29 @@ unless the user explicitly asks.
 Location:
 
 ```text
-agents/<domain>/<spec>.toml
+agents/<name>.toml
 ```
 
-The path defines the runtime tag `<domain>:<spec>`. Each manifest requires a
-top-level `capabilities = [...]` array followed by exactly one `[[roles]]`.
-Do not set `name`; Octomind injects it from the tag.
+The file name defines the runtime tag `<name>`: lowercase letters, digits, and
+hyphens, starting with a letter, with no `:`. `octomind run <name>` starts the
+agent. The `# Agent: <name>` header comment must equal the file name. Each
+manifest requires a top-level `capabilities = [...]` array followed by exactly
+one `[[roles]]`. Do not set `name`; Octomind injects it from the tag.
 
-A domain's orchestrator is the agent named `chief`: `agents/<domain>/chief.toml`.
-`octomind run <domain>` starts `<domain>:chief`. A domain with two or more
-agents needs a `chief.toml`; a domain with a single agent does not. The chief
-declares the `orchestration` capability (`octomind/orchestration`). The chief
-sends a task with `tap(action="run", prompt="<brief>")` and the runtime matches
-it to a specialist by each agent's `# Title:` and `# Description:`, so write
-those in the words a task brief would use. The chief names no specialist.
+An agent that hands work to other agents declares the `orchestration`
+capability (`octomind/orchestration`). It sends a task with
+`tap(action="run", prompt="<brief>")` and the runtime matches the task to an
+agent by each agent's `# Title:` and `# Description:`, so write those in the
+words a task brief would use.
 
-A chief can also call other domains or single agents it declares in a header
-comment: a bare domain (`content`) or a full tag (`seo:audit`) per entry. The
-header alone makes them reachable. Only a chief may carry the header, and it
-needs `orchestration`. Entries may name domains of another tap; local ones are
-checked.
+A header comment lists the agents it may reach: `*` for every agent, or agent
+names separated by commas. Names must exist in `agents/`, appear once, and
+never be the agent's own name, and agents that list each other must not form a
+loop. An agent with the header needs `orchestration`.
 
 ```toml
-# agents/marketing/chief.toml
-# Uses: content, seo:audit
+# agents/marketing.toml
+# Uses: content, seo-audit
 ```
 
 Required role fields:
@@ -227,7 +226,9 @@ license: MIT
 ```
 
 Optional `capabilities`, `domains`, `allowed-tools`, and activation `rules`
-may follow. Keep skills domain-isolated. Their recommended body order is:
+may follow. Each `domains` entry is the name of an agent in `agents/`; the
+skill auto-activates only for those agents. Keep skills tied to the agents they
+serve and do not mention other agents in the body. Their recommended body order is:
 
 ```text
 Overview → Mental model → Rules → Examples → Checklist → Composition / References
@@ -256,9 +257,8 @@ steps may reference earlier outputs by name.
 - `{{INPUT:KEY}}` is for user-global secrets stored by Octomind.
 - `{{ENV:KEY}}` is for project-scoped environment values.
 - `{{CWD}}` and `{{DATE}}` are prompt-time values and belong in `welcome` only.
-- `{{SPECIALISTS}}` and `{{USES}}` are removed and must not appear in `system`.
-  Octomind 0.71 and older expanded them to lists of agents; newer versions
-  do not expand them, and the tap registry lint rejects them.
+- `{{SPECIALISTS}}` and `{{USES}}` are not expanded and must not appear in
+  `system`; the check rejects them.
 - Commit only placeholder names, never secret values or a populated `.env`.
 
 Capability `env` tables primarily carry and document `{{ENV:KEY}}` values.
@@ -266,7 +266,7 @@ Ensure the key exactly matches the variable read by the child process.
 
 ## Validation checklist
 
-- [ ] Agent paths match their `<domain>:<spec>` tags.
+- [ ] Agent file names match their `# Agent: <name>` headers.
 - [ ] Every agent has capabilities and exactly one complete role.
 - [ ] Agent system prompts use canonical XML ordering and stable contents.
 - [ ] Every bare capability exists locally with `default.toml`; community ones use `octomind/<name>`.

@@ -4,18 +4,17 @@ title: "Markdown Slides with Marp: Decks to PDF and PowerPoint"
 description: "Marp markdown slide decks with a bundled theme, linter and overflow check, exported to PDF, HTML or PowerPoint. Use when a deck must ship as a file."
 license: Apache-2.0
 compatibility: "Requires: python3, Node.js (npx), and Chrome, Edge, Chromium, or Firefox (the installer adds Playwright's Chromium when none is present). Editable PPTX also needs LibreOffice. macOS/Linux."
-capabilities: shell slides image-view
-domains: content launch
+capabilities: shell slides image-gen image-view
+domains: writer founder
 rules:
-  - session(presentation)
-  - session(pitch)
   - content(deck)
   - content(slides)
   - content(marp)
   - match(\b(slide\s*deck|pitch\s*deck|presentation|keynote|pptx|powerpoint)\b)
-  - semantic(turn this document into slides)
-  - semantic(make a pitch deck I can send as a PDF)
-  - semantic(export my marp deck to powerpoint)
+  - semantic(turn this document into slides, 0.72)
+  - semantic(make a pitch deck I can send as a PDF, 0.72)
+  - semantic(export my marp deck to powerpoint, 0.72)
+  - semantic(build a slide deck from this outline and export it, 0.72)
 ---
 
 ## Overview
@@ -70,6 +69,43 @@ Local images need paths relative to the deck; `slide-deck` passes `--allow-local
 - Accessibility: alt text on every meaningful image, body text ≥ 24 px (the theme uses 30), contrast ≥ 4.5:1 (keep text off busy photos or darken them), color never the only signal.
 - Backup slides after a `<!-- _class: divider -->` slide titled "Appendix".
 
+### Frame the room and the storyline
+
+- Before any slide, fix the audience (who exactly, what they know, what they care about), the occasion and time slot, and the one-sentence outcome: "after this, the room will ___". No outcome, no deck. Ask at most three questions; in an autonomous, non-interactive run, derive the three from the request, state them, and build the outline and deck in one pass with the assumptions listed.
+- Find the throughline: one controlling idea in one sentence. Cut what does not serve it or park it in backup slides.
+- Structure persuasion by SCQA (situation, complication, question, answer). Structure a pitch that is not a fundraise as problem, stakes, resolution, proof, ask. Structure teaching decks as need, concept, example, practice.
+- Outline before slides: the storyline as a list of assertion titles. Read them aloud as a paragraph; if the titles alone do not carry the story, the deck will not either. Get outline approval before drafting the full deck when the user asks for it.
+- Turning a document into slides: extract the throughline, state it back in one sentence, then compress by assertion. Never paste paragraphs onto slides.
+- Reviewing an existing deck: give a verdict against the titles-as-argument test, the 10-second test, and the outcome, then per-slide fixes ranked by impact.
+- Investor fundraising decks, pricing narratives, delivery coaching, rehearsal, and brand identity systems are outside this skill; the storyline method carries over.
+
+### Slide content
+
+- One idea per slide. The title is a full-sentence assertion ("Churn concentrates in month two", never "Churn Overview"). If you cannot write the assertion, the slide has no point yet.
+- The 10-second test: the message lands in 10 seconds or the slide is doing the speaker's job. The speaker notes hold the rest.
+- Slides are free: split a crowded slide into three. The 10/20/30 rule is a pitch sanity check, not law.
+- Prefer progressive disclosure over walls: build a complex diagram across slides or step the visual emphasis. Never put six bullets of eight words on a slide to be read aloud.
+- Use sentence case and consistent terminology. Round numbers to meaning ("increase of 47.3%" becomes "nearly half again").
+- Generate images with `generate_image` only where they carry meaning (a diagram, a mood-setter for a section break), never as filler and never with text baked in. Save them beside the deck and reference them relatively.
+- Verify unfamiliar figures destined for evidence slides by web search, or flag them. Never fabricate data, quotes, or citations.
+
+### Data slides
+
+One chart, one message, the message in the title. Simplify the visual until that message is the first thing seen. Use bar for comparison, line for trend, scatter for relationship, table for lookup; pie only for two or three parts of an obvious whole. Drop 3D, dual axes (they imply causation that is not shown), and rainbow palettes. Highlight the one series that matters and grey the rest. Put a source line on every data slide.
+
+### Deck genres
+
+Say which genre you are building.
+
+- Talk deck: sparse slides, rich notes.
+- Send-ahead deck: complete sentences, readable alone, roughly double the text; used for executive pre-reads and async review.
+- Hybrid (a talk deck someone will forward) is the most common request: talk-deck slides plus an executive-summary slide and an appendix that survive forwarding.
+- Executive and board audiences: answer first (the ask or verdict on slide 2), evidence after.
+
+### Openings, closings, timing
+
+Open with the stakes or the surprise; agenda and team bios go later or in the appendix. Close on the specific ask or action, restated. Plan about 1 to 2 minutes per content slide; a 20-minute slot fits 10 to 15 slides plus backups. Mark the cut-line in the notes: which sections drop if the time halves.
+
 ### Exports
 
 | Format | Command | Use |
@@ -109,6 +145,10 @@ Local images need paths relative to the deck; `slide-deck` passes `--allow-local
 - [ ] Speaker notes on content slides (talk decks).
 - [ ] Alt text on meaningful images; brand color set once in front matter.
 - [ ] Files delivered: the `.md` source plus PDF (and PPTX/HTML/notes when asked), PNG previews reviewed or flagged as unreviewed.
+- [ ] Text contrast is at least 4.5:1 (WCAG 2.2 criterion 1.4.3) and body text is at least 24 px on the 1280x720 slide; smaller text fails the back row.
+- [ ] Content slides number between slot minutes divided by 2 and slot minutes divided by 1, plus backups.
+- [ ] Notes mark the cut-line for a halved slot.
+- [ ] Outlines are delivered as the assertion-title list with the throughline on top.
 
 ## Composition / References
 

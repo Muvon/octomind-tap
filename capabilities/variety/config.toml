@@ -20,4 +20,4 @@ triggers = [
 	"keep release notes from reading the same every version",
 ]
 
-domains = ["content", "marketing", "sales", "video", "developer", "support", "community", "launch"]
+domains = ["writer", "marketer", "sales-rep", "producer", "developer", "support-agent", "community-manager", "founder"]

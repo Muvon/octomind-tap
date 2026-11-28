@@ -12,4 +12,4 @@ triggers = [
 	"pexels photos for the post",
 ]
 
-domains = ["video", "content", "marketing", "design"]
+domains = ["producer", "writer", "marketer", "designer"]

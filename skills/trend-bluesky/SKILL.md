@@ -5,9 +5,9 @@ description: "Harvest Bluesky conversations, formats and feeds into a sourced tr
 license: Apache-2.0
 compatibility: "Browser access and network access. Use the available Bluesky session; record signed-in state and unavailable surfaces."
 capabilities: browser memory-read memory-write
-domains: browser
+domains: operator
 rules:
-  - session(trend) content(bluesky)
+  - content(bluesky) match((?i)\b(trend\w*|harvest\w*|viral|what\W?s\s+(moving|hot|popular))\b)
   - match(\bbluesky\s+(trend|trends|harvest|brief|post)\b)
   - match(\b(harvest|scan|analyze)\s+bluesky\b)
   - match(\bbsky\.app\b)

@@ -4,7 +4,7 @@ title: "Podcast Guest Pitch Templates and Speaker Outreach"
 description: "Podcast guest pitching: pitch templates, show research, one-sheets, follow-ups. Use when pitching a founder for podcasts, webinars or conference talks."
 license: Apache-2.0
 compatibility: "Needs web search and page fetch for show research. Any OS."
-domains: marketing launch
+domains: marketer founder
 rules:
   - content(podcast) content(guest)
   - content(speaking) content(pitch)
@@ -85,4 +85,4 @@ Good: "Your episode with Dana Lee on pricing page tests changed how I think abou
 ## Composition / References
 
 - Pair with `outreach-cold-copy` and `outreach-compliance` for craft and legal rules.
-- Pair with press and clip specialists once an episode is recorded.
+- Press releases and episode clips are separate work once an episode is recorded; this skill covers pitching only.

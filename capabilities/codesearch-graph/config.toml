@@ -28,4 +28,4 @@ triggers = [
 # obvious developer domain. Locks out medical/legal/marketing/etc. so
 # generic "find X" prompts in those roles don't pull a code-search false
 # positive via the embedding's keyword-leak behaviour.
-domains = ["developer", "devops", "security"]
+domains = ["developer", "devops", "security-analyst"]

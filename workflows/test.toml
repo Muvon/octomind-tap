@@ -28,7 +28,8 @@ max_cost = 4.0
 # ── 1. Baseline — target, test command, source hashes, starting git state ────
 [[steps]]
 name    = "baseline"
-role    = "developer:tester"
+role    = "developer"
+skills  = ["developer-test-implementation", "e2e-testing"]
 session = "fresh"
 retries = 1
 prompt  = """
@@ -68,7 +69,8 @@ exit_when      = { output = "verify", matches = '(?m)^VERDICT: (TESTS-EFFECTIVE|
 
   [[steps.run]]
   name    = "write"
-  role    = "developer:tester"
+  role    = "developer"
+  skills  = ["developer-test-implementation", "e2e-testing"]
   session = "continue"
   retries = 1
   prompt  = """
@@ -104,7 +106,7 @@ output tail as evidence. No preamble.
 
   [[steps.run]]
   name    = "verify"
-  role    = "developer:general"
+  role    = "developer"
   session = "fresh"
   prompt  = """
 You are an independent verifier in a fresh session. You did not write these tests.
@@ -168,7 +170,8 @@ on_no_match = ["stalled"]
 
   [[steps.run]]
   name    = "summary"
-  role    = "developer:brief"
+  role    = "developer"
+  skills  = ["developer-diff-briefing"]
   session = "fresh"
   prompt  = """
 Summarize the new tests for a human reviewer: read only the test files that are
@@ -190,7 +193,8 @@ baseline hashes. Output only the briefing.
 
   [[steps.run]]
   name    = "stalled"
-  role    = "developer:brief"
+  role    = "developer"
+  skills  = ["developer-diff-briefing"]
   session = "fresh"
   prompt  = """
 The test loop ended WITHOUT a TESTS-EFFECTIVE verdict — do not present this as

@@ -17,8 +17,7 @@ repository after tokens are replaced in both paths and file contents.
 | `__TAP_OWNER__` | `acme` |
 | `__TAP_NAME__` | `team` |
 | `__TAP_REPOSITORY__` | `octomind-team` |
-| `__AGENT_DOMAIN__` | `team` unless overridden with `--agent <domain>` |
-| `__AGENT_SPEC__` | `chief`, always: the starter agent is its domain's orchestrator |
+| `__AGENT_NAME__` | `team` unless overridden with `--agent <name>`; the starter agent's name |
 | `__YEAR__` | Current four-digit year |
 
 The renderer must fail if any `__TOKEN__` remains after rendering. It must
@@ -38,7 +37,7 @@ exist once here and are symlinked from the repository root.
    on any error.
 3. Runs `git init`.
 4. Registers the directory as a local tap for `<owner/name>`, so the starter
-   agent runs immediately: `octomind run <domain>:<spec>`.
+   agent runs immediately: `octomind run <name>`.
 
 ## Design boundary
 

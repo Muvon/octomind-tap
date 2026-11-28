@@ -5,7 +5,7 @@ description: "Dated log of Google Search facts: core and spam updates, site repu
 license: Apache-2.0
 compatibility: "Requires web fetch to re-check the sources below. Facts are as of 2026-11-15."
 capabilities: websearch webfetch
-domains: seo
+domains: seo writer
 rules:
   - match((?i)\b(core|spam)\s+update\b)
   - match((?i)\bsite\s+reputation\s+(abuse|policy)\b)

@@ -7,7 +7,6 @@ compatibility: "Requires: rendercv (installed with uv), poppler-utils; doc-expor
 capabilities: shell resume-render documents
 domains: coach
 rules:
-  - session(resume)
   - content(rendercv)
   - match(\b(resume|cv|curriculum vitae)\s+(pdf|docx|word|file|template|format)\b)
   - semantic(make my resume into a pdf)

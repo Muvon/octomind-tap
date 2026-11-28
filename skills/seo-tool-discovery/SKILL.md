@@ -6,7 +6,6 @@ license: Apache-2.0
 compatibility: "Stack-agnostic. Requires websearch and webfetch for competitor and SERP scans."
 domains: seo
 rules:
-  - session(seo)
   - content(free tool)
   - content(free tools)
   - match(\bbuild\s+a\s+(free\s+)?tool\b)

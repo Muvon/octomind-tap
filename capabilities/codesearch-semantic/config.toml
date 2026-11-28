@@ -22,4 +22,4 @@ triggers = [
 	"search the codebase by intent, not by symbol name",
 ]
 
-domains = ["developer", "devops", "security"]
+domains = ["developer", "devops", "security-analyst"]

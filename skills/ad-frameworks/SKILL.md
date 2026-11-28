@@ -4,7 +4,7 @@ title: "Ad Frameworks: AIDA, PAS, BAB, 4Us"
 description: "Ad copy frameworks (AIDA, PAS, before-after-bridge, 4Us, FAB) matched to audience awareness. Use when structuring ad scripts or body copy."
 license: Apache-2.0
 compatibility: "Stack-agnostic."
-domains: video launch marketing
+domains: producer founder marketer
 rules:
   - content(advertisement)
   - content(copywriting)
@@ -16,8 +16,6 @@ rules:
   - match(\bPAS\b)
   - match(\bproblem.agitation.solution\b)
   - match(\bbefore.after.bridge\b)
-  - session(adcraft)
-  - session(ugc)
   - semantic(write a punchier ad for our product)
   - semantic(structure this ad copy better)
   - semantic(make this ad creative more compelling)

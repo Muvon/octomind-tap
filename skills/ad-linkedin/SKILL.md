@@ -3,8 +3,8 @@ name: ad-linkedin
 title: "LinkedIn Ads Production Spec"
 description: "LinkedIn ad specs: Sponsored Content, Message Ads, Text Ads slots, character limits, ratios, CTAs. Use when writing LinkedIn ad copy or briefs."
 license: Apache-2.0
-compatibility: "Octomind launch agents. Platform-specific to LinkedIn Ads."
-domains: launch marketing
+compatibility: "Needs web search for current ad policies and specs. Applies to LinkedIn Ads only; an ad account on that platform is needed to launch."
+domains: founder marketer
 rules:
   - content(linkedin ads)
   - content(linkedin ad)

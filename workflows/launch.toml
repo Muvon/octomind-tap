@@ -13,7 +13,8 @@ max_cost    = 10.0   # runaway guard, not a target: checked after each step
 # ── 1. Explore the market ────────────────────────────────────────────────────
 [[steps]]
 name    = "explore"
-role    = "launch:explore"
+role    = "founder"
+skills  = ["launch-opportunity-exploration"]
 session = "fresh"
 prompt  = """
 Explore the market opportunity for this idea: analyze the landscape, pain points,
@@ -27,7 +28,8 @@ sentiment, and competitors with evidence.
 # ── 2. Validate viability (honest go/no-go) ──────────────────────────────────
 [[steps]]
 name    = "validate"
-role    = "launch:validate"
+role    = "founder"
+skills  = ["launch-idea-validation"]
 session = "fresh"
 prompt  = """
 Validate this idea brutally honestly: market size, competition, risks, and real
@@ -65,7 +67,8 @@ on_no_match = ["pivot"]
 
   [[steps.run]]
   name    = "gtm"
-  role    = "launch:gtm"
+  role    = "founder"
+  skills  = ["launch-gtm-plan", "organic-launch"]
   session = "fresh"
   prompt  = """
 Build the go-to-market strategy for this validated idea: beachhead ICP, sales
@@ -82,7 +85,8 @@ motion, channel mix, launch sequencing, and metric stack.
 
   [[steps.run]]
   name    = "brand"
-  role    = "launch:brand"
+  role    = "founder"
+  skills  = ["launch-brand-identity"]
   session = "fresh"
   prompt  = """
 Create the brand identity for this validated idea: name options, positioning,
@@ -100,7 +104,8 @@ beachhead ICP in the GTM plan.
 
   [[steps.run]]
   name    = "pitch"
-  role    = "launch:pitch"
+  role    = "founder"
+  skills  = ["launch-pitch-pricing"]
   session = "fresh"
   prompt  = """
 Write the pitch and pricing: elevator pitch, pitch-deck outline, pricing model,
@@ -122,7 +127,8 @@ motion in the GTM plan.
 
   [[steps.run]]
   name    = "ads"
-  role    = "launch:ads"
+  role    = "founder"
+  skills  = ["launch-ad-creative"]
   session = "fresh"
   prompt  = """
 Produce launch ad creative: platform-specific copy and creative briefs for the
@@ -143,8 +149,8 @@ paid channels prioritized in the GTM plan. Stay on-brand.
 
   [[steps.run]]
   name    = "bootstrap"
-  role    = "launch:gtm"
-  skills  = ["organic-launch"]
+  role    = "founder"
+  skills  = ["launch-gtm-plan", "organic-launch"]
   session = "fresh"
   prompt  = """
 Write a zero-budget launch plan: Product Hunt playbook, community building,
@@ -166,7 +172,8 @@ priorities and launch sequence in the GTM plan.
 
   [[steps.run]]
   name    = "pivot"
-  role    = "launch:explore"
+  role    = "founder"
+  skills  = ["launch-opportunity-exploration"]
   session = "fresh"
   prompt  = """
 The idea did not validate. Based on the findings, propose the 3 strongest pivots

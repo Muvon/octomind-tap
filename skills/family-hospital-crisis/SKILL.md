@@ -4,7 +4,7 @@ title: "Parent in the Hospital: Status, Discharge and Funding Rules"
 description: "US hospital-crisis rules for an older parent: observation vs inpatient, the skilled-nursing 3-day rule, discharge appeal, PACE, VA aid, estate recovery."
 license: Apache-2.0
 compatibility: "Requires: web search for the state Medicaid agency and the Medicare quality improvement organization. US only; 2026 dollar figures change yearly."
-domains: family
+domains: family-advisor
 rules:
   - content(observation status)
   - content(discharge planning)

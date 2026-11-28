@@ -4,7 +4,7 @@ title: "Instagram Publishing Playbook"
 description: "Write and revise Instagram captions, Reels, carousels and Stories in the author's voice, with a publishing package. Use when drafting for Instagram."
 license: Apache-2.0
 compatibility: "Network access for current platform checks; Instagram account access for composer previews and account-level Insights."
-domains: content
+domains: writer producer
 rules:
   - content(instagram)
   - match(\binsta\s+(post|reel|reels|caption|story|carousel)\b)

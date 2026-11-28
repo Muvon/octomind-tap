@@ -14,4 +14,4 @@ triggers = [
 	"publish to my yt channel",
 ]
 
-domains = ["content", "video", "marketing"]
+domains = ["writer", "producer", "marketer"]

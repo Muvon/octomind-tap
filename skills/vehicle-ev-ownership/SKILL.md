@@ -5,7 +5,7 @@ description: "EV home charging, used-EV battery health checks, range and cold-we
 license: Apache-2.0
 compatibility: "Requires: web search and web page fetching."
 capabilities: webfetch
-domains: vehicle
+domains: mechanic travel-agent
 rules:
   - match((?i)\b(ev|evs|electric (car|vehicle)|battery (health|degradation|warranty)|state of health|level 2 charger|home charger|wallbox|charging at home|ev tax credit|ev incentive)\b)
   - match((?i)\b(used (ev|electric)|buy(ing)? an? (ev|electric)|ioniq|leaf|bolt|model [3sxy]|id\.[3-7])\b)

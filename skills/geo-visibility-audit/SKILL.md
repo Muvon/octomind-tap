@@ -5,7 +5,7 @@ description: "Audits how AI engines represent a product using buyer questions, c
 license: Apache-2.0
 compatibility: "Requires web search and page fetching. AI visibility measurement needs supplied answer captures or authorized engine access."
 capabilities: websearch webfetch seo-data
-domains: seo
+domains: seo writer
 rules:
   - content(geo)
   - content(aeo)
@@ -42,7 +42,7 @@ An absent brand is an observation, not a root cause. A citation is a displayed s
 | Did the changes work? | Matched-cohort readout with limitations | No causal uplift claim from an uncontrolled before/after comparison |
 | Run this month's AI visibility check | Monitoring report: same questions compared with the last run, plus cited-source changes | Same question version and surfaces; changes stay observations, no causal claim |
 
-Respect the host role: an auditor returns findings, priority, fix direction, and retest conditions; a strategist returns question and experiment briefs, not diagnostic claims without evidence. Neither mode publishes, changes site settings, claims profiles, contacts editors, or posts in communities. Those require separately authorized execution.
+Audit mode returns findings, priority, fix direction, and retest conditions; planning mode returns question and experiment briefs, not diagnostic claims without evidence. Neither mode publishes, changes site settings, claims profiles, contacts editors, or posts in communities. Those require separately authorized execution.
 
 Record site/product, buyer segment, market/language, current alternative, decision/constraint, desired conversion or activation event, and available evidence. Reuse supplied context; ask one focused question only when a missing input prevents useful work. Otherwise label assumptions and proceed with a bounded provisional artifact. DR, keyword volume, paid tracking, and analytics access are not prerequisites for question discovery or a public-evidence audit.
 

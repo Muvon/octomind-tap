@@ -4,7 +4,7 @@ title: "TikTok Publishing Playbook"
 description: "Draft TikTok scripts, captions and publishing packages in the author's voice for demos, launches and proof. Use when writing for TikTok."
 license: Apache-2.0
 compatibility: "Text and media editing; browser and TikTok account access for current publishing controls."
-domains: content
+domains: writer producer
 rules:
   - content(tiktok)
   - match(\btik\s+tok\b)

@@ -12,4 +12,4 @@ triggers = [
 	"create slides for this talk",
 ]
 
-domains = ["content", "launch"]
+domains = ["writer", "founder"]

@@ -3,8 +3,8 @@ name: ad-x
 title: "X (Twitter) Ads Production Spec"
 description: "X (Twitter) ad specs: Promoted Posts, Website and App Cards, Video Ads, with slots, character limits and ratios. Use when writing X ad copy or card assets."
 license: Apache-2.0
-compatibility: "Octomind launch agents. Platform-specific to X/Twitter Ads."
-domains: launch marketing
+compatibility: "Needs web search for current ad policies and specs. Applies to X/Twitter Ads only; an ad account on that platform is needed to launch."
+domains: founder marketer
 rules:
   - content(twitter ads)
   - content(x ads)

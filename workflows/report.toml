@@ -20,7 +20,7 @@
 # the actual data — the audit recomputes and fails the run on any figure it
 # can't reproduce. No illustrative or invented numbers; uncertainty is flagged.
 #
-# Role: data:analyst runs every step — it has shell + python + filesystem, so
+# Role: the analyst agent runs every step — it has shell + python + filesystem, so
 # it genuinely loads the data, computes statistics, generates SVG charts, edits
 # the report file, and (when a renderer is available) renders it to PDF. The
 # audit step runs it in a FRESH session as an independent checker.
@@ -46,8 +46,8 @@ description = "Turns a data source into a decision-ready analysis report with co
 # ── 1. Analyze — load the data, compute the real numbers, extract findings ──
 [[steps]]
 name    = "analyze"
-role    = "data:analyst"
-skills  = ["analytical-report"]
+role    = "analyst"
+skills  = ["data-analysis-statistics", "analytical-report"]
 session = "fresh"
 retries = 4
 prompt  = """
@@ -82,8 +82,8 @@ Output only the analysis brief. No report yet, no meta-commentary.
 # ── 2. Compose — build the report and WRITE it to a file on disk ────────────
 [[steps]]
 name    = "compose"
-role    = "data:analyst"
-skills  = ["analytical-report"]
+role    = "analyst"
+skills  = ["data-analysis-statistics", "analytical-report"]
 session = "fresh"
 retries = 4
 prompt  = """
@@ -127,8 +127,8 @@ exit_when      = { output = "audit", matches = '(?m)^REPORT-PASS' }
 
   [[steps.run]]
   name    = "fix"
-  role    = "data:analyst"
-  skills  = ["analytical-report"]
+  role    = "analyst"
+  skills  = ["data-analysis-statistics", "analytical-report"]
   session = "continue"
   retries = 4
   prompt  = """
@@ -160,8 +160,8 @@ one sentence on what you changed. Do not paste the document.
 
   [[steps.run]]
   name    = "audit"
-  role    = "data:analyst"
-  skills  = ["analytical-report"]
+  role    = "analyst"
+  skills  = ["data-analysis-statistics", "analytical-report"]
   session = "fresh"
   retries = 4
   prompt  = """
@@ -205,7 +205,8 @@ the report — recompute to verify, but do not edit the file.
 # ── 4. Deliver + render — the file is on disk; place it, render PDF if able ──
 [[steps]]
 name    = "deliver"
-role    = "data:analyst"
+role    = "analyst"
+skills  = ["data-analysis-statistics", "analytical-report"]
 session = "fresh"
 retries = 4
 prompt  = """

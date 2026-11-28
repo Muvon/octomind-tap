@@ -4,7 +4,7 @@ title: "Teens and AI Chatbots: Settings, Talks, Warning Signs"
 description: "Parent guide to teen chatbot and companion-app use: a settings checklist, conversation openers, warning signs, and when to bring in a professional."
 license: Apache-2.0
 compatibility: "No tools required. Web search helps to check an app's current parental controls."
-domains: family
+domains: family-advisor
 rules:
   - match((?i)\b(teens?|teenagers?|kids?|child|children|son|daughter|minors?)\b) content(chatbot)
   - match((?i)\b(teens?|teenagers?|kids?|child|children|son|daughter|minors?)\b) content(ChatGPT)

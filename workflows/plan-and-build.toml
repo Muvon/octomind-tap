@@ -6,7 +6,7 @@
 # never reaches the build.
 #
 # Shape:
-# spec (developer:spec, autonomous, spec-authoring skill preloaded — its
+# spec (developer agent with the spec-authoring skill, autonomous, spec-authoring skill preloaded — its
 #   validator gates the spec when [skills] auto_validation is on) ->
 #   SPEC STATUS: NEEDS CLARIFICATION -> blocked (questions for the human) -> end
 #   SPEC STATUS: READY -> build loop (developer -> brief -> evaluator, max 3) ->
@@ -40,9 +40,9 @@ max_transitions = 4
 # ── 1. Spec: request → behavioral spec ───────────────────────────────────────
 [[steps]]
 name    = "spec"
-role    = "developer:spec"
-session = "fresh"
+role    = "developer"
 skills  = ["spec-authoring"]
+session = "fresh"
 prompt  = """
 <request>
 {{input}}
@@ -56,7 +56,8 @@ then output the complete spec.md content, ending with its SPEC STATUS line.
 # ── 2a. Blocked: the spec still needs a human ────────────────────────────────
 [[steps]]
 name    = "blocked"
-role    = "developer:brief"
+role    = "developer"
+skills  = ["developer-diff-briefing"]
 session = "fresh"
 prompt  = """
 <spec>
@@ -79,7 +80,7 @@ exit_when      = { output = "evaluator", matches = '(?m)^VERDICT: (APPROVED|BLOC
 
   [[steps.run]]
   name    = "developer"
-  role    = "developer:general"
+  role    = "developer"
   session = "continue"
   prompt  = """
 <spec>
@@ -105,7 +106,8 @@ Output only the work summary, the map, and the evidence — no preamble.
 
   [[steps.run]]
   name    = "brief"
-  role    = "developer:brief"
+  role    = "developer"
+  skills  = ["developer-diff-briefing"]
   session = "fresh"
   prompt  = """
 <spec>
@@ -118,7 +120,7 @@ diff actually does versus what each FR asks for. Output only the brief.
 
   [[steps.run]]
   name    = "evaluator"
-  role    = "developer:general"
+  role    = "developer"
   session = "fresh"
   prompt  = """
 <spec>
@@ -185,7 +187,8 @@ End with exactly one line: `VERDICT: APPROVED`, `VERDICT: REVISE`, or
 # ── 3a. Summary: approved ────────────────────────────────────────────────────
 [[steps]]
 name    = "summary"
-role    = "developer:brief"
+role    = "developer"
+skills  = ["developer-diff-briefing"]
 session = "fresh"
 prompt  = """
 <spec>
@@ -207,7 +210,8 @@ Output only the briefing.
 # ── 3b. Stalled: loop hit its cap without approval ───────────────────────────
 [[steps]]
 name    = "stalled"
-role    = "developer:brief"
+role    = "developer"
+skills  = ["developer-diff-briefing"]
 session = "fresh"
 prompt  = """
 <spec>

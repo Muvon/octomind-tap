@@ -4,7 +4,7 @@ title: "X (Twitter) Publishing Playbook"
 description: "Write and revise X (Twitter) posts, replies, threads and launch proof in the author's voice. Use when drafting for X, from announcements to reply plans."
 license: Apache-2.0
 compatibility: "Text editing; network access for source checks and a signed-in X session for account-specific format validation."
-domains: content
+domains: writer producer
 rules:
   - content(tweet)
   - content(tweets)

@@ -79,7 +79,7 @@ description = "Optional description"
 
 [[steps]]                          # sequential (default kind)
 name    = "outline"                # unique across the file
-role    = "demo:writer"            # installed role or tap tag (placeholder shown)
+role    = "writer"                # installed role or tap agent name
 prompt  = """
 {{input}}
 
@@ -129,7 +129,7 @@ Setting `entry = "<step>"` or any `[[edges]]` switches to explicit routing. Edge
 
 Checked before any step runs: valid TOML with at least one step; unique, non-empty step names; every `{{var}}` is a builtin, `input`, or an earlier step; parallel ≥2 sub-steps (or one template with `source`+`match`); loop has `exit_when`; conditional branches name existing sub-steps; regexes compile; `model`/`workdir` non-empty when set; `count` only on parallel sub-steps; `max_cost` positive; graph constraints above. Not checked: role existence for local files (a bad role fails when its subprocess spawns) and workdir existence.
 
-Workflows fetched from a tap are additionally restricted to public `domain:spec` tap roles, so they stay portable. Workflow roles stay full two-part tags: a bare domain such as `developer` is not accepted in a `role` field.
+Workflows fetched from a tap are additionally restricted to public tap agents, so they stay portable. A step `role` is a flat agent name such as `developer`; a value containing `:` is rejected (`ROLE_FORMAT`) and an unknown name fails lint (`ROLE_NOT_FOUND`). A preloaded skill must exist (`SKILL_NOT_FOUND`) and list the step's role in its `domains:` (`SKILL_DOMAIN_MISMATCH`); a skill without `domains:` may be preloaded by any role. A step that needs a specialty preloads its skills: `role = "developer"`, `skills = ["spec-authoring"]`.
 
 ## CLI
 
@@ -156,7 +156,7 @@ name = "report-with-review"
 
 [[steps]]
 name   = "draft"
-role   = "demo:writer"
+role   = "writer"
 prompt = "<input>\n{{input}}\n</input>\n\nWrite the report. Output only the report."
 
 [[steps]]
@@ -167,13 +167,13 @@ exit_when      = { output = "critic", matches = '(?m)^VERDICT: APPROVED' }
 
   [[steps.run]]
   name    = "reviser"
-  role    = "demo:writer"
+  role    = "writer"
   session = "continue"
   prompt  = "Improve this report:\n{{draft}}\n\nOutput only the report."
 
   [[steps.run]]
   name    = "critic"
-  role    = "demo:critic"
+  role    = "writer"
   session = "continue"
   prompt  = """
 Review against this rubric only: claims sourced; structure follows brief; no filler.
@@ -196,7 +196,7 @@ name = "fan-out"
 
 [[steps]]
 name   = "plan"
-role   = "demo:planner"
+role   = "pm"
 prompt = "List the sub-questions for: {{input}}\nOne per line as: Q: <question>"
 
 [[steps]]
@@ -208,7 +208,7 @@ max_parallel = 4
 
   [[steps.run]]
   name   = "answers"
-  role   = "demo:researcher"
+  role   = "academic"
   prompt = "Answer concisely: {{q}}"
 ```
 
@@ -217,7 +217,7 @@ max_parallel = 4
 ```toml
 [[steps]]
 name   = "outline"
-role   = "demo:writer"
+role   = "writer"
 prompt = "Refine using {{review}}"   # review runs later → pre-flight error
 ```
 

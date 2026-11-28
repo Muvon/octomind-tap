@@ -6,7 +6,7 @@ description = "<What the workflow accomplishes and how its steps cooperate.>"
 
 [[steps]]
 name = "work"
-role = "<domain>:<spec>"
+role = "<name>"
 session = "fresh"
 prompt = """
 Complete the following request and return only the requested deliverable.

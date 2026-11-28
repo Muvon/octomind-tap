@@ -6,22 +6,24 @@ license: Apache-2.0
 compatibility: "Any Octomind session with web search. Database access varies by user; state which databases were actually searched."
 domains: academic
 rules:
-  - session(literature)
-  - content(prisma)
-  - content(systematic) content(review)
-  - content(scoping) content(review)
-  - content(rapid) content(review)
-  - content(pico)
-  - content(risk) content(bias)
-  - content(consort) content(strobe)
-  - match((?i)\b(search\s+strategy|search\s+string|boolean\s+search|mesh\s+terms?)\b)
-  - content(pubmed)
-  - semantic(help me plan a systematic review and report the screening counts)
+  - match((?i)\b(screen|chase|collect|find|search\s+for|compare|build\s+a\s+table\s+of)\b.{0,40}\b(abstracts?|papers|pdfs?|studies|citations?|literature|articles)\b)
+  - match((?i)\b(citation[- ]chas\w*|chase\s+citations?|trace\s+(forward|backward)|forward\s+and\s+backward)\b)
+  - match((?i)\b(identify|find|check|build|produce|add|test)\b.{0,50}\b(research\s+gaps?|synthesis\s+matri\w+|matrix|comparison\s+table|gap\s+analysis)\b)
+  - match((?i)\b(search\s+(terms|strings?|plan|strategy)|boolean|which\s+databases|document\w*\s+my\s+searches)\b)
+  - match((?i)\b(inclusion|exclusion)\s+criteria\b|\binclude/exclude\b)
+  - match((?i)\b(prisma|pico|pubmed|scopus|mesh\s+terms?|risk\s+of\s+bias)\b)
+  - match((?i)\bgap\b.{0,40}\b(research|literature|studies|papers)\b.{0,40}\b(real|check|actually|under-?studied)\b)
+  - semantic(help me plan a systematic review and report the screening counts, 0.72)
+  - semantic(find and screen studies on my question and log what I excluded, 0.72)
+  - semantic(check whether a research gap in the literature is real, 0.72)
+  - semantic(build a table comparing the papers I collected on one question, 0.72)
 ---
 
 ## Overview
 
-A literature review is only as defensible as its method. This skill gives the method steps that review readers and journal editors check: which review type the question needs, how to frame the question, how to search each database, how to log screening, which counts the PRISMA 2020 flow diagram needs, and which risk-of-bias tool or reporting checklist fits the study design. Use it for literature searches, thesis literature chapters, systematic and scoping reviews, and the reporting-checklist check before submitting an empirical paper.
+A literature review is only as defensible as its method. This skill gives the method steps that review readers and journal editors check: which review type the question needs, how to frame the question, how to search each database, how to log screening, which counts the PRISMA 2020 flow diagram needs, and which risk-of-bias tool or reporting checklist fits the study design. Use it for literature searches, thesis literature chapters, systematic and scoping reviews, synthesis matrices, bounded gap statements, and the reporting-checklist check before submitting an empirical paper.
+
+The work turns an unfocused reading pile into an auditable search, a screened evidence set, and a synthesis scaffold the researcher can interrogate. Its value is comparison, not citation volume: every included source is a real paper you opened, and every interpretation stays attached to the evidence actually available. The researcher owns the final synthesis and its disclosure obligations.
 
 ## Mental model
 
@@ -93,6 +95,27 @@ Source: Page et al., BMJ 2021;372:n71. Count at each stage and check that the ar
 
 Checks: identified minus removed equals screened; screened minus excluded equals sought; sought minus not retrieved equals assessed; assessed minus excluded equals included reports. If automation tools excluded records, say how many a human excluded and how many a tool did. The 2020 statement has separate flow templates for new reviews, updates, and searches that include other methods. PRISMA extensions proposed for AI-assisted reviews are not endorsed standards; do not cite them as the standard.
 
+### Literature search, screening and synthesis
+
+1. Bound the review: establish the question, discipline, purpose, date range, languages, study types and inclusion and exclusion criteria from the brief, or state provisional assumptions. Pick the review type and frame the question as above.
+2. Design the search: split the question into concept blocks, collect synonyms and controlled vocabulary, and show Boolean strings adapted to each scholarly search surface you can reach.
+3. Search live: log queries, platforms, dates and accessible results. Follow references and citing papers where useful. Don't claim database access you do not have.
+4. Open and verify: fetch each candidate's publisher or repository page and the available full text, resolve its DOI or keep a working canonical link, and reconcile title, authors, year, version and publication status. A DOI string alone is not verification: open the destination. Check corrections, retractions, and preprint versus published versions.
+5. Screen and extract: deduplicate versions, record inclusion and exclusion reasons, and extract methods, population or corpus, findings and limitations, each with the page or section it came from.
+6. Synthesize: group agreement, disagreement, methods and missing coverage across the matrix. Separate the authors' conclusions from your cross-paper inferences.
+7. Deliver and audit: check every citation and claim against opened sources, list inaccessible items separately, and give a bounded gap statement plus searches that could challenge it.
+
+Rules that hold at every step:
+- Search snippets discover candidates; they do not verify papers or support findings. Prefer publisher pages, established repositories and primary papers over commentary.
+- An abstract verifies only what it states. Label access as abstract-only, leave unavailable extraction fields unknown, and don't infer effect sizes, procedures or limitations from a title.
+- A paper that cannot be opened, or whose metadata cannot be reconciled, is reported as could not verify with the identifier tried and the reason. It stays out of the evidence matrix and the verified bibliography.
+- Record actual screening counts only. Call the result review support, not an exhaustive or systematic review, unless its protocol, coverage and reporting justify the claim.
+- Matrix cells trace to the opened paper. Keep uncertainty, negative findings, methodological differences and conflicts instead of smoothing them away.
+- Say "not found within this search" rather than "no research exists". A gap is a testable possibility, bounded by the searched corpus and its access limits.
+- Never fabricate references, quotations, statistics or metadata. Keep policy sources separate from the paper bibliography.
+- Offer comparison scaffolds and source-grounded summaries, not submission-ready graded reviews. Flag the venue's current AI-disclosure policy when relevant.
+- Don't accept a confidential peer-review manuscript or bypass a paywall; ask for a lawful public version.
+
 ### Risk-of-bias tool by study design
 
 | Study design | Tool | Note |
@@ -130,6 +153,12 @@ Weak: "I searched Google for studies on school phones and found 20 papers; this 
 
 Better: "Scoping review (PRISMA-ScR). Frame: PCC. Databases: PubMed and Scopus, run 2026-11-10, strings in Appendix A. 412 records identified, 96 duplicates removed, 316 screened, 41 reports assessed, 12 included. Bias not assessed (scoping). Protocol registered on OSF."
 
+## Output format
+
+Return the scope and limitations; a dated search log with keywords, exact queries and platforms; the screening decisions; then a synthesis matrix with the columns: paper and verified DOI or link | access and version | question | methods and sample | findings with location | limitations | relevance. Follow with thematic comparisons, tentative gaps with counter-searches, a verified bibliography, and a separate could-not-verify list. Keep the artifacts in the conversation unless the user asks for a file.
+
+A brief marked autonomous or non-interactive gets no questions: state the review boundaries as assumptions at the top, run the search, and deliver without claiming completeness.
+
 ## Checklist
 
 - [ ] The review type is stated and matches the question and the resources.
@@ -140,6 +169,7 @@ Better: "Scoping review (PRISMA-ScR). Frame: PCC. Databases: PubMed and Scopus, 
 - [ ] A bias tool or checklist matches each study design, or its absence is stated.
 - [ ] The second-screener situation and any AI use are disclosed.
 - [ ] No review is called systematic unless it has a protocol, two databases, and a bias assessment.
+- [ ] Every included paper was opened; full text, abstract-only and could-not-verify items are kept apart.
 
 ## Composition / References
 
@@ -153,4 +183,4 @@ Better: "Scoping review (PRISMA-ScR). Frame: PCC. Databases: PubMed and Scopus, 
 - [OpenAlex search documentation](https://help.openalex.org/how-to-use-the-api/get-lists-of-entities/search-entities)
 - [arXiv API user manual](https://info.arxiv.org/help/api/user-manual.html)
 - [EQUATOR Network reporting guidelines](https://www.equator-network.org/)
-- For thesis question fit and defense preparation, see the thesis specialist; for the venue's own AI-use policy, check the venue site.
+- For thesis question fit and defense preparation, see the `academic-thesis-development` skill; for the venue's own AI-use policy, check the venue site.

@@ -14,7 +14,7 @@
 # (a fresh auditor recomputes the headline figures from the raw data <-> fix
 # applies the corrections) -> deliver.
 #
-# Grounding contract: finance:personal writes but cannot compute, data:analyst
+# Grounding contract: the financial-planner agent writes but cannot compute, the analyst agent
 # computes but does not write the deliverable, and the auditor recomputes from
 # the source data in a fresh session. A figure the auditor cannot reproduce is
 # CRITICAL and forces another round; it is corrected or removed, never massaged.
@@ -39,7 +39,8 @@ max_cost    = 3.0
 # ── 1. Intake — locate and profile the data, never reproduce it ─────────────
 [[steps]]
 name    = "intake"
-role    = "data:analyst"
+role    = "analyst"
+skills  = ["data-analysis-statistics", "analytical-report"]
 session = "fresh"
 retries = 2
 prompt  = """
@@ -75,7 +76,8 @@ Do not analyze yet. Output only the intake brief — no meta-commentary.
 # ── 2. Analyze — compute every number from the transactions ─────────────────
 [[steps]]
 name    = "analyze"
-role    = "data:analyst"
+role    = "analyst"
+skills  = ["data-analysis-statistics", "analytical-report"]
 session = "fresh"
 retries = 2
 prompt  = """
@@ -125,7 +127,8 @@ recommendations prose, no meta-commentary.
 # ── 3. Compose — write the audit from the computed numbers only ─────────────
 [[steps]]
 name    = "compose"
-role    = "finance:personal"
+role    = "financial-planner"
+skills  = ["finance-budget-debt-payoff"]
 session = "fresh"
 retries = 2
 prompt  = """
@@ -175,7 +178,8 @@ exit_when      = { output = "audit", matches = '(?m)^VERDICT: ACCURATE' }
 
   [[steps.run]]
   name    = "fix"
-  role    = "finance:personal"
+  role    = "financial-planner"
+  skills  = ["finance-budget-debt-payoff"]
   session = "continue"
   retries = 2
   prompt  = """
@@ -208,7 +212,8 @@ Output the complete revised checkup — same five sections — and nothing else.
 
   [[steps.run]]
   name    = "audit"
-  role    = "data:analyst"
+  role    = "analyst"
+  skills  = ["data-analysis-statistics", "analytical-report"]
   session = "fresh"
   retries = 2
   prompt  = """
@@ -246,7 +251,8 @@ MAJOR findings) or `VERDICT: REVISE`. Nothing after it. Read-only.
 # ── 5. Deliver — final checkup on stdout, with its audit status ─────────────
 [[steps]]
 name    = "deliver"
-role    = "finance:personal"
+role    = "financial-planner"
+skills  = ["finance-budget-debt-payoff"]
 session = "fresh"
 retries = 2
 prompt  = """

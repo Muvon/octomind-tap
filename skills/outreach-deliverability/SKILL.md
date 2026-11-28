@@ -4,7 +4,7 @@ title: "Cold Email Deliverability – SPF, DKIM and DMARC"
 description: "Cold email deliverability: SPF, DKIM, DMARC, sending domains, warmup, volume caps, list hygiene. Use when planning outreach setup or fixing spam placement."
 license: Apache-2.0
 compatibility: "Needs DNS access for the sending domain to apply changes. Any OS."
-domains: marketing sales launch
+domains: marketer sales-rep founder
 rules:
   - content(deliverability)
   - content(spam folder) content(email)

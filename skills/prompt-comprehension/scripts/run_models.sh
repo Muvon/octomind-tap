@@ -28,7 +28,7 @@ mkdir -p prompts out sandbox
 
 for model in "$@"; do
   slug=$(printf '%s' "$model" | tr '/:' '__')
-  (cd sandbox && octomind run assistant:plain -m "$model" --format plain \
+  (cd sandbox && octomind run plain -m "$model" --format plain \
     -c skills.auto_activation=false -c 'plugins=[]' \
     <"$work/prompts/$id-i$iter.txt" >"$work/out/$id-i$iter-$slug.txt" 2>"$work/out/$id-i$iter-$slug.err") &
 done

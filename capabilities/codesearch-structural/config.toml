@@ -23,4 +23,4 @@ triggers = [
 	"locate where this struct is declared",
 ]
 
-domains = ["developer", "devops", "security"]
+domains = ["developer", "devops", "security-analyst"]

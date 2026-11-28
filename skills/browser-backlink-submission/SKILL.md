@@ -3,13 +3,11 @@ name: browser-backlink-submission
 title: "Browser Backlink Submission Execution"
 description: "Submit backlinks via a headless browser (Playwright): directory forms, email verification, throttling, submission log. Use with a qualified prospect list."
 license: Apache-2.0
-compatibility: "Requires browser:chief agent with browser (Playwright) capability and filesystem-write. Assumes a prospect list already qualified for safety and topical fit."
-domains: browser
+compatibility: "Requires a Playwright browser and file writing. Assumes a prospect list already qualified for safety and topical fit."
+domains: operator
 rules:
-  - session(browser) content(backlink)
-  - session(browser) content(backlinks)
-  - session(browser) content(directory)
-  - session(browser) content(directories)
+  - match((?i)\b(submit|post|add|list)\w*\b.{0,50}\b(backlinks?|directories|directory\s+listings?)\b)
+  - match((?i)\b(backlinks?|directories)\b.{0,50}\b(submission|prospect\s+list)\b)
   - match(\bsubmit\s+(our\s+|the\s+)?(site|product|startup|tool|app|business|company)\s+to\b)
   - match(\bdirectory\s+submission\b)
   - match(\bsubmit\s+to\s+(\d+\s+)?directories\b)
@@ -25,7 +23,7 @@ metadata:
 
 ## Overview
 
-Given a qualified prospect list and a single source-of-truth site profile, drive each target's submission form to completion, capture evidence, and emit an auditable log. This skill is execution-only — it assumes prospects are already vetted upstream and assumes anchor / description copy is either pre-supplied or fetched via the agent's main loop.
+Given a qualified prospect list and a single source-of-truth site profile, drive each target's submission form to completion, capture evidence, and emit an auditable log. This skill is execution-only — it assumes prospects are already vetted upstream and assumes anchor / description copy is either pre-supplied or fetched from the session.
 
 Outcome: a `submission-log.json` with one row per attempt (status, evidence, live URL once verified) plus screenshots under `./out/backlinks/`. No fabricated successes, no fire-and-forget, no link-farm targets ever.
 
@@ -172,7 +170,7 @@ Form filled cleanly, "Submit" button reveals an hCaptcha challenge. Stop. Screen
 
 ## Composition / References
 
-- Selector resilience, uploads, and waiting follow the browser agent's own snapshot-and-ref discipline.
+- Selector resilience, uploads, and waiting follow the snapshot-and-ref discipline of the browser session.
 - Runs only after an upstream prospect-vetting step has produced a qualified list — this skill does not discover or qualify prospects.
 - Copy generation (descriptions) is an upstream concern — do not author copy inside this skill.
 - [Google Search Essentials — Spam policies: link spam](https://developers.google.com/search/docs/essentials/spam-policies#link-spam)

@@ -6,11 +6,10 @@ license: Apache-2.0
 compatibility: "Any Octomind session. No external tools required; pairs well with an SRS app (Anki) for spaced repetition."
 domains: tutor
 rules:
-  - session(tutor)
-  - content(study) content(remember)
-  - content(memorize)
-  - content(flashcards)
-  - content(revision)
+  - match((?i)\b(study|studying|revise|revising|memori[sz]e|memori[sz]ing)\b.{0,40}\b(better|faster|effectively|technique|techniques|method|methods|strategy|strategies|for (my|the|an?) (exam|test|quiz|finals?))\b)
+  - match((?i)\b(retrieval practice|spaced repetition|interleaving|active recall|learning styles?)\b)
+  - match((?i)\b(flashcards?|anki)\b)
+  - match((?i)\b(won'?t|doesn'?t|will not|can'?t)\s+(stick|remember|retain)\b)
 ---
 
 ## Overview

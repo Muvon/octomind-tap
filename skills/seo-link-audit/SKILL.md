@@ -4,10 +4,8 @@ title: "Link Profile SEO Audit"
 description: "Off-page link audit: referring domains, anchor-text mix, toxic links, paid-link risk, link gap vs competitors. Use when auditing a site's backlinks."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Requires websearch + webfetch. Free path covers 80% via SERP operators, site: queries, and competitor public-link discovery. Paid path (Ahrefs / SEMrush / Majestic / Moz Link Explorer) provides referring-domain census and anchor-distribution data at scale."
-domains: seo
+domains: seo marketer
 rules:
-  - session(seo)
-  - session(audit)
   - content(referring domain)
   - content(referring domains)
   - content(anchor text)
@@ -126,7 +124,7 @@ Never claim "no toxic links found" — claim "no toxic links found in sample of 
 
 ### Output
 
-Use the canonical output structure from the agent that runs this skill. Every finding includes: severity, evidence (referring domain, anchor text, page context, capture date), why it matters, fix direction. Save as `seo-audit-[slug]-[YYYY-MM-DD].md` in working directory.
+Use the report structure of the `seo-site-audit` skill. Every finding includes: severity, evidence (referring domain, anchor text, page context, capture date), why it matters, fix direction. Save as `seo-audit-[slug]-[YYYY-MM-DD].md` in working directory.
 
 ## Checklist
 

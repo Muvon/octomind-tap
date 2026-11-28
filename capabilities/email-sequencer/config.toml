@@ -15,4 +15,4 @@ triggers = [
 	"what is this lead's status in our sequence",
 ]
 
-domains = ["sales", "marketing"]
+domains = ["sales-rep", "marketer"]

@@ -10,7 +10,8 @@ description = "Builds a project knowledge base: grounds memory from the codebase
 # ── 1. Ground — codebase → memory ────────────────────────────────────────────
 [[steps]]
 name    = "ground"
-role    = "developer:learn"
+role    = "developer"
+skills  = ["developer-memory-curation"]
 session = "fresh"
 retries = 1
 prompt  = """
@@ -36,7 +37,8 @@ exit_when      = { output = "audit", matches = '(?m)^KB-AUDIT: PASS' }
 
   [[steps.run]]
   name    = "promote"
-  role    = "assistant:knowledge"
+  role    = "assistant"
+  skills  = ["assistant-knowledge-base"]
   session = "continue"
   retries = 1
   prompt  = """
@@ -59,7 +61,7 @@ End by listing every note in the box: `path — one-line claim`.
 
   [[steps.run]]
   name    = "audit"
-  role    = "developer:general"
+  role    = "developer"
   session = "fresh"
   prompt  = """
 Independently audit the knowledge base in `.box/` against the real repository.
@@ -92,7 +94,8 @@ on_no_match = ["stalled"]
 
   [[steps.run]]
   name    = "summary"
-  role    = "assistant:knowledge"
+  role    = "assistant"
+  skills  = ["assistant-knowledge-base"]
   session = "fresh"
   prompt  = """
 The knowledge base passed its audit. Report the final state briefly: the box
@@ -103,7 +106,8 @@ searchable by every agent with the knowledge capability — say so in one line.
 
   [[steps.run]]
   name    = "stalled"
-  role    = "developer:brief"
+  role    = "developer"
+  skills  = ["developer-diff-briefing"]
   session = "fresh"
   prompt  = """
 The knowledge-base audit loop ended WITHOUT a pass — do not present this as

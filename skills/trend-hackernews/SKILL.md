@@ -5,10 +5,10 @@ description: "Harvest Hacker News discussions and prior submissions into a dated
 license: Apache-2.0
 compatibility: "Requires browser access to Hacker News and Algolia. Inspect removed items with a logged-in profile configured for showdead."
 capabilities: browser memory-read memory-write
-domains: browser
+domains: operator
 rules:
-  - session(trend) content(hackernews)
-  - session(trend) content(hn)
+  - content(hackernews) match((?i)\b(trend\w*|harvest\w*|viral|what\W?s\s+(moving|hot|popular))\b)
+  - content(hn) match((?i)\b(trend\w*|harvest\w*|viral|what\W?s\s+(moving|hot|popular))\b)
   - match(\b(hacker\s*news|hn)\s+(trend|trends|harvest|brief|post|submit)\b)
   - match(\b(harvest|scan|analyze)\s+(hacker\s*news|hn)\b)
   - match(\bshow\s*hn\b)

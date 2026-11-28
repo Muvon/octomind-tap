@@ -5,7 +5,7 @@ description: "Account health targets, fee stacks, suspension appeals and fulfilm
 license: Apache-2.0
 compatibility: "Needs web access to read each marketplace's current seller documentation. Proposes and drafts only; the seller submits appeals and changes."
 capabilities: websearch webfetch
-domains: commerce
+domains: merchant
 rules:
   - match((?i)\b(amazon|etsy|ebay|tiktok\s+shop)\b.{0,50}\b(suspen\w*|deactivat\w*|account\s+health|appeal\w*|fees?|fba|fbm|policy|violation\w*)\b)
   - match((?i)\b(fba|fbm|seller\s+central|account\s+health|plan\s+of\s+action|offsite\s+ads|seller\s+level|top\s+rated)\b)

@@ -12,4 +12,4 @@ triggers = [
 	"compose the timeline and export mp4",
 ]
 
-domains = ["video", "content"]
+domains = ["producer", "writer"]

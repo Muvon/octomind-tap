@@ -5,7 +5,7 @@ description: "Table of entry systems and fees: EU EES and ETIAS, UK ETA, US ESTA
 license: Apache-2.0
 compatibility: "Requires: web search and web page fetching."
 capabilities: webfetch
-domains: travel
+domains: travel-agent
 rules:
   - match((?i)\b(etias|uk eta|eta (uk|canada|australia)|electronic travel (authori[sz]ation|authority)|entry/exit|esta|tdac|arrival card|visa[- ]free|visa waiver|entry requirements?|passport validity)\b)
   - match((?i)\b(do i need a (visa|passport)|passport (valid|expir)|real id|confirmid)\b)

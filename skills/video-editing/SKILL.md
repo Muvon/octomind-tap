@@ -1,33 +1,31 @@
 ---
 name: video-editing
-title: "Short-Form Video Editing: Footage to Platform-Ready Shorts"
-description: "Short-form video editing pipeline: silence cuts, 9:16 reframes, b-roll, audio ducking, captions, encodes. Use when editing footage or clipping a podcast."
+title: "Footage Editing: Captioned Shorts and Ad Variants"
+description: "Edit existing footage into captioned shorts: silence cuts, reframes, b-roll, ad variants, single edits like trims and joins. Use for cutting raw video."
 license: Apache-2.0
-compatibility: "Requires: ffmpeg (libass build for captions and text), auto-editor, python3; Node.js for Remotion motion graphics. macOS/Linux."
-capabilities: shell video-editing captions
-domains: video
+compatibility: "Requires: ffmpeg (libass build for captions and text), auto-editor, python3, whisper-ctranslate2; Node.js for Remotion motion graphics. macOS/Linux."
+capabilities: video-editing thumbnails voice music stock
+domains: producer
 rules:
-  - session(editor)
-  - session(clips)
-  - session(adcraft)
-  - session(ugc)
-  - content(footage)
-  - match(\b(edit|cut|trim|clip|re-?cut)\b.*\b(footage|recording|talking[- ]head|podcast|webinar|stream|vlog|raw (video|clip))\b)
-  - match(\b(jump cuts?|punch[- ]ins?|b-?roll|silence (removal|cut)|dead air)\b)
-  - match(\bhook (swap|variants?)\b)
-  - semantic(edit my raw footage into a short)
-  - semantic(turn this podcast episode into short clips)
+  - match((?i)\b(edit|cut|trim|re-?cut|re-?frame|reframe)\b.{0,50}\b(footage|recording|talking[- ]head|vlog|raw (video|clip)|founder video|ugc delivery|podcast|webinar|keynote|interview|livestream|stream|vod)\b)
+  - match((?i)\b(jump cuts?|punch[- ]ins?|silence (removal|cut)|dead air|b-?roll (inserts?|footage))\b)
+  - match((?i)\bhook swaps?\b|\b(re-?cut|variants?|versions?)\b.{0,40}\b(winning|best[- ]performing|top[- ]performing)\s+(ad|video|creative)\b)
+  - match((?i)\b(vertical|9:16)\s+clips?\b|\bclips?\.md\b|\b(standalone|quotable|self-contained)\s+(moments?|segments?|answers?)\b|\b(render|reframe|batch-render|pull|mine)\b.{0,40}\b(clips?|shorts|moments)\b)
+  - match((?i)\b(trim|join|concat\w*|re-?encode|append)\b.{0,40}\b(video|clip|mp4|mov|file)\b)
+  - semantic(edit my raw footage into a captioned short, 0.76)
   - semantic(cut the silences and add zooms and b-roll)
-  - semantic(make new hook variants of my winning ad)
+  - semantic(trim and join these video files and reframe them to vertical, 0.71)
 ---
 
 ## Overview
 
-Most marketing video work starts from footage that already exists: a creator's talking head, a founder recording, a podcast episode, a product demo, or last month's winning ad. This skill is the edit pipeline for that footage. It uses tested tools in a fixed order so the result looks edited rather than assembled: auto-editor for cuts, vetted ffmpeg recipes for reframes, punch-ins, cutaways and the audio mix, and the `video-captions` script for captions. Every command lives in `references/ffmpeg-recipes.md` (absolute path listed under Skill Resources); read it before the first edit step.
+Most marketing video work starts from footage that already exists: a creator's talking head, a founder recording, a product demo, a UGC delivery, a clip someone generated, or last month's winning ad. This skill is the edit pipeline for that footage. It turns it into captioned, platform-ready shorts (a 9:16 master plus feed cut-downs), re-cuts a winner into new variants, or applies one requested edit to a finished file. It uses tested tools in a fixed order so the result looks edited rather than assembled: auto-editor for cuts, vetted ffmpeg recipes for reframes, punch-ins, cutaways and the audio mix, and the `video-captions` script for captions. Every command lives in `references/ffmpeg-recipes.md` (absolute path listed under Skill Resources); read it before the first edit step.
+
+It does not cover generating new footage or avatar ads, long-form explainers, or publishing. Picking highlight clips out of long recordings is in the `video-clips` skill.
 
 ## Mental model
 
-An edit is a chain of files, each the output of one decision: transcript → edit decision list → cut → reframe → visual rhythm → audio mix → loudness → captions → encode. Every step writes into `./video-out/<slug>/` (`raw/`, `work/`, `broll/`, `sfx/`, `music/`, `captions/`, `cuts/`, `meta/`), so any step can be redone without redoing the rest.
+An edit is a chain of files, each the output of one decision: transcript → edit decision list → cut → reframe → visual rhythm → audio mix → loudness → captions → encode. Every step writes into `./video-out/<slug>/`, so any step can be redone without redoing the rest.
 
 Native beats polished on short-form feeds: TikTok's own guidance asks for content that is not overly polished, and practitioners report that more distinct variants beat more polish on one. Spend effort on the story (hook, payoff, pacing), captions, and variants, not on effects.
 
@@ -35,19 +33,29 @@ Don't write custom frame-by-frame pipelines (moviepy, PIL, OpenCV loops). Every 
 
 ## Rules
 
+### Single-edit mode
+
+The request names one operation on an existing file (burn these exact text lines, trim, join, append an end card, extract a frame, re-encode to a platform spec): do only that operation, skip the story steps and the approval wait.
+
+1. Probe the input: resolution, frame rate, duration, audio streams.
+2. Apply the matching recipe; burned-in text uses the given lines verbatim, inside the platform safe zone from `video-spec-sheet`.
+3. QA: extract frames where the edit shows (each text line, each join, the last frame), open and look at them; probe the output and confirm duration, resolution and audio survived.
+4. Write to the exact output path requested; return that path with the probe result and the QA frame paths.
+
 ### Footage → short
 
-1. Ingest: copy sources into `raw/`, probe resolution, frame rate, rotation, duration, and loudness.
-2. Transcribe the raw audio with word timestamps (`video-captions` sources table). Read it and write `edit.md`: the hook line, the payoff, the ranges to keep, the flubs, repeats and filler to cut, each with a reason.
-3. Clean the voice if it was recorded on a phone or in a room (voice cleanup recipe).
-4. Cut: `auto-editor raw/clip.mp4 --margin 0.15s --cut A,B --cut C,D -c:v libx264 -crf 16 -o work/cut.mp4` — silence removal plus one `--cut` per flub range from `edit.md` (`3.2sec,3.6sec`). Keep 0.1–0.2 s of air so speech still breathes.
-5. Reframe to the target aspect: face-centred crop for talking heads, blurred fill for screens and wide shots.
-6. Visual rhythm: a visual change every 2–3 s. Hard 110–120% punch-ins on emphasis words (times from the transcript), b-roll cutaways of 1–3 s showing the product in use, text cards for numbers and lists. The speaker's face carries the hook.
-7. Audio: SFX on cutaway entries only (one whoosh or pop, not every cut). Music bed ducked under the voice, or none for UGC-style; licensed or generated music only.
-8. Loudness: two-pass to -14 LUFS integrated, -1 dBTP.
-9. Captions and hook box: `video-captions` pipeline on the mixed file.
-10. Encode with the `video-spec-sheet` preset; export cut-downs; pull a cover frame.
-11. QA: watch the whole cut once, then check frames at the hook, every cutaway, and the CTA.
+1. Ingest: locate the footage (paths given, or `./video-out/<slug>/raw/`), copy sources into `raw/`, probe resolution, frame rate, rotation, duration and loudness. Ask only for what is missing: platform(s), goal, organic or paid, CTA, brand font and colors, a reference edit to match. Defaults: 9:16 master, `pop` captions. If the footage is unusable (clipped audio, wrong orientation, too short for the brief), say what is wrong and the fix before editing.
+2. Transcribe the raw audio with word timestamps (`whisper-ctranslate2 ... --word_timestamps True --output_format json`; see the `video-captions` sources table). Read it and write `./video-out/<slug>/edit.md`: the hook line for the first 1.5–3 s, the payoff, the last line (written with the hook: end right after the payoff, loop-friendly, see `video-hooks` "Endings and loops"), mid-video re-hook points at likely drop-off moments (`video-hooks` "Mid-video re-hooks"), keep ranges, cuts (flubs, repeats, filler, dead context) with timestamps and reasons, emphasis words for punch-ins, cutaway slots and what each shows, and the on-screen hook text. For a trend adaptation or repost, add the transformation: what the cut adds that the source does not.
+3. Show `edit.md` and wait for approval before cutting. An autonomous, non-interactive brief skips the wait, uses the defaults, and lists assumptions in `edit.md`.
+4. Clean the voice if it was recorded on a phone or in a room (voice cleanup recipe; `isolate_audio` only for heavy noise, on the final selects).
+5. Cut: `auto-editor raw/clip.mp4 --margin 0.15s --cut A,B --cut C,D -c:v libx264 -crf 16 -o work/cut.mp4` — silence removal plus one `--cut` per flub range from `edit.md` (`3.2sec,3.6sec`). Keep 0.1–0.2 s of air so speech still breathes.
+6. Reframe to the target aspect: face-centred crop for talking heads, blurred fill for screens and wide shots.
+7. Visual rhythm: a visual change every 2–3 s. Hard 110–120% punch-ins on emphasis words (times from the transcript), b-roll cutaways of 1–3 s showing the product in use (the user's b-roll first, then Pexels via `searchVideos` / `downloadVideo`, otherwise list the gap), text cards for numbers and lists. The speaker's face carries the hook.
+8. Audio: SFX on cutaway entries only (one whoosh or pop, not every cut; `text_to_sound_effects` when no library exists). Music bed ducked under the voice (`compose_music`), or none for UGC-style; licensed or generated music only.
+9. Loudness: two-pass to -14 LUFS integrated, -1 dBTP.
+10. Captions and hook box: run the `video-captions` pipeline on the mixed file, only after the cut and the mix are final. Presets: `pop` default, `box` for a native lo-fi look, `clean` for 16:9. Add the `--hook` text, burn, write the SRT sidecar.
+11. Encode with the `video-spec-sheet` preset; export 4:5 and 1:1 cut-downs re-captioned at their size; render the cover with `video-thumbnail render <hook frame> --format reels --layout top --text "<hook text>"` (a 16:9 cut also gets a `--format youtube` thumbnail; full Test & Compare sets are in the `video-thumbnails` skill).
+12. QA: watch the whole cut once, then open frames at the hook, every cutaway, the CTA, and the cover preview; check loudness and the caption script's safe-zone warnings. If an image can't be read, list the frame files for the user and say what is unverified.
 
 ### Edit conventions
 
@@ -56,13 +64,14 @@ Defaults, with the strength of their evidence. Let the account's own retention a
 | Convention | Default | Evidence |
 |---|---|---|
 | Hook | Spoken hook and on-screen hook text in the first 1–3 s; product or brand visible by 3 s | TikTok creative guidance |
-| Captions | Always, word-timed; audio leads, captions support | Platform guidance (most views sound-on; captions serve the rest and search) |
+| Captions | Always, word-timed, inside the safe zone; audio leads, captions support | Platform guidance (most views sound-on; captions serve the rest and search) |
 | On-screen text pace | 5–10 words per second at most | TikTok creative guidance |
 | Ending | Ads: CTA on a held frame or card, not a fade. Organic: end right after the payoff, last frame flows back into the hook | TikTok-cited recall data; practitioner |
 | Length | By platform and goal (next section); ad length follows the platform's ad spec and the creative test | Measured, per platform |
 | Visual change | Every 2–3 s | Practitioner |
 | Punch-ins | 110–120%, hard cut on an emphasis word | Practitioner |
 | B-roll | 20–40% of runtime, 1–3 s each, product in use | Practitioner and vendor |
+| SFX | Only on cutaway entries and reveals | Practitioner |
 | Music | Ducked under voice; about -18 dB or off for UGC | Practitioner |
 | Look | Native, lo-fi framing beats studio gloss on TikTok | TikTok creative guidance |
 
@@ -76,20 +85,24 @@ Descriptive data, not targets; let the account's own retention overrule it, and 
 - Paid ads: length follows the platform's ad spec and the creative test; put the hook and proposition in the first 3 s.
 - Don't pad to hit a length, and don't cut a payoff to fit one.
 
-### Long-form → clips
-
-1. Transcribe the full episode with word timestamps (`--model medium` or larger for multi-speaker audio).
-2. Find candidates that stand alone, with length per the platform section above: they open on a strong self-contained line and hold the payoff to the end. Never end before the punchline; never open on context the viewer lacks.
-3. Score each candidate 1–5 on hook strength, standalone clarity, payoff, and quotability. Write `clips.md`: rank, start–end, first line, payoff line, score, suggested on-screen hook.
-4. Cut each pick with a little padding, reframe (track the active speaker per segment), caption with a `--hook` line, and render as `cuts/clip-NN-9x16.mp4`.
-5. Ship the full ranked set; the user's tests pick winners. Automated virality scores are not evidence.
-
 ### Iterating a winning ad
 
 - Hook swaps: same body, new first 1.5–3 s (new spoken line, new opening shot, or new hook text). Ship 3–5 clearly different hooks, not wording tweaks, plus distinct concepts (different angle, format, or opening scene): Jon Loomer's Meta Andromeda guidance says ad variations should differ significantly, not subtly, so concept variety is what widens the test (directional).
-- Re-cuts: 15 / 30 / 45 s lengths from the same selects; tighter pacing; a different CTA.
+- Re-cuts: length variants from the same selects, chosen by platform and goal; tighter pacing; a different CTA.
 - Resizes: 9:16 master, then 4:5 and 1:1 for feeds, re-captioned at each size.
+- Claims and the offer stay exactly as approved.
 - Name every file `YYYYMMDD_concept_angle_hookID_format_len_vN` (e.g. `20261024_founder_pain_h3_9x16_30s_v1.mp4`) and list each variant in `meta/variants.md` with what changed.
+
+### Retention review of a flop
+
+After about 24–72 h, run the retention review in the `video-hooks` skill, then re-cut or re-hook the drop-off spot as a new variant and record what worked in memory. Never delete and re-upload a flopping Short.
+
+### Integrity
+
+- Cuts tighten what the speaker said; they never splice words into a claim, testimonial or result the speaker did not make.
+- Creator footage used in paid ads needs the creator's usage rights; paid partnerships carry the platform's partnership label.
+- Brand content uses licensed, owned or generated music, never trending sounds.
+- Reused material needs a transformation (TikTok guidelines, YouTube Shorts originality update of 2026-10-01, Instagram aggregator rules); watermarks and credits don't count.
 
 ### Tool choice
 
@@ -99,7 +112,8 @@ Descriptive data, not targets; let the account's own retention overrule it, and 
 | Reframes, punch-ins, cutaways, text cards, audio mix, loudness, encodes | ffmpeg recipes in `references/ffmpeg-recipes.md` |
 | Captions and hook box | `video-captions` script |
 | Kinetic type, animated graphics, smooth camera moves, many templated variants | Remotion (`npx create-video@4.0.538 --yes --blank`, `npx remotion render`) |
-| Hand-off to a human editor | `auto-editor raw.mp4 --export premiere` (or `resolve`, `final-cut-pro`) |
+| Hand-off to a human editor | `auto-editor raw.mp4 --export premiere` (or `resolve`, `final-cut-pro`) plus `edit.md` |
+| Translated subtitles, per-language burn-ins, dubbed voice-over of a finished cut | `video-localization` skill |
 
 Keep generation loss low: intermediates at `-crf 16 -preset veryfast`, one final encode at the platform preset, and never re-encode a file that is only being remuxed (`-c copy`).
 
@@ -117,15 +131,19 @@ Keep generation loss low: intermediates at `-crf 16 -preset veryfast`, one final
 
 ✅ Transcribe the raw file only to plan cuts; caption the final mixed file.
 
-### Example 3: podcast clip ends early
+### Example 3: a splice that invents a claim
 
-❌ A 30 s clip that stops on "and the reason that worked was" because the 30 s mark fell there.
+❌ Joining "we cut costs" from minute 2 with "by 80%" from minute 9 into one sentence.
 
-✅ Extend to the end of the payoff sentence (42 s) or pick a tighter opening line; length follows the story.
+✅ Keep the speaker's sentences whole; cut between sentences, never inside a claim.
+
+## Output format
+
+`./video-out/<slug>/`: `edit.md`, `raw/`, `work/` (intermediates), `broll/`, `sfx/`, `music/`, `captions/` (`vo.json`, `captions.ass`, `captions.srt`), `cuts/` (`master-9x16.mp4`, `feed-4x5.mp4`, `feed-1x1.mp4`, variants), `thumbs/` (`cover-reels.jpg`, previews), `meta/` (`variants.md`, `publish-checklist.md` with music source and any disclosure).
 
 ## Checklist
 
-- [ ] `edit.md` (or `clips.md`) written before cutting: hook, payoff, keep ranges, cuts with reasons.
+- [ ] `edit.md` written before cutting: hook, payoff, keep ranges, cuts with reasons.
 - [ ] Cuts made with auto-editor and recipes; no custom frame-processing code.
 - [ ] Hook spoken and shown in the first 3 s; product or subject visible early.
 - [ ] Visual change about every 2–3 s; cutaways show the product in use.
@@ -141,7 +159,10 @@ Keep generation loss low: intermediates at `-crf 16 -preset veryfast`, one final
 
 - `video-captions` — word timings, caption presets, burn.
 - `video-spec-sheet` — safe zones, encode presets, disclosure and music rules.
-- `video-hooks` — hook patterns for hook swaps and clip openers.
+- `video-hooks` — hook patterns for hook swaps, endings, re-hooks, retention review.
+- `video-thumbnails` — covers and thumbnails.
+- `video-localization` — translated subtitles and dubs.
+- `video-clips` — selecting standalone clips from long recordings.
 - `references/ffmpeg-recipes.md` — tested commands for every step above.
 - [auto-editor options](https://auto-editor.com/ref/options)
 - [TikTok creative best practices](https://ads.tiktok.com/help/article/creative-best-practices)

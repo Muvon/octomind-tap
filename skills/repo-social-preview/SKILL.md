@@ -4,13 +4,14 @@ title: "GitHub Social Preview Card in the Repo's Brand"
 description: "Design and render a 1280x640 GitHub social preview card from the repo's brand and check the upload. Use when a repo shows GitHub's generic card."
 license: Apache-2.0
 compatibility: "Requires: python3 and typst (installed with the social-preview capability); gh, authenticated, for reading the repo and checking the upload. macOS/Linux."
-capabilities: shell social-preview image-view
+capabilities: webfetch social-preview image-view
 domains: developer
 rules:
   - match((?i)social[- ]preview)
   - match((?i)\b(og|open ?graph)[ :-]?(image|card)\b)
-  - semantic(make a social preview image for this github repo)
-  - semantic(our repo link shows a generic card when shared)
+  - semantic(make a social preview image for this github repo, 0.72)
+  - semantic(our repo link shows a generic card when shared, 0.72)
+  - semantic(design the share card image for this repository, 0.72)
 ---
 
 ## Overview
@@ -36,7 +37,7 @@ If `usesCustomOpenGraphImage` is true, look at the current image first and ask w
 
 ### Discover the brand
 
-Search the repository, and the website's repository when one is checked out or linked from `homepageUrl`; the website is the source of truth when the two disagree.
+Search the repository, and the website's repository when one is checked out or linked from `homepageUrl`; fetch `homepageUrl` when the site is not checked out. The website is the source of truth when the two disagree. Recall earlier brand values and copy from memory first.
 
 | Input | Where to look | Flag |
 |---|---|---|
@@ -88,6 +89,19 @@ gh repo view OWNER/REPO --json usesCustomOpenGraphImage,openGraphImageUrl
 ```
 
 `usesCustomOpenGraphImage` must be `true`. Links already posted keep their old card, and X, Slack, and LinkedIn cache unfurls; LinkedIn's Post Inspector forces a refresh. Report the card as uploaded only after the check passes.
+
+Memorize the approved brand values and copy afterwards.
+
+### Situations
+
+- Make a card: read the current state, discover the brand, write the copy, render and check, upload and verify.
+- Audit an existing card: open the current `openGraphImageUrl` at full size and at 480 px, rate the claim, legibility, brand match and stale facts, and end with the top fix.
+- No brand found: use the defaults plus the logo's fill as accent, and say so in the report; never an invented palette or icon.
+- Autonomous or non-interactive brief: take the strongest copy, render, list the assumptions in the report, and stop before the upload.
+
+### Output
+
+Deliver `<out>/social-preview.png` (1280x640) and `<out>/social-preview-preview.png` (480 px wide), plus a short report: each brand value with its source file or "default", the final copy, the warnings resolved, and the upload steps.
 
 ## Examples
 

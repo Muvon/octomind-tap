@@ -24,7 +24,8 @@
 # `inline`). A file destination is written by prep, edited in-place by fix, and
 # read back by the screener — it never round-trips through the conversation.
 #
-# Roles: `coach:interview` intake/prep/fix/deliver; `coach:screener` is the
+# Roles: the coach agent with the interview-prep skill does intake/prep/fix/deliver;
+# the coach agent with the screening skill is the
 # independent auditor and keeps its native SCREEN-PASS / SCREEN-FAIL verdict
 # line so the gate matches the role's own output contract.
 #
@@ -45,7 +46,8 @@ max_cost    = 3.0 # ceiling for the whole run; checked after each step
 # ── 1. Intake — read resume + posting, capture both, resolve stage + destination
 [[steps]]
 name    = "intake"
-role    = "coach:interview"
+role    = "coach"
+skills  = ["coach-interview-prep"]
 session = "fresh"
 retries = 2
 prompt  = """
@@ -82,7 +84,8 @@ Do not build the pack yet. No meta-commentary.
 # ── 2. Prep — grounded pack, mapped to the resume and the posting ────────────
 [[steps]]
 name    = "prep"
-role    = "coach:interview"
+role    = "coach"
+skills  = ["coach-interview-prep"]
 session = "fresh"
 retries = 2
 prompt  = """
@@ -136,7 +139,8 @@ exit_when      = { output = "audit", matches = '(?m)^SCREEN-PASS' }
 
   [[steps.run]]
   name    = "fix"
-  role    = "coach:interview"
+  role    = "coach"
+  skills  = ["coach-interview-prep"]
   session = "continue"
   retries = 2
   prompt  = """
@@ -168,7 +172,8 @@ a file's content into the output. No meta-commentary.
 
   [[steps.run]]
   name    = "audit"
-  role    = "coach:screener"
+  role    = "coach"
+  skills  = ["coach-application-screening"]
   session = "fresh"
   retries = 2
   prompt  = """
@@ -211,7 +216,8 @@ that line. Read-only — never edit files.
 # ── 4. Deliver — inline pack + summary; a file pack is already done ──────────
 [[steps]]
 name    = "deliver"
-role    = "coach:interview"
+role    = "coach"
+skills  = ["coach-interview-prep"]
 session = "fresh"
 retries = 2
 prompt  = """

@@ -11,4 +11,4 @@ triggers = [
 	"sync the avatar lips to this track",
 ]
 
-domains = ["video", "marketing"]
+domains = ["producer", "marketer"]

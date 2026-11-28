@@ -4,7 +4,7 @@ title: "Analytical Report Craft"
 description: "Turn raw data into a decision-ready report: answer-first Minto Pyramid, traced numbers, charts, HTML that prints to PDF. Use for data reports."
 license: Apache-2.0
 compatibility: "Produces self-contained HTML by default; markdown or PDF when requested and a renderer is available."
-domains: data
+domains: analyst
 rules:
   - match(\b(generate|build|write|make)\s+(a|the|an)\s+(report|analytics report|data report)\b)
   - match(\breport\s+(from|on)\s+(this|the|my)\s+(data|csv|metrics|logs|numbers)\b)
@@ -75,7 +75,7 @@ Use absolute units (pt, mm) for print layout, `break-inside: avoid` on tables/fi
 
 Typography and layout for humans: generous line height, a readable measure (not full-width text), clear heading hierarchy, tables for enumerable facts with right-aligned numbers, a stat-tile row for the headline metrics, whitespace over density. Restraint reads as authoritative.
 
-Format flexibility: HTML is the default and the most useful (browser + PDF in one). Produce Markdown if the request asks for it, or a rendered PDF if a renderer is available in the environment (the agent can render the HTML via a shell tool when one is present); otherwise deliver the HTML and tell the reader to open it and Print -> Save as PDF.
+Format flexibility: HTML is the default and the most useful (browser + PDF in one). Produce Markdown if the request asks for it, or a rendered PDF if a renderer is available in the environment (render the HTML via a shell tool when one is present); otherwise deliver the HTML and tell the reader to open it and Print -> Save as PDF.
 
 ## Examples
 

@@ -25,8 +25,8 @@
 # faked. The screener's truthfulness gate fails the run on any fabrication,
 # regardless of ATS match score.
 #
-# Roles: `coach:resume` reads/tailors/writes/fixes/delivers the documents;
-# `coach:screener` is the independent auditor (ATS match + truthfulness +
+# Roles: the coach agent with the resume skills reads/tailors/writes/fixes/delivers the
+# documents; the coach agent with the screening skill is the independent auditor (ATS match + truthfulness +
 # convention + letter quality). Knowledge lives in the ats-optimization,
 # resume-conventions, and cover-letter skills.
 #
@@ -50,7 +50,8 @@ description = "Turns a master resume and a job posting into a tailored ATS resum
 # ── 1. Intake — read resume + posting, capture both, detect target market ───
 [[steps]]
 name    = "intake"
-role    = "coach:resume"
+role    = "coach"
+skills  = ["coach-resume-tailoring", "ats-optimization", "resume-conventions", "cover-letter", "resume-rendering"]
 session = "fresh"
 retries = 4
 prompt  = """
@@ -86,7 +87,8 @@ Do not tailor or write anything yet. No meta-commentary.
 # ── 2. Tailor — grounded, ATS-optimized, market-adapted draft ───────────────
 [[steps]]
 name    = "tailor"
-role    = "coach:resume"
+role    = "coach"
+skills  = ["coach-resume-tailoring", "ats-optimization", "resume-conventions", "cover-letter", "resume-rendering"]
 session = "fresh"
 retries = 4
 prompt  = """
@@ -136,7 +138,8 @@ exit_when      = { output = "audit", matches = '(?m)^SCREEN-PASS' }
 
   [[steps.run]]
   name    = "fix"
-  role    = "coach:resume"
+  role    = "coach"
+  skills  = ["coach-resume-tailoring", "ats-optimization", "resume-conventions", "cover-letter", "resume-rendering"]
   session = "continue"
   retries = 4
   prompt  = """
@@ -171,7 +174,8 @@ text. Never paste a file's content into the output. No meta-commentary.
 
   [[steps.run]]
   name    = "audit"
-  role    = "coach:screener"
+  role    = "coach"
+  skills  = ["coach-application-screening"]
   session = "fresh"
   retries = 4
   prompt  = """
@@ -209,7 +213,8 @@ Nothing after that line. Read-only — never edit files.
 # ── 4. Deliver — inline documents + summary; file documents are done ────────
 [[steps]]
 name    = "deliver"
-role    = "coach:resume"
+role    = "coach"
+skills  = ["coach-resume-tailoring", "ats-optimization", "resume-conventions", "cover-letter", "resume-rendering"]
 session = "fresh"
 retries = 4
 prompt  = """

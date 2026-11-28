@@ -14,4 +14,4 @@ triggers = [
 	"reduce leverage and close part of my perp position",
 ]
 
-domains = ["finance"]
+domains = ["financial-planner"]

@@ -4,21 +4,23 @@ title: "Content Audit Rubric & Scoring Harness"
 description: "Read-only content audit: detects content type, scores each axis 0-10, reports findings with evidence and rewrites. Use to diagnose a draft or post."
 license: Apache-2.0
 compatibility: "Read-only. Requires filesystem read access for file inputs; live SERP or source checks need network access."
-domains: content
+domains: writer
 rules:
-  - session(audit)
-  - match(\b(audit|score|review|diagnose|grade|critique)\s+(this|my|the|a)\s+(post|thread|tweet|article|blog|draft|copy)\b)
-  - match(\b(how\s+(good|strong|viral)\s+is\s+this)\b)
-  - match(\b(will\s+this\s+(work|rank|perform|land))\b)
-  - match(\b(check|inspect)\s+.{0,40}before\s+(posting|publishing|shipping)\b)
-  - semantic(audit this post before I publish)
-  - semantic(score this draft against the algorithm)
-  - semantic(tell me what will fail in this content)
+  - match((?i)\b(audit|scored?\s+audit|score|grade)\s+(this|my|the|our|an?|attached|these|each)\b.{0,60}\b(post|thread|tweet|article|blog|bios?|caption|comments?|replies|reply|title|draft|copy|submission)\b)
+  - match((?i)\b(rubric|per-axis|axis\s+scores?|prioritized\s+findings|critical/moderate/minor|overall\s+score|platform\s+fit)\b)
+  - match((?i)\b(how\s+(good|strong|viral)\s+is\s+this|will\s+this\s+(work|rank|perform|land)|honest\s+audit|audit\s+with\s+scores|score\s+it|flag\s+any\s+problems)\b|\b(check|inspect)\s+.{0,40}before\s+(posting|publishing|shipping)\b)
+  - match((?i)\b(edit|fix|tighten|polish|rewrite|surgical)\w*\b.{0,80}\b(draft|post|article|newsletter|copy|essay|hook|intro|piece)\b)
+  - match((?i)\bhumani[sz]e\b|\bAI-sounding\b|\bChatGPT-written\b|\bsurgical\s+edit\b)
+  - semantic(audit this post before I publish, 0.72)
+  - semantic(score this draft against the algorithm, 0.72)
+  - semantic(tell me what will fail in this content, 0.72)
+  - semantic(score this blog post and show what to rewrite, 0.72)
+  - semantic(review my draft and tell me what is weak and why, 0.72)
 ---
 
 ## Overview
 
-The shared rubric for scoring any content the system writes. The audit agent renders read-only reports from it; the editor agent uses the same diagnosis to drive rewrites. The harness detects the content type, routes to the platform skill, and grades with per-axis scores plus a prioritized findings list. It never writes to the source file.
+The shared rubric for scoring any content the system writes. A read-only audit renders reports from it; an edit session uses the same diagnosis to drive rewrites. The harness detects the content type, routes to the platform skill, and grades with per-axis scores plus a prioritized findings list. It never writes to the source file.
 
 ## Mental model
 
@@ -28,7 +30,7 @@ Three constraints keep the harness useful instead of confusing:
 
 - Platform skills own the rules; the harness owns the grading. `social-x` knows what good X looks like; this skill knows how to count, weight, and report what it finds. Never restate platform rules here — read them from the activated skill.
 - One canonical report shape across every content type. Same headers, same severity tiers, same axis vocabulary. Only the weights on each axis change per content type. Skim-able regardless of input.
-- Read-only — the auditor renders the report and stops. Suggested rewrites are proposals inside the report, never disk writes. To apply, hand off to `content:editor`.
+- Read-only — the audit renders the report and stops. Suggested rewrites are proposals inside the report, never disk writes. To apply them, run an edit session with the report as input.
 
 ## Instructions
 
@@ -131,7 +133,7 @@ Every finding follows this shape so reports are diff-able and tools can parse th
   Suggested rewrite: {optional — only when the fix is local and short; otherwise omit}
 ```
 
-No suggested rewrites for structural findings (those are scoping decisions for the editor agent). No suggested rewrites for findings the auditor flagged as "needs verification" — preservation is the default.
+No suggested rewrites for structural findings (those are scoping decisions for the edit session). No suggested rewrites for findings the auditor flagged as "needs verification" — preservation is the default.
 
 ### Escalation rule
 
@@ -143,6 +145,21 @@ If a check cannot be completed, do not infer. Flag as "Unverified" with a precis
 - Source content too short to evaluate an axis → "Unscored — not enough signal."
 
 Never grade an axis from a guess. Unverified beats wrong.
+
+### Audit session
+
+- Parse: read the file path or pasted text. Pull the declared platform or format, niche, audience, account stage, primary keyword, anchor accounts, and brand voice notes from the request. In parallel, recall brand voice and past audit findings on similar content from memory. Brand voice is required input to the Voice axis. Persist nothing after scoring: an audit does not write memory.
+- Detect, then confirm: state the detected content type at the top of every audit. If the user redirects, re-route the skills and re-score. If the type is borderline, ask one question ("X post or LinkedIn post?", "Blog or article?") and stop.
+- Read each platform skill and cross-cutting skill before scoring against it. Don't recall platform rules from training, and don't invent rubric items, axis weights, or verdict mappings.
+- Emit a finding for every axis below 8/10 and every issue the rubric flags.
+- Never downgrade a safety, grounding, or kill-switch finding to make a verdict look better.
+- Don't invent benchmarks, quote algorithm weights that are not in an activated skill, or predict views, click-through, or ranking. The verdict is a structured projection from the rubric, not a prediction.
+- When the user pushes back on a finding, re-read the relevant skill rule and restate it verbatim. If the rule does not back the finding, withdraw it. If it does, hold the line and explain.
+- Missing context that would lift the score: render the report with the affected axes Unscored, list the missing context, and offer to re-audit when the user provides it.
+- "Just score it, don't ask", or an autonomous, non-interactive brief: audit with what is available and state the assumed content type at the top. Unscored axes stay Unscored.
+- "Score only, no findings": render the score block and verdict only.
+- A whole folder of drafts: audit one piece at a time.
+- Save only when the user asks. The slug is the first six lowercase-kebab words of the content's hook or title. After saving, give the path and the handoff line.
 
 ### Output report template
 
@@ -191,7 +208,7 @@ Overall: {N}/100 — {verdict band}
 
 {One of:}
 - Ready to publish — minor polish optional.
-- Run `content:editor` to apply the {N} critical and {N} moderate fixes.
+- Run an edit session to apply the {N} critical and {N} moderate fixes; paste this report or the file path as input.
 - Rewrite recommended — structural issues; restart from a new outline.
 - Get the missing context first ({list}) then re-audit.
 ```
@@ -265,6 +282,5 @@ Content-domain skills the harness composes with:
 - `content-grounding` — fact-grounding triage for the Grounding axis
 - `content-geo` — answer-first / extractable structure for the Answer-first / GEO axis
 
-Used by agents:
-- `content:audit` — read-only orchestrator, produces report only
-- `content:editor` — uses the diagnosis to drive surgical edits
+Used with:
+- An edit session takes this report as its diagnosis and applies the fixes.

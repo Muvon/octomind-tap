@@ -25,7 +25,8 @@ description = "Implements an existing feature spec in a developer/evaluator loop
 # ── 1. Spec → context ────────────────────────────────────────────────────────
 [[steps]]
 name    = "context"
-role    = "developer:context"
+role    = "developer"
+skills  = ["developer-context-scouting"]
 session = "fresh"
 retries = 1
 prompt  = """
@@ -45,7 +46,8 @@ Output only the refined task with its <context> pinpoints — no implementation 
 # ── 1b. Upstream research (reported issues) ──────────────────────────────────
 [[steps]]
 name    = "upstream"
-role    = "assistant:researcher"
+role    = "assistant"
+skills  = ["assistant-web-research"]
 session = "fresh"
 retries = 1
 prompt  = """
@@ -71,7 +73,7 @@ exit_when      = { output = "evaluator", matches = '(?m)^VERDICT: (APPROVED|BLOC
 
   [[steps.run]]
   name    = "developer"
-  role    = "developer:general"
+  role    = "developer"
   session = "continue"
   retries = 1
   prompt  = """
@@ -113,7 +115,8 @@ Output only the work, the map, and that evidence — no preamble.
 
   [[steps.run]]
   name    = "brief"
-  role    = "developer:brief"
+  role    = "developer"
+  skills  = ["developer-diff-briefing"]
   session = "fresh"
   retries = 1
   prompt  = """
@@ -134,7 +137,7 @@ Output only the brief.
 
   [[steps.run]]
   name    = "evaluator"
-  role    = "developer:general"
+  role    = "developer"
   session = "fresh"
   prompt  = """
 You are the independent evaluator, in a fresh session. Trust nothing you did not
@@ -213,7 +216,8 @@ on_no_match = ["stalled"]
 
   [[steps.run]]
   name    = "summary"
-  role    = "developer:brief"
+  role    = "developer"
+  skills  = ["developer-diff-briefing"]
   session = "fresh"
   prompt  = """
 Read the user spec and the implementation in the current unstaged git changes,
@@ -236,7 +240,8 @@ Output only the briefing.
 
   [[steps.run]]
   name    = "stalled"
-  role    = "developer:brief"
+  role    = "developer"
+  skills  = ["developer-diff-briefing"]
   session = "fresh"
   prompt  = """
 The development loop ended WITHOUT evaluator approval — do not present this as

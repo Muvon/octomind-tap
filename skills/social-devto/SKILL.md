@@ -4,7 +4,7 @@ title: "DEV Community (dev.to) Publishing Playbook"
 description: "Write and revise DEV articles, discussions, comments and launch posts in the author's voice, with disclosure rules. Use when drafting for dev.to."
 license: Apache-2.0
 compatibility: "Markdown editor; network access for DEV policy, editor, and tag checks."
-domains: content
+domains: writer
 rules:
   - match(\bdev\.to\b)
   - match(\bDEV\s+Community\b)

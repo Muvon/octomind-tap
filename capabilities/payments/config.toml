@@ -9,4 +9,4 @@ triggers = [
 	"create a stripe invoice",
 ]
 
-domains = ["finance"]
+domains = ["financial-planner"]

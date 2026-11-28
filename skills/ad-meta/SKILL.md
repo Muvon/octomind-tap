@@ -3,8 +3,8 @@ name: ad-meta
 title: "Meta Ads Production Spec (Facebook + Instagram)"
 description: "Meta ad specs for Facebook and Instagram Feed, Stories and Reels: text slots, character limits, ratios and CTAs. Use when writing Meta ad copy or briefs."
 license: Apache-2.0
-compatibility: "Octomind launch agents. Platform-specific to Meta (Facebook + Instagram)."
-domains: launch marketing
+compatibility: "Needs web search for current ad policies and specs. Applies to Meta (Facebook + Instagram) only; an ad account on that platform is needed to launch."
+domains: founder marketer
 rules:
   - content(meta ads)
   - content(facebook ads)

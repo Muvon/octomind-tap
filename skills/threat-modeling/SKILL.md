@@ -4,7 +4,7 @@ title: "Threat Modeling: STRIDE and Data Flow Diagrams"
 description: "Threat modeling steps: data flow diagram, trust boundaries, STRIDE per element, rated threat table, mitigations. Use when designing or reviewing."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Text diagrams (Mermaid) are enough; no modeling tool required."
-domains: security
+domains: security-analyst
 rules:
   - match((?i)\bthreat[\s-]?model(l)?(ing|s|ed)?\b)
   - match(\bSTRIDE\b)

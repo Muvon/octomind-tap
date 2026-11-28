@@ -47,8 +47,8 @@ class ProviderTests(unittest.TestCase):
             for path in CAP.glob("*.toml"):
                 if path.name != "default.toml":
                     (seo / path.name).symlink_to(path)
-            (root / "agents/seo").mkdir(parents=True)
-            (root / "agents/seo/test.toml").write_text(
+            (root / "agents").mkdir()
+            (root / "agents/seo-test.toml").write_text(
                 'capabilities = ["core", "websearch", "webfetch", "seo-data"]\n'
                 '[[roles]]\nsystem = "fixture"\nwelcome = "fixture"\n')
             for provider in sorted(PROVIDERS):
@@ -56,7 +56,7 @@ class ProviderTests(unittest.TestCase):
                     default = seo / "default.toml"
                     default.unlink(missing_ok=True)
                     default.symlink_to(f"{provider}.toml")
-                    p = subprocess.run(["python3", str(root / "bin/load"), "seo:test"],
+                    p = subprocess.run(["python3", str(root / "bin/load"), "seo-test"],
                                        capture_output=True, text=True, check=True)
                     merged = tomllib.loads(p.stdout)
                     refs = merged["roles"][0]["mcp"]["server_refs"]

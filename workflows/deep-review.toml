@@ -51,7 +51,7 @@ description = "Reviews a code change through five parallel lenses, verifies each
 # ── 1. Scope — resolve the target and build shared context ──────────────────
 [[steps]]
 name    = "scope"
-role    = "developer:general"
+role    = "developer"
 session = "fresh"
 retries = 4
 timeout = 1800
@@ -91,7 +91,7 @@ max_parallel = 3
 
   [[steps.run]]
   name    = "correctness"
-  role    = "developer:general"
+  role    = "developer"
   skills  = ["code-review-lenses"]
   session = "fresh"
   retries = 4
@@ -116,8 +116,8 @@ none, output exactly: NO FINDINGS. No meta-commentary.
 
   [[steps.run]]
   name    = "security"
-  role    = "security:owasp"
-  skills  = ["code-review-lenses"]
+  role    = "security-analyst"
+  skills  = ["security-code-review", "threat-modeling", "code-review-lenses"]
   session = "fresh"
   retries = 4
   timeout = 1800
@@ -139,7 +139,7 @@ output exactly: NO FINDINGS. No meta-commentary.
 
   [[steps.run]]
   name    = "concurrency"
-  role    = "developer:general"
+  role    = "developer"
   skills  = ["code-review-lenses"]
   session = "fresh"
   retries = 4
@@ -163,7 +163,7 @@ No meta-commentary.
 
   [[steps.run]]
   name    = "performance"
-  role    = "developer:general"
+  role    = "developer"
   skills  = ["code-review-lenses"]
   session = "fresh"
   retries = 4
@@ -185,7 +185,7 @@ Output candidate findings only in the skill's finding format ([SEVERITY]
 
   [[steps.run]]
   name    = "design"
-  role    = "developer:general"
+  role    = "developer"
   skills  = ["code-review-lenses"]
   session = "fresh"
   retries = 4
@@ -209,7 +209,7 @@ Output candidate findings only in the skill's finding format ([SEVERITY]
 # ── 3. Verify — adversarial refute + dedup + mechanical verdict ─────────────
 [[steps]]
 name    = "verify"
-role    = "developer:general"
+role    = "developer"
 skills  = ["code-review-lenses"]
 session = "fresh"
 retries = 4
@@ -246,7 +246,7 @@ means REQUEST_CHANGES; otherwise APPROVED. End with exactly one line:
 # ── 4. Synthesize — the final, coherent review ──────────────────────────────
 [[steps]]
 name    = "synthesize"
-role    = "developer:general"
+role    = "developer"
 skills  = ["code-review-lenses"]
 session = "fresh"
 retries = 4

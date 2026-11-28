@@ -12,4 +12,4 @@ triggers = [
 	"check the tiktok upload status",
 ]
 
-domains = ["content", "video", "marketing"]
+domains = ["writer", "producer", "marketer"]

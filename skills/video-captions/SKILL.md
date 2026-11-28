@@ -5,13 +5,8 @@ description: "Burned-in video captions with word-level timing from faster-whispe
 license: Apache-2.0
 compatibility: "Requires: python3, an ffmpeg built with libass (macOS: Homebrew ffmpeg-full), and a word-timestamp source such as whisper-ctranslate2. macOS/Linux."
 capabilities: shell captions image-view
-domains: video
+domains: producer
 rules:
-  - session(adcraft)
-  - session(ugc)
-  - session(explainer)
-  - session(editor)
-  - session(clips)
   - content(captions)
   - content(subtitles)
   - match(\b(burn(ed)?[- ]in|word[- ]by[- ]word|karaoke)\s+(captions?|subtitles?|text)\b)

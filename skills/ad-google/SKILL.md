@@ -3,8 +3,8 @@ name: ad-google
 title: "Google Ads Production Spec"
 description: "Google Ads creative specs: Search RSA, Performance Max and Display slots, character limits, pinning rules, asset ratios. Use when writing Google Ads copy."
 license: Apache-2.0
-compatibility: "Octomind launch agents. Platform-specific to Google Ads."
-domains: launch marketing
+compatibility: "Needs web search for current ad policies and specs. Applies to Google Ads only; an ad account on that platform is needed to launch."
+domains: founder marketer
 rules:
   - content(google ads)
   - content(google ad)

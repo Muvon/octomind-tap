@@ -10,7 +10,7 @@ description = "Upgrades named dependencies, or safe patch and minor ones by defa
 # ── 1. Inventory & plan ──────────────────────────────────────────────────────
 [[steps]]
 name    = "inventory"
-role    = "developer:general"
+role    = "developer"
 session = "fresh"
 retries = 1
 prompt  = """
@@ -44,7 +44,7 @@ exit_when      = { output = "verify", matches = '(?m)^VERIFY: GREEN' }
 
   [[steps.run]]
   name    = "apply"
-  role    = "developer:general"
+  role    = "developer"
   session = "continue"
   retries = 1
   prompt  = """
@@ -69,7 +69,7 @@ command and its output as evidence.
 
   [[steps.run]]
   name    = "verify"
-  role    = "developer:general"
+  role    = "developer"
   session = "fresh"
   prompt  = """
 Independently verify the upgrade in the current working tree — trust nothing
@@ -101,7 +101,8 @@ on_no_match = ["stalled"]
 
   [[steps.run]]
   name    = "notes"
-  role    = "developer:changelog"
+  role    = "developer"
+  skills  = ["changelog-writing", "release-notes-writing"]
   session = "fresh"
   prompt  = """
 Return a concise upgrade notes draft from the current unstaged changes and the plan
@@ -115,7 +116,8 @@ any bumps pinned back and why. Verify against the diff and leave files untouched
 
   [[steps.run]]
   name    = "stalled"
-  role    = "developer:brief"
+  role    = "developer"
+  skills  = ["developer-diff-briefing"]
   session = "fresh"
   prompt  = """
 The upgrade loop ended WITHOUT a green verification — do not present this as

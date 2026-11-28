@@ -59,7 +59,7 @@ Everyday life (paste or point at the thing; get a checked document back — you 
 
 ## How resolution works
 
-`octomind workflow <arg>` resolves like `octomind run <tag>`:
+`octomind workflow <arg>` resolves like `octomind run <name>`:
 
 - `octomind workflow plan-and-build` — **bare name** → fetched from taps
   (`<tap>/workflows/plan-and-build.toml`), first tap wins (user taps first,
@@ -77,13 +77,14 @@ echo "Add a --json flag to the export command" | octomind workflow plan-and-buil
 octomind workflow plan-and-build --dry-run   # validate + print the plan, run nothing
 ```
 
-## Public roles only
+## Public agents only
 
-Workflows fetched from a tap are validated to use **public tap roles only** —
-every step's `role` must be a `category:variant` tag installed via taps
-(e.g. `developer:general`, `developer:spec`). This keeps a public workflow
-portable: anyone with the same taps can run it. Local workflow files may use
-local config roles freely.
+Workflows fetched from a tap are validated to use **tap agents only** —
+every step's `role` must be the name of an agent installed via taps
+(e.g. `developer`, `content`, `assistant`), never a name containing `:`. Where a
+step needs a specialty, it preloads skills with `skills = [...]`. This keeps a
+public workflow portable: anyone with the same taps can run it. Local workflow
+files may use local config roles freely.
 
 ## Structure
 
@@ -94,7 +95,8 @@ description = "What it does."        # shown in `octomind workflow` listing and 
 
 [[steps]]                            # one or more steps, run top to bottom
 name = "plan"                        # unique step name (also a {{var}} for later steps)
-role = "developer:spec"              # public tap role (category:variant)
+role = "developer"                   # public tap agent name
+skills = ["spec-authoring"]           # optional; skills to preload for this step
 prompt = "Plan this: {{input}}"      # {{input}} = stdin; {{step-name}} = a prior step's output
 # session = "fresh" | "continue"     # optional; reuse one session across iterations
 # timeout = 0                        # optional, seconds (0 = none)

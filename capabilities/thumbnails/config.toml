@@ -12,4 +12,4 @@ triggers = [
 	"make thumbnail variants for an a/b test",
 ]
 
-domains = ["video", "content"]
+domains = ["producer", "writer"]

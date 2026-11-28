@@ -4,9 +4,8 @@ title: "Backlink Prospecting & Qualification: Find Safe Free Places"
 description: "Find and qualify safe free backlink targets: resource pages, broken links, communities, directories, with a link-spam rubric. Use before any link outreach."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Requires websearch and webfetch for prospect discovery and qualification."
-domains: seo
+domains: seo marketer
 rules:
-  - session(seo)
   - content(backlink)
   - content(backlinks)
   - content(linkbuilding)

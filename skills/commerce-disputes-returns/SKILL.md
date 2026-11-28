@@ -5,7 +5,7 @@ description: "Card dispute reason codes, response deadlines, evidence packs and 
 license: Apache-2.0
 compatibility: "Needs web access to re-read card network and processor rules. Drafts evidence and recommendations only; the seller submits and refunds."
 capabilities: websearch webfetch
-domains: commerce
+domains: merchant
 rules:
   - match((?i)\b(charge\s?backs?|disputes?)\b.{0,40}\b(evidence|respond|reason\s+code|deadline|win|lose|visa|mastercard|stripe|paypal)\b)
   - match((?i)\b(reason\s+code|rma|return\s+merchandise|friendly\s+fraud|compelling\s+evidence|vamp)\b)

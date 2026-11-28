@@ -13,4 +13,4 @@ triggers = [
 	"export for tiktok specs",
 ]
 
-domains = ["video", "content"]
+domains = ["producer", "writer"]

@@ -14,7 +14,8 @@ parallel = true
 
   [[steps.run]]
   name    = "background"
-  role    = "assistant:researcher"
+  role    = "assistant"
+  skills  = ["assistant-web-research"]
   session = "fresh"
   prompt  = """
 Research the background and current landscape of this question. Search broad,
@@ -31,7 +32,8 @@ Do not assert anything you cannot quote from a source you actually searched.
 
   [[steps.run]]
   name    = "evidence"
-  role    = "assistant:researcher"
+  role    = "assistant"
+  skills  = ["assistant-web-research"]
   session = "fresh"
   prompt  = """
 Research the strongest evidence, data, and expert positions that bear on this
@@ -49,7 +51,8 @@ Do not assert anything you cannot quote from a source you actually searched.
 
   [[steps.run]]
   name    = "counter"
-  role    = "assistant:researcher"
+  role    = "assistant"
+  skills  = ["assistant-web-research"]
   session = "fresh"
   prompt  = """
 Research counter-arguments, risks, caveats, and credible dissenting views on this
@@ -66,7 +69,7 @@ Do not assert anything you cannot quote from a source you actually searched.
 """
 
 # ── 2. Synthesize + groundedness gate ────────────────────────────────────────
-# Synthesizer (researcher) and judge (ai:evals) are distinct roles so the writer
+# Synthesizer (researcher) and judge (ai-engineer agent) are distinct roles so the writer
 # never grades its own work — separation of concerns is the core anti-hallucination
 # lesson. The loop caps at 2: one synthesis, at most one targeted refinement.
 [[steps]]
@@ -77,7 +80,8 @@ exit_when      = { output = "judge", matches = '(?m)^VERDICT: GROUNDED' }
 
   [[steps.run]]
   name    = "synthesizer"
-  role    = "assistant:researcher"
+  role    = "assistant"
+  skills  = ["assistant-web-research"]
   session = "continue"
   prompt  = """
 Synthesize the three research passes below into one balanced, well-structured
@@ -116,7 +120,8 @@ Output only the report — no preamble, no commentary.
 
   [[steps.run]]
   name    = "judge"
-  role    = "ai:evals"
+  role    = "ai-engineer"
+  skills  = ["ai-evals-design"]
   session = "fresh"
   prompt  = """
 You are a groundedness judge in a fresh session. You did not write this report.

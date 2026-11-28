@@ -9,7 +9,7 @@ domains: octomind
 
 ## Overview
 
-A skill is a reusable instruction pack at `skills/<name>/SKILL.md`. When it activates — preloaded, auto-activated by its rules, or loaded with `skill(action="use")` or `/skill <name>` — its body is injected into the session's context. Skills don't define a role, model, or tools; they add focused knowledge any agent in their domain can use.
+A skill is a reusable instruction pack at `skills/<name>/SKILL.md`. When it activates — preloaded, auto-activated by its rules, or loaded with `skill(action="use")` or `/skill <name>` — its body is injected into the session's context. Skills don't define a role or model; they add focused knowledge to the agent they are bound to, and can bring the tools that knowledge needs. Each specialty of a field is a skill bound to that field's agent.
 
 ## Mental model
 
@@ -52,7 +52,7 @@ rules:
 | `name` | yes | ≤64 chars, lowercase letters, digits, hyphens; no leading/trailing hyphen; equals the directory name |
 | `title` | yes (tap lint) | 5–60 chars |
 | `description` | yes | 20–1024 chars, third person, what it does plus when to use it with concrete trigger terms |
-| `domains` | for auto-activation | Space-separated or array; each value must be an existing `agents/<domain>/` directory (lint); the runtime also accepts `*` for every domain, but tap lint rejects it |
+| `domains` | for auto-activation | Space-separated or array of agent names; each value must have an `agents/<name>.toml` (`DOMAIN_UNKNOWN`); the runtime also accepts `*` for every agent, but tap lint rejects it |
 | `rules` | for auto-activation | List of rule expressions, below |
 | `capabilities` | optional | Capabilities enabled when the skill activates; each must exist under `capabilities/` (lint) |
 | `compatibility` | optional | ≤500 chars, environment only (tools, OS, network) |
@@ -62,7 +62,7 @@ The runtime parser reads `name`, `description`, `compatibility`, `license`, `all
 
 ### Auto-activation rules
 
-Rules are evaluated on fresh user messages when `[skills] auto_activation` is on and the session domain is in `domains`. Each `- ` item is an OR branch; several expressions on one line are ANDed.
+Rules are evaluated on fresh user messages when `[skills] auto_activation` is on and the session's agent is in `domains`. Each `- ` item is an OR branch; several expressions on one line are ANDed.
 
 | Expression | Matches when |
 |------------|--------------|
@@ -73,12 +73,12 @@ Rules are evaluated on fresh user messages when `[skills] auto_activation` is on
 | `env(<VAR>)` / `env(<VAR>=<value>)` | Variable set and non-empty / equals value |
 | `bin(<command>)` | Command found on `PATH` |
 | `workdir(<text>)` | Working-directory path contains the text (case-insensitive) |
-| `session(<text>)` | Session name contains the text (case-insensitive). Default names are `YYMMDD-<dir>-HHMM-<id>`; `tap run` sessions are `tap-<domain>-<spec>-<hex>`, so `session(<spec>)` targets one agent only in tap runs or `-n`-named sessions |
+| `session(<text>)` | Session name contains the text (case-insensitive). Default names are `YYMMDD-<dir>-HHMM-<id>`; `tap run` sessions are `tap-<agent name>-<hex>`, so a session check cannot tell specialties apart. Tap skills use message checks instead |
 | `semantic(<phrase>[, <threshold>])` | Embedding cosine between the message and the phrase clears the threshold (default 0.68) |
 
 Deterministic matches activate directly. Semantic-only candidates must also beat the runner-up by a 0.05 margin, so near-ties abstain. Adding or changing `semantic(...)` phrases changes the tap embedding model's training data — see the `tap-model-training` skill.
 
-A skill loads only when the request shows the work. Every rule line carries at least one check on the message (`content`, `match` or `semantic`); `file`, `grep`, `bin`, `env` and `workdir` only narrow a line, because on their own they fire in every session in a matching repo, whatever the user asked. `session(...)` alone is fine: it targets one agent's own runs. Lint enforces this (`RULE_NO_INTENT`) and rejects unknown check types (`RULE_UNKNOWN_CHECK`), which the runtime would silently ignore. Single common words (`review`, `cost`, `pdf`, `node`) fire on passing mentions; use a phrase or a `match()` that needs the task verb.
+A skill loads only when the request shows the work. Every rule line carries at least one check on the message (`content`, `match` or `semantic`); `file`, `grep`, `bin`, `env` and `workdir` only narrow a line, because on their own they fire in every session in a matching repo, whatever the user asked. Lint enforces this (`RULE_NO_INTENT`) and rejects unknown check types (`RULE_UNKNOWN_CHECK`), which the runtime would silently ignore. Single common words (`review`, `cost`, `pdf`, `node`) fire on passing mentions; use a phrase or a `match()` that needs the task verb.
 
 ### Validate script
 
@@ -94,7 +94,7 @@ Fixed section order, U-shaped for attention: the opening and the closing get rea
 ## Rules                 tables, bullets, decision guides
 ## Examples              bad → good pairs
 ## Checklist             verifiable gates before shipping
-## Composition / References   sibling skills in the same domain, sources
+## Composition / References   sibling skills bound to the same agent, sources
 ```
 
 - Overview names the problem, trigger, and outcome.
@@ -119,11 +119,23 @@ The same calibration as agent prompts: current Claude models follow instructions
 
 Reserve all-caps for one or two genuine safety hard-stops. Full guidance: `skills/prompt-engineering/reference/claude-4-emphasis-and-tools.md`.
 
+### Skills that carry a specialty
+
+A specialty is a procedure for one kind of task in a field, such as QA test planning, contract review for one jurisdiction or lifecycle email. It is a skill bound to the field's agent.
+
+- `domains:` names the agent, for example `domains: developer`.
+- `capabilities:` lists tools only this specialty needs. They load when the skill activates, so the agent's manifest does not declare them.
+- `rules:` are message-based: a `match()` on the verbs and nouns of the task, or a `semantic()` phrase, so the skill loads when the request shows the work and not on passing mentions.
+- The body holds the full procedure and the output contract: the steps, the decision rules, the shape and file path of the deliverable, and the checks before reporting done. The agent prompt does not repeat them.
+- A workflow step that depends on the specialty preloads it with `skills = [...]`; it does not rely on the rules matching.
+
+Test the rules against the intended prompts, against close requests that should not load the skill, and against a neutral prompt.
+
 ### Domain isolation
 
-- `domains:` single-valued wherever possible — pick the domain that owns the deliverable.
+- `domains:` single-valued wherever possible — pick the agent that owns the deliverable.
 - `compatibility:` describes the environment, never pairings with agents.
-- The body never names agents from other domains; describe downstream work as owned by another domain. Sibling skills in the same domain may be named sparingly.
+- The body never names other agents; describe downstream work as owned by another field. Sibling skills bound to the same agent may be named sparingly.
 
 ### Creation workflow
 
@@ -175,14 +187,14 @@ rules:
 
 ❌ `grep(async_trait, src/**/*.rs)` — the glob is matched against file names only, so it never matches. Use `grep(async_trait, *.rs)`.
 
-❌ `domains: dev` — no `agents/dev/` directory, so lint fails and it would never activate.
+❌ `domains: dev` — no `agents/dev.toml`, so lint fails (`DOMAIN_UNKNOWN`) and it would never activate.
 
 ❌ `- file(Cargo.toml)` on its own line — loads the skill for every request in a Rust repo, even "summarize the changes"; lint fails with `RULE_NO_INTENT`. Add a message check on the same line.
 
 ## Checklist
 
 - [ ] Description in third person, says what and when, with concrete trigger terms?
-- [ ] `name` equals the directory; `domains` and `capabilities` reference real directories?
+- [ ] `name` equals the directory; `domains` names existing agents and `capabilities` names existing capabilities?
 - [ ] Rules match the intended prompts and nothing broader; every line has a message check; semantic phrases one idea each?
 - [ ] Body in canonical order, no H1, bold, italics, or `---`; under ~2000 words?
 - [ ] Instructions actionable and specific; examples for non-obvious rules?

@@ -4,7 +4,7 @@ title: "CI/CD Pipelines and Supply-Chain Hardening"
 description: "Write and debug GitHub Actions and GitLab CI pipelines: triggers, caching, concurrency, OIDC to the cloud, token permissions and action pinning."
 license: Apache-2.0
 compatibility: "Needs the repository's workflow files; GitHub Actions and GitLab CI syntax. Hosted runners or self-managed runners."
-domains: developer devops
+domains: developer devops security-analyst
 rules:
   - content(github actions)
   - content(gitlab ci)

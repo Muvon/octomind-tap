@@ -5,9 +5,9 @@ description: "Harvest LinkedIn posts and conversations into a sourced brief: buy
 license: Apache-2.0
 compatibility: "Browser access and network. Signed-in LinkedIn session for personalized feed and search."
 capabilities: browser memory-read memory-write
-domains: browser
+domains: operator
 rules:
-  - session(trend) content(linkedin)
+  - content(linkedin) match((?i)\b(trend\w*|harvest\w*|viral|what\W?s\s+(moving|hot|popular))\b)
   - match(\blinkedin\s+(trend|trends|harvest|brief|research)\b)
   - match(\b(harvest|scan|analyze)\s+linkedin\b)
 ---

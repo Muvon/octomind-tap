@@ -4,10 +4,8 @@ title: "On-Page Content SEO Audit"
 description: "On-page SEO content audit: titles, meta descriptions, headings, search intent, answer placement, E-E-A-T. Use when auditing the content of URLs."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Requires webfetch (target page + top-10 SERP pages) and websearch (SERP for the target keyword + competitor pages)."
-domains: seo
+domains: seo writer
 rules:
-  - session(seo)
-  - session(audit)
   - content(on-page)
   - content(meta description)
   - content(EEAT)
@@ -122,7 +120,7 @@ Never infer information gain from one source; never grade an anonymous byline be
 
 ### Output
 
-Use the canonical output structure from the agent that runs this skill. Every finding includes: severity, evidence (URL section, line, the missing element, the SERP comparison point), why it matters, fix direction. Save as `seo-audit-[slug]-[YYYY-MM-DD].md` in working directory.
+Use the report structure of the `seo-site-audit` skill. Every finding includes: severity, evidence (URL section, line, the missing element, the SERP comparison point), why it matters, fix direction. Save as `seo-audit-[slug]-[YYYY-MM-DD].md` in working directory.
 
 For an explicit GEO/AEO request, retain the host's focused `geo-visibility-audit` mode and report shape. Apply only content checks justified by the selected buyer question/finding; don't expand it into a full conventional audit or propose a new page without checking existing coverage.
 

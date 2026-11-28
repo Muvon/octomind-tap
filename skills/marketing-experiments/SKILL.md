@@ -4,7 +4,7 @@ title: "A/B Testing for Marketing: Sample Size and Stop Rules"
 description: "One rule set for marketing tests: hypothesis, sample size per arm, run length, stop rule, kill and scale table. Use for A/B, email, ad and growth tests."
 license: Apache-2.0
 compatibility: "No tools required. Any OS. Produces test plans and verdicts only; runs nothing."
-domains: marketing launch
+domains: marketer founder
 rules:
   - match((?i)\ba/?b\s+tests?\b)
   - match((?i)\bsplit\s+tests?\b)

@@ -5,13 +5,13 @@ description: "Harvest YouTube topic demand, channel outliers and buyer questions
 license: Apache-2.0
 compatibility: "Requires browser and network access. Account-specific Studio research requires an authorized signed-in session."
 capabilities: browser memory-read memory-write
-domains: browser
+domains: operator
 rules:
-  - session(trend) content(youtube)
+  - content(youtube) match((?i)\b(trend\w*|harvest\w*|viral|what\W?s\s+(moving|hot|popular))\b)
   - match(\byoutube\s+(trend|trends|trending|harvest|brief)\b)
   - match(\b(harvest|scan|analyze)\s+youtube\b)
   - match(\byoutube\s+(competitor|launch)\s+(research|monitoring|scan)\b)
-  - session(trend) match(\boutlier\s+(video|videos|hunting)\b)
+  - match(\boutlier\s+(video|videos|hunting)\b)
 ---
 
 ## Overview

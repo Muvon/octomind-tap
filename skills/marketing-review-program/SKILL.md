@@ -5,7 +5,7 @@ description: "Plans how to ask real customers for honest public reviews: site ch
 license: Apache-2.0
 compatibility: "Needs web search or page fetching to check current platform policies. Any OS. Plans only; sends nothing."
 capabilities: webfetch
-domains: marketing
+domains: marketer
 rules:
   - match(\b(customer|user|product)\s+reviews?\b)
   - match(\b(ask|collect|get|generate|request)\w*\s+(more\s+|honest\s+|positive\s+|\d+\s+)?(public\s+)?reviews\b)

@@ -65,7 +65,7 @@ plugins = [
 - Storage and display of the plan (`/plan`). The agent has no tool to change the plan; a plugin creates and advances it. Without a plugin `/plan` reports that there is no plan.
 - The status line: the agent ends each response with a hidden line that reports its state. Octomind reads it and removes it before display.
 - A hard stop for runaway tool loops: root key `max_identical_rounds` (default `10`). When that many tool rounds in a row repeat calls and results already seen since the last new result, the turn ends with a notice naming the repeated call. `0` turns the stop off. `-c max_identical_rounds=0` sets it for one run.
-- Its own rules for which skill and which capability a request activates, which specialist gets a delegated task, and which tool results a compaction summarizes.
+- Its own rules for which skill and which capability a request activates, which agent gets a delegated task, and which tool results a compaction summarizes.
 
 ### What Besydr does
 
@@ -80,7 +80,7 @@ Each part has a switch in Besydr's file. Several parts call a model, so they use
 - Standing rules. No switch. A rule you state for the rest of the session ("from now on, never push to main") is kept in your exact words, repeated with every later request and kept through compaction. At most 8 rules of at most 200 characters.
 - Learning (`[learning] enabled`, default on). Lessons from your corrections and rules, added to later sessions. In Octomind `/learning` comes from the plugin, with the sub-commands `list`, `show`, `delete`, `clear` and `evolution`. Generated skills and rules (`[learning.evolution] enabled`) are off by default and need `[gate] enabled = true`.
 - Hindsight (`[hindsight] enabled`) scores handed-back turns for the chance you will correct them. It acts on nothing and is counted in `/info`. Project document sections (`[inject] enabled`) add the part of a document that `AGENTS.md` references and that fits the file being worked on; no model is called.
-- Judgements for Octomind. Octomind asks its plugin to decide four things: which skill, which capability, which specialist for a delegated task, and which tool results a compaction may drop. Besydr answers with its decision model.
+- Judgements for Octomind. Octomind asks its plugin to decide four things: which skill, which capability, which agent for a delegated task, and which tool results a compaction may drop. Besydr answers with its decision model.
 
 ### Besydr's configuration
 

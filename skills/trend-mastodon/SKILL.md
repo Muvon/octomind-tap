@@ -5,10 +5,10 @@ description: "Harvest Mastodon posts and topic conversations into a sourced, ser
 license: Apache-2.0
 compatibility: "Browser access and network access. A signed-in session may be needed for restricted server surfaces."
 capabilities: browser memory-read memory-write
-domains: browser
+domains: operator
 rules:
-  - session(trend) content(mastodon)
-  - session(trend) content(fediverse)
+  - content(mastodon) match((?i)\b(trend\w*|harvest\w*|viral|what\W?s\s+(moving|hot|popular))\b)
+  - content(fediverse) match((?i)\b(trend\w*|harvest\w*|viral|what\W?s\s+(moving|hot|popular))\b)
   - match(\b(mastodon|fediverse|fedi)\s+(trend|trends|harvest|brief|post|toot)\b)
   - match(\b(harvest|scan|analyze)\s+(mastodon|fediverse)\b)
 ---

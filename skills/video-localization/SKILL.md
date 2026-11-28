@@ -5,7 +5,7 @@ description: "Localize a finished video: subtitle limits per language, re-timing
 license: Apache-2.0
 compatibility: "Requires: ffmpeg with libass for burn-in; a voice tool for dubbing. macOS/Linux."
 capabilities: shell captions voice
-domains: video
+domains: producer
 rules:
   - content(translate captions)
   - content(translated captions)

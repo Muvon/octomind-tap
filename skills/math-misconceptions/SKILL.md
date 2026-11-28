@@ -5,7 +5,7 @@ description: "Diagnose and repair a math misconception with short counterexample
 license: Apache-2.0
 domains: tutor
 rules:
-  - session(tap-tutor-math-)
+  - match((?i)\b(keeps?|always)\b.{0,30}\b(mix(es)? up|gets? wrong|confus\w*)\b.{0,30}\b(fractions?|negatives?|signs?|variables?|exponents?|limits?)\b)
   - match((?i)\b(math|algebra|fractions?|statistics|calculus)\b.{0,40}\b(misconception|why|confus\w*)\b)
 ---
 

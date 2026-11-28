@@ -3,7 +3,7 @@ name: organic-launch
 title: "Zero-Budget Organic Launch Planning"
 description: "Plan an organic launch on zero budget with audience-fit channels, community participation, credible proof, and a sequenced first-user playbook."
 license: Apache-2.0
-domains: launch
+domains: founder
 rules:
   - match((?i)\b(zero[ -]budget|no[ -]budget|without (spending|paid ads))\b.{0,50}\b(launch|organic growth|first users)\b)
   - match((?i)\b(launch|first users)\b.{0,50}\b(zero[ -]budget|no[ -]budget)\b)
@@ -12,7 +12,7 @@ rules:
 
 ## Overview
 
-Build an organic launch plan for an existing product. Use supplied GTM and brand decisions to select channels, sequence the work, and choose measurable milestones. Verify current platform policies and limits before applying channel guidance.
+Build an organic launch plan for an existing product. Use supplied GTM and brand decisions to select channels, sequence the work, and choose measurable milestones. If those inputs are missing, establish the product, audience and stage, and state any assumptions. Verify current platform policies and limits before applying channel guidance. Give each action a metric or decision gate, exclude paid spend, and provide requested outreach as drafts only. Follow an explicit workflow output contract when one is given.
 
 ## Procedure
 

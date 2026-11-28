@@ -11,7 +11,8 @@ description = "Builds a cold email sequence from live target research, then revi
 # ── 1. Research ──────────────────────────────────────────────────────────────
 [[steps]]
 name    = "research"
-role    = "sales:outbound"
+role    = "sales-rep"
+skills  = ["sales-outbound"]
 session = "fresh"
 prompt  = """
 Research the outreach brief below using live web sources only.
@@ -40,7 +41,8 @@ exit_when      = { output = "critic", matches = '(?m)^VERDICT: APPROVED' }
 
   [[steps.run]]
   name    = "drafter"
-  role    = "sales:outbound"
+  role    = "sales-rep"
+  skills  = ["sales-outbound"]
   session = "continue"
   prompt  = """
 Draft the outreach sequence for each target in the dossier below.
@@ -64,7 +66,8 @@ Output only the sequence drafts — no preamble.
 
   [[steps.run]]
   name    = "critic"
-  role    = "sales:outbound"
+  role    = "sales-rep"
+  skills  = ["sales-outbound"]
   session = "fresh"
   prompt  = """
 You are an independent critic in a fresh session. You did not write these drafts. Check them against the dossier, never from memory.
@@ -92,7 +95,8 @@ Critique first, then end with exactly one line: VERDICT: APPROVED or VERDICT: RE
 # ── 3. Deliver ───────────────────────────────────────────────────────────────
 [[steps]]
 name    = "deliver"
-role    = "sales:outbound"
+role    = "sales-rep"
+skills  = ["sales-outbound"]
 session = "fresh"
 prompt  = """
 The critique loop is finished. Output the drafts below verbatim and whole, with no edits of your own. If the final critique does not end in `VERDICT: APPROVED`, put one line above them — `Unverified: the critic still flagged items; recheck these before sending:` — followed by the critic's remaining findings as a short list. If it does, add nothing above the drafts. Add one closing line: `Drafts only — nothing has been sent; confirm recipient jurisdiction and consent with counsel before scaling.`

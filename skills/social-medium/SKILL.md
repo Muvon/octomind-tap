@@ -4,7 +4,7 @@ title: "Medium Publishing Playbook"
 description: "Draft and revise Medium stories in the author's voice: publication submissions, canonical syndication, disclosure, metrics. Use when writing for Medium."
 license: Apache-2.0
 compatibility: "Requires a text editor; network access and a Medium account for publishing and story statistics."
-domains: content
+domains: writer
 rules:
   - match(\bmedium\.com\b)
   - match(\bmedium\s+(article|post|story|publication|draft|piece|newsletter)\b)

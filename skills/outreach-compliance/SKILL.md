@@ -4,7 +4,7 @@ title: "Outreach Compliance – Email, Calls and Recording Laws"
 description: "Outreach law checks by region: email consent, opt-out, calls, texts, call recording. Use before contacting leads in the US, EU, UK, Canada or APAC."
 license: Apache-2.0
 compatibility: "Environment-independent. Any OS."
-domains: marketing sales launch
+domains: marketer sales-rep founder
 rules:
   - content(compliance) content(outreach)
   - content(gdpr) content(email)

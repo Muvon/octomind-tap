@@ -4,29 +4,16 @@ title: "Structural / Technical SEO Audit"
 description: "Technical SEO audit: robots.txt, canonicals, sitemap, redirects, JSON-LD, Core Web Vitals, hreflang. Use when auditing the technical layer of a site."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Requires webfetch (for HTML/JSON-LD/page response) and shell (for curl, sitemap parsing, optional Lighthouse/PSI). Optional: GSC and crawler-tool MCPs for richer signal."
-domains: seo
+domains: seo writer
 rules:
-  - session(seo)
-  - session(audit)
-  - content(crawlability)
-  - content(indexability)
-  - content(sitemap)
-  - content(canonical)
-  - content(schema)
-  - content(robots.txt)
-  - content(hreflang)
-  - content(redirect)
-  - match(\b(audit|diagnose|review|inspect)\s+.{0,40}(site|page|url|domain)\b)
-  - match(\b(core\s+web\s+vitals|cwv|lcp|inp|cls)\b)
-  - match(\b(schema|json-?ld|structured\s+data)\s+(audit|check|validate|review)?\b)
-  - match(\b(crawl|index|render)\s+(issue|problem|error|gap|parity)\b)
-  - match(\b(redirect\s+chain|canonical\s+(issue|tag)|hreflang)\b)
-  - match(\b(technical\s+seo|structural\s+seo)\b)
+  - match((?i)\b(technical|structural)\s+seo\b)
+  - match((?i)\b(audit|check|review|inspect|diagnose|find|validate|analy[sz]e)\b.{0,60}\b(robots\.txt|sitemap\.xml|hreflang|redirect\s+chains?|canonical\s+tags?|json-?ld|structured\s+data|schema\s+markup|indexation|raw\s+html)\b)
+  - match((?i)\b(core\s+web\s+vitals|cwv)\b)
+  - match((?i)\b(crawl|index|render)\w*\s+(issues?|problems?|errors?|gaps?|parity)\b)
   - semantic(diagnose technical SEO problems on this site)
   - semantic(check whether Google can crawl and index this page)
   - semantic(validate schema markup and structured data)
   - semantic(audit the technical layer for ranking blockers)
-  - semantic(find structural SEO issues affecting visibility)
 ---
 
 ## Overview
@@ -139,7 +126,7 @@ Log analysis: with server logs, count Googlebot requests by URL type (templates,
 
 ### Output
 
-Use the canonical output structure from the agent that runs this skill. Every finding includes: severity, evidence (URL + line / header / schema field / metric), why it matters, fix direction. Save as `seo-audit-[slug]-[YYYY-MM-DD].md` in working directory.
+Use the report structure of the `seo-site-audit` skill. Every finding includes: severity, evidence (URL + line / header / schema field / metric), why it matters, fix direction. Save as `seo-audit-[slug]-[YYYY-MM-DD].md` in working directory.
 
 ## Checklist
 

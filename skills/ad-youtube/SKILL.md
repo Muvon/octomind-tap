@@ -3,8 +3,8 @@ name: ad-youtube
 title: "YouTube Ads Production Spec"
 description: "YouTube ad specs: Skippable, Bumper, In-Feed, Masthead and Shorts slots, durations and ratios. Use when writing YouTube ad copy or video briefs."
 license: Apache-2.0
-compatibility: "Octomind launch agents. Platform-specific to YouTube Ads."
-domains: launch marketing
+compatibility: "Needs web search for current ad policies and specs. Applies to YouTube Ads only; an ad account on that platform is needed to launch."
+domains: founder marketer
 rules:
   - content(youtube ads)
   - content(youtube ad)

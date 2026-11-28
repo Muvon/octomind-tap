@@ -27,9 +27,10 @@
 # check-and-fix pass on the source itself via content-voice/content-humanize —
 # every prompt detects the same-language case per-language and switches rubric.
 #
-# Roles: `content:editor` owns the fix step (diagnose-then-edit specialist —
-# surgical fixes per findings is exactly its identity, and the tap's own
-# content.toml uses it in the same loop position). `content:translate` owns
+# Roles: the writer agent with the editing skills owns the fix step (diagnose-then-edit —
+# surgical fixes per findings is exactly its job, and the tap's own
+# content.toml uses it in the same loop position). The writer agent with the
+# translate skill owns
 # brief/transcreate (cross-language rendering), audit (NATIVE-AUDIT mode), and
 # deliver (inline languages plus the per-language summary).
 #
@@ -61,7 +62,7 @@ max_cost    = 10.0   # runaway guard, not a target: checked after each step
 # ── 1. Brief — languages, source, and one destination per language ──────────
 [[steps]]
 name    = "brief"
-role    = "content:translate"
+role    = "writer"
 skills  = ["content-translate"]
 session = "fresh"
 retries = 4
@@ -103,7 +104,7 @@ Do not translate or analyze anything yet. No meta-commentary.
 # ── 2. Source fact ledger — stable preservation target for every later step ─
 [[steps]]
 name    = "facts"
-role    = "content:translate"
+role    = "writer"
 skills  = ["content-translate"]
 session = "fresh"
 retries = 4
@@ -143,7 +144,7 @@ Output ONLY:
 # ── 3. Transcreate every requested language — straight into its file ────────
 [[steps]]
 name    = "transcreate"
-role    = "content:translate"
+role    = "writer"
 skills  = ["content-translate"]
 session = "fresh"
 retries = 4
@@ -199,7 +200,8 @@ exit_when      = { output = "audit", matches = '(?m)^ALL-PASS' }
 
   [[steps.run]]
   name    = "fix"
-  role    = "content:editor"
+  role    = "writer"
+  skills  = ["content-audit", "content-edit", "content-humanize"]
   session = "continue"
   retries = 4
   prompt  = """
@@ -289,7 +291,7 @@ meta-commentary about your own process.
 
   [[steps.run]]
   name    = "audit"
-  role    = "content:translate"
+  role    = "writer"
   skills  = ["content-translate"]
   session = "fresh"
   retries = 4
@@ -372,7 +374,7 @@ that line.
 # ── 5. Deliver — inline languages + per-language summary; files are done ────
 [[steps]]
 name    = "deliver"
-role    = "content:translate"
+role    = "writer"
 skills  = ["content-translate"]
 session = "fresh"
 retries = 4

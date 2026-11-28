@@ -4,7 +4,7 @@ title: "Facebook Posts and Reels: Caption Writing Guide"
 description: "Write and revise Facebook Page posts, Reels and captions in the author's voice, with a publishing package. Use when drafting or auditing for Facebook."
 license: Apache-2.0
 compatibility: "Network access for current platform checks; a Facebook Page for composer previews and Insights."
-domains: content
+domains: writer
 rules:
   - content(facebook)
   - match((?i)\bfacebook\s+(post|page|reel|reels|caption|video|copy)\b)

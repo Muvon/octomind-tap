@@ -6,7 +6,6 @@ license: Apache-2.0
 compatibility: "Any Octomind session. No external tools required; pairs well with memory to carry commitments between sessions."
 domains: coach
 rules:
-  - session(coach)
   - content(coaching)
   - content(accountability)
   - content(goal) content(stuck)

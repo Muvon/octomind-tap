@@ -9,4 +9,4 @@ triggers = [
 	"create a new product on shopify",
 ]
 
-domains = ["finance", "marketing"]
+domains = ["financial-planner", "marketer"]

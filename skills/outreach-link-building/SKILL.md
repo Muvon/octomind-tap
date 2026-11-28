@@ -4,7 +4,7 @@ title: "Link Building Outreach Templates – Guest Posts and Backlinks"
 description: "Link building outreach templates: guest post pitches, backlink emails, broken-link reports, link reclamation. Use when pitching site owners or editors."
 license: Apache-2.0
 compatibility: "Needs web search and page fetch for prospect research. Any OS."
-domains: marketing
+domains: marketer
 rules:
   - content(guest post) content(pitch)
   - content(link reclamation)

@@ -3,8 +3,8 @@ name: ad-tiktok
 title: "TikTok Ads Production Spec"
 description: "TikTok ad specs: In-Feed, Spark Ads and TopView slots, limits, the 9:16 video spec and safe zones. Use when writing TikTok ad copy or video briefs."
 license: Apache-2.0
-compatibility: "Octomind launch agents. Platform-specific to TikTok Ads."
-domains: launch marketing
+compatibility: "Needs web search for current ad policies and specs. Applies to TikTok Ads only; an ad account on that platform is needed to launch."
+domains: founder marketer
 rules:
   - content(tiktok ads)
   - content(tiktok ad)

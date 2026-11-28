@@ -9,7 +9,7 @@ rules:
   - match(\bcover letter\b)
   - match(\bmotivation letter\b)
   - match(\bwrite\s+(a|my|the)\s+cover letter\b)
-  - semantic(write a cover letter for this job)
+  - semantic(write a cover letter for this job, 0.74)
   - semantic(make my cover letter less generic)
 ---
 

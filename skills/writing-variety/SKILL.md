@@ -4,7 +4,7 @@ title: "Avoid Repeated AI Writing Patterns"
 description: "Keep batches of posts, replies, emails, ad angles or scripts from sounding alike, with AI-tell checks. Use for recurring writing jobs and batches."
 license: Apache-2.0
 compatibility: "Needs the variety capability: either the local variety server or the hosted unsame server. Network access only for unsame."
-domains: content marketing sales video developer support community launch
+domains: writer marketer sales-rep producer developer support-agent community-manager founder
 rules:
   - content(variety)
   - match(\b(sound|read)s?\s+(all\s+)?the\s+same\b)

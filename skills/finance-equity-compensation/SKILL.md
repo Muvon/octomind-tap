@@ -4,7 +4,7 @@ title: "RSU, ISO, NSO & ESPP Taxes: Equity Compensation Rules"
 description: "How RSUs, ISOs, NSOs, ESPP shares, 83(b) elections and AMT are taxed in the US, with decision steps and the questions to bring to a CPA."
 license: Apache-2.0
 compatibility: "US federal rules. Needs web search to confirm current thresholds. Other countries differ; say so."
-domains: finance
+domains: financial-planner
 rules:
   - content(RSU)
   - content(RSUs)

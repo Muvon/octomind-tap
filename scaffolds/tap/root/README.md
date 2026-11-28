@@ -11,14 +11,14 @@ the Octomind community tap.
 The scaffold includes one runnable agent:
 
 ```bash
-octomind run __AGENT_DOMAIN__:__AGENT_SPEC__
+octomind run __AGENT_NAME__
 ```
 
 When working from a checkout that has not been registered yet:
 
 ```bash
 octomind tap __TAP_ID__ "$(pwd)"
-octomind run __AGENT_DOMAIN__:__AGENT_SPEC__
+octomind run __AGENT_NAME__
 ```
 
 Validate the repository after changes:
@@ -31,7 +31,7 @@ bash scripts/check.sh
 
 | Path | Purpose |
 |------|---------|
-| `agents/<domain>/<spec>.toml` | Runnable agent manifests |
+| `agents/<name>.toml` | Runnable agent manifests |
 | `capabilities/<name>/` | Tool and dependency providers used by agents and skills |
 | `deps/<org>/<tool>.sh` | Idempotent dependency installers and companion documentation |
 | `skills/<name>/SKILL.md` | Reusable AgentSkills instruction packs |
@@ -47,8 +47,7 @@ working in this repository.
 Create an agent:
 
 ```bash
-mkdir -p agents/__AGENT_DOMAIN__
-cp templates/agent.toml agents/__AGENT_DOMAIN__/backend.toml
+cp templates/agent.toml agents/backend.toml
 ```
 
 Create a skill:
@@ -64,7 +63,7 @@ file under `templates/` and follow `AGENTS.md`.
 The Octomind tap authoring agent can also maintain this repository:
 
 ```bash
-octomind run octomind:tap
+octomind run octomind
 ```
 
 ## Publish

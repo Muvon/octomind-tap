@@ -4,7 +4,7 @@ title: "Estate Tax & Form 706 After a Death (US Federal)"
 description: "US federal orientation after a death: estate tax exclusion and Form 706 due date, final income tax return, estate income tax return, who to ask."
 license: Apache-2.0
 compatibility: "Requires: web search for current IRS figures and the state revenue department. US federal only; figures change yearly."
-domains: family finance
+domains: family-advisor financial-planner
 rules:
   - content(estate tax)
   - content(inheritance tax)

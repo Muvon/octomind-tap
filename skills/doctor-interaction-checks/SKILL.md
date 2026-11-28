@@ -17,11 +17,11 @@ rules:
 
 ## Overview
 
-A person lists two or more medicines and asks whether they mix. The outcome is a short table of pairs, each with the mechanism, the severity from the label, and the question to take to a prescriber or pharmacist. This skill adds the procedure and the pairs that the general interaction tables do not name. The agent never says to stop or change a dose.
+A person lists two or more medicines and asks whether they mix. The outcome is a short table of pairs, each with the mechanism, the severity from the label, and the question to take to a prescriber or pharmacist. This skill adds the procedure and the pairs that the general interaction tables do not name. Never say to stop or change a dose.
 
 ## Mental model
 
-Most serious interactions come from two causes: one drug changes how fast the liver enzyme (CYP) or transporter (P-gp) clears another, or two drugs add the same effect (bleeding, sedation, serotonin, potassium). Check the enzyme and the effect, then read the current label for the exact wording.
+Most serious interactions come from two causes: one drug changes how fast the liver enzyme (CYP) or transporter (P-gp) clears another, or two drugs add the same effect (bleeding, sedation, serotonin, potassium). Check the enzyme and the effect, then read the current label for the exact wording. Two mechanisms: pharmacokinetic (affects drug levels via absorption, distribution, metabolism, excretion) and pharmacodynamic (affects drug response: additive, synergistic, antagonistic).
 
 ## Rules
 
@@ -50,6 +50,20 @@ CYP450 enzyme reference (inhibitors raise the other drug's level, inducers lower
 | CYP2D6 | Fluoxetine, paroxetine | None listed by the FDA |
 | CYP2C9 | Fluconazole (moderate) | Rifampin (moderate) |
 | CYP1A2 | Fluvoxamine | None listed by the FDA |
+
+Common high-risk pairs (general reference; confirm in the current label)
+
+| Drug 1 | Drug 2 | Interaction | Risk |
+|--------|--------|-------------|------|
+| Warfarin | NSAIDs | Bleeding | High |
+| SSRIs | MAOIs, linezolid | Serotonin syndrome | Critical |
+| Opioids | Benzodiazepines, gabapentinoids, alcohol | Respiratory depression | Critical (FDA boxed warning) |
+| PDE5 inhibitors (sildenafil, tadalafil) | Nitrates | Severe hypotension | Critical |
+| Methotrexate | NSAIDs | Methotrexate toxicity | High |
+| Digoxin | Many drugs | Digoxin toxicity | Moderate-High |
+| Lithium | NSAIDs, diuretics | Lithium toxicity | High |
+| QT-prolonging drugs | Other QT-prolonging drugs | Arrhythmia | High |
+| Oral contraceptives | Rifampin, St. John's Wort | Reduced efficacy | Moderate |
 
 Pairs not covered here (tramadol with serotonergic antidepressants, ACE inhibitor with trimethoprim and potassium) are not sourced in this skill: look up the current label and mark the result "label not checked in this skill".
 

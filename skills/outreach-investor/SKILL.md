@@ -3,13 +3,22 @@ name: outreach-investor
 title: "Investor Email Templates – Warm Intros and Follow-Ups"
 description: "Investor outreach for fundraising: cold emails, warm intros, forwardable blurbs, follow-ups, updates, fit scoring. Use when drafting investor messages."
 license: Apache-2.0
-compatibility: "Needs web search for investor research. Any OS."
-domains: launch
+compatibility: "Needs web search and page fetch for investor research. Any OS."
+capabilities: webfetch
+domains: founder
 rules:
   - content(investor) content(outreach)
-  - content(investors) content(email)
-  - content(warm intro)
+  - content(warm intro) content(investor)
   - content(investor update)
+  - match((?i)\b(find|research|shortlist|identify)\b.{0,30}\b(investors|vcs|angels)\b)
+  - match((?i)\b(cold\s+emails?|intros?|messages?|emails?)\b.{0,30}\b(vc|investors?|angels?|funds?)\b)
+  - match((?i)\b(warm[- ]intro|forwardable\s+blurb|data[- ]room)\b)
+  - match((?i)\b(score|rank|list)\b.{0,40}\b(investors?|funds?|vcs?|angels)\b)
+  - match((?i)\b(investors?|angels|backers)\b.{0,60}\b(follow[- ]?up|update|intro\w*|cold\s+email)\b)
+  - semantic(write a cold email to investors asking for a meeting about our round, 0.74)
+  - semantic(find and rank venture funds that fit our stage and sector, 0.73)
+  - semantic(draft a warm intro blurb a friend can forward to an angel)
+  - semantic(write an update to my investors about progress this quarter)
 ---
 
 ## Overview
@@ -21,6 +30,26 @@ Fundraising outreach is a sales motion with a small, researched list and a long 
 An investor reads for three things in about thirty seconds: is this in my lane, is there evidence it is working, and is the ask clear and small. Every message answers those three and nothing else. A warm intro beats a cold email because someone else has already vouched; a cold email beats a vague warm one when it is specific and short.
 
 ## Rules
+
+### Process
+
+1. Intake: stage, round size and instrument if decided, sector, geography, traction numbers, the one-line pitch and any existing connections to investors. Missing traction is a finding to report, not a gap to fill with guesses.
+2. Research each candidate with web search and page fetch: recent deals at your stage, stated check size and thesis, their own writing or talks, portfolio conflicts and a path in. Record a source URL next to every fact.
+3. Score and tier with the fit table below. Drop direct portfolio conflicts.
+4. Draft a warm-intro note plus forwardable blurb where a connector exists, a cold email otherwise. Each cites one real, sourced signal about that investor.
+5. Plan the cadence: touches and timing from the follow-up table, three unanswered touches at most.
+6. Track: maintain the tracking sheet and the update list.
+
+Memory: before starting, remember(["fundraising", "investor list", "traction", "round details"]). After completing, memorize() list decisions, outcomes and the traction numbers used, plus what worked.
+
+### Evidence
+
+- Never state a portfolio company, check size, thesis or recent deal you did not find in a cited source. Mark the rest unverified.
+- Investor data goes stale fast: confirm the person still works at the firm and the fund is still investing before listing them.
+- Round-size and valuation benchmarks move quarterly: check current data, never quote them from memory.
+- Proof is a number the founder supplied. Never invent metrics, logos or backers.
+
+For subject and cadence craft use the `outreach-cold-copy` skill; for opt-out and consent rules on bulk or EU and UK recipients use the `outreach-compliance` skill.
 
 ### Investor fit scoring
 
@@ -97,6 +126,19 @@ Fundraising messages are securities communications. Don't promise or imply retur
 
 In the US, a Rule 506(b) offering bars general solicitation, and cold messages about a raise to investors with no pre-existing substantive relationship can count as one. Rule 506(c) permits general solicitation but requires reasonable steps to verify every purchaser is accredited. A no-action letter from SEC staff dated 2025-03-12 says an issuer can treat a high minimum investment as that verification: at least USD 200,000 for an individual or USD 1,000,000 for an entity, with written confirmation from the purchaser that the money is not borrowed for this investment and the issuer having no knowledge that the purchaser is not accredited. This is the staff's view, not a rule, and entity types differ, so counsel confirms which route applies. Have counsel confirm which exemption applies before cold investor outreach.
 
+### Ask or assume
+
+- "Find investors for X": ask stage, sector and geography if missing, then deliver a researched, tiered list.
+- "Intro me to Y": a connector note plus a forwardable blurb.
+- "Write a cold email to Z": research Z first, then one draft with the cited signal.
+- "Investor update": ask for the metrics and the misses, then draft in the update structure.
+- Vague request: ask one question, "What stage, how much, and what is your best traction number?"
+- Autonomous or non-interactive brief: skip questions, state assumptions and deliver.
+
+### Conduct
+
+Draft only. Never send, post or contact anyone; every message waits for the founder's approval. Don't automate LinkedIn; draft messages the founder sends by hand. Never fabricate investors, portfolio facts, metrics or backers.
+
 ## Examples
 
 Bad subject: "Revolutionary AI startup seeking investment!!!"
@@ -111,6 +153,10 @@ Bad claim: "Backed by top investors" with no names.
 
 Good claim: Name the investor, with their permission, or drop the claim.
 
+## Output format
+
+Investor list as a table: investor, firm, tier, fit score, stage and check size (sourced), recent relevant deal, conflict check, path in, source links. Messages as ready-to-send drafts in fenced blocks headed by recipient and channel. Save substantial packages as `investors-<company>.md` and the tracker as `investor-tracker-<company>.md`. The package also carries a data-room readiness checklist.
+
 ## Checklist
 
 - [ ] Every investor fact traces to a source URL, or is marked unverified?
@@ -123,6 +169,6 @@ Good claim: Name the investor, with their permission, or drop the claim.
 
 ## Composition / References
 
-- Pair with a pitch-deck specialist when a deck is the missing artifact.
-- Pair with a validation specialist when traction claims need market evidence first.
+- `launch-pitch-pricing` skill: the pitch deck when a deck is the missing artifact.
+- `launch-idea-validation` skill: market evidence when traction claims need it first.
 - Check current round-size and valuation data from live sources; do not quote benchmarks from memory.

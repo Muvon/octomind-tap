@@ -13,4 +13,4 @@ triggers = [
 	"search recent posts on x",
 ]
 
-domains = ["content", "video", "marketing"]
+domains = ["writer", "producer", "marketer"]

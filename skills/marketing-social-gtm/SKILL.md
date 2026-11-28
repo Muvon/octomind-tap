@@ -4,7 +4,7 @@ title: "Social Go-to-Market Planning"
 description: "Plan cross-platform social launch, proof and objection campaigns by buyer need, evidence, channel role and reply ownership. Use for GTM or launch planning."
 license: MIT
 compatibility: "Requires access to campaign source documents and account analytics; network access for source and policy checks."
-domains: marketing
+domains: marketer
 rules:
   - content(gtm)
   - match(go[ -]to[ -]market)

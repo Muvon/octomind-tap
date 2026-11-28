@@ -30,7 +30,8 @@ max_transitions = 8
 # ── 1. Protocol — fix the question set and pick how answers are captured ─────
 [[steps]]
 name    = "protocol"
-role    = "seo:strategist"
+role    = "seo"
+skills  = ["seo-strategy-brief"]
 session = "fresh"
 prompt  = """
 Set up this AI visibility check with the `geo-visibility-audit` skill.
@@ -67,7 +68,8 @@ CAPTURE: NONE
 # ── Route without any way to measure — stop and say what is needed ───────────
 [[steps]]
 name    = "needs_captures"
-role    = "seo:strategist"
+role    = "seo"
+skills  = ["seo-strategy-brief"]
 session = "fresh"
 prompt  = """
 This AI visibility check cannot measure engine answers yet.
@@ -86,7 +88,8 @@ estimate what the engines would say.
 # ── 2. Capture — one record per question, engine, and run ────────────────────
 [[steps]]
 name    = "capture"
-role    = "seo:audit"
+role    = "seo"
+skills  = ["seo-site-audit", "seo-structural-audit", "seo-content-audit", "seo-link-audit"]
 session = "fresh"
 prompt  = """
 Run the capture in this protocol with the `geo-visibility-audit` skill and write
@@ -123,7 +126,8 @@ exit_when      = { output = "recount", matches = '(?m)^VERDICT: TRACEABLE' }
 
   [[steps.run]]
   name    = "analyst"
-  role    = "seo:audit"
+  role    = "seo"
+  skills  = ["seo-site-audit", "seo-structural-audit", "seo-content-audit", "seo-link-audit"]
   session = "continue"
   prompt  = """
 Write the monitoring report from this ledger, following the Monitoring run section
@@ -150,7 +154,8 @@ Output the report path, then the full report.
 
   [[steps.run]]
   name    = "recount"
-  role    = "seo:audit"
+  role    = "seo"
+  skills  = ["seo-site-audit", "seo-structural-audit", "seo-content-audit", "seo-link-audit"]
   session = "fresh"
   prompt  = """
 You are an independent auditor in a fresh session. You did not write this report.
@@ -184,7 +189,8 @@ Critique first, then end with exactly one line: VERDICT: TRACEABLE or VERDICT: R
 # ── 4. Actions — which cited sources are worth working on ────────────────────
 [[steps]]
 name    = "actions"
-role    = "seo:strategist"
+role    = "seo"
+skills  = ["seo-strategy-brief"]
 session = "fresh"
 prompt  = """
 Turn this monitoring report into source actions with the `geo-source-actions`
@@ -212,7 +218,8 @@ ACTIONS: NONE
 # ── Route with nothing to draft — deliver the report and actions ─────────────
 [[steps]]
 name    = "report_only"
-role    = "seo:strategist"
+role    = "seo"
+skills  = ["seo-strategy-brief"]
 session = "fresh"
 prompt  = """
 Output the monitoring report and action records below verbatim, with no edits of
@@ -241,7 +248,8 @@ parallel = true
 
   [[steps.run]]
   name    = "community"
-  role    = "content:reply"
+  role    = "writer"
+  skills  = ["content-reply"]
   session = "fresh"
   prompt  = """
 For each Reddit or forum action below, read the whole thread, state your
@@ -264,7 +272,8 @@ You draft only; don't post.
 
   [[steps.run]]
   name    = "pitches"
-  role    = "sales:outbound"
+  role    = "sales-rep"
+  skills  = ["sales-outbound"]
   session = "fresh"
   prompt  = """
 Draft one short email for each listicle, review-site correction, or video-creator
@@ -290,7 +299,8 @@ You draft only; don't send.
 # ── 6. Check — every draft against its action record ─────────────────────────
 [[steps]]
 name    = "check"
-role    = "seo:audit"
+role    = "seo"
+skills  = ["seo-site-audit", "seo-structural-audit", "seo-content-audit", "seo-link-audit"]
 session = "fresh"
 prompt  = """
 You are an independent checker in a fresh session. You did not write these drafts.
@@ -321,7 +331,8 @@ Output the table only.
 # ── 7. Deliver — report, actions, and the drafts that passed ─────────────────
 [[steps]]
 name    = "deliver"
-role    = "seo:strategist"
+role    = "seo"
+skills  = ["seo-strategy-brief"]
 session = "fresh"
 prompt  = """
 Assemble the result below with no edits of your own: the monitoring report, the

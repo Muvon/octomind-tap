@@ -4,12 +4,18 @@ title: "Octomind Configuration Reference"
 description: "Reference for octomind config.toml: model profile, roles, MCP servers, hooks, limits, spending caps. Use when configuring octomind or fixing a parse error."
 license: Apache-2.0
 compatibility: "Requires: octomind binary for `octomind config --validate`. macOS/Linux/Windows."
+capabilities: runtime
 domains: octomind
 rules:
-  - match((?i)\bconfig\.toml\b)
-  - match((?i)octomind config\b)
-  - match((?i)\[\[?(model|roles|roles\.model|mcp\.servers|layers|commands|agents|prompts|hooks|compression|registry|capabilities|taps|skills|timing)\]\]?)
-  - semantic(configure octomind settings in config.toml)
+  - match((?i)\b(add|edit|change|set|update|fix|remove|enable|disable|wire|upgrade|tune|adjust|flip|lower|give|merge)\b.{0,70}\b(config\.toml|octomind\s+config|my\s+config|guardrails\.toml|overlay\s+config)\b)
+  - match((?i)\b(my|the|project)\s+config\.toml\b.{0,40}\b(won'?t|fails?|parse|error|invalid)\b|\bparse\s+error\b)
+  - match((?i)\b(give|grant|add|create|wire)\b.{0,50}\b(role|mcp\s+server|hook)\b.{0,50}\b(access|config|filesystem)\b)
+  - match((?i)\b(guardrails\.toml|octomind\s+config\s+--(validate|show|upgrade))\b|\[compression\.model\]|\[roles\.mcp\]|\[\[mcp\.servers\]\])
+  - match((?i)\b(set|raise|lower|change|cap)\b.{0,40}\b(spending|session|cost|per-session)\s+(cap|limit|threshold)\b|\bmax_tool_calls\b)
+  - semantic(configure octomind settings in config.toml, 0.72)
+  - semantic(fix my octomind config file parse error, 0.72)
+  - semantic(set a spending limit and choose a model for octomind, 0.72)
+  - semantic(add an MCP server and hook to my octomind roles, 0.72)
 metadata:
   version: "1.1"
   tags: "octomind config toml roles mcp"
@@ -20,6 +26,8 @@ metadata:
 Octomind's configuration lives at `~/.local/share/octomind/config/config.toml` (`%LOCALAPPDATA%\octomind\config\config.toml` on Windows), overridable with `OCTOMIND_CONFIG_PATH` or relocated with `OCTOMIND_DATA_DIR`. This skill documents the sections and fields so config answers cite real names and defaults. The shipped template (`config-templates/default.toml` in the octomind source, also what `octomind config --show` reflects) is the authority when this page and the binary disagree.
 
 Besydr, the plugin that does completion checks, planning and learning, has its own skill (`octomind-supervisor`).
+
+The skill also covers changing the file: read it, make the smallest edit that achieves the goal, and prove the change parses. It does not cover tap registry artifacts, workflow pipelines, or secrets management beyond naming the right environment variable.
 
 ## Mental model
 
@@ -33,12 +41,34 @@ So a config error is usually a missing key, not a wrong value. Validate after ev
 
 ## Rules
 
+### Editing procedure
+
+1. Locate and read the config before touching it. `octomind config --show` prints the effective merged config; the file lives under the octomind config directory, with `config.toml` plus any additional files merged in.
+2. State the goal in config terms: which section and which field changes the behaviour the user described. Load the `octomind-supervisor` skill when the change concerns the Besydr plugin: its `plugins` entry is in this file, its own settings are in Besydr's config file.
+3. Make the minimal edit. Preserve existing formatting, comments and ordering; never reformat or reorder the file. When two fields could achieve the goal, pick the narrower one and say why.
+4. Validate with `octomind config --validate`. A parse error is a hard failure: fix it and re-validate before reporting anything. A file that fails on a missing section usually needs `octomind config --upgrade`, not hand edits.
+5. Confirm the effect with `octomind config --show` and report exactly which fields changed and what each does.
+
+Useful commands: `octomind config --show` (effective merged config), `octomind config --validate` (the verifier for every edit), `octomind config --upgrade` (migrate an older config version), `octomind vars` (resolved template placeholder values), `octomind complete run` (every available role tag).
+
+### Prefer the tap for reusable wiring
+
+A role that other people or projects should be able to run belongs in a tap manifest with `capabilities = [...]`, not in hand-wired `[[roles]]` plus `[[mcp.servers]]` in a local config. Say so when a request is really a tap agent. Local config is for machine-specific settings: models, keys, limits, personal roles and overrides.
+
+### Environment and secrets
+
+Two `.env` files load in precedence order: the user-scope file alongside `config.toml`, then the project-local `./.env`, which wins. Both override the system environment, and an empty value counts as not set. Put an API key in a `.env` file and reference the variable name; never paste a secret value into `config.toml` or into a reply.
+
+### Model settings in practice
+
+Sampling values are dropped for models that reject them, so changing `temperature` does nothing on current Claude models: say so instead of tuning it. To turn Besydr off, set `enabled = false` on its `plugins` entry; to turn off one part of it, edit Besydr's config file. Don't add `[supervisor]` or `[decision]` tables: version 32 removed them and Octomind no longer reads them.
+
 ### Root settings
 
 | Field | Default | Meaning |
 |-------|---------|---------|
 | `log_level` | `"info"` | `none`, `info`, `debug` |
-| `default` | `"assistant:chief"` | Tag used when `run`/`acp`/`server` get none |
+| `default` | `"assistant"` | Tag used when `run`/`acp`/`server` get none |
 | `sandbox` | `false` | Restrict writes to CWD; Linux Landlock 5.13+, macOS Seatbelt |
 | `telemetry` | `true` | Anonymous usage counts; never code, prompts, paths, or env values |
 | `auto_capabilities` | `true` | Capability auto-activation on fresh user messages |
@@ -51,7 +81,7 @@ So a config error is usually a missing key, not a wrong value. Validate after ev
 | `max_request_spending_threshold` | `0.0` | USD; stops the current request when exceeded |
 | `system` | unset | Legacy global prompt fallback; prefer per-role `system` |
 
-`default = "assistant:chief"` is a tap agent, not a role in this file. A name without a colon is looked up in `[[roles]]` first; if no role has that name, it is read as a domain and runs `<domain>:chief` (the domain's orchestrator, the agent that hands work to the other agents of the domain). `domain:spec` resolves against taps and runs that exact agent.
+`default = "assistant"` is a tap agent, not a role in this file. A name is looked up in `[[roles]]` first; if no role has that name, it resolves against taps and runs the agent of that name (the agent tag is the manifest's file name, such as `assistant` for `agents/assistant.toml`).
 
 ### `[model]`
 
@@ -74,11 +104,10 @@ These fields used to be root scalars (`model`, `max_tokens`, `reasoning_effort`,
 websearch = "brave"          # use capabilities/websearch/brave.toml instead of default.toml
 
 [taps]
-"developer:general" = "ollama:glm-5"   # model name only, one agent
-developer = "ollama:glm-5"             # bare domain: every agent of the domain
+developer = "ollama:glm-5"   # model name only, for the agent of that name
 ```
 
-Model priority, highest first: runtime override (`--model`, `/model`), the role's model, the `[taps]` entry, then `[model].name`. A `[taps]` value replaces only the model name; the rest of the profile is inherited. Within `[taps]`, an exact tag key beats the bare domain key, so `"developer:general"` overrides `developer` for that one agent.
+Model priority, highest first: runtime override (`--model`, `/model`), the role's model, the `[taps]` entry, then `[model].name`. A `[taps]` value replaces only the model name; the rest of the profile is inherited.
 
 ### `[[roles]]`
 
@@ -140,7 +169,7 @@ Per-person calibration for `/report`'s human-time and energy estimate: `think_ov
 
 ### `[registry]`
 
-`cache_ttl_hours` (`24`) governs tap manifest caching.
+`cache_ttl_hours` (`24`) governs tap manifest caching. `tap` (`"muvon/tap"`) names the built-in tap, which is always loaded last, after the taps the user added; `ref` names the branch, tag or commit of it to serve. Taps added with `octomind tap <user/repo>` follow their default branch.
 
 ### Multi-file configuration
 
@@ -210,6 +239,8 @@ Put the override in `mcp-github.toml`, not `zz-github.toml`. Only the `mcp-*.tom
 - [ ] Every `[[mcp.servers]]` has `timeout_seconds` and `tools`, plus `url` for http or `command` for stdio?
 - [ ] Secrets referenced as `{{ENV:KEY}}` or set in `.env`, never written into the file?
 - [ ] Override files that must win named `mcp-*.toml`?
+- [ ] Comments, ordering and formatting of the user's file left as they were?
+- [ ] The reported change names each field touched and its effect?
 
 ## Composition / References
 

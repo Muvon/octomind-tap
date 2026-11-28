@@ -4,15 +4,18 @@ title: "Content Translation & Localization"
 description: "Translate documents, code comments, UI strings and structured content, keeping formatting and terms consistent. Use for localizing large files."
 license: Apache-2.0
 compatibility: "Requires file read, file edit and shell tools. Works with any LLM model. Supports markdown, code, TOML, YAML, JSON, and plain text."
-domains: content
+domains: writer
 rules:
-  - session(tap-content-translate-)
   - content(translate)
   - content(translation)
   - content(localize)
   - content(localization)
   - match(translat(?:e|ion|ing|ed))
   - match(localiz(?:e|ation|ing|ed))
+  - semantic(translate this document into Spanish and keep the formatting, 0.72)
+  - semantic(localize the interface strings in this file for another language, 0.72)
+  - semantic(translate the comments in my code but keep the terms consistent, 0.72)
+  - semantic(convert this content to German without changing the structure, 0.72)
 ---
 
 ## Overview
@@ -36,6 +39,44 @@ A translation is a contract: same meaning and function, target-native form. Accu
 | Do-not-translate | Brand and product names, code identifiers, commands, legal entity names |
 
 Ask when the locale variant, register, or domain is unknown and would change the output. Don't guess between es-ES and es-419.
+
+### Modes
+
+Detect the mode first. If it is unclear, ask in one sentence.
+
+- Translate (default): source content plus a target language.
+- Validate: the source and an existing translation to check or grade. Report mistranslations, register drift, dropped or added meaning, terminology inconsistency, and broken placeholders. Don't rewrite unless asked.
+- Native audit: does a translation sound native, or does it read like AI or machine translation? Detect the domain and score native fluency, translationese, and AI-slop with the `content-locale-humanize` skill, which reasons natively in the target language, not with the English list in `content-voice`. Report only, unless asked to fix.
+- Adjust: an existing translation plus a directional ask (register shift, terminology swap, length trim, locale-variant change, tone). Return the revised version and a delta note.
+
+After a native-audit report, "fix these" means Adjust with the findings as the ask.
+
+### Intake and delivery
+
+- Required, ask once, and don't proceed without them: the target language with locale variant (`es-MX` not `es`, `pt-BR` not `pt`, `zh-Hans` or `zh-Hant`, `en-US` or `en-GB`, `de-DE`, `de-AT` or `de-CH`, `fr-FR` or `fr-CA`) and the register (formal, informal, or neutral; it drives the T-V choice, honorifics, and contractions). Ask with one message: `I need: (1) target language with locale variant, (2) register. Optional: purpose (marketing, docs, legal, UI, prose), output destination. Source: <detected language>; confirm if wrong.`
+- Source language: auto-detect and confirm only when ambiguous (Norwegian Bokmål or Nynorsk, Serbian Cyrillic or Latin).
+- Optional: purpose (it sets how aggressively to localize), glossary, output destination. A glossary that is referenced but not provided: ask for the file or the entries. In parallel, recall the translation glossary, brand voice, locale conventions, and prior choices from memory.
+- With every input present, start immediately.
+- Stop and ask only when a load-bearing sentence is genuinely ambiguous, the target demands a gender or honorific the source leaves open and the reader is unknown, a tagline needs transcreation rather than translation, or numbers look like they should be converted (for example USD prices for an EU audience).
+- In an autonomous, non-interactive run, don't ask: infer the register from the source, take the most probable reading of each ambiguity, and flag each such choice in the notes. The target language stays required.
+- Output goes exactly where the user said. A named file path: write there, and overwrite only when invited. "In place" or "replace" on a source file: overwrite the source. Several locales into one file or structured format: use the shape described. No destination: answer inline and never invent a filename. File input without a destination: answer inline and offer to write it to a path.
+- After delivering, memorize durable terminology choices, per-locale brand-voice rules, T-V decisions, and recurring untranslatables (importance 0.7 to 0.9).
+- Source already in the target language: say so and don't translate. The request is generation, not translation ("translate this idea into Spanish marketing copy"): say in one line that it is a writing task and treat it as one.
+- Several target locales: one independent block per locale, each with its own notes and no cross-references.
+
+### Translation practice
+
+- Translate meaning, voice, and intent, not words. Ask how a native speaker would say it, never what the dictionary word is. Equivalent effect beats equivalent form: if a pun, idiom, or rhetorical device cannot survive, recreate the effect in a form natural to the target.
+- When the literal and the natural rendering diverge, choose natural and flag it if load-bearing. When two natural options carry different connotations, take the one closer to the source and note the other.
+- Never resolve source ambiguity silently: ask, or translate the more probable reading and flag it in the notes. When the target demands a gender the source leaves neutral, ask, or use the most inclusive target form and flag it.
+- Untranslatable: keep the source word italicized with a short gloss on first occurrence, or paraphrase. Never invent a fake target word.
+- Police false friends, calques, source-syntax bleed, and mixed register (one register unless the source deliberately shifts). In technical and legal text, preserve and gloss rather than substitute a local equivalent. Transcreate marketing text only when the user permits.
+- Use web search only for a proper noun's accepted transliteration, a brand's official localized name, or the usual rendering of a culture-bound reference or emerging technical term: two or three targeted queries per item. Unverified: preserve the source and add a note. Never fabricate a localized brand name.
+- Raw machine translation handed over for fixing is full post-editing (ISO 18587) unless the user says it is for internal gisting.
+- The translator is invisible: add no meaning, examples, qualifiers, or hedges absent from the source, and drop no meaning, nuance, hedges, or tone present in it. Don't edit or improve the source; translate what is there.
+- Convert currency, units, or dates only with permission, and warn when text expansion threatens the layout.
+- Self-review before delivery: back-translate two or three critical sentences and fix drift; check one rendering per concept, one register and T-V form, and placeholder, code-block, and link counts against the source; rewrite anything that reads like source syntax or a dictionary lookup.
+- Deliver translation notes whenever a non-trivial choice was made. Keep them a thin addendum; the translation is the artifact.
 
 ### Terminology
 
@@ -163,6 +204,30 @@ Translation notes (non-trivial choices only, one bullet each):
 - Ambiguity flagged: <sentence> — read as <A> over <B> because <reason>
 - Length: +/-X% vs source — <warn if a UI string may break layout>
 ```
+
+Validate report:
+
+```
+🔍 Translation review (<source-lang> → <target-locale>) · <verdict>
+
+Verdict: ✅ ship / 🟡 minor fixes / 🔴 needs rework
+Overall accuracy: <N>/10 · Naturalness: <N>/10 · Terminology consistency: <N>/10 · Structure integrity: <pass/fail>
+
+Findings (severity-ordered)
+- 🔴|🟡|🟢 <one-line issue> — source: "<quote>" → translation: "<quote>" — <why it's wrong / fix direction>
+
+What's working
+- <one-line strength>
+```
+
+After a validate or native-audit report, offer: `Want me to apply the fixes? Reply with "apply all" / "apply critical" / "apply <#>"`. The native-audit report uses the shape of the `content-locale-humanize` skill.
+
+Confirmation line, only when the output did not go to the conversation:
+
+- `Translation written to <path> (<N> words, <K> placeholders preserved).`
+- `Source overwritten with <locale> translation (<N> words, <K> placeholders preserved).`
+
+An adjusted translation goes back in the original's shape, in the conversation unless the user named a file, followed by the delta note above.
 
 ## Examples
 

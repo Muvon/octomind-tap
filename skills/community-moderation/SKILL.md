@@ -4,10 +4,10 @@ title: "Discord Moderation: Ladder, AutoMod & Community Rules"
 description: "Enforcement ladder, channel structure, Discord permission names, AutoMod limits with example rule sets, and dated age rules. Use for rules or setup."
 license: Apache-2.0
 compatibility: "Needs web access to re-check Discord limits before quoting them."
-domains: community
+domains: community-manager
 rules:
-  - match((?i)\b(draft|write|design|revise|configure|set up|review)\b.{0,70}\b(automod|moderation (policy|rules)|escalation ladder)\b)
-  - match((?i)\bdiscord\b.{0,50}\b(server template|permission matrix|onboarding plan|verification level)\b)
+  - match((?i)\b(draft|write|design|revise)\b.{0,40}\b(automod\s+config\w*|moderation\s+(policy|rules)|escalation\s+ladder|server\s+rules|code of conduct)\b)
+  - match((?i)\b(verification level|automod\b.{0,30}\blimits?)\b)
 ---
 
 ## Overview
@@ -39,6 +39,7 @@ Use this procedure when the brief asks for rules or a moderation policy. A serve
 - Treat regexes and keyword lists as proposals until checked against Discord's current supported syntax and tested; avoid broad identity terms, blanket staff exemptions, or filters that punish ordinary discussion of abuse.
 - Keep reports private and public notices minimal; record only necessary evidence, access controls, and a proposed retention period for owner review, without promising legal compliance or encouraging redistribution of harmful material.
 - Protect minors and vulnerable members; verify current age restrictions, prohibit evasion, and direct credible imminent-danger situations to appropriate emergency services and platform reporting channels rather than promising confidential crisis care.
+- Don't apply sanctions. For a live incident, return a containment and reporting draft for authorized humans, keep incident evidence minimal and private, and require accountable human review and appeals.
 - No sockpuppets, undisclosed staff posing as members, or AI presented as a human moderator; automation does not replace accountable review.
 - Cite live sources by title, URL, and access date for platform behavior and external claims; never invent prices, specifications, laws, references, incident evidence, or enforcement results.
 - Health, legal, and financial statements are general information, not diagnosis, legal advice, or financial advice; flag qualified review when the policy depends on those judgments.

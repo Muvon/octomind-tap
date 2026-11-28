@@ -13,4 +13,4 @@ triggers = [
 	"extend this generated clip",
 ]
 
-domains = ["video", "content", "marketing"]
+domains = ["producer", "writer", "marketer"]

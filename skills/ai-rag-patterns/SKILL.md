@@ -4,28 +4,12 @@ title: "RAG Patterns: Chunking, Retrieval, Reranking, Evaluation"
 description: "Production RAG design: chunking, hybrid retrieval, reranking, query rewriting, RAGAS evaluation. Use when building or debugging a RAG pipeline."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Requires webfetch (for accessing docs and APIs) and a vector store. Many sub-techniques (Cohere Rerank, voyage embeddings, Anthropic Contextual Retrieval) require external API keys."
-domains: ai
+domains: ai-engineer
 rules:
-  - session(ai)
-  - content(rag)
-  - content(retrieval)
-  - content(chunking)
-  - content(embedding)
-  - content(embeddings)
-  - content(reranker)
-  - content(reranking)
-  - match(\b(retrieval[\s-]?augmented|RAG)\b)
-  - match(\b(vector\s+(db|database|store|search))\b)
-  - match(\b(chunking|chunk\s+(size|strategy))\b)
-  - match(\b(hybrid\s+(retrieval|search))\b)
-  - match(\b(rerank(er|ing)?)\b)
-  - match(\b(BM25|dense\s+retrieval|ColBERT|HyDE)\b)
-  - match(\b(RAGAS|TruLens|DeepEval)\b)
+  - match((?i)\b(design|implement|build|rework|improve|fix|add|debug)\b.{0,50}\b(retriev\w+|chunk\w*|rerank\w*|hybrid\s+search|vector\s+(db|database|store|search)|embeddings?)\b)
+  - match((?i)\b(chunk(ing|s)?|chunk\s+(size|strategy)|rerank(er|ing)?|BM25|hybrid\s+(retrieval|search)|ColBERT|HyDE|reciprocal\s+rank|query\s+rewrit\w+|contextual\s+retrieval|vector\s+(db|database|store|search))\b)
   - semantic(design a RAG pipeline for my documents)
   - semantic(why is my retrieval missing relevant chunks)
-  - semantic(should we use long context or RAG)
-  - semantic(evaluate retrieval quality for our agent)
-  - semantic(rerank results to improve RAG accuracy)
 ---
 
 ## Overview

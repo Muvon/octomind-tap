@@ -7,7 +7,6 @@ compatibility: "Requires web search and page fetching. Authenticated SEO provide
 capabilities: seo-data
 domains: seo
 rules:
-  - session(seo)
   - content(keyword)
   - content(keywords)
   - content(longtail)

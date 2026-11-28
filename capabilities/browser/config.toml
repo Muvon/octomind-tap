@@ -10,4 +10,4 @@ triggers = [
 	"scrape the rendered content of a page",
 ]
 
-domains = ["browser", "developer"]
+domains = ["operator", "developer"]

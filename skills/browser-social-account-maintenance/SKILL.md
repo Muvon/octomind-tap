@@ -3,13 +3,11 @@ name: browser-social-account-maintenance
 title: "Browser Social Account Maintenance Ops"
 description: "Recurring social account upkeep via headless browser: bio sync, cross-posting, post audits, follower cleanup. Use for maintenance, not new copy."
 license: Apache-2.0
-compatibility: "Requires browser:chief agent with browser (Playwright) capability and filesystem-write. Assumes user has authenticated sessions or supplies credentials this session."
-domains: browser
+compatibility: "Requires a Playwright browser and file writing. Assumes user has authenticated sessions or supplies credentials this session."
+domains: operator
 rules:
-  - session(browser) content(profile)
-  - session(browser) content(bio)
-  - session(browser) content(crosspost)
-  - session(browser) content(cross-post)
+  - match((?i)\b(bio|profile)\s+(sync|update|refresh)\w*\b)
+  - match((?i)\bcross[- ]?post\w*\b)
   - match(\b(sync|update)\s+(my\s+)?(bio|profile)\s+(across|on)\b)
   - match(\bcross[-\s]?post\s+(this|the\s+post|to\s+(twitter|x|linkedin|mastodon|bluesky|threads))\b)
   - match(\b(audit|clean(\s*up)?|review)\s+(my\s+)?(scheduled|drafts|old\s+(posts|tweets))\b)
@@ -213,7 +211,7 @@ User says "unfollow all bots, do it now." Skill still runs `dry_run: true` first
 
 ## Composition / References
 
-- Selector resilience, uploads, and waiting follow the browser agent's own snapshot-and-ref discipline.
+- Selector resilience, uploads, and waiting follow the snapshot-and-ref discipline of the browser session.
 - New copy (post bodies, replies, comments, DMs) and follower or growth analysis are upstream concerns: this skill ships copy and returns data, it does not author or analyze.
 - [LinkedIn Help — Prohibited software and extensions](https://www.linkedin.com/help/linkedin/answer/a1341387)
 - [X Help — About following (abusive and automated following)](https://help.x.com/en/using-x/x-follow-limit)

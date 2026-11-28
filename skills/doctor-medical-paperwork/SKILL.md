@@ -5,6 +5,7 @@ description: "Drafts letters of medical necessity, prior-authorization packets, 
 license: Apache-2.0
 compatibility: "Requires: filesystem write for the drafts. US forms and deadlines; check the current form version on the agency site."
 domains: doctor
+capabilities: filesystem-write
 rules:
   - content(letter of medical necessity)
   - content(prior authorization)
@@ -19,7 +20,7 @@ rules:
 
 ## Overview
 
-A person gives the agent records and asks for a document a clinician or payer needs: a letter of medical necessity, a prior-authorization packet, a records request, or a leave or disability form. The outcome is a draft built only from the supplied records, a table that proves each clinical fact, a list of what is missing, and blank signature blocks for the clinician.
+A person supplies records and asks for a document a clinician or payer needs: a letter of medical necessity, a prior-authorization packet, a records request, or a leave or disability form. The outcome is a draft built only from the supplied records, a table that proves each clinical fact, a list of what is missing, and blank signature blocks for the clinician.
 
 ## Mental model
 
@@ -48,6 +49,12 @@ By document type
 
 Bad: "Mr. R has severe chronic back pain unresponsive to conservative therapy and requires an MRI."
 Good: "The 2026-03-04 clinic note (page 2) records low back pain for 14 weeks and states physical therapy was tried 2026-01 to 2026-02 without improvement. Payer criterion 3 asks for 6 weeks of therapy: the note supports it. Missing: the neurological exam, which the clinician must add. Signature and attestation: left for the clinician."
+
+## Output format
+
+- `medical-doc-[type]-[date].md`: the letter or form text, clinician blocks left blank
+- `fact-source-[type].md`: fact, source document, location, status
+- The missing list at the end of the document
 
 ## Checklist
 

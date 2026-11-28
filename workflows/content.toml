@@ -17,7 +17,8 @@ description = "Turns a brief into a researched, publish-ready article in the cur
 # ── 1. Draft ─────────────────────────────────────────────────────────────────
 [[steps]]
 name    = "draft"
-role    = "content:article"
+role    = "writer"
+skills  = ["content-article", "content-formats", "content-grounding", "content-geo"]
 session = "fresh"
 prompt  = """
 Research and write a complete, source-backed article to a file in the current
@@ -37,7 +38,8 @@ exit_when      = { output = "audit", matches = '(?m)^AUDIT-PASS' }
 
   [[steps.run]]
   name    = "editor"
-  role    = "content:editor"
+  role    = "writer"
+  skills  = ["content-audit", "content-edit", "content-humanize"]
   session = "continue"
   prompt  = """
 Improve the article in the current directory for this brief. Apply surgical fixes,
@@ -51,7 +53,8 @@ the auditor's findings — address every one, criticals first.)
 
   [[steps.run]]
   name    = "audit"
-  role    = "content:audit"
+  role    = "writer"
+  skills  = ["content-audit"]
   session = "fresh"
   prompt  = """
 Audit the article in the current directory against this brief. Score these axes,

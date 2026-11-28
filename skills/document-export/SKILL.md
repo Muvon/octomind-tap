@@ -5,10 +5,8 @@ description: "Export Markdown to DOCX and PDF that meets submission rules: refer
 license: Apache-2.0
 compatibility: "Requires: python3, pandoc 3.1.2+, typst, and poppler-utils (pdftotext, pdfinfo, pdffonts). Optional: LibreOffice for DOCX page counts. macOS/Linux."
 capabilities: shell documents
-domains: sales coach content academic assistant tutor
+domains: sales-rep coach writer academic assistant tutor
 rules:
-  - session(proposals)
-  - session(resume)
   - semantic(export this proposal to word and pdf)
   - semantic(the rfp requires 12 point times new roman and one inch margins)
   - match((?i)\b(export|convert|save|render|turn)\b.{0,40}\b(pdf|docx|word)\b)
@@ -80,7 +78,7 @@ Check the font exists before relying on it: `typst fonts` for PDF. When Calibri,
 
 ❌ Draft exported once, sent: 21 pages against a 20-page limit; the evaluator stops reading at page 20, or the proposal is non-compliant.
 
-✅ `doc-export pdf ... --max-pages 20` flags 21 pages; the agent tightens the weakest section and re-exports at 19 pages.
+✅ `doc-export pdf ... --max-pages 20` flags 21 pages; tighten the weakest section, then re-export at 19 pages.
 
 ### Example 2: font rules
 

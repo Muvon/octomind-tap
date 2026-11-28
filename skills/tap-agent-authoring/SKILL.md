@@ -1,35 +1,37 @@
 ---
 name: tap-agent-authoring
 title: "Agent Manifest Authoring"
-description: "Write Octomind agent manifests: TOML fields, capability tiers, system prompt structure, model settings, lint rules. Use when editing agents/*/*.toml."
+description: "Write Octomind agent manifests: TOML fields, capability tiers, system prompt structure, model settings, lint rules. Use when editing agents/*.toml."
 license: Apache-2.0
 compatibility: "Requires: an Octomind tap checkout with scripts/lint-manifests.sh and bin/load."
-domains: octomind
+domains: octomind assistant
 ---
 
 ## Overview
 
-This skill encodes what a correct, high-quality `agents/<domain>/<spec>.toml` needs: the exact TOML shape, which fields are required or forbidden, how to structure and phrase the system prompt for current models, how sampling settings actually reach the model, and the checks that must pass before the manifest ships. Use it whenever you create or edit an agent manifest.
+This skill encodes what a correct, high-quality `agents/<name>.toml` needs: the exact TOML shape, which fields are required or forbidden, how to structure and phrase the system prompt for current models, how sampling settings actually reach the model, and the checks that must pass before the manifest ships. Use it whenever you create or edit an agent manifest.
 
 ## Mental model
 
 A manifest is `capabilities` plus exactly one `[[roles]]`. Capabilities decide the tool surface (`bin/load` and the runtime merge each capability's provider file into `[deps]`, `[roles.mcp]`, and `[[mcp.servers]]`); the role decides behaviour. The system prompt is sent on every request and cached, so it must be stable, short, and structural: identity and rules live in `system`, reference material lives in skills loaded on demand.
 
-Keep one recognizable deliverable or decision in each specialist. Put reusable procedures and decision rules in focused skills. Use workflow steps to bind inputs, skills, and checks. Keep shared decisions in one session and give any delegate the evidence and output contract needed to make its own decision.
+There is one agent per field of work, for example `developer`, `writer` or `lawyer`. The agent does that field's work itself. Its prompt is short: the role, the scope, the working method every task in the field shares, the guards, and the output conventions.
 
-Describe the task and its essential guardrails in the role. Use domain-scoped skill rules for optional augmentation and explicit workflow preloads for required procedures. Use a literal skill name in the system prompt when the skill itself is being authored or inspected, or when an exact manual reference is part of the deliverable contract.
+A specialty is a procedure for one kind of task inside the field, such as QA test planning or contract review for one jurisdiction. It is not a second agent. It is a skill at `skills/<name>/SKILL.md` whose `domains:` names the agent. The skill loads when the user's message matches its `rules:`, when a workflow step lists it in `skills`, or when it is preloaded from the environment or by hand. A tool that only one specialty needs is declared by that skill through `capabilities:`, not by the agent. Load `tap-skill-authoring` to write such a skill.
 
-Consolidate roles when their tool authority and deliverable can share one contract. Move format and method differences into skills. Migrate workflow and routing references to the canonical tag, remove explicitly retired tags, and check direct requests with skills enabled and disabled.
+Put in the agent prompt only what applies to every task of the field. Put a procedure, a checklist or an output contract that applies to one kind of task into a skill. Use a literal skill name in the system prompt when the skill itself is being authored or inspected, or when an exact manual reference is part of the deliverable contract.
+
+Keep shared decisions in one session. A delegate gets the evidence and the output contract it needs to make its own decision.
 
 ## Rules
 
 ### Manifest format
 
 ```toml
-# agents/<domain>/<spec>.toml
-# Agent: <domain>:<spec>
+# agents/<name>.toml
+# Agent: <name>
 # Title: Short Agent Title (5–60 chars)
-# Description: What this agent does (20–160 chars).
+# Description: What this agent does and returns (120–155 chars).
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "programming-python"]
 
@@ -43,8 +45,8 @@ welcome = "<Emoji> <Short greeting>. Working in {{CWD}}"
 
 | Field | Rule |
 |-------|------|
-| `# Agent:`, `# Title:`, `# Description:` | Required header comments; title 5–60 chars, description 20–160 |
-| `chief` file name | `agents/<domain>/chief.toml` is the domain's orchestrator, the agent `octomind run <domain>` starts. No `# Default:` header exists |
+| `# Agent:`, `# Title:`, `# Description:` | Required header comments; title 5–60 chars, description 120–155; no `# Default:` header exists |
+| `# Uses:` | Optional header, see Delegation below |
 | `capabilities` | Required at top level; the only way to wire tools. Bare names only — `default.toml` picks the provider; users override it in their own `[capabilities]` config |
 | `system` | Required; XML blocks in canonical order |
 | `welcome` | Required; first message shown; emoji plus `{{CWD}}` |
@@ -52,19 +54,19 @@ welcome = "<Emoji> <Short greeting>. Working in {{CWD}}"
 | `model` | Optional `provider:model` override for this agent |
 | `name`, `[deps]`, `[roles.mcp]`, `[[mcp.servers]]` | Forbidden — injected from the tag and from capability files |
 
-File path matches the tag (`developer:rust` → `agents/developer/rust.toml`), exactly one `[[roles]]`, sub-specs use hyphens (`developer:rust-nightly`).
+The file is `agents/<name>.toml` with no subdirectory and no symlink. The tag is the file name: lowercase letters, digits and hyphens, starting with a letter, no `:`. The `# Agent:` header repeats the name. The manifest has exactly one `[[roles]]`. `octomind run <name>` starts the agent. A role with the same name in the user's local config takes priority over the tap agent. There is no README file per agent.
 
-The `# Description:` line is also the entry the domain's `chief` shows for this agent, so it says what the agent takes in and what it returns.
+The `# Title:` and `# Description:` lines are what `tap` compares a task brief against when it picks an agent, so they say what the agent takes in and what it returns.
 
 ### Capability tiers
 
 - `core` — every agent.
 - Domain capabilities (`shell`, `filesystem-*`, `codesearch-*`, `websearch`, ...) — what the role actually needs, nothing speculative.
-- `agent` — sub-orchestrators delegating to their own configured agents.
-- `orchestration` (`tap`, `schedule`, `monitor`) — each domain's `chief`, which delegates inside its own domain (`assistant:chief`, the global assistant, reaches every domain).
-- `runtime` (`mcp`, `agent`, `skill`, `capability`) — high-trust agents that reconfigure the tool surface.
+- `agent` (`agent_*`) — agents that run their own configured sub-agents; only `assistant` declares it.
+- `orchestration` (`tap`, `schedule`, `monitor`) — agents that start copies of themselves or hand tasks to other agents; see Delegation.
+- `runtime` (`mcp`, `agent`, `skill`, `capability`) — reconfigures the tool surface; only `octomind` declares it.
 
-A narrow specialist never declares `orchestration` or `runtime`; the unwanted server is then physically absent from its context. Domain capabilities beyond the manifest can still auto-activate on intent at runtime.
+An agent that has no delegation job does not declare `orchestration`, `agent` or `runtime`; the unwanted server is then absent from its context. Capabilities beyond the manifest can still load at runtime: on intent, or through a skill's `capabilities:`.
 
 ### System prompt structure
 
@@ -85,31 +87,26 @@ XML-tagged blocks in a fixed U-shape order. Anthropic recommends XML tags to sep
 Block rules:
 
 - `<identity>` — one paragraph, nothing before it.
-- `<scope>` — required when siblings exist. Describe out-of-scope work by what it is, not by naming agents from other domains.
+- `<scope>` — what the agent covers and what it does not. Describe out-of-scope work by what it is; for work outside the field, point the user to the global assistant (`octomind run` with no agent).
 - `<workflow>` — numbered steps, one sentence each plus optional sub-bullets.
 - `<rules>` — tables and bullets; prose only when the why is non-obvious.
 - `<output_format>` — exact artifact shape; name file path patterns if the agent writes files.
 - `<critical>` — short Don't/Do bullets, no explanations, no theatre.
 
-Chief agent blocks:
+### Delegation
 
-- Do not put `{{SPECIALISTS}}` or `{{USES}}` in `system`. Octomind 0.71 and older expanded them to lists of agents; newer octomind does not expand them, and lint rejects them (`SPECIALISTS_REMOVED`, `USES_PLACEHOLDER_REMOVED`). The `chief` names no specialist.
-- Describe when to delegate, what evidence and constraints belong in the handoff, and what the chief must verify. The delegation tool documents its own actions and parameters. Write each agent's `# Title:` and `# Description:` in the terms a task brief would use for the work and deliverable. The runtime matches the brief within the chief's domain and its declared reach.
-- Name no other domain's agent tag in `system` or `welcome`. Only `assistant:chief` routes across all domains: it declares `# Uses: *`, which stands for every other domain that has a `chief`.
+An agent that declares `orchestration` can start copies of itself with `tap`. Each copy is a fresh session of the same agent; a copy cannot start further copies. A copy started with `readonly: true` can only use tools marked read-only, so it can scout a large change before it is made or review finished work independently. Several writable copies can run at once for independent parts, each on its own files. Write when to delegate, what evidence and constraints belong in the handoff, and what the agent must verify afterwards. The delegation tool documents its own actions and parameters.
 
-A chief can reach other domains or single agents it declares. Put one header comment next to `# Title:` and `# Description:`: `# Uses: <entry>[, <entry>…]`, where an entry is a bare domain (`content`, meaning that domain's `chief`) or a full tag (`seo:audit`, meaning that agent). The header alone makes them reachable; it is validated at load and bounds which agents the runtime can match for this chief. Only a `chief` may carry the header, it needs `orchestration`, and it must not list its own domain (its agents are reachable without it), write `<domain>:chief` (write the bare domain), or form a loop with another lead.
+An agent reaches other agents only through the `# Uses:` header, placed next to `# Title:` and `# Description:`. It is a comma-separated list of agent names, or `*` for every other agent. `tap` then matches a task brief against the `# Title:` and `# Description:` of each listed agent. An agent with the header must declare `orchestration`. Entries must be existing agent names, unique, not the agent itself, and must form no loop between agents. In this tap only `assistant` carries the header, as `# Uses: *`; it is the one agent that hands tasks across fields.
 
-```toml
-# agents/marketing/chief.toml
-# Uses: content, seo:audit
-```
-
-Prompt lines to copy into `<scope>` or `<rules>` of a chief that has the header (the agents themselves are not listed; the runtime matches the brief):
+Prompt lines for an agent that has the header (the agents themselves are not listed; the runtime matches the brief):
 
 ```
-Outside your domain you may reach only the domains and agents your `# Uses:` header declares.
-Give the specialist a self-contained brief with the requested deliverable, verified evidence, constraints and acceptance checks.
+You may hand a task only to the agents your `# Uses:` header declares.
+Give the other agent a self-contained brief with the requested deliverable, verified evidence, constraints and acceptance checks.
 ```
+
+Do not put `{{SPECIALISTS}}` or `{{USES}}` in `system`: lint rejects them (`SPECIALISTS_REMOVED`, `USES_PLACEHOLDER_REMOVED`).
 
 ### Tone for current models
 
@@ -136,21 +133,23 @@ The system prompt must be identical run to run so the provider can cache it (cac
 | Placeholder | Where |
 |-------------|-------|
 | `{{CWD}}`, `{{DATE}}`, `{{SYSTEM}}` | `welcome` only — lint fails if they appear in `system` |
-| `{{SPECIALISTS}}`, `{{USES}}` | Removed: not expanded in newer octomind (lists of agents in 0.71 and older); lint rejects them in `system` |
+| `{{SPECIALISTS}}`, `{{USES}}`, `{{DOMAINS}}` | Not expanded; lint rejects them in `system` |
 | `{{ROLE}}`, `{{SHELL}}`, `{{OS}}`, `{{GIT_STATUS}}`, `{{README}}`, ... | Expand in both, but anything that changes per session or project breaks caching in `system` |
 | `{{INPUT:KEY}}`, `{{ENV:KEY}}` | Capability files, not prompts — credentials and env vars |
 
 ### Model setting
 
-Use `model` only when the agent genuinely needs a specific model; otherwise let the user's config and `[taps]` decide.
+Use `model` only when the agent genuinely needs a specific model; otherwise let the user's config decide.
 
 ### Lint rules that bite
 
 - No `{{CWD}}`, `{{DATE}}`, or `{{SYSTEM}}` in `system`.
-- No tap-relative paths (`skills/…`, `capabilities/…`, `deps/…`) in `system` or `welcome` — agents run in the user's project, not the tap checkout. The `octomind` domain is exempt.
+- No tap-relative paths (`skills/…`, `capabilities/…`, `deps/…`) in `system` or `welcome` — agents run in the user's project, not the tap checkout. The `octomind` agent is exempt.
 - Every `` `name` skill `` mention must exist at `skills/<name>/SKILL.md`.
 - Every capability needs `capabilities/<name>/default.toml`.
-- Every domain with two or more agents has a `chief` that declares `orchestration`; no `{{SPECIALISTS}}` (`SPECIALISTS_REMOVED`) or `{{USES}}` (`USES_PLACEHOLDER_REMOVED`) in `system`; no foreign domain tag in a `chief`; no `# Default:` header; `{{DOMAINS}}` no longer exists (`DOMAINS_REMOVED`: the global assistant declares `# Uses: *`). A `# Uses:` header goes only in a `chief` (`USES_MISPLACED`); entries are valid, unique, outside the chief's own domain, not `<domain>:chief`, and `*` only in `assistant:chief` (`USES_INVALID`), exist (`USES_UNKNOWN`) and form no loop between leads (`USES_CYCLE`).
+- The path is `agents/<name>.toml` (`AGENT_PATH`, `AGENT_SUBDIR`, `AGENT_SYMLINK`, `AGENT_NAME_INVALID`), and the `# Agent:` header matches the file name (`MISSING_AGENT_HEADER`, `AGENT_HEADER_MISMATCH`).
+- No `{{SPECIALISTS}}` (`SPECIALISTS_REMOVED`), `{{USES}}` (`USES_PLACEHOLDER_REMOVED`) or `{{DOMAINS}}` (`DOMAINS_REMOVED`) in `system`; no `# Default:` header (`DEFAULT_HEADER_REMOVED`).
+- `# Uses:` entries are `*` or existing agent names, unique, not the agent itself (`USES_INVALID`, `USES_UNKNOWN`, `USES_CYCLE`), and an agent with the header declares `orchestration` (`USES_NO_ORCHESTRATION`).
 
 ### Required disclaimers
 
@@ -165,10 +164,10 @@ Manifests do not define pipelines. Multi-step orchestration is the external `oct
 ### Example 1: minimal correct agent
 
 ```toml
-# agents/developer/rust.toml
-# Agent: developer:rust
-# Title: Rust Developer
-# Description: Expert Rust developer. Writes idiomatic, safe, performant Rust code.
+# agents/rustacean.toml
+# Agent: rustacean
+# Title: Rust Developer – Idiomatic, Safe Code
+# Description: Writes, reviews and debugs Rust: ownership, async with tokio, error handling, FFI and Cargo. Runs check, clippy and tests before it reports the work.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "programming-rust"]
 
@@ -229,20 +228,21 @@ What changed: the system prompt is cacheable again and lint passes.
 
 ## Checklist
 
-- [ ] Header comments present with valid lengths; path matches tag?
-- [ ] Every needed capability exists; tiers respected (no `orchestration`/`runtime` on a specialist)?
-- [ ] A domain with two or more agents has a `chief` that declares `orchestration`, delegates inside its domain, names no other domain's tag?
+- [ ] Header comments present with valid lengths; path matches the `# Agent:` name?
+- [ ] Every needed capability exists; `orchestration` only where the agent delegates, `runtime` only in `octomind`?
+- [ ] A `# Uses:` header, if present, lists existing agents and comes with `orchestration`?
+- [ ] A procedure for one kind of task sits in a skill bound to this agent, not in the prompt?
 - [ ] XML blocks in canonical order, `<identity>` first, `<critical>` last and short?
 - [ ] Tone calibrated: plain `Use X when …`, explicit asks, all-caps only for real hard-stops?
 - [ ] No `{{CWD}}`/`{{DATE}}`/`{{SYSTEM}}`, headers, or bold in `system`; under ~1500 words?
 - [ ] Reference material moved to skills; every named skill exists?
 - [ ] Deprecated sampling fields absent?
-- [ ] `bash scripts/lint-manifests.sh agents/<domain>/<spec>.toml` passes and `bin/load <domain>:<spec>` resolves?
+- [ ] `bash scripts/lint-manifests.sh agents/<name>.toml` passes and `bin/load <name>` resolves?
 
 ## References
 
 - `templates/agent.toml` — canonical agent template
-- `agents/developer/general.toml` — execution-protocol reference
-- `bin/load <domain>[:<spec>]` — print the merged manifest (a bare domain loads `<domain>:chief`)
+- `agents/developer.toml` — execution-protocol reference
+- `bin/load <name>` — print the merged manifest
 - `skills/prompt-engineering/SKILL.md` — prompt theory across agents and skills
 - [Anthropic prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)

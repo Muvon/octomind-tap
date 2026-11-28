@@ -4,7 +4,7 @@ title: "Secret Leak Response: Leaked API Keys and Tokens"
 description: "Steps after a leaked API key, token or password: revoke first, check audit logs, purge git history, add push protection. Use when a secret is exposed."
 license: Apache-2.0
 compatibility: "Needs git; git-filter-repo for history rewrites. Provider CLIs (for example the AWS CLI) speed up revocation and log searches."
-domains: security
+domains: security-analyst
 rules:
   - match((?i)\b(committed|pushed|leaked|exposed|compromised|posted|pasted|uploaded|published)\b.{0,60}(\b(api[\s-]?keys?|(access|secret|signing|ssh|private)\s+keys?|(access|auth|bearer|secret|api|github|slack)\s+tokens?|secrets?|passwords?|credentials?)\b|(?:^|\s)\.env\b))
   - match((?i)(\b(api[\s-]?keys?|(access|secret|signing|ssh|private)\s+keys?|(access|auth|bearer|secret|api|github|slack)\s+tokens?|secrets?|passwords?|credentials?)\b|(?:^|\s)\.env\b).{0,60}\b(leaked|exposed|compromised|committed|pushed|uploaded|posted)\b)

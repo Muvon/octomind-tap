@@ -11,7 +11,8 @@ description = "Audits a site or page for technical, on-page, off-page and GEO is
 # ── 1. Audit ─────────────────────────────────────────────────────────────────
 [[steps]]
 name    = "audit"
-role    = "seo:audit"
+role    = "seo"
+skills  = ["seo-site-audit", "seo-structural-audit", "seo-content-audit", "seo-link-audit"]
 session = "fresh"
 prompt  = """
 Run ONE multi-lens SEO audit of the target below, covering all four lenses in a
@@ -43,7 +44,8 @@ exit_when      = { output = "trace", matches = '(?m)^VERDICT: TRACEABLE' }
 
   [[steps.run]]
   name    = "strategist"
-  role    = "seo:strategist"
+  role    = "seo"
+  skills  = ["seo-strategy-brief"]
   session = "continue"
   prompt  = """
 Turn the audit findings below into a prioritized SEO strategy brief.
@@ -82,7 +84,8 @@ Output only the strategy brief — no preamble, no commentary.
 
   [[steps.run]]
   name    = "trace"
-  role    = "seo:audit"
+  role    = "seo"
+  skills  = ["seo-site-audit", "seo-structural-audit", "seo-content-audit", "seo-link-audit"]
   session = "fresh"
   prompt  = """
 You are an independent traceability auditor in a fresh session. You did not write
@@ -114,7 +117,8 @@ Critique first, then end with exactly one line: VERDICT: TRACEABLE or VERDICT: R
 # as the final step's result.
 [[steps]]
 name    = "deliver"
-role    = "seo:strategist"
+role    = "seo"
+skills  = ["seo-strategy-brief"]
 session = "fresh"
 prompt  = """
 The traceability loop is finished. Output the strategy brief below verbatim,

@@ -4,7 +4,7 @@ title: "Gift Idea Generator – Shortlist Within Your Budget"
 description: "Gift idea finder: recipient intake, distinct directions, live price, delivery and return checks, up to three picks. Use when asked for a gift for someone."
 license: Apache-2.0
 compatibility: "Requires: web search and web page fetching."
-domains: shopping
+domains: shopper
 rules:
   - content(gift)
   - content(gifts)

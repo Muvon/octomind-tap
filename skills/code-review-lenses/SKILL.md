@@ -4,7 +4,7 @@ title: "Code Review Lenses & Adversarial Verification"
 description: "Code review lenses: correctness, security, concurrency, performance, design, tests, plus refuting false positives. Use in multi-reviewer review passes."
 license: Apache-2.0
 compatibility: "Requires read access to the code under review. Powers multi-lens parallel review plus an adversarial verify gate."
-domains: developer
+domains: developer security-analyst
 rules:
   - match(\b(deep|multi.?angle|thorough)\s+(code\s+)?review\b)
   - match(\breview\s+(this|the|my)\s+(branch|diff|change|PR|code)\b)

@@ -4,7 +4,7 @@ title: "LinkedIn Publishing Playbook"
 description: "Write and revise LinkedIn posts, launch copy and comments in the author's voice, with customer-proof handling. Use when drafting for LinkedIn."
 license: Apache-2.0
 compatibility: "Browser and network access for source checks and LinkedIn previews."
-domains: content
+domains: writer producer
 rules:
   - content(linkedin)
   - match(\blinkedin\s+(post|comment|article|newsletter|launch|profile)\b)

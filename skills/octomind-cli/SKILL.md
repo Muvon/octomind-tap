@@ -45,7 +45,7 @@ Bare `octomind` behaves like `octomind run` with the default role.
 | `login [chatgpt]` | Sign in to an Octomind account (stores the hub key as `OCTOHUB_API_KEY`); `login chatgpt` lets `chatgpt:<model>` run on a ChatGPT plan |
 | `config` | Create, validate, display, or upgrade configuration |
 | `tap [TAP] [PATH]` | Add a tap (`user/repo` clones `github.com/user/octomind-repo`; with PATH it links a local directory); bare lists taps |
-| `tap init <user/repo>` | Scaffold a new tap from the default tap's scaffold, validate it, git-init it, register it (`--agent <domain>` sets the starter agent's domain, `--dir`) |
+| `tap init <user/repo>` | Scaffold a new tap from the default tap's scaffold, validate it, git-init it, register it (`--agent <name>` sets the starter agent's name, `--dir`) |
 | `untap <TAP>` | Remove a tap |
 | `vars` | Placeholder variables and resolved values (`-p/--preview`, `-e/--expand`) |
 | `send --name <NAME> [MESSAGE]` | Inject a message into a running named session; message from stdin when omitted |
@@ -56,7 +56,7 @@ Hidden helpers: `octomind complete run` prints every runnable tag (tap agents pl
 
 ### TAG resolution
 
-`run`, `server`, and `acp` take an optional TAG: a plain role name matched against `[[roles]]` in config, a tap agent tag in `domain:spec` form resolved through installed taps, or a bare domain name such as `developer`. A domain's orchestrator is the agent that knows the other agents of its domain and hands work to them; it is named `chief`. A name with no colon is looked up as a local role first; if no role has that name, it is read as a domain and starts `<domain>:chief`. If the domain has no `chief`, the command fails with an error listing the domain's agents. `domain:spec` always starts that exact agent. Omitted, the TAG uses `default` from config (`assistant:chief` out of the box) — except when resuming, where the session's own role is restored. Model priority, highest first: `--model`, the role's model, a `[taps]` entry for that tag or its domain, then the main `[model]` profile. The `octomind-runtime` skill has the resolution details.
+`run`, `server`, and `acp` take an optional TAG: a plain role name matched against `[[roles]]` in config, or a tap agent tag resolved through installed taps, which is the manifest's file name, such as `developer`. A tag containing `:` is an error that shows the flat form. A name is looked up as a local role first; if no role has that name, it starts the tap agent of that name. Omitted, the TAG uses `default` from config (`assistant` out of the box) — except when resuming, where the session's own role is restored. Model priority, highest first: `--model`, the role's model, a `[taps]` entry for that tag, then the main `[model]` profile. The `octomind-runtime` skill has the resolution details.
 
 ### `octomind run` flags
 
@@ -71,6 +71,7 @@ Hidden helpers: `octomind complete run` prints every runnable tag (tap agents pl
 | `--sandbox` | Restrict filesystem writes to the working directory |
 | `--hook` | Activate a `[[hooks]]` webhook by name; repeatable |
 | `--schema` | JSON Schema file constraining the final reply |
+| `--readonly` | Offer and execute only tools whose MCP `readOnlyHint` is true (a tool with no hint counts as mutable); the session has no shell and cannot delegate. Also available on `octomind acp` |
 
 Interactivity: with `--format` unset and stdin a TTY, the session is interactive. Otherwise input is read from stdin, and empty stdin is an error. `--daemon` is non-interactive and needs `--format`; attached to a terminal its initial input is empty.
 
@@ -102,7 +103,7 @@ Inspect or maintain: `--show`, `--validate`, `--list-themes`, `--upgrade`.
 Behaviour worth knowing:
 
 - `/model` and `/effort` save to the session file, not global config. `/loglevel` is runtime-only.
-- `/role` accepts a config role name, a tap tag, or a bare domain (switches to `<domain>:chief`, with the same local-role-first rule as TAG).
+- `/role` accepts a config role name or a tap agent tag, with the same local-role-first rule as TAG.
 - `/done` force-compresses context, bypassing threshold and cost guards; with the Besydr plugin connected, Besydr then extracts lessons in the background.
 - `/mcp` is read-only. Runtime server management is the `mcp` tool of the `runtime` server.
 - `/plan` only displays the plan a plugin set; with no plugin there is no plan, and nothing in the session can edit it.

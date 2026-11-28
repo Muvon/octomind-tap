@@ -13,47 +13,32 @@ If you have domain knowledge — medicine, law, finance, security, DevOps, or an
 A tap agent is a fully-configured AI specialist that anyone can run:
 
 ```bash
-octomind run developer      # The developer domain: starts its lead agent
-octomind run doctor         # The doctor domain
-octomind run doctor:blood   # One exact agent: blood test interpreter
+octomind run developer      # The developer agent
+octomind run doctor         # The doctor agent
+octomind run                # The global assistant
 ```
 
 Each agent is a single TOML file that defines:
-- **System prompt** — The AI's personality, knowledge, and behavior
-- **MCP servers** — Tools the agent can use (databases, APIs, filesystem)
-- **Dependencies** — Tools that auto-install before the session starts
+- **System prompt** — The AI's role, scope, working method and guards
+- **Capabilities** — The tools the agent needs, named as capabilities; the registry resolves each one to a provider and installs its dependencies before the session starts
 
 ---
 
 ## Quick Start: Create Your First Agent
 
-### 1. Choose Your Domain and Spec
+### 1. Decide: Skill or Agent
 
-- **Domain**: The category (doctor, developer, devops, security, finance, lawyer, etc.)
-- **Spec**: The specialization (blood, rust, kubernetes, owasp, analyst, contracts)
+The tap has one agent per field of work (`developer`, `doctor`, `lawyer`, `devops`, and so on). Each specialty inside a field is a skill bound to that agent.
 
-Examples:
-- `doctor:blood` — Blood test analysis
-- `developer:rust` — Rust development
-- `devops:kubernetes` — Kubernetes management
-- `security:owasp` — OWASP security review
-- `finance:analyst` — Financial statement analysis
+- **A specialty of an existing field** (for example blood test interpretation for `doctor`) is a skill. See [Contributing a Skill](#contributing-a-skill).
+- **A new field of work** with its own deliverables is an agent. Its name is the file name: lowercase letters, digits and hyphens, never a `:`. Examples: `developer`, `devops`, `finance`.
 
-A domain with two or more agents has an orchestrator named `chief` (`agents/<domain>/chief.toml`). It is the agent that `octomind run <domain>` starts, and it hands work to the other agents of its domain.
-
-- A new domain with two or more agents needs a `chief`.
-- An agent added to an existing domain needs no edit elsewhere: the domain's `chief` is matched to it from its `# Title:` and `# Description:` lines, so the description must say what the agent takes in and what it returns.
-- A `chief` can also call other domains or single agents by declaring them in a header comment, a bare domain or a full tag per entry. Only a `chief` may do this.
-
-```toml
-# agents/marketing/chief.toml
-# Uses: content, seo:audit
-```
+An agent starts copies of itself or hands tasks to another agent only when it declares the `orchestration` capability. Delegation matches a task to an agent from its `# Title:` and `# Description:` lines, so the description must say what the agent takes in and what it returns. The rules are in [ARCHITECTURE.md](ARCHITECTURE.md#agents-skills-and-delegation).
 
 ### 2. Copy the Template
 
 ```bash
-cp templates/agent.toml agents/<domain>/<spec>.toml
+cp templates/agent.toml agents/<name>.toml
 ```
 
 ### 3. Edit Your Agent
@@ -61,32 +46,39 @@ cp templates/agent.toml agents/<domain>/<spec>.toml
 Open the file and customize:
 
 ```toml
-# agents/doctor/blood.toml
-# Agent: doctor:blood
+# agents/<name>.toml
+# Agent: <name>
 # Title: Blood Test Interpreter
-# Description: Blood test results interpreter. Explains CBC, metabolic panels...
+# Description: Explains blood test results (CBC, metabolic panels, lipids) in plain language, flags values to discuss with a clinician and never diagnoses.
+
+capabilities = ["core", "filesystem-read", "websearch"]
 
 [[roles]]
-welcome = "🩸 Blood test analysis agent ready..."
+welcome = "Blood test interpreter ready. Working in {{CWD}}"
 
 system = """
-You are a Blood Test Analysis Assistant...
+<identity>
+You explain laboratory results in plain language for patients and their families.
+</identity>
 
-[Your detailed system prompt here]
+<scope>
+Own: reading result values against reference ranges and saying what they usually mean.
+Don't own: diagnosis and treatment decisions; send those to a clinician.
+</scope>
+
+<critical>
+- Don't diagnose or recommend treatment.
+- Don't invent reference ranges; cite the range printed on the report.
+</critical>
 """
-
-[roles.mcp]
-server_refs = ["core", "octofs", "medical"]
-allowed_tools = ["core:plan", "octofs:*", "search-medical-literature"]
 ```
 
-> **Grant `core:plan`, not `core:*`.** The core server also hosts `tap` (delegation to other agents) and `schedule` (session loops), but those are **orchestrator-tier** — they belong to the `orchestration` capability, not to every agent. A normal domain specialist gets `core:plan` plus its domain tools and nothing else. Declare `orchestration` only when the agent is its domain's `chief`. See [ARCHITECTURE.md](ARCHITECTURE.md#capability-access-tiers-least-privilege).
+A manifest names capabilities and nothing else about tools. Never write `[deps]`, `[roles.mcp]` or `[[mcp.servers]]` in it; those blocks live in the capability's provider file. Declare `orchestration` only when the agent starts copies of itself or hands tasks to other agents. See [ARCHITECTURE.md](ARCHITECTURE.md#capability-access-tiers-least-privilege).
 
 ### 4. Test Locally
 
 ```bash
-octomind run doctor:blood    # one exact agent
-octomind run doctor          # the doctor domain's chief (doctor:chief)
+octomind run <name>             # the agent you added
 ```
 
 ### 5. Submit a Pull Request
@@ -100,44 +92,32 @@ That's it! Your agent is ready for review.
 ### Required Fields
 
 ```toml
-# agents/<domain>/<spec>.toml
-# Agent: <domain>:<spec>
+# agents/<name>.toml
+# Agent: <name>
 # Title: <Short Agent Title (5–60 chars)>
-# Description: <One-line description (20–160 chars)>
+# Description: <What the agent does (120–155 chars)>
+
+capabilities = ["core"]
 
 [[roles]]
-welcome = "🩸 Agent ready. Working in {{CWD}}"
+welcome = "<Agent title> ready. Working in {{CWD}}"
 system = """
+<identity>
 Your system prompt here.
-
-Working directory: {{CWD}}
+</identity>
 """
 ```
+
+The system prompt uses XML-tagged blocks in a fixed order; copy `templates/agent.toml` for the full set. `{{CWD}}` and `{{DATE}}` belong in `welcome` only, because they break prompt caching inside `system`. Do not set `name`, `temperature`, `top_p` or `top_k`.
 
 ### Optional Fields
 
 ```toml
 # Override the global model
 model = "openrouter:anthropic/claude-sonnet-4"
-
-# MCP server configuration
-[roles.mcp]
-server_refs = ["core", "octofs", "octocode"]
-allowed_tools = ["core:plan", "octofs:*", "semantic_search"]
-
-# Additional MCP servers (beyond built-in)
-[[mcp.servers]]
-name = "medical"
-type = "stdio"
-command = "medical-mcp-server"
-args = []
-timeout_seconds = 60
-tools = []
-
-# Dependencies (auto-install before session)
-[deps]
-require = ["medical/medical", "astral-sh/uv"]
 ```
+
+A new tool or install step is a capability, not a manifest field. See [MCP Server Configuration](#mcp-server-configuration) and [Creating Dependency Scripts](#creating-dependency-scripts).
 
 ### Placeholder Variables
 
@@ -215,9 +195,12 @@ esac
 info "<tool> installed successfully."
 ```
 
-### Using Dependencies in Agents
+### Using Dependencies
+
+A dependency script is listed in the `[deps]` block of a capability's provider file, never in an agent manifest:
 
 ```toml
+# capabilities/<name>/<provider>.toml
 [deps]
 require = ["nodejs/node", "astral-sh/uv"]
 ```
@@ -236,16 +219,18 @@ The dependency system will:
 | server_ref | Provides |
 |------------|----------|
 | `core` | `recall` — folded-context recall; planning is not a tool: a plugin sets the plan |
-| `agent` | `agent_*` tools — delegate to configured layers |
+| `agent` | `agent_*` tools — delegate to your own configured sub-agents |
 
 ### Adding Custom MCP Servers
+
+Server blocks go in a capability's provider file, `capabilities/<name>/<provider>.toml`. An agent gets the server by declaring that capability. Servers launched with `npx` or `uvx` pin an exact version.
 
 ```toml
 [[mcp.servers]]
 name = "my-tool"
 type = "stdio"
 command = "npx"
-args = ["-y", "@scope/my-mcp-server"]
+args = ["-y", "@scope/my-mcp-server@1.2.3"]
 timeout_seconds = 60
 tools = []  # Empty = all tools exposed
 ```
@@ -257,7 +242,7 @@ tools = []  # Empty = all tools exposed
 name = "github"
 type = "stdio"
 command = "npx"
-args = ["-y", "@github/mcp-server"]
+args = ["-y", "@github/mcp-server@1.2.3"]
 env = { GITHUB_TOKEN = "{{INPUT:GITHUB_TOKEN}}" }
 timeout_seconds = 60
 tools = []
@@ -277,22 +262,15 @@ tools = []
 6. **Calibrate tone for Claude 4.5+** — Don't write `CRITICAL: YOU MUST X` / `🚨 HARD RULES` / stacked `NEVER`/`ALWAYS` blocks. They over-trigger on 4.6/4.7 and dilute attention. Use plain `Use X when …` / `Don't X.` / `Do X.` Reserve all-caps for one or two genuine safety hard-stops (e.g. `Never force-push to main`). Full recipe with verbatim Anthropic guidance: [`skills/prompt-engineering/reference/claude-4-emphasis-and-tools.md`](skills/prompt-engineering/reference/claude-4-emphasis-and-tools.md).
 7. **Parallel tool use** — For tool-heavy agents, append the `<use_parallel_tool_calls>` block from the reference doc above. Anthropic's claim: takes parallel-call success from "high by default" to ~100%.
 
-### Temperature Settings
+### Sampling Settings
 
-| Domain | Recommended | Why |
-|--------|-------------|-----|
-| Medical/Legal | 0.1–0.2 | Precision matters |
-| Code Review | 0.2–0.3 | Accuracy over creativity |
-| Development | 0.1–0.3 | Consistent, correct code |
-| Creative Writing | 0.7–0.9 | Variety and exploration |
-| General Chat | 0.4–0.6 | Balanced |
+Do not set `temperature`, `top_p` or `top_k`. Octomind ignores them and sends no sampling parameters.
 
 ### Tool Selection
 
-- **Start minimal** — Only include tools the agent actually needs
-- **Use wildcards** — `"octofs:*"` for full file access
-- **Be specific** — `["view", "shell"]` for restricted access
-- **Consider security** — Can this agent modify files? Access secrets?
+- **Start minimal** — Declare only the capabilities the agent actually needs
+- **Reuse existing capabilities** — List `capabilities/` before adding one
+- **Consider security** — Can this agent modify files? Access secrets? Leave out `filesystem-write` and `shell` unless the work needs them
 
 ---
 
@@ -301,48 +279,51 @@ tools = []
 ### Minimal Agent
 
 ```toml
-# agents/utility/notes.toml
-# Agent: utility:notes
+# agents/notes.toml
+# Agent: notes
 # Title: Note-Taking Assistant
-# Description: Quick note-taking and information organization assistant.
+# Description: Organizes notes, writes summaries and structures information from the files you point it at, keeping your wording and never inventing content.
+
+capabilities = ["core", "filesystem-read", "filesystem-write"]
 
 [[roles]]
-welcome = "📝 Note-taking agent ready. Working in {{CWD}}"
+welcome = "Note-taking agent ready. Working in {{CWD}}"
 
 system = """
-You are a note-taking assistant. Help users organize thoughts, create summaries, and structure information.
+<identity>
+You are a note-taking assistant. You organize thoughts, write summaries and structure information.
+</identity>
 
-Working directory: {{CWD}}
+<critical>
+- Don't invent content that is not in the user's notes.
+</critical>
 """
-
-[roles.mcp]
-server_refs = ["core", "octofs"]
-allowed_tools = ["core:plan", "octofs:*"]
 ```
 
-### Complex Agent with Dependencies
+### Agent with a Toolchain
+
+An agent that needs a toolchain declares the capability that installs it. The capability's provider file requires the dependency script.
 
 ```toml
-# agents/developer/rust.toml
-# Agent: developer:rust
+# agents/rustacean.toml
+# Agent: rustacean
 # Title: Rust Developer
-# Description: Rust development specialist with cargo, clippy, and rustfmt.
+# Description: Builds, tests and reviews Rust crates with cargo, clippy and rustfmt, and reports the exact command output behind every claim it makes.
 
-[deps]
-require = ["rust/cargo"]
+capabilities = ["core", "filesystem-read", "filesystem-write", "shell", "programming-rust"]
 
 [[roles]]
-welcome = "🦀 Rust developer agent ready. Working in {{CWD}}"
+welcome = "Rust developer ready. Working in {{CWD}}"
 
 system = """
-You are a Rust development specialist...
+<identity>
+You are a Rust development specialist.
+</identity>
 
-[Detailed system prompt]
+<critical>
+- Don't claim a build or test passed without running it.
+</critical>
 """
-
-[roles.mcp]
-server_refs = ["core", "octofs", "octocode"]
-allowed_tools = ["core:plan", "octofs:*", "octocode:*"]
 ```
 
 ---
@@ -351,7 +332,7 @@ allowed_tools = ["core:plan", "octofs:*", "octocode:*"]
 
 1. **Automated checks** — Manifest syntax, required fields
 2. **Manual review** — System prompt quality, appropriate tools
-3. **Testing** — Agent runs correctly with `octomind run <domain>:<spec>`
+3. **Testing** — Agent runs correctly with `octomind run <name>`
 4. **Merge** — Agent becomes available to all users
 
 ---
@@ -360,7 +341,7 @@ allowed_tools = ["core:plan", "octofs:*", "octocode:*"]
 
 - **GitHub Issues** — Ask questions, report bugs, request agents
 - **GitHub Discussions** — "What specialist agent would you run if it existed?"
-- **Existing Agents** — Study `agents/doctor/blood.toml` as a reference
+- **Existing Agents** — Study `agents/doctor.toml` as a reference
 
 ---
 
@@ -376,7 +357,7 @@ By contributing, you agree that your contributions will be licensed under the sa
 
 ## Contributing a Skill
 
-Skills are a different kind of contribution from agents. Where an agent defines a full AI persona, a skill encodes **focused domain knowledge** that any agent can activate on demand.
+Skills are a different kind of contribution from agents. Where an agent covers a whole field of work, a skill encodes **one specialty's knowledge** that its agent activates on demand.
 
 ### What is a skill?
 
@@ -392,7 +373,7 @@ A skill is a `SKILL.md` file stored at `skills/<name>/SKILL.md`. When activated 
 
 **Not a good skill** (use an agent instead):
 - Something that needs its own model settings
-- A full persona (doctor, lawyer, developer)
+- A whole new field of work (a new agent)
 
 Note: Skills **can** declare `capabilities` to auto-load MCP servers when activated. A skill that needs git tools can declare `capabilities: git` and the backing MCP server loads automatically.
 
@@ -400,8 +381,8 @@ Note: Skills **can** declare `capabilities` to auto-load MCP servers when activa
 
 | | Skill | Agent |
 |---|---|---|
-| **File** | `skills/<name>/SKILL.md` | `agents/<domain>/<spec>.toml` |
-| **Activation** | Manual via `skill` tool, or auto via `rules:` frontmatter field | `octomind run domain:spec` |
+| **File** | `skills/<name>/SKILL.md` | `agents/<name>.toml` |
+| **Activation** | Manual via `skill` tool, or auto via `rules:` frontmatter field | `octomind run <name>` |
 | **What it provides** | Domain knowledge + capabilities + validation | Full role: model, tools, system prompt |
 | **Composable** | Yes — multiple skills per session | No — one role per session |
 | **Auto-expand** | Yes — can auto-load MCP servers via capabilities | No — tools are static |
@@ -432,14 +413,14 @@ compatibility: "Requires git. Works with any project."
 capabilities: git memory
 domains: developer devops
 rules:
-  - file(some-marker-file)   # activate if file exists in workdir
-  - content(keyword)         # activate if user message contains keyword
+  - content(keyword)                          # activate if the user message contains keyword
+  - content(deploy) file(some-marker-file)    # message contains deploy AND the file exists in workdir
 ---
 ```
 
 - `capabilities` — auto-loads MCP servers when skill activates (optional, space-delimited)
-- `domains` — limits auto-activation to matching agent categories (optional, omit for manual-only)
-- `rules` — list of auto-activation expressions; omit for manual-only skills
+- `domains` — the agent names the skill is bound to; auto-activation applies only in those agents (optional, omit for manual-only)
+- `rules` — list of auto-activation expressions; every line needs a message check (`content`, `match`); omit for manual-only skills
 
 **Available rule expressions:**
 
@@ -453,7 +434,7 @@ rules:
 | `env(<VAR>=<value>)` | Environment variable `VAR` equals `value` |
 | `bin(<command>)` | Command is available in `$PATH` (detects installed runtimes/tools) |
 | `workdir(<pattern>)` | Current working directory path contains the pattern (substring) |
-| `session(<word>)` | Current session name contains the word (e.g. `session(rust)` matches the tap-run session `tap-developer-rust-<hex>`; default `octomind run` names are `YYMMDD-<dir>-HHMM-<id>` and don't contain the role) |
+| `session(<word>)` | Current session name contains the word. Tap-run sessions are named `tap-<agent name>-<hex>`, so tap skills use message checks instead |
 
 Logic: each list item is an **OR branch**; multiple expressions on the same line are **AND**.
 
@@ -487,7 +468,7 @@ bash scripts/lint-skills.sh skills/<name>
 **7. Test in a session**
 
 ```bash
-octomind run octomind:tap   # the tap-authoring agent; it has the skill tool
+octomind run octomind       # the tap-authoring agent; it has the skill tool
 # Then in session:
 # skill(action="use", name="<name>")
 ```
@@ -503,7 +484,7 @@ That's it! Include a brief description of what domain knowledge the skill encode
 - [ ] `description` tells you *when* to activate the skill (not just what it is)
 - [ ] `compatibility` lists any required tools or environment constraints
 - [ ] `capabilities` lists all capabilities the skill needs (if any)
-- [ ] `domains` lists relevant agent categories (if auto-activation desired)
+- [ ] `domains` lists the agent names that own the skill (if auto-activation desired)
 - [ ] `rules` lists auto-activation expressions if auto-activation is desired
 - [ ] Body has at least an Overview and Instructions section
 - [ ] Instructions are specific enough to follow without guessing

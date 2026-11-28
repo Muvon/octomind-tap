@@ -20,7 +20,8 @@ max_cost = 3.0
 # ── 1. Timeline — evidence only ──────────────────────────────────────────────
 [[steps]]
 name    = "timeline"
-role    = "devops:sre"
+role    = "devops"
+skills  = ["devops-incident-response", "observability-setup"]
 session = "fresh"
 retries = 1
 prompt  = """
@@ -54,7 +55,8 @@ parallel = true
 
   [[steps.run]]
   name    = "factors"
-  role    = "devops:sre"
+  role    = "devops"
+  skills  = ["devops-incident-response", "observability-setup"]
   session = "fresh"
   prompt  = """
 <timeline>
@@ -83,7 +85,8 @@ Output only the analysis — no preamble, no commentary.
 
   [[steps.run]]
   name    = "metrics"
-  role    = "devops:sre"
+  role    = "devops"
+  skills  = ["devops-incident-response", "observability-setup"]
   session = "fresh"
   prompt  = """
 <timeline>
@@ -119,7 +122,8 @@ exit_when      = { output = "audit", matches = '(?m)^VERDICT: SOUND' }
 
   [[steps.run]]
   name    = "write"
-  role    = "devops:sre"
+  role    = "devops"
+  skills  = ["devops-incident-response", "observability-setup"]
   session = "continue"
   prompt  = """
 Write the blameless postmortem from the material below. Use only what the timeline,
@@ -157,7 +161,8 @@ Output only the postmortem — no preamble, no commentary.
 
   [[steps.run]]
   name    = "audit"
-  role    = "ai:evals"
+  role    = "ai-engineer"
+  skills  = ["ai-evals-design"]
   session = "fresh"
   prompt  = """
 You are a postmortem judge in a fresh session. You did not write this document.
@@ -201,7 +206,8 @@ Nothing after it.
 # ── 4. Deliver — the postmortem as the final output ──────────────────────────
 [[steps]]
 name    = "deliver"
-role    = "devops:sre"
+role    = "devops"
+skills  = ["devops-incident-response", "observability-setup"]
 session = "fresh"
 prompt  = """
 <postmortem>

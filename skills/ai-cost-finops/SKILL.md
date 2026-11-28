@@ -4,9 +4,8 @@ title: "AI Cost & FinOps: Caching, Batching, Model Routing"
 description: "Cutting LLM cost: model price book, prompt caching, Batch tiers, routing, attribution. Use when projecting LLM cost or hunting pipeline waste."
 license: Apache-2.0
 compatibility: "Stack-agnostic. FinOps observability typically needs a proxy (Helicone) or instrumented SDK (Langfuse / Phoenix / OpenLLMetry / Vantage). All major providers expose Batch APIs and prompt caching."
-domains: ai
+domains: ai-engineer
 rules:
-  - session(ai)
   - match(\b(token\s+(cost|economics|budget|usage|waste))\b)
   - match(\b(prompt\s+caching|cache\s+control)\b)
   - match(\b(batch\s+api)\b)

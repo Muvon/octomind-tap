@@ -4,10 +4,8 @@ title: "Video Spec Sheet: Platform Specs and Safe Zones"
 description: "Platform video output specs: aspect ratio, length, codec, bitrate, safe zones, ffmpeg presets for TikTok, Reels, Shorts, YouTube. Use to check an export."
 license: Apache-2.0
 compatibility: "Stack-agnostic."
-domains: video content
+domains: producer writer
 rules:
-  - session(video)
-  - session(adcraft)
   - content(aspect ratio)
   - match(\bsafe\s+zone\b)
   - match(\b(video\s+)?codec\b)

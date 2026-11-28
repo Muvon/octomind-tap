@@ -6,11 +6,16 @@ license: Apache-2.0
 compatibility: "Language-agnostic. Needs a codebase to ground the spec in and filesystem/search access to verify every cited path."
 domains: developer
 rules:
-  - session(tap-developer-spec-)
+  - match((?i)\b(turn|convert)\b.{0,30}\b(task|ask|request|idea)\b.{0,30}\binto\b.{0,15}\bspec\b)
   - match((?i)\b(write|draft|create|update|revise|produce|review)\b.{0,40}\bspec(ification)?\b)
   - match((?i)\bspec[- ]driven\b|\bacceptance criteria\b|\bEARS\b|\brequirements (doc|document|section)\b)
-  - semantic(turn this request into testable requirements before coding)
-  - semantic(write a spec for this feature)
+  - semantic(turn this request into testable requirements before coding, 0.72)
+  - semantic(write a spec for this feature, 0.72)
+  - semantic(write the requirements as testable EARS statements, 0.72)
+  - semantic(review this spec for gaps an implementer would have to guess, 0.72)
+  - semantic(turn this feature idea into a behavior spec with acceptance proofs, 0.72)
+  - semantic(specify the expected behavior of a new feature with numbered requirements and a verification command, 0.72)
+  - semantic(turn this ticket into a precise spec with scenarios and edge cases, 0.72)
 ---
 
 ## Overview
@@ -157,6 +162,24 @@ Write the parent first and pin the interfaces. Only then can the children run in
 - Brownfield behavior change — state the verified current truth, then tag each requirement ADDED / MODIFIED / REMOVED.
 - Beyond ~30 requirements, or a tasks.md past ~10–15 items — apply the split rules above instead of growing one file.
 
+### Working the task
+
+1. Explore in one parallel block: memory recall on the domain and past decisions; knowledge lookup for conventions and terms; README, ARCHITECTURE, CONTRIBUTING, docs and existing specs; semantic code search on the touched functionality; file outline then targeted read ranges; call-graph search for component relationships; symbol search for named symbols; shell only for the real build and test commands, never to read code; web search only for external standards. Learn current behavior (verified file:line), conventions, integration points and the exact proving command. Verify every path you cite.
+2. Classify: feature (default), bug, refactor or performance, other. An ambiguous type gets a question or a recorded default.
+3. Clarify by divergence, as above. Interactive: share a short findings summary (what exists, the established pattern), then ask. Autonomous: record every applied default.
+4. Specify into files, always: `specs/<NNN>-<slug>/spec.md` (next free number; reuse the repo's existing spec folder and numbering if any), with `tasks.md` beside it (ordered, independently verifiable slices, each naming the FRs it delivers: outcomes, not code steps), plus `design.md` only for risky or unfamiliar work. Keep a `## Clarifications` log (`- Q: … → A: …`) just above the status line and edit answers into the affected sections: the file, not the chat, is the record.
+5. Self-check spec.md and fix each miss in the file: every FR has exactly one `shall`; every FR ID appears in Acceptance; no FR or proof names a file, type, constant or component; every security, privacy or data-loss default is the restrictive reading or a [NEEDS CLARIFICATION] marker.
+6. Memorize discovered decisions and behavioral rules.
+7. Report. Interactive: the behavior summary below; the spec lives in the file. Autonomous: after writing the file, emit the complete spec in one message, because the step output is the handoff artifact.
+
+For HTTP, GraphQL and webhook contracts, specify externally observable error shapes, pagination, versioning and idempotency where relevant. For a bug, state repro and expected behavior. For refactors and brownfield changes, state the observable invariants and mark changes to existing requirements. In interactive mode ask up to five grounded questions per round; in autonomous mode record safe defaults and mark unresolved security, privacy or integrity decisions inline.
+
+Situations:
+- "I don't know" or "you decide": apply your recommended option and record it in Assumptions.
+- A correction or revision: edit only the affected sections of spec.md in place; interactive, reply with the changed groups plus the status line.
+- Autonomous: no questions or confirmations; one pass, stop after the status line.
+- Never prescribe the solution, cite an unverified path, or assume silently (interactive means ask; autonomous means record the default or mark [NEEDS CLARIFICATION]). Never ship a vague term or state a behavior twice (no separate error table).
+
 ## Examples
 
 Requirement, vague → testable:
@@ -188,6 +211,28 @@ Constraint, instruction → boundary:
    - Forbidden: no new dependencies, no renames outside the touched module.
    - Invariant: existing clients sending only `name` continue to succeed.
 ```
+
+## Interactive reply
+
+The reply is a plain behavior summary so the user catches a wrong call before anyone builds. Do not paste the spec into it. The last line of spec.md and of every reply is the status line.
+
+```text
+What changes for <who>, from <when> (spec: `specs/<NNN>-<slug>/spec.md`). Reconfirm each line; (mine) marks a call I made that you did not confirm.
+
+<User-visible area>
+- <What a user sees or can do, with concrete numbers.> (mine)
+
+Your setup before <date>        (only when the user must act: keys, accounts, approvals)
+- <action>
+
+Open questions                  (only if any remain)
+SPEC STATUS: READY
+```
+
+- One group per user-visible area, one plain complete sentence per behavior, with concrete amounts, limits, durations and dates. A small spec is one group of 1 to 3 bullets.
+- (mine) on every behavior from an applied default or your own judgment; user-confirmed behaviors carry no tag.
+- FR and acceptance numbers, function names, paths other than spec.md, test commands and internal mechanics stay in the file.
+- The reconfirm line already asks the user; do not ask again.
 
 ## Checklist
 

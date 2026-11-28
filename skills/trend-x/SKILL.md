@@ -5,11 +5,10 @@ description: "Harvest X (Twitter) conversations into a sourced topic brief: buye
 license: Apache-2.0
 compatibility: "Browser and network access. Use an authorized signed-in X session where required; search availability must be checked in the current session."
 capabilities: browser memory-read memory-write
-domains: browser
+domains: operator
 rules:
-  - session(trend) content(x)
-  - session(trend) content(twitter)
-  - session(trend) match(\btweet)
+  - content(twitter) match((?i)\b(trend\w*|harvest\w*|viral|what\W?s\s+(moving|hot|popular))\b)
+  - match(\btweets?\b) match((?i)\b(trend\w*|harvest\w*|viral|what\W?s\s+(moving|hot|popular))\b)
   - match(\b(x|twitter)\s+(trend|trends|harvest|brief)\b)
   - match(\b(harvest|scan|analyze)\s+(x|twitter)\b)
 ---

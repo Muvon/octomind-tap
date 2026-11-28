@@ -6,18 +6,18 @@
 # list.
 #
 # Role split (a writer should receive a prepared brief, not do research):
-# - `content:draft` RESOLVES the source into a brief: a file source is
+# - the writer agent (source-to-draft skill) RESOLVES the source into a brief: a file source is
 #   verified readable and referenced by path (every later step reads it from
 #   disk — the article never round-trips through the conversation); pasted or
 #   fetched text is captured verbatim once. It won't fabricate a source it
 #   couldn't read.
-# - `assistant:researcher` RESEARCHES trends — what's genuinely live on each
+# - the assistant agent (web-research skill) RESEARCHES trends — what's genuinely live on each
 #   platform for the posting date, citation-minded by identity.
-# - `content:social` WRITES the drafts from that brief, one per platform,
+# - the writer agent (social skill) WRITES the drafts from that brief, one per platform,
 #   following the platform rulebooks.
-# - `content:editor` fixes per audit findings; `content:audit` scores against
+# - the writer agent (editing skills) fixes per audit findings; with the audit skill it scores against
 #   the shared rubric (incl. the Phoenix-style reach verdict for X).
-# - `content:social` DELIVERS — writes files or returns inline, verbatim.
+# - the writer agent (social skill) DELIVERS — writes files or returns inline, verbatim.
 #
 # Grounding contract: every fact, number, and claim in a draft must trace to
 # the source (the file on disk, or the captured pasted/fetched text); every
@@ -50,14 +50,15 @@
 name        = "promote"
 description = "Turns an existing article into platform-native social media drafts for each requested network, polished by a fix and audit loop; chain it after content."
 # ── 1. Brief — resolve the source (read file / use pasted text) once ────────
-# Role note: content:draft carries filesystem-read + websearch, so it reads a
+# Role note: the writer agent carries filesystem-read + websearch, so it reads a
 # file source directly and structures raw input into a brief — its native job.
 # It has no webfetch, so a URL source that can't be reached halts cleanly
 # (SOURCE-UNREACHABLE) rather than being guessed at; file and pasted text are
 # the dependable inputs (and the content->promote chain passes a file).
 [[steps]]
 name    = "brief"
-role    = "content:draft"
+role    = "writer"
+skills  = ["source-to-draft"]
 session = "fresh"
 retries = 4
 prompt  = """
@@ -102,7 +103,8 @@ meta-commentary.
 # ── 2. Pulse — researcher finds what's genuinely live per platform ──────────
 [[steps]]
 name    = "pulse"
-role    = "assistant:researcher"
+role    = "assistant"
+skills  = ["assistant-web-research"]
 session = "fresh"
 retries = 4
 prompt  = """
@@ -131,7 +133,8 @@ in one line. No meta-commentary.
 # ── 3. Draft — writer produces one grounded block per platform ──────────────
 [[steps]]
 name    = "draft"
-role    = "content:social"
+role    = "writer"
+skills  = ["content-social"]
 session = "fresh"
 retries = 4
 prompt  = """
@@ -182,7 +185,8 @@ exit_when      = { output = "audit", matches = '(?m)^ALL-PASS' }
 
   [[steps.run]]
   name    = "fix"
-  role    = "content:editor"
+  role    = "writer"
+  skills  = ["content-audit", "content-edit", "content-humanize"]
   session = "continue"
   retries = 4
   prompt  = """
@@ -228,7 +232,8 @@ Wrap each draft in its platform's own XML tag as the delimiter (e.g.
 
   [[steps.run]]
   name    = "audit"
-  role    = "content:audit"
+  role    = "writer"
+  skills  = ["content-audit"]
   session = "fresh"
   retries = 4
   prompt  = """
@@ -270,7 +275,8 @@ edit files.
 # ── 5. Deliver — files if destinations named, else inline ───────────────────
 [[steps]]
 name    = "deliver"
-role    = "content:social"
+role    = "writer"
+skills  = ["content-social"]
 session = "fresh"
 retries = 4
 prompt  = """

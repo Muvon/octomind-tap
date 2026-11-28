@@ -11,7 +11,8 @@ description = "Security-audits the current repo across OWASP lenses, then fixes 
 # ── 1. Audit ─────────────────────────────────────────────────────────────────
 [[steps]]
 name    = "audit"
-role    = "security:owasp"
+role    = "security-analyst"
+skills  = ["security-code-review", "threat-modeling"]
 session = "fresh"
 retries = 1
 prompt  = """
@@ -46,7 +47,7 @@ exit_when      = { output = "reaudit", matches = '(?m)^HARDEN: PASS' }
 
   [[steps.run]]
   name    = "fix"
-  role    = "developer:general"
+  role    = "developer"
   session = "continue"
   retries = 1
   prompt  = """
@@ -67,7 +68,8 @@ its output as evidence nothing broke.
 
   [[steps.run]]
   name    = "reaudit"
-  role    = "security:owasp"
+  role    = "security-analyst"
+  skills  = ["security-code-review", "threat-modeling"]
   session = "fresh"
   prompt  = """
 Independently re-audit the current working tree against the original findings —
@@ -104,7 +106,8 @@ on_no_match = ["stalled"]
 
   [[steps.run]]
   name    = "summary"
-  role    = "developer:brief"
+  role    = "developer"
+  skills  = ["developer-diff-briefing"]
   session = "fresh"
   prompt  = """
 Summarize the hardening pass from the current unstaged changes and the final
@@ -118,7 +121,8 @@ and any FALSE-POSITIVE calls worth a human glance.
 
   [[steps.run]]
   name    = "stalled"
-  role    = "developer:brief"
+  role    = "developer"
+  skills  = ["developer-diff-briefing"]
   session = "fresh"
   prompt  = """
 The hardening loop ended WITHOUT a pass — do not present this as success.

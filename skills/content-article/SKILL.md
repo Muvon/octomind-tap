@@ -1,0 +1,180 @@
+---
+name: content-article
+title: "Long-Form Articles: Research, Citations, SEO"
+description: "Research, outline, and draft 1500-3000 word articles with inline citations, SEO structure, and a grounding report. Use for long-form pieces."
+license: Apache-2.0
+compatibility: "Needs web search and page fetch for research. Saves Markdown to the working directory; Word or PDF export needs the document tools."
+capabilities: shell documents webfetch variety
+domains: writer
+rules:
+  - match((?i)\b(write|draft|create|produce|research)\s+(me\s+)?(an?\s+|one\s+|the\s+)?(finished\s+|proper\s+|full\s+)?(\d[\d,]*[- ]word[, ]+)?(\w+[, -]+){0,3}(article|guide|explainer)\b)
+  - match((?i)\b(well-sourced|citation-backed|source-backed|researched|authoritative|cited)\b.{0,30}\b(guide|article|explainer)\b)
+  - match((?i)\b(guide|article|explainer)\b.{0,80}\b(inline\s+(citations|links)|rank\s+for|grounding\s+report|SEO[- ]structure)\b)
+  - match((?i)\b(1500|2000|2500|3000)[-\s]?(word)?\s*(article|guide|piece|explainer)\b)
+  - match((?i)\brefresh\s+(an?|the|my|this|our)\s+(old\s+|outdated\s+|existing\s+)?(article|guide)\b)
+  - semantic(write a researched article with citations on this topic, 0.76)
+  - semantic(build a pillar page for this topic cluster, 0.76)
+  - semantic(research and draft a long guide with sources and an outline, 0.76)
+  - semantic(write a thorough SEO article of about two thousand words, 0.76)
+---
+
+## Overview
+
+Write authoritative, source-backed long-form articles (about 1500 to 3000 words) that need search fit, several sources, and citations: guides, definitive pieces, and explainers. The outcome is a publication-ready Markdown file plus a grounding report that shows what was verified. Short opinionated posts, raw-notes-to-draft work, edits of existing copy, and read-only scoring use other skills (`content-blog`, `source-to-draft`, `content-edit`, `content-audit`). Posting the approved article on a platform is a separate step done from the approved copy.
+
+## Mental model
+
+Think like a journalist, write like an expert, optimize like an SEO strategist. Experience is evidence the author holds, never a tone you add. A piece that an LLM reading the top ten results could rebuild adds nothing and does not ship.
+
+## Rules
+
+### Workflow
+
+No shortcuts. Don't start writing before research and an outline, even for a simple topic.
+
+1. Research. Run the angles below in one parallel block. Read the top-ranking pages and the primary sources with `knowledge(command="read")`, not snippets.
+2. Format. Classify the search intent and pick the format and depth with the `content-formats` skill. State the gain over the ranking pages in one sentence.
+3. Experience intake. Ask the author once for what they did: numbers, screenshots, failures, reviewers. Nothing supplied means no first-person claims.
+4. Outline: format, gain, sections. Wait for approval.
+5. Draft section by section, grounded in the research and the author's material.
+6. Polish and save to disk as Markdown.
+
+Before starting, recall brand voice, target audience, content style, and past articles from memory. After finishing, memorize key decisions: tone, audience, topic cluster, style notes.
+
+### Research protocol
+
+Cover every angle:
+
+- Core topic: what it is, why it matters, the current state.
+- Data and statistics: the numbers, studies, and surveys behind the key claims.
+- Expert perspectives: quotes, opinions, authoritative sources.
+- Recent developments: news, trends, updates from the last 12 months.
+- Competing content: what the top ten miss or get wrong, and the original angle, data, or case study this piece adds.
+
+Triage confidence before any specific claim (see `content-grounding`): familiar means write; an unfamiliar entity or a time-sensitive fact (versions, prices, "latest") means verify first; speculative means label it opinion. Still unresolved after two or three targeted queries: rewrite around it or escalate with a precise, forked question.
+
+Source hierarchy: primary sources (studies, official data and docs, vendor pages), then established publications, then practitioner blogs; general web content only when verified. Cite inline with a link or (Source: Name, Year). Add independent corroboration when a claim is contested, surprising, or high-stakes.
+
+### Grounding report
+
+Required for any piece involving named tools, recent events, or technical specifics. Append it before the Sources section:
+
+```
+## Grounding Report
+- Verified via primary source: [...]
+- Verified via cross-reference: [...]
+- Unresolved (flagged [needs verification] inline): [...]
+- Skipped (couldn't verify, rewrote around or dropped): [...]
+- Open questions for you: [...]
+```
+
+### Voice
+
+- Authoritative but accessible. Active voice. Specific over vague ("47% of users", not "many users"). A concrete example for each abstract claim.
+- Rhythm follows the argument: a long analytical sentence can land on a short one ("That's the problem."). Vary by meaning, not by quota.
+- Use contractions where the register allows; keep formal wording for instructions and safety text.
+- Natural grammar: start a sentence with "And" or "But" when it flows. Parenthetical commentary is fine.
+- No trailing participles ("...highlighting the importance of", "...ensuring that", "...contributing to"); make it a separate sentence.
+- First person only for experience, decisions, or opinions the author supplied ("In our March test..."). Otherwise report ("The study found..."). Keep genuine uncertainty ("The data is mixed."), skepticism, and curiosity.
+- Don't rotate synonyms. If "users" is the right word, keep saying "users".
+- Skip a transition when the logic is clear. When needed: "But." / "The problem is:" / "Here's what that looks like." / "Which raises the question:" / "And this matters because..." / "So what does this mean?" Never "Furthermore," "Moreover," "Additionally," "Consequently," or "It's worth noting".
+
+### Craft
+
+- Open with something that earns the next sentence. One point per paragraph. Contextualize every number. Address counterarguments. End with insight, not summary.
+- Avoid filler ("It's important to note that...", "In today's world...", "As we can see..."), overused passive voice, unsupported superlatives ("the best", "the most important"), padding, and clickbait titles that don't deliver.
+
+### SEO awareness
+
+- Primary keyword in the title tag, H1, and first paragraph, then natural wording and related terms. No stuffing.
+- Title tag: the page's real promise, about 50 to 60 characters before truncation, keyword early, nothing exaggerated, a year only if the content was re-checked for it. H1 close to the title.
+- Meta description: one or two sentences (about 150 to 160 characters; Google may rewrite it) saying what the page delivers.
+- Headings say what the section answers; use question form where readers ask questions.
+- Each section opens with a one- or two-sentence direct answer that stands alone. Google's AI Overviews and AI Mode need no special markup, chunking, or llms.txt; `content-geo` has the patterns.
+- Internal links only to URLs the user or sitemap supplied, with descriptive anchors. Unknown URL: write `[internal link: topic]`.
+
+### Experience proof
+
+Google's rater guidelines rate a false claim of personal testing Lowest and overstated experience Low.
+
+- Byline where readers expect one: real name, role, credentials, bio link. Never "Admin", an invented author, an AI headshot, or made-up credentials; Google calls fabricated creator profiles deception.
+- Use the author's material only: dated "what we did and what happened", exact versions, settings, errors, costs, original screenshots or photos (or a captioned shot list), and what failed.
+- Tests, rankings, and reviews get a methodology note: who tested, how long, the criteria, and what was provided free.
+- No author material: use reported synthesis or labelled opinion, or a `[FIRST-HAND: ...]` placeholder for the author to fill. Placeholders never ship.
+- Say how the piece was made, including AI assistance, where readers would reasonably ask; be specific about what the AI did and what a human checked.
+
+### Pillar versus standard article
+
+A pillar page (a topic-cluster hub) answers every real sub-question at summary depth and links to each cluster article early. A cluster article goes deep on one sub-topic and links back to the pillar within the first 100 words. Reciprocal linking is site architecture that keeps the cluster crawlable and coherent, not a guaranteed ranking lever.
+
+### Interaction
+
+- New topic: ask once for audience, angle, sources to include, and the author's first-hand material.
+- Outline presented: wait for explicit approval.
+- Draft complete: show the word count and offer to publish as-is, revise a section, or adjust tone.
+- Ambiguous request: one clarifying question, then proceed.
+- Refreshing an existing article: keep the URL, slug, and intent; re-verify every dated fact; add what changed; bump `updated` only for substantive changes; list the changes.
+- Autonomous, non-interactive brief: skip the questions and the outline approval, apply the brief's defaults, draft, and list assumptions. Mark unverifiable claims `[needs verification]` inline with a grounding report entry. With no first-hand material in the brief, make no first-person claims.
+
+### Never
+
+- Fabricate statistics, quotes, sources, function signatures, version numbers, prices, URLs, person names, product features, command flags, or any specific the `content-grounding` skill marks as zero-exception. Search or escalate; never fill a gap with a plausible guess.
+- Silently change a specific the user gave into one you find cleaner without verifying both.
+- Write first-person tests, results, anecdotes, or customer stories the author didn't supply.
+
+## Output format
+
+```
+# [H1: the page's promise, close to the title tag]
+By [Author, role] · Published YYYY-MM-DD · Updated YYYY-MM-DD (substantive changes only)
+
+[Intro, a few short paragraphs: the answer, verdict, or result first; who it's for; why trust it (what was tested or sourced). No "In this article we will..."]
+
+## [One section per real sub-question, in the shape the format needs: steps, table, picks, findings]
+- Open with a one- or two-sentence direct answer, then evidence, examples, data; each section stands alone as an extractable passage
+- A concrete number per section and, where the author supplied one, an experience signal
+
+## [Nuance, counterpoint, or where it fails]
+
+## FAQ (optional: real follow-up questions only; FAQ rich results ended 7 May 2026)
+- 2 to 4 sentence self-contained answers
+
+## [Closing: the key insight and a clear next step; never "In conclusion", "Overall", or "In summary"]
+
+## Sources
+- [Source Name](URL), brief description
+```
+
+Adapt the structure to the format. Sections need not be equal: a deep dive followed by a sharp short point beats evenly sized blocks. Length follows the sub-questions, never a target. Use specific subheadings ("Why reindexing stalls at 80%"), not generic ("Benefits") or vague ("Why This Matters") ones.
+
+Save as `[slug-from-title].md` in the working directory. Include frontmatter when the user asks for CMS format:
+
+```
+---
+title: "..."
+description: "..."
+author: "..."
+date: YYYY-MM-DD
+updated: YYYY-MM-DD
+tags: [tag1, tag2]
+schema: [article]
+---
+```
+
+When the user asks for Word, PDF, or another document format, export the saved Markdown with the `document-export` skill and keep the `.md` as the source.
+
+## Checklist
+
+- [ ] Research covered all five angles and read primary sources in full.
+- [ ] Format and gain over the ranking pages stated; outline approved or the autonomous defaults listed.
+- [ ] Every number, date, feature, and quote verified against a primary source or flagged.
+- [ ] Grounding report appended for any piece with named tools, recent events, or technical specifics.
+- [ ] No first-person claim without author material; no invented byline.
+- [ ] Title, H1, meta description, and section-opening answers follow the SEO rules.
+- [ ] Markdown saved with the slug name; word count reported.
+
+## Composition / References
+
+- `content-formats` picks the format by search intent; `content-geo` has answer-first passage patterns; `content-grounding` has the claim triage; `content-voice` and `content-humanize` check the prose; `content-audit` scores the result.
+- `social-devto` and `social-medium` add platform rules when the article targets dev.to or Medium.
+- `document-export` converts the saved Markdown to Word or PDF.

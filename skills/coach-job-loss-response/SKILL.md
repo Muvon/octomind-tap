@@ -18,7 +18,7 @@ rules:
 
 A layoff starts several clocks at once: the time to sign a release, the time to elect health cover, the time to claim unemployment benefits, and the time to exercise stock options. Most people are told about none of them in the room. This skill gives the employee side in a fixed order: what to ask before signing anything, which deadlines run, and what to do in the first 30 days.
 
-It is general information, not legal advice. It rules on nothing about one person's contract. Questions about whether a release is fair, discrimination, retaliation, a non-compete or an immigration status belong to the lawyer domain; the benefits and unemployment paperwork after the first days belongs to the family domain's benefits agent. Say that in plain words when the question reaches that point. This skill is US-first; outside the US it supplies the question list only and the person looks up their country's rules.
+It is general information, not legal advice. It rules on nothing about one person's contract. Questions about whether a release is fair, discrimination, retaliation, a non-compete or an immigration status need an employment lawyer; the benefits and unemployment paperwork after the first days is a separate task. Say that in plain words when the question reaches that point. This skill is US-first; outside the US it supplies the question list only and the person looks up their country's rules.
 
 ## Mental model
 
@@ -49,7 +49,7 @@ It is general information, not legal advice. It rules on nothing about one perso
 | Mutual terms | Non-disparagement that binds both sides; agreed wording for the departure announcement |
 | Return of property and confidentiality | What must be returned, by when, and what the employee may keep (contacts, samples of own work) |
 
-Negotiating is normal: more weeks, a longer health-cover period, and an extension to the exercise window are the usual asks. Preparing the script is `coach:negotiation`; the contract wording is for a lawyer.
+Negotiating is normal: more weeks, a longer health-cover period, and an extension to the exercise window are the usual asks. Preparing the script is negotiation coaching; the contract wording is for a lawyer.
 
 ### Deadlines to put in the calendar on day 1
 
@@ -71,14 +71,14 @@ COBRA versus the marketplace is a cost comparison, not a rule: price both before
 3. Week 1: calendar every deadline in the table above; list monthly costs and the number of months of cash; pause nonessential spending.
 4. Week 1-2: decide on health cover (COBRA or marketplace) and, if the agreement is significant, have a lawyer read it before the release deadline.
 5. Week 2: negotiate the terms that can move; ask for a reference agreement; settle the equity exercise decision with a tax advisor.
-6. Week 2-4: update resume and the target list (`coach:career` for direction, `coach:resume` for the document, `coach:interview` for practice); tell the network in a message that names the role wanted.
+6. Week 2-4: update resume and the target list (career coaching for direction, resume tailoring for the document, interview practice for the rounds); tell the network in a message that names the role wanted.
 7. Day 30: review cash runway, claim status and applications; set the next 30-day target.
 
 ### Handoffs, said plainly
 
-- A question about whether a clause is enforceable, a suspected discrimination or retaliation case, a non-compete dispute, or a visa that depends on the job: that is for an employment lawyer, which is the lawyer domain here.
-- Filing benefit paperwork, food or housing help, and tracking appeal deadlines after the first days: that is the family domain's benefits agent.
-- Distress, panic or hopelessness after the news: acknowledge it, then offer `coach:wellbeing`; any crisis or self-harm signal goes to emergency services or a crisis line (US: 988).
+- A question about whether a clause is enforceable, a suspected discrimination or retaliation case, a non-compete dispute, or a visa that depends on the job: that is for an employment lawyer.
+- Filing benefit paperwork, food or housing help, and tracking appeal deadlines after the first days: that is a separate benefits-paperwork task, not covered here.
+- Distress, panic or hopelessness after the news: acknowledge it, then offer wellbeing support; any crisis or self-harm signal goes to emergency services or a crisis line (US: 988).
 
 ### Non-competes
 

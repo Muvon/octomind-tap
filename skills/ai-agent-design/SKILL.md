@@ -4,27 +4,15 @@ title: "AI Agent Design: Loops, Tools, Schemas, Orchestration"
 description: "Designing production LLM agents: loop patterns, tool schemas, MCP, multi-agent setups, observability. Use when designing or debugging an agent."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Production agent stacks typically need: LLM provider SDK (Anthropic / OpenAI / Google), an orchestration framework or hand-rolled loop, a tracing backend (Langfuse / Phoenix / OpenTelemetry collector), MCP servers or REST tools."
-domains: ai
+domains: ai-engineer
 rules:
-  - session(ai)
-  - content(tool use)
-  - content(function calling)
-  - content(MCP)
-  - content(orchestration)
-  - match(\b(agent\s+(loop|design|pattern|architecture))\b)
-  - match(\b(tool[\s-]?(use|call|calling|schema))\b)
-  - match(\b(function[\s-]?call(ing|s)?)\b)
-  - match(\b(ReAct|Reflexion|Plan-and-Execute|Tree[\s-]?of[\s-]?Thoughts|ToT)\b)
-  - match(\b(LangGraph|CrewAI|AutoGen)\b)
-  - match(\b(multi[\s-]?agent)\b)
-  - match(\b(Model\s+Context\s+Protocol|MCP)\b)
-  - match(\b(Agent\s+Skills)\b)
-  - match(\b(context\s+engineering)\b)
+  - match((?i)\b(design|implement|build|write|rework|rewrite|fix|refactor|debug|package)\b.{0,40}\b(agent\s+loop|tool\s+schemas?|agent\s+skills?|MCP\s+server|multi[\s-]agent\s+(pipeline|system|workflow|orchestration)|tool\s+descriptions?)\b)
+  - match((?i)\b(tool[\s-]?(calls?|use))\b.{0,40}\b(loops?|schema|errors?|malformed|retr(y|ies))\b|\b(max[\s-]iteration|infinite\s+loop|agent\s+(is\s+)?(stuck|looping))\b)
+  - match((?i)\b(ReAct|Reflexion|Plan-and-Execute|LangGraph|CrewAI|AutoGen)\b)
+  - match((?i)\b(message\s+history|context\s+(window|limit)|context\s+engineering|compaction)\b)
+  - match((?i)\b(add|wire|instrument|set\s+up)\b.{0,30}\b(tracing|Langfuse|OpenTelemetry)\b)
   - semantic(design an LLM agent with tools)
   - semantic(my agent is stuck in a loop)
-  - semantic(should we use multi-agent or single agent with tools)
-  - semantic(what is the best agent framework)
-  - semantic(write tool schemas for my agent)
 ---
 
 ## Overview

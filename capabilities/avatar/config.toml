@@ -12,4 +12,4 @@ triggers = [
 	"heygen avatar video",
 ]
 
-domains = ["video", "marketing"]
+domains = ["producer", "marketer"]

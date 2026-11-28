@@ -9,4 +9,4 @@ triggers = [
 	"see exception frequency across releases in the Sentry error tracker",
 ]
 
-domains = ["devops", "security"]
+domains = ["devops", "security-analyst"]

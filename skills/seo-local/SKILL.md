@@ -5,7 +5,7 @@ description: "Audits and plans local search: Google Business Profile eligibility
 license: Apache-2.0
 compatibility: "Public evidence works without access. Profile edits and insights need the owner's Business Profile access; this skill never edits a profile."
 capabilities: websearch webfetch
-domains: seo
+domains: seo operator writer marketer
 rules:
   - match((?i)\b(local\s+seo|local\s+pack|map\s+pack|3-?pack|local\s+search|local\s+ranking)\b)
   - match((?i)\b(google\s+(business|my\s+business)\s+profile|gbp|gmb)\b)

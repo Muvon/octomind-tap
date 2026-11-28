@@ -12,4 +12,4 @@ triggers = [
 	"generate royalty-free music",
 ]
 
-domains = ["video", "content", "marketing"]
+domains = ["producer", "writer", "marketer"]

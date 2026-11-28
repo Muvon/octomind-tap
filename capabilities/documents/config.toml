@@ -12,4 +12,4 @@ triggers = [
 	"check the pdf page count",
 ]
 
-domains = ["sales", "coach", "content"]
+domains = ["sales-rep", "coach", "writer"]

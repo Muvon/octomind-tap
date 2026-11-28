@@ -4,7 +4,7 @@ title: "Threads (Meta) Publishing Playbook"
 description: "Write and revise Meta Threads posts, replies and launch copy in the author's voice, with honest proof and conversation. Use when drafting for Threads."
 license: Apache-2.0
 compatibility: "Network access for source checks; a Threads account for composer and publishing checks."
-domains: content
+domains: writer
 rules:
   - match(\bmeta\s+threads\b)
   - match(\bthreads\s+(app|post|meta|campaign)\b)

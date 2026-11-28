@@ -9,4 +9,4 @@ triggers = [
 	"track changes in version control",
 ]
 
-domains = ["developer", "devops", "content"]
+domains = ["developer", "devops", "writer"]

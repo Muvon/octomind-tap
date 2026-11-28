@@ -4,7 +4,7 @@ title: "French Native-Fluency Calibration"
 description: "Calibration anchors for AI-slop and translationese in French (fr) text. Use alongside content-locale-humanize when the target is French."
 license: Apache-2.0
 compatibility: "Calibration data only; no tools required. Network access helps for usage checks."
-domains: content
+domains: writer
 rules:
   - match((?i)\b(translat\w*|locali[sz]\w*|native|fluen\w*|proofread\w*|transcreat\w*)\b) content(french)
   - match(\bfr-(FR|CA|BE|CH)\b)

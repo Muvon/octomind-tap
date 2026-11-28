@@ -5,7 +5,7 @@ description: "Road trip planner: drivable daily legs, rest stops, overnight town
 license: Apache-2.0
 compatibility: "Requires: web search, web page fetching and a maps service."
 capabilities: webfetch
-domains: travel
+domains: travel-agent mechanic
 rules:
   - match((?i)\broad[- ]?trips?\b)
   - content(driving)

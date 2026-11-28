@@ -14,4 +14,4 @@ triggers = [
 	"reproduce this bug on the iPhone simulator step by step",
 ]
 
-domains = ["device", "developer"]
+domains = ["operator", "developer"]

@@ -4,7 +4,7 @@ title: "Human Writing Voice"
 description: "Clear professional prose and context-aware editing for posts, replies, articles and scripts, keeping author facts. Use when editing in an author's voice."
 license: Apache-2.0
 compatibility: "Text editing and source material; network access for current policy or factual checks."
-domains: content
+domains: writer coach developer producer
 rules:
   - content(humanize)
   - match(\brewrite\s+(this|the|my)\s+(article|blog|post|copy|content|draft|piece|writing)\b)

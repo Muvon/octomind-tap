@@ -5,7 +5,7 @@ description: "Test that prompt wording is read the same by a list of models with
 license: Apache-2.0
 compatibility: "Requires: octomind on PATH with credentials for every model under test, bash, python3. Every test run is a billed model call; the procedure caps a session at 60 runs."
 capabilities: shell filesystem-read filesystem-write
-domains: ai
+domains: ai-engineer
 rules:
   - match((?i)\bcomprehension\s+(test|check|testing)\b)
   - match((?i)\b(misread|misreading|misinterpret\w*)\b.{0,60}\b(prompt|instruction|instructions|wording|rule|rules)\b)
@@ -21,7 +21,7 @@ Use it when a rule has to hold across models, when a model is seen misreading an
 ## Mental model
 
 - The test measures reading, not capability. A model sees the text and the questions and nothing else.
-- The instrument is the `assistant:plain` role: a one-line system prompt ("You are a helpful assistant."), so no persona shapes the answer. `run_models.sh` runs it isolated: an empty working directory, no auto-activated tools, no plugins (so Besydr, which checks completion and injects learned rules, is off). Without that, a model can read the key, and injected rules can answer the questions for it.
+- The instrument is the `plain` agent (`octomind run plain`): a one-line system prompt ("You are a helpful assistant."), so no persona shapes the answer. `run_models.sh` runs it isolated: an empty working directory, no auto-activated tools, no plugins (so Besydr, which checks completion and injects learned rules, is off). Without that, a model can read the key, and injected rules can answer the questions for it.
 - One bias stays: octomind's built-in system-prompt rules reach every run. When the text under test is one of them, the run measures the installed binary's version alongside it; re-test such texts after the edited binary is installed.
 - Two signals: scenario letters are machine-scorable; the restatement catches omissions the letters miss.
 - A miss is evidence about the wording, unless the question is flawed or the provider failed. Rule those out first.
@@ -49,7 +49,7 @@ If anything is missing, ask once for all of it. In an autonomous session, derive
 
 `run_models.sh` and `score_answers.py` ship with this skill; their absolute paths are listed under Skill Resources. Below, RUN is the path of `run_models.sh` and SCORE the path of `score_answers.py`.
 
-1. `octomind complete run` must list `assistant:plain`; if not, stop and report.
+1. the agent `plain` must start with `octomind run plain`; if not, stop and report.
 2. Create `comprehension-<slug>/` in the working directory. Every file below lives there; run all commands from it.
 
 ### Test design
@@ -134,7 +134,7 @@ Ledger line: `t1 i1 alibaba:glm-5.3 5/6 OMIT 2 a:A!=B`
 ## Checklist
 
 - [ ] Texts copied from the source, not retyped; intended rule and model list confirmed?
-- [ ] Plan within 60 calls; `assistant:plain` listed by `octomind complete run`?
+- [ ] Plan within 60 calls; `plain` starts with `octomind run plain`?
 - [ ] Every question has one correct option, two realistic misreadings, and a spread of correct letters?
 - [ ] Provider and format failures separated from misreadings before any edit?
 - [ ] Every edit traces to a scored miss and adds only a few words; related texts stay consistent?

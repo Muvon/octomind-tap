@@ -4,25 +4,19 @@ title: "AI Evals Design: Golden Sets, Metrics, Significance, CI"
 description: "Designing LLM evals: golden datasets, LLM-as-judge calibration, statistics, RAG and agent metrics. Use when building an eval suite or gating a deploy."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Production eval stacks typically need: an LLM provider SDK, a framework (Promptfoo / DeepEval / Braintrust / LangSmith), and a tracing backend for production drift monitoring (Phoenix / Langfuse / Helicone / Galileo)."
-domains: ai
+domains: ai-engineer
 rules:
-  - session(ai)
-  - content(eval)
-  - content(evals)
-  - content(evaluation)
-  - match(\b(eval|evaluation)\s+(suite|harness|framework|design|driven)\b)
-  - match(\b(golden\s+(set|dataset|examples))\b)
-  - match(\b(LLM[\s-]?as[\s-]?judge|G-Eval)\b)
-  - match(\b(RAGAS|TruLens|DeepEval|Promptfoo|Braintrust|Maxim|LangSmith)\b)
-  - match(\b(prompt\s+(regression|drift)|model\s+drift)\b)
-  - match(\b(statistical\s+significance|McNemar|paired\s+t-?test)\b)
-  - match(\b(MMLU|GPQA|GAIA|SWE-?Bench|BFCL|HELM|τ-?Bench)\b)
-  - match(\b(eval[\s-]?driven\s+development|EDD)\b)
-  - semantic(design an evaluation suite for our LLM app)
-  - semantic(did this prompt change actually improve anything)
-  - semantic(how to know if our agent regressed in production)
-  - semantic(set up a golden dataset for testing)
-  - semantic(prevent prompt regression in CI)
+  - match((?i)\b(significance|significant|effect\s+size|confidence\s+intervals?|paired\s+(examples?|test|comparison)|A/B\s+test)\b)
+  - match((?i)\b(drift|regression)\b.{0,40}\b(detect\w*|monitor\w*|gate|suite|alerts?)\b|\b(detect\w*|monitor\w*)\b.{0,30}\bdrift\b)
+  - match((?i)\b(golden\s+(set|dataset|examples)|LLM[\s-]?(as[\s-]?a?[\s-]?)?judge|G-Eval|rubric|RAGAS|TruLens|DeepEval|Promptfoo|Braintrust)\b)
+  - match((?i)\b(choose|pick|select|define|design|set\s+up|build|create|run|write)\b.{0,40}\b(evals?|evaluation\s+(suite|harness|metrics?)|CI\s+(gate|check)|regression\s+(gate|suite|tests?)|metrics\s+for\s+evaluat\w+)\b)
+  - match((?i)\b(MMLU|GPQA|GAIA|SWE-?bench|BFCL|benchmarks?)\b.{0,40}\b(saturated|contaminat\w+|cite|replace\w*)\b)
+  - match((?i)\b(eval[\s-]?driven\s+development|EDD|prompt\s+(regression|drift)|model\s+drift)\b)
+  - semantic(did this prompt change actually improve anything, 0.74)
+  - semantic(design an evaluation suite for our LLM app, 0.74)
+  - semantic(build a golden dataset and a judge to grade model outputs, 0.74)
+  - semantic(set up a regression gate before we deploy a new model version, 0.74)
+  - semantic(measure whether our RAG answers are faithful to the retrieved sources, 0.74)
 ---
 
 ## Overview
@@ -177,6 +171,66 @@ Set alert thresholds during the eval baseline and alert on crossings; dashboards
 | HELM | Reproducible multi-metric benchmarking | [Stanford CRFM HELM](https://crfm.stanford.edu/helm/) |
 
 Caution: published benchmarks leak into training data and reward hacking on tool-use benchmarks is documented. Use them for capability triage; use your own private held-out set for production decisions. Verify saturation status live — it changes with every model generation.
+
+### 13. Working method and guards
+
+1. Define the behavior, then pick one metric per behavior.
+2. Build the golden set, then choose and calibrate the judge.
+3. Run the baseline and the variants on the same items in isolated environments, with several trials per item when outputs are stochastic.
+4. Run the significance check, then encode the suite as a CI config that fails the build on regression.
+5. Hand the findings back with the metric, the regressed examples, the suspected cause, and the effect size.
+
+Guards:
+
+- A metric without a falsifier is not a metric: define what failure looks like before measuring.
+- Cite the framework or paper that owns every metric and statistical method. Don't invent metric formulas.
+- Don't run a single-shot eval against a noisy judge; average across runs or use a deterministic metric.
+- Don't use the same model family for generator and judge, and don't trust a judge that was not checked against human labels.
+- Don't use published benchmarks for production decisions; build a held-out golden set.
+- When asked whether a change helped and no eval suite exists, decline the comparison and propose a suite first. A judgment without a suite is not a result.
+- A verdict is one of: real improvement, real regression, undecided (with the sample-size rationale).
+- When a request is marked autonomous or non-interactive, pick the recommended metric, judge, and threshold, deliver, and list the assumptions in the report.
+
+## Output format
+
+Save the report as `ai-evals-[system-slug]-[YYYY-MM-DD].md` in the working directory. CI configs go under an `evals/` subdirectory.
+
+```markdown
+# Eval Report: [System / Change]
+Date: YYYY-MM-DD
+
+## Behavior under test
+[Falsifiable behavior spec: what the system should do and what failure looks like]
+
+## Eval design
+- Golden set: [n, source, stratification, version]
+- Metric(s): [name, framework, threshold]
+- Judge model: [if LLM-as-judge: name, why this model, mitigations for preference leakage]
+- Statistical method: [McNemar's / paired t / Bayesian / bootstrap]
+
+## Baseline
+| Metric | Score | n | 95% CI |
+|---|---|---|---|
+
+## Variant: [name / hash / commit]
+| Metric | Score | Delta vs baseline | p-value | effect size |
+|---|---|---|---|---|
+
+## Verdict
+- [Real improvement / Real regression / Undecided, with sample-size rationale]
+
+## Regressed or surprising examples
+1. [Example]: [judge reasoning, suggested cause]
+
+## Suggested CI gate
+[Promptfoo / DeepEval / Braintrust config snippet that fails the build on regression]
+
+## Drift baseline (production only)
+- [Distribution snapshot, alert thresholds, monitoring tool]
+
+## Hand-off to engineering
+- [Examples, metric, suggested direction]
+```
 
 ## Checklist
 

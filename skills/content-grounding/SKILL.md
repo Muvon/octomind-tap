@@ -5,7 +5,7 @@ description: "Verify factual claims, keep source meaning in edits, separate publ
 license: Apache-2.0
 compatibility: "Source documents or text; websearch and webfetch for live checks when required."
 capabilities: websearch webfetch
-domains: content
+domains: writer
 rules:
   - content(grounding)
   - match(\b(write|draft|edit|review)\s+(an?|the|this|my)\s*(article|blog|post|piece|copy|review|guide|tutorial)\b)

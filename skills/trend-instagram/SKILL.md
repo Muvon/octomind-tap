@@ -5,10 +5,10 @@ description: "Harvest Instagram post, carousel, Reel and audio patterns into a s
 license: Apache-2.0
 compatibility: "Browser and network access. An authorized Instagram session may be needed; app-only observations require supplied evidence."
 capabilities: browser memory-read memory-write
-domains: browser
+domains: operator
 rules:
-  - session(trend) content(instagram)
-  - session(trend) content(reels)
+  - content(instagram) match((?i)\b(trend\w*|harvest\w*|viral|what\W?s\s+(moving|hot|popular))\b)
+  - content(reels) match((?i)\b(trend\w*|harvest\w*|viral|what\W?s\s+(moving|hot|popular))\b)
   - match(\binstagram\s+(trend|trends|trending|harvest|brief)\b)
   - match(\b(harvest|scan|analyze)\s+instagram\b)
 ---

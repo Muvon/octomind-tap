@@ -4,7 +4,7 @@ title: "Medicare & ACA Open Enrollment: Plan Comparison"
 description: "Medicare and ACA open-enrollment dates, official plan finders, drug-list plan comparison, Medicaid retroactive and renewal changes, screening limits."
 license: Apache-2.0
 compatibility: "Requires: web search and web fetch for the official plan finders and state pages. US only; figures change yearly."
-domains: family
+domains: family-advisor
 rules:
   - content(open enrollment)
   - content(Medicare Advantage)

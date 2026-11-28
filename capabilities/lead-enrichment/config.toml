@@ -17,4 +17,4 @@ triggers = [
 	"which of these emails will bounce",
 ]
 
-domains = ["sales", "marketing"]
+domains = ["sales-rep", "marketer"]

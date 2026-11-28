@@ -4,7 +4,7 @@ title: "Self-Employment Tax: Quarterly Estimated Taxes, QBI"
 description: "US self-employment tax, quarterly estimated payments, safe harbor and QBI, plus UK payments on account. Use to size a tax set-aside and a payment calendar."
 license: Apache-2.0
 compatibility: "US federal and UK rules. Needs web search to confirm current-year figures. Other countries differ; say so."
-domains: finance
+domains: financial-planner
 rules:
   - match((?i)estimated (tax|payment)s?)
   - match((?i)self[- ]employment tax)

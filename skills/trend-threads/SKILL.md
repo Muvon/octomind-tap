@@ -5,9 +5,9 @@ description: "Harvest Meta Threads conversations into a source-backed brief with
 license: Apache-2.0
 compatibility: "Browser access and network. Authorized signed-in access where a surface requires it."
 capabilities: browser memory-read memory-write
-domains: browser
+domains: operator
 rules:
-  - session(trend) content(threads)
+  - content(threads) match((?i)\b(trend\w*|harvest\w*|viral|what\W?s\s+(moving|hot|popular))\b)
   - match(\bthreads\s+(trend|trends|harvest|brief|research)\b)
   - match(\b(harvest|scan|analyze)\s+threads\b)
 ---

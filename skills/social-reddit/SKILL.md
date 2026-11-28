@@ -4,7 +4,7 @@ title: "Reddit Publishing Playbook"
 description: "Draft Reddit posts, comments, AMAs and launches that follow subreddit rules, with disclosure and proof. Use when preparing content for a subreddit."
 license: Apache-2.0
 compatibility: "Requires network access to current Reddit rules and post pages; some research requires an authenticated session."
-domains: content
+domains: writer producer
 rules:
   - content(reddit)
   - content(subreddit)

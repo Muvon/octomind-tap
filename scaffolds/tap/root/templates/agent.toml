@@ -1,5 +1,5 @@
-# agents/<domain>/<spec>.toml
-# Agent: <domain>:<spec>
+# agents/<name>.toml
+# Agent: <name>
 # Title: <Short title, 5–60 characters>
 # Description: <What this agent does, 20–160 characters>
 

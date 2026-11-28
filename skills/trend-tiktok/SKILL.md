@@ -5,12 +5,12 @@ description: "Harvest TikTok trend evidence into a source-linked brief: audience
 license: Apache-2.0
 compatibility: "Requires browser and network access; authenticated TikTok business or publishing account access when a surface requires it."
 capabilities: browser memory-read memory-write
-domains: browser
+domains: operator
 rules:
-  - session(trend) content(tiktok)
+  - content(tiktok) match((?i)\b(trend\w*|harvest\w*|viral|what\W?s\s+(moving|hot|popular))\b)
   - match(\btiktok\s+(trend|trends|harvest|brief)\b)
   - match(\b(harvest|scan|analyze)\s+tiktok\b)
-  - session(trend) match(\bcreative\s+center\b)
+  - match(\bcreative\s+center\b) match((?i)\b(trend\w*|harvest\w*|viral|what\W?s\s+(moving|hot|popular))\b)
 ---
 
 ## Overview

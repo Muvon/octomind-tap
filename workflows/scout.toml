@@ -20,7 +20,8 @@ parallel = true
 
   [[steps.run]]
   name    = "communities"
-  role    = "launch:explore"
+  role    = "founder"
+  skills  = ["launch-opportunity-exploration"]
   session = "fresh"
   retries = 1
   prompt  = """
@@ -48,7 +49,8 @@ glossary (their jargon, verbatim).
 
   [[steps.run]]
   name    = "reviews"
-  role    = "launch:explore"
+  role    = "founder"
+  skills  = ["launch-opportunity-exploration"]
   session = "fresh"
   retries = 1
   prompt  = """
@@ -74,7 +76,8 @@ per-incumbent weakness percentages.
 
   [[steps.run]]
   name    = "demand"
-  role    = "assistant:researcher"
+  role    = "assistant"
+  skills  = ["assistant-web-research"]
   session = "fresh"
   retries = 1
   prompt  = """
@@ -103,7 +106,8 @@ Cite every claim with its source and date.
 # ── 2. Pain map — job stories, triangulated, scored ──────────────────────────
 [[steps]]
 name    = "map"
-role    = "launch:explore"
+role    = "founder"
+skills  = ["launch-opportunity-exploration"]
 session = "fresh"
 retries = 1
 prompt  = """
@@ -154,7 +158,8 @@ exit_when      = { output = "skeptic", matches = '(?m)^SCOUT: SOLID' }
 
   [[steps.run]]
   name    = "strengthen"
-  role    = "launch:explore"
+  role    = "founder"
+  skills  = ["launch-opportunity-exploration"]
   session = "continue"
   retries = 1
   prompt  = """
@@ -178,7 +183,8 @@ Output the current top-3 dossiers, each with its full evidence pack.
 
   [[steps.run]]
   name    = "skeptic"
-  role    = "launch:validate"
+  role    = "founder"
+  skills  = ["launch-idea-validation"]
   session = "fresh"
   prompt  = """
 Refute-first audit. Your job is to find reasons these are NOT real
@@ -223,7 +229,8 @@ on_no_match = ["nosignal"]
 
   [[steps.run]]
   name    = "briefs"
-  role    = "launch:validate"
+  role    = "founder"
+  skills  = ["launch-idea-validation"]
   session = "fresh"
   prompt  = """
 Write the final Opportunity Brief for every PROVEN candidate (one-line closing
@@ -254,7 +261,8 @@ take it from opportunity to go-to-market.
 
   [[steps.run]]
   name    = "nosignal"
-  role    = "launch:validate"
+  role    = "founder"
+  skills  = ["launch-idea-validation"]
   session = "fresh"
   prompt  = """
 The vetting loop ended with no PROVEN opportunity — that is a finding, not a

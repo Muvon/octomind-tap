@@ -4,7 +4,7 @@ title: "Mastodon Publishing Playbook"
 description: "Write and revise Mastodon posts, replies and launches in the author's voice, with accessibility and disclosure. Use when drafting for Mastodon."
 license: Apache-2.0
 compatibility: "Browser or HTTP access for current server rules, composer limits, and source verification."
-domains: content
+domains: writer
 rules:
   - content(mastodon)
   - content(fediverse)

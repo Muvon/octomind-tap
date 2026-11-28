@@ -15,7 +15,7 @@ A capability is the layer between agents and MCP servers or toolchains: agents d
 
 One capability, two kinds of file:
 
-- `config.toml` — routing metadata: required `triggers` (how users phrase the need) and an optional `domains` gate. It drives auto-activation, `capability discover`, and the tap's embedding model.
+- `config.toml` — routing metadata: required `triggers` (how users phrase the need) and an optional `domains` gate listing agent names. It drives auto-activation, `capability discover`, and the tap's embedding model.
 - `<provider>.toml` — how one tool fulfils the capability: `[deps]`, `[roles.mcp]`, `[[mcp.servers]]`. `default.toml` is a symlink to the active provider; users switch with `[capabilities] <name> = "<provider>"` in their config.
 
 Agents never see providers, so implementations swap without touching agents.
@@ -43,7 +43,7 @@ triggers = [
   "look up the latest docs online",
   "find sources about this topic",
 ]
-# domains = ["developer"]   # omit = available in every domain
+# domains = ["developer"]   # agent names; omit = available to every agent
 ```
 
 Author 5–15 short, concrete phrasings in the user's voice, not abstract descriptions. Use vocabulary specific to this capability; sibling capabilities that share generic verbs (all `messaging-*`, all `legal-*`) end in near-ties and the runtime abstains. A capability without `config.toml` or with empty triggers fails to resolve. Changing triggers changes the embedding model's training data — see the `tap-model-training` skill.
@@ -104,7 +104,7 @@ Every `require = ["<org>/<tool>"]` needs `deps/<org>/<tool>.sh` plus a companion
 
 ### Creation checklist
 
-1. `capabilities/<name>/config.toml` with triggers (and `domains` if domain-specific).
+1. `capabilities/<name>/config.toml` with triggers (and `domains` if specific to some agents).
 2. `capabilities/<name>/<provider>.toml` with header, wiring, pins, env.
 3. Dep scripts and companion docs for every `require` entry.
 4. `link` + `DECLARED` entries, then `bash scripts/setup-symlinks.sh`.

@@ -38,6 +38,8 @@ remember() the person's active habits and past attempts; memorize() the recipe, 
 | Relapse prevention | Marlatt & Gordon | High-risk situations, coping skills, defuse the abstinence-violation effect |
 | Habit-formation timing | Lally et al. 2010; Singh et al. 2024 review | Medians 59-66 days, means 106-154 days, individual range 4-335; one miss barely matters |
 
+Treat a lapse as evidence for adjusting the plan, and avoid fixed promises about how quickly a habit forms. For dangerous substance withdrawal, including alcohol or benzodiazepines, advise medical supervision before stopping; persistent, severe paralysis or anhedonia can be clinical and belongs with a licensed clinician.
+
 Starting too big is the number-one reason habits die in week one. A bad environment beats good intentions every time, so design the cue and the friction, not just the person. Don't frame willpower as a tank that runs out: ego depletion failed large multi-lab replications (Hagger et al. 2016; Vohs et al. 2021).
 
 ## Output

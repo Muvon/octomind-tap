@@ -1,21 +1,18 @@
 ---
 name: video-thumbnails
-title: "YouTube Thumbnail Maker: Shorts, Reels, and TikTok Covers"
+title: "Thumbnail Maker: YouTube, Shorts, Reels, TikTok Covers"
 description: "YouTube thumbnail workflow: one promise, frames from footage, short outlined text, feed-size previews, A/B variants. Use when a video needs a thumbnail."
 license: Apache-2.0
 compatibility: "Requires: python3 and an ffmpeg built with libass (macOS: Homebrew ffmpeg-full). Optional: uvx for rembg subject cut-outs. macOS/Linux."
-capabilities: shell thumbnails image-view
-domains: video
+capabilities: thumbnails
+domains: producer
 rules:
-  - session(thumbnail)
-  - session(editor)
-  - session(clips)
-  - content(thumbnail)
-  - content(thumbnails)
-  - match(\b(cover|thumb)\s+(image|frame|art)\b)
-  - match(\btest\s*(&|and)\s*compare\b)
-  - semantic(make a youtube thumbnail for this video)
-  - semantic(design three thumbnail variants to a/b test)
+  - match((?i)\b(thumbnails?|covers?)\b.{0,30}\b(for|of|about)\b.{0,40}\b(video|reel|short|tiktok|youtube|episode|channel|webinar|podcast)\b)
+  - match((?i)\b(make|design|create|audit|improve|redo|pick|produce|need|define)\b.{0,40}\b(thumbnails?|cover (image|frame|art))\b)
+  - match((?i)\b(thumbnails?)\s+(style|options?|variants?|concepts?|click|text|headline|guide)\b|\b(youtube|linkedin|x|video|channel)\s+thumbnails?\b|\bmy thumbnails\b)
+  - match((?i)\btest\s*(&|and)\s*compare\b|\b(cut-?out|cut out)\b.{0,40}\b(face|host|subject|photo)\b)
+  - semantic(make a youtube thumbnail for this video, 0.79)
+  - semantic(design three thumbnail variants to a/b test, 0.72)
   - semantic(pick a cover frame for my reel)
 ---
 
@@ -56,6 +53,13 @@ The renderer is the `video-thumbnail` command, installed on PATH with the `thumb
 - YouTube's own guidance: an easy-to-read font, rule of thirds, a relatable emotion, title and thumbnail working together, and shooting dedicated thumbnail photos during the shoot.
 - Keep text and faces out of the bottom-right corner (duration badge) and the bottom strip (progress bar). The renderer's layouts already do; it warns when text reaches there.
 
+### Intake and concepts
+
+1. Collect the video (path or transcript), the title (or title options), the channel or brand, the platform(s), and any channel style to match (fonts, colors, past thumbnails). Recall earlier choices from memory: thumbnail style, brand font and colors, winning thumbnails, channel niche, whether faces are allowed.
+2. Find the promise: what the viewer gets, the moment of highest stakes or emotion, the result worth showing. From a transcript, pick the line that carries it.
+3. Pitch three concepts, each one line: picture + overlay text (0–5 words) + why it pairs with the title. Make them differ in one variable each (face vs result, text vs no text, close vs wide), so a Test & Compare result teaches something. Wait for a pick before rendering. An autonomous, non-interactive brief picks the strongest concept per variable, renders all three, and lists assumptions in `concepts.md`.
+4. With only a title and no frame or photo, ask for a frame, a photo, or permission to generate a scene; never invent the person.
+
 ### Pipeline
 
 1. Promise. Write the one-line promise and the title first. The thumbnail shows the payoff, stakes, or tension; the text adds one beat the title leaves out ("I quit" + title "Why I left Google after 8 years").
@@ -95,6 +99,16 @@ The renderer measures each candidate line with libass, picks the split that allo
 - AI-generated or AI-edited thumbnails need no synthetic-content label, but the misleading and impersonation rules still apply.
 - Thumbnails on ads also fall under Google Ads clickbait rules: no "you won't believe", no fake shock, no fear of negative life events.
 - Sponsored content: when the image itself endorses a product, the disclosure must be visual and on the image (FTC).
+- Represent what happens in the video accurately. Use footage or authorized photos for real people; never generate a real person's face from scratch.
+
+### Deliver
+
+1. Deliver `a.jpg`, `b.jpg`, `c.jpg` (plus covers per platform) with a one-line rationale each. Note that Test & Compare is set in desktop YouTube Studio and picks the winner by watch time share.
+2. Record the approved style (font, colors, layout, accent) in memory and, when the user reports results, which variant won and why.
+
+### Auditing an existing thumbnail
+
+Scale it to feed size (`ffmpeg -i thumb.jpg -vf scale=168:-2 thumb-168.png`, and 360), open and look at both, and rate promise, legibility at 168 px, focal point, title pairing, and policy risk, ending with the top fix. For "make it pop" or "more clickbait": stronger contrast, a bigger subject, sharper emotion, fewer words; never a promise the video doesn't keep.
 
 ## Examples
 
@@ -115,6 +129,10 @@ The renderer measures each candidate line with libass, picks the split that allo
 ❌ Text placed at the very top of a 1080x1920 cover: the 3:4 profile grid cuts it off.
 
 ✅ `--format reels --layout top` keeps the text inside the centered 3:4 area; the preview shows both the full frame and the grid crop.
+
+## Output format
+
+`./video-out/<slug>/thumbs/`: `concepts.md` (three concepts, chosen frames with timestamps, rationale), `frames/` (candidates and `sheet.jpg`), `subject*.png` (cut-outs), `a.jpg`, `b.jpg`, `c.jpg` with `*-preview.png`, `cover-reels.jpg` / `cover-tiktok.jpg` when asked.
 
 ## Checklist
 

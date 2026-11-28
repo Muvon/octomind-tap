@@ -4,7 +4,7 @@ title: "Amazon Review Analyzer – Cross-Retailer Review Summary"
 description: "Amazon review analyzer for one exact product: samples good and bad reviews, finds recurring issues, weighs fake-review signals. Use to check owners' views."
 license: Apache-2.0
 compatibility: "Requires: web search and web page fetching."
-domains: shopping
+domains: shopper
 rules:
   - content(reviews)
   - match((?i)\b(fake|customer|owner|amazon|user|verified) reviews?\b)

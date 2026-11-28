@@ -5,7 +5,7 @@ description: "Audits product feeds, markup and live pages for AI shopping assist
 license: Apache-2.0
 compatibility: "Needs web access for channel documentation and live product pages. Connected store data is optional. Proposes changes only."
 capabilities: webfetch
-domains: commerce
+domains: merchant
 rules:
   - match(\b(ai|llm)[ -](shopping|shoppers?|visibility|discovery|ready|readiness|readable|search)\b)
   - match(\b(chatgpt|copilot|gemini|perplexity)\b.{0,40}\b(shopping|recommend\w*|visibility|discover\w*)\b)

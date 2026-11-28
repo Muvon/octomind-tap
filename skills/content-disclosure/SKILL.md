@@ -4,7 +4,7 @@ title: "Content Disclosure: Paid Partnership and AI Labels"
 description: "Paid-partnership and AI-content disclosure rules per platform and jurisdiction: FTC, YouTube, TikTok, Meta, EU AI Act, New York. Use before publishing."
 license: Apache-2.0
 compatibility: "Stack-agnostic."
-domains: content video
+domains: writer producer
 rules:
   - content(disclosure)
   - content(disclose)

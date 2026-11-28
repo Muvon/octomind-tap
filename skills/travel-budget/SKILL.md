@@ -5,7 +5,7 @@ description: "Trip budget planner in one currency: fares, stays, food, activitie
 license: Apache-2.0
 compatibility: "Requires: web search and web page fetching."
 capabilities: webfetch
-domains: travel
+domains: travel-agent
 rules:
   - content(budget)
   - content(afford)

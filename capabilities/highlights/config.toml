@@ -13,4 +13,4 @@ triggers = [
 	"show my saved readwise documents",
 ]
 
-domains = ["video", "content"]
+domains = ["producer", "writer"]

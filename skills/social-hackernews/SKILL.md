@@ -4,7 +4,7 @@ title: "Hacker News Publishing Playbook"
 description: "Prepare Hacker News submissions: Show HN, Ask HN, Tell HN and Launch HN briefs, comment replies, author voice kept. Use when posting or replying on HN."
 license: Apache-2.0
 compatibility: "Requires web access to Hacker News and linked source material."
-domains: content
+domains: writer
 rules:
   - content(hackernews)
   - match(\bhacker\s+news\b)

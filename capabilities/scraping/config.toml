@@ -24,4 +24,4 @@ triggers = [
 	"turn a website into a CSV / JSON dataset",
 ]
 
-domains = ["browser", "developer"]
+domains = ["operator", "developer"]

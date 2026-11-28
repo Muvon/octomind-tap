@@ -5,8 +5,8 @@ description = "Verifies current unstaged changes and uses one compatibility deci
 
 [[steps]]
 name   = "doc"
-role   = "developer:doc"
-skills = ["readme-writing", "changelog-writing", "release-notes-writing"]
+role   = "developer"
+skills = ["developer-doc-sync", "readme-writing", "changelog-writing", "release-notes-writing"]
 prompt = """
 Produce a documentation update plan for the current unstaged Git diff and the
 intent below. Read the diff and relevant implementation, existing docs and

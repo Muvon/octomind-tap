@@ -10,7 +10,7 @@
 # Shape: draft against the transcript, then run an independent trace check
 # with bounded revisions and deliver the final document.
 #
-# Grounding contract: the verifier is a different role (ai:evals) running in a
+# Grounding contract: the verifier is a different role (ai-engineer agent) running in a
 # fresh session with the transcript in hand. An item whose quote is missing,
 # paraphrased into a different meaning, or misattributed to a person is
 # CRITICAL; the fix downgrades it to [unclear who] / [OWNER?] / [no date] or
@@ -36,7 +36,7 @@ max_cost    = 2.0
 # ── 1. Draft one source-grounded document ─────────────────────────────────
 [[steps]]
 name    = "draft"
-role    = "assistant:meetings"
+role    = "assistant"
 skills  = ["meeting-notes"]
 session = "fresh"
 retries = 2
@@ -73,7 +73,8 @@ exit_when      = { output = "verify", matches = '(?m)^VERDICT: TRACED' }
 
   [[steps.run]]
   name    = "fix"
-  role    = "assistant:meetings"
+  role    = "assistant"
+  skills  = ["meeting-notes"]
   session = "continue"
   retries = 2
   prompt  = """
@@ -97,7 +98,8 @@ Output the complete document and nothing else.
 
   [[steps.run]]
   name    = "verify"
-  role    = "ai:evals"
+  role    = "ai-engineer"
+  skills  = ["ai-evals-design"]
   session = "fresh"
   retries = 2
   prompt  = """
@@ -138,7 +140,8 @@ Nothing after it. Read-only — never edit files.
 # ── 3. Deliver — final document on stdout, with its trace status ────────────
 [[steps]]
 name    = "deliver"
-role    = "assistant:meetings"
+role    = "assistant"
+skills  = ["meeting-notes"]
 session = "fresh"
 retries = 2
 prompt  = """

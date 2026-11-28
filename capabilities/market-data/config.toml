@@ -9,4 +9,4 @@ triggers = [
 	"fetch quote for a stock symbol",
 ]
 
-domains = ["finance"]
+domains = ["financial-planner"]

@@ -4,7 +4,7 @@ title: "Portuguese Native-Fluency Calibration"
 description: "Calibration anchors for AI-slop and translationese in Portuguese (pt) text. Use alongside content-locale-humanize when the target is Portuguese."
 license: Apache-2.0
 compatibility: "Calibration data only; no tools required. Network access helps for usage checks."
-domains: content
+domains: writer
 rules:
   - match((?i)\b(translat\w*|locali[sz]\w*|native|fluen\w*|proofread\w*|transcreat\w*)\b) content(portuguese)
   - match(\bpt-(BR|PT)\b)

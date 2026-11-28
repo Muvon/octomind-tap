@@ -4,7 +4,7 @@ title: "YouTube Publishing Playbook"
 description: "Write YouTube scripts and publishing packages: titles, thumbnails, descriptions, Shorts, in the author's voice. Use when drafting for YouTube."
 license: Apache-2.0
 compatibility: "Text and media editing; network and YouTube Studio access for account-specific publishing checks."
-domains: content
+domains: writer
 rules:
   - content(youtube)
   - match(\byt\s+(video|short|shorts|title|thumbnail|channel)\b)

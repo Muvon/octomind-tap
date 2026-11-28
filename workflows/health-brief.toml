@@ -27,7 +27,8 @@ max_transitions = 8
 # ── 1. Intake + red-flag triage ──────────────────────────────────────────────
 [[steps]]
 name    = "intake"
-role    = "doctor:chief"
+role    = "doctor"
+skills  = ["doctor-guideline-anchors"]
 session = "fresh"
 retries = 2
 prompt  = """
@@ -72,7 +73,8 @@ Output only the intake — no commentary.
 # ── 2a. Blocked — nothing to work with ───────────────────────────────────────
 [[steps]]
 name    = "blocked"
-role    = "doctor:chief"
+role    = "doctor"
+skills  = ["doctor-guideline-anchors"]
 session = "fresh"
 prompt  = """
 Nothing readable was provided. Tell the user in two sentences what to provide
@@ -87,7 +89,8 @@ age and sex) and that no brief was produced. Output only that message.
 # ── 2b. Urgent — stop, no analysis ───────────────────────────────────────────
 [[steps]]
 name    = "urgent"
-role    = "doctor:chief"
+role    = "doctor"
+skills  = ["doctor-guideline-anchors"]
 session = "fresh"
 prompt  = """
 The intake could not clear this as routine. Write a short, calm, direct message
@@ -113,7 +116,8 @@ parallel = true
 
   [[steps.run]]
   name    = "labs"
-  role    = "doctor:blood"
+  role    = "doctor"
+  skills  = ["doctor-blood-tests"]
   session = "fresh"
   retries = 2
   prompt  = """
@@ -133,7 +137,8 @@ and any follow-up tests worth raising. Output only the interpretation.
 
   [[steps.run]]
   name    = "meds"
-  role    = "doctor:medications"
+  role    = "doctor"
+  skills  = ["doctor-medication-info", "doctor-interaction-checks"]
   session = "fresh"
   retries = 2
   prompt  = """
@@ -153,7 +158,8 @@ quote and grade the evidence. Output only the review.
 
   [[steps.run]]
   name    = "context"
-  role    = "doctor:chief"
+  role    = "doctor"
+  skills  = ["doctor-guideline-anchors"]
   session = "fresh"
   retries = 2
   prompt  = """
@@ -172,7 +178,7 @@ only the context.
 """
 
 # ── 4. Synthesize + safety gate ──────────────────────────────────────────────
-# Synthesizer (doctor:chief) and judge (ai:evals) are distinct roles so the
+# Synthesizer (doctor agent) and judge (ai-engineer agent) are distinct roles so the
 # writer never grades its own brief.
 [[steps]]
 name           = "brief"
@@ -182,7 +188,8 @@ exit_when      = { output = "judge", matches = '(?m)^VERDICT: SAFE' }
 
   [[steps.run]]
   name    = "synthesizer"
-  role    = "doctor:chief"
+  role    = "doctor"
+  skills  = ["doctor-guideline-anchors"]
   session = "continue"
   prompt  = """
 Synthesize the three analyses below into ONE visit-prep brief for the user, in
@@ -226,7 +233,8 @@ commentary.
 
   [[steps.run]]
   name    = "judge"
-  role    = "ai:evals"
+  role    = "ai-engineer"
+  skills  = ["ai-evals-design"]
   session = "fresh"
   retries = 2
   prompt  = """
@@ -275,7 +283,8 @@ Critique first, then end with exactly one line: VERDICT: SAFE or VERDICT: REVISE
 # ── 5. Deliver ───────────────────────────────────────────────────────────────
 [[steps]]
 name    = "deliver"
-role    = "doctor:chief"
+role    = "doctor"
+skills  = ["doctor-guideline-anchors"]
 session = "fresh"
 prompt  = """
 The loop is finished. Output the final brief below verbatim and whole — make no

@@ -5,7 +5,7 @@ description: "Packing list from itinerary, destination forecast, activities, lau
 license: Apache-2.0
 compatibility: "Requires: web search, web page fetching and file writing."
 capabilities: webfetch
-domains: travel
+domains: travel-agent
 rules:
   - content(packing)
   - content(pack)

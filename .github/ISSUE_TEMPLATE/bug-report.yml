@@ -1,14 +1,14 @@
 name: Bug report — broken manifest
 description: Report a manifest that fails to load or behaves incorrectly.
-title: "[bug] <domain>:<spec> — <short description>"
+title: "[bug] <name> — <short description>"
 labels: ["bug"]
 body:
   - type: input
     id: tag
     attributes:
-      label: Agent tag
-      description: "The tag you ran, e.g. `doctor:blood`"
-      placeholder: "doctor:blood"
+      label: Agent name
+      description: "The agent you ran, e.g. `doctor`"
+      placeholder: "doctor"
     validations:
       required: true
 

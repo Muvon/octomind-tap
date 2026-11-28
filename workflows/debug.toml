@@ -10,7 +10,7 @@ description = "Reproduces a bug and locates its root cause in the current repo, 
 # ── 1. Reproduce & locate root cause ─────────────────────────────────────────
 [[steps]]
 name    = "reproduce"
-role    = "developer:general"
+role    = "developer"
 session = "fresh"
 retries = 1
 prompt  = """
@@ -42,7 +42,7 @@ exit_when      = { output = "verify", matches = '(?m)^VERIFY: FIXED' }
 
   [[steps.run]]
   name    = "fix"
-  role    = "developer:general"
+  role    = "developer"
   session = "continue"
   retries = 1
   prompt  = """
@@ -65,7 +65,7 @@ findings as your input — address every one.)
 
   [[steps.run]]
   name    = "verify"
-  role    = "developer:general"
+  role    = "developer"
   session = "fresh"
   prompt  = """
 Verify the fix in the current unstaged changes against ground truth — run the
@@ -97,7 +97,8 @@ on_no_match = ["stalled"]
 
   [[steps.run]]
   name    = "summary"
-  role    = "developer:brief"
+  role    = "developer"
+  skills  = ["developer-diff-briefing"]
   session = "fresh"
   prompt  = """
 Summarize the fix in the current unstaged changes against the original bug.
@@ -109,7 +110,8 @@ Summarize the fix in the current unstaged changes against the original bug.
 
   [[steps.run]]
   name    = "stalled"
-  role    = "developer:brief"
+  role    = "developer"
+  skills  = ["developer-diff-briefing"]
   session = "fresh"
   prompt  = """
 The fix loop ended WITHOUT a verified fix — do not present this as success.

@@ -13,4 +13,4 @@ triggers = [
 	"publish to ig",
 ]
 
-domains = ["content", "video", "marketing"]
+domains = ["writer", "producer", "marketer"]

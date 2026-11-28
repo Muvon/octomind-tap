@@ -4,8 +4,8 @@ title: "Car Maintenance Schedule – Service Due Dates & Log"
 description: "Car maintenance schedule from the manufacturer's documents: normal or severe service, next due by time and distance, log. Use to see what service is due."
 license: Apache-2.0
 compatibility: "Requires: web search, web page fetching and file writing."
-capabilities: webfetch
-domains: vehicle
+capabilities: webfetch filesystem-write memory-write
+domains: mechanic
 rules:
   - content(maintenance)
   - content(servicing)
@@ -52,6 +52,10 @@ Collect before assigning numbers: make, model, model year, engine or powertrain,
 - Never mark work completed without the user's confirmation or a matching service record.
 - A new receipt or odometer reading: reconcile with existing history, update only the supported items, recalculate next due.
 - After saving, verify the file and report its path and the next due items. Store stable car facts with `memorize` after the user confirms them; skip memory writes in AUTONOMOUS runs.
+
+### Interval rules of thumb
+
+Use these only to sanity-check a schedule, never to replace the maker's document. Follow the manual's severe-service intervals over marketing myths. Oil by interval or annually; brake fluid about every 2 years (it absorbs water); coolant by spec; tires: 1.6 mm is the legal minimum in much of the world but wet grip degrades below 3 mm, and an age-crack check starts from about 6 years; battery 4 to 6 years; timing belt strictly by interval (commonly about 90,000 to 160,000 km, the manual decides), because interference engines destroy themselves when it snaps. EVs and hybrids need no or fewer oil changes, but brake fluid and battery coolant stay on schedule, heavy EVs wear tires faster, and rarely used friction brakes corrode, so inspect them.
 
 ### Output shape
 

@@ -4,9 +4,8 @@ title: "Guest Posting: Editorial Pitches & Safe Link Strategy"
 description: "Guest posting strategy for contextual links without spam: target qualification, pitch brief, anchor mix, link placement. Use before writing a pitch."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Requires websearch and webfetch for discovery and qualification."
-domains: seo
+domains: seo marketer
 rules:
-  - session(seo)
   - content(guest post)
   - content(guest posting)
   - content(guest blog)

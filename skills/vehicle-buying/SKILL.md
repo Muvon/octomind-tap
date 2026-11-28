@@ -5,7 +5,7 @@ description: "Car purchase steps: price research, out-the-door math, loan and le
 license: Apache-2.0
 compatibility: "Requires: web search and web page fetching."
 capabilities: webfetch
-domains: vehicle
+domains: mechanic
 rules:
   - match((?i)\b(out[- ]the[- ]door|trade[- ]?in|lemon law|car loan|auto loan|lease deal|money factor|residual value|dealer fees?|extended warranty|service contract)\b)
   - match((?i)\b(buy(ing)? a (new |used )?car|lease (a|or) (new |used )?car|lease vs\.? buy|financ(e|ing)( a)? car)\b)
