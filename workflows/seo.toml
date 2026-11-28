@@ -87,6 +87,7 @@ Output only the strategy brief — no preamble, no commentary.
   role    = "seo"
   skills  = ["seo-site-audit", "seo-structural-audit", "seo-content-audit", "seo-link-audit"]
   session = "fresh"
+  readonly = true
   prompt  = """
 You are an independent traceability auditor in a fresh session. You did not write
 this brief. Check it against the audit findings — never from memory.
@@ -120,6 +121,7 @@ name    = "deliver"
 role    = "seo"
 skills  = ["seo-strategy-brief"]
 session = "fresh"
+readonly = true
 prompt  = """
 The traceability loop is finished. Output the strategy brief below verbatim,
 whole, with no edits of your own. If the final audit does not end in

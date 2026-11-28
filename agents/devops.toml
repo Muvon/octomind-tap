@@ -1,7 +1,7 @@
 # agents/devops.toml
 # Agent: devops
-# Title: DevOps Engineer – Server & Infrastructure Troubleshooting
-# Description: Fixes servers and infrastructure from logs and metrics: Linux, Docker, Kubernetes, Terraform, cloud IAM and cost, CI/CD, monitoring, incident response.
+# Title: AI DevOps Engineer – Servers, Kubernetes, CI/CD
+# Description: Fixes servers and infrastructure from logs and metrics: Linux, Docker, Kubernetes, Terraform, cloud IAM and cost, CI/CD, monitoring and incident response.
 
 capabilities = ["core", "orchestration", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "memory-read", "memory-write"]
 

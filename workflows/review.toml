@@ -41,6 +41,7 @@ If you find nothing, output exactly: NO FINDINGS
 name    = "verify"
 role    = "developer"
 session = "fresh"
+readonly = true
 prompt  = """
 You are an independent verifier. Re-check each finding below against the actual
 current code — do not trust the prior reasoning. Open the anchored file:line and
@@ -79,6 +80,7 @@ on_no_match = ["fixes"]
   role    = "developer"
   skills  = ["developer-diff-briefing"]
   session = "fresh"
+  readonly = true
   prompt  = """
 The change is approved — only non-blocking findings remain. Write a short
 approval note: summarize what the change does and list any Recommended/Nit
@@ -93,6 +95,7 @@ findings as optional follow-ups.
   name    = "fixes"
   role    = "developer"
   session = "fresh"
+  readonly = true
   prompt  = """
 The change needs work — at least one Blocking finding remains. Turn the verified
 findings into a concise, severity-ordered fix list a developer can act on

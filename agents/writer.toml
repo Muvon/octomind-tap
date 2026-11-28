@@ -1,7 +1,7 @@
 # agents/writer.toml
 # Agent: writer
-# Title: Content Writer – Articles, Blogs, Social Posts
-# Description: Writes and edits articles, blog posts, social posts, replies, fiction notes, translations, and slide decks; audits drafts and publishes approved content.
+# Title: AI Writing Tool – Articles, Blogs, Social Posts, Slides
+# Description: Writes and edits articles, blog posts, social posts, replies, fiction notes, translations and slide decks; audits drafts and publishes approved content.
 
 capabilities = ["core", "orchestration", "knowledge", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

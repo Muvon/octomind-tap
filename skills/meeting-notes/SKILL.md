@@ -1,7 +1,7 @@
 ---
 name: meeting-notes
-title: "Meeting Notes: Decisions and Action Items"
-description: "Turn a meeting transcript or notes into traceable decisions, owned actions, open questions and follow-up drafts, and track follow-through across meetings."
+title: "Meeting Minutes and Notes: Decisions and Action Items"
+description: "Turn a meeting transcript or notes into meeting minutes: traceable decisions, owned actions, open questions, follow-up drafts, follow-through tracking."
 license: Apache-2.0
 compatibility: "Reads transcripts and notes; local whisper-ctranslate2 for audio; writes minutes files in the working directory; calendar connector optional."
 capabilities: captions calendar

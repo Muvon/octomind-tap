@@ -1,7 +1,7 @@
 ---
 name: developer-test-implementation
-title: "Test Implementation: Coverage & Mutation Testing"
-description: "Write behavior-proving tests in any language, close risk-ranked coverage gaps, set up mutation tooling, and prove each new test fails first."
+title: "Mutation Testing and Code Coverage: Writing Tests"
+description: "Write behavior-proving tests in any language, close risk-ranked coverage gaps, set up mutation testing tooling, and prove each new test fails first."
 license: Apache-2.0
 compatibility: "Requires the project's own test runner; coverage and mutation tools are those of the project's language."
 capabilities: versioning devdocs

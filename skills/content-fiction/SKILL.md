@@ -1,6 +1,6 @@
 ---
 name: content-fiction
-title: "Fiction Coaching: Craft, Critique, Story Bible"
+title: "Fiction Writing Coach: Craft, Critique, Story Bible"
 description: "Coach fiction craft without ghostwriting: structure diagnosis, character work, honest developmental critique, and story-bible continuity. Use on stories."
 license: Apache-2.0
 compatibility: "Needs file read for manuscripts and memory for the story bible. Web search supports period and technical research."

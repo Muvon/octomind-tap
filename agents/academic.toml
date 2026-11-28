@@ -1,7 +1,7 @@
 # agents/academic.toml
 # Agent: academic
-# Title: Academic Research Assistant – Papers & Theses
-# Description: Supports academic work: literature reviews, research questions and thesis statements, paper drafting, abstracts, reviewer replies and citation checks.
+# Title: AI Research Assistant – Literature Reviews & Papers
+# Description: An AI research assistant for literature reviews, research questions, thesis statements, paper drafts, abstracts, reviewer replies and citation checks.
 
 capabilities = ["core", "orchestration", "filesystem-read", "websearch", "webfetch"]
 

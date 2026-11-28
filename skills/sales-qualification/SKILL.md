@@ -1,6 +1,6 @@
 ---
 name: sales-qualification
-title: "Sales Qualification – MEDDPICC, BANT, SPIN, SPICED"
+title: "MEDDPICC, BANT and SPICED Sales Qualification"
 description: "Sales qualification frameworks MEDDPICC, BANT, SPIN and SPICED: when to use each and exit criteria per deal stage. Use when scoring or advancing a deal."
 license: Apache-2.0
 compatibility: "Environment-independent. Works with any CRM or a plain notes file."

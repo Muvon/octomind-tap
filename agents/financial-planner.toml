@@ -1,7 +1,7 @@
 # agents/financial-planner.toml
 # Agent: financial-planner
-# Title: Personal Finance Assistant – Budget, Tax, Retirement
-# Description: Handles budgets and debt payoff, student loans, personal tax, retirement and pensions, insurance claims, bookkeeping, statement analysis, crypto futures.
+# Title: AI Bookkeeping & Budget Assistant – Debt, Tax, Retirement
+# Description: Handles budgets and debt payoff, bookkeeping, student loans, personal tax, retirement, insurance claims, statement analysis. Education, not advice.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

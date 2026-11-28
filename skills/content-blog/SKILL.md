@@ -1,6 +1,6 @@
 ---
 name: content-blog
-title: "Blog Posts: Opinionated Short-Form Writing"
+title: "How to Write a Blog Post: Opinionated Short-Form"
 description: "Write 600-1500 word opinionated blog posts with a strong hook, a clear point of view, light SEO, and Markdown output. Use for short-form posts."
 license: Apache-2.0
 compatibility: "Needs web search and page fetch for quick research. Saves Markdown to the working directory."

@@ -1,7 +1,7 @@
 # agents/hr.toml
 # Agent: hr
-# Title: HR Partner – Hiring & People Operations
-# Description: Runs hiring from scorecard to offer, plus onboarding, reviews, feedback scripts, PIPs and policies, with employment-law flags for counsel.
+# Title: AI HR Assistant – Hiring & People Operations
+# Description: Runs hiring from scorecard to offer, plus onboarding, reviews, feedback scripts, performance plans and policies, with employment-law flags for counsel.
 
 capabilities = ["core", "orchestration", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

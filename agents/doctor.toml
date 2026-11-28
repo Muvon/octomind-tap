@@ -1,7 +1,7 @@
 # agents/doctor.toml
 # Agent: doctor
-# Title: Medical Information Assistant – ER or Urgent Care
-# Description: Answers health questions with cited evidence: symptom urgency, lab results, medications, nutrition, sleep, medical bills. Information, not clinical advice.
+# Title: AI Symptom Checker – Health Info, Labs, Urgency
+# Description: Explains symptoms by urgency, lab results, medications, nutrition, sleep and medical bills with cited evidence. Information, not diagnosis or advice.
 
 capabilities = ["core", "filesystem-read", "websearch", "medical-reference"]
 

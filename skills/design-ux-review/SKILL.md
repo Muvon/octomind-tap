@@ -1,7 +1,7 @@
 ---
 name: design-ux-review
-title: "UX Review: Heuristic Audit and Microcopy"
-description: "Review a page or flow against Nielsen's heuristics with WCAG 2.2 AA spot checks, rate findings by severity, and rewrite failing microcopy in place."
+title: "Heuristic Evaluation: UX Review and Microcopy Rewrites"
+description: "Run a heuristic evaluation of a page or flow against Nielsen's heuristics and WCAG 2.2 AA spot checks, rate findings by severity, fix failing microcopy."
 license: Apache-2.0
 compatibility: "A browser for live URLs and image viewing for screenshots; works from a described flow when neither is available."
 capabilities: browser image-view

@@ -1,7 +1,7 @@
 ---
 name: coach-relationships
-title: "Dating and Relationship Skills: Messages and Repair"
-description: "Coach dating messages, mixed signals, conflict repair, boundaries, hard talks and breakups with drafts, role-play and an abuse and scam safety screen."
+title: "Relationship Repair and Dating Message Coaching"
+description: "Coach dating messages, mixed signals, relationship repair after conflict, boundaries, hard talks and breakups, with drafts, role-play and a safety screen."
 license: Apache-2.0
 compatibility: "No external tools required. Web search confirms current hotlines by country and any local rule or platform policy; memory holds skill goals only."
 domains: coach

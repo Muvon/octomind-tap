@@ -1,7 +1,7 @@
 # agents/community-manager.toml
 # Agent: community-manager
-# Title: Community Manager – Discord Moderation & Setup
-# Description: Runs online communities: Discord server blueprints, moderation rules and AutoMod packs, onboarding, engagement rituals, health audits, moderator playbooks.
+# Title: Discord Server Setup & Moderation – Community Manager
+# Description: Plans and runs online communities: Discord server setup blueprints, moderation rules and AutoMod packs, onboarding, engagement rituals and health audits.
 
 capabilities = ["core", "orchestration", "filesystem-read", "filesystem-write", "websearch", "webfetch"]
 

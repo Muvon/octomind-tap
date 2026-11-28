@@ -21,6 +21,7 @@ max_cost = 3.0
 name    = "extract"
 role    = "developer"
 session = "fresh"
+readonly = true
 prompt  = """
 <issue>
 {{input}}
@@ -129,6 +130,7 @@ on_no_match = ["unconfirmed"]
   name    = "confirmed"
   role    = "developer"
   session = "fresh"
+  readonly = true
   prompt  = """
 <extracted>
 {{extract}}
@@ -158,6 +160,7 @@ Output only the card — no preamble, no commentary.
   name    = "unconfirmed"
   role    = "developer"
   session = "fresh"
+  readonly = true
   prompt  = """
 <extracted>
 {{extract}}
@@ -188,6 +191,7 @@ name    = "reply"
 role    = "writer"
 skills  = ["content-reply"]
 session = "fresh"
+readonly = true
 prompt  = """
 <issue>
 {{input}}

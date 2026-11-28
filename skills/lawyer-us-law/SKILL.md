@@ -1,7 +1,7 @@
 ---
 name: lawyer-us-law
-title: "US Law Research: Federal and State"
-description: "US federal and 50-state law research with CourtListener case law and citation checks: employment, contracts, criminal, privacy, IP, deadlines."
+title: "US Legal Research: Federal and State Law"
+description: "US legal research across federal and 50-state law with CourtListener case law and citation checks: employment, contracts, criminal, privacy, IP, deadlines."
 license: Apache-2.0
 compatibility: "Needs web search and the CourtListener tools (COURTLISTENER_API_KEY). Covers US federal, state, DC and territory law."
 capabilities: legal-us

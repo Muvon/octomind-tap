@@ -1,7 +1,7 @@
 ---
 name: commerce-store-policies
-title: "Store Policies: Returns, Refunds, Shipping, Exchanges"
-description: "Draft returns, refund, shipping and exchange policies for small online stores, with sourced consumer-law minimums flagged for lawyer review."
+title: "Return and Refund Policy Drafts: Shipping, Exchanges"
+description: "Draft a return policy, refund policy, shipping policy and exchange policy for small online stores, with consumer-law minimums flagged for lawyer review."
 license: Apache-2.0
 compatibility: "Needs web access to read current legislation, regulator guidance and platform rules. Legal information only, not legal advice."
 domains: merchant

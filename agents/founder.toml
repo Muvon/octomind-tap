@@ -1,7 +1,7 @@
 # agents/founder.toml
 # Agent: founder
-# Title: Launch Strategist – Go-to-Market & First Customers
-# Description: Takes a product from idea to first customers: idea validation, opportunity research, go-to-market plan, brand, pitch deck, pricing, ads, investor outreach.
+# Title: AI Pitch Deck Generator – Idea to First Customers
+# Description: Takes a product from idea to first customers: idea validation, go-to-market plan, brand, pitch deck, pricing, ads and investor outreach drafts.
 
 capabilities = ["core", "orchestration", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

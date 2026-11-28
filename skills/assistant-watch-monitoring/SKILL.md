@@ -1,7 +1,7 @@
 ---
 name: assistant-watch-monitoring
-title: "Standing Watches: Competitor and Topic Monitoring"
-description: "Run standing watches on competitors, markets and topics: sweep sources, compare to the last state, and deliver graded digests of what changed."
+title: "Competitor Monitoring: Standing Watches and Digests"
+description: "Run competitor and market monitoring as standing watches on competitors, markets and topics: sweep sources, compare to last state, send graded digests."
 license: Apache-2.0
 compatibility: "Needs web search, page fetch and memory for watch state; scraping and saved highlights are optional."
 capabilities: webfetch scraping highlights knowledge

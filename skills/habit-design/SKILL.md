@@ -1,6 +1,6 @@
 ---
 name: habit-design
-title: "Everyday Habit Design and Recovery"
+title: "Build or Break a Habit: Cue, Friction and Recovery"
 description: "Build or break an everyday habit using a small starting behavior, a concrete cue, reduced friction, and an if-then recovery plan."
 license: Apache-2.0
 domains: coach

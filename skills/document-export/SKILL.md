@@ -1,7 +1,7 @@
 ---
 name: document-export
-title: "Markdown to Word and PDF: Submission-Ready Documents"
-description: "Export Markdown to DOCX and PDF that meets submission rules: reference styles, pandoc Typst, page and font checks. Use for .docx or .pdf deliverables."
+title: "Markdown to PDF and DOCX: Submission-Ready Documents"
+description: "Export Markdown to PDF and DOCX that meets submission rules: reference styles, pandoc Typst, page and font checks. Use for .docx or .pdf deliverables."
 license: Apache-2.0
 compatibility: "Requires: python3, pandoc 3.1.2+, typst, and poppler-utils (pdftotext, pdfinfo, pdffonts). Optional: LibreOffice for DOCX page counts. macOS/Linux."
 capabilities: shell documents

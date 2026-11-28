@@ -1,7 +1,7 @@
 # agents/pm.toml
 # Agent: pm
-# Title: Product & Project Manager – PRDs, Roadmaps, Status
-# Description: Turns ideas into PRDs, stories, RICE roadmaps and OKRs, and runs delivery with milestone plans, RAID logs, tracker sweeps and RAG status reports.
+# Title: AI Product Manager – PRDs, Roadmaps, Status Reports
+# Description: Turns ideas into PRDs, stories, RICE roadmaps and OKRs, and runs delivery as an AI project manager: milestone plans, RAID logs and RAG status reports.
 
 capabilities = ["core", "orchestration", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write", "task-management"]
 

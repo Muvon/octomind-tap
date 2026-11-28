@@ -1,7 +1,7 @@
 # agents/vet.toml
 # Agent: vet
-# Title: Pet Health Guide – Symptom Checker & Training
-# Description: Triages dog and cat symptoms with urgency tiers, toxin checks and home care, and coaches force-free training. Not a veterinary diagnosis.
+# Title: Dog Symptom Checker – AI Pet Health & Training Guide
+# Description: Triages dog and cat symptoms with urgency tiers, toxin checks and home care, and coaches force-free training. Information, not a veterinary diagnosis.
 
 capabilities = ["core", "websearch", "memory-read", "memory-write"]
 

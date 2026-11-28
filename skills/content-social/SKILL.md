@@ -1,7 +1,7 @@
 ---
 name: content-social
-title: "Social Posts: Platform-Native Drafts and Packages"
-description: "Draft original posts, threads, captions, DMs, and bios for X, LinkedIn, Reddit, Instagram, TikTok, and more in the author's voice, saved as a package."
+title: "Social Media Posts: Platform-Native Drafts and Packages"
+description: "Draft original social media posts, threads, captions, DMs and bios for X, LinkedIn, Reddit, Instagram, TikTok and more in the author's voice, as a package."
 license: Apache-2.0
 compatibility: "Needs file write to save the draft package. Web search verifies facts. Drafts only; posting and scheduling are separate steps."
 capabilities: variety

@@ -77,7 +77,7 @@ cd model && uv sync && bin/train             # embedding model full pipeline (--
 
 ### Agents, skills, and delegation
 
-- The tap has one agent per field of work (`developer`, `content`, `lawyer`, `doctor`, `video`, and so on), plus `assistant` (the global assistant) and `plain` (a baseline with a one-line system prompt and no persona, for prompt testing). An agent does its field's work itself. Its prompt is short: role, scope, the common working method, guards and output conventions.
+- The tap has one agent per field of work (`developer`, `writer`, `lawyer`, `doctor`, `producer`, and so on), plus `assistant` (the global assistant) and `plain` (a baseline with a one-line system prompt and no persona, for prompt testing). An agent does its field's work itself. Its prompt is short: role, scope, the common working method, guards and output conventions.
 - Each specialty procedure (QA test planning, contract review for one jurisdiction, lifecycle email) is a skill at `skills/<name>/SKILL.md`, bound to an agent by `domains: <agent name>`. A new subject or format is a new skill, not a new agent. A new agent needs a new field of work.
 - A skill loads when the user's message matches its `rules:`, when a workflow step lists it in `skills = [...]`, when `OCTOMIND_SKILLS=a,b octomind run <name>` preloads it, or when `/skill use <name>` loads it by hand. Preload explicitly any skill a workflow step depends on.
 - A skill can bring tools with it: `capabilities:` in its frontmatter loads them on activation. A tool that only one specialty needs is declared by that skill, not by the agent.
@@ -197,11 +197,11 @@ Full authoring spec, rationale, anti-patterns: `skills/tap-agent-authoring/SKILL
 |------|-----------|-------|-----------------|
 | self-management | `core` | `recall` (planning is not a tool: a plugin sets the plan) | **every** agent |
 | do the work | domain caps | `shell`, `filesystem-*`, `codesearch-*`, `legal-*`, … | per agent |
-| own sub-agents | `agent` | `agent_*` | agents that run their own configured sub-agents (`assistant`) |
+| own sub-agents | `agent` | `agent_*` | agents that run their own configured sub-agents (`assistant`, `developer`) |
 | orchestration | `orchestration` | `tap`, `schedule`, `monitor` | agents that start copies of themselves (for example `developer`); `assistant`, which also hands tasks to other agents through `# Uses: *` |
 | runtime config | `runtime` | `mcp`, `agent`-register, `skill`, `capability` | high-trust only; declared by `octomind` |
 
-An agent declares `core` + the capabilities its field needs. `orchestration` is declared only by agents that start copies of themselves or hand tasks to other agents; `runtime` is declared only by `octomind`. Each server enters the tool surface only when declared. `orchestration`/`runtime` may also auto-activate on intent via their `config.toml` triggers; that is temporary, never a standing grant.
+An agent declares `core` + the capabilities its field needs. `orchestration` is declared only by agents that start copies of themselves, and by `assistant`, which also hands tasks to other agents; consult-style agents (a question in, an answer out) work in one session and do not declare it. `runtime` is declared only by `octomind`. Each server enters the tool surface only when declared. `orchestration`/`runtime` may also auto-activate on intent via their `config.toml` triggers; that is temporary, never a standing grant.
 
 ### Running and delegating
 
@@ -231,6 +231,7 @@ Orchestration is an external CLI: `octomind workflow <file.toml|name>` — porta
 
 - Workflows fetched from a tap may use **tap agents only** (a step `role` is an agent name such as `developer`, never a tag with `:`) — no local config roles; this keeps them portable. A step that needs a specialty preloads skills: `role = "developer"`, `skills = ["spec-authoring"]`.
 - Driving input arrives on stdin; validate with `--dry-run` before running.
+- A step that only reads and reports sets `readonly = true`: its agent starts with `--readonly`, so it has no shell and no file writes and cannot delegate. `lint-workflows.sh` rejects a non-boolean value (`READONLY_INVALID`).
 - Author with `templates/workflow.toml`, the `octomind-workflow` skill, or the `octomind` agent; catalogue: `workflows/README.md`.
 
 `[[commands]]` in Octomind config (not tap manifests) define the slash commands run with `/run <name>`; they delegate via `command = "octomind acp <role>"`.

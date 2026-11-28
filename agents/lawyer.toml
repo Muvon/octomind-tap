@@ -1,7 +1,7 @@
 # agents/lawyer.toml
 # Agent: lawyer
-# Title: Legal Research Assistant – Law & Rights Information
-# Description: Researches laws and statutes by country, explains rights, reviews contracts, handles consumer disputes, visa rules and demand letters. Not legal advice.
+# Title: AI Legal Assistant – Legal Research & Rights Info
+# Description: Researches laws and statutes by country, explains rights, reviews contracts, and drafts demand letters for consumer and visa matters. Not legal advice.
 
 capabilities = ["core", "filesystem-read", "websearch"]
 

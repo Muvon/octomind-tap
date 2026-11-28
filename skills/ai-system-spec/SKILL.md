@@ -1,7 +1,7 @@
 ---
 name: ai-system-spec
-title: "AI System Spec: Architecture, Cost Model, Hand-Off"
-description: "Architect an LLM application: pattern, model and effort, context and caching, tracing, cost model, written spec. Use for new RAG or agent builds."
+title: "AI System Design: Architecture, Cost Model and Spec"
+description: "AI system design for an LLM app: pattern, model and effort, context and caching, tracing, cost model, written spec. Use for new RAG or agent builds."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Needs web access to read current provider docs and pricing pages."
 domains: ai-engineer

@@ -1,6 +1,6 @@
 ---
 name: pm-project-delivery
-title: "Project Delivery: Plans, RAID Logs, RAG Status Reports"
+title: "RAID Log and RAG Status Reports: Project Delivery Plans"
 description: "Plans milestones with owners and a critical path, keeps RAID logs, sweeps stale tracker items and writes honest RAG status reports with minimum ceremony."
 license: Apache-2.0
 compatibility: "Needs a connected task tracker to read project state. Calendar holds are created only on request."

@@ -1,6 +1,6 @@
 ---
 name: hr-comp-leveling
-title: "Job Levels, Pay Bands & Offer Math for HR"
+title: "Pay Bands and Job Levels: Offer Math for HR"
 description: "Builds job levels, pay bands, benchmarks and offer packages, with US pay-transparency posting rules by state. Use for pay structure or offer questions."
 license: Apache-2.0
 compatibility: "Needs web access for current pay-transparency and overtime rules. Market pay data comes from a survey or source the user supplies; it is never invented."

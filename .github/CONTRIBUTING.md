@@ -20,7 +20,7 @@ Octomind fetches `agents/doctor.toml` from this repo and merges it into their co
 
 ### 1. Pick a name
 
-The tap has one agent per field of work, for example `developer`, `devops`, `data`, `security`. The name is the file name: lowercase letters, digits and hyphens, never a `:`.
+The tap has one agent per field of work, for example `developer`, `devops`, `analyst`, `security-analyst`. The name is the file name: lowercase letters, digits and hyphens, never a `:`.
 
 A specialty of an existing field (for example blood test interpretation for `doctor`) is a skill at `skills/<name>/SKILL.md` with `domains: <agent name>`, not a new agent. Add an agent only for a new field of work.
 

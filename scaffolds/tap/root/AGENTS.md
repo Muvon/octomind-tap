@@ -65,8 +65,8 @@ never be the agent's own name, and agents that list each other must not form a
 loop. An agent with the header needs `orchestration`.
 
 ```toml
-# agents/marketing.toml
-# Uses: content, seo-audit
+# agents/marketer.toml
+# Uses: writer, seo
 ```
 
 Required role fields:

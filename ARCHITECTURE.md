@@ -95,11 +95,11 @@ Capabilities are grouped by **who needs the tool**. Each tier is its own built-i
 |------|-----------|-------|-----------------|
 | self-management | `core` | `recall` (a plugin sets the plan) | **every** agent |
 | do the work | domain caps | `shell`, `filesystem-*`, `websearch`, `codesearch-*`, `legal-*`, … | per agent |
-| own sub-agents | `agent` | `agent_*` | agents that run their own *configured* sub-agents (`assistant`) |
+| own sub-agents | `agent` | `agent_*` | agents that run their own *configured* sub-agents (`assistant`, `developer`) |
 | **orchestration** | `orchestration` | `tap`, `schedule`, `monitor` | agents that start copies of themselves; `assistant`, which also hands tasks to other agents |
 | runtime config | `runtime` | `mcp`, `agent`-register, `skill`, `capability` | **high-trust only**; `octomind` |
 
-**The rule — orchestration is for agents that intend to delegate.** An agent declares `core` + the tools its field needs. It declares `orchestration` only to start copies of itself (to scout or review read-only, or to split independent parts) or, for `assistant`, to hand tasks to other agents. `runtime` is declared only by `octomind`. This is enforced **structurally** — an undeclared tool is physically absent from the agent's context, not merely discouraged in the prompt. `tap`, `schedule` and `monitor` live on a separate built-in **`orchestration` server**, so an agent that declares `core` + `orchestration` resolves to `core:*` (`recall`) + `orchestration:*` (`tap`, `schedule`, `monitor`), while an agent that declares only `core` resolves to `core:*` (`recall`) alone — the orchestration server never enters its tool surface.
+**The rule — orchestration is for agents that intend to delegate.** An agent declares `core` + the tools its field needs. It declares `orchestration` only to start copies of itself (to scout or review read-only, or to split independent parts) or, for `assistant`, to hand tasks to other agents. Consult-style agents (a question in, an answer out) work in one session and do not declare it. `runtime` is declared only by `octomind`. This is enforced **structurally** — an undeclared tool is physically absent from the agent's context, not merely discouraged in the prompt. `tap`, `schedule` and `monitor` live on a separate built-in **`orchestration` server**, so an agent that declares `core` + `orchestration` resolves to `core:*` (`recall`) + `orchestration:*` (`tap`, `schedule`, `monitor`), while an agent that declares only `core` resolves to `core:*` (`recall`) alone — the orchestration server never enters its tool surface.
 
 Agents that carry `orchestration` are listed by `grep -l orchestration agents/*.toml`. Only `assistant` carries a `# Uses:` header (see [Agents, Skills, and Delegation](#agents-skills-and-delegation)).
 
@@ -109,7 +109,7 @@ Agents that carry `orchestration` are listed by `grep -l orchestration agents/*.
 
 ## Agents, Skills, and Delegation
 
-The tap has one agent per field of work, plus two special ones. A field agent does that field's work itself: `developer`, `content`, `lawyer`, `doctor`, `video`, and so on. `assistant` is the global assistant that hands tasks across fields. `plain` is a baseline with a one-line system prompt and no persona, used for prompt testing. Each agent is one manifest, `agents/<name>.toml`, and its tag is the file name. A tag has no `:`. An agent's prompt is short: role, scope, the common working method, guards and output conventions.
+The tap has one agent per field of work, plus two special ones. A field agent does that field's work itself: `developer`, `writer`, `lawyer`, `doctor`, `producer`, and so on. `assistant` is the global assistant that hands tasks across fields. `plain` is a baseline with a one-line system prompt and no persona, used for prompt testing. Each agent is one manifest, `agents/<name>.toml`, and its tag is the file name. A tag has no `:`. An agent's prompt is short: role, scope, the common working method, guards and output conventions.
 
 | Command | Runs |
 |---------|------|
@@ -209,7 +209,7 @@ In the user's Octomind config, `[taps]` sets the model for one agent:
 | `USES_CYCLE` | agents use each other in a loop; the message shows the loop |
 | `USES_NO_ORCHESTRATION` | an agent with a `# Uses:` header does not declare `orchestration` |
 
-`lint-skills` fails with `DOMAIN_UNKNOWN` when a skill's `domains:` entry is not an agent name. `lint-workflows` fails with `ROLE_FORMAT` when a step `role` contains `:`, and with `ROLE_NOT_FOUND` when it names no agent. It fails with `SKILL_NOT_FOUND` when a step preloads a skill that has no `SKILL.md`, and with `SKILL_DOMAIN_MISMATCH` when the skill's `domains:` does not include the step's `role` (a skill without `domains:` may be preloaded by any role).
+`lint-skills` fails with `DOMAIN_UNKNOWN` when a skill's `domains:` entry is not an agent name. `lint-workflows` fails with `ROLE_FORMAT` when a step `role` contains `:`, and with `ROLE_NOT_FOUND` when it names no agent. It fails with `SKILL_NOT_FOUND` when a step preloads a skill that has no `SKILL.md`, and with `SKILL_DOMAIN_MISMATCH` when the skill's `domains:` does not include the step's `role` (a skill without `domains:` may be preloaded by any role). `lint-workflows` also fails with `READONLY_INVALID` when a step sets `readonly` to anything but `true` or `false`; `readonly = true` starts that step's agent with `--readonly`.
 
 ---
 
@@ -456,7 +456,7 @@ Before adding an agent, compare its authority, deliverables, callers, and behavi
 
 SkillsBench measures curated access and reports a mean gain of 16.6 percentage points across 87 tasks and 18 model–harness configurations. SkillRouter shows that name and description alone can omit routing information on its large-catalog retrieval benchmark. SkillBuffBench v2 separates automatic selection from curated access and presents the evaluation protocol. Measure discovery separately on tap workloads, including short direct requests, detached briefs, unrelated near-matches, and workflows with explicit preloads. [SkillsBench v4](https://arxiv.org/html/2602.12670v4) · [SkillRouter](https://arxiv.org/html/2603.22455) · [SkillBuffBench v2](https://arxiv.org/html/2611.22017v2)
 
-The `promote` workflow shows the pattern: its `brief` step runs the `content` agent with the `source-to-draft` skill, and its `draft` step runs the same agent with the `content-social` skill, so one agent covers both specialties.
+The `promote` workflow shows the pattern: its `brief` step runs the `writer` agent with the `source-to-draft` skill, and its `draft` step runs the same agent with the `content-social` skill, so one agent covers both specialties.
 
 Keep decisions that depend on the same evidence in one session. The `document` workflow derives one verified change list and uses it for the README, changelog, and release notes. Reserve separate sessions for independently verifiable work or an independent review with a concrete acceptance check. Give each delegate the relevant source evidence, shared decisions, and output contract, plus an authorized way to resolve missing inputs. Preserve valid early exits.
 
@@ -470,7 +470,7 @@ Controlled enterprise SOP experiments show sensitivity to missing decision conte
 
 A skill belongs to the agent named in its `domains:` field and stays inside that agent's field. Concretely:
 
-- **`domains:` is single-valued where possible.** `domains: marketing content launch` couples one skill to three agents and is almost always wrong — pick the agent that owns this skill's deliverable.
+- **`domains:` is single-valued where possible.** `domains: marketer writer founder` couples one skill to three agents and is almost always wrong — pick the agent that owns this skill's deliverable.
 - **`compatibility:` describes environment only.** Tools, OS, network requirements. Not "Pairs with X agent" — pairing is the delegating agent's responsibility.
 - **The body does not name other agents.** If the work needs to continue elsewhere, describe it as a downstream concern owned by another field — without pinning a specific agent.
 

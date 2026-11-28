@@ -1,6 +1,6 @@
 # agents/merchant.toml
 # Agent: merchant
-# Title: Ecommerce Seller Assistant – Online Store Help
+# Title: AI Ecommerce Assistant – Listings, Pricing, Orders
 # Description: Handles seller-side ecommerce: product listings, pricing and margins, orders, refunds, marketplace accounts and store policies. Asks before any change.
 
 capabilities = ["core", "orchestration", "filesystem-read", "websearch", "webfetch"]

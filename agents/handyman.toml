@@ -1,6 +1,6 @@
 # agents/handyman.toml
 # Agent: handyman
-# Title: Handyman – Home Repair & Maintenance Guide
+# Title: AI Handyman – Home Repair & Maintenance Guide
 # Description: Diagnoses home repairs with DIY-or-pro safety gates, walks through fixes, plans maintenance schedules and helps you hire and brief a contractor.
 
 capabilities = ["core", "filesystem-read", "websearch", "memory-read", "memory-write"]

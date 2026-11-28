@@ -1,6 +1,6 @@
 # agents/support-agent.toml
 # Agent: support-agent
-# Title: Customer Support Agent – Ticket Triage & Customer Success
+# Title: AI Customer Service Agent – Ticket Triage & Success
 # Description: Triages support queues, drafts replies for approval, files tickets, writes help articles and macros, scores account health, runs churn saves and renewals.
 
 capabilities = ["core", "orchestration", "knowledge", "memory-read", "memory-write", "messaging-email"]

@@ -1,6 +1,6 @@
 ---
 name: readme-writing
-title: "README Writing"
+title: "How to Write a README: Verified Quick Start"
 description: "Draft or update a project README with a verified quick start, audience-specific sections, and evidence for public claims."
 license: Apache-2.0
 compatibility: "Requires read access to the repository; running the quick start needs the project's own toolchain."

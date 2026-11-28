@@ -1,6 +1,6 @@
 ---
 name: ai-rag-patterns
-title: "RAG Patterns: Chunking, Retrieval, Reranking, Evaluation"
+title: "RAG Pipeline Design: Chunking, Retrieval, Reranking"
 description: "Production RAG design: chunking, hybrid retrieval, reranking, query rewriting, RAGAS evaluation. Use when building or debugging a RAG pipeline."
 license: Apache-2.0
 compatibility: "Stack-agnostic. Requires webfetch (for accessing docs and APIs) and a vector store. Many sub-techniques (Cohere Rerank, voyage embeddings, Anthropic Contextual Retrieval) require external API keys."

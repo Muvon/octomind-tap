@@ -1,7 +1,7 @@
 ---
 name: content-article
-title: "Long-Form Articles: Research, Citations, SEO"
-description: "Research, outline, and draft 1500-3000 word articles with inline citations, SEO structure, and a grounding report. Use for long-form pieces."
+title: "Long-Form Content Writing: Research, Citations, SEO"
+description: "Research, outline, and draft 1500-3000 word articles with inline citations, SEO structure, and a grounding report. Use for long-form content pieces."
 license: Apache-2.0
 compatibility: "Needs web search and page fetch for research. Saves Markdown to the working directory; Word or PDF export needs the document tools."
 capabilities: shell documents webfetch variety

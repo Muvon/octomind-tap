@@ -1,7 +1,7 @@
 ---
 name: sales-closing
-title: "Sales Closing: Objections, Negotiation and JOLT"
-description: "B2B closing and negotiation: objections, stalled or indecisive deals, mutual action plans, concession trades, win/loss review. Use for late-stage deals."
+title: "Handling Sales Objections and Sales Negotiation"
+description: "B2B closing: handling sales objections, negotiation, stalled deals, mutual action plans, concession trades, win/loss review. Use for late-stage deals."
 license: Apache-2.0
 compatibility: "Environment-independent. Memory helps track a deal and what was tried."
 domains: sales-rep

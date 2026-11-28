@@ -24,6 +24,7 @@ role    = "devops"
 skills  = ["devops-incident-response", "observability-setup"]
 session = "fresh"
 retries = 1
+readonly = true
 prompt  = """
 <evidence>
 {{input}}
@@ -58,6 +59,7 @@ parallel = true
   role    = "devops"
   skills  = ["devops-incident-response", "observability-setup"]
   session = "fresh"
+  readonly = true
   prompt  = """
 <timeline>
 {{timeline}}
@@ -88,6 +90,7 @@ Output only the analysis — no preamble, no commentary.
   role    = "devops"
   skills  = ["devops-incident-response", "observability-setup"]
   session = "fresh"
+  readonly = true
   prompt  = """
 <timeline>
 {{timeline}}
@@ -125,6 +128,7 @@ exit_when      = { output = "audit", matches = '(?m)^VERDICT: SOUND' }
   role    = "devops"
   skills  = ["devops-incident-response", "observability-setup"]
   session = "continue"
+  readonly = true
   prompt  = """
 Write the blameless postmortem from the material below. Use only what the timeline,
 factors, and metrics establish.
@@ -164,6 +168,7 @@ Output only the postmortem — no preamble, no commentary.
   role    = "ai-engineer"
   skills  = ["ai-evals-design"]
   session = "fresh"
+  readonly = true
   prompt  = """
 You are a postmortem judge in a fresh session. You did not write this document.
 Check it against the evidence, never from memory.
@@ -209,6 +214,7 @@ name    = "deliver"
 role    = "devops"
 skills  = ["devops-incident-response", "observability-setup"]
 session = "fresh"
+readonly = true
 prompt  = """
 <postmortem>
 {{write}}

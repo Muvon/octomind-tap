@@ -1,7 +1,7 @@
 # agents/family-advisor.toml
 # Agent: family-advisor
-# Title: Family Life Guide – Parenting, Eldercare, Benefits
-# Description: Family help: parenting from newborn to teen, aging-parent care, public-benefits paperwork and the weeks after a death. Checklists and next steps.
+# Title: AI Parenting Guide – Eldercare, Benefits, Bereavement
+# Description: Family help: parenting from newborn to teen, aging-parent care, benefits paperwork and the weeks after a death. Checklists and next steps, not advice.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

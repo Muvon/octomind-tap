@@ -1,7 +1,7 @@
 ---
 name: task-briefing
-title: "Task Briefing – Prompt Optimizer for AI Agents"
-description: "Turn a short or vague request into a task brief an autonomous agent can run without asking back. Use when sharpening a prompt before agent handoff."
+title: "Prompt Optimizer: Turn a Request Into an Agent Brief"
+description: "Prompt optimizer that turns a short or vague request into a task brief an autonomous agent can run without asking back. Use before agent handoff."
 license: Apache-2.0
 compatibility: "Domain-agnostic. Reads project files and memory when available; works from the request alone otherwise."
 capabilities: knowledge

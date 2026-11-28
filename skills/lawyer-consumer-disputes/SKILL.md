@@ -1,6 +1,6 @@
 ---
 name: lawyer-consumer-disputes
-title: "Consumer Disputes: Refunds, Chargebacks, Demand Letters"
+title: "Demand Letters, Chargebacks and Refund Disputes"
 description: "Consumer dispute strategy: refunds, chargebacks, demand letters, debt-collector replies, credit-report disputes, small-claims prep, with deadlines."
 license: Apache-2.0
 compatibility: "Needs web search to verify current deadlines and rules, and file access to save case files and letters. Information and drafts, not legal advice."

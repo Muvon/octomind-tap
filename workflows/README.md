@@ -81,7 +81,7 @@ octomind workflow plan-and-build --dry-run   # validate + print the plan, run no
 
 Workflows fetched from a tap are validated to use **tap agents only** —
 every step's `role` must be the name of an agent installed via taps
-(e.g. `developer`, `content`, `assistant`), never a name containing `:`. Where a
+(e.g. `developer`, `writer`, `assistant`), never a name containing `:`. Where a
 step needs a specialty, it preloads skills with `skills = [...]`. This keeps a
 public workflow portable: anyone with the same taps can run it. Local workflow
 files may use local config roles freely.
@@ -101,6 +101,7 @@ prompt = "Plan this: {{input}}"      # {{input}} = stdin; {{step-name}} = a prio
 # session = "fresh" | "continue"     # optional; reuse one session across iterations
 # timeout = 0                        # optional, seconds (0 = none)
 # retries = 0                        # optional
+# readonly = true                    # optional; the step's agent starts with --readonly (read-only tools only: no shell, no file writes, cannot delegate). Default false
 # model = "openrouter:..."           # optional per-step model override
 # workdir = "./sub/project"          # optional working directory
 ```

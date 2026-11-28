@@ -1,6 +1,6 @@
 ---
 name: community-discord-server-blueprint
-title: "Discord Server Blueprint: Channels, Roles, Onboarding"
+title: "Discord Server Template: Channels, Roles, Onboarding"
 description: "Writes a manually applied Discord server template: channel tree, role hierarchy, permission matrix, onboarding, setup steps and role-view tests."
 license: Apache-2.0
 compatibility: "Needs web access to check current Discord documentation before quoting permissions, onboarding or age rules."

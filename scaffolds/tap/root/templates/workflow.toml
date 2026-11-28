@@ -8,6 +8,7 @@ description = "<What the workflow accomplishes and how its steps cooperate.>"
 name = "work"
 role = "<name>"
 session = "fresh"
+# readonly = true   # optional: the step's agent gets read-only tools only (no shell, no file writes, cannot delegate)
 prompt = """
 Complete the following request and return only the requested deliverable.
 

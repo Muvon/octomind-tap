@@ -1,6 +1,6 @@
 ---
 name: pm-product-requirements
-title: "Product Requirements: PRDs, Stories, RICE, OKRs"
+title: "Product Requirements Document (PRD): Stories, RICE, OKRs"
 description: "Turns fuzzy ideas into problem statements, PRDs, user stories, RICE-scored roadmaps and OKRs, with an explicit never list. Use when deciding what to build."
 license: Apache-2.0
 compatibility: "Needs web access for competitor scans. Backlog sync needs a connected task tracker."

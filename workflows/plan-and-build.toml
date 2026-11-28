@@ -59,6 +59,7 @@ name    = "blocked"
 role    = "developer"
 skills  = ["developer-diff-briefing"]
 session = "fresh"
+readonly = true
 prompt  = """
 <spec>
 {{spec}}

@@ -102,6 +102,7 @@ Output the complete document and nothing else.
   skills  = ["ai-evals-design"]
   session = "fresh"
   retries = 2
+  readonly = true
   prompt  = """
 If the document below is a single `INTAKE-BLOCKED:` line, end your whole
 response with exactly `VERDICT: TRACED` (nothing to verify; let the run finish
@@ -144,6 +145,7 @@ role    = "assistant"
 skills  = ["meeting-notes"]
 session = "fresh"
 retries = 2
+readonly = true
 prompt  = """
 If the document below is a single `INTAKE-BLOCKED:` line, tell the user what
 couldn't be read (quote the line) and that no minutes were produced. Stop

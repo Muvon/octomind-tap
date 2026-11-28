@@ -1,6 +1,6 @@
 ---
 name: design-graphics-kit
-title: "Logo and Brand Kit: SVG and PNG Assets"
+title: "Brand Kit and Logo: SVG and PNG Assets"
 description: "Make logos, social graphics, posters, and a simple brand kit as SVG and PNG files with a usage sheet (sizes, colours, clear space). Use for brand visuals."
 license: Apache-2.0
 compatibility: "Needs a shell with an SVG renderer (rsvg-convert, magick, or inkscape) for PNG export, an image generator for text-free pictures, and web access for platform size pages."

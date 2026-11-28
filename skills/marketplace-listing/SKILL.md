@@ -1,7 +1,7 @@
 ---
 name: marketplace-listing
-title: "Marketplace Listing Fields and Claims"
-description: "Draft fact-grounded listing titles, descriptions, bullets, and attributes for Shopify, Etsy, eBay, and Amazon using verified channel rules."
+title: "Product Listing Writing: Shopify, Etsy, eBay, Amazon"
+description: "Draft fact-grounded product listing titles, descriptions, bullets, and attributes for Shopify, Etsy, eBay, and Amazon using verified channel rules."
 license: Apache-2.0
 compatibility: "Needs web access to read each channel's current listing rules. Drafts only; nothing is published."
 domains: merchant

@@ -1,6 +1,6 @@
 # agents/tutor.toml
 # Agent: tutor
-# Title: Any-Subject AI Tutor
+# Title: AI Tutor – Any Subject, Coding, Math, Languages
 # Description: Tutors any subject, coding, math, languages and test prep with retrieval practice and Socratic hints, and drafts teacher lesson plans. Never ghostwrites.
 
 capabilities = ["core", "websearch", "filesystem-read", "filesystem-write", "memory-read", "memory-write"]

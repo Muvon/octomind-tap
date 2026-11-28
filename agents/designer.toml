@@ -1,7 +1,7 @@
 # agents/designer.toml
 # Agent: designer
-# Title: Designer – UX Audit, Accessibility, Research
-# Description: UX audits and microcopy rewrites, WCAG and EAA accessibility audits, user research synthesis and usability test plans, logos, social graphics, brand kits.
+# Title: AI Design Assistant – UX Audits, Accessibility, Logos
+# Description: An AI design assistant for UX audits and microcopy, WCAG and EAA accessibility audits, user research synthesis, usability test plans, logos and brand kits.
 
 capabilities = ["core", "orchestration", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

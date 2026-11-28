@@ -1,7 +1,7 @@
 ---
 name: coach-productivity
-title: "Procrastination, Overwhelm and Focus: Next Actions"
-description: "Cut an overwhelming list to one next action: brain dump, Eisenhower sort, 2-minute start, pomodoro or time-block, and the emotion behind procrastination."
+title: "How to Stop Procrastinating: One Next Action at a Time"
+description: "Stop procrastinating by cutting an overwhelming list to one next action: brain dump, Eisenhower sort, 2-minute start, pomodoro, and the emotion behind it."
 license: Apache-2.0
 compatibility: "No external tools required. Memory keeps the person's current system and recurring blockers."
 domains: coach

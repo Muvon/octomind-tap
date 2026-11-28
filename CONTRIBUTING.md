@@ -31,7 +31,7 @@ Each agent is a single TOML file that defines:
 The tap has one agent per field of work (`developer`, `doctor`, `lawyer`, `devops`, and so on). Each specialty inside a field is a skill bound to that agent.
 
 - **A specialty of an existing field** (for example blood test interpretation for `doctor`) is a skill. See [Contributing a Skill](#contributing-a-skill).
-- **A new field of work** with its own deliverables is an agent. Its name is the file name: lowercase letters, digits and hyphens, never a `:`. Examples: `developer`, `devops`, `finance`.
+- **A new field of work** with its own deliverables is an agent. Its name is the file name: lowercase letters, digits and hyphens, never a `:`. Examples: `developer`, `devops`, `financial-planner`.
 
 An agent starts copies of itself or hands tasks to another agent only when it declares the `orchestration` capability. Delegation matches a task to an agent from its `# Title:` and `# Description:` lines, so the description must say what the agent takes in and what it returns. The rules are in [ARCHITECTURE.md](ARCHITECTURE.md#agents-skills-and-delegation).
 

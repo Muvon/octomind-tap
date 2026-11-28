@@ -1,7 +1,7 @@
 ---
 name: launch-idea-validation
-title: "Idea Validation: GO/NO-GO Verdict and Market Sizing"
-description: "Stress-test one startup idea to a GO, CONDITIONAL GO or NO-GO verdict with problem evidence, TAM/SAM/SOM sizing, competitors and a risk matrix."
+title: "TAM SAM SOM Market Sizing and Idea Validation"
+description: "Stress-test one startup idea to a GO, CONDITIONAL GO or NO-GO verdict with problem evidence, TAM SAM SOM market sizing, competitors and a risk matrix."
 license: Apache-2.0
 compatibility: "Needs web search for problem, competitor and market research. Any OS."
 domains: founder

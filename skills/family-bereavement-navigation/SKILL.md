@@ -1,7 +1,7 @@
 ---
 name: family-bereavement-navigation
-title: "Bereavement Navigation: After-Death Checklist"
-description: "The weeks after a death: immediate steps, notifications, survivor benefits, executor first duties, scam radar, and grief-aware pacing. Educational only."
+title: "What to Do When Someone Dies: After-Death Checklist"
+description: "What to do when someone dies: immediate steps, notifications, survivor benefits, executor first duties, scam radar, grief-aware pacing. Educational only."
 license: Apache-2.0
 compatibility: "Requires: web search for the country's official registration, benefit, and probate pages. Country rules differ and change."
 domains: family-advisor

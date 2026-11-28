@@ -88,6 +88,7 @@ Produce a structured outline. Output only the outline.
 session = "fresh"                  # "fresh" (default) | "continue"
 timeout = 0                        # seconds, 0 = none
 retries = 0                        # extra attempts on failure
+# readonly = true                  # the step's agent starts with --readonly: only tools marked read-only, no shell, no file writes, cannot delegate; default false
 # model = "<provider>:<model>"     # forwarded as --model
 # workdir = "path"                 # resolved against the orchestrator cwd at run time
 # skills = ["skill-name"]          # forwarded as OCTOMIND_SKILLS
@@ -146,6 +147,8 @@ An argument containing `/` or ending in `.toml` is a file; anything else is look
 Inside a session: `/workflow <name> <input>` runs a tap workflow; agents with the `orchestration` capability can use `tap(action="workflow")`.
 
 Retries rerun the whole step — keep `retries = 0` on steps whose role writes files or calls external APIs unless they are idempotent.
+
+Set `readonly = true` on a step that only reads and reports and whose prompt needs no shell command and no file write: a scout, a briefing from text already in the prompt, a judge, a verifier that opens files without running anything. A step that runs git or tests, saves a file, or stores memory keeps the default.
 
 ## Examples
 

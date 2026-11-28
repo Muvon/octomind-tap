@@ -1,6 +1,6 @@
 ---
 name: vehicle-used-car-inspection
-title: "Used Car Inspection: Listing Walk-Through Checklist"
+title: "Used Car Inspection Checklist: Listing Walk-Through"
 description: "Builds a checklist for one used-car listing: seller questions, VIN and history research, in-person checks, red flags, and when to get a pro inspection."
 license: Apache-2.0
 compatibility: "Requires web search and page fetching to read the listing and cite official recall and history sources. Looking up a VIN with a third party needs the user's approval."

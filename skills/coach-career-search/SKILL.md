@@ -1,7 +1,7 @@
 ---
 name: coach-career-search
-title: "Career Direction and Job Search: Funnel and Pipeline"
-description: "Plan a career move: Designing Your Life, positioning, hidden job market, funnel diagnosis, promotion case, evidence-based plans with weekly actions."
+title: "Career Change and Job Search Plan: Funnel Diagnosis"
+description: "Plan a career change or job search: Designing Your Life, positioning, hidden job market, funnel diagnosis, promotion case, plans with weekly actions."
 license: Apache-2.0
 compatibility: "No external tools required. Web search gives live market salary data, target companies and role research; memory holds the target list."
 domains: coach

@@ -1,7 +1,7 @@
 # agents/coach.toml
 # Agent: coach
-# Title: Life Coach – Goals, Career & Habits Coaching
-# Description: Coaches goals, accountability, career and job search, resumes, interviews, negotiation, speaking, habits, fitness, relationship skills and wellbeing.
+# Title: AI Coach – Goals, Career, Habits & Accountability
+# Description: An AI life coach for goals and accountability, career and job search, resumes, interviews, negotiation, speaking, habits, fitness and wellbeing.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "memory-read", "memory-write", "websearch"]
 

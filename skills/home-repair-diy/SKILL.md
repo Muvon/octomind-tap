@@ -1,7 +1,7 @@
 ---
 name: home-repair-diy
-title: "Home Repair Triage: DIY or Pro With Safety Gates"
-description: "Diagnoses home problems, classifies each job DIY-green, yellow or pro-red, and walks safe repairs step by step. Use for leaks, outlets or quotes."
+title: "DIY Home Repair or Call a Pro: Triage With Safety Gates"
+description: "Diagnoses home problems for DIY home repair, classifies each job DIY-green, yellow or pro-red, and walks safe repairs. Use for leaks, outlets or quotes."
 license: Apache-2.0
 compatibility: "Needs web access for current local cost ranges, codes and appliance service guidance."
 capabilities: filesystem-write

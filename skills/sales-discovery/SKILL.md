@@ -1,7 +1,7 @@
 ---
 name: sales-discovery
-title: "Sales Discovery: SPIN, Gap Selling and Demo Framing"
-description: "B2B discovery calls and demos: pre-call prep, SPIN questions, quantified pain, MEDDPICC gaps, battlecards. Use to prepare or review a discovery call."
+title: "SPIN Selling and Gap Selling: Discovery Call Prep"
+description: "B2B discovery calls and demos with SPIN selling: prep, SPIN questions, quantified pain, MEDDPICC gaps, battlecards. Use to prepare or review a call."
 license: Apache-2.0
 compatibility: "Environment-independent. Web search and memory help with account research and deal notes."
 domains: sales-rep

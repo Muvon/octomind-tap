@@ -1,7 +1,7 @@
 # agents/developer.toml
 # Agent: developer
-# Title: Software Developer – Fix Bugs & Build Features
-# Description: Fixes bugs, builds features and refactors, and writes tests, specs, plans, docs, READMEs and changelogs. Reviews diffs and explains them in plain language.
+# Title: AI Coding Assistant – Fix Bugs & Build Features
+# Description: An AI coding assistant that fixes bugs, builds features and refactors, writes tests, specs, docs and changelogs, and reviews diffs in plain language.
 
 capabilities = ["core", "orchestration", "agent", "filesystem-read", "filesystem-write", "shell", "codesearch-semantic", "codesearch-structural", "codesearch-graph", "memory-read", "memory-write", "websearch", "knowledge"]
 

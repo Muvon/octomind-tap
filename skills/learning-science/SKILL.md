@@ -1,6 +1,6 @@
 ---
 name: learning-science
-title: "Learning Science: Make Studying Actually Stick"
+title: "Study Techniques: Retrieval Practice, Spacing, Interleaving"
 description: "Evidence-based study techniques: retrieval practice, spacing, interleaving, self-explanation, AI tutor use. Use when helping someone study or learn faster."
 license: Apache-2.0
 compatibility: "Any Octomind session. No external tools required; pairs well with an SRS app (Anki) for spaced repetition."

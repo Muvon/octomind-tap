@@ -259,6 +259,7 @@ and zero MAJOR) or `VERDICT: REVISE`. Nothing after it.
 name    = "deliver"
 role    = "travel-agent"
 session = "fresh"
+readonly = true
 prompt  = """
 <final_itinerary>
 {{fix}}

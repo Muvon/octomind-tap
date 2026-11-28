@@ -1,7 +1,7 @@
 ---
 name: assistant-everyday-writing
-title: "Everyday Writing: Emails, Complaints, Speeches"
-description: "Draft the messages people send: emails, complaints, appeals, announcements, hard conversations and occasion speeches, in the user's voice."
+title: "Email Writing: Complaint and Appeal Letters, Speeches"
+description: "Draft the messages people send: emails, complaint letters, appeal letters, announcements, hard conversations and occasion speeches, in the user's voice."
 license: Apache-2.0
 compatibility: "Writes drafts to the working directory; Word or PDF export needs the document-export skill and the documents capability."
 capabilities: documents

@@ -1,7 +1,7 @@
 ---
 name: marketing-email
-title: "Email Marketing: Lifecycle Flows and Newsletters"
-description: "Designs lifecycle email flows, writes newsletters and campaigns, and sets segmentation and list-health rules. Use for welcome, win-back or newsletter work."
+title: "Email Newsletters and Lifecycle Email Flows"
+description: "Writes email newsletters and campaigns, designs lifecycle email flows, and sets segmentation and list-health rules. Use for welcome or win-back work."
 license: Apache-2.0
 compatibility: "Needs web search to check current bulk-sender rules. Sending needs an email-capable tool and the user's approval. Any OS."
 capabilities: messaging-email variety

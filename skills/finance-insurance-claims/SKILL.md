@@ -1,7 +1,7 @@
 ---
 name: finance-insurance-claims
-title: "Insurance Claims and Denial Appeals: Policy Decoding"
-description: "Decodes policies and exclusions, structures claims, sizes life and disability cover, and drafts denial appeals with the country's ombudsman escalation."
+title: "Denied Insurance Claim Appeals and Policy Decoding"
+description: "Decodes policies and exclusions, structures claims, sizes life and disability cover, and drafts appeals for a denied insurance claim with ombudsman steps."
 license: Apache-2.0
 compatibility: "Needs web search for the user's country regulator, ombudsman and deadlines. Works from a shared policy or denial letter when one is provided."
 domains: financial-planner

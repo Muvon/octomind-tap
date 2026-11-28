@@ -1,7 +1,7 @@
 ---
 name: data-sql-queries
-title: "SQL Query Debugging: Join Grain & EXPLAIN"
-description: "Write, debug and optimize analytical SQL by logical processing order, join grain and sargability. Use for wrong totals, empty results or slow queries."
+title: "SQL Query Optimization: Join Grain, EXPLAIN, Debugging"
+description: "Write, debug and speed up analytical SQL: SQL query optimization by processing order, join grain and sargability. Use for wrong totals or slow queries."
 license: Apache-2.0
 compatibility: "Works from pasted SQL; a connected SQLite or PostgreSQL database tool allows live schema inspection and read-only runs."
 domains: analyst

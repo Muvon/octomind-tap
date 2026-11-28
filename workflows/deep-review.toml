@@ -96,6 +96,7 @@ max_parallel = 3
   session = "fresh"
   retries = 4
   timeout = 1800
+  readonly = true
   prompt  = """
 Review ONLY through the correctness-and-edge-cases lens, per
 `code-review-lenses`: logic errors, off-by-one, null/empty/boundary inputs,
@@ -121,6 +122,7 @@ none, output exactly: NO FINDINGS. No meta-commentary.
   session = "fresh"
   retries = 4
   timeout = 1800
+  readonly = true
   prompt  = """
 Review ONLY through the security lens, per `code-review-lenses`: untrusted
 input reaching a sink (SQL/command/path/template injection), missing
@@ -144,6 +146,7 @@ output exactly: NO FINDINGS. No meta-commentary.
   session = "fresh"
   retries = 4
   timeout = 1800
+  readonly = true
   prompt  = """
 Review ONLY through the concurrency, error-handling and resources lens, per
 `code-review-lenses`: race conditions, check-then-act, deadlocks and
@@ -168,6 +171,7 @@ No meta-commentary.
   session = "fresh"
   retries = 4
   timeout = 1800
+  readonly = true
   prompt  = """
 Review ONLY through the performance-and-efficiency lens, per
 `code-review-lenses`: algorithmic complexity on hot paths, N+1 queries,
@@ -190,6 +194,7 @@ Output candidate findings only in the skill's finding format ([SEVERITY]
   session = "fresh"
   retries = 4
   timeout = 1800
+  readonly = true
   prompt  = """
 Review ONLY through the design, maintainability and tests lens, per
 `code-review-lenses`: SOLID and coupling, leaky or missing abstractions, API
@@ -214,6 +219,7 @@ skills  = ["code-review-lenses"]
 session = "fresh"
 retries = 4
 timeout = 1800
+readonly = true
 prompt  = """
 You are an independent, adversarial verifier. The candidate findings below came
 from parallel lens reviewers — treat them ALL as unproven. Per
@@ -251,6 +257,7 @@ skills  = ["code-review-lenses"]
 session = "fresh"
 retries = 4
 timeout = 1800
+readonly = true
 prompt  = """
 Turn the verified findings below into one clean review a developer acts on
 directly. Keep ONLY the KEPT findings; drop the verifier's DROP reasoning from

@@ -1,7 +1,7 @@
 ---
 name: vehicle-repair-diagnosis
-title: "Car Symptom Diagnosis: Noises, Leaks & Quotes"
-description: "Narrows car noises, leaks, smells, dash lights and OBD-II codes to likely causes, and checks a repair quote against local prices. Use for any car fault."
+title: "Car Diagnosis: Noises, Leaks, OBD-II Codes and Quotes"
+description: "Car diagnosis from symptoms: narrows noises, leaks, smells, dash lights and OBD-II codes to likely causes; checks a repair quote against local prices."
 license: Apache-2.0
 compatibility: "Requires web search for local part prices, labor rates and known issues. Recall lookups need the VIN and the user's approval to submit it."
 capabilities: memory-write

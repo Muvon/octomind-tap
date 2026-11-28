@@ -13,7 +13,8 @@
 #   8. Graph mode (entry / [[edges]]) sets max_transitions
 #   9. max_cost, when set, is a positive number
 #  10. Listed in workflows/README.md; the root README workflow count is current
-#  11. `octomind workflow <file> --dry-run` passes (skipped when octomind is not installed)
+#  11. `readonly`, when set on a step, is true or false
+#  12. `octomind workflow <file> --dry-run` passes (skipped when octomind is not installed)
 #
 # Usage:
 #   scripts/lint-workflows.sh                         # lint all workflows

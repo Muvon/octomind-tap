@@ -1,7 +1,7 @@
 ---
 name: doctor-medical-billing
-title: "Medical Bill Audit: Dispute and Negotiate"
-description: "Audits hospital and clinic bills line by line, finds errors, applies No Surprises Act and charity-care rules, drafts disputes and scripts."
+title: "Dispute a Medical Bill: Line-by-Line Audit and Scripts"
+description: "Audits hospital and clinic bills line by line to dispute a medical bill: finds errors, applies No Surprises Act and charity-care rules, drafts disputes."
 license: Apache-2.0
 compatibility: "Requires: filesystem write for letters and case files, web search for current codes and thresholds, memory tools for case state. US billing rules by default."
 domains: doctor

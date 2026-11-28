@@ -1,7 +1,7 @@
 ---
 name: data-engineering-pipelines
-title: "Data Pipelines: Idempotent Loads & Quality Checks"
-description: "Design idempotent pipelines, layered warehouse models, Postgres tuning and data quality checks. Use for ETL, backfills and numbers that look wrong."
+title: "ETL Pipeline Design: Idempotent Loads, Data Quality"
+description: "Design idempotent ETL pipelines, layered warehouse models, Postgres tuning and data quality checks. Use for ETL, backfills and numbers that look wrong."
 license: Apache-2.0
 compatibility: "Needs read access to schemas and sample data; a PostgreSQL tool and documentation lookup help but are not required."
 domains: analyst

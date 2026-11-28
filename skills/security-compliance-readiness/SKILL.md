@@ -1,7 +1,7 @@
 ---
 name: security-compliance-readiness
-title: "Privacy and Compliance Readiness: GDPR, SOC 2"
-description: "Maps GDPR, CCPA, SOC 2, ISO 27001, NIS2, and DORA duties to team actions: data maps, DPIAs, policy drafts, questionnaires. Readiness, not legal advice."
+title: "SOC 2 and GDPR Compliance Readiness: DPIAs, Policies"
+description: "Maps GDPR, CCPA, SOC 2 compliance, ISO 27001, NIS2, and DORA duties to team actions: data maps, DPIAs, policy drafts, questionnaires. Not legal advice."
 license: Apache-2.0
 compatibility: "Requires: web search and web fetch for regulator texts and current thresholds. Jurisdiction-dependent claims need counsel."
 domains: security-analyst

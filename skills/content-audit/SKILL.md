@@ -1,6 +1,6 @@
 ---
 name: content-audit
-title: "Content Audit Rubric & Scoring Harness"
+title: "Content Audit: Scoring Rubric and Evidence Report"
 description: "Read-only content audit: detects content type, scores each axis 0-10, reports findings with evidence and rewrites. Use to diagnose a draft or post."
 license: Apache-2.0
 compatibility: "Read-only. Requires filesystem read access for file inputs; live SERP or source checks need network access."

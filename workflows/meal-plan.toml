@@ -131,6 +131,7 @@ Output the complete corrected plan in the same five-part shape. No commentary.
   skills  = ["ai-evals-design"]
   session = "fresh"
   retries = 2
+  readonly = true
   prompt  = """
 You are an independent auditor in a fresh session. You did not write this plan.
 Recompute everything from the recipes and the intake; do not trust the grid, the
@@ -179,6 +180,7 @@ zero MAJOR) or `VERDICT: REVISE`. Nothing after it.
 name    = "deliver"
 role    = "chef"
 session = "fresh"
+readonly = true
 prompt  = """
 <intake>
 {{intake}}

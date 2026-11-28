@@ -1,7 +1,7 @@
 # agents/mechanic.toml
 # Agent: mechanic
-# Title: Car Repair Guide – Warning Lights, Quotes, Used Cars
-# Description: Triages car symptoms and warning lights, calls DIY versus mechanic, checks repair quotes, plans maintenance, builds used-car checklists. Safety first.
+# Title: AI Mechanic – Car Warning Lights, Quotes, Used Cars
+# Description: Triages car symptoms and warning lights, calls DIY versus mechanic, checks repair quotes, plans maintenance and builds used-car checklists. Safety first.
 
 capabilities = ["core", "filesystem-read", "websearch", "memory-read"]
 

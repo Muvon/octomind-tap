@@ -1,6 +1,6 @@
 ---
 name: cover-letter
-title: "Cover Letter Craft"
+title: "How to Write a Cover Letter: Truthful, Tailored Drafts"
 description: "Write a truthful cover letter tailored to the posting and grounded in the candidate's real experience, without AI-template phrasing. Use when applying."
 license: Apache-2.0
 compatibility: "No external tools required. Works from a resume plus a job posting (file, URL text, or pasted)."

@@ -1,7 +1,7 @@
 ---
 name: support-customer-success
-title: "Customer Success: Health, Churn Risk & Renewals"
-description: "Onboards customers to first value, scores account health, runs churn-risk save plays, prepares business reviews and T-90 renewals for recurring revenue."
+title: "QBR Prep, Health Scores and Churn Risk for CS"
+description: "Onboards customers to first value, scores account health, runs churn-risk save plays, prepares quarterly business reviews (QBRs) and T-90 renewals."
 license: Apache-2.0
 compatibility: "Needs a customer record (CRM or supplied account data). Outbound email and calendar holds are drafts until the user approves them."
 capabilities: customer-management calendar filesystem-read filesystem-write

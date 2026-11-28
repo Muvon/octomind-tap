@@ -1,7 +1,7 @@
 ---
 name: database-design-and-migrations
-title: "Database Design and Migrations"
-description: "Key and index rules for application schemas, plus zero-downtime migration patterns and lock levels for PostgreSQL, MySQL and SQLite. Use for DDL work."
+title: "Database Migration and Schema Design: Keys, Indexes"
+description: "Database schema design rules for keys and indexes, plus zero-downtime database migration patterns and lock levels for PostgreSQL, MySQL, SQLite."
 license: Apache-2.0
 compatibility: "Needs a SQL client or database MCP tool for live checks; works from schema files alone."
 domains: analyst

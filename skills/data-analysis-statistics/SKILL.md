@@ -1,6 +1,6 @@
 ---
 name: data-analysis-statistics
-title: "Data Analysis: EDA, Statistics & A/B Tests"
+title: "Statistical Significance and A/B Tests: Data Analysis"
 description: "Turn messy data into a plain answer: exploratory analysis, honest statistics, A/B test reading and chart choice. Use for analysis and significance."
 license: Apache-2.0
 compatibility: "Needs Python with pandas, or uv to fetch packages; Polars or DuckDB for data larger than memory."

@@ -1,6 +1,6 @@
 ---
 name: launch-pitch-pricing
-title: "Pitch and Pricing: Decks, Tiers and Sales Pages"
+title: "Pitch Deck and Pricing Tiers: Sales Pages and Offers"
 description: "Write elevator pitches, 10-12 slide pitch decks, pricing tiers, sales pages and partnership proposals. Use when turning a product into an offer."
 license: Apache-2.0
 compatibility: "Needs web search; slide decks need the slide-deck CLI. Any OS."

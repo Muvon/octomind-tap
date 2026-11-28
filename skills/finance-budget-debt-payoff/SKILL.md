@@ -1,6 +1,6 @@
 ---
 name: finance-budget-debt-payoff
-title: "Budget and Debt Payoff: Order of Operations"
+title: "Snowball vs Avalanche: Debt Payoff Plan and Budget"
 description: "Builds a household budget, debt payoff order and emergency fund from the user's numbers, using 50/30/20, snowball vs avalanche and a named priority order."
 license: Apache-2.0
 compatibility: "Needs web search for current rates and limits."

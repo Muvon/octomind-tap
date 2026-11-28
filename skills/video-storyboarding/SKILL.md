@@ -1,7 +1,7 @@
 ---
 name: video-storyboarding
-title: "Video Storyboarding: Shot Lists and Asset Checklists"
-description: "Plan beat-by-beat video storyboards: shot list, framing, motion, transitions, music brief, asset checklist, reference frames. Use after a script exists."
+title: "Shot List and Storyboard: Beat-by-Beat Video Planning"
+description: "Plan a beat-by-beat video storyboard and shot list: framing, motion, transitions, music brief, asset checklist, reference frames. Use after a script."
 license: Apache-2.0
 compatibility: "Stack-agnostic; reference frames need an image generation tool."
 domains: producer

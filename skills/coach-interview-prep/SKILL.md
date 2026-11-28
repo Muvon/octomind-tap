@@ -1,7 +1,7 @@
 ---
 name: coach-interview-prep
-title: "Mock Interviews: STAR Story Banks and Rubric Feedback"
-description: "Run mock interviews with scored feedback, build STAR/CAR story banks, and drill system-design, coding, case, panel, take-home and AI-interviewer rounds."
+title: "Interview Prep: Mock Interviews and STAR Story Banks"
+description: "Interview prep with mock interviews and scored feedback, STAR/CAR story banks, and drills for system-design, coding, case, panel, take-home and AI rounds."
 license: Apache-2.0
 compatibility: "No external tools required. Web search finds company interview formats and role-specific question patterns; memory keeps the story bank."
 domains: coach

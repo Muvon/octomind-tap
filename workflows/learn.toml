@@ -63,6 +63,7 @@ End by listing every note in the box: `path — one-line claim`.
   name    = "audit"
   role    = "developer"
   session = "fresh"
+  readonly = true
   prompt  = """
 Independently audit the knowledge base in `.box/` against the real repository.
 You trust nothing the curator wrote — verify.
@@ -97,6 +98,7 @@ on_no_match = ["stalled"]
   role    = "assistant"
   skills  = ["assistant-knowledge-base"]
   session = "fresh"
+  readonly = true
   prompt  = """
 The knowledge base passed its audit. Report the final state briefly: the box
 map (each note path with its one-line claim), what was promoted from memory
@@ -109,6 +111,7 @@ searchable by every agent with the knowledge capability — say so in one line.
   role    = "developer"
   skills  = ["developer-diff-briefing"]
   session = "fresh"
+  readonly = true
   prompt  = """
 The knowledge-base audit loop ended WITHOUT a pass — do not present this as
 success. Report for a human decision: what the box currently contains, and

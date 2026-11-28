@@ -1,7 +1,7 @@
 ---
 name: finance-student-loans
-title: "Student Loans and Aid: Repayment Plans, FAFSA, Credit"
-description: "Compares US student-loan repayment plans, forgiveness paths, FAFSA deadlines and credit-score mechanics from official sources, with a deadline calendar."
+title: "Student Loan Forgiveness and Repayment Plans, FAFSA"
+description: "Compares US student loan repayment plans and forgiveness paths, FAFSA deadlines and credit-score mechanics from official sources, with a deadline calendar."
 license: Apache-2.0
 compatibility: "Needs web search and page fetch for studentaid.gov. US federal programs; non-US loans follow the country's own student-finance body."
 capabilities: webfetch

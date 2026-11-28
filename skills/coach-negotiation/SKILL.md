@@ -1,7 +1,7 @@
 ---
 name: coach-negotiation
-title: "Negotiation Prep: Salary, Rent and Bills Scripts"
-description: "Prepare to negotiate salary, rent, bills or a big purchase: BATNA, walkaway and target numbers, verbatim scripts, and role-play with debrief."
+title: "Salary Negotiation Prep: Rent, Bills and Purchase Scripts"
+description: "Prepare for salary negotiation, or to negotiate rent, bills or a big purchase: BATNA, walkaway and target numbers, verbatim scripts, role-play and debrief."
 license: Apache-2.0
 compatibility: "No external tools required. Web search gives market data (salary ranges, rent comps, price benchmarks); filesystem read opens offer letters and quotes."
 domains: coach

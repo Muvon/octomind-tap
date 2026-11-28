@@ -1,6 +1,6 @@
 ---
 name: video-thumbnails
-title: "Thumbnail Maker: YouTube, Shorts, Reels, TikTok Covers"
+title: "YouTube Thumbnails: Shorts, Reels and TikTok Covers"
 description: "YouTube thumbnail workflow: one promise, frames from footage, short outlined text, feed-size previews, A/B variants. Use when a video needs a thumbnail."
 license: Apache-2.0
 compatibility: "Requires: python3 and an ffmpeg built with libass (macOS: Homebrew ffmpeg-full). Optional: uvx for rembg subject cut-outs. macOS/Linux."

@@ -1,7 +1,7 @@
 # agents/operator.toml
 # Agent: operator
-# Title: Operator – Browser, Desktop & Mobile UI Automation
-# Description: Drives web pages, desktop and mobile apps: scrapes data, fills forms, runs flows, posts approved copy, and returns files, screenshots and step logs.
+# Title: AI Web Scraper & UI Automation – Browser, Desktop, Mobile
+# Description: Drives web pages, desktop and mobile apps for browser automation: scrapes data, fills forms, runs flows, posts approved copy, returns files and step logs.
 
 capabilities = ["core", "filesystem-read", "filesystem-write", "browser"]
 

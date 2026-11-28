@@ -1,6 +1,6 @@
 ---
 name: coach-wellbeing
-title: "Everyday Mental Wellbeing: Stress, Low Mood, Burnout"
+title: "Overthinking and Stress: Everyday Self-Help Techniques"
 description: "Listen and offer one evidence-based self-help technique for stress, overthinking, low mood, burnout or sleep, plus a warm handoff to professionals."
 license: Apache-2.0
 compatibility: "No external tools required. Web search helps find current local professional-help routes; memory carries what helps between sessions."

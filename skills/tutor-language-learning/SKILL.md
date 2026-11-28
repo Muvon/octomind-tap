@@ -1,6 +1,6 @@
 ---
 name: tutor-language-learning
-title: "Language Learning: Weekly Plan and CEFR Milestones"
+title: "Language Learning Plan: Comprehensible Input and CEFR"
 description: "Coaches self-learners toward conversation: comprehensible input, high-frequency vocabulary with SRS, output practice, CEFR milestones, weekly plans."
 license: Apache-2.0
 compatibility: "Requires: web search for graded resources and frequency lists; file write for the plan; memory tools to track level and plan."

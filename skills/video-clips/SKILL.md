@@ -1,7 +1,7 @@
 ---
 name: video-clips
-title: "Long-Form to Shorts: Podcast and Webinar Clips"
-description: "Turn a podcast, webinar, stream or talk into ranked standalone vertical clips with reframes, captions and hooks. Use when picking clips from a recording."
+title: "Podcast Clips and Webinar Shorts from Long Recordings"
+description: "Turn a podcast, webinar, stream or talk into ranked standalone vertical clips with reframes, captions and hooks. Use when picking podcast clips."
 license: Apache-2.0
 compatibility: "Requires: ffmpeg (libass build), auto-editor, python3, whisper-ctranslate2. macOS/Linux."
 capabilities: video-editing thumbnails

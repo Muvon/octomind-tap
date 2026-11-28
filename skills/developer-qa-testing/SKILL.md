@@ -1,6 +1,6 @@
 ---
 name: developer-qa-testing
-title: "QA Testing: Risk-Based Test Plans & Bug Reports"
+title: "Test Plan: Risk-Based QA Planning and Bug Reports"
 description: "Design risk-based test plans and cases, diagnose flaky tests, write precise bug reports and release verdicts. Use for QA strategy rather than test code."
 license: Apache-2.0
 compatibility: "Requires a project with a runnable test command for execution; otherwise delivers a manual plan."

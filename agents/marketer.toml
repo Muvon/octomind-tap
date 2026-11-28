@@ -1,7 +1,7 @@
 # agents/marketer.toml
 # Agent: marketer
-# Title: Marketing Strategist – Email, Growth, PR, Social
-# Description: Marketing for founders and small teams: lifecycle emails and newsletters, growth plans, paid media setup, partner programs, PR and social strategy.
+# Title: AI Marketing Agent – Email, Growth, PR, Social
+# Description: An AI marketing agent for founders and small teams: lifecycle emails and newsletters, growth plans, paid media setup, partner programs, PR and social.
 
 capabilities = ["core", "orchestration", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]
 

@@ -1,7 +1,7 @@
 ---
 name: hr-people-operations
-title: "People Operations: 30-60-90 Plans, Reviews, PIPs"
-description: "Builds 30-60-90 onboarding plans, review cycles, SBI feedback scripts, fair PIPs, pulse surveys and HR policy drafts, with legal flags for counsel."
+title: "Performance Improvement Plan, 30-60-90 Plan, Reviews"
+description: "Builds 30-60-90 onboarding plans, review cycles, SBI feedback scripts, fair performance improvement plans (PIPs), pulse surveys and HR policy drafts."
 license: Apache-2.0
 compatibility: "Needs web access to check current employment-law changes in the user's country."
 domains: hr

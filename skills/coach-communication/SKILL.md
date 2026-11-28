@@ -1,7 +1,7 @@
 ---
 name: coach-communication
-title: "Public Speaking and Hard Work Conversations"
-description: "Build a talk plan with SCQA, Story Spine or Sparkline, vocal drills, anxiety reappraisal, and SBI scripts for hard conversations with a boss or peer."
+title: "Difficult Conversations at Work and Public Speaking"
+description: "Build a talk plan with SCQA, Story Spine or Sparkline, vocal drills, anxiety reappraisal, and SBI scripts for difficult conversations with a boss or peer."
 license: Apache-2.0
 compatibility: "No external tools required. Memory keeps recurring talks and weak spots between sessions."
 domains: coach

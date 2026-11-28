@@ -1,7 +1,7 @@
 ---
 name: analytical-report
-title: "Analytical Report Craft"
-description: "Turn raw data into a decision-ready report: answer-first Minto Pyramid, traced numbers, charts, HTML that prints to PDF. Use for data reports."
+title: "Data Report Writing: Minto Pyramid, Charts, PDF"
+description: "Turn raw data into a decision-ready data report: answer-first Minto Pyramid, traced numbers, charts, HTML that prints to PDF. Use for data reports."
 license: Apache-2.0
 compatibility: "Produces self-contained HTML by default; markdown or PDF when requested and a renderer is available."
 domains: analyst

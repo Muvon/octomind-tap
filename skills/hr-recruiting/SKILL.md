@@ -1,6 +1,6 @@
 ---
 name: hr-recruiting
-title: "Recruiting: Scorecards, Job Descriptions, Interview Kits"
+title: "Structured Interview Kits, Scorecards, Job Descriptions"
 description: "Takes a role from scorecard to signed offer: job description, sourcing plan, resume screen, structured interview kit and candidate messages."
 license: Apache-2.0
 compatibility: "Needs web access for pay-transparency rules and candidates' public work. Email drafting uses the connected email account; nothing sends without approval."

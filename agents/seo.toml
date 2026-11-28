@@ -1,6 +1,6 @@
 # agents/seo.toml
 # Agent: seo
-# Title: SEO Specialist – Site Audit & AI Search Visibility
+# Title: AI SEO Tool – Site Audits, Keywords, AI Visibility
 # Description: Audits sites for technical, on-page and link problems, plans keyword research, content clusters and link building, and diagnoses visibility in AI answers.
 
 capabilities = ["core", "orchestration", "filesystem-read", "filesystem-write", "websearch", "webfetch", "seo-data", "memory-read", "memory-write"]

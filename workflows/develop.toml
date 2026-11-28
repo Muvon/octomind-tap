@@ -29,6 +29,7 @@ role    = "developer"
 skills  = ["developer-context-scouting"]
 session = "fresh"
 retries = 1
+readonly = true
 prompt  = """
 Take the user spec and gather the most important context to begin development.
 

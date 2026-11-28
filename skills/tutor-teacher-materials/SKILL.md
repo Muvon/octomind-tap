@@ -1,6 +1,6 @@
 ---
 name: tutor-teacher-materials
-title: "Teacher Planning: Units, Quizzes, Rubrics, Messages"
+title: "Lesson Plans, Quizzes and Rubrics for Teachers"
 description: "Drafts unit and lesson plans, quizzes with answer keys, rubrics, leveled worksheets and parent messages for teachers as editable files. No grading."
 license: Apache-2.0
 compatibility: "Requires: file write and shell for the files, web search to confirm named standards; the document-export skill for Word or PDF."

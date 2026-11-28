@@ -1,7 +1,7 @@
 ---
 name: design-user-research
-title: "User Research Synthesis: Themes, Quotes, Personas"
-description: "Turn interviews, feedback, and usability notes into coded themes traced to verbatim quotes; build personas and plan usability tests or card sorts."
+title: "Thematic Analysis for User Research: Quotes, Personas"
+description: "Turn interviews and usability notes into coded themes (thematic analysis) traced to verbatim quotes; build personas, plan usability tests or card sorts."
 license: Apache-2.0
 compatibility: "Works from transcripts, notes, or feedback exports in the working directory. No special tools."
 domains: designer

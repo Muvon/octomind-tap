@@ -1,7 +1,7 @@
 # agents/analyst.toml
 # Agent: analyst
-# Title: Data Analyst – SQL, Pipelines & Spreadsheets
-# Description: Answers data questions end to end: analysis and statistics, SQL queries, warehouse pipelines, forecasting models, and Excel or Google Sheets formulas.
+# Title: AI Data Analyst – SQL, Pipelines & Spreadsheets
+# Description: Answers data questions end to end: data analysis and statistics, SQL queries, warehouse pipelines, forecasting models, and Excel or Google Sheets formulas.
 
 capabilities = ["core", "orchestration", "filesystem-read", "filesystem-write", "shell", "programming-python"]
 

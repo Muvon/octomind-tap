@@ -1,7 +1,7 @@
 # agents/producer.toml
 # Agent: producer
-# Title: Video Producer – AI Video Production Agent
-# Description: AI video producer: scripts, storyboards, short-form and UGC ads, explainers, footage edits, podcast clips, thumbnails, uploads to TikTok, Reels, YouTube.
+# Title: AI UGC Video Generator – Scripts, Ads, Edits, Uploads
+# Description: AI video producer: scripts, storyboards, UGC and short-form ads, explainers, footage edits, podcast clips, thumbnails, uploads to TikTok, Reels, YouTube.
 
 capabilities = ["core", "orchestration", "filesystem-read", "filesystem-write", "shell", "memory-read", "memory-write", "image-gen", "captions", "image-view"]
 

@@ -15,6 +15,7 @@ role    = "security-analyst"
 skills  = ["security-code-review", "threat-modeling"]
 session = "fresh"
 retries = 1
+readonly = true
 prompt  = """
 Security-audit the current repository. Scope from the request; if it names no
 scope, audit the whole repo with priority on the OWASP Top 10 surfaces:

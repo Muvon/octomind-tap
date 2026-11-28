@@ -1,6 +1,6 @@
 ---
 name: coding-pedagogy
-title: "Coding Pedagogy and Debugging Practice"
+title: "Teaching Programming: PRIMM and Debugging Practice"
 description: "Teach programming through PRIMM, a hint ladder, worked-example fading, misconception repair, and a scaffolded debugging protocol for novice learners."
 license: Apache-2.0
 compatibility: "Any Octomind session; reading the learner's own code needs file access, and a memory tool keeps level and misconceptions between sessions."

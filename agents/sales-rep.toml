@@ -1,6 +1,6 @@
 # agents/sales-rep.toml
 # Agent: sales-rep
-# Title: Sales Assistant – B2B Sales Coaching and CRM
+# Title: AI Sales Assistant – B2B Outreach, Proposals & CRM
 # Description: B2B sales work: cold outreach copy, lead enrichment and scoring, discovery and qualification, closing and negotiation, RFP proposals, CRM and pipeline.
 
 capabilities = ["core", "orchestration", "filesystem-read", "filesystem-write", "websearch", "memory-read", "memory-write"]

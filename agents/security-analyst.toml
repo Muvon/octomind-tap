@@ -1,7 +1,7 @@
 # agents/security-analyst.toml
 # Agent: security-analyst
-# Title: Security Analyst – AppSec, SOC, Compliance, Fraud
-# Description: Defensive security: secure code review, alert and phishing triage, incident response, GDPR and SOC 2 readiness, scam and identity-theft recovery.
+# Title: AI Cybersecurity Analyst – AppSec, SOC, Compliance
+# Description: Defensive cybersecurity: secure code review, alert and phishing triage, incident response, GDPR and SOC 2 readiness, scam and identity-theft recovery.
 
 capabilities = ["core", "orchestration", "filesystem-read", "filesystem-write", "websearch", "webfetch", "memory-read", "memory-write"]
 

@@ -1,6 +1,6 @@
 ---
 name: sales-outbound
-title: "Sales Outbound: Cold Email, LinkedIn and Call Coaching"
+title: "Cold Email, LinkedIn Outreach and Call Coaching"
 description: "B2B cold email, LinkedIn and call-opener rewrites, REPLY and 4-T audits, multi-touch cadences, deliverability red flags. Use when outreach gets no replies."
 license: Apache-2.0
 compatibility: "Environment-independent. Web search and page fetch help with account and persona research."

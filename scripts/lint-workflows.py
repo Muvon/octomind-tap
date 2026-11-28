@@ -109,6 +109,8 @@ for s in leaves:
         agent_file = repo_root / "agents" / f"{role}.toml"
         if not agent_file.is_file() or agent_file.is_symlink():
             errors.append(f"ROLE_NOT_FOUND: step {sname!r} role {role!r} has no agents/{role}.toml")
+    if "readonly" in s and not isinstance(s["readonly"], bool):
+        errors.append(f"READONLY_INVALID: step {sname!r} readonly must be true or false, got {s['readonly']!r}")
     for skill in s.get("skills") or []:
         skill_file = repo_root / "skills" / skill / "SKILL.md"
         if not skill_file.is_file():
